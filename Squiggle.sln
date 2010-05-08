@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual C# Express 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.UI", "Squiggle.UI\Squiggle.UI.csproj", "{F45A0E9A-5F9C-404E-BF72-4DDB8A5380E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Chat", "Squiggle.Chat\Squiggle.Chat.csproj", "{CF28694A-887E-4118-874F-76F028DAB56E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{F45A0E9A-5F9C-404E-BF72-4DDB8A5380E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F45A0E9A-5F9C-404E-BF72-4DDB8A5380E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F45A0E9A-5F9C-404E-BF72-4DDB8A5380E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF28694A-887E-4118-874F-76F028DAB56E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF28694A-887E-4118-874F-76F028DAB56E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF28694A-887E-4118-874F-76F028DAB56E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF28694A-887E-4118-874F-76F028DAB56E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
