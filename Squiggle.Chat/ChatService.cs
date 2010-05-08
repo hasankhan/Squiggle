@@ -8,6 +8,12 @@ using System.ServiceModel;
 
 namespace Squiggle.Chat
 {
+    class ResolveEndPointEventArgs:EventArgs
+    {
+        public string Username {get; set;}
+        public IPEndPoint EndPoint {get; set;}
+    }
+
     class ChatService: IChatService
     {
         ChatHost chatHost;
@@ -15,7 +21,8 @@ namespace Squiggle.Chat
         Dictionary<string, IChatSession> chatSessions;
 
         public string Username { get; set; }
-
+        public event EventHandler<ResolveEndPointEventArgs> ResolveEndPoint = delegate { };
+        
         public ChatService()
         {
             chatHost = new ChatHost();
@@ -66,9 +73,13 @@ namespace Squiggle.Chat
         {
             if (!chatSessions.ContainsKey(e.User))
             {
-                //TODO: get the address remote user address from presence service
-                var session = CreateSession(new IPEndPoint(IPAddress.Loopback, 34), e.User);
-                ChatStarted(this, new ChatStartedEventArgs() { Session = session });
+                var args = new ResolveEndPointEventArgs(){Username = e.User };
+                ResolveEndPoint(this, args);
+                if (args.EndPoint != null)
+                {
+                    var session = CreateSession(args.EndPoint, e.User);
+                    ChatStarted(this, new ChatStartedEventArgs() { Session = session });
+                }
             }
         }
 

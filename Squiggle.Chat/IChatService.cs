@@ -17,5 +17,6 @@ namespace Squiggle.Chat
         void Stop();
         IChatSession CreateSession(IPEndPoint host, string remoteUser);
         event EventHandler<ChatStartedEventArgs> ChatStarted;
+        event EventHandler<ResolveEndPointEventArgs> ResolveEndPoint;
     }
 }
