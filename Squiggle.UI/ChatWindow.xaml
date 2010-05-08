@@ -1,0 +1,20 @@
+﻿<Window x:Class="Messenger.ChatWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="ChatWindow" Height="400" Width="400" FocusManager.FocusedElement="{Binding ElementName=txtMessage}"
+        Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <Border BorderBrush="Black" BorderThickness="2" Margin="2">
+            <ScrollViewer x:Name="scrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <TextBlock Margin="2" TextWrapping="Wrap" x:Name="sentMessages" />
+            </ScrollViewer>
+        </Border>
+        <TextBox x:Name="txtMessage"  Grid.Row="1" Height="25" Width="Auto" HorizontalAlignment="Stretch"/>
+        <Button Grid.Row="1" IsDefault="True" HorizontalAlignment="Right" Width="50" Content="Send" Margin="2" Click="Button_Click" />
+    </Grid>
+</Window>
