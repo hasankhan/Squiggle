@@ -13,7 +13,7 @@ namespace Squiggle.Chat.Services.Presence
     {
         public string UserFriendlyName { get; set; }
         public IPAddress Address { get; set; }
-        public short Port { get; set; }
+        public int Port { get; set; }
         public int KeepAliveSyncTime { get; set; }
 
         public IPEndPoint ChatEndPoint

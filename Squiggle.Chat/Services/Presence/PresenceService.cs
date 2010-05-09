@@ -10,12 +10,11 @@ namespace Squiggle.Chat.Services.Presence
 {
     class PresenceService : IPresenceService
     {
-        private UserDiscovery discovery;
-        private List<KeepAliveService> discoveredUsers;
-        private Timer heartbeat;
+        UserDiscovery discovery;
+        List<KeepAliveService> discoveredUsers;
+        Timer heartbeat;
 
-        private short communicationPort = 11000;
-        private IPAddress machineAddress;
+        IPEndPoint chatEndPoint;
         int keepAliveTime;
 
         public event EventHandler<UserEventArgs> UserOnline;
@@ -26,25 +25,13 @@ namespace Squiggle.Chat.Services.Presence
             get { return discoveredUsers.Select(u => u.User); }
         }
 
-        public PresenceService()
+        public PresenceService(IPEndPoint chatEndPoint, short presencePort, int keepAliveTime)
         {
-            this.discovery = new UserDiscovery(communicationPort);
+            this.chatEndPoint = chatEndPoint;
+            this.discovery = new UserDiscovery(presencePort);
             this.discoveredUsers = new List<KeepAliveService>(10);
-
-            if (this.machineAddress == null)
-            {
-                this.machineAddress = ((IPAddress[])Dns.GetHostAddresses(Environment.MachineName)).First(address =>
-                    (address != IPAddress.Any && address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork));
-            }
-        }
-
-        public PresenceService(IPAddress machineAddress, short communicationPort, int keepAliveTime)
-            : this()
-        {
-            this.machineAddress = machineAddress;
-            this.communicationPort = communicationPort;
             this.keepAliveTime = keepAliveTime;
-        }
+        }        
 
         void heartbeat_Elapsed(object sender, ElapsedEventArgs e)
         {
@@ -85,8 +72,8 @@ namespace Squiggle.Chat.Services.Presence
             UserInfo data = new UserInfo()
             {
                 UserFriendlyName = friendlyName,
-                Address = this.machineAddress,
-                Port = 12000,
+                Address = this.chatEndPoint.Address,
+                Port = this.chatEndPoint.Port,
                 KeepAliveSyncTime = keepAliveTime
             };
 
