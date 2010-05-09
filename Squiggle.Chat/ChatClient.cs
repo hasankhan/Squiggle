@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net;
+using Squiggle.Chat.Services.Presence;
+using Squiggle.Chat.Services.Chat;
 
 namespace Squiggle.Chat
 {
-    /* This class will be used by the WPF front end for all communication */
     class ChatClient: IChatClient
     {
         IChatService chatService;
@@ -23,7 +24,7 @@ namespace Squiggle.Chat
 
         void chatService_ResolveEndPoint(object sender, ResolveEndPointEventArgs e)
         {
-            var user = presenceService.Users.FirstOrDefault(u => u.Name == e.Username);
+            var user = presenceService.Users.FirstOrDefault(u => u.UserFriendlyName == e.Username);
             if (user != null)
                 e.EndPoint = user.ChatEndPoint;
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Squiggle.Chat.Services.Presence;
 
 namespace Squiggle.Chat
 {
@@ -10,16 +11,12 @@ namespace Squiggle.Chat
         public UserInfo User {get; set; }
     }
     
-    interface IPresenceService
+    interface IPresenceService: IDisposable
     {
         event EventHandler<UserEventArgs> UserOnline;
         event EventHandler<UserEventArgs> UserOffline;
-        event EventHandler<UserEventArgs> UserUpdated;
         IEnumerable<UserInfo> Users { get; }
         
-        void ChangeStatus(UserStatus status);
-        void ChangeName(string name);
-
         void Login(string name);
         void Logout();
     }
