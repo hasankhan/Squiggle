@@ -77,7 +77,7 @@ namespace Squiggle.Chat.Services.Presence
                 KeepAliveSyncTime = keepAliveTime
             };
 
-            discovery.AnnouncePrecense(data);
+            discovery.AnnouncePresence(data);
             discovery.UserDiscovered += new EventHandler<UserDiscoveredEventArgs>(discovery_OnUserDiscovered);
 
             this.heartbeat = new Timer(keepAliveTime);

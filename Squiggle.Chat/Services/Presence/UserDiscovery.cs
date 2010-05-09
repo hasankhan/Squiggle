@@ -25,7 +25,7 @@ namespace Squiggle.Chat.Services.Presence
             this.reciever.BeginReceive(new AsyncCallback(this.OnDataRecieved), null);
         }
         
-        public void AnnouncePrecense(UserInfo data)
+        public void AnnouncePresence(UserInfo data)
         {
             if (data == null)
             {
