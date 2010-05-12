@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Squiggle.Chat
 {
-    enum UserStatus
+    public enum UserStatus
     {
         Online,
         Offline,

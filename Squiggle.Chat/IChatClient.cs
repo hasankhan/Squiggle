@@ -5,7 +5,10 @@ using System.Text;
 
 namespace Squiggle.Chat
 {
-    interface IChatClient
+    public interface IChatClient
     {
+        IChatSession StartChat(string address);
+        void Login(string username);
+        void Logout();
     }
 }

@@ -11,6 +11,7 @@ namespace Squiggle.Chat.Services.Presence
     class PresenceService : IPresenceService
     {
         UserDiscovery discovery;
+        short presencePort;
         List<KeepAliveService> discoveredUsers;
         Timer heartbeat;
 
@@ -28,6 +29,7 @@ namespace Squiggle.Chat.Services.Presence
         public PresenceService(IPEndPoint chatEndPoint, short presencePort, int keepAliveTime)
         {
             this.chatEndPoint = chatEndPoint;
+            this.presencePort = presencePort;
             this.discovery = new UserDiscovery(presencePort);
             this.discoveredUsers = new List<KeepAliveService>(10);
             this.keepAliveTime = keepAliveTime;
@@ -42,7 +44,7 @@ namespace Squiggle.Chat.Services.Presence
         {
             if (args.UserData != null)
             {
-                KeepAliveService service = new KeepAliveService(args.UserData);
+                KeepAliveService service = new KeepAliveService(args.UserData, 9000);
                 service.UserLost += new EventHandler<UserLostEventArgs>(service_OnUserLost);
                 lock (this.discoveredUsers)
                 {

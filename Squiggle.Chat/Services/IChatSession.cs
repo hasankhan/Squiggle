@@ -7,7 +7,7 @@ using Squiggle.Chat.Services.Chat.Host;
 
 namespace Squiggle.Chat
 {
-    interface IChatSession
+    public interface IChatSession
     {
         void SendMessage(string message);
         event EventHandler<MessageReceivedEventArgs> MessageReceived;

@@ -9,13 +9,13 @@ using Squiggle.Chat.Services.Chat.Host;
 
 namespace Squiggle.Chat.Services.Chat
 {
-    class ResolveEndPointEventArgs:EventArgs
+    public class ResolveEndPointEventArgs:EventArgs
     {
         public string User {get; set;}
         public IPEndPoint EndPoint {get; set;}
     }
 
-    class ChatService: IChatService
+    public class ChatService : IChatService
     {
         ChatHost chatHost;
         ServiceHost serviceHost;
@@ -79,7 +79,7 @@ namespace Squiggle.Chat.Services.Chat
                 if (args.EndPoint != null)
                 {
                     var session = CreateSession(args.EndPoint);
-                    ChatStarted(this, new ChatStartedEventArgs() { Session = session });
+                    ChatStarted(this, new ChatStartedEventArgs() { Address = e.User, Session = session });
                 }
             }
         }

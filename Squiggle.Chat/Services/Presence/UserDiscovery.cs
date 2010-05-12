@@ -20,7 +20,7 @@ namespace Squiggle.Chat.Services.Presence
             this.broadcastPort = broadcastPort;
 
             IPEndPoint localEP = new IPEndPoint(IPAddress.Any, this.broadcastPort);
-            this.reciever = new UdpClient(localEP); 
+            this.reciever = new UdpClient(localEP);
            
             this.reciever.BeginReceive(new AsyncCallback(this.OnDataRecieved), null);
         }
@@ -63,6 +63,7 @@ namespace Squiggle.Chat.Services.Presence
             }
 
             this.UserDiscovered(this, new UserDiscoveredEventArgs() { UserData = data });
+            this.reciever.BeginReceive(new AsyncCallback(OnDataRecieved), null);
         }
 
         private void AssureBroadcast(UdpClient client, byte[] data)

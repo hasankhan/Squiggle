@@ -7,12 +7,13 @@ using Squiggle.Chat.Services.Chat;
 
 namespace Squiggle.Chat
 {
-    class ChatStartedEventArgs: EventArgs
+    public class ChatStartedEventArgs: EventArgs
     {
+        public string Address { get; set; }
         public IChatSession Session {get; set; }
     }
 
-    interface IChatService
+    public interface IChatService
     {
         void Start(IPEndPoint endpoint);
         void Stop();

@@ -10,6 +10,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Squiggle.Chat;
+using System.Net;
+using System.ComponentModel;
+using System.Threading;
 
 namespace Messenger
 {
@@ -18,53 +22,35 @@ namespace Messenger
     /// </summary>
     public partial class MainWindow : Window
     {
+        const short chatPort = 7777;
+        const short presencePort = 9999;
+        const int keepAliveTimeout = 20000;
+        ChatClient chatClient;
+        
         public MainWindow()
         {
             InitializeComponent();
+            var ipAddress = Utility.GetLocalIPAddress();
+            chatClient = new ChatClient(new IPEndPoint(ipAddress, chatPort), presencePort, keepAliveTimeout);
+            chatClient.Login(Dns.GetHostName());
 
-            List<User> users = new List<User>()
-            {
-                new User(){DisplayName="Faisal", Status=Status.Online},
-                new User(){DisplayName="Ata", Status=Status.Idle},
-                new User(){DisplayName="Hasan", Status=Status.Offline}
-            };
-
-            this.Users = users;
-            this.DataContext = this;
-        }
-
-        public List<User> Users { get; set; }
+            this.DataContext = chatClient;
+            signedInView.Visibility = Visibility.Visible;
+            signedOffView.Visibility = Visibility.Hidden;
+        }       
 
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            string displayName = ((TextBlock)sender).Tag.ToString();
+            Buddy buddy= ((TextBlock)sender).Tag as Buddy;
             ChatWindow window = new ChatWindow();
-            window.Title = displayName;
+            window.Title = buddy.DisplayName;
+            window.DataContext = chatClient.StartChat(buddy.Address);
             window.Show();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //var title = new Bold(new Run("Kashif"));
-            //var status = new Run(" (Online)");
-            //var displayMessage = new Run("You display message goes here...");
-            //txtLoggedInUser.Inlines.Add(title);
-            //txtLoggedInUser.Inlines.Add(status);
-            //txtLoggedInUser.Inlines.Add(Environment.NewLine);
-            //txtLoggedInUser.Inlines.Add(displayMessage);
+
         }
-    }
-
-    public class User
-    {
-        public string DisplayName { get; set; }
-        public Status Status { get; set; }
-    }
-
-    public enum Status
-    {
-        Online,
-        Offline,
-        Idle
     }
 }

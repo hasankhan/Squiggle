@@ -14,18 +14,19 @@ namespace Squiggle.Chat.Services.Presence
         private UdpClient client;
         private Timer timer;
         private bool dataRecieved = false;
-
+        private short presencePort;
         private const int tolerance = 5000;
 
         ///Binary for "Alive"
         public static readonly byte[] KeepAliveData = new byte[] { 65, 108, 105, 118, 101 };
         public event EventHandler<UserLostEventArgs> UserLost = delegate { };
 
-        public KeepAliveService(UserInfo user)
+        public KeepAliveService(UserInfo user, short presencePort)
         {
             if (user.Address == null)
                 throw new ArgumentNullException("UserData.Address");
 
+            this.presencePort = presencePort;
             this.User = user;
         }
 
@@ -37,7 +38,7 @@ namespace Squiggle.Chat.Services.Presence
             this.timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
             this.timer.Start();
 
-            IPEndPoint remoteEP = new IPEndPoint(this.User.Address, this.User.Port);
+            IPEndPoint remoteEP = new IPEndPoint(this.User.Address, this.presencePort);
             this.client = new UdpClient(remoteEP);
 
             this.client.BeginReceive(new AsyncCallback(this.OnDataRecieved), remoteEP);

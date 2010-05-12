@@ -9,13 +9,14 @@ using System.Net;
 
 namespace Squiggle.Chat.Services.Chat.Host
 {
-    class MessageReceivedEventArgs : EventArgs
+    public  class MessageReceivedEventArgs : EventArgs
     {
         public string User { get; set; }
         public string Message { get; set; }
     }
 
-    class ChatHost: IChatHost
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)] 
+    public class ChatHost: IChatHost
     {
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
 
