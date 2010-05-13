@@ -35,7 +35,6 @@ namespace Squiggle.Chat.Services.Presence
             thisUser = me;
             channel.MessageReceived += new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
 
-
             SayHi();
         }
 
@@ -78,7 +77,7 @@ namespace Squiggle.Chat.Services.Presence
 
         void OnLoginMessage(LoginMessage message)
         {
-            if (message.ChatEndPoint.Equals(thisUser.ChatEndPoint))
+            if (!message.ChatEndPoint.Equals(thisUser.ChatEndPoint))
             {
                 var user = new UserInfo()
                 {
