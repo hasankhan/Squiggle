@@ -5,111 +5,99 @@ using System.Text;
 using System.Timers;
 using System.Net;
 using Squiggle.Chat;
+using Squiggle.Chat.Services.Presence.Transport;
 
 namespace Squiggle.Chat.Services.Presence
 {
     class PresenceService : IPresenceService
     {
         UserDiscovery discovery;
-        short presencePort;
-        List<KeepAliveService> discoveredUsers;
-        Timer heartbeat;
+        PresenceChannel channel;
+        KeepAliveService keepAlive;
 
-        IPEndPoint chatEndPoint;
-        int keepAliveTime;
+        UserInfo thisUser;
 
         public event EventHandler<UserEventArgs> UserOnline;
         public event EventHandler<UserEventArgs> UserOffline;
 
         public IEnumerable<UserInfo> Users
         {
-            get { return discoveredUsers.Select(u => u.User); }
+            get { return discovery.Users; }
         }
 
-        public PresenceService(IPEndPoint chatEndPoint, short presencePort, int keepAliveTime)
+        public PresenceService(IPEndPoint chatEndPoint, int presencePort, int keepAliveTime)
         {
-            this.chatEndPoint = chatEndPoint;
-            this.presencePort = presencePort;
-            this.discovery = new UserDiscovery(presencePort);
-            this.discoveredUsers = new List<KeepAliveService>(10);
-            this.keepAliveTime = keepAliveTime;
-        }        
-
-        void heartbeat_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            this.discovery.BroadcastKeepAlive();            
-        }
-
-        void discovery_OnUserDiscovered(object sender, UserDiscoveredEventArgs args)
-        {
-            if (args.UserData != null)
+            thisUser = new UserInfo()
             {
-                KeepAliveService service = new KeepAliveService(args.UserData, 9000);
-                service.UserLost += new EventHandler<UserLostEventArgs>(service_OnUserLost);
-                lock (this.discoveredUsers)
-                {
-                    if (!this.discoveredUsers.Contains(service))
-                    {
-                        this.discoveredUsers.Add(service);
-                        service.StartServices();
-                        UserOnline(this, new UserEventArgs() { User = args.UserData });
-                    }
-                }
-            }
-        }
-
-        void service_OnUserLost(object sender, UserLostEventArgs args)
-        {
-            if (args.Service != null)
-            {
-                lock (this.discoveredUsers)
-                    this.discoveredUsers.Remove(args.Service);
-                args.Service.StopServices();
-                UserOffline(this, new UserEventArgs() { User = args.Service.User });
-            }
-        }                
-
-        public void Login(string friendlyName)
-        {
-            UserInfo data = new UserInfo()
-            {
-                UserFriendlyName = friendlyName,
-                Address = this.chatEndPoint.Address,
-                Port = this.chatEndPoint.Port,
+                ChatEndPoint = chatEndPoint,
                 KeepAliveSyncTime = keepAliveTime
             };
 
-            discovery.AnnouncePresence(data);
-            discovery.UserDiscovered += new EventHandler<UserDiscoveredEventArgs>(discovery_OnUserDiscovered);
+            channel = new PresenceChannel(presencePort);
 
-            this.heartbeat = new Timer(keepAliveTime);
-            this.heartbeat.AutoReset = true;
-            this.heartbeat.Elapsed += new ElapsedEventHandler(heartbeat_Elapsed);
-            this.heartbeat.Start();
+            this.discovery = new UserDiscovery(channel);
+            discovery.UserOnline += new EventHandler<UserEventArgs>(discovery_UserOnline);
+            discovery.UserOffline += new EventHandler<UserEventArgs>(discovery_UserOffline);
+
+            this.keepAlive = new KeepAliveService(channel, thisUser, keepAliveTime);
+            this.keepAlive.UserLost += new EventHandler<UserEventArgs>(keepAlive_UserLost);
+            this.keepAlive.UserReturned += new EventHandler<UserEventArgs>(keepAlive_UserReturned);
+        }
+
+        public void Login(string name)
+        {
+            thisUser.UserFriendlyName = name;
+            
+            channel.Start();
+            discovery.Login(thisUser);
+            keepAlive.Start();
         }
 
         public void Logout()
         {
-            this.Dispose();
+            channel.Stop();
+            discovery.Logout();
+            keepAlive.Stop();
         }
+
+        void keepAlive_UserReturned(object sender, UserEventArgs e)
+        {
+            OnUserOnline(e);
+        }
+
+        void keepAlive_UserLost(object sender, UserEventArgs e)
+        {
+            OnUserOffline(e);
+        }        
+
+        void discovery_UserOnline(object sender, UserEventArgs e)
+        {
+            discovery.SayHi();
+            OnUserOnline(e);
+        }        
+
+        void discovery_UserOffline(object sender, UserEventArgs e)
+        {
+            OnUserOffline(e);
+        }
+
+        void OnUserOnline(UserEventArgs e)
+        {
+            keepAlive.MonitorUser(e.User);
+            UserOnline(this, e);
+        }
+
+        void OnUserOffline(UserEventArgs e)
+        {
+            keepAlive.LeaveUser(e.User);
+            UserOffline(this, e);
+        }                   
 
         #region IDisposable Members
 
         public void Dispose()
         {
-            lock (this.discoveredUsers)
-            {
-                this.discoveredUsers.ForEach(service => service.StopServices());
-                this.discoveredUsers.Clear();
-            }
-
-            if (this.heartbeat != null)
-            {
-                this.heartbeat.Stop();
-                this.heartbeat.Close();
-                this.heartbeat.Dispose();
-                this.heartbeat = null;
-            }
+            Logout();
         }
 
         #endregion

@@ -6,8 +6,8 @@ using System.Net;
 
 namespace Squiggle.Chat.Services.Presence
 {
-    class UserDiscoveredEventArgs : EventArgs
+    class UserEventArgs : EventArgs
     {
-        public UserInfo UserData = null;
+        public UserInfo User {get; set; }
     }
 }

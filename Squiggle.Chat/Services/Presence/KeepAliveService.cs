@@ -5,128 +5,125 @@ using System.Text;
 using System.Net;
 using System.Timers;
 using System.Net.Sockets;
+using Squiggle.Chat.Services.Presence.Transport;
 
 namespace Squiggle.Chat.Services.Presence
 {
     class KeepAliveService : IDisposable
     {
+        Timer timer;
+        PresenceChannel channel;
+        int keepAliveSyncTime;
+        Message keepAliveMessage;
+        Dictionary<UserInfo, DateTime> aliveUsers;
+        HashSet<UserInfo> lostUsers;
+
         public UserInfo User { get; private set; }
-        private UdpClient client;
-        private Timer timer;
-        private bool dataRecieved = false;
-        private short presencePort;
-        private const int tolerance = 5000;
 
-        ///Binary for "Alive"
-        public static readonly byte[] KeepAliveData = new byte[] { 65, 108, 105, 118, 101 };
-        public event EventHandler<UserLostEventArgs> UserLost = delegate { };
+        public event EventHandler<UserEventArgs> UserLost = delegate { };
+        public event EventHandler<UserEventArgs> UserReturned = delegate { };
 
-        public KeepAliveService(UserInfo user, short presencePort)
+        public KeepAliveService(PresenceChannel channel, UserInfo user, int keepAliveSyncTime)
         {
-            if (user.Address == null)
-                throw new ArgumentNullException("UserData.Address");
-
-            this.presencePort = presencePort;
+            this.channel = channel;
+            this.keepAliveSyncTime = keepAliveSyncTime;
             this.User = user;
+            aliveUsers = new Dictionary<UserInfo, DateTime>();
+            lostUsers = new HashSet<UserInfo>();
+            keepAliveMessage = new KeepAliveMessage() { ChatEndPoint = user.ChatEndPoint };
         }
 
-        public void StartServices()
+        public void Start()
         {
-            ///Add some tolerance for network delays
-            this.timer = new Timer(this.User.KeepAliveSyncTime + tolerance);
+            this.timer = new Timer();
+            timer.Interval = keepAliveSyncTime * 1000; // seconds
             this.timer.AutoReset = true;
             this.timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
             this.timer.Start();
-
-            IPEndPoint remoteEP = new IPEndPoint(this.User.Address, this.presencePort);
-            this.client = new UdpClient(remoteEP);
-
-            this.client.BeginReceive(new AsyncCallback(this.OnDataRecieved), remoteEP);
+            channel.MessageReceived += new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
         }
 
-        public void StopServices()
+        void channel_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            this.Dispose();
+            if (e.Message is KeepAliveMessage)
+                OnKeepAliveMessage((KeepAliveMessage)e.Message);
+        }        
+
+        public void ImAlive()
+        {
+            channel.SendMessage(keepAliveMessage);
         }
 
-        public override bool Equals(object obj)
+        public void MonitorUser(UserInfo user)
         {
-            if (obj == null)
-                return false;
-            if (obj is KeepAliveService)
-                return this.User.Equals(((KeepAliveService)obj).User);
-            return base.Equals(obj);
+            HeIsAlive(user);
         }
 
-        public override int GetHashCode()
+        public void LeaveUser(UserInfo user)
         {
-            return this.User.GetHashCode();
+            HeIsGone(user);
+        }
+
+        public void Stop()
+        {
+            lostUsers.Clear();
+            aliveUsers.Clear();
+
+            timer.Stop();
+            timer = null;
         }
 
         void timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            if (!this.dataRecieved)
+            ImAlive();
+
+            List<UserInfo> gone = GetLostUsers();
+
+            foreach (UserInfo user in gone)
             {
-                this.Dispose();
-                this.UserLost(this, new UserLostEventArgs() { Service = this });
+                lostUsers.Add(user);
+                HeIsGone(user);
+                UserLost(this, new UserEventArgs() { User = user });
             }
-            this.dataRecieved = false;
+        }        
+
+        void OnKeepAliveMessage(KeepAliveMessage message)
+        {
+            var user = new UserInfo() { ChatEndPoint = message.ChatEndPoint };
+            if (!User.Equals(user))
+                HeIsAlive(user);
         }
 
-        private void OnDataRecieved(IAsyncResult result)
+        List<UserInfo> GetLostUsers()
         {
-            IPEndPoint remoteEP = (IPEndPoint)result.AsyncState;
-            byte[] buffer = null;
-            if (this.client != null)
+            lock (aliveUsers)
             {
-                lock (this.client)
-                {
-                    if (this.client != null)
-                        buffer = this.client.EndReceive(result, ref remoteEP);
-                }
+                var now = DateTime.Now;
+                List<UserInfo> gone = new List<UserInfo>();
+                foreach (KeyValuePair<UserInfo, DateTime> pair in aliveUsers)
+                    if (now.Subtract(pair.Value).TotalSeconds < pair.Key.KeepAliveSyncTime)
+                        gone.Add(pair.Key);
+                return gone; 
             }
+        }
 
-            if (buffer == null || (buffer != null && buffer.Length == 0))
-            {
-                return;
-            }
+        void HeIsGone(UserInfo user)
+        {
+            lock (aliveUsers)
+                aliveUsers.Remove(user); 
+        }
 
-            Console.WriteLine("Heart beat recieved");
-
-            if (buffer.Length == KeepAliveData.Length)
-            {
-                byte[] diff = (byte[])buffer.Except(KeepAliveData);
-                this.dataRecieved = diff.Length == 0;
-            }
+        void HeIsAlive(UserInfo user)
+        {
+            lock (aliveUsers)
+                aliveUsers[user] = DateTime.Now; 
         }
 
         #region IDisposable Members
 
         public void Dispose()
         {
-            if (this.timer != null)
-            {
-                this.timer.Stop();
-                this.timer.Close();
-                this.timer.Dispose();
-                this.timer = null;
-            }
-            lock (this.client)
-            {
-                if (this.client != null)
-                {
-                    try
-                    {
-                        this.client.Close();
-                    }
-                    catch (SocketException)
-                    {
-                    }
-                    this.client = null;
-                }
-            }
-
-            GC.SuppressFinalize(this);
+            Stop();
         }
 
         #endregion

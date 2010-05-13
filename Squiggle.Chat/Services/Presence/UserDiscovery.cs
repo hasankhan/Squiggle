@@ -6,87 +6,89 @@ using System.Net.Sockets;
 using System.Net;
 using System.IO;
 using System.Threading;
+using Squiggle.Chat.Services.Presence.Transport;
 
 namespace Squiggle.Chat.Services.Presence
 {    
     class UserDiscovery
     {
-        private UdpClient reciever;
-        private short broadcastPort;
-        public event EventHandler<UserDiscoveredEventArgs> UserDiscovered = delegate { };        
+        UserInfo thisUser;
+        PresenceChannel channel;
+        HashSet<UserInfo> onlineUsers;
 
-        public UserDiscovery(short broadcastPort)
+        public IEnumerable<UserInfo> Users
         {
-            this.broadcastPort = broadcastPort;
+            get { return onlineUsers; }
+        }
 
-            IPEndPoint localEP = new IPEndPoint(IPAddress.Any, this.broadcastPort);
-            this.reciever = new UdpClient(localEP);
-           
-            this.reciever.BeginReceive(new AsyncCallback(this.OnDataRecieved), null);
+        public event EventHandler<UserEventArgs> UserOnline = delegate { };
+        public event EventHandler<UserEventArgs> UserOffline = delegate { };        
+
+        public UserDiscovery(PresenceChannel channel)
+        {
+            this.channel = channel;
+            this.onlineUsers = new HashSet<UserInfo>();
         }
         
-        public void AnnouncePresence(UserInfo data)
+        public void Login(UserInfo me)
         {
-            if (data == null)
+            thisUser = me;
+            channel.MessageReceived += new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
+
+
+            SayHi();
+        }
+
+        public void SayHi()
+        {
+            var message = new LoginMessage()
             {
-                throw new ArgumentNullException("data");
+                ChatEndPoint = thisUser.ChatEndPoint,
+                KeepAliveSyncTime = thisUser.KeepAliveSyncTime,
+                UserFriendlyName = thisUser.UserFriendlyName
+            };
+            channel.SendMessage(message);
+        }
+
+        public void Logout()
+        {
+            channel.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
+
+            var message = new LogoutMessage() { ChatEndPoint = thisUser.ChatEndPoint };
+            channel.SendMessage(message);
+        }
+
+        void channel_MessageReceived(object sender, MessageReceivedEventArgs e)
+        {
+            if (e.Message is LoginMessage)
+                OnLoginMessage((LoginMessage)e.Message);
+            else if (e.Message is LogoutMessage)
+                OnLogoutMessage((LogoutMessage)e.Message);
+        }
+
+        void OnLogoutMessage(LogoutMessage message)
+        {
+            var user = onlineUsers.FirstOrDefault(u => u.ChatEndPoint.Equals(message.ChatEndPoint));
+            if (user != null)
+            {
+                onlineUsers.Remove(user);
+                UserOffline(this, new UserEventArgs() { User = user });
             }
+        }
 
-            UdpClient client = new UdpClient();
-            using (MemoryStream stream = new MemoryStream())
+        void OnLoginMessage(LoginMessage message)
+        {
+            if (message.ChatEndPoint.Equals(thisUser.ChatEndPoint))
             {
-                UserInfo.Serialize(stream, data);
-                AssureBroadcast(client, stream.ToArray());
-                stream.Close();                
-            }
-
-            client.Close();
-        }
-
-        public void BroadcastKeepAlive()
-        {
-            UdpClient client = new UdpClient();
-            AssureBroadcast(client, KeepAliveService.KeepAliveData);
-            client.Close();
-        }
-
-        private void OnDataRecieved(IAsyncResult result)
-        {
-            IPEndPoint remoteEndPoint = new IPEndPoint(IPAddress.Any, this.broadcastPort);
-            byte[] buffer = this.reciever.EndReceive(result, ref remoteEndPoint);
-
-            UserInfo data = null;
-            using (MemoryStream stream = new MemoryStream(buffer))
-            {
-                data = UserInfo.Deserialize(stream);
-                stream.Close();
-            }
-
-            this.UserDiscovered(this, new UserDiscoveredEventArgs() { UserData = data });
-            this.reciever.BeginReceive(new AsyncCallback(OnDataRecieved), null);
-        }
-
-        private void AssureBroadcast(UdpClient client, byte[] data)
-        {
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Broadcast, this.broadcastPort);            
-            AssureSend(client, endPoint, data);
-        }
-
-        private void AssureSend(UdpClient client, IPEndPoint endPoint, byte[] data)
-        {
-            int bytesSent = 0;
-            int length = data.Length;
-            byte[] buffer = data;
-
-            while (bytesSent < length)
-            {
-                bytesSent += client.Send(buffer, buffer.Length, endPoint);
-                if (bytesSent < length)
+                var user = new UserInfo()
                 {
-                    buffer = new byte[length - bytesSent];
-                    Buffer.BlockCopy(data, bytesSent, buffer, 0, buffer.Length);
-                }
+                    ChatEndPoint = message.ChatEndPoint,
+                    KeepAliveSyncTime = message.KeepAliveSyncTime,
+                    UserFriendlyName = message.UserFriendlyName
+                };
+                onlineUsers.Add(user);
+                UserOnline(this, new UserEventArgs() { User = user });
             }
-        }
+        }        
     }
 }
