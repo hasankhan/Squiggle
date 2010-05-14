@@ -62,6 +62,7 @@ namespace Squiggle.Chat.Services.Presence
         public void LeaveUser(UserInfo user)
         {
             HeIsGone(user);
+            lostUsers.Remove(user);
         }
 
         public void Stop()
@@ -116,7 +117,8 @@ namespace Squiggle.Chat.Services.Presence
         void HeIsAlive(UserInfo user)
         {
             lock (aliveUsers)
-                aliveUsers[user] = DateTime.Now; 
+                aliveUsers[user] = DateTime.Now;
+            lostUsers.Remove(user);
         }
 
         #region IDisposable Members
