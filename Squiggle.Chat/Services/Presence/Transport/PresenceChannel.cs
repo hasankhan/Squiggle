@@ -46,14 +46,21 @@ namespace Squiggle.Chat.Services.Presence.Transport
 
         void OnReceive(IAsyncResult ar)
         {
-            IPEndPoint remoteEndPoint = null;
-            var broadcastAddress = (IPEndPoint)ar.AsyncState;
-            byte[] data = client.EndReceive(ar, ref remoteEndPoint);
-            var message = Message.Deserialize(data);
-            BeginReceive();
-            var args = new MessageReceivedEventArgs() { Message = message,
-                                                        Sender = remoteEndPoint};
-            MessageReceived(this, args);
+            try
+            {
+                IPEndPoint remoteEndPoint = null;
+                var broadcastAddress = (IPEndPoint)ar.AsyncState;
+                byte[] data = client.EndReceive(ar, ref remoteEndPoint);
+                var message = Message.Deserialize(data);
+                BeginReceive();
+                var args = new MessageReceivedEventArgs()
+                {
+                    Message = message,
+                    Sender = remoteEndPoint
+                };
+                MessageReceived(this, args);
+            }
+            catch (Exception) { }
         }
 
         void BeginReceive()

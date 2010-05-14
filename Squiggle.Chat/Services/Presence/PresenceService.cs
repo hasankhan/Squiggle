@@ -55,9 +55,9 @@ namespace Squiggle.Chat.Services.Presence
 
         public void Logout()
         {
-            channel.Stop();
             discovery.Logout();
             keepAlive.Stop();
+            channel.Stop();
         }
 
         void keepAlive_UserReturned(object sender, UserEventArgs e)

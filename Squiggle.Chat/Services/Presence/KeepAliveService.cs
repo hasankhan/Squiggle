@@ -17,6 +17,7 @@ namespace Squiggle.Chat.Services.Presence
         Message keepAliveMessage;
         Dictionary<UserInfo, DateTime> aliveUsers;
         HashSet<UserInfo> lostUsers;
+        int waitTolerance = 5; // no. of seconds to tolerate the alive message delay.
 
         public UserInfo User { get; private set; }
 
@@ -102,7 +103,7 @@ namespace Squiggle.Chat.Services.Presence
                 var now = DateTime.Now;
                 List<UserInfo> gone = new List<UserInfo>();
                 foreach (KeyValuePair<UserInfo, DateTime> pair in aliveUsers)
-                    if (now.Subtract(pair.Value).TotalSeconds < pair.Key.KeepAliveSyncTime)
+                    if ((now.Subtract(pair.Value).TotalSeconds - pair.Key.KeepAliveSyncTime) > waitTolerance)
                         gone.Add(pair.Key);
                 return gone; 
             }

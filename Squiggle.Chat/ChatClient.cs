@@ -24,6 +24,7 @@ namespace Squiggle.Chat
 
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyOnline = delegate { };
+        public event EventHandler<BuddyEventArgs> BuddyOffline = delegate { };
 
         public List<Buddy> Buddies { get; private set; }
         public Buddy CurrentUser { get; private set; }
@@ -62,11 +63,19 @@ namespace Squiggle.Chat
             {
                 buddy = new Buddy() { DisplayName = user.UserFriendlyName, Address = user.ChatEndPoint.ToString()};
                 Buddies.Add(buddy);
-                if (buddy.Status != UserStatus.Offline)
-                    BuddyOnline(this, new BuddyEventArgs() { Buddy = buddy });
             }
 
             buddy.Status = status;
+            OnBuddyStatusChanged(buddy);
+        }
+
+        void OnBuddyStatusChanged(Buddy buddy)
+        {
+            var args = new BuddyEventArgs() { Buddy = buddy };
+            if (buddy.Status == UserStatus.Online)
+                BuddyOnline(this, args);
+            else if (buddy.Status == UserStatus.Offline)
+                BuddyOffline(this, args);
         }
 
         private Buddy GetBuddyByAddress(string address)
