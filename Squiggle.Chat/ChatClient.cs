@@ -56,7 +56,7 @@ namespace Squiggle.Chat
             SetUserStatus(e.User, UserStatus.Offline);            
         }
 
-        private void SetUserStatus(UserInfo user, UserStatus status)
+        void SetUserStatus(UserInfo user, UserStatus status)
         {
             var buddy = GetBuddyByAddress(user.ChatEndPoint.ToString());
             if (buddy == null)

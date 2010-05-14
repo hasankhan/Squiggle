@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Net;
 
-namespace Squiggle.Chat.Services.Presence.Transport
+namespace Squiggle.Chat.Services.Presence.Transport.Messages
 {
     [Serializable]
-    class LogoutMessage : Message
+    class KeepAliveMessage: Message
     {
         public IPEndPoint ChatEndPoint { get; set; }
     }

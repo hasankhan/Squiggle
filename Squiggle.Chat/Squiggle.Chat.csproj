@@ -64,10 +64,10 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Presence\KeepAliveService.cs" />
-    <Compile Include="Services\Presence\Transport\KeepAliveMessage.cs" />
-    <Compile Include="Services\Presence\Transport\LogoutMessage.cs" />
+    <Compile Include="Services\Presence\Transport\Messages\KeepAliveMessage.cs" />
+    <Compile Include="Services\Presence\Transport\Messages\LogoutMessage.cs" />
     <Compile Include="Services\Presence\Transport\Message.cs" />
-    <Compile Include="Services\Presence\Transport\LoginMessage.cs" />
+    <Compile Include="Services\Presence\Transport\Messages\LoginMessage.cs" />
     <Compile Include="Services\Presence\Transport\PresenceChannel.cs" />
     <Compile Include="Services\Presence\PresenceService.cs" />
     <Compile Include="Services\Presence\UserEventArgs.cs" />

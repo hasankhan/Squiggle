@@ -6,6 +6,7 @@ using System.Net;
 using System.Timers;
 using System.Net.Sockets;
 using Squiggle.Chat.Services.Presence.Transport;
+using Squiggle.Chat.Services.Presence.Transport.Messages;
 
 namespace Squiggle.Chat.Services.Presence
 {
