@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ServiceModel;
+using System.Net;
 
 namespace Squiggle.Chat.Service
 {
@@ -10,6 +11,6 @@ namespace Squiggle.Chat.Service
     public interface IChatHost
     {
         [OperationContract]
-        void ReceiveMessage(string user, string message);
+        void ReceiveMessage(IPEndPoint user, string message);
     }
 }

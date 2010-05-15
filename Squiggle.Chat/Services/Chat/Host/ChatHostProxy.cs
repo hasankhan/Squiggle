@@ -5,6 +5,7 @@ using System.Text;
 using System.ServiceModel;
 using System.CodeDom.Compiler;
 using Squiggle.Chat.Service;
+using System.Net;
 
 namespace Squiggle.Chat.Services.Chat.Host
 {
@@ -41,7 +42,7 @@ namespace Squiggle.Chat.Services.Chat.Host
 
         #region IChatHost Members
 
-        public void ReceiveMessage(string user, string message)
+        public void ReceiveMessage(IPEndPoint user, string message)
         {
             try
             {

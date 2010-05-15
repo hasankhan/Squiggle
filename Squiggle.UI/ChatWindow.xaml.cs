@@ -22,13 +22,11 @@ namespace Squiggle.UI
         public ChatWindow()
         {
             InitializeComponent();
-
-            
         }
 
         void chatSession_MessageReceived(object sender, Squiggle.Chat.Services.Chat.Host.MessageReceivedEventArgs e)
         {
-            WriteMessage(e.User, e.Message);
+            WriteMessage("Him", e.Message);
             
         }
 

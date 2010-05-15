@@ -33,7 +33,6 @@ namespace Squiggle.Chat
         {
             chatService = new ChatService();
             Buddies = new List<Buddy>();
-            chatService.ResolveEndPoint += new EventHandler<ResolveEndPointEventArgs>(chatService_ResolveEndPoint);
             chatService.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatService_ChatStarted);
             presenceService = new PresenceService(localEndPoint, presencePort, keepAliveTime);
             presenceService.UserOffline += new EventHandler<UserEventArgs>(presenceService_UserOffline);
@@ -83,13 +82,6 @@ namespace Squiggle.Chat
         private Buddy GetBuddyByAddress(IPEndPoint endPoint)
         {
             return Buddies.FirstOrDefault(b => b.EndPoint == endPoint);
-        }
-
-        void chatService_ResolveEndPoint(object sender, ResolveEndPointEventArgs e)
-        {
-            var user = presenceService.Users.FirstOrDefault(u => u.ChatEndPoint.ToString() == e.User);
-            if (user != null)
-                e.EndPoint = user.ChatEndPoint;
         }
 
         public IChatSession StartChat(IPEndPoint endpoint)

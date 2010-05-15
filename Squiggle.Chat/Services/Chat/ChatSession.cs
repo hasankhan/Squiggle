@@ -4,17 +4,18 @@ using System.Linq;
 using System.Text;
 using Squiggle.Chat.Service;
 using Squiggle.Chat.Services.Chat.Host;
+using System.Net;
 
 namespace Squiggle.Chat.Services.Chat
 {
     class ChatSession: IChatSession
     {
         IChatHost remoteHost;
-        string localUser;
+        IPEndPoint localUser;
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
 
-        public ChatSession(ChatHost localHost, IChatHost remoteHost, string localUser)
+        public ChatSession(ChatHost localHost, IChatHost remoteHost, IPEndPoint localUser)
         {
             this.remoteHost = remoteHost;
             this.localUser = localUser;
@@ -30,7 +31,7 @@ namespace Squiggle.Chat.Services.Chat
 
         public void SendMessage(string message)
         {
-            remoteHost.ReceiveMessage(this.localUser, message);
+            remoteHost.ReceiveMessage(localUser, message);
         }
 
         #endregion

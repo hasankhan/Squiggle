@@ -9,26 +9,20 @@ using Squiggle.Chat.Services.Chat.Host;
 
 namespace Squiggle.Chat.Services.Chat
 {
-    public class ResolveEndPointEventArgs:EventArgs
-    {
-        public string User {get; set;}
-        public IPEndPoint EndPoint {get; set;}
-    }
-
     public class ChatService : IChatService
     {
         ChatHost chatHost;
         ServiceHost serviceHost;
-        Dictionary<string, IChatSession> chatSessions;
+        Dictionary<IPEndPoint, IChatSession> chatSessions;
+        IPEndPoint localEndPoint;
 
         public string Username { get; set; }
-        public event EventHandler<ResolveEndPointEventArgs> ResolveEndPoint = delegate { };
         
         public ChatService()
         {
             chatHost = new ChatHost();
             chatHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(chatHost_MessageReceived);
-            chatSessions = new Dictionary<string, IChatSession>();
+            chatSessions = new Dictionary<IPEndPoint, IChatSession>();
         }        
 
         #region IChatService Members
@@ -38,6 +32,7 @@ namespace Squiggle.Chat.Services.Chat
             if (serviceHost != null)
                 throw new InvalidOperationException("Service already started.");
 
+            localEndPoint = endpoint;
             serviceHost = new ServiceHost(chatHost);
             var address = CreateServiceUri(endpoint.ToString());
             serviceHost.AddServiceEndpoint(typeof(IChatHost), new NetTcpBinding(), address);
@@ -56,18 +51,17 @@ namespace Squiggle.Chat.Services.Chat
         public IChatSession CreateSession(IPEndPoint endpoint)
         {
             IChatSession session;
-            var address = endpoint.ToString();
-            if (!chatSessions.TryGetValue(address, out session))
+            if (!chatSessions.TryGetValue(endpoint, out session))
             {
-                Uri uri = CreateServiceUri(address);
+                Uri uri = CreateServiceUri(endpoint.ToString());
                 var binding =new NetTcpBinding();
                 //temp code to resolve the "server rejected credentials" exception
                 binding.Security.Mode = SecurityMode.Transport;
                 binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
 
                 IChatHost remoteHost = new ChatHostProxy(binding, new EndpointAddress(uri));
-                session = new ChatSession(chatHost, remoteHost, Username);
-                this.chatSessions.Add(address, session);
+                session = new ChatSession(chatHost, remoteHost, localEndPoint);
+                this.chatSessions.Add(endpoint, session);
             }
             return session;
         }
@@ -80,13 +74,8 @@ namespace Squiggle.Chat.Services.Chat
         {
             if (!chatSessions.ContainsKey(e.User))
             {
-                var args = new ResolveEndPointEventArgs(){User = e.User };
-                ResolveEndPoint(this, args);
-                if (args.EndPoint != null)
-                {
-                    var session = CreateSession(args.EndPoint);
-                    ChatStarted(this, new ChatStartedEventArgs() { Address = e.User, Session = session });
-                }
+                var session = CreateSession(e.User);
+                ChatStarted(this, new ChatStartedEventArgs() { Session = session });
             }
         }
 
