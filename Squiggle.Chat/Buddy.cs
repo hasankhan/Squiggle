@@ -57,6 +57,11 @@ namespace Squiggle.Chat
             return chatClient.StartChat(EndPoint);
         }
 
+        public void EndChat()
+        {
+            chatClient.EndChat(EndPoint);
+        }
+
         void chatClient_ChatStarted(object sender, ChatStartedEventArgs e)
         {
             ChatStarted(this, e);
@@ -71,8 +76,6 @@ namespace Squiggle.Chat
         {
             Status = UserStatus.Offline;
         }
-
-
 
         #region INotifyPropertyChanged Members
 

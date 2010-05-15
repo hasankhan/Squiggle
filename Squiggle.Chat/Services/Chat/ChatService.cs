@@ -48,22 +48,27 @@ namespace Squiggle.Chat.Services.Chat
             }
         }
 
-        public IChatSession CreateSession(IPEndPoint endpoint)
+        public IChatSession CreateSession(IPEndPoint endPoint)
         {
             IChatSession session;
-            if (!chatSessions.TryGetValue(endpoint, out session))
+            if (!chatSessions.TryGetValue(endPoint, out session))
             {
-                Uri uri = CreateServiceUri(endpoint.ToString());
-                var binding =new NetTcpBinding();
+                Uri uri = CreateServiceUri(endPoint.ToString());
+                var binding = new NetTcpBinding();
                 //temp code to resolve the "server rejected credentials" exception
                 binding.Security.Mode = SecurityMode.Transport;
                 binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
 
                 IChatHost remoteHost = new ChatHostProxy(binding, new EndpointAddress(uri));
-                session = new ChatSession(chatHost, remoteHost, localEndPoint);
-                this.chatSessions.Add(endpoint, session);
+                session = new ChatSession(chatHost, remoteHost, localEndPoint, endPoint);
+                this.chatSessions.Add(endPoint, session);
             }
             return session;
+        }
+
+        public void RemoveSession(IPEndPoint endPoint)
+        {
+            chatSessions.Remove(endPoint);
         }
 
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
@@ -75,7 +80,7 @@ namespace Squiggle.Chat.Services.Chat
             if (!chatSessions.ContainsKey(e.User))
             {
                 var session = CreateSession(e.User);
-                ChatStarted(this, new ChatStartedEventArgs() { Session = session });
+                ChatStarted(this, new ChatStartedEventArgs() { Message=e.Message, Session = session });
             }
         }
 

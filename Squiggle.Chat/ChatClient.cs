@@ -42,6 +42,7 @@ namespace Squiggle.Chat
 
         void chatService_ChatStarted(object sender, ChatStartedEventArgs e)
         {
+            e.Buddy = GetBuddyByAddress(e.Session.RemoteUser);
             ChatStarted(this, e);
         }
 
@@ -81,13 +82,18 @@ namespace Squiggle.Chat
 
         private Buddy GetBuddyByAddress(IPEndPoint endPoint)
         {
-            return Buddies.FirstOrDefault(b => b.EndPoint == endPoint);
+            return Buddies.FirstOrDefault(b => b.EndPoint.Equals(endPoint));
         }
 
         public IChatSession StartChat(IPEndPoint endpoint)
         {
             IChatSession chatSession = chatService.CreateSession(endpoint);
             return chatSession;
+        }
+
+        public void EndChat(IPEndPoint endPoint)
+        {
+            chatService.RemoveSession(endPoint);
         }
 
         public void Login(string username)

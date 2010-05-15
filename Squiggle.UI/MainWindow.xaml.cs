@@ -31,29 +31,57 @@ namespace Squiggle.UI
         public MainWindow()
         {
             InitializeComponent();
-            chatPort = (short)Utility.GetFreePort();
-            var ipAddress = Utility.GetLocalIPAddress();
-            chatClient = new ChatClient(new IPEndPoint(ipAddress, chatPort), presencePort, keepAliveTimeout);
-            chatClient.Login("Ali");
-            chatClient.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
-            chatVM = new ChatViewModel(chatClient);
-            this.DataContext = chatVM;
+
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.DisplayName))
+                SignIn(Properties.Settings.Default.DisplayName);
+            else
+                txtdisplayName.Focus();
         }
 
         void chatClient_ChatStarted(object sender, ChatStartedEventArgs e)
         {
-            ChatWindow window = new ChatWindow();
-            window.DataContext = e.Session;
-            window.Show();
-        }       
+            CreateChatWindow(e.Buddy, e.Message, e.Session);
+        }
 
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Buddy buddy= ((TextBlock)sender).Tag as Buddy;
-            ChatWindow window = new ChatWindow();
+            Buddy buddy = ((TextBlock)sender).Tag as Buddy;
+            CreateChatWindow(buddy, string.Empty, buddy.StartChat());
+        }
+
+        private static void CreateChatWindow(Buddy buddy, string message, IChatSession session)
+        {
+            ChatWindow window = new ChatWindow(buddy, message);
             window.Title = buddy.DisplayName;
-            window.DataContext = buddy.StartChat();
+            window.DataContext = session;
+            window.Topmost = true;
             window.Show();
+        }   
+
+        private void SignIn(object sender, RoutedEventArgs e)
+        {
+            SignIn(txtdisplayName.Text);
+
+            if (chkRememberName.IsChecked.HasValue && chkRememberName.IsChecked.Value)
+                Properties.Settings.Default.DisplayName = txtdisplayName.Text;
+            else
+                Properties.Settings.Default.DisplayName = String.Empty;
+
+            Properties.Settings.Default.Save();
+        }
+
+        private void SignIn(string displayName)
+        {
+            chatPort = (short)Utility.GetFreePort();
+            var ipAddress = Utility.GetLocalIPAddress();
+            chatClient = new ChatClient(new IPEndPoint(ipAddress, chatPort), presencePort, keepAliveTimeout);
+            chatClient.Login(displayName);
+            chatClient.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
+            chatVM = new ChatViewModel(chatClient);
+            this.DataContext = chatVM;
+
+            OfflineView.Visibility = Visibility.Hidden;
+            OnlineView.Visibility = Visibility.Visible;
         }
     }
 }

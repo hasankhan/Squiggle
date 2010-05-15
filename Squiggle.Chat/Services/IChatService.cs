@@ -10,6 +10,8 @@ namespace Squiggle.Chat
     public class ChatStartedEventArgs: EventArgs
     {
         public IChatSession Session {get; set; }
+        public Buddy Buddy { get; set; }
+        public string Message { get; set; }
     }
 
     public interface IChatService
@@ -18,6 +20,7 @@ namespace Squiggle.Chat
         void Start(IPEndPoint endpoint);
         void Stop();
         IChatSession CreateSession(IPEndPoint endpoint);
+        void RemoveSession(IPEndPoint endpoint);
         event EventHandler<ChatStartedEventArgs> ChatStarted;
     }
 }

@@ -22,5 +22,17 @@ namespace Squiggle.UI.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DisplayName {
+            get {
+                return ((string)(this["DisplayName"]));
+            }
+            set {
+                this["DisplayName"] = value;
+            }
+        }
     }
 }

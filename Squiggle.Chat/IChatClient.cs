@@ -15,7 +15,8 @@ namespace Squiggle.Chat
         Buddy CurrentUser{get; set;}
         List<Buddy> Buddies { get; set; }
 
-        IChatSession StartChat(IPEndPoint endpoint);
+        IChatSession StartChat(IPEndPoint endPoint);
+        void EndChat(IPEndPoint endPoint);
         void Login(string username);
         void Logout();
     }

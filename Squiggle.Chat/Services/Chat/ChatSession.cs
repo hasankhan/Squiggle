@@ -15,10 +15,11 @@ namespace Squiggle.Chat.Services.Chat
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
 
-        public ChatSession(ChatHost localHost, IChatHost remoteHost, IPEndPoint localUser)
+        public ChatSession(ChatHost localHost, IChatHost remoteHost, IPEndPoint localUser, IPEndPoint remoteUser)
         {
             this.remoteHost = remoteHost;
             this.localUser = localUser;
+            RemoteUser = remoteUser;
             localHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(host_MessageReceived);
         }
 
@@ -33,6 +34,15 @@ namespace Squiggle.Chat.Services.Chat
         {
             remoteHost.ReceiveMessage(localUser, message);
         }
+
+        #endregion
+
+
+        #region IChatSession Members
+
+
+        public IPEndPoint RemoteUser { get; set; }
+        
 
         #endregion
     }
