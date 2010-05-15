@@ -8,6 +8,6 @@ namespace Squiggle.Chat.Services.Presence.Transport.Messages
     {
         public string UserFriendlyName { get; set; }
         public IPEndPoint ChatEndPoint { get; set; }   
-        public int KeepAliveSyncTime { get; set; }                
+        public TimeSpan KeepAliveSyncTime { get; set; }                
     }
 }

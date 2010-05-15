@@ -14,7 +14,7 @@ namespace Squiggle.Chat.Services.Presence
     {
         Timer timer;
         PresenceChannel channel;
-        int keepAliveSyncTime;
+        double keepAliveSyncTime;
         Message keepAliveMessage;
         Dictionary<UserInfo, DateTime> aliveUsers;
         HashSet<UserInfo> lostUsers;
@@ -25,10 +25,10 @@ namespace Squiggle.Chat.Services.Presence
         public event EventHandler<UserEventArgs> UserLost = delegate { };
         public event EventHandler<UserEventArgs> UserReturned = delegate { };
 
-        public KeepAliveService(PresenceChannel channel, UserInfo user, int keepAliveSyncTime)
+        public KeepAliveService(PresenceChannel channel, UserInfo user, TimeSpan keepAliveSyncTime)
         {
             this.channel = channel;
-            this.keepAliveSyncTime = keepAliveSyncTime;
+            this.keepAliveSyncTime = keepAliveSyncTime.TotalMilliseconds;
             this.User = user;
             aliveUsers = new Dictionary<UserInfo, DateTime>();
             lostUsers = new HashSet<UserInfo>();
@@ -38,7 +38,7 @@ namespace Squiggle.Chat.Services.Presence
         public void Start()
         {
             this.timer = new Timer();
-            timer.Interval = keepAliveSyncTime * 1000; // seconds
+            timer.Interval = keepAliveSyncTime;
             this.timer.AutoReset = true;
             this.timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
             this.timer.Start();
@@ -104,7 +104,7 @@ namespace Squiggle.Chat.Services.Presence
                 var now = DateTime.Now;
                 List<UserInfo> gone = new List<UserInfo>();
                 foreach (KeyValuePair<UserInfo, DateTime> pair in aliveUsers)
-                    if ((now.Subtract(pair.Value).TotalSeconds - pair.Key.KeepAliveSyncTime) > waitTolerance)
+                    if ((now.Subtract(pair.Value).TotalSeconds - pair.Key.KeepAliveSyncTime.TotalSeconds) > waitTolerance)
                         gone.Add(pair.Key);
                 return gone; 
             }

@@ -7,7 +7,7 @@ using System.Net.Sockets;
 
 namespace Squiggle.Chat
 {
-    public class Utility
+    public class NetworkUtility
     {
         public static int GetFreePort()
         {
@@ -20,15 +20,19 @@ namespace Squiggle.Chat
 
         public static IPAddress GetLocalIPAddress()
         {
+            var address = GetLocalIPAddresses().FirstOrDefault();
+            return address;
+        }
+
+        public static IEnumerable<IPAddress> GetLocalIPAddresses()
+        {
             IPHostEntry entry = Dns.GetHostEntry(Dns.GetHostName());
 
             foreach (IPAddress ip in entry.AddressList)
             {
                 if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-                    return ip;
+                    yield return ip;
             }
-
-            return entry.AddressList[0];
         }
     }
 }

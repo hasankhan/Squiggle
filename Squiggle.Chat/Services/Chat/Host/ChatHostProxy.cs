@@ -44,15 +44,7 @@ namespace Squiggle.Chat.Services.Chat.Host
 
         public void ReceiveMessage(IPEndPoint user, string message)
         {
-            try
-            {
-                base.Channel.ReceiveMessage(user, message);
-            }
-            catch (Exception)
-            {
-                
-                throw;
-            }
+            base.Channel.ReceiveMessage(user, message);
         }
 
         #endregion

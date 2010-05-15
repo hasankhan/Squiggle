@@ -9,7 +9,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
-        <Border BorderBrush="Black" BorderThickness="2" Margin="2">
+        <Border BorderBrush="WhiteSmoke" BorderThickness="2" Margin="2">
             <ScrollViewer x:Name="scrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <TextBlock Margin="2" TextWrapping="Wrap" x:Name="sentMessages" />
             </ScrollViewer>

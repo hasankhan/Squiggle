@@ -12,7 +12,7 @@ namespace Squiggle.Chat.Services.Presence
     {
         public string UserFriendlyName { get; set; }
         public IPEndPoint ChatEndPoint { get; set; }
-        public int KeepAliveSyncTime { get; set; }                
+        public TimeSpan KeepAliveSyncTime { get; set; }                
 
         public override bool Equals(object obj)
         {

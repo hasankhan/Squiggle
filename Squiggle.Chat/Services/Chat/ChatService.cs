@@ -55,6 +55,7 @@ namespace Squiggle.Chat.Services.Chat
             {
                 Uri uri = CreateServiceUri(endPoint.ToString());
                 var binding = new NetTcpBinding();
+                
                 //temp code to resolve the "server rejected credentials" exception
                 binding.Security.Mode = SecurityMode.Transport;
                 binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;

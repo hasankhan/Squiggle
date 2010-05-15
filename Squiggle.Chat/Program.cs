@@ -11,8 +11,8 @@ namespace Squiggle.Chat
     {
         static void Main(string[] args)
         {
-            ChatClient client1 = new ChatClient(new IPEndPoint(IPAddress.Loopback, 1234), 12345, 2);
-            ChatClient client2 = new ChatClient(new IPEndPoint(IPAddress.Loopback, 1236), 12345, 2);
+            ChatClient client1 = new ChatClient(new IPEndPoint(IPAddress.Loopback, 1234), 12345, 2.Seconds());
+            ChatClient client2 = new ChatClient(new IPEndPoint(IPAddress.Loopback, 1236), 12345, 2.Seconds());
             client1.BuddyOnline += new EventHandler<BuddyEventArgs>(client_BuddyOnline);
             client2.BuddyOnline += new EventHandler<BuddyEventArgs>(client_BuddyOnline);
             client2.BuddyOffline += new EventHandler<BuddyEventArgs>(client2_BuddyOffline);

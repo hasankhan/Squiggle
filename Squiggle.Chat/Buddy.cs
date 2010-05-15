@@ -8,58 +8,35 @@ using System.Net;
 
 namespace Squiggle.Chat
 {
-    public class Buddy : INotifyPropertyChanged
+    public class Buddy
     {
-        public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
 
         IChatClient chatClient;
 
+        public object ID { get; private set; }
         public string DisplayName { get; set; }
         public string DisplayMessage { get; set; }
-        public IPEndPoint EndPoint { get; internal set; }
         public UserStatus Status { get; set; }
 
-        public Buddy() { }
-        public Buddy(IChatClient chatClient)
+        public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
+
+        public Buddy(IChatClient chatClient, object id)
         {
+            this.ID = id;
             this.chatClient = chatClient;
             this.chatClient.BuddyOffline += new EventHandler<BuddyEventArgs>(chatClient_BuddyOffline);
             this.chatClient.BuddyOnline += new EventHandler<BuddyEventArgs>(chatClient_BuddyOnline);
             this.chatClient.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj != null && obj is Buddy)
-            {
-                var otherBuddy = (Buddy)obj;
-                bool equals = DisplayName.Equals(otherBuddy.DisplayName);
-                if (equals)
-                    equals = DisplayMessage.Equals(otherBuddy.DisplayMessage);
-                //if (equals)
-                //    equals = Address.Equals(otherBuddy.Address);
-                if (equals)
-                    equals = Status.Equals(otherBuddy.Status);
-
-                return equals;
-            }
-            else
-                return base.Equals(obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        }        
 
         public IChatSession StartChat()
         {
-            return chatClient.StartChat(EndPoint);
+            return chatClient.StartChat(this);
         }
 
         public void EndChat()
         {
-            chatClient.EndChat(EndPoint);
+            chatClient.EndChat(this);
         }
 
         void chatClient_ChatStarted(object sender, ChatStartedEventArgs e)
@@ -77,15 +54,21 @@ namespace Squiggle.Chat
             Status = UserStatus.Offline;
         }
 
-        #region INotifyPropertyChanged Members
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void OnPropertyChanged(string propertyName)
+        public override bool Equals(object obj)
         {
-            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            if (obj != null && obj is Buddy)
+            {
+                var otherBuddy = (Buddy)obj;
+                bool equals = this.ID.Equals(otherBuddy.ID);
+                return equals;
+            }
+            else
+                return base.Equals(obj);
         }
 
-        #endregion
+        public override int GetHashCode()
+        {
+            return this.ID.GetHashCode();
+        }
     }
 }

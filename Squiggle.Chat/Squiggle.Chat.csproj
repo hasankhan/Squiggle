@@ -73,8 +73,9 @@
     <Compile Include="Services\Presence\UserEventArgs.cs" />
     <Compile Include="Services\Presence\UserInfo.cs" />
     <Compile Include="Services\Presence\UserDiscovery.cs" />
+    <Compile Include="TimeExtensions.cs" />
     <Compile Include="UserStatus.cs" />
-    <Compile Include="Utility.cs" />
+    <Compile Include="NetworkUtility.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

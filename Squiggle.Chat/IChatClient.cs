@@ -12,11 +12,11 @@ namespace Squiggle.Chat
         event EventHandler<BuddyEventArgs> BuddyOnline;
         event EventHandler<BuddyEventArgs> BuddyOffline;
 
-        Buddy CurrentUser{get; set;}
-        List<Buddy> Buddies { get; set; }
+        Buddy CurrentUser{get; }
+        IEnumerable<Buddy> Buddies { get; }
 
-        IChatSession StartChat(IPEndPoint endPoint);
-        void EndChat(IPEndPoint endPoint);
+        IChatSession StartChat(Buddy buddy);
+        void EndChat(Buddy buddy);
         void Login(string username);
         void Logout();
     }
