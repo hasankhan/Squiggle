@@ -22,8 +22,8 @@ namespace Squiggle.UI
     /// </summary>
     public partial class MainWindow : Window
     {
-        const short chatPort = 7777;
-        const short presencePort = 9999;
+        short chatPort = 7778;
+        short presencePort = 9999;
         const int keepAliveTimeout = 20000;
         ChatClient chatClient;
         ChatViewModel chatVM;
@@ -31,9 +31,10 @@ namespace Squiggle.UI
         public MainWindow()
         {
             InitializeComponent();
+            chatPort = (short)Utility.GetFreePort();
             var ipAddress = Utility.GetLocalIPAddress();
             chatClient = new ChatClient(new IPEndPoint(ipAddress, chatPort), presencePort, keepAliveTimeout);
-            chatClient.Login(Dns.GetHostName());
+            chatClient.Login("Ali");
             chatClient.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
             chatVM = new ChatViewModel(chatClient);
             this.DataContext = chatVM;

@@ -7,6 +7,8 @@ namespace Squiggle.Chat.Services.Presence.Transport
     [Serializable]
     class Message
     {
+        public Guid ChannelID { get; set; }
+
         public byte[] Serialize()
         {
             var stream = new MemoryStream();

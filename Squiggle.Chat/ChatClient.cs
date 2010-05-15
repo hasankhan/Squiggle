@@ -100,9 +100,9 @@ namespace Squiggle.Chat
 
         public void Login(string username)
         {
-            presenceService.Login(username);
             chatService.Username = username;
             chatService.Start(localEndPoint);
+            presenceService.Login(username);
 
             CurrentUser = new Buddy() 
             { 

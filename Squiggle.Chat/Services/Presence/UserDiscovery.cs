@@ -86,8 +86,8 @@ namespace Squiggle.Chat.Services.Presence
                     KeepAliveSyncTime = message.KeepAliveSyncTime,
                     UserFriendlyName = message.UserFriendlyName
                 };
-                onlineUsers.Add(user);
-                UserOnline(this, new UserEventArgs() { User = user });
+                if (onlineUsers.Add(user))
+                    UserOnline(this, new UserEventArgs() { User = user });
             }
         }        
     }

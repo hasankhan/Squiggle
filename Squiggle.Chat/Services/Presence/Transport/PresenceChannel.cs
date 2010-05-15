@@ -15,6 +15,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
         UdpClient client;
         IPEndPoint receiveEndPoint;
         IPEndPoint broadCastEndPoint;
+        Guid channelID = Guid.NewGuid();
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
 
@@ -40,6 +41,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
 
         public void SendMessage(Message message)
         {
+            message.ChannelID = channelID;
             byte[] data = message.Serialize();
             client.Send(data, data.Length, broadCastEndPoint);
         }
@@ -53,12 +55,15 @@ namespace Squiggle.Chat.Services.Presence.Transport
                 byte[] data = client.EndReceive(ar, ref remoteEndPoint);
                 var message = Message.Deserialize(data);
                 BeginReceive();
-                var args = new MessageReceivedEventArgs()
+                if (!message.ChannelID.Equals(channelID))
                 {
-                    Message = message,
-                    Sender = remoteEndPoint
-                };
-                MessageReceived(this, args);
+                    var args = new MessageReceivedEventArgs()
+                    {
+                        Message = message,
+                        Sender = remoteEndPoint
+                    };
+                    MessageReceived(this, args);
+                }
             }
             catch (Exception) { }
         }
