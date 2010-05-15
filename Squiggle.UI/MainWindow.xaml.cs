@@ -15,7 +15,7 @@ using System.Net;
 using System.ComponentModel;
 using System.Threading;
 
-namespace Messenger
+namespace Squiggle.UI
 {
     /// <summary>
     /// Interaction logic for Window1.xaml
@@ -26,6 +26,7 @@ namespace Messenger
         const short presencePort = 9999;
         const int keepAliveTimeout = 20000;
         ChatClient chatClient;
+        ChatViewModel chatVM;
         
         public MainWindow()
         {
@@ -33,10 +34,16 @@ namespace Messenger
             var ipAddress = Utility.GetLocalIPAddress();
             chatClient = new ChatClient(new IPEndPoint(ipAddress, chatPort), presencePort, keepAliveTimeout);
             chatClient.Login(Dns.GetHostName());
+            chatClient.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
+            chatVM = new ChatViewModel(chatClient);
+            this.DataContext = chatVM;
+        }
 
-            this.DataContext = chatClient;
-            signedInView.Visibility = Visibility.Visible;
-            signedOffView.Visibility = Visibility.Hidden;
+        void chatClient_ChatStarted(object sender, ChatStartedEventArgs e)
+        {
+            ChatWindow window = new ChatWindow();
+            window.DataContext = e.Session;
+            window.Show();
         }       
 
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
@@ -44,13 +51,8 @@ namespace Messenger
             Buddy buddy= ((TextBlock)sender).Tag as Buddy;
             ChatWindow window = new ChatWindow();
             window.Title = buddy.DisplayName;
-            window.DataContext = chatClient.StartChat(buddy.Address);
+            window.DataContext = buddy.StartChat();
             window.Show();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

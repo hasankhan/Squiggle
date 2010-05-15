@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Net;
 
 namespace Squiggle.Chat
 {
@@ -11,7 +12,10 @@ namespace Squiggle.Chat
         event EventHandler<BuddyEventArgs> BuddyOnline;
         event EventHandler<BuddyEventArgs> BuddyOffline;
 
-        IChatSession StartChat(string address);
+        Buddy CurrentUser{get; set;}
+        List<Buddy> Buddies { get; set; }
+
+        IChatSession StartChat(IPEndPoint endpoint);
         void Login(string username);
         void Logout();
     }

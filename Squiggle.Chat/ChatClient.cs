@@ -26,8 +26,8 @@ namespace Squiggle.Chat
         public event EventHandler<BuddyEventArgs> BuddyOnline = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyOffline = delegate { };
 
-        public List<Buddy> Buddies { get; private set; }
-        public Buddy CurrentUser { get; private set; }
+        public List<Buddy> Buddies { get; set; }
+        public Buddy CurrentUser { get; set; }
 
         public ChatClient(IPEndPoint localEndPoint, short presencePort, int keepAliveTime)
         {
@@ -58,15 +58,17 @@ namespace Squiggle.Chat
 
         void SetUserStatus(UserInfo user, UserStatus status)
         {
-            var buddy = GetBuddyByAddress(user.ChatEndPoint.ToString());
-            if (buddy == null)
+            lock (this)
             {
-                buddy = new Buddy() { DisplayName = user.UserFriendlyName, Address = user.ChatEndPoint.ToString()};
-                Buddies.Add(buddy);
+                var buddy = GetBuddyByAddress(user.ChatEndPoint);
+                if (buddy == null)
+                {
+                    buddy = new Buddy(this) { DisplayName = user.UserFriendlyName, DisplayMessage = String.Empty, EndPoint = user.ChatEndPoint};
+                    Buddies.Add(buddy);
+                }
+                buddy.Status = status;
+                OnBuddyStatusChanged(buddy);
             }
-
-            buddy.Status = status;
-            OnBuddyStatusChanged(buddy);
         }
 
         void OnBuddyStatusChanged(Buddy buddy)
@@ -78,9 +80,9 @@ namespace Squiggle.Chat
                 BuddyOffline(this, args);
         }
 
-        private Buddy GetBuddyByAddress(string address)
+        private Buddy GetBuddyByAddress(IPEndPoint endPoint)
         {
-            return Buddies.FirstOrDefault(b => b.Address == address);
+            return Buddies.FirstOrDefault(b => b.EndPoint == endPoint);
         }
 
         void chatService_ResolveEndPoint(object sender, ResolveEndPointEventArgs e)
@@ -90,23 +92,25 @@ namespace Squiggle.Chat
                 e.EndPoint = user.ChatEndPoint;
         }
 
-        public IChatSession StartChat(string address)
+        public IChatSession StartChat(IPEndPoint endpoint)
         {
-            IChatSession chatSession = chatService.CreateSession(localEndPoint);
+            IChatSession chatSession = chatService.CreateSession(endpoint);
             return chatSession;
         }
 
         public void Login(string username)
         {
             presenceService.Login(username);
+            chatService.Username = username;
             chatService.Start(localEndPoint);
 
             CurrentUser = new Buddy() 
             { 
                 DisplayName = username, 
                 DisplayMessage="No display message",
-                Address = localEndPoint.Address.ToString(), 
-                Status = UserStatus.Online };
+                EndPoint = localEndPoint, 
+                Status = UserStatus.Online 
+            };
         }
 
         public void Logout()

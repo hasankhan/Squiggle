@@ -39,7 +39,7 @@ namespace Squiggle.Chat.Services.Chat
                 throw new InvalidOperationException("Service already started.");
 
             serviceHost = new ServiceHost(chatHost);
-            var address = CreateServiceUri(endpoint);
+            var address = CreateServiceUri(endpoint.ToString());
             serviceHost.AddServiceEndpoint(typeof(IChatHost), new NetTcpBinding(), address);
             serviceHost.Open();
         }        
@@ -53,15 +53,21 @@ namespace Squiggle.Chat.Services.Chat
             }
         }
 
-        public IChatSession CreateSession(IPEndPoint host)
+        public IChatSession CreateSession(IPEndPoint endpoint)
         {
             IChatSession session;
-            if (!chatSessions.TryGetValue(host.Address.ToString(), out session))
+            var address = endpoint.ToString();
+            if (!chatSessions.TryGetValue(address, out session))
             {
-                Uri addess = CreateServiceUri(host);
-                IChatHost remoteHost = new ChatHostProxy(new NetTcpBinding(), new EndpointAddress(addess.ToString()));
+                Uri uri = CreateServiceUri(address);
+                var binding =new NetTcpBinding();
+                //temp code to resolve the "server rejected credentials" exception
+                binding.Security.Mode = SecurityMode.Transport;
+                binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
+
+                IChatHost remoteHost = new ChatHostProxy(binding, new EndpointAddress(uri));
                 session = new ChatSession(chatHost, remoteHost, Username);
-                this.chatSessions.Add(host.Address.ToString(), session);
+                this.chatSessions.Add(address, session);
             }
             return session;
         }
@@ -84,10 +90,10 @@ namespace Squiggle.Chat.Services.Chat
             }
         }
 
-        static Uri CreateServiceUri(IPEndPoint endpoint)
+        static Uri CreateServiceUri(string address)
         {
-            var address = new Uri("net.tcp://" + endpoint.ToString() + "/chat");
-            return address;
+            var uri = new Uri("net.tcp://" + address + "/chat");
+            return uri;
         }
     }
 }

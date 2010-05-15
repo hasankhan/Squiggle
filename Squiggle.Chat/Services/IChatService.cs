@@ -15,9 +15,10 @@ namespace Squiggle.Chat
 
     public interface IChatService
     {
+        string Username { get; set; }
         void Start(IPEndPoint endpoint);
         void Stop();
-        IChatSession CreateSession(IPEndPoint host);
+        IChatSession CreateSession(IPEndPoint endpoint);
         event EventHandler<ChatStartedEventArgs> ChatStarted;
         event EventHandler<ResolveEndPointEventArgs> ResolveEndPoint;
     }

@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Squiggle.Chat;
 
-namespace Messenger
+namespace Squiggle.UI
 {
     /// <summary>
     /// Interaction logic for ChatWindow.xaml
@@ -34,6 +34,7 @@ namespace Messenger
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            chatSession.SendMessage(txtMessage.Text);
             WriteMessage("Me", txtMessage.Text);
         }
 

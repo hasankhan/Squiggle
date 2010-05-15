@@ -11,7 +11,6 @@ namespace Squiggle.Chat.Services.Chat.Host
     [GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     public partial class ChatHostProxy : ClientBase<IChatHost>, IChatHost
     {
-
         public ChatHostProxy()
         {
         }
@@ -44,7 +43,15 @@ namespace Squiggle.Chat.Services.Chat.Host
 
         public void ReceiveMessage(string user, string message)
         {
-            base.Channel.ReceiveMessage(user, message);
+            try
+            {
+                base.Channel.ReceiveMessage(user, message);
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
         }
 
         #endregion
