@@ -95,7 +95,7 @@ namespace Squiggle.Chat
             {
                 buddy.Status = e.User.Status;
                 buddy.DisplayMessage = e.User.DisplayMessage;
-                buddy.DisplayName = e.User.DisplayMessage;
+                buddy.DisplayName = e.User.UserFriendlyName;
                 BuddyUpdated(this, new BuddyEventArgs() { Buddy = buddy });
             }
         }       

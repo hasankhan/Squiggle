@@ -185,7 +185,7 @@
                                             </ToolTip>
                                         </TextBlock.ToolTip>
                                     </TextBlock>
-                                    <TextBlock Grid.Row="1" Text="{Binding Path=DisplayMessage}" FontSize="10" HorizontalAlignment="Left" Grid.Column="1"/>
+                                    <TextBlock Grid.Row="1" Text="{Binding Path=DisplayMessage}" TextTrimming="WordEllipsis" ToolTip="{Binding Path=DisplayMessage}"  FontSize="10" HorizontalAlignment="Left" Grid.Column="1"/>
                                 </Grid>
                             </Border>
                         </DataTemplate>
