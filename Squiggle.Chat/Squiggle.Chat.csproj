@@ -83,6 +83,7 @@
     <Compile Include="Services\Presence\UserInfo.cs" />
     <Compile Include="Services\Presence\UserDiscovery.cs" />
     <Compile Include="TimeExtensions.cs" />
+    <Compile Include="UserActivityMonitor.cs" />
     <Compile Include="UserStatus.cs" />
     <Compile Include="NetworkUtility.cs" />
   </ItemGroup>

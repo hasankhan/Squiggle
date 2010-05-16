@@ -7,8 +7,13 @@ namespace Squiggle.Chat
 {
     public enum UserStatus
     {
-        Online,
-        Offline,
-        Busy
+        Online,        
+        Idle,
+        OnPhone,
+        InAMeeting,
+        OutForLunch,
+        BeRightBack,
+        Busy,
+        Offline
     }
 }
