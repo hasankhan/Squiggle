@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Squiggle.Chat.Services;
+using System.IO;
+using System.Threading;
 
 namespace Squiggle.Chat
 {
@@ -21,10 +23,21 @@ namespace Squiggle.Chat
         public event EventHandler<ChatMessageReceivedEventArgs> MessageReceived = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyJoined = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyLeft = delegate { };
+        public event EventHandler<ErrorEventArgs> Error = delegate { };
 
         public void SendMessage(string message)
         {
-            session.SendMessage(message);
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                try
+                {
+                    session.SendMessage(message);
+                }
+                catch (Exception ex)
+                {
+                    Error(this, new ErrorEventArgs(ex));
+                }
+            });
         }
 
         public void Leave()
