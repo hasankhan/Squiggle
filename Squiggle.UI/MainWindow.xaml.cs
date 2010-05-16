@@ -39,7 +39,7 @@ namespace Squiggle.UI
 
         void chatClient_ChatStarted(object sender, ChatStartedEventArgs e)
         {
-            CreateChatWindow(e.Buddy, e.Message, e.Session);
+            CreateChatWindow(e.Buddy, e.Message, e.Chat);
         }
 
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
@@ -48,7 +48,7 @@ namespace Squiggle.UI
             CreateChatWindow(buddy, string.Empty, buddy.StartChat());
         }
 
-        private static void CreateChatWindow(Buddy buddy, string message, IChatSession session)
+        static void CreateChatWindow(Buddy buddy, string message, IChat session)
         {
             ChatWindow window = new ChatWindow(buddy, message);
             window.Title = buddy.DisplayName;

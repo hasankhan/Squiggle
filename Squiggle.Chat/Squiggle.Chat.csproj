@@ -51,8 +51,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buddy.cs" />
+    <Compile Include="BuddyList.cs" />
+    <Compile Include="BuddyEventArgs.cs" />
+    <Compile Include="Chat.cs" />
     <Compile Include="ChatClient.cs" />
+    <Compile Include="ChatStartedEventArgs.cs" />
+    <Compile Include="IChat.cs" />
     <Compile Include="IChatClient.cs" />
+    <Compile Include="ChatMessageReceivedEventArgs.cs" />
     <Compile Include="Services\IPresenceService.cs" />
     <Compile Include="Services\Chat\Host\ChatHost.cs" />
     <Compile Include="Services\Chat\Host\ChatHostProxy.cs" />
@@ -64,10 +70,13 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Presence\KeepAliveService.cs" />
+    <Compile Include="Services\Presence\Transport\Messages\HiMessage.cs" />
     <Compile Include="Services\Presence\Transport\Messages\KeepAliveMessage.cs" />
     <Compile Include="Services\Presence\Transport\Messages\LogoutMessage.cs" />
     <Compile Include="Services\Presence\Transport\Message.cs" />
     <Compile Include="Services\Presence\Transport\Messages\LoginMessage.cs" />
+    <Compile Include="Services\Presence\Transport\Messages\PresenceMessage.cs" />
+    <Compile Include="Services\Presence\Transport\Messages\UserUpdateMessage.cs" />
     <Compile Include="Services\Presence\Transport\PresenceChannel.cs" />
     <Compile Include="Services\Presence\PresenceService.cs" />
     <Compile Include="Services\Presence\UserEventArgs.cs" />

@@ -17,7 +17,6 @@ namespace Squiggle.UI
 
         public ObservableCollection<Buddy> Buddies { get; private set; }
 
-        public List<Buddy> Buddies2 { get; private set; }
         public Buddy LoggedInUser { get; set; }
 
 

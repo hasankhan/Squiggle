@@ -24,9 +24,9 @@ namespace Squiggle.Chat.Services.Presence
 
         public void Update(UserInfo user)
         {
+            this.UserFriendlyName = user.UserFriendlyName;
             this.DisplayMessage = user.DisplayMessage;
             this.Status = user.Status;
-            this.UserFriendlyName = user.UserFriendlyName;
         }
 
         public override bool Equals(object obj)

@@ -8,20 +8,16 @@ using Squiggle.Chat.Services.Chat;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Threading;
+using Squiggle.Chat.Services;
 
 namespace Squiggle.Chat
 {
-    public class BuddyEventArgs : EventArgs
-    {
-        public Buddy Buddy { get; set; }
-    }
-
     public class ChatClient: IChatClient
     {
         IChatService chatService;
         IPresenceService presenceService;
         IPEndPoint localEndPoint;
-        List<Buddy> buddies;
+        BuddyList buddies;
 
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyOnline = delegate { };
@@ -38,8 +34,8 @@ namespace Squiggle.Chat
         public ChatClient(IPEndPoint localEndPoint, short presencePort, TimeSpan keepAliveTime)
         {
             chatService = new ChatService();
-            buddies = new List<Buddy>();
-            chatService.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatService_ChatStarted);
+            buddies = new BuddyList();
+            chatService.ChatStarted += new EventHandler<Squiggle.Chat.Services.ChatStartedEventArgs>(chatService_ChatStarted);
             presenceService = new PresenceService(localEndPoint, presencePort, keepAliveTime);
             presenceService.UserOffline += new EventHandler<UserEventArgs>(presenceService_UserOffline);
             presenceService.UserOnline += new EventHandler<UserEventArgs>(presenceService_UserOnline);
@@ -47,11 +43,12 @@ namespace Squiggle.Chat
             this.localEndPoint = localEndPoint;
         }        
 
-        public IChatSession StartChat(Buddy buddy)
+        public IChat StartChat(Buddy buddy)
         {
             var endpoint = (IPEndPoint)buddy.ID;
-            IChatSession chatSession = chatService.CreateSession(endpoint);
-            return chatSession;
+            IChatSession session = chatService.CreateSession(endpoint);
+            var chat = new Chat(session, buddy);
+            return chat;
         }
 
         public void EndChat(Buddy buddy)
@@ -66,12 +63,14 @@ namespace Squiggle.Chat
             chatService.Start(localEndPoint);
             presenceService.Login(username, String.Empty);
 
-            CurrentUser = new SelfBuddy(this, localEndPoint) 
+            var self = new SelfBuddy(this, localEndPoint) 
             { 
                 DisplayName = username, 
                 DisplayMessage = String.Empty,
                 Status = UserStatus.Online 
             };
+            self.EnableUpdates = true;
+            CurrentUser = self;
         }
 
         private void Update()
@@ -88,21 +87,16 @@ namespace Squiggle.Chat
             presenceService.Logout();
         }
 
-        Buddy GetBuddyByAddress(IPEndPoint endPoint)
+        void chatService_ChatStarted(object sender, Squiggle.Chat.Services.ChatStartedEventArgs e)
         {
-            Buddy buddy = buddies.FirstOrDefault(b => b.ID.Equals(endPoint));
-            return buddy;
-        }
-
-        void chatService_ChatStarted(object sender, ChatStartedEventArgs e)
-        {
-            e.Buddy = GetBuddyByAddress(e.Session.RemoteUser);
-            ChatStarted(this, e);
+            Buddy buddy = buddies[e.Session.RemoteUser];
+            var chat = new Chat(e.Session, buddy);
+            ChatStarted(this, new ChatStartedEventArgs() { Chat = chat,Buddy = buddy, Message = e.Message });
         }
 
         void presenceService_UserUpdated(object sender, UserEventArgs e)
         {
-            var buddy = GetBuddyByAddress(e.User.ChatEndPoint);
+            var buddy = buddies[e.User.ChatEndPoint];
             if (buddy != null)
             {
                 buddy.Status = e.User.Status;
@@ -114,15 +108,16 @@ namespace Squiggle.Chat
 
         void presenceService_UserOnline(object sender, UserEventArgs e)
         {
-            var buddy = GetBuddyByAddress(e.User.ChatEndPoint);
+            var buddy = buddies[e.User.ChatEndPoint];
             if (buddy == null)
             {
-                buddy = new Buddy(this, e.User)
+                buddy = new Buddy(this, e.User.ChatEndPoint)
                 {
                     DisplayName = e.User.UserFriendlyName,
                     Status = e.User.Status,
                     DisplayMessage = e.User.DisplayMessage,
                 };
+                System.Diagnostics.Debug.WriteLine(buddy.DisplayName);
                 buddies.Add(buddy);
                 BuddyOnline(this, new BuddyEventArgs() { Buddy = buddy });
             }
@@ -130,7 +125,7 @@ namespace Squiggle.Chat
 
         void presenceService_UserOffline(object sender, UserEventArgs e)
         {
-            var buddy = GetBuddyByAddress(e.User.ChatEndPoint);
+            var buddy = buddies[e.User.ChatEndPoint];
             if (buddy == null)
                 BuddyOffline(this, new BuddyEventArgs(){Buddy = buddy});
         }        
@@ -155,6 +150,8 @@ namespace Squiggle.Chat
 
         class SelfBuddy : Buddy
         {
+            public bool EnableUpdates { get; set; }
+
             public SelfBuddy(IChatClient client, IPEndPoint id) : base(client, id) { }
 
             public override string DisplayMessage
@@ -169,7 +166,6 @@ namespace Squiggle.Chat
                     Update();
                 }
             }
-
             public override string DisplayName
             {
                 get
@@ -182,7 +178,6 @@ namespace Squiggle.Chat
                     Update();
                 }
             }
-
             public override UserStatus Status
             {
                 get
@@ -198,7 +193,8 @@ namespace Squiggle.Chat
 
             void Update()
             {
-                ((ChatClient)base.ChatClient).Update();
+                if (EnableUpdates)
+                    ((ChatClient)base.ChatClient).Update();
             }
         }
     }

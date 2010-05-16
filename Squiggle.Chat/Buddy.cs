@@ -31,7 +31,7 @@ namespace Squiggle.Chat
             this.ChatClient.BuddyUpdated += new EventHandler<BuddyEventArgs>(chatClient_BuddyUpdated);
         }
         
-        public IChatSession StartChat()
+        public IChat StartChat()
         {
             return ChatClient.StartChat(this);
         }

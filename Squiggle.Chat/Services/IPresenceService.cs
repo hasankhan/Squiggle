@@ -5,7 +5,7 @@ using System.Text;
 using Squiggle.Chat.Services.Presence;
 using System.Net;
 
-namespace Squiggle.Chat
+namespace Squiggle.Chat.Services
 {
     interface IPresenceService: IDisposable
     {

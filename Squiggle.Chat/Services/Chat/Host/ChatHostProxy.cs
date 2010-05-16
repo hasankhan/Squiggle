@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.ServiceModel;
 using System.CodeDom.Compiler;
-using Squiggle.Chat.Service;
 using System.Net;
 
 namespace Squiggle.Chat.Services.Chat.Host

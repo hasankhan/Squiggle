@@ -18,7 +18,7 @@ namespace Squiggle.UI
     /// </summary>
     public partial class ChatWindow : Window
     {
-        IChatSession chatSession;
+        IChat chatSession;
         Buddy buddy;
 
         public ChatWindow()
@@ -33,9 +33,9 @@ namespace Squiggle.UI
                 WriteMessage(buddy.DisplayName, firstMessage);
         }
 
-        void chatSession_MessageReceived(object sender, Squiggle.Chat.Services.Chat.Host.MessageReceivedEventArgs e)
+        void chatSession_MessageReceived(object sender, ChatMessageReceivedEventArgs e)
         {
-            WriteMessage(buddy.DisplayName, e.Message);
+            WriteMessage(e.Sender.DisplayName, e.Message);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -58,8 +58,8 @@ namespace Squiggle.UI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            chatSession = this.DataContext as IChatSession;
-            chatSession.MessageReceived += new EventHandler<Squiggle.Chat.Services.Chat.Host.MessageReceivedEventArgs>(chatSession_MessageReceived);
+            chatSession = this.DataContext as IChat;
+            chatSession.MessageReceived += new EventHandler<ChatMessageReceivedEventArgs>(chatSession_MessageReceived);
         }
 
         private void Window_Closed(object sender, EventArgs e)

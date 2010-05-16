@@ -5,7 +5,7 @@ using System.Text;
 using System.ServiceModel;
 using System.Net;
 
-namespace Squiggle.Chat.Service
+namespace Squiggle.Chat.Services
 {
     [ServiceContract]
     public interface IChatHost

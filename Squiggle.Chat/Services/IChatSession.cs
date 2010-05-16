@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Squiggle.Chat.Service;
 using Squiggle.Chat.Services.Chat.Host;
 using System.Net;
 
-namespace Squiggle.Chat
+namespace Squiggle.Chat.Services
 {
     public interface IChatSession
     {
