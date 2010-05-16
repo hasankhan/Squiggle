@@ -20,10 +20,19 @@ namespace Squiggle.UI
     {
         IChat chatSession;
         Buddy buddy;
+        FlashForm flash;
 
         public ChatWindow()
         {
             InitializeComponent();
+            flash = new FlashForm(this);
+
+            this.Activated += new EventHandler(ChatWindow_Activated);
+        }
+
+        void ChatWindow_Activated(object sender, EventArgs e)
+        {
+            flash.Stop();
         }
 
         public ChatWindow(Buddy buddy, string firstMessage) : this()
@@ -36,12 +45,16 @@ namespace Squiggle.UI
         void chatSession_MessageReceived(object sender, ChatMessageReceivedEventArgs e)
         {
             WriteMessage(e.Sender.DisplayName, e.Message);
+            if (!this.IsActive)
+                flash.Start();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             chatSession.SendMessage(txtMessage.Text);
             WriteMessage("Me", txtMessage.Text);
+            txtMessage.Text = String.Empty;
+            txtMessage.Focus();
         }
 
         private void WriteMessage(string user, string message)
@@ -52,14 +65,25 @@ namespace Squiggle.UI
             sentMessages.Inlines.Add(text);
             sentMessages.Inlines.Add(new Run("\r\n"));
             scrollViewer.ScrollToBottom();
-            txtMessage.Text = String.Empty;
-            txtMessage.Focus();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             chatSession = this.DataContext as IChat;
             chatSession.MessageReceived += new EventHandler<ChatMessageReceivedEventArgs>(chatSession_MessageReceived);
+            chatSession.BuddyJoined += new EventHandler<BuddyEventArgs>(chatSession_BuddyJoined);
+            chatSession.BuddyLeft += new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
+        }
+
+        void chatSession_BuddyLeft(object sender, BuddyEventArgs e)
+        {
+            txtUserLeftMessage.Text = e.Buddy.DisplayName + " has left the chat.";
+            txtUserLeftMessage.Visibility = Visibility.Visible;
+        }
+
+        void chatSession_BuddyJoined(object sender, BuddyEventArgs e)
+        {
+            txtUserLeftMessage.Visibility = Visibility.Hidden;            
         }
 
         private void Window_Closed(object sender, EventArgs e)

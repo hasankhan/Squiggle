@@ -24,7 +24,7 @@ namespace Squiggle.UI
     {
         short presencePort = 9999;
         TimeSpan keepAliveTimeout = 2.Seconds();
-        ChatClient chatClient;
+        IChatClient chatClient;
         ChatViewModel chatVM;
         
         public MainWindow()
