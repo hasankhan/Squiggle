@@ -64,7 +64,7 @@ namespace Squiggle.UI
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            
+            chatSession.Leave();
         }
     }
 }

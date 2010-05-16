@@ -60,15 +60,12 @@ namespace Squiggle.Chat.Services.Chat
                 binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
 
                 IChatHost remoteHost = new ChatHostProxy(binding, new EndpointAddress(uri));
-                session = new ChatSession(chatHost, remoteHost, localEndPoint, endPoint);
+                ChatSession temp = new ChatSession(chatHost, remoteHost, localEndPoint, endPoint);
+                temp.SessionEnded += (sender, e) => chatSessions.Remove(temp.RemoteUser);
                 this.chatSessions.Add(endPoint, session);
+                session = temp;
             }
             return session;
-        }
-
-        public void RemoveSession(IPEndPoint endPoint)
-        {
-            chatSessions.Remove(endPoint);
         }
 
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };

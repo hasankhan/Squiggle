@@ -17,7 +17,6 @@ namespace Squiggle.Chat
         IEnumerable<Buddy> Buddies { get; }
 
         IChat StartChat(Buddy buddy);
-        void EndChat(Buddy buddy);
         void Login(string username);
         void Logout();
     }

@@ -18,7 +18,6 @@ namespace Squiggle.Chat.Services
         void Start(IPEndPoint endpoint);
         void Stop();
         IChatSession CreateSession(IPEndPoint endpoint);
-        void RemoveSession(IPEndPoint endpoint);
         event EventHandler<ChatStartedEventArgs> ChatStarted;
     }
 }

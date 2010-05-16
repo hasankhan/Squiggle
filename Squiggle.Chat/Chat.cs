@@ -27,6 +27,11 @@ namespace Squiggle.Chat
             session.SendMessage(message);
         }
 
+        public void Leave()
+        {
+            session.End();
+        }
+
         #endregion
 
         public Chat(IChatSession session, Buddy buddy)

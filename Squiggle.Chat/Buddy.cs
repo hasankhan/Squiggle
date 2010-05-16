@@ -36,11 +36,6 @@ namespace Squiggle.Chat
             return ChatClient.StartChat(this);
         }
 
-        public void EndChat()
-        {
-            ChatClient.EndChat(this);
-        }
-
         void chatClient_ChatStarted(object sender, ChatStartedEventArgs e)
         {
             if (e.Buddy.Equals(this))

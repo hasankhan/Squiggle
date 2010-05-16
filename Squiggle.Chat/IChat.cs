@@ -14,5 +14,6 @@ namespace Squiggle.Chat
         event EventHandler<BuddyEventArgs> BuddyLeft;
 
         void SendMessage(string Message);
+        void Leave();
     }
 }

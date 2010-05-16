@@ -14,6 +14,8 @@ namespace Squiggle.Chat.Services.Chat
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
 
+        public event EventHandler SessionEnded = delegate { };
+
         public ChatSession(ChatHost localHost, IChatHost remoteHost, IPEndPoint localUser, IPEndPoint remoteUser)
         {
             this.remoteHost = remoteHost;
@@ -32,6 +34,11 @@ namespace Squiggle.Chat.Services.Chat
         public void SendMessage(string message)
         {
             remoteHost.ReceiveMessage(localUser, message);
+        }
+
+        public void End()
+        {
+            SessionEnded(this, EventArgs.Empty);
         }
 
         #endregion

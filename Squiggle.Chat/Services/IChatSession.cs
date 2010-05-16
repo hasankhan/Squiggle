@@ -13,5 +13,6 @@ namespace Squiggle.Chat.Services
 
         event EventHandler<MessageReceivedEventArgs> MessageReceived;
         IPEndPoint RemoteUser { get; set; }
+        void End();
     }
 }

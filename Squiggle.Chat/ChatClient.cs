@@ -49,13 +49,7 @@ namespace Squiggle.Chat
             IChatSession session = chatService.CreateSession(endpoint);
             var chat = new Chat(session, buddy);
             return chat;
-        }
-
-        public void EndChat(Buddy buddy)
-        {
-            var endpoint = (IPEndPoint)buddy.ID;
-            chatService.RemoveSession(endpoint);
-        }
+        }        
 
         public void Login(string username)
         {
