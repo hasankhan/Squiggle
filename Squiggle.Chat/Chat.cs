@@ -23,7 +23,7 @@ namespace Squiggle.Chat
         public event EventHandler<ChatMessageReceivedEventArgs> MessageReceived = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyJoined = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyLeft = delegate { };
-        public event EventHandler<ErrorEventArgs> Error = delegate { };
+        public event EventHandler<MessageFailedEventArgs> MessageFailed = delegate { };
 
         public void SendMessage(string message)
         {
@@ -35,7 +35,11 @@ namespace Squiggle.Chat
                 }
                 catch (Exception ex)
                 {
-                    Error(this, new ErrorEventArgs(ex));
+                    MessageFailed(this, new MessageFailedEventArgs()
+                    {
+                        Message = message,
+                        Exception = ex
+                    });
                 }
             });
         }

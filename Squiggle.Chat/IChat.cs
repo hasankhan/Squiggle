@@ -5,7 +5,13 @@ using System.Text;
 using System.IO;
 
 namespace Squiggle.Chat
-{    
+{
+    public class MessageFailedEventArgs : EventArgs
+    {
+        public string Message { get; set; }
+        public Exception Exception { get; set; }
+    }
+
     public interface IChat
     {
         IEnumerable<Buddy> Buddies { get; }
@@ -13,7 +19,7 @@ namespace Squiggle.Chat
         event EventHandler<ChatMessageReceivedEventArgs> MessageReceived;
         event EventHandler<BuddyEventArgs> BuddyJoined;
         event EventHandler<BuddyEventArgs> BuddyLeft;
-        event EventHandler<ErrorEventArgs> Error;
+        event EventHandler<MessageFailedEventArgs> MessageFailed;
 
         void SendMessage(string Message);
         void Leave();
