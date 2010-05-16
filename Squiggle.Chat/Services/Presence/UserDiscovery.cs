@@ -71,7 +71,9 @@ namespace Squiggle.Chat.Services.Presence
                 OnLogoutMessage((LogoutMessage)e.Message);
             else if (e.Message is HiMessage)
                 OnLoginMessage(((HiMessage)e.Message).Convert<LoginMessage>(), true);
-        }
+            else if (e.Message is UserUpdateMessage)
+                OnUpdateMessage((UserUpdateMessage)e.Message);
+        }        
 
         void OnLogoutMessage(LogoutMessage message)
         {
@@ -91,28 +93,37 @@ namespace Squiggle.Chat.Services.Presence
 
         void OnLoginMessage(LoginMessage message, bool discovered)
         {
-            if (!message.ChatEndPoint.Equals(thisUser.ChatEndPoint))
+            UserInfo newUser = message.GetUser();
+            if (newUser.Status != UserStatus.Offline)
             {
-                UserInfo newUser = message.GetUser();
-                if (newUser.Status != UserStatus.Offline)
+                if (onlineUsers.Add(newUser))
                 {
-                    if (onlineUsers.Add(newUser))
-                    {
-                        if (discovered)
-                            UserDiscovered(this, new UserEventArgs() { User = newUser });
-                        else
-                            UserOnline(this, new UserEventArgs() { User = newUser });
-                    }
+                    if (discovered)
+                        UserDiscovered(this, new UserEventArgs() { User = newUser });
                     else
-                    {
-                        var oldUser = onlineUsers.First(u => u.Equals(newUser));
-                        oldUser.Update(newUser);
-                        UserUpdated(this, new UserEventArgs() { User = oldUser });
-                    }
+                        UserOnline(this, new UserEventArgs() { User = newUser });
                 }
                 else
-                    OnUserOffline(newUser.ChatEndPoint);
+                    OnUserUpdated(newUser);
             }
-        }        
+            else
+                OnUserOffline(newUser.ChatEndPoint);
+        }
+
+        void OnUserUpdated(UserInfo newUser)
+        {
+            var oldUser = onlineUsers.First(u => u.Equals(newUser));
+            if (oldUser != null)
+            {
+                oldUser.Update(newUser);
+                UserUpdated(this, new UserEventArgs() { User = oldUser });
+            }
+        }
+
+        void OnUpdateMessage(UserUpdateMessage message)
+        {
+            UserInfo newUser = message.GetUser();
+            OnUserUpdated(newUser);
+        }
     }
 }
