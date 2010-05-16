@@ -8,51 +8,62 @@ using System.Net;
 
 namespace Squiggle.Chat
 {
-    public class Buddy
+    public class Buddy: IDisposable
     {
-
-        IChatClient chatClient;
+        protected IChatClient ChatClient { get; private set; }
 
         public object ID { get; private set; }
-        public string DisplayName { get; set; }
-        public string DisplayMessage { get; set; }
-        public UserStatus Status { get; set; }
+
+        public virtual string DisplayName { get; set; }
+        public virtual string DisplayMessage { get; set; }
+        public virtual UserStatus Status { get; set; }
 
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
+        public event EventHandler Updated = delegate { };
 
         public Buddy(IChatClient chatClient, object id)
         {
             this.ID = id;
-            this.chatClient = chatClient;
-            this.chatClient.BuddyOffline += new EventHandler<BuddyEventArgs>(chatClient_BuddyOffline);
-            this.chatClient.BuddyOnline += new EventHandler<BuddyEventArgs>(chatClient_BuddyOnline);
-            this.chatClient.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
-        }        
-
+            this.ChatClient = chatClient;
+            this.ChatClient.BuddyOffline += new EventHandler<BuddyEventArgs>(chatClient_BuddyOffline);
+            this.ChatClient.BuddyOnline += new EventHandler<BuddyEventArgs>(chatClient_BuddyOnline);
+            this.ChatClient.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
+            this.ChatClient.BuddyUpdated += new EventHandler<BuddyEventArgs>(chatClient_BuddyUpdated);
+        }
+        
         public IChatSession StartChat()
         {
-            return chatClient.StartChat(this);
+            return ChatClient.StartChat(this);
         }
 
         public void EndChat()
         {
-            chatClient.EndChat(this);
+            ChatClient.EndChat(this);
         }
 
         void chatClient_ChatStarted(object sender, ChatStartedEventArgs e)
         {
-            ChatStarted(this, e);
+            if (e.Buddy.Equals(this))
+                ChatStarted(this, e);
         }
 
         void chatClient_BuddyOnline(object sender, BuddyEventArgs e)
         {
-            Status = UserStatus.Online;
+            if (e.Buddy.Equals(this))
+                Status = UserStatus.Online;
         }
 
         void chatClient_BuddyOffline(object sender, BuddyEventArgs e)
         {
-            Status = UserStatus.Offline;
+            if (e.Buddy.Equals(this))
+                Status = UserStatus.Offline;
         }
+
+        void chatClient_BuddyUpdated(object sender, BuddyEventArgs e)
+        {
+            if (e.Buddy.Equals(this))
+                Updated(this, EventArgs.Empty);
+        }        
 
         public override bool Equals(object obj)
         {
@@ -70,5 +81,17 @@ namespace Squiggle.Chat
         {
             return this.ID.GetHashCode();
         }
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+            this.ChatClient.BuddyOffline -= new EventHandler<BuddyEventArgs>(chatClient_BuddyOffline);
+            this.ChatClient.BuddyOnline -= new EventHandler<BuddyEventArgs>(chatClient_BuddyOnline);
+            this.ChatClient.ChatStarted -= new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
+            this.ChatClient.BuddyUpdated -= new EventHandler<BuddyEventArgs>(chatClient_BuddyUpdated);
+        }
+
+        #endregion
     }
 }

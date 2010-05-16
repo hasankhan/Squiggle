@@ -11,9 +11,12 @@ namespace Squiggle.Chat
     {
         event EventHandler<UserEventArgs> UserOnline;
         event EventHandler<UserEventArgs> UserOffline;
+        event EventHandler<UserEventArgs> UserUpdated;
+
         IEnumerable<UserInfo> Users { get; }
         
-        void Login(string name);
+        void Login(string name, string displayMessage);
+        void Update(string userFriendlyName, string displayMessage, UserStatus status);
         void Logout();
     }
 }

@@ -12,7 +12,22 @@ namespace Squiggle.Chat.Services.Presence
     {
         public string UserFriendlyName { get; set; }
         public IPEndPoint ChatEndPoint { get; set; }
-        public TimeSpan KeepAliveSyncTime { get; set; }                
+        public TimeSpan KeepAliveSyncTime { get; set; }
+        public string DisplayMessage { get; set; }
+        public UserStatus Status { get; set; }       
+
+        public static UserInfo FromEndPoint(IPEndPoint endPoint)
+        {
+            var user = new UserInfo() { ChatEndPoint = endPoint };
+            return user;
+        }
+
+        public void Update(UserInfo user)
+        {
+            this.DisplayMessage = user.DisplayMessage;
+            this.Status = user.Status;
+            this.UserFriendlyName = user.UserFriendlyName;
+        }
 
         public override bool Equals(object obj)
         {
@@ -32,12 +47,6 @@ namespace Squiggle.Chat.Services.Presence
             if (this.ChatEndPoint != null)
                 return ChatEndPoint.GetHashCode();
             return base.GetHashCode();
-        }
-
-        public static UserInfo FromEndPoint(IPEndPoint endPoint)
-        {
-            var user = new UserInfo() { ChatEndPoint = endPoint };
-            return user;
         }
     }
 }

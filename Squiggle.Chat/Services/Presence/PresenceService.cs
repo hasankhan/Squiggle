@@ -17,8 +17,9 @@ namespace Squiggle.Chat.Services.Presence
 
         UserInfo thisUser;
 
-        public event EventHandler<UserEventArgs> UserOnline;
-        public event EventHandler<UserEventArgs> UserOffline;
+        public event EventHandler<UserEventArgs> UserOnline = delegate { };
+        public event EventHandler<UserEventArgs> UserOffline = delegate { };
+        public event EventHandler<UserEventArgs> UserUpdated = delegate { };
 
         public IEnumerable<UserInfo> Users
         {
@@ -38,19 +39,30 @@ namespace Squiggle.Chat.Services.Presence
             this.discovery = new UserDiscovery(channel);
             discovery.UserOnline += new EventHandler<UserEventArgs>(discovery_UserOnline);
             discovery.UserOffline += new EventHandler<UserEventArgs>(discovery_UserOffline);
+            discovery.UserUpdated += new EventHandler<UserEventArgs>(discovery_UserUpdated);
 
             this.keepAlive = new KeepAliveService(channel, thisUser, keepAliveTime);
             this.keepAlive.UserLost += new EventHandler<UserEventArgs>(keepAlive_UserLost);
             this.keepAlive.UserReturned += new EventHandler<UserEventArgs>(keepAlive_UserReturned);
-        }
+        }        
 
-        public void Login(string name)
+        public void Login(string name, string displayMessage)
         {
             thisUser.UserFriendlyName = name;
-            
+            thisUser.DisplayMessage = displayMessage;
+            thisUser.Status = UserStatus.Online;
+
             channel.Start();
             discovery.Login(thisUser);
             keepAlive.Start();
+        }
+
+        public void Update(string name, string displayMessage, UserStatus status)
+        {
+            thisUser.UserFriendlyName = name;
+            thisUser.DisplayMessage = displayMessage;
+            thisUser.Status = status;
+            discovery.Login(thisUser);
         }
 
         public void Logout()
@@ -58,6 +70,11 @@ namespace Squiggle.Chat.Services.Presence
             discovery.Logout();
             keepAlive.Stop();
             channel.Stop();
+        }
+
+        void discovery_UserUpdated(object sender, UserEventArgs e)
+        {
+            UserUpdated(this, e);
         }
 
         void keepAlive_UserReturned(object sender, UserEventArgs e)

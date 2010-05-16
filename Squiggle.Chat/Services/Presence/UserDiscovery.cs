@@ -23,7 +23,8 @@ namespace Squiggle.Chat.Services.Presence
         }
 
         public event EventHandler<UserEventArgs> UserOnline = delegate { };
-        public event EventHandler<UserEventArgs> UserOffline = delegate { };        
+        public event EventHandler<UserEventArgs> UserOffline = delegate { };
+        public event EventHandler<UserEventArgs> UserUpdated = delegate { };
 
         public UserDiscovery(PresenceChannel channel)
         {
@@ -34,6 +35,8 @@ namespace Squiggle.Chat.Services.Presence
         public void Login(UserInfo me)
         {
             thisUser = me;
+
+            channel.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
             channel.MessageReceived += new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
 
             SayHi();
@@ -41,12 +44,7 @@ namespace Squiggle.Chat.Services.Presence
 
         public void SayHi()
         {
-            var message = new LoginMessage()
-            {
-                ChatEndPoint = thisUser.ChatEndPoint,
-                KeepAliveSyncTime = thisUser.KeepAliveSyncTime,
-                UserFriendlyName = thisUser.UserFriendlyName
-            };
+            var message = LoginMessage.FromUserInfo(thisUser);
             channel.SendMessage(message);
         }
 
@@ -68,7 +66,13 @@ namespace Squiggle.Chat.Services.Presence
 
         void OnLogoutMessage(LogoutMessage message)
         {
-            var user = onlineUsers.FirstOrDefault(u => u.ChatEndPoint.Equals(message.ChatEndPoint));
+            IPEndPoint chatEndPoint = message.ChatEndPoint;
+            OnUserOffline(chatEndPoint);
+        }
+
+        void OnUserOffline(IPEndPoint chatEndPoint)
+        {
+            var user = onlineUsers.FirstOrDefault(u => u.ChatEndPoint.Equals(chatEndPoint));
             if (user != null)
             {
                 onlineUsers.Remove(user);
@@ -80,14 +84,20 @@ namespace Squiggle.Chat.Services.Presence
         {
             if (!message.ChatEndPoint.Equals(thisUser.ChatEndPoint))
             {
-                var user = new UserInfo()
+                UserInfo newUser = message.GetUser();
+                if (newUser.Status != UserStatus.Offline)
                 {
-                    ChatEndPoint = message.ChatEndPoint,
-                    KeepAliveSyncTime = message.KeepAliveSyncTime,
-                    UserFriendlyName = message.UserFriendlyName
-                };
-                if (onlineUsers.Add(user))
-                    UserOnline(this, new UserEventArgs() { User = user });
+                    if (onlineUsers.Add(newUser))
+                        UserOnline(this, new UserEventArgs() { User = newUser });
+                    else
+                    {
+                        var oldUser = onlineUsers.First(u=>u.Equals(newUser));
+                        oldUser.Update(newUser);
+                        UserUpdated(this, new UserEventArgs() { User = oldUser });
+                    }
+                }
+                else
+                    OnUserOffline(newUser.ChatEndPoint);
             }
         }        
     }

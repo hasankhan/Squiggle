@@ -6,11 +6,12 @@ using System.Net;
 
 namespace Squiggle.Chat
 {
-    public interface IChatClient
+    public interface IChatClient: IDisposable
     {
         event EventHandler<ChatStartedEventArgs> ChatStarted;
         event EventHandler<BuddyEventArgs> BuddyOnline;
         event EventHandler<BuddyEventArgs> BuddyOffline;
+        event EventHandler<BuddyEventArgs> BuddyUpdated;
 
         Buddy CurrentUser{get; }
         IEnumerable<Buddy> Buddies { get; }
