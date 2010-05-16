@@ -1,6 +1,8 @@
 ﻿<Window x:Class="Squiggle.UI.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib" 
     Title="Squiggle Messenger" Height="600" Width="300" >
     <Window.Resources>
         <LinearGradientBrush x:Key="SignedOffBackground" EndPoint="0.5,1" StartPoint="0.5,0">
@@ -52,6 +54,14 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <ObjectDataProvider MethodName="GetValues" 
+        ObjectType="{x:Type sys:Enum}" 
+        x:Key="AvailableUserStatus">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="chat:UserStatus" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -86,20 +96,20 @@
             <Border Background="{StaticResource HeaderBackground}" Height="75">
                 <Grid DataContext="{Binding Path=LoggedInUser}">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.25*"/>
-                        <ColumnDefinition Width="0.75*"/>
+                        <ColumnDefinition Width="0.20*"/>
+                        <ColumnDefinition Width="0.80*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="0.50*"/>
-                        <RowDefinition Height="0.50*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="0.20*"/>
                     </Grid.RowDefinitions>
                     <Image Source="Images/8.png" Height="40" Grid.RowSpan="2"/>
                     <StackPanel x:Name="signedInView" Grid.Column="1" Orientation="Horizontal" >
                         <TextBlock Margin="10,0,5,0" VerticalAlignment="Bottom" Text="{Binding DisplayName}" Foreground="White" FontWeight="Bold" x:Name="txtLoggedInUser" HorizontalAlignment="Left" />
-                        <ComboBox Background="{StaticResource HeaderBackground}" VerticalAlignment="Bottom" Height="20" Foreground="White" Grid.Column="1" HorizontalAlignment="Left">
-                            <ComboBoxItem Content="Online" IsSelected="True"/>
-                            <ComboBoxItem Content="Busy" />
-                            <ComboBoxItem Content="Offline" />
+                        <ComboBox ItemsSource="{Binding Source={StaticResource AvailableUserStatus}}" SelectedValue="{Binding Path=Status}"
+                                  Background="{StaticResource HeaderBackground}" VerticalAlignment="Bottom" Height="20" Foreground="White" Grid.Column="1" HorizontalAlignment="Left">
                             <ComboBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel Background="{StaticResource HeaderBackground}"/>
@@ -107,7 +117,24 @@
                             </ComboBox.ItemsPanel>
                         </ComboBox>
                     </StackPanel> 
-                    <TextBlock Margin="10,0,0,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Text="{Binding DisplayMessage}" TextTrimming="WordEllipsis"  Foreground="White"/>
+                    <StackPanel x:Name="emptyMessageView" Grid.Row="1" Grid.Column="1">
+                        <TextBlock VerticalAlignment="Bottom" Margin="10,0,0,0" Text="You currently have no display message." TextTrimming="WordEllipsis"  Foreground="White"/>
+                        <TextBlock HorizontalAlignment="Right" Margin="5,0,5,0"> 
+                            <Hyperlink FontSize="10" Foreground="White" Click="PropmtDisplayMessage">Create message</Hyperlink>
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel x:Name="readOnlyMessageView" Visibility="Hidden" Grid.Row="1" Grid.Column="1">
+                        <TextBlock VerticalAlignment="Bottom" x:Name="txbDisplayMessage" Margin="10,0,0,0" Text="{Binding DisplayMessage}" TextTrimming="WordEllipsis"  Foreground="White"/>
+                        <TextBlock HorizontalAlignment="Right" Margin="5,0,5,0"> 
+                            <Hyperlink FontSize="10" Foreground="White" Click="PropmtDisplayMessage">Change message</Hyperlink>
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel x:Name="writableMessageView" Visibility="Hidden" Grid.Row="1" Grid.Column="1">
+                        <TextBox Margin="10,0,10,0" x:Name="txtDisplayMessage" HorizontalAlignment="Stretch"/>
+                        <TextBlock HorizontalAlignment="Right" Margin="5,0,5,0"> 
+                            <Hyperlink FontSize="10" Foreground="White" Click="UpdateDisplayMessage">Update</Hyperlink>
+                        </TextBlock>
+                    </StackPanel>
                 </Grid>
             </Border>
             <StackPanel Orientation="Vertical" Grid.Row="1">
@@ -126,7 +153,10 @@
                                         <ColumnDefinition Width="0.2*"/>
                                         <ColumnDefinition Width="0.8*"/>
                                     </Grid.ColumnDefinitions>
-
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="0.01*"/>
+                                    </Grid.RowDefinitions>
                                     <Border ToolTip="{Binding Path=Status}"
                                             Style="{StaticResource StatusStyle}"/>
                                     <TextBlock Cursor="Hand" MouseDown="TextBlock_MouseDown" Tag="{Binding}" 
@@ -155,6 +185,7 @@
                                             </ToolTip>
                                         </TextBlock.ToolTip>
                                     </TextBlock>
+                                    <TextBlock Grid.Row="1" Text="{Binding Path=DisplayMessage}" FontSize="10" HorizontalAlignment="Left" Grid.Column="1"/>
                                 </Grid>
                             </Border>
                         </DataTemplate>

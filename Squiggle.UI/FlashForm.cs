@@ -14,7 +14,6 @@ namespace Squiggle.UI
         [DllImport("user32.dll")]
         static extern bool FlashWindow(IntPtr hwnd, bool bInvert);
 
-        private Boolean flashOn = false;
         private Window target;
 
         public FlashForm(Window sender)

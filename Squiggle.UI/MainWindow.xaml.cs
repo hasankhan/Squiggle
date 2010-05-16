@@ -79,8 +79,37 @@ namespace Squiggle.UI
             chatVM = new ChatViewModel(chatClient);
             this.DataContext = chatVM;
 
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.DisplayMessage))
+                readOnlyMessageView.Visibility = Visibility.Visible;
+ 
             OfflineView.Visibility = Visibility.Hidden;
             OnlineView.Visibility = Visibility.Visible;
         }
+
+        private void PropmtDisplayMessage(object sender, RoutedEventArgs e)
+        {
+            readOnlyMessageView.Visibility = Visibility.Hidden;
+            emptyMessageView.Visibility = Visibility.Hidden;
+            writableMessageView.Visibility = Visibility.Visible;
+
+            txtDisplayMessage.Text = chatVM.LoggedInUser.DisplayMessage;
+            txtDisplayMessage.Focus();
+        }
+
+        private void UpdateDisplayMessage(object sender, RoutedEventArgs e)
+        {
+            chatVM.LoggedInUser.DisplayMessage = txtDisplayMessage.Text;
+            
+            Properties.Settings.Default.DisplayMessage = txtDisplayMessage.Text;
+            Properties.Settings.Default.Save();
+
+            if (txtDisplayMessage.Text.Trim() == String.Empty)
+                emptyMessageView.Visibility = Visibility.Visible;
+            else
+                readOnlyMessageView.Visibility = Visibility.Visible;
+            
+            writableMessageView.Visibility = Visibility.Hidden;
+        }
+
     }
 }
