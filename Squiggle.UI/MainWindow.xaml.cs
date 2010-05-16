@@ -80,8 +80,12 @@ namespace Squiggle.UI
             this.DataContext = chatVM;
 
             if (!String.IsNullOrEmpty(Properties.Settings.Default.DisplayMessage))
+            {
+                chatVM.LoggedInUser.DisplayMessage = Properties.Settings.Default.DisplayMessage;
+                emptyMessageView.Visibility = Visibility.Hidden;
                 readOnlyMessageView.Visibility = Visibility.Visible;
- 
+            }
+
             OfflineView.Visibility = Visibility.Hidden;
             OnlineView.Visibility = Visibility.Visible;
         }
