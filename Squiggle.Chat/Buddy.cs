@@ -8,15 +8,45 @@ using System.Net;
 
 namespace Squiggle.Chat
 {
-    public class Buddy: IDisposable
+    public class Buddy: INotifyPropertyChanged, IDisposable
     {
+        string displayName;
+        UserStatus status;
+        string displayMessage;
+
         protected IChatClient ChatClient { get; private set; }
 
-        public object ID { get; private set; }
+        public object ID { get; private set; }        
 
-        public virtual string DisplayName { get; set; }
-        public virtual string DisplayMessage { get; set; }
-        public virtual UserStatus Status { get; set; }
+        public virtual string DisplayName
+        {
+            get { return displayName; }
+            set
+            {
+                displayName = value;
+                OnPropertyChanged("DisplayName");
+            }
+        }
+
+        public virtual string DisplayMessage 
+        {
+            get { return displayMessage; }
+            set
+            {
+                displayMessage = value;
+                OnPropertyChanged("DisplayMessage");
+            }
+        }
+
+        public virtual UserStatus Status 
+        {
+            get { return status; }
+            set
+            {
+                status = value;
+                OnPropertyChanged("Status");
+            }
+        }
 
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
         public event EventHandler Updated = delegate { };
@@ -88,5 +118,16 @@ namespace Squiggle.Chat
         }
 
         #endregion
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+
+        #endregion
+
+        void OnPropertyChanged(string name)
+        {
+            PropertyChanged(this, new PropertyChangedEventArgs(name));
+        }
     }
 }
