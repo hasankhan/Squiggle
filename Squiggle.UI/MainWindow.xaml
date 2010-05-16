@@ -44,13 +44,16 @@
             <Setter Property="Width" Value="10"/>
             <Setter Property="Height" Value="10"/>
             <Setter Property="CornerRadius" Value="5"/>
-            <Setter Property="Background" Value="Red"/>
+            <Setter Property="Background" Value="Gray"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Status}" Value="Online">
                     <Setter Property="Background" Value="Green"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Status}" Value="Idle">
-                    <Setter Property="Background" Value="Gray"/>
+                    <Setter Property="Background" Value="Orange"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Status}" Value="Busy">
+                    <Setter Property="Background" Value="Red"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
