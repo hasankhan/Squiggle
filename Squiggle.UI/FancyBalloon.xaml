@@ -1,0 +1,91 @@
+﻿<UserControl
+  x:Class="StackOverflowClient.FancyBalloon"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:tb="clr-namespace:Hardcodet.Wpf.TaskbarNotification"
+  xmlns:system="clr-namespace:System;assembly=mscorlib"    
+  x:Name="me"
+  Width="200" Height="100" 
+  MouseEnter="Baloon_MouseEnter">
+    <UserControl.DataContext>
+        <system:String>Hasan is online</system:String>
+    </UserControl.DataContext>
+	<UserControl.Resources>
+        <LinearGradientBrush x:Key="ToolbarBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFFCFCFD" Offset="0.04"/>
+            <GradientStop Color="#FFE5E5F1" Offset="0.99"/>
+        </LinearGradientBrush>
+		<Storyboard x:Key="FadeIn" Completed="OnFadeInCompleted">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="grid" Storyboard.TargetProperty="(UIElement.Opacity)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+				<SplineDoubleKeyFrame KeyTime="00:00:03" Value="1"/>
+<!--				<SplineDoubleKeyFrame KeyTime="00:00:05" Value="0"/>-->
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Key="HighlightCloseButton">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="imgClose" Storyboard.TargetProperty="(UIElement.Opacity)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00" Value="0.4"/>
+				<SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Key="FadeCloseButton">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="imgClose" Storyboard.TargetProperty="(UIElement.Opacity)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+				<SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0.4"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Key="FadeBack">
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="grid" Storyboard.TargetProperty="(UIElement.Opacity)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+				<SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Key="FadeOut" Completed="OnFadeOutCompleted" >
+			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="grid" Storyboard.TargetProperty="(UIElement.Opacity)">
+				<SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+				<SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0.2"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+	</UserControl.Resources>
+	<UserControl.Triggers>
+		<EventTrigger RoutedEvent="tb:TaskbarIcon.BalloonShowing">
+			<BeginStoryboard Storyboard="{StaticResource FadeIn}" x:Name="FadeIn_BeginStoryboard"/>
+		</EventTrigger>
+		<EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="imgClose">
+			<BeginStoryboard Storyboard="{StaticResource HighlightCloseButton}" x:Name="HighlightCloseButton_BeginStoryboard"/>
+		</EventTrigger>
+		<EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="imgClose">
+			<BeginStoryboard Storyboard="{StaticResource FadeCloseButton}" x:Name="FadeCloseButton_BeginStoryboard"/>
+		</EventTrigger>
+		<EventTrigger RoutedEvent="Mouse.MouseEnter">
+			<StopStoryboard BeginStoryboardName="FadeIn_BeginStoryboard"/>
+			<BeginStoryboard x:Name="FadeBack_BeginStoryboard1" Storyboard="{StaticResource FadeBack}"/>
+		</EventTrigger>
+		<EventTrigger RoutedEvent="tb:TaskbarIcon.BalloonClosing">
+			<BeginStoryboard Storyboard="{StaticResource FadeOut}" x:Name="FadeOut_BeginStoryboard"/>
+		</EventTrigger>
+	</UserControl.Triggers>
+  <Grid x:Name="grid" MouseEnter="grid_MouseEnter">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="26*" />
+            <ColumnDefinition Width="314*" />
+        </Grid.ColumnDefinitions>
+        <Border
+      HorizontalAlignment="Stretch"
+      Margin="5"
+      BorderThickness="1,1,1,1"
+      BorderBrush="LightBlue" Grid.ColumnSpan="2" Background="{StaticResource  ResourceKey=ToolbarBackground}">
+    	<Border.Effect>
+    		<DropShadowEffect Color="Silver"/>
+    	</Border.Effect>
+               
+        <TextBlock Cursor="Hand" HorizontalAlignment="Left" 
+                   VerticalAlignment="Top" Margin="10,5,0,0" 
+                   Foreground="#FF151561" TextWrapping="Wrap" 
+                   Text="{Binding}" TextTrimming="CharacterEllipsis" MouseDown="TextBlock_MouseDown" Width="292" Height="47" />
+        </Border>
+        <Image HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="16" Height="16" Source="/Images/Close.png" Stretch="Fill" Opacity="0.4" ToolTip="Close Balloon" x:Name="imgClose" MouseDown="imgClose_MouseDown" Grid.Column="1" />
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,5" Grid.Column="1" Foreground="White">
+        </TextBlock>
+    </Grid>
+</UserControl>

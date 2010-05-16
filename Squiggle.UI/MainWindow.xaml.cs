@@ -14,6 +14,8 @@ using Squiggle.Chat;
 using System.Net;
 using System.ComponentModel;
 using System.Threading;
+using StackOverflowClient;
+using System.Windows.Controls.Primitives;
 
 namespace Squiggle.UI
 {
@@ -76,6 +78,7 @@ namespace Squiggle.UI
             chatClient = new ChatClient(new IPEndPoint(ipAddress, chatPort), presencePort, keepAliveTimeout);
             chatClient.Login(displayName);
             chatClient.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
+            chatClient.BuddyOnline += new EventHandler<BuddyEventArgs>(chatClient_BuddyOnline);
             chatVM = new ChatViewModel(chatClient);
             this.DataContext = chatVM;
 
@@ -90,7 +93,12 @@ namespace Squiggle.UI
             OnlineView.Visibility = Visibility.Visible;
         }
 
-        private void PropmtDisplayMessage(object sender, RoutedEventArgs e)
+        void chatClient_BuddyOnline(object sender, BuddyEventArgs e)
+        {
+            ShowPopup("Budy Online", e.Buddy.DisplayName + " is online");
+        }        
+
+        void PropmtDisplayMessage(object sender, RoutedEventArgs e)
         {
             readOnlyMessageView.Visibility = Visibility.Hidden;
             emptyMessageView.Visibility = Visibility.Hidden;
@@ -100,7 +108,7 @@ namespace Squiggle.UI
             txtDisplayMessage.Focus();
         }
 
-        private void UpdateDisplayMessage(object sender, RoutedEventArgs e)
+        void UpdateDisplayMessage(object sender, RoutedEventArgs e)
         {
             chatVM.LoggedInUser.DisplayMessage = txtDisplayMessage.Text;
             
@@ -115,5 +123,15 @@ namespace Squiggle.UI
             writableMessageView.Visibility = Visibility.Hidden;
         }
 
+        void ShowPopup(string title, string message)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                FancyBalloon balloon = new FancyBalloon();
+                balloon.BalloonText = title;
+                balloon.DataContext = message;
+                trayIcon.ShowCustomBalloon(balloon, PopupAnimation.Slide, 5000);
+            }));
+        }
     }
 }

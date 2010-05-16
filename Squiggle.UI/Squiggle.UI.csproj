@@ -38,6 +38,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="UIAutomationProvider">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
@@ -61,6 +62,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="FancyBalloon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -79,7 +84,28 @@
     <Compile Include="ChatWindow.xaml.cs">
       <DependentUpon>ChatWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FancyBalloon.xaml.cs">
+      <DependentUpon>FancyBalloon.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FlashForm.cs" />
+    <Compile Include="NotifyIcon\BalloonIcon.cs" />
+    <Compile Include="NotifyIcon\Interop\BalloonFlags.cs" />
+    <Compile Include="NotifyIcon\Interop\IconDataMembers.cs" />
+    <Compile Include="NotifyIcon\Interop\IconState.cs" />
+    <Compile Include="NotifyIcon\Interop\MouseEvent.cs" />
+    <Compile Include="NotifyIcon\Interop\NotifyCommand.cs" />
+    <Compile Include="NotifyIcon\Interop\NotifyIconData.cs" />
+    <Compile Include="NotifyIcon\Interop\NotifyIconVersion.cs" />
+    <Compile Include="NotifyIcon\Interop\Point.cs" />
+    <Compile Include="NotifyIcon\Interop\TrayInfo.cs" />
+    <Compile Include="NotifyIcon\Interop\WinApi.cs" />
+    <Compile Include="NotifyIcon\Interop\WindowClass.cs" />
+    <Compile Include="NotifyIcon\Interop\WindowMessageSink.cs" />
+    <Compile Include="NotifyIcon\PopupActivationMode.cs" />
+    <Compile Include="NotifyIcon\RoutedEventHelper.cs" />
+    <Compile Include="NotifyIcon\TaskbarIcon.cs" />
+    <Compile Include="NotifyIcon\TaskbarIcon.Declarations.cs" />
+    <Compile Include="NotifyIcon\Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -130,6 +156,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\contacts.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Close.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

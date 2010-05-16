@@ -3,6 +3,7 @@
     xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+    xmlns:tray="clr-namespace:Hardcodet.Wpf.TaskbarNotification"
     Title="Squiggle Messenger" Height="600" Width="300" >
     <Window.Resources>
         <LinearGradientBrush x:Key="SignedOffBackground" EndPoint="0.5,1" StartPoint="0.5,0">
@@ -63,14 +64,14 @@
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="chat:UserStatus" />
             </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-
+        </ObjectDataProvider>        
     </Window.Resources>
-    <Grid>
+    <Grid>        
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid x:Name="OfflineView" Background="{StaticResource SignedOffBackground}">
+            <tray:TaskbarIcon x:Name="trayIcon" />
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
