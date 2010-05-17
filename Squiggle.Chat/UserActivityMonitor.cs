@@ -7,12 +7,12 @@ using System.Timers;
 
 namespace Squiggle.Chat
 {
-    class IdleEventArgs : EventArgs
+    public class IdleEventArgs : EventArgs
     {
         public TimeSpan IdleTime { get; set; }
     }
 
-    class UserActivityMonitor: IDisposable
+    public class UserActivityMonitor: IDisposable
     {
         #region PInvoke
         [DllImport("user32.dll")]

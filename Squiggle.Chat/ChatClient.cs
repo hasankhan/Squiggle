@@ -31,7 +31,9 @@ namespace Squiggle.Chat
             get { return buddies; }
         }
 
-        public ChatClient(IPEndPoint localEndPoint, short presencePort, TimeSpan keepAliveTime)
+        public bool LoggedIn { get; private set; }
+
+        public ChatClient(IPEndPoint localEndPoint, int presencePort, TimeSpan keepAliveTime)
         {
             chatService = new ChatService();
             buddies = new BuddyList();
@@ -65,6 +67,7 @@ namespace Squiggle.Chat
             };
             self.EnableUpdates = true;
             CurrentUser = self;
+            LoggedIn = true;
         }
 
         private void Update()
@@ -79,6 +82,7 @@ namespace Squiggle.Chat
             buddies.Clear();
             chatService.Stop();
             presenceService.Logout();
+            LoggedIn = false;
         }
 
         void chatService_ChatStarted(object sender, Squiggle.Chat.Services.ChatStartedEventArgs e)

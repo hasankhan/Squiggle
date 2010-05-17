@@ -11,5 +11,10 @@ namespace Squiggle.Chat
         {
             return TimeSpan.FromSeconds(number);
         }
+
+        public static TimeSpan Minutes(this int number)
+        {
+            return TimeSpan.FromMinutes(number);
+        }
     }
 }

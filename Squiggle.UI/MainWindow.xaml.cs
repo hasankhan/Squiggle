@@ -23,12 +23,12 @@ namespace Squiggle.UI
     /// Interaction logic for Window1.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {
-        short presencePort = 9999;
-        TimeSpan keepAliveTimeout = 2.Seconds();
+    {        
         IChatClient chatClient;
-        ChatViewModel chatVM;
-        
+        ClientViewModel clientViewModel;
+        UserActivityMonitor activityMonitor;
+        UserStatus lastStatus;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -73,25 +73,20 @@ namespace Squiggle.UI
 
         private void SignIn(string displayName)
         {
-            int chatPort = NetworkUtility.GetFreePort();
-            var ipAddress = NetworkUtility.GetLocalIPAddress();
-            chatClient = new ChatClient(new IPEndPoint(ipAddress, chatPort), presencePort, keepAliveTimeout);
-            chatClient.Login(displayName);
-            chatClient.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
-            chatClient.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);
-            chatVM = new ChatViewModel(chatClient);
-            this.DataContext = chatVM;
+            InitializeClient(displayName);
+            clientViewModel = new ClientViewModel(chatClient);
+            this.DataContext = clientViewModel;
 
             if (!String.IsNullOrEmpty(Properties.Settings.Default.DisplayMessage))
             {
-                chatVM.LoggedInUser.DisplayMessage = Properties.Settings.Default.DisplayMessage;
+                clientViewModel.LoggedInUser.DisplayMessage = Properties.Settings.Default.DisplayMessage;
                 emptyMessageView.Visibility = Visibility.Hidden;
                 readOnlyMessageView.Visibility = Visibility.Visible;
             }
 
             OfflineView.Visibility = Visibility.Hidden;
             OnlineView.Visibility = Visibility.Visible;
-        }
+        }        
 
         void chatClient_BuddyOnline(object sender, BuddyOnlineEventArgs e)
         {
@@ -105,13 +100,13 @@ namespace Squiggle.UI
             emptyMessageView.Visibility = Visibility.Hidden;
             writableMessageView.Visibility = Visibility.Visible;
 
-            txtDisplayMessage.Text = chatVM.LoggedInUser.DisplayMessage;
+            txtDisplayMessage.Text = clientViewModel.LoggedInUser.DisplayMessage;
             txtDisplayMessage.Focus();
         }
 
         void UpdateDisplayMessage(object sender, RoutedEventArgs e)
         {
-            chatVM.LoggedInUser.DisplayMessage = txtDisplayMessage.Text;
+            clientViewModel.LoggedInUser.DisplayMessage = txtDisplayMessage.Text;
             
             Properties.Settings.Default.DisplayMessage = txtDisplayMessage.Text;
             Properties.Settings.Default.Save();
@@ -133,6 +128,47 @@ namespace Squiggle.UI
                 balloon.DataContext = message;
                 trayIcon.ShowCustomBalloon(balloon, PopupAnimation.Slide, 5000);
             }));
+        }
+
+        void InitializeClient(string displayName)
+        {
+            chatClient = CreateClient(displayName);
+            CreateMonitor();
+        }
+
+        void CreateMonitor()
+        {
+            if (activityMonitor != null)
+                activityMonitor.Dispose();
+            activityMonitor = new UserActivityMonitor(5.Minutes());
+            activityMonitor.Idle += (sender, e) =>
+            {
+                if (chatClient.LoggedIn)
+                {
+                    lastStatus = chatClient.CurrentUser.Status;
+                    chatClient.CurrentUser.Status = UserStatus.Idle;
+                }
+            };
+            activityMonitor.Active += (sender, e) =>
+            {
+                if (chatClient.LoggedIn)
+                    chatClient.CurrentUser.Status = lastStatus;
+            };
+            activityMonitor.Start();
+        }
+
+        IChatClient CreateClient(string displayName)
+        {
+            int presencePort = 9999;
+            int chatPort = NetworkUtility.GetFreePort();            
+            IPAddress localIP = NetworkUtility.GetLocalIPAddress();
+            TimeSpan keepAliveTimeout = 2.Seconds();
+            var localEndPoint = new IPEndPoint(localIP, chatPort);
+            var client = new ChatClient(localEndPoint, presencePort, keepAliveTimeout);
+            client.Login(displayName);
+            client.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
+            client.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);
+            return client;
         }
     }
 }

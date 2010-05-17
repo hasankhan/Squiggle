@@ -8,7 +8,7 @@ using System.Windows.Threading;
 
 namespace Squiggle.UI
 {
-    class ChatViewModel
+    class ClientViewModel
     {
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
 
@@ -20,7 +20,7 @@ namespace Squiggle.UI
         public Buddy LoggedInUser { get; set; }
 
 
-        public ChatViewModel(IChatClient chatClient)
+        public ClientViewModel(IChatClient chatClient)
         {
             currentDispatcher = Dispatcher.CurrentDispatcher;
             this.chatClient = chatClient;
