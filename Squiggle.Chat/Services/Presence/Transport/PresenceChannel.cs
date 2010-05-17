@@ -26,6 +26,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
 
             client = new UdpClient();
             client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            client.EnableBroadcast = true;
         }
 
         public void Start()
