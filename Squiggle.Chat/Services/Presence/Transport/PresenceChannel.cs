@@ -25,8 +25,10 @@ namespace Squiggle.Chat.Services.Presence.Transport
             broadCastEndPoint = new IPEndPoint(IPAddress.Broadcast, port);
 
             client = new UdpClient();
-            client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             client.EnableBroadcast = true;
+            client.DontFragment = true;
+            client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontRoute, true);
         }
 
         public void Start()
