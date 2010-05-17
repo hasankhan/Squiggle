@@ -73,7 +73,12 @@ namespace Squiggle.UI
         {
             if (!e.Discovered)
                 ShowPopup("Budy Online", e.Buddy.DisplayName + " is online");
-        }        
+        }
+
+        void OnChatStart(object sender, Squiggle.UI.Controls.ChatStartEventArgs e)
+        {
+            CreateChatWindow(e.User, string.Empty, e.User.StartChat());
+        }
 
         void ShowPopup(string title, string message)
         {
