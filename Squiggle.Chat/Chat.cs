@@ -7,7 +7,7 @@ using System.IO;
 using System.Threading;
 
 namespace Squiggle.Chat
-{
+{    
     class Chat: IChat
     {
         Buddy buddy;

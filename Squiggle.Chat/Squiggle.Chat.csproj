@@ -55,10 +55,8 @@
     <Compile Include="BuddyEventArgs.cs" />
     <Compile Include="Chat.cs" />
     <Compile Include="ChatClient.cs" />
-    <Compile Include="ChatStartedEventArgs.cs" />
     <Compile Include="IChat.cs" />
     <Compile Include="IChatClient.cs" />
-    <Compile Include="ChatMessageReceivedEventArgs.cs" />
     <Compile Include="Services\IPresenceService.cs" />
     <Compile Include="Services\Chat\Host\ChatHost.cs" />
     <Compile Include="Services\Chat\Host\ChatHostProxy.cs" />

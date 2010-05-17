@@ -78,7 +78,7 @@ namespace Squiggle.UI
             chatClient = new ChatClient(new IPEndPoint(ipAddress, chatPort), presencePort, keepAliveTimeout);
             chatClient.Login(displayName);
             chatClient.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
-            chatClient.BuddyOnline += new EventHandler<BuddyEventArgs>(chatClient_BuddyOnline);
+            chatClient.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);
             chatVM = new ChatViewModel(chatClient);
             this.DataContext = chatVM;
 
@@ -93,9 +93,10 @@ namespace Squiggle.UI
             OnlineView.Visibility = Visibility.Visible;
         }
 
-        void chatClient_BuddyOnline(object sender, BuddyEventArgs e)
+        void chatClient_BuddyOnline(object sender, BuddyOnlineEventArgs e)
         {
-            ShowPopup("Budy Online", e.Buddy.DisplayName + " is online");
+            if (!e.Discovered)
+                ShowPopup("Budy Online", e.Buddy.DisplayName + " is online");
         }        
 
         void PropmtDisplayMessage(object sender, RoutedEventArgs e)

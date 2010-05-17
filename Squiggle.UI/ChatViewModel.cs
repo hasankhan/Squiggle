@@ -25,7 +25,7 @@ namespace Squiggle.UI
             currentDispatcher = Dispatcher.CurrentDispatcher;
             this.chatClient = chatClient;
             LoggedInUser = chatClient.CurrentUser;
-            this.chatClient.BuddyOnline += new EventHandler<BuddyEventArgs>(chatClient_BuddyOnline);
+            this.chatClient.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);
             this.chatClient.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
             Buddies = new ObservableCollection<Buddy>(chatClient.Buddies);
         }
@@ -35,7 +35,7 @@ namespace Squiggle.UI
             ChatStarted(this, e);
         }
 
-        void chatClient_BuddyOnline(object sender, BuddyEventArgs e)
+        void chatClient_BuddyOnline(object sender, BuddyOnlineEventArgs e)
         {
             if (!Buddies.Contains(e.Buddy))
                 currentDispatcher.Invoke(new Action(delegate() { Buddies.Add(e.Buddy); }));

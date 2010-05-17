@@ -20,7 +20,7 @@ namespace Squiggle.Chat
         BuddyList buddies;
 
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
-        public event EventHandler<BuddyEventArgs> BuddyOnline = delegate { };
+        public event EventHandler<BuddyOnlineEventArgs> BuddyOnline = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyOffline = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyUpdated = delegate { };
 
@@ -38,7 +38,7 @@ namespace Squiggle.Chat
             chatService.ChatStarted += new EventHandler<Squiggle.Chat.Services.ChatStartedEventArgs>(chatService_ChatStarted);
             presenceService = new PresenceService(localEndPoint, presencePort, keepAliveTime);
             presenceService.UserOffline += new EventHandler<UserEventArgs>(presenceService_UserOffline);
-            presenceService.UserOnline += new EventHandler<UserEventArgs>(presenceService_UserOnline);
+            presenceService.UserOnline += new EventHandler<UserOnlineEventArgs>(presenceService_UserOnline);
             presenceService.UserUpdated += new EventHandler<UserEventArgs>(presenceService_UserUpdated);
             this.localEndPoint = localEndPoint;
         }        
@@ -100,7 +100,7 @@ namespace Squiggle.Chat
             }
         }       
 
-        void presenceService_UserOnline(object sender, UserEventArgs e)
+        void presenceService_UserOnline(object sender, UserOnlineEventArgs e)
         {
             var buddy = buddies[e.User.ChatEndPoint];
             if (buddy == null)
@@ -113,7 +113,7 @@ namespace Squiggle.Chat
                 };
                 System.Diagnostics.Debug.WriteLine(buddy.DisplayName);
                 buddies.Add(buddy);
-                BuddyOnline(this, new BuddyEventArgs() { Buddy = buddy });
+                BuddyOnline(this, new BuddyOnlineEventArgs() { Buddy = buddy, Discovered = e.Discovered });
             }
         }
 
@@ -123,15 +123,6 @@ namespace Squiggle.Chat
             if (buddy == null)
                 BuddyOffline(this, new BuddyEventArgs(){Buddy = buddy});
         }        
-
-        void OnBuddyStatusChanged(Buddy buddy)
-        {
-            var args = new BuddyEventArgs() { Buddy = buddy };
-            if (buddy.Status == UserStatus.Online)
-                BuddyOnline(this, args);
-            else if (buddy.Status == UserStatus.Offline)
-                BuddyOffline(this, args);
-        }
 
         #region IDisposable Members
 

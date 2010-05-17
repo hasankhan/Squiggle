@@ -7,9 +7,14 @@ using System.Net;
 
 namespace Squiggle.Chat.Services
 {
+    class UserOnlineEventArgs : UserEventArgs
+    {
+        public bool Discovered { get; set; }
+    }
+
     interface IPresenceService: IDisposable
     {
-        event EventHandler<UserEventArgs> UserOnline;
+        event EventHandler<UserOnlineEventArgs> UserOnline;
         event EventHandler<UserEventArgs> UserOffline;
         event EventHandler<UserEventArgs> UserUpdated;
 

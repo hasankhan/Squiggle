@@ -17,7 +17,7 @@ namespace Squiggle.Chat.Services.Presence
 
         UserInfo thisUser;
 
-        public event EventHandler<UserEventArgs> UserOnline = delegate { };
+        public event EventHandler<UserOnlineEventArgs> UserOnline = delegate { };
         public event EventHandler<UserEventArgs> UserOffline = delegate { };
         public event EventHandler<UserEventArgs> UserUpdated = delegate { };
 
@@ -80,7 +80,7 @@ namespace Squiggle.Chat.Services.Presence
 
         void keepAlive_UserReturned(object sender, UserEventArgs e)
         {
-            OnUserOnline(e);
+            OnUserOnline(e, false);
         }
 
         void keepAlive_UserLost(object sender, UserEventArgs e)
@@ -91,12 +91,12 @@ namespace Squiggle.Chat.Services.Presence
         void discovery_UserOnline(object sender, UserEventArgs e)
         {
             discovery.SayHi();
-            OnUserOnline(e);
+            OnUserOnline(e, false);
         }
 
         void discovery_UserDiscovered(object sender, UserEventArgs e)
         {
-            OnUserOnline(e);
+            OnUserOnline(e, true);
         }   
 
         void discovery_UserOffline(object sender, UserEventArgs e)
@@ -104,10 +104,10 @@ namespace Squiggle.Chat.Services.Presence
             OnUserOffline(e);
         }
 
-        void OnUserOnline(UserEventArgs e)
+        void OnUserOnline(UserEventArgs e, bool discovered)
         {
             keepAlive.MonitorUser(e.User);
-            UserOnline(this, e);
+            UserOnline(this, new UserOnlineEventArgs() { User = e.User, Discovered = discovered });
         }
 
         void OnUserOffline(UserEventArgs e)

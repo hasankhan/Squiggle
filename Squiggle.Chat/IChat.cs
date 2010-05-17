@@ -6,6 +6,12 @@ using System.IO;
 
 namespace Squiggle.Chat
 {
+    public class ChatMessageReceivedEventArgs : EventArgs
+    {
+        public Buddy Sender { get; set; }
+        public string Message { get; set; }
+    }
+
     public class MessageFailedEventArgs : EventArgs
     {
         public string Message { get; set; }

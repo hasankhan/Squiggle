@@ -56,7 +56,7 @@ namespace Squiggle.Chat
             this.ID = id;
             this.ChatClient = chatClient;
             this.ChatClient.BuddyOffline += new EventHandler<BuddyEventArgs>(chatClient_BuddyOffline);
-            this.ChatClient.BuddyOnline += new EventHandler<BuddyEventArgs>(chatClient_BuddyOnline);
+            this.ChatClient.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);
             this.ChatClient.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
             this.ChatClient.BuddyUpdated += new EventHandler<BuddyEventArgs>(chatClient_BuddyUpdated);
         }
@@ -112,7 +112,7 @@ namespace Squiggle.Chat
         public void Dispose()
         {
             this.ChatClient.BuddyOffline -= new EventHandler<BuddyEventArgs>(chatClient_BuddyOffline);
-            this.ChatClient.BuddyOnline -= new EventHandler<BuddyEventArgs>(chatClient_BuddyOnline);
+            this.ChatClient.BuddyOnline -= new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);
             this.ChatClient.ChatStarted -= new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
             this.ChatClient.BuddyUpdated -= new EventHandler<BuddyEventArgs>(chatClient_BuddyUpdated);
         }
