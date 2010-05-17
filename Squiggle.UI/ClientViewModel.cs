@@ -8,7 +8,7 @@ using System.Windows.Threading;
 
 namespace Squiggle.UI
 {
-    class ClientViewModel
+    public class ClientViewModel
     {
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
 

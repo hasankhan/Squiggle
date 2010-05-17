@@ -35,19 +35,17 @@ namespace Squiggle.UI
 
             if (!String.IsNullOrEmpty(Properties.Settings.Default.DisplayName))
                 SignIn(Properties.Settings.Default.DisplayName);
-            else
-                txtdisplayName.Focus();
+            
+        }
+
+        void OnCredentialsVerfied(object sender, Squiggle.UI.Controls.LogInEventArgs e)
+        {
+            SignIn(e.UserName);
         }
 
         void chatClient_ChatStarted(object sender, ChatStartedEventArgs e)
         {
             CreateChatWindow(e.Buddy, e.Message, e.Chat);
-        }
-
-        private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            Buddy buddy = ((TextBlock)sender).Tag as Buddy;
-            CreateChatWindow(buddy, string.Empty, buddy.StartChat());
         }
 
         static void CreateChatWindow(Buddy buddy, string message, IChat session)
@@ -59,33 +57,16 @@ namespace Squiggle.UI
             window.Show();
         }   
 
-        private void SignIn(object sender, RoutedEventArgs e)
-        {
-            SignIn(txtdisplayName.Text);
-
-            if (chkRememberName.IsChecked.HasValue && chkRememberName.IsChecked.Value)
-                Properties.Settings.Default.DisplayName = txtdisplayName.Text;
-            else
-                Properties.Settings.Default.DisplayName = String.Empty;
-
-            Properties.Settings.Default.Save();
-        }
-
         private void SignIn(string displayName)
         {
             InitializeClient(displayName);
             clientViewModel = new ClientViewModel(chatClient);
             this.DataContext = clientViewModel;
+            Online.ChatContext = clientViewModel;
 
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.DisplayMessage))
-            {
-                clientViewModel.LoggedInUser.DisplayMessage = Properties.Settings.Default.DisplayMessage;
-                emptyMessageView.Visibility = Visibility.Hidden;
-                readOnlyMessageView.Visibility = Visibility.Visible;
-            }
-
-            OfflineView.Visibility = Visibility.Hidden;
-            OnlineView.Visibility = Visibility.Visible;
+            //VisualStateManager.GoToState(this, "OnlineState", true);
+            Online.Opacity = 1;
+            Offline.Opacity = 0;
         }        
 
         void chatClient_BuddyOnline(object sender, BuddyOnlineEventArgs e)
@@ -93,31 +74,6 @@ namespace Squiggle.UI
             if (!e.Discovered)
                 ShowPopup("Budy Online", e.Buddy.DisplayName + " is online");
         }        
-
-        void PropmtDisplayMessage(object sender, RoutedEventArgs e)
-        {
-            readOnlyMessageView.Visibility = Visibility.Hidden;
-            emptyMessageView.Visibility = Visibility.Hidden;
-            writableMessageView.Visibility = Visibility.Visible;
-
-            txtDisplayMessage.Text = clientViewModel.LoggedInUser.DisplayMessage;
-            txtDisplayMessage.Focus();
-        }
-
-        void UpdateDisplayMessage(object sender, RoutedEventArgs e)
-        {
-            clientViewModel.LoggedInUser.DisplayMessage = txtDisplayMessage.Text;
-            
-            Properties.Settings.Default.DisplayMessage = txtDisplayMessage.Text;
-            Properties.Settings.Default.Save();
-
-            if (txtDisplayMessage.Text.Trim() == String.Empty)
-                emptyMessageView.Visibility = Visibility.Visible;
-            else
-                readOnlyMessageView.Visibility = Visibility.Visible;
-            
-            writableMessageView.Visibility = Visibility.Hidden;
-        }
 
         void ShowPopup(string title, string message)
         {
