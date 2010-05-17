@@ -3,8 +3,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:Squiggle.UI.Controls"
     xmlns:sys="clr-namespace:System;assembly=mscorlib" 
-    xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat">
+    xmlns:local="clr-namespace:Squiggle.UI"
+    xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat">    
     <UserControl.Resources>
+        <local:StatusConverter x:Key="statusConverter" />
         <Style x:Key="ContactInfoToolTipStyle" TargetType="{x:Type ToolTip}">
             <Setter Property="SnapsToDevicePixels" Value="True"/>
             <Setter Property="Template">
@@ -85,6 +87,11 @@
                                 <StackPanel Background="{StaticResource HeaderBackground}"/>
                             </ItemsPanelTemplate>
                         </ComboBox.ItemsPanel>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <ContentPresenter Content="{Binding Converter={StaticResource statusConverter}}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
                     </ComboBox>
                 </StackPanel>
                 <controls:DisplayMessageBlock x:Name="displayMessageBox" Grid.Row="1" Grid.Column="1"/>
