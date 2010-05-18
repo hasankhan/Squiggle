@@ -6,7 +6,7 @@
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{CF28694A-887E-4118-874F-76F028DAB56E}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Squiggle.Chat</RootNamespace>
     <AssemblyName>Squiggle.Chat</AssemblyName>
@@ -65,7 +65,6 @@
     <Compile Include="Services\IChatHost.cs" />
     <Compile Include="Services\IChatService.cs" />
     <Compile Include="Services\IChatSession.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Presence\KeepAliveService.cs" />
     <Compile Include="Services\Presence\Transport\Messages\HiMessage.cs" />

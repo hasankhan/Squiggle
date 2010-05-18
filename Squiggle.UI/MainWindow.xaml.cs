@@ -16,6 +16,7 @@ using System.ComponentModel;
 using System.Threading;
 using StackOverflowClient;
 using System.Windows.Controls.Primitives;
+using System.Windows.Threading;
 
 namespace Squiggle.UI
 {
@@ -28,6 +29,7 @@ namespace Squiggle.UI
         ClientViewModel clientViewModel;
         UserActivityMonitor activityMonitor;
         UserStatus lastStatus;
+        WindowState lastState;
 
         public MainWindow()
         {
@@ -131,5 +133,29 @@ namespace Squiggle.UI
             client.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);
             return client;
         }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            if (this.WindowState == System.Windows.WindowState.Minimized)
+                this.Visibility = System.Windows.Visibility.Hidden;
+            else
+                lastState = this.WindowState;
+        }
+
+        private void RestoreWindow()
+        {
+            this.Visibility = System.Windows.Visibility.Visible;
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                new Action(delegate()
+                {
+                    this.WindowState = WindowState.Normal;
+                    this.Activate();
+                }));
+        }
+
+        private void trayIcon_TrayLeftMouseDown(object sender, RoutedEventArgs e)
+        {
+            RestoreWindow();
+        }        
     }
 }

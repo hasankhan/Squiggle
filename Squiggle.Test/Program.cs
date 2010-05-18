@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.Threading;
-using System.Windows.Threading;
 
 namespace Squiggle.Chat
 {
