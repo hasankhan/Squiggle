@@ -15,7 +15,7 @@
                 <TextBlock Margin="2" TextWrapping="Wrap" x:Name="sentMessages" />
             </ScrollViewer>
         </Border>
-        <TextBox x:Name="txtMessage"  Grid.Row="2" Height="25" Width="Auto" HorizontalAlignment="Stretch"/>
+        <TextBox x:Name="txtMessage"  Grid.Row="2" Height="25" Width="Auto" HorizontalAlignment="Stretch" SpellCheck.IsEnabled="True" />
         <Button Grid.Row="2" IsDefault="True" HorizontalAlignment="Right" Width="50" Content="Send" Margin="2" Click="Button_Click" />
     </Grid>
 </Window>
