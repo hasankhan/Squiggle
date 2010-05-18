@@ -7,21 +7,21 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel x:Name="emptyMessageView">
-            <TextBlock VerticalAlignment="Bottom" Margin="10,0,0,0" Text="You currently have no display message." TextTrimming="WordEllipsis"  Foreground="White"/>
+            <TextBlock VerticalAlignment="Bottom" Margin="10,0,0,0" Text="Share a quick message here." TextTrimming="WordEllipsis"  Foreground="Black"/>
             <TextBlock HorizontalAlignment="Right" Margin="5,0,5,0"> 
                     <Hyperlink FontSize="10" Foreground="White" Click="PropmtDisplayMessage">Create message</Hyperlink>
             </TextBlock>
         </StackPanel>
         <StackPanel x:Name="readOnlyMessageView" Visibility="Hidden" >
-            <TextBlock VerticalAlignment="Bottom" x:Name="txbDisplayMessage" Margin="10,0,0,0" Text="{Binding DisplayMessage}" TextTrimming="WordEllipsis"  Foreground="White"/>
+            <TextBlock VerticalAlignment="Bottom" x:Name="txbDisplayMessage" Margin="10,0,0,0" Text="{Binding DisplayMessage}" TextTrimming="WordEllipsis"  Foreground="Black"/>
             <TextBlock HorizontalAlignment="Right" Margin="5,0,5,0"> 
-                     <Hyperlink FontSize="10" Foreground="White" Click="PropmtDisplayMessage">Change message</Hyperlink>
+                     <Hyperlink FontSize="10" Foreground="Black" Click="PropmtDisplayMessage">Change message</Hyperlink>
             </TextBlock>
         </StackPanel>
         <StackPanel x:Name="writableMessageView" Visibility="Hidden">
             <TextBox Margin="10,0,10,0" x:Name="txtDisplayMessage" HorizontalAlignment="Stretch"/>
             <TextBlock HorizontalAlignment="Right" Margin="5,0,5,0"> 
-                      <Hyperlink FontSize="10" Foreground="White" Click="UpdateDisplayMessage">Update</Hyperlink>
+                      <Hyperlink FontSize="10" Foreground="Black" Click="UpdateDisplayMessage">Update</Hyperlink>
             </TextBlock>
         </StackPanel>
     </Grid>

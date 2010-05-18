@@ -13,7 +13,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ToolTip}">
                         <Border BorderBrush="#111111" BorderThickness="1" SnapsToDevicePixels="True">
-                            <Border Width="Auto" Height="Auto" Name="windowFrame" BorderBrush="#999999" BorderThickness="1" SnapsToDevicePixels="True" CornerRadius="0" Background="#525252" TextBlock.Foreground="White" TextBlock.FontFamily="Verdana" TextBlock.FontSize="11" Margin="0" Padding="3">
+                            <Border Width="Auto" Height="Auto" Name="windowFrame" BorderBrush="#999999" BorderThickness="1" SnapsToDevicePixels="True" CornerRadius="0" Background="#525252" TextBlock.Foreground="Black" TextBlock.FontFamily="Verdana" TextBlock.FontSize="11" Margin="0" Padding="3">
                                 <ContentPresenter />
                             </Border>
                         </Border>
@@ -25,15 +25,27 @@
             <GradientStop Color="#FFFCFCFD" Offset="0.04"/>
             <GradientStop Color="#FFE5E5F1" Offset="0.99"/>
         </LinearGradientBrush>
-        <LinearGradientBrush x:Key="HeaderBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        <LinearGradientBrush x:Key="HeaderBackground1" EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FF1C8FB4" Offset="0"/>
             <GradientStop Color="#FF1F9BBA" Offset="1"/>
             <GradientStop Color="#FF01448B" Offset="0.517"/>
         </LinearGradientBrush>
-        <LinearGradientBrush x:Key="ToolbarBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        <LinearGradientBrush x:Key="HeaderBackground" EndPoint="0.5,1" StartPoint="0.5,0" MappingMode="RelativeToBoundingBox">
+            <GradientStop Color="#FF3DB2E8" Offset="0.228"/>
+            <GradientStop Color="#FFA0DAF5" Offset="0.591"/>
+            <GradientStop Color="#FF99D7F4" Offset="0.693"/>
+            <GradientStop Color="#FF5BBFED" Offset="0.732"/>
+            <GradientStop Color="#FF40B4EB" Offset="0.895"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="ToolbarBackground1" EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FFDEECF6" Offset="0"/>
             <GradientStop Color="#FFDEEDF4" Offset="1"/>
             <GradientStop Color="#FFC2DDED" Offset="0.517"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="ToolbarBackground" EndPoint="0.5,1" StartPoint="0.5,0" MappingMode="RelativeToBoundingBox">
+            <GradientStop Color="#FFEEF6FA" Offset="0"/>
+            <GradientStop Color="#FFE4F1F7" Offset="0.9"/>
+            <GradientStop Color="#FFE4F1F6" Offset="1"/>
         </LinearGradientBrush>
         <Style x:Key="StatusStyle" TargetType="Border">
             <Setter Property="Width" Value="10"/>
@@ -68,8 +80,8 @@
         <Border Background="{StaticResource HeaderBackground}" Height="75">
             <Grid DataContext="{Binding Path=LoggedInUser}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.20*"/>
-                    <ColumnDefinition Width="0.80*"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.50*"/>
@@ -77,11 +89,13 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="0.20*"/>
                 </Grid.RowDefinitions>
-                <Image Source="..\Images\8.png" Height="40" Grid.RowSpan="2"/>
-                <StackPanel x:Name="signedInView" Grid.Column="1" Orientation="Horizontal" >
-                    <TextBlock Margin="10,0,5,0" VerticalAlignment="Bottom" Text="{Binding DisplayName}" Foreground="White" FontWeight="Bold" x:Name="txtLoggedInUser" HorizontalAlignment="Left" />
+                <Border CornerRadius="10" Margin="10,0,0,0" Height="50" Width="50" Grid.RowSpan="2" HorizontalAlignment="Left" BorderBrush="WhiteSmoke" BorderThickness="3">
+                    <Image Source="..\Images\8.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+                </Border>
+                <StackPanel x:Name="signedInView" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Margin="10,0,5,0" VerticalAlignment="Bottom" Text="{Binding DisplayName}" Foreground="Black" FontWeight="Bold" x:Name="txtLoggedInUser" HorizontalAlignment="Left" />
                     <ComboBox ItemsSource="{Binding Source={StaticResource AvailableUserStatus}}" SelectedValue="{Binding Path=Status}"
-                                  Background="{StaticResource HeaderBackground}" VerticalAlignment="Bottom" Height="20" Foreground="White" Grid.Column="1" HorizontalAlignment="Left">
+                                  Background="{StaticResource HeaderBackground}" VerticalAlignment="Bottom" Height="20" Foreground="Black" Grid.Column="1" HorizontalAlignment="Left">
                         <ComboBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Background="{StaticResource HeaderBackground}"/>
@@ -107,11 +121,11 @@
             <ItemsControl Margin="5" DataContext="{Binding}" ItemsSource="{Binding Path=Buddies}" >
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderThickness="0.5" Margin="1">
+                        <Border BorderThickness="0.5" Margin="1" Cursor="Hand" Tag="{Binding}" MouseDown="OnMouseDown">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="0.2*"/>
-                                    <ColumnDefinition Width="0.8*"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -119,34 +133,35 @@
                                 </Grid.RowDefinitions>
                                 <Border ToolTip="{Binding Path=Status}"
                                             Style="{StaticResource StatusStyle}"/>
-                                <TextBlock Cursor="Hand" MouseDown="TextBlock_MouseDown" Tag="{Binding}" 
-                                               Text="{Binding Path=DisplayName}" HorizontalAlignment="Left" Grid.Column="1">
-                                        <TextBlock.ToolTip>
-                                            <ToolTip Placement="Left">
-                                                <Border Width="200" CornerRadius="5" Background="{StaticResource ContactInfoBackground}">
-                                                    <Grid>
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="0.3*"/>
-                                                            <RowDefinition Height="Auto"/>
-                                                        </Grid.RowDefinitions>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="0.3*"/>
-                                                            <ColumnDefinition Width="0.7*"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        
-                                                        <TextBlock VerticalAlignment="Top" Text="Contact" Foreground="Black" FontWeight="Bold"/>
-                                                        <Image Source="..\Images\man.png" Grid.Row="1"/>
-                                                        <StackPanel VerticalAlignment="Center" Orientation="Vertical" Grid.Column="1" Grid.Row="1">
-                                                            <TextBlock Foreground="Black" Text="{Binding DisplayName, StringFormat=Display: \{0\}}"/>
-                                                            <TextBlock Foreground="Black" Text="{Binding Status, StringFormat=Presence: \{0\}}"/>
-                                                        </StackPanel>
-                                                    </Grid>
-                                                </Border>    
-                                            </ToolTip>
-                                        </TextBlock.ToolTip>
+                                <TextBlock Cursor="Hand" 
+                                               Text="{Binding Path=DisplayName}" HorizontalAlignment="Left" Grid.Column="1">                                        
                                     </TextBlock>
-                                <TextBlock Grid.Row="1" Text="{Binding Path=DisplayMessage}" TextTrimming="WordEllipsis" ToolTip="{Binding Path=DisplayMessage}"  FontSize="10" HorizontalAlignment="Left" Grid.Column="1"/>
+                                <TextBlock Grid.Row="1" Text="{Binding Path=DisplayMessage}" TextTrimming="WordEllipsis" ToolTip="{Binding Path=DisplayMessage}"  FontSize="10" Foreground="#FF9A9C9D" HorizontalAlignment="Left" Grid.Column="1"/>
+                                
                             </Grid>
+                            <Border.ToolTip>
+                                <ToolTip Placement="Left">
+                                    <Border Width="200" CornerRadius="5" Background="{StaticResource ContactInfoBackground}">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="0.3*"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="0.3*"/>
+                                                <ColumnDefinition Width="0.7*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock VerticalAlignment="Top" Text="Contact" Foreground="Black" FontWeight="Bold"/>
+                                            <Image Source="..\Images\man.png" Grid.Row="1"/>
+                                            <StackPanel VerticalAlignment="Center" Orientation="Vertical" Grid.Column="1" Grid.Row="1">
+                                                <TextBlock Foreground="Black" Text="{Binding DisplayName, StringFormat=Display: \{0\}}"/>
+                                                <TextBlock Foreground="Black" Text="{Binding Status, StringFormat=Presence: \{0\}}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </ToolTip>
+                            </Border.ToolTip>
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

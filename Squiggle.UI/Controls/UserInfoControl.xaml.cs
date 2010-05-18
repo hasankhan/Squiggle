@@ -43,9 +43,9 @@ namespace Squiggle.UI.Controls
             InitializeComponent();
         }
 
-        private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
+        private void OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            Buddy buddy = ((TextBlock)sender).Tag as Buddy;
+            Buddy buddy = ((Border)sender).Tag as Buddy;
             ChatStart(this, new ChatStartEventArgs() { User=buddy });
         }
 
