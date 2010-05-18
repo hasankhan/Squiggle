@@ -148,14 +148,17 @@ namespace Squiggle.UI
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
                 new Action(delegate()
                 {
-                    this.WindowState = WindowState.Normal;
+                    this.WindowState = lastState;
                     this.Activate();
                 }));
         }
 
         private void trayIcon_TrayLeftMouseDown(object sender, RoutedEventArgs e)
         {
-            RestoreWindow();
-        }        
+            if (this.Visibility == Visibility.Visible)
+                Hide();
+            else
+                RestoreWindow();
+        }
     }
 }
