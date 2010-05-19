@@ -89,7 +89,9 @@ namespace Squiggle.UI
                 FancyBalloon balloon = new FancyBalloon();
                 balloon.BalloonText = title;
                 balloon.DataContext = message;
-                trayIcon.ShowCustomBalloon(balloon, PopupAnimation.Slide, 5000);
+                Hardcodet.Wpf.TaskbarNotification.TaskbarIcon icon = new Hardcodet.Wpf.TaskbarNotification.TaskbarIcon();
+                icon.Visibility = Visibility.Hidden;
+                icon.ShowCustomBalloon(balloon, PopupAnimation.Slide, 5000);
             }));
         }
 

@@ -34,6 +34,7 @@ using System.Windows.Data;
 using System.Windows.Threading;
 using Hardcodet.Wpf.TaskbarNotification.Interop;
 using Point=Hardcodet.Wpf.TaskbarNotification.Interop.Point;
+using System.Collections.Generic;
 
 
 
@@ -147,6 +148,22 @@ namespace Hardcodet.Wpf.TaskbarNotification
 
     #endregion
 
+    struct PopupOffset
+    {
+        public int Count { get; set; }
+        public Popup Last { get; set; }
+
+        public double GetOffset(UIElement balloon)
+        {
+            double height = 0;
+            if (balloon is UserControl)
+                height = ((UserControl)balloon).Height;
+            double offset = height * Count;
+            return offset;
+        }
+    }
+
+    static Dictionary<Type, PopupOffset> popups = new Dictionary<Type, PopupOffset>();
 
     #region Custom Balloons
 
@@ -182,7 +199,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
       //make sure we don't have an open balloon
       lock (this)
       {
-        CloseBalloon();
+          CloseBalloon();
       }
       
       //create an invisible popup that hosts the UIElement
@@ -207,12 +224,32 @@ namespace Hardcodet.Wpf.TaskbarNotification
 
       Point position = TrayInfo.GetTrayLocation();
       popup.HorizontalOffset = position.X -1;
-      popup.VerticalOffset = position.Y -1;
 
+      PopupOffset offset;
+      lock (popups)
+      {
+          popups.TryGetValue(balloon.GetType(), out offset);
+          offset.Count++;
+          offset.Last = popup;
+          popups[balloon.GetType()] = offset;
+      }     
+
+      popup.VerticalOffset = position.Y - offset.GetOffset(balloon) - 1;
+      Debug.WriteLine(popup.VerticalOffset);
+      popup.Closed += (sender, e) =>
+      {
+          lock (popups)
+          {
+              PopupOffset temp = popups[balloon.GetType()];
+              if (temp.Last == popup)
+                temp.Count = 0;
+              popups[balloon.GetType()] = temp;
+          }
+      };
       //store reference
       lock (this)
       {
-        SetCustomBalloon(popup);
+          SetCustomBalloon(popup);
       }
 
       //assign this instance as an attached property
