@@ -11,11 +11,15 @@
         <system:String>Hasan is online</system:String>
     </UserControl.DataContext>
 	<UserControl.Resources>
-        <LinearGradientBrush x:Key="ToolbarBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        <LinearGradientBrush x:Key="ToolbarBackground1" EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FFFCFCFD" Offset="0.04"/>
             <GradientStop Color="#FFE5E5F1" Offset="0.99"/>
         </LinearGradientBrush>
-		<Storyboard x:Key="FadeIn" Completed="OnFadeInCompleted">
+        <LinearGradientBrush x:Key="ToolbarBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFE2F4FB" Offset="0.4"/>
+            <GradientStop Color="#FFD8EAF1" Offset="0.45"/>
+        </LinearGradientBrush>
+        <Storyboard x:Key="FadeIn" Completed="OnFadeInCompleted">
 			<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="grid" Storyboard.TargetProperty="(UIElement.Opacity)">
 				<SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
 				<SplineDoubleKeyFrame KeyTime="00:00:03" Value="1"/>

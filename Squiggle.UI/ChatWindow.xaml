@@ -3,19 +3,41 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="ChatWindow" Height="400" Width="400" FocusManager.FocusedElement="{Binding ElementName=txtMessage}"
         Loaded="Window_Loaded" Closed="Window_Closed" >
-    <Grid>
+    <Grid >
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="txtUserLeftMessage" HorizontalAlignment="Stretch" Background="#FFFFFFE1" Visibility="Hidden"/>
-        <Border Grid.Row="1" BorderBrush="WhiteSmoke" BorderThickness="2" Margin="2">
+        <TextBlock x:Name="txtUserLeftMessage" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="#FFFFFFE1" Visibility="Hidden"/>
+        <Border BorderBrush="White" BorderThickness="1">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFD2EBF5" Offset="0"/>
+                    <GradientStop Color="#FFCAE8F3" Offset="0.885"/>
+                    <GradientStop Color="#FFCAE7F3" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
             <ScrollViewer x:Name="scrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <TextBlock Margin="2" TextWrapping="Wrap" x:Name="sentMessages" />
+                <TextBlock Margin="5" Background="White" TextWrapping="Wrap" x:Name="sentMessages" />
             </ScrollViewer>
         </Border>
-        <TextBox x:Name="txtMessage"  Grid.Row="2" Height="25" Width="Auto" HorizontalAlignment="Stretch" SpellCheck.IsEnabled="True" />
-        <Button Grid.Row="2" IsDefault="True" HorizontalAlignment="Right" Width="50" Content="Send" Margin="2" Click="Button_Click" />
+        <Border Grid.Row="2" Height="50">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFD2EBF5" Offset="0"/>
+                    <GradientStop Color="#FFCAE8F3" Offset="0.885"/>
+                    <GradientStop Color="#FFCAE7F3" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid Height="30" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Margin="5,0,5,0" x:Name="txtMessage" SpellCheck.IsEnabled="True" />
+                <Button Grid.Column="1" IsDefault="True" Width="50" Content="Send" Margin="2" Click="Button_Click" />
+            </Grid>
+        </Border>
+        
     </Grid>
 </Window>

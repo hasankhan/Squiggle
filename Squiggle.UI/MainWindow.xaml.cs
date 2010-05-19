@@ -47,15 +47,15 @@ namespace Squiggle.UI
 
         void chatClient_ChatStarted(object sender, ChatStartedEventArgs e)
         {
-            CreateChatWindow(e.Buddy, e.Message, e.Chat);
+            CreateChatWindow(e.Buddy, e.Message, e.Chat, WindowState.Minimized);
         }
 
-        static void CreateChatWindow(Buddy buddy, string message, IChat session)
+        static void CreateChatWindow(Buddy buddy, string message, IChat session, WindowState state)
         {
             ChatWindow window = new ChatWindow(buddy, message);
             window.Title = buddy.DisplayName;
             window.DataContext = session;
-            window.Topmost = true;
+            window.WindowState = state;
             window.Show();
         }   
 
@@ -79,7 +79,7 @@ namespace Squiggle.UI
 
         void OnChatStart(object sender, Squiggle.UI.Controls.ChatStartEventArgs e)
         {
-            CreateChatWindow(e.User, string.Empty, e.User.StartChat());
+            CreateChatWindow(e.User, string.Empty, e.User.StartChat(), WindowState.Normal);
         }
 
         void ShowPopup(string title, string message)
