@@ -14,7 +14,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
     {
         UdpClient client;
         IPEndPoint receiveEndPoint;
-        IPEndPoint broadCastEndPoint;
+        IPEndPoint multicastEndPoint;
         Guid channelID = Guid.NewGuid();
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
@@ -22,18 +22,17 @@ namespace Squiggle.Chat.Services.Presence.Transport
         public PresenceChannel(int port)
         {
             receiveEndPoint = new IPEndPoint(IPAddress.Any, port);
-            broadCastEndPoint = new IPEndPoint(IPAddress.Broadcast, port);
+            multicastEndPoint = new IPEndPoint(IPAddress.Parse("224.10.11.12"), port);
 
             client = new UdpClient();
-            client.EnableBroadcast = true;
             client.DontFragment = true;
             client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-            client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontRoute, true);
         }
 
         public void Start()
         {            
             client.Client.Bind(receiveEndPoint);
+            client.JoinMulticastGroup(multicastEndPoint.Address);
             BeginReceive();
         }        
 
@@ -46,7 +45,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
         {
             message.ChannelID = channelID;
             byte[] data = message.Serialize();
-            client.Send(data, data.Length, broadCastEndPoint);
+            client.Send(data, data.Length, multicastEndPoint);
         }
 
         void OnReceive(IAsyncResult ar)
@@ -54,7 +53,6 @@ namespace Squiggle.Chat.Services.Presence.Transport
             try
             {
                 IPEndPoint remoteEndPoint = null;
-                var broadcastAddress = (IPEndPoint)ar.AsyncState;
                 byte[] data = client.EndReceive(ar, ref remoteEndPoint);
                 var message = Message.Deserialize(data);
                 BeginReceive();
@@ -73,7 +71,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
 
         void BeginReceive()
         {
-            client.BeginReceive(OnReceive, receiveEndPoint);
+            client.BeginReceive(OnReceive, null);
         }
     }
 }

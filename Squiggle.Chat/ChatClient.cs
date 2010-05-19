@@ -124,7 +124,7 @@ namespace Squiggle.Chat
         void presenceService_UserOffline(object sender, UserEventArgs e)
         {
             var buddy = buddies[e.User.ChatEndPoint];
-            if (buddy == null)
+            if (buddy != null)
                 BuddyOffline(this, new BuddyEventArgs(){Buddy = buddy});
         }        
 
