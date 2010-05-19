@@ -54,11 +54,6 @@ namespace Squiggle.Chat.Services.Chat
             {
                 Uri uri = CreateServiceUri(endPoint.ToString());
                 var binding = new NetTcpBinding();
-                
-                //temp code to resolve the "server rejected credentials" exception
-                binding.Security.Mode = SecurityMode.Transport;
-                binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
-
                 IChatHost remoteHost = new ChatHostProxy(binding, new EndpointAddress(uri));
                 ChatSession temp = new ChatSession(chatHost, remoteHost, localEndPoint, endPoint);
                 temp.SessionEnded += (sender, e) => chatSessions.Remove(temp.RemoteUser);
@@ -83,7 +78,7 @@ namespace Squiggle.Chat.Services.Chat
 
         static Uri CreateServiceUri(string address)
         {
-            var uri = new Uri("net.tcp://" + address + "/chat");
+            var uri = new Uri("net.tcp://" + address + "/squiggle");
             return uri;
         }
     }
