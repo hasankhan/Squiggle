@@ -19,10 +19,10 @@ namespace Squiggle.Chat.Services.Presence.Transport
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
 
-        public PresenceChannel(int port)
+        public PresenceChannel(IPEndPoint multicastEndPoint)
         {
-            receiveEndPoint = new IPEndPoint(IPAddress.Any, port);
-            multicastEndPoint = new IPEndPoint(IPAddress.Parse("224.10.11.12"), port);
+            receiveEndPoint = new IPEndPoint(IPAddress.Any, multicastEndPoint.Port);
+            this.multicastEndPoint = multicastEndPoint;
 
             client = new UdpClient();
             client.DontFragment = true;

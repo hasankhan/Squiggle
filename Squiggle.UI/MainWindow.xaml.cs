@@ -122,12 +122,12 @@ namespace Squiggle.UI
 
         IChatClient CreateClient(string displayName)
         {
-            int presencePort = 9999;
             int chatPort = NetworkUtility.GetFreePort();            
             IPAddress localIP = NetworkUtility.GetLocalIPAddress();
             TimeSpan keepAliveTimeout = 2.Seconds();
-            var localEndPoint = new IPEndPoint(localIP, chatPort);
-            var client = new ChatClient(localEndPoint, presencePort, keepAliveTimeout);
+            var chatEndPoint = new IPEndPoint(localIP, chatPort);
+            var presenceEndPoint = new IPEndPoint(IPAddress.Parse("224.10.11.12"), 9999);
+            var client = new ChatClient(chatEndPoint, presenceEndPoint, keepAliveTimeout);
             client.Login(displayName);
             client.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
             client.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);

@@ -33,16 +33,16 @@ namespace Squiggle.Chat
 
         public bool LoggedIn { get; private set; }
 
-        public ChatClient(IPEndPoint localEndPoint, int presencePort, TimeSpan keepAliveTime)
+        public ChatClient(IPEndPoint chatEndPoint, IPEndPoint presenceEndPoint, TimeSpan keepAliveTime)
         {
             chatService = new ChatService();
             buddies = new BuddyList();
             chatService.ChatStarted += new EventHandler<Squiggle.Chat.Services.ChatStartedEventArgs>(chatService_ChatStarted);
-            presenceService = new PresenceService(localEndPoint, presencePort, keepAliveTime);
+            presenceService = new PresenceService(chatEndPoint, presenceEndPoint, keepAliveTime);
             presenceService.UserOffline += new EventHandler<UserEventArgs>(presenceService_UserOffline);
             presenceService.UserOnline += new EventHandler<UserOnlineEventArgs>(presenceService_UserOnline);
             presenceService.UserUpdated += new EventHandler<UserEventArgs>(presenceService_UserUpdated);
-            this.localEndPoint = localEndPoint;
+            this.localEndPoint = chatEndPoint;
         }        
 
         public IChat StartChat(Buddy buddy)
