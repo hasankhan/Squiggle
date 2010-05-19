@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Interop;
 using System.Runtime.InteropServices;
+using System.Windows.Threading;
 using System.Windows;
 using System.Timers;
 
@@ -33,8 +34,11 @@ namespace Squiggle.UI
 
         void ToggleFlash(bool flash)
         {
-            IntPtr hwnd = new WindowInteropHelper(target).Handle;
-            FlashWindow(hwnd, flash);
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                IntPtr hwnd = new WindowInteropHelper(target).Handle;
+                FlashWindow(hwnd, flash);
+            }));
         }
     }
 }

@@ -39,14 +39,12 @@ namespace Squiggle.UI
         {
             this.buddy = buddy;
             if(!String.IsNullOrEmpty(firstMessage))
-                WriteMessage(buddy.DisplayName, firstMessage);
-        }
+                OnMessageReceived(buddy, firstMessage);
+        }        
 
         void chatSession_MessageReceived(object sender, ChatMessageReceivedEventArgs e)
         {
-            WriteMessage(e.Sender.DisplayName, e.Message);
-            if (!this.IsActive)
-                flash.Start();
+            OnMessageReceived(e.Sender, e.Message);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -89,6 +87,13 @@ namespace Squiggle.UI
         private void Window_Closed(object sender, EventArgs e)
         {
             chatSession.Leave();
+        }
+
+        void OnMessageReceived(Buddy buddy, string message)
+        {
+            WriteMessage(buddy.DisplayName, message);
+            if (!this.IsActive)
+                flash.Start();
         }
     }
 }
