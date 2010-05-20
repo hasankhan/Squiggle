@@ -46,5 +46,89 @@ namespace Squiggle.UI.Properties {
                 this["DisplayMessage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("9998")]
+        public int PresencePort {
+            get {
+                return ((int)(this["PresencePort"]));
+            }
+            set {
+                this["PresencePort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("9999")]
+        public int ChatPort {
+            get {
+                return ((int)(this["ChatPort"]));
+            }
+            set {
+                this["ChatPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BindToIP {
+            get {
+                return ((string)(this["BindToIP"]));
+            }
+            set {
+                this["BindToIP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool HideToTray {
+            get {
+                return ((bool)(this["HideToTray"]));
+            }
+            set {
+                this["HideToTray"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowPopups {
+            get {
+                return ((bool)(this["ShowPopups"]));
+            }
+            set {
+                this["ShowPopups"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int IdelTimeout {
+            get {
+                return ((int)(this["IdelTimeout"]));
+            }
+            set {
+                this["IdelTimeout"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int KeepAliveTime {
+            get {
+                return ((int)(this["KeepAliveTime"]));
+            }
+            set {
+                this["KeepAliveTime"] = value;
+            }
+        }
     }
 }
