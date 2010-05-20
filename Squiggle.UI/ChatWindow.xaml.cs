@@ -92,8 +92,16 @@ namespace Squiggle.UI
         void OnMessageReceived(Buddy buddy, string message)
         {
             WriteMessage(buddy.DisplayName, message);
+            txbLastMessageReceived.Text = String.Format("Last message received at " + String.Format("{0:t} on {0:d}", DateTime.Now));
             if (!this.IsActive)
                 flash.Start();
+        }
+
+        private void txtMessage_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                if (e.KeyboardDevice.Modifiers == ModifierKeys.Control)
+                    e.Handled = true;
         }
     }
 }

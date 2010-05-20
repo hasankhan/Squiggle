@@ -70,23 +70,33 @@
 		</EventTrigger>
 	</UserControl.Triggers>
   <Grid x:Name="grid" MouseEnter="grid_MouseEnter">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="26*" />
-            <ColumnDefinition Width="314*" />
-        </Grid.ColumnDefinitions>
-        <Border
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FFF9F9F9" Offset="0.111"/>
+                <GradientStop Color="#FFE4E4E4" Offset="0.593"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+            <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Border>
+            <TextBlock Text="Squiggle Messenger" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+        </Border>
+            <Border Grid.Row="1"
       HorizontalAlignment="Stretch"
       Margin="5"
       BorderThickness="1,1,1,1"
-      BorderBrush="LightBlue" Grid.ColumnSpan="2" Background="{StaticResource  ResourceKey=ToolbarBackground}">
+      BorderBrush="LightBlue">
     	<Border.Effect>
-    		<DropShadowEffect Color="Silver"/>
+    		<DropShadowEffect Color="LightGray"/>
     	</Border.Effect>
                
-        <TextBlock Cursor="Hand" HorizontalAlignment="Left" 
-                   VerticalAlignment="Top" Margin="10,5,0,0" 
+        <TextBlock Cursor="Hand" HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" Margin="10,5,0,0" 
                    Foreground="#FF151561" TextWrapping="Wrap" 
-                   Text="{Binding}" TextTrimming="CharacterEllipsis" MouseDown="TextBlock_MouseDown" Width="292" Height="47" />
+                   Text="{Binding}" TextTrimming="CharacterEllipsis" MouseDown="TextBlock_MouseDown"  />
         </Border>
         <Image HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="16" Height="16" Source="/Images/Close.png" Stretch="Fill" Opacity="0.4" ToolTip="Close Balloon" x:Name="imgClose" MouseDown="imgClose_MouseDown" Grid.Column="1" />
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,5" Grid.Column="1" Foreground="White">

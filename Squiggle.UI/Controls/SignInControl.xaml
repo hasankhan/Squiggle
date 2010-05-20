@@ -3,15 +3,28 @@
     xmlns:controls="clr-namespace:Squiggle.UI.Controls"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Loaded="UserControl_Loaded">
     <UserControl.Resources>
-        <LinearGradientBrush x:Key="SignedOffBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        <LinearGradientBrush x:Key="SignedOffBackground1" EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FF3DB3EA" Offset="0.012"/>
             <GradientStop Color="#FFE4F1F7" Offset="0.116"/>
             <GradientStop Color="White" Offset="0.23"/>
             <GradientStop Color="White" Offset="0.738"/>
             <GradientStop Color="#FFD0EAF5" Offset="0.953"/>
         </LinearGradientBrush>
+        <LinearGradientBrush x:Key="SignedOffBackground2" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFFCFCFC" Offset="0.022"/>
+            <GradientStop Color="#FFEEEEEA" Offset="0.207"/>
+            <GradientStop Color="#FFEEE6E6" Offset="0.164"/>
+            <GradientStop Color="#FFF0F0F0" Offset="0.983"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="SignedOffBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFFCFCFC" Offset="0.022"/>
+            <GradientStop Color="#FFECECF4" Offset="0.461"/>
+            <GradientStop Color="#FFE6E7EE" Offset="0.397"/>
+            <GradientStop Color="#FFF0F0F0" Offset="0.983"/>
+        </LinearGradientBrush>
     </UserControl.Resources>
     <Grid Background="{StaticResource SignedOffBackground}">
+        
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>

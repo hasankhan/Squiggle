@@ -46,7 +46,8 @@ namespace Squiggle.UI.Controls
         private void OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             Buddy buddy = ((Border)sender).Tag as Buddy;
-            ChatStart(this, new ChatStartEventArgs() { User=buddy });
+            if(buddy.Status != UserStatus.Offline)
+                ChatStart(this, new ChatStartEventArgs() { User=buddy });
         }
 
     }

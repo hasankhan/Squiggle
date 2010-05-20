@@ -30,12 +30,16 @@
             <GradientStop Color="#FF1F9BBA" Offset="1"/>
             <GradientStop Color="#FF01448B" Offset="0.517"/>
         </LinearGradientBrush>
-        <LinearGradientBrush x:Key="HeaderBackground" EndPoint="0.5,1" StartPoint="0.5,0" MappingMode="RelativeToBoundingBox">
+        <LinearGradientBrush x:Key="HeaderBackground2" EndPoint="0.5,1" StartPoint="0.5,0" MappingMode="RelativeToBoundingBox">
             <GradientStop Color="#FF3DB2E8" Offset="0.228"/>
             <GradientStop Color="#FFA0DAF5" Offset="0.591"/>
             <GradientStop Color="#FF99D7F4" Offset="0.693"/>
             <GradientStop Color="#FF5BBFED" Offset="0.732"/>
             <GradientStop Color="#FF40B4EB" Offset="0.895"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="HeaderBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFFCFCFC" Offset="0.087"/>
+            <GradientStop Color="#FFECECEC" Offset="0.478"/>
         </LinearGradientBrush>
         <LinearGradientBrush x:Key="ToolbarBackground1" EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FFDEECF6" Offset="0"/>
@@ -109,7 +113,13 @@
             </Grid>
         </Border>
         <StackPanel Orientation="Vertical" Grid.Row="1">
-            <StackPanel Background="{StaticResource ToolbarBackground}" Height="25" Orientation="Horizontal">
+            <StackPanel Height="25" Orientation="Horizontal">
+                <StackPanel.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFF9F9F9" Offset="0.111"/>
+                        <GradientStop Color="#FFE4E4E4" Offset="0.593"/>
+                    </LinearGradientBrush>
+                </StackPanel.Background>
                 <Image Cursor="Hand" Source="..\Images\info.png" />
                 <Image Cursor="Hand" Source="..\Images\webcam.png" />
                 <Image Cursor="Hand" Source="..\Images\Distortions.png" />
@@ -119,6 +129,7 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border BorderThickness="0.5" Margin="1" Cursor="Hand" Tag="{Binding}" MouseDown="OnMouseDown">
+                            
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="30"/>
@@ -138,7 +149,7 @@
                             </Grid>
                             <Border.ToolTip>
                                 <ToolTip Placement="Left">
-                                    <Border Width="200" Background="#FFD1E6F9">
+                                    <Border Width="200" Background="#FFF3F3F3">
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="0.3*"/>
