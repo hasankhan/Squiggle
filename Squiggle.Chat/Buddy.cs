@@ -69,7 +69,12 @@ namespace Squiggle.Chat
         void chatClient_ChatStarted(object sender, ChatStartedEventArgs e)
         {
             if (e.Buddy.Equals(this))
-                ChatStarted(this, e);
+                OnChatStarted(e);
+        }
+
+        protected void OnChatStarted(ChatStartedEventArgs e)
+        {
+            ChatStarted(this, e);
         }
 
         void chatClient_BuddyOnline(object sender, BuddyEventArgs e)
@@ -87,7 +92,12 @@ namespace Squiggle.Chat
         void chatClient_BuddyUpdated(object sender, BuddyEventArgs e)
         {
             if (e.Buddy.Equals(this))
-                Updated(this, EventArgs.Empty);
+                OnBuddyUpdated();
+        }
+
+        protected void OnBuddyUpdated()
+        {
+            Updated(this, EventArgs.Empty);
         }        
 
         public override bool Equals(object obj)

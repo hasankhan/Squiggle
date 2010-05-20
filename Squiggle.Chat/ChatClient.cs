@@ -97,11 +97,23 @@ namespace Squiggle.Chat
             var buddy = buddies[e.User.ChatEndPoint];
             if (buddy != null)
             {
+                UserStatus lastStatus = buddy.Status;
                 buddy.Status = e.User.Status;
                 buddy.DisplayMessage = e.User.DisplayMessage;
                 buddy.DisplayName = e.User.UserFriendlyName;
-                BuddyUpdated(this, new BuddyEventArgs() { Buddy = buddy });
+
+                if (lastStatus != UserStatus.Offline && buddy.Status == UserStatus.Offline)
+                    OnBuddyOffline(buddy);
+                else if (lastStatus == UserStatus.Offline && buddy.Status != UserStatus.Offline)
+                    OnBuddyOnline(buddy, false);
+                else
+                    OnBuddyUpdated(buddy);
             }
+        }
+
+        void OnBuddyUpdated(Buddy buddy)
+        {
+            BuddyUpdated(this, new BuddyEventArgs() { Buddy = buddy });
         }       
 
         void presenceService_UserOnline(object sender, UserOnlineEventArgs e)
@@ -115,17 +127,26 @@ namespace Squiggle.Chat
                     Status = e.User.Status,
                     DisplayMessage = e.User.DisplayMessage,
                 };
-                System.Diagnostics.Debug.WriteLine(buddy.DisplayName);
                 buddies.Add(buddy);
-                BuddyOnline(this, new BuddyOnlineEventArgs() { Buddy = buddy, Discovered = e.Discovered });
             }
+            OnBuddyOnline(buddy, e.Discovered);
+        }
+
+        void OnBuddyOnline(Buddy buddy, bool discovered)
+        {
+            BuddyOnline(this, new BuddyOnlineEventArgs() { Buddy = buddy, Discovered = discovered });
         }
 
         void presenceService_UserOffline(object sender, UserEventArgs e)
         {
             var buddy = buddies[e.User.ChatEndPoint];
+            OnBuddyOffline(buddy);
+        }
+
+        void OnBuddyOffline(Buddy buddy)
+        {
             if (buddy != null)
-                BuddyOffline(this, new BuddyEventArgs(){Buddy = buddy});
+                BuddyOffline(this, new BuddyEventArgs() { Buddy = buddy });
         }        
 
         #region IDisposable Members
