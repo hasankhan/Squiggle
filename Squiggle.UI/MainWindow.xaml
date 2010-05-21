@@ -3,32 +3,7 @@
     xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat"
     xmlns:controls="clr-namespace:Squiggle.UI.Controls"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:tray="clr-namespace:Hardcodet.Wpf.TaskbarNotification"
-    Title="Squiggle Messenger" Height="600" Width="300" StateChanged="Window_StateChanged" Icon="/Squiggle;component/Images/Squiggle.ico">
+    Title="Squiggle Messenger" Height="600" Width="300" Icon="/Squiggle;component/Images/Squiggle.ico">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <tray:TaskbarIcon IconSource="/Images/Squiggle.ico" TrayLeftMouseDown="trayIcon_TrayLeftMouseDown" x:Name="trayIcon" />
-        <controls:SignInControl x:Name="Offline" CredentialsVerfied="OnCredentialsVerfied" Opacity="1"/>
-        <controls:UserInfoControl x:Name="Online" ChatStart="OnChatStart" Opacity="0"/>
-
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="Common">
-                <VisualState x:Name="OfflineState">
-                    <Storyboard>
-                        <DoubleAnimation To="1" Duration="0:00:00.4" Storyboard.TargetName="Online" Storyboard.TargetProperty="(UIElement.Opacity)" />
-                        <DoubleAnimation To="0" Duration="0:00:00.7" Storyboard.TargetName="Offline" Storyboard.TargetProperty="(UIElement.Opacity)" />
-                    </Storyboard>
-                </VisualState>
-                <VisualState x:Name="OnlineState">
-                    <Storyboard>
-                        <DoubleAnimation To="0" Duration="0:00:00.7" Storyboard.TargetName="Online" Storyboard.TargetProperty="(UIElement.Opacity)" />
-                        <DoubleAnimation To="1" Duration="0:00:00.4" Storyboard.TargetName="Offline" Storyboard.TargetProperty="(UIElement.Opacity)" />
-                    </Storyboard>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-    </Grid>
+    <controls:ChatClientControl x:Name="chatControl" />
 </Window>
