@@ -2,8 +2,11 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat"
     xmlns:controls="clr-namespace:Squiggle.UI.Controls"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
+    xmlns:tray="clr-namespace:Hardcodet.Wpf.TaskbarNotification"
     Title="Squiggle Messenger" Height="600" Width="300" Icon="/Squiggle;component/Images/Squiggle.ico">
-
-    <controls:ChatClientControl x:Name="chatControl" />
+    <Grid>
+        <tray:TaskbarIcon IconSource="/Images/Squiggle.ico" TrayLeftMouseDown="trayIcon_TrayLeftMouseDown" x:Name="trayIcon" />
+        <controls:ChatClientControl x:Name="chatControl" />
+    </Grid>
 </Window>

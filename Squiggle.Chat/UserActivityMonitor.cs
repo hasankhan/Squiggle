@@ -52,20 +52,22 @@ namespace Squiggle.Chat
 
         Timer timer;
         bool isIdle;
+        TimeSpan timeout;
 
         public event EventHandler<IdleEventArgs> Idle = delegate { };
         public event EventHandler Active = delegate { };
 
         public UserActivityMonitor(TimeSpan timeout)
         {
-            timer = new Timer(timeout.TotalMilliseconds);
+            this.timeout = timeout;
+            timer = new Timer(1.Seconds().TotalMilliseconds);
             timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
         }
 
         void timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             TimeSpan idleTime = GetIdleTime();
-            if (idleTime.TotalMilliseconds > timer.Interval)
+            if (idleTime > timeout)
             {
                 if (!isIdle)
                     Idle(this, new IdleEventArgs() { IdleTime = idleTime });
