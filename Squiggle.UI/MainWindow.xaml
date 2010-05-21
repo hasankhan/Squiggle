@@ -4,9 +4,32 @@
     xmlns:controls="clr-namespace:Squiggle.UI.Controls"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
     xmlns:tray="clr-namespace:Hardcodet.Wpf.TaskbarNotification"
+    xmlns:local="clr-namespace:Squiggle.UI"
     Title="Squiggle Messenger" Height="600" Width="300" Icon="/Squiggle;component/Images/Squiggle.ico">
+    <Window.Resources>
+        <local:StatusConverter x:Key="statusConverter" />
+        <ObjectDataProvider MethodName="GetChangableStatuses" 
+            ObjectType="{x:Type local:ChatUtil}" 
+            x:Key="AvailableUserStatus">
+        </ObjectDataProvider>
+    </Window.Resources>
     <Grid>
-        <tray:TaskbarIcon IconSource="/Images/Squiggle.ico" TrayLeftMouseDown="trayIcon_TrayLeftMouseDown" x:Name="trayIcon" />
+        <tray:TaskbarIcon IconSource="/Images/Squiggle.ico" TrayLeftMouseDown="trayIcon_TrayLeftMouseDown" x:Name="trayIcon">
+            <tray:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Open" />
+                    <MenuItem Header="Change Status" 
+                              ItemsSource="{Binding Source={StaticResource AvailableUserStatus}}">
+                        <MenuItem.ItemTemplate>
+                            <DataTemplate>
+                                <ContentPresenter Content="{Binding Converter={StaticResource statusConverter}}" />
+                            </DataTemplate>
+                        </MenuItem.ItemTemplate>
+                    </MenuItem>
+                    <MenuItem Header="Quit" />
+                </ContextMenu>
+            </tray:TaskbarIcon.ContextMenu>
+        </tray:TaskbarIcon>
         <controls:ChatClientControl x:Name="chatControl" />
     </Grid>
 </Window>

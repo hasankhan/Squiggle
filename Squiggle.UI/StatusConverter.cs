@@ -19,14 +19,18 @@ namespace Squiggle.UI
                 var status = (UserStatus)value;
                 switch (status)
                 {
-                    case UserStatus.OnPhone:
-                        return "On Phone";
-                    case UserStatus.InAMeeting:
-                        return "In a Metting";
-                    case UserStatus.OutForLunch:
-                        return "Out for Lunch";
+                    case UserStatus.Online:
+                        return "Online";
+                    case UserStatus.Busy:
+                        return "Busy";                  
                     case UserStatus.BeRightBack:
                         return "Be Right Back";
+                    case UserStatus.Away:
+                        return "Away";
+                    case UserStatus.Idle:
+                        return "Idle";
+                    case UserStatus.Offline:
+                        return "Offline";
                     default:
                         return status.ToString();
                 }

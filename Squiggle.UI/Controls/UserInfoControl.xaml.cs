@@ -40,7 +40,7 @@ namespace Squiggle.UI.Controls
 
         public UserInfoControl()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
 
         private void OnMouseDown(object sender, MouseButtonEventArgs e)

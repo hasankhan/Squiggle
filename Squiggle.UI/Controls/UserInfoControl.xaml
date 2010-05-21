@@ -68,12 +68,9 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        <ObjectDataProvider MethodName="GetValues" 
-            ObjectType="{x:Type sys:Enum}" 
+        <ObjectDataProvider MethodName="GetChangableStatuses" 
+            ObjectType="{x:Type local:ChatUtil}" 
             x:Key="AvailableUserStatus">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="chat:UserStatus" />
-            </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </UserControl.Resources>
     <Grid >
@@ -95,8 +92,9 @@
                 </Grid.RowDefinitions>
                 <StackPanel x:Name="signedInView" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left">
                     <TextBlock Margin="10,0,5,0" VerticalAlignment="Bottom" Text="{Binding DisplayName}" Foreground="Black" FontSize="16" x:Name="txtLoggedInUser" HorizontalAlignment="Left" />
-                    <ComboBox ItemsSource="{Binding Source={StaticResource AvailableUserStatus}}" SelectedValue="{Binding Path=Status}"
-                                  Background="{StaticResource HeaderBackground}" VerticalAlignment="Bottom" Height="20" Foreground="Black" Grid.Column="1" HorizontalAlignment="Left">
+                    <ComboBox x:Name="statuses" SelectedValue="{Binding Path=Status}"
+                              ItemsSource="{Binding Source={StaticResource AvailableUserStatus}}"
+                              Background="{StaticResource HeaderBackground}" VerticalAlignment="Bottom" Height="20" Foreground="Black" Grid.Column="1" HorizontalAlignment="Left">
                         <ComboBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Background="{StaticResource HeaderBackground}"/>
