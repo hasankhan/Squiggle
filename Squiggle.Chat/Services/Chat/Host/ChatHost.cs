@@ -14,16 +14,26 @@ namespace Squiggle.Chat.Services.Chat.Host
         public string Message { get; set; }
     }
 
+    public class UserEventArgs: EventArgs
+    {
+        public IPEndPoint User {get; set; }
+    }
+
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)] 
     public class ChatHost: IChatHost
     {
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
+        public event EventHandler<UserEventArgs> UserTyping = delegate { };
 
         #region IChatHost Members
 
-        public void ReceiveMessage(IPEndPoint user, string message)
+        public void UserIsTyping(IPEndPoint user)
         {
-            var remoteEndPoint = (RemoteEndpointMessageProperty)OperationContext.Current.IncomingMessageProperties[RemoteEndpointMessageProperty.Name];
+            UserTyping(this, new UserEventArgs() { User = user });
+        }
+
+        public void ReceiveMessage(IPEndPoint user, string message)
+        {            
             MessageReceived(this, new MessageReceivedEventArgs() { User = user, Message = message });
         }
 

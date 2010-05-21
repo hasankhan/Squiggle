@@ -13,8 +13,11 @@ namespace Squiggle.Chat.Services.Chat
         IPEndPoint localUser;
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
-
+        public event EventHandler<UserEventArgs> UserTyping = delegate { };
         public event EventHandler SessionEnded = delegate { };
+
+        public IPEndPoint RemoteUser { get; set; }
+
 
         public ChatSession(ChatHost localHost, IChatHost remoteHost, IPEndPoint localUser, IPEndPoint remoteUser)
         {
@@ -22,14 +25,30 @@ namespace Squiggle.Chat.Services.Chat
             this.localUser = localUser;
             RemoteUser = remoteUser;
             localHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(host_MessageReceived);
+            localHost.UserTyping += new EventHandler<UserEventArgs>(localHost_UserTyping);
+        }
+
+        void localHost_UserTyping(object sender, UserEventArgs e)
+        {
+            if (IsRemoteUser(e.User))
+                UserTyping(this, e);
+        }
+
+        private bool IsRemoteUser(IPEndPoint iPEndPoint)
+        {
+            return iPEndPoint.Equals(RemoteUser);
         }
 
         void host_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            MessageReceived(this, e);
+            if (IsRemoteUser(e.User))
+                MessageReceived(this, e);
         }
 
-        #region IChatSession Members
+        public void NotifyTyping()
+        {
+            remoteHost.UserIsTyping(localUser);
+        }
 
         public void SendMessage(string message)
         {
@@ -40,16 +59,5 @@ namespace Squiggle.Chat.Services.Chat
         {
             SessionEnded(this, EventArgs.Empty);
         }
-
-        #endregion
-
-
-        #region IChatSession Members
-
-
-        public IPEndPoint RemoteUser { get; set; }
-        
-
-        #endregion
     }
 }

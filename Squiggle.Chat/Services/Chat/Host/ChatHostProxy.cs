@@ -41,6 +41,11 @@ namespace Squiggle.Chat.Services.Chat.Host
 
         #region IChatHost Members
 
+        public void UserIsTyping(IPEndPoint user)
+        {
+            base.Channel.UserIsTyping(user);
+        }
+
         public void ReceiveMessage(IPEndPoint user, string message)
         {
             base.Channel.ReceiveMessage(user, message);

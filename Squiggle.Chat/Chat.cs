@@ -21,9 +21,10 @@ namespace Squiggle.Chat
         }
 
         public event EventHandler<ChatMessageReceivedEventArgs> MessageReceived = delegate { };
+        public event EventHandler<MessageFailedEventArgs> MessageFailed = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyJoined = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyLeft = delegate { };
-        public event EventHandler<MessageFailedEventArgs> MessageFailed = delegate { };
+        public event EventHandler<BuddyEventArgs> BuddyTyping = delegate { };
 
         public void SendMessage(string message)
         {
@@ -44,6 +45,11 @@ namespace Squiggle.Chat
             });
         }
 
+        public void NotifyTyping()
+        {
+            session.NotifyTyping();
+        }
+
         public void Leave()
         {
             session.End();
@@ -56,6 +62,12 @@ namespace Squiggle.Chat
             this.buddy = buddy;
             this.session = session;
             session.MessageReceived += new EventHandler<Squiggle.Chat.Services.Chat.Host.MessageReceivedEventArgs>(session_MessageReceived);
+            session.UserTyping += new EventHandler<Squiggle.Chat.Services.Chat.Host.UserEventArgs>(session_UserTyping);
+        }
+
+        void session_UserTyping(object sender, Squiggle.Chat.Services.Chat.Host.UserEventArgs e)
+        {
+            BuddyTyping(this, new BuddyEventArgs() { Buddy = buddy });
         }                
 
         void session_MessageReceived(object sender, Squiggle.Chat.Services.Chat.Host.MessageReceivedEventArgs e)

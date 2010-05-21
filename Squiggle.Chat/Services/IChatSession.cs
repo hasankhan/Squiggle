@@ -9,10 +9,13 @@ namespace Squiggle.Chat.Services
 {
     public interface IChatSession
     {
-        void SendMessage(string message);
-
         event EventHandler<MessageReceivedEventArgs> MessageReceived;
+        event EventHandler<UserEventArgs> UserTyping;
+
         IPEndPoint RemoteUser { get; set; }
+
+        void SendMessage(string message);        
+        void NotifyTyping();
         void End();
     }
 }

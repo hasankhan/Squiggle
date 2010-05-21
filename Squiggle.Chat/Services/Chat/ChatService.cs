@@ -22,7 +22,7 @@ namespace Squiggle.Chat.Services.Chat
             chatHost = new ChatHost();
             chatHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(chatHost_MessageReceived);
             chatSessions = new Dictionary<IPEndPoint, IChatSession>();
-        }        
+        }             
 
         #region IChatService Members
 
