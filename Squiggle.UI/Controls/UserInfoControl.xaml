@@ -91,8 +91,8 @@
                     <RowDefinition Height="0.20*"/>
                 </Grid.RowDefinitions>
                 <StackPanel x:Name="signedInView" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left">
-                    <TextBlock Margin="10,0,5,0" VerticalAlignment="Bottom" Text="{Binding DisplayName}" Foreground="Black" FontSize="16" x:Name="txtLoggedInUser" HorizontalAlignment="Left" />
-                    <ComboBox x:Name="statuses" SelectedValue="{Binding Path=Status}"
+                    <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" Text="{Binding DisplayName}" Foreground="Black" FontSize="16" x:Name="txtLoggedInUser" HorizontalAlignment="Left" />
+                    <!--<ComboBox x:Name="statuses" SelectedValue="{Binding Path=Status}"
                               ItemsSource="{Binding Source={StaticResource AvailableUserStatus}}"
                               Background="{StaticResource HeaderBackground}" VerticalAlignment="Bottom" Height="20" Foreground="Black" Grid.Column="1" HorizontalAlignment="Left">
                         <ComboBox.ItemsPanel>
@@ -105,9 +105,29 @@
                                 <ContentPresenter Content="{Binding Converter={StaticResource statusConverter}}" />
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
+                    </ComboBox>-->
+                    <ComboBox Grid.Column="1" VerticalAlignment="Center" Style="{DynamicResource ComboBoxStyle}" Width="100" SelectedValue="{Binding Path=Status}"
+                              Background="{StaticResource HeaderBackground}" SelectionChanged="ComboBox_SelectionChanged" >
+                        <ComboBox.ItemsSource>
+                            <CompositeCollection>
+                                <CollectionContainer Collection="{Binding Source={StaticResource AvailableUserStatus}}"/>
+                                <Separator IsEnabled="False"/>
+                                <ComboBoxItem>Options</ComboBoxItem>
+                            </CompositeCollection>
+                        </ComboBox.ItemsSource>
+                        <ComboBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Background="{StaticResource HeaderBackground}"/>
+                            </ItemsPanelTemplate>
+                        </ComboBox.ItemsPanel>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <ContentPresenter Content="{Binding Converter={StaticResource statusConverter}}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
                     </ComboBox>
                 </StackPanel>
-                <controls:DisplayMessageBlock x:Name="displayMessageBox" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
+                <TextBlock VerticalAlignment="Bottom" Grid.Row="1" Grid.ColumnSpan="4" Margin="10,0,0,0" Text="{Binding DisplayMessage}" TextTrimming="WordEllipsis"  Foreground="Black"/>
             </Grid>
         </Border>
         <StackPanel Orientation="Vertical" Grid.Row="1">

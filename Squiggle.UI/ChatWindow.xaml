@@ -34,9 +34,9 @@
                             </LinearGradientBrush>
                         </Border.Background>
                     </Border>
-                    <TextBox Grid.Row="1" Margin="2,5,5,0" x:Name="txtMessage" SpellCheck.IsEnabled="True" PreviewKeyDown="txtMessage_PreviewKeyDown" />
+                    <TextBox Grid.Row="1" Margin="2,5,5,0" AcceptsReturn="True" Height="70" x:Name="txtMessage" SpellCheck.IsEnabled="True" PreviewKeyDown="txtMessage_PreviewKeyDown" />
                     <Button Grid.Row="1" Margin="2,5,5,0" Grid.Column="1" IsDefault="True" Width="50" Content="Send"  Click="Button_Click" />
-                    <TextBlock Margin="0,10,0,0" x:Name="txbLastMessageReceived" VerticalAlignment="Bottom" Grid.Row="2" Grid.ColumnSpan="2" Foreground="Black"/>
+                    <TextBlock Margin="0,10,0,0" x:Name="txbLastMessageReceived"  VerticalAlignment="Bottom" Grid.Row="2" Grid.ColumnSpan="2" Foreground="Black"/>
                 </Grid>
         </Border>
         

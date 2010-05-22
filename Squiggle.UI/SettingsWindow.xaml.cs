@@ -22,15 +22,22 @@ namespace Squiggle.UI
     public partial class SettingsWindow : Window
     {
         SettingsViewModel settingsVm = new SettingsViewModel();
+        Buddy user;
 
         public SettingsWindow()
         {
             InitializeComponent();
         }
 
+        public SettingsWindow(Buddy user) : this()
+        {
+            this.user = user;
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             LoadGeneralSettings();
+            LoadPersonalSettings();
             LoadConnectionSettings();
             this.DataContext = settingsVm;
         }
@@ -38,6 +45,7 @@ namespace Squiggle.UI
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             SaveGeneralSettings();
+            SavePersonalSettings();
             SaveConnectionSettings();
             this.DialogResult = true;
             Close();
@@ -55,9 +63,22 @@ namespace Squiggle.UI
         private void LoadGeneralSettings()
         {
             settingsVm.GeneralSettings.HideToSystemTray = Properties.Settings.Default.HideToTray;
-            settingsVm.GeneralSettings.IdleTimeout = Properties.Settings.Default.IdelTimeout;
             settingsVm.GeneralSettings.ShowPopups = Properties.Settings.Default.ShowPopups;
             settingsVm.GeneralSettings.RunAtStartup = GetRunAtStartup();
+        }
+
+        private void LoadPersonalSettings()
+        {
+            settingsVm.PersonalSettings.DisplayName = user.DisplayName;
+            settingsVm.PersonalSettings.DisplayMessage = user.DisplayMessage;
+            settingsVm.PersonalSettings.IdleTimeout = Properties.Settings.Default.IdelTimeout;
+        }
+
+        private void SavePersonalSettings()
+        {
+            user.DisplayName = settingsVm.PersonalSettings.DisplayName;
+            user.DisplayMessage = settingsVm.PersonalSettings.DisplayMessage;
+            Properties.Settings.Default.IdelTimeout = settingsVm.PersonalSettings.IdleTimeout;
         }
 
         private void SaveConnectionSettings()
@@ -71,7 +92,6 @@ namespace Squiggle.UI
         private void SaveGeneralSettings()
         {
             Properties.Settings.Default.HideToTray = settingsVm.GeneralSettings.HideToSystemTray;
-            Properties.Settings.Default.IdelTimeout = settingsVm.GeneralSettings.IdleTimeout;
             Properties.Settings.Default.ShowPopups = settingsVm.GeneralSettings.ShowPopups;
             SetRunAtStartup(settingsVm.GeneralSettings.RunAtStartup);
         }

@@ -14,7 +14,7 @@ namespace Squiggle.UI
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (value != null)
+            if (value != null && value is UserStatus)
             {
                 var status = (UserStatus)value;
                 switch (status)
@@ -36,7 +36,7 @@ namespace Squiggle.UI
                 }
             }
             else
-                return String.Empty;
+                return value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

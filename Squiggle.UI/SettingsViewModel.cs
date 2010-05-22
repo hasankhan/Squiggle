@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Squiggle.Chat;
 
 namespace Squiggle.UI
 {
@@ -9,12 +10,21 @@ namespace Squiggle.UI
     {
         public GeneralSettingsViewModel GeneralSettings { get; set; }
         public ConnectionSettingsViewModel ConnectionSettings { get; set; }
+        public PersonalSettingsViewModel PersonalSettings { get; set; }
 
         public SettingsViewModel()
         {
             GeneralSettings = new GeneralSettingsViewModel();
             ConnectionSettings = new ConnectionSettingsViewModel();
+            PersonalSettings = new PersonalSettingsViewModel();
         }
+    }
+
+    class PersonalSettingsViewModel
+    {
+        public string DisplayName { get; set; }
+        public string DisplayMessage { get; set; }
+        public int IdleTimeout { get; set; }        
     }
 
     class GeneralSettingsViewModel
@@ -22,7 +32,6 @@ namespace Squiggle.UI
         public bool RunAtStartup { get; set; }
         public bool HideToSystemTray { get; set; }
         public bool ShowPopups { get; set; }
-        public int IdleTimeout { get; set; }
     }
 
     class ConnectionSettingsViewModel

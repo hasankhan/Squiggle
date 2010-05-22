@@ -15,10 +15,7 @@ using Squiggle.Chat;
 
 namespace Squiggle.UI.Controls
 {
-    public class ChatStartEventArgs : EventArgs
-    {
-        public Buddy User { get; set; }
-    }
+    
     
     /// <summary>
     /// Interaction logic for BuddyList.xaml
@@ -34,7 +31,7 @@ namespace Squiggle.UI.Controls
             set 
             {
                 SetValue(ChatContextProperty, value);
-                displayMessageBox.SelfUser = value.LoggedInUser;
+                //displayMessageBox.SelfUser = value.LoggedInUser;
             }
         } 
 
@@ -50,5 +47,23 @@ namespace Squiggle.UI.Controls
                 ChatStart(this, new ChatStartEventArgs() { User=buddy });
         }
 
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems[0] is ComboBoxItem)
+            {
+                var item = e.AddedItems[0] as ComboBoxItem;
+                if (item.Content.ToString() == "Options")
+                {
+                    SettingsWindow settings = new SettingsWindow(ChatContext.LoggedInUser);
+                    settings.ShowDialog();
+                }
+            }
+        }
+
+    }
+
+    public class ChatStartEventArgs : EventArgs
+    {
+        public Buddy User { get; set; }
     }
 }

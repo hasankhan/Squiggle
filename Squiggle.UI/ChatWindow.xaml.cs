@@ -71,6 +71,17 @@ namespace Squiggle.UI
             chatSession.MessageReceived += new EventHandler<ChatMessageReceivedEventArgs>(chatSession_MessageReceived);
             chatSession.BuddyJoined += new EventHandler<BuddyEventArgs>(chatSession_BuddyJoined);
             chatSession.BuddyLeft += new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
+            chatSession.MessageFailed += new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
+            
+        }
+
+        void chatSession_MessageFailed(object sender, MessageFailedEventArgs e)
+        {
+            var text = new Run("Following message could not be sent due to error: " + e.Exception.Message);
+            sentMessages.Inlines.Add(text);
+            sentMessages.Inlines.Add(new Run("\r\n\t"));
+            sentMessages.Inlines.Add(e.Message);
+            scrollViewer.ScrollToBottom();
         }
 
         void chatSession_BuddyLeft(object sender, BuddyEventArgs e)
@@ -92,7 +103,7 @@ namespace Squiggle.UI
         void OnMessageReceived(Buddy buddy, string message)
         {
             WriteMessage(buddy.DisplayName, message);
-            txbLastMessageReceived.Text = String.Format("Last message received at " + String.Format("{0:t} on {0:d}", DateTime.Now));
+            txbLastMessageReceived.Text = String.Format("Last message received at " + String.Format("{0:T} on {0:d}", DateTime.Now));
             if (!this.IsActive)
                 flash.Start();
         }
