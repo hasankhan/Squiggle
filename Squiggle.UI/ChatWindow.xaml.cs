@@ -21,6 +21,7 @@ namespace Squiggle.UI
         IChat chatSession;
         Buddy buddy;
         FlashForm flash;
+        DateTime? lastTypingNotificationSent;
 
         public ChatWindow()
         {
@@ -72,7 +73,12 @@ namespace Squiggle.UI
             chatSession.BuddyJoined += new EventHandler<BuddyEventArgs>(chatSession_BuddyJoined);
             chatSession.BuddyLeft += new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
             chatSession.MessageFailed += new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
-            
+            chatSession.BuddyTyping += new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
+        }
+
+        void chatSession_BuddyTyping(object sender, BuddyEventArgs e)
+        {
+            txbLastMessageReceived.Text = String.Format("{0} is typing", e.Buddy.DisplayName);
         }
 
         void chatSession_MessageFailed(object sender, MessageFailedEventArgs e)
@@ -113,6 +119,13 @@ namespace Squiggle.UI
             if (e.Key == Key.Enter)
                 if (e.KeyboardDevice.Modifiers == ModifierKeys.Control)
                     e.Handled = true;
+        }
+
+        private void txtMessage_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (txtMessage.Text != String.Empty)
+                if (!lastTypingNotificationSent.HasValue || DateTime.Now.Subtract(lastTypingNotificationSent.Value).TotalSeconds > 5)
+                    chatSession.NotifyTyping();
         }
     }
 }
