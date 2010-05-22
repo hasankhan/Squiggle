@@ -94,7 +94,7 @@ namespace StackOverflowClient
 
       //the tray icon assigned this attached property to simplify access
       TaskbarIcon taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
-      taskbarIcon.ResetBalloonCloseTimer();
+      //taskbarIcon.ResetBalloonCloseTimer();
     }
 
 
@@ -123,6 +123,11 @@ namespace StackOverflowClient
     private void OnFadeInCompleted(object sender, EventArgs e)
     {
         
+    }
+
+    private void me_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        Close();
     }
   }
 }

@@ -57,8 +57,8 @@ namespace Squiggle.Chat.Services.Chat
                 IChatHost remoteHost = new ChatHostProxy(binding, new EndpointAddress(uri));
                 ChatSession temp = new ChatSession(chatHost, remoteHost, localEndPoint, endPoint);
                 temp.SessionEnded += (sender, e) => chatSessions.Remove(temp.RemoteUser);
-                this.chatSessions.Add(endPoint, session);
                 session = temp;
+                this.chatSessions.Add(endPoint, session);
             }
             return session;
         }

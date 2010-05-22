@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Threading;
 using Squiggle.Chat.Services;
+using System.Diagnostics;
 
 namespace Squiggle.Chat
 {
@@ -49,6 +50,8 @@ namespace Squiggle.Chat
         {
             var endpoint = (IPEndPoint)buddy.ID;
             IChatSession session = chatService.CreateSession(endpoint);
+            if (session == null)
+                Debugger.Break();
             var chat = new Chat(session, buddy);
             return chat;
         }        

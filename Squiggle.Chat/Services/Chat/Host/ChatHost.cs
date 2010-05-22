@@ -5,6 +5,7 @@ using System.Text;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Net;
+using System.Diagnostics;
 
 namespace Squiggle.Chat.Services.Chat.Host
 {
@@ -30,11 +31,13 @@ namespace Squiggle.Chat.Services.Chat.Host
         public void UserIsTyping(IPEndPoint user)
         {
             UserTyping(this, new UserEventArgs() { User = user });
+            Trace.WriteLine(user.ToString() + " is typing.");
         }
 
         public void ReceiveMessage(IPEndPoint user, string message)
         {            
             MessageReceived(this, new MessageReceivedEventArgs() { User = user, Message = message });
+            Trace.WriteLine("Message received from: " + user.ToString() + ", message = " + message);
         }
 
         #endregion

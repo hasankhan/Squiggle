@@ -6,7 +6,7 @@
   xmlns:system="clr-namespace:System;assembly=mscorlib"    
   x:Name="me"
   Width="200" Height="100" 
-  MouseEnter="Baloon_MouseEnter">
+  MouseEnter="Baloon_MouseEnter" MouseDown="me_MouseDown">
     <UserControl.DataContext>
         <system:String>Hasan is online</system:String>
     </UserControl.DataContext>

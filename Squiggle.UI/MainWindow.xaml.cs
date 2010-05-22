@@ -37,7 +37,7 @@ namespace Squiggle.UI
            InitializeComponent();
 
            chatControl.SignIn.CredentialsVerfied += new EventHandler<Squiggle.UI.Controls.LogInEventArgs>(OnCredentialsVerfied);
-           chatControl.UserInfo.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(OnChatStart);
+           chatControl.UserInfo.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(OnStartChat);
 
             if (!String.IsNullOrEmpty(Properties.Settings.Default.DisplayName))
                 SignIn(Properties.Settings.Default.DisplayName);
@@ -50,16 +50,19 @@ namespace Squiggle.UI
 
         void chatClient_ChatStarted(object sender, ChatStartedEventArgs e)
         {
-            CreateChatWindow(e.Buddy, e.Message, e.Chat, WindowState.Minimized);
+            CreateChatWindow(e.Buddy, e.Message, e.Chat, false);
         }
 
-        static void CreateChatWindow(Buddy buddy, string message, IChat session, WindowState state)
+        static void CreateChatWindow(Buddy buddy, string message, IChat session, bool focused)
         {
             ChatWindow window = new ChatWindow(buddy, message);
             window.Title = buddy.DisplayName;
             window.DataContext = session;
-            window.WindowState = state;
+            if (!focused)
+                window.WindowState = WindowState.Minimized;
             window.Show();
+            if (focused)
+                window.Activate();
         }   
 
         private void SignIn(string displayName)
@@ -75,25 +78,17 @@ namespace Squiggle.UI
         void chatClient_BuddyOnline(object sender, BuddyOnlineEventArgs e)
         {
             if (!e.Discovered)
-                ShowPopup("Budy Online", e.Buddy.DisplayName + " is online");
+                TrayPopup.Show("Budy Online", e.Buddy.DisplayName + " is online", _=> StartChat(e.Buddy));
         }
 
-        void OnChatStart(object sender, Squiggle.UI.Controls.ChatStartEventArgs e)
+        void OnStartChat(object sender, Squiggle.UI.Controls.ChatStartEventArgs e)
         {
-            CreateChatWindow(e.User, string.Empty, e.User.StartChat(), WindowState.Normal);
+            StartChat(e.User);
         }
 
-        void ShowPopup(string title, string message)
+        static void StartChat(Buddy buddy)
         {
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                FancyBalloon balloon = new FancyBalloon();
-                balloon.BalloonText = title;
-                balloon.DataContext = message;
-                Hardcodet.Wpf.TaskbarNotification.TaskbarIcon icon = new Hardcodet.Wpf.TaskbarNotification.TaskbarIcon();
-                icon.Visibility = Visibility.Hidden;
-                icon.ShowCustomBalloon(balloon, PopupAnimation.Slide, 5000);
-            }));
+            CreateChatWindow(buddy, String.Empty, buddy.StartChat(), true);
         }
 
         void InitializeClient(string displayName)
