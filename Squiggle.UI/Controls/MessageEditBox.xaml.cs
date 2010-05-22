@@ -62,17 +62,13 @@ namespace Squiggle.UI.Controls
         {
             if (e.Key == Key.Enter)
             {
-                if (Keyboard.Modifiers == ModifierKeys.Control || Keyboard.Modifiers == ModifierKeys.Shift)
+                if (!(Keyboard.Modifiers == ModifierKeys.Control || Keyboard.Modifiers == ModifierKeys.Shift))
                 {
-                    txtMessage.Text += "\r\n";
-                    txtMessage.CaretIndex = txtMessage.Text.Length;
-                }
-                else if (btnSend.IsEnabled)
-                {
-                    RaiseMessageSendEvent();
+                    
+                    if (btnSend.IsEnabled)
+                        RaiseMessageSendEvent();
                     e.Handled = true;
                 }
-               
               }
         }
     }
