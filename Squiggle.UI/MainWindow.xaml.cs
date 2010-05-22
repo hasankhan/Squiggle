@@ -43,6 +43,11 @@ namespace Squiggle.UI
                 SignIn(Properties.Settings.Default.DisplayName);
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.StateChanged += new EventHandler(Window_StateChanged);
+        }   
+
         void OnCredentialsVerfied(object sender, Squiggle.UI.Controls.LogInEventArgs e)
         {
             SignIn(e.UserName);
@@ -158,10 +163,5 @@ namespace Squiggle.UI
             else
                 lastState = this.WindowState;
         }
-
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            this.StateChanged += new EventHandler(Window_StateChanged);
-        }   
     }
 }
