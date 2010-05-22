@@ -25,8 +25,10 @@ namespace Squiggle.Chat
         event EventHandler<ChatMessageReceivedEventArgs> MessageReceived;
         event EventHandler<BuddyEventArgs> BuddyJoined;
         event EventHandler<BuddyEventArgs> BuddyLeft;
+        event EventHandler<BuddyEventArgs> BuddyTyping;
         event EventHandler<MessageFailedEventArgs> MessageFailed;
 
+        void NotifyTyping();
         void SendMessage(string Message);
         void Leave();
     }
