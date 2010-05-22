@@ -47,16 +47,25 @@ namespace Squiggle.UI.Controls
                 ChatStart(this, new ChatStartEventArgs() { User=buddy });
         }
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ComboBoxItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.AddedItems[0] is ComboBoxItem)
+            ShowSettingsWindow();
+
+            e.Handled = true;
+        }
+
+        private void ShowSettingsWindow()
+        {
+            SettingsWindow settings = new SettingsWindow(ChatContext.LoggedInUser);
+            settings.ShowDialog();
+        }
+
+        private void ComboBoxItem_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
             {
-                var item = e.AddedItems[0] as ComboBoxItem;
-                if (item.Content.ToString() == "Options")
-                {
-                    SettingsWindow settings = new SettingsWindow(ChatContext.LoggedInUser);
-                    settings.ShowDialog();
-                }
+                ShowSettingsWindow();
+                e.Handled = true;
             }
         }
 

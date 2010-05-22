@@ -9,12 +9,28 @@
                     <Storyboard>
                         <DoubleAnimation From="0" To="1" Duration="0:00:00.4" Storyboard.TargetName="UserInfo" Storyboard.TargetProperty="(UIElement.Opacity)" />
                         <DoubleAnimation From="1" To="0" Duration="0:00:00.7" Storyboard.TargetName="SignIn" Storyboard.TargetProperty="(UIElement.Opacity)" />
+                        <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="UserInfo" Storyboard.TargetProperty="(UIElement.Visibility)">
+                            <DiscreteObjectKeyFrame KeyTime="00:00:01" Value="{x:Static Visibility.Visible}"/>
+                        </ObjectAnimationUsingKeyFrames>
+
+                        <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="SignIn"
+                                Storyboard.TargetProperty="(UIElement.Visibility)">
+                            <DiscreteObjectKeyFrame KeyTime="00:00:01" Value="{x:Static Visibility.Hidden}"/>
+                        </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
                 <VisualState Name="OfflineState">
                     <Storyboard>
                         <DoubleAnimation From="1" To="0" Duration="0:00:00.7" Storyboard.TargetName="userInfo" Storyboard.TargetProperty="(UIElement.Opacity)" />
                         <DoubleAnimation From="0" To="1" Duration="0:00:00.4" Storyboard.TargetName="signIn" Storyboard.TargetProperty="(UIElement.Opacity)" />
+                    <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="SignIn" Storyboard.TargetProperty="(UIElement.Visibility)">
+                            <DiscreteObjectKeyFrame KeyTime="00:00:01" Value="{x:Static Visibility.Visible}"/>
+                        </ObjectAnimationUsingKeyFrames>
+
+                        <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="UserInfo"
+                                Storyboard.TargetProperty="(UIElement.Visibility)">
+                            <DiscreteObjectKeyFrame KeyTime="00:00:01" Value="{x:Static Visibility.Hidden}"/>
+                        </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
             </VisualStateGroup>

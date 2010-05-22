@@ -107,12 +107,14 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>-->
                     <ComboBox Grid.Column="1" VerticalAlignment="Center" Style="{DynamicResource ComboBoxStyle}" Width="100" SelectedValue="{Binding Path=Status}"
-                              Background="{StaticResource HeaderBackground}" SelectionChanged="ComboBox_SelectionChanged" >
+                              Background="Gray" Focusable="False">
                         <ComboBox.ItemsSource>
                             <CompositeCollection>
                                 <CollectionContainer Collection="{Binding Source={StaticResource AvailableUserStatus}}"/>
                                 <Separator IsEnabled="False"/>
-                                <ComboBoxItem>Options</ComboBoxItem>
+                                <ComboBoxItem  PreviewMouseLeftButtonDown="ComboBoxItem_PreviewMouseLeftButtonDown"
+                                              PreviewKeyDown="ComboBoxItem_PreviewKeyDown"
+                                              >Options</ComboBoxItem>
                             </CompositeCollection>
                         </ComboBox.ItemsSource>
                         <ComboBox.ItemsPanel>

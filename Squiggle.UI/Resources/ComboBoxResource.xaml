@@ -135,7 +135,7 @@
     <Style x:Key="ComboBoxStyle" TargetType="{x:Type ComboBox}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource ComboBoxFocusVisual}"/>
         <Setter Property="Foreground" Value="Black"/>
-        <Setter Property="Background" Value="LightGray"/>
+        <Setter Property="Background" Value="Gray"/>
         <Setter Property="BorderBrush" Value="{StaticResource ButtonNormalBorder}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
@@ -151,7 +151,7 @@
                             <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
                         </Grid.ColumnDefinitions>
                         <Popup Margin="1" x:Name="PART_Popup" AllowsTransparency="true" IsOpen="{Binding Path=IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" Placement="Bottom" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Grid.ColumnSpan="2">
-                            <Border x:Name="DropDownBorder" Background="LightGray" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding Path=ActualWidth, ElementName=MainGrid}" >
+                            <Border x:Name="DropDownBorder" Background="Gray" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding Path=ActualWidth, ElementName=MainGrid}" >
                                 <ScrollViewer CanContentScroll="true">
                                     <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" KeyboardNavigation.DirectionalNavigation="Contained"/>
                                 </ScrollViewer>
