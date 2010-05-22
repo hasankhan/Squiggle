@@ -5,6 +5,7 @@ using System.Text;
 using Squiggle.Chat.Services;
 using System.IO;
 using System.Threading;
+using System.Diagnostics;
 
 namespace Squiggle.Chat
 {    
@@ -47,7 +48,17 @@ namespace Squiggle.Chat
 
         public void NotifyTyping()
         {
-            session.NotifyTyping();
+            ThreadPool.QueueUserWorkItem(_ => 
+            {
+                try
+                {
+                    session.NotifyTyping();
+                }
+                catch (Exception ex)
+                {
+                    Trace.WriteLine(ex.Message);
+                }
+            });
         }
 
         public void Leave()

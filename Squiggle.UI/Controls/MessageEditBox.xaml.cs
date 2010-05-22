@@ -55,6 +55,7 @@ namespace Squiggle.UI.Controls
             if (txtMessage.Text != String.Empty)
                 if (!lastTypingNotificationSent.HasValue || DateTime.Now.Subtract(lastTypingNotificationSent.Value).TotalSeconds > 5)
                     MessageTyping(this, new EventArgs());
+            btnSend.IsEnabled = txtMessage.Text != String.Empty;
         }
 
         private void txtMessage_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -66,7 +67,7 @@ namespace Squiggle.UI.Controls
                     txtMessage.Text += "\r\n";
                     txtMessage.CaretIndex = txtMessage.Text.Length;
                 }
-                else 
+                else if (btnSend.IsEnabled)
                 {
                     RaiseMessageSendEvent();
                     e.Handled = true;

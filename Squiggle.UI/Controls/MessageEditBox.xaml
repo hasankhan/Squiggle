@@ -37,7 +37,7 @@
         <!-- filter control -->
         <Border Style="{StaticResource BorderStyle}">
             <DockPanel>
-                <Button x:Name="btnSend" DockPanel.Dock="Right" Content="Send" ToolTip="Send Message" 
+                <Button x:Name="btnSend" IsEnabled="False" DockPanel.Dock="Right" Content="Send" ToolTip="Send Message" 
         Style="{StaticResource ButtonStyle}" Click="btnSend_Click" />
                 <TextBox x:Name="txtMessage" DockPanel.Dock="Left" 
         Style="{StaticResource TextStyle}" AcceptsReturn="True" Height="60" VerticalScrollBarVisibility="Auto"
