@@ -75,6 +75,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\MessageEditBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\SignInControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -119,6 +123,9 @@
     </Compile>
     <Compile Include="Controls\DisplayMessageBlock.xaml.cs">
       <DependentUpon>DisplayMessageBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MessageEditBox.xaml.cs">
+      <DependentUpon>MessageEditBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SignInControl.xaml.cs">
       <DependentUpon>SignInControl.xaml</DependentUpon>

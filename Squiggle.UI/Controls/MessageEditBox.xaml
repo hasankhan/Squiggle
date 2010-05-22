@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="Squiggle.UI.Controls.MessageEditBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    >
+    <UserControl.Resources>
+
+        <!-- border style -->
+        <Style x:Key="BorderStyle" TargetType="{x:Type Border}">
+            <Setter Property="BorderBrush" Value="#FFBFCBD8" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="3" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+        </Style>
+
+        <!-- textbox style -->
+        <Style x:Key="TextStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Margin" Value="2,1,2,2" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="{x:Null}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!-- reset button style -->
+        <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+            <Setter Property="Width" Value="60" />
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="BorderBrush" Value="Orange" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+        </UserControl.Resources>
+
+        <!-- filter control -->
+        <Border Style="{StaticResource BorderStyle}">
+            <DockPanel>
+                <Button x:Name="btnSend" DockPanel.Dock="Right" Content="Send" ToolTip="Send Message" 
+        Style="{StaticResource ButtonStyle}" Click="btnSend_Click" />
+                <TextBox x:Name="txtMessage" DockPanel.Dock="Left" 
+        Style="{StaticResource TextStyle}" AcceptsReturn="True" Height="60" VerticalScrollBarVisibility="Auto"
+                         TextChanged="txtMessage_TextChanged"
+                         PreviewKeyDown="txtMessage_PreviewKeyDown"/>
+            </DockPanel>
+        </Border>
+
+</UserControl>
+

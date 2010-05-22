@@ -1,5 +1,6 @@
 ﻿<Window x:Class="Squiggle.UI.ChatWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:controls="clr-namespace:Squiggle.UI.Controls"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="ChatWindow" Height="502" Width="654" FocusManager.FocusedElement="{Binding ElementName=txtMessage}"
         Loaded="Window_Loaded" Closed="Window_Closed" >
@@ -34,8 +35,7 @@
                             </LinearGradientBrush>
                         </Border.Background>
                     </Border>
-                    <TextBox Grid.Row="1" Margin="2,5,5,0" AcceptsReturn="True" Height="70" x:Name="txtMessage" SpellCheck.IsEnabled="True" PreviewKeyDown="txtMessage_PreviewKeyDown" TextChanged="txtMessage_TextChanged" />
-                    <Button Grid.Row="1" Margin="2,5,5,0" Grid.Column="1" IsDefault="True" Width="50" Content="Send"  Click="Button_Click" />
+                    <controls:MessageEditBox  Margin="2,5,5,0"  x:Name="editMessageBox" MessageTyping="editMessageBox_MessageTyping" MessageSend="editMessageBox_MessageSend" Grid.Row="1"/>
                     <TextBlock Margin="0,10,0,0" x:Name="txbLastMessageReceived"  VerticalAlignment="Bottom" Grid.Row="2" Grid.ColumnSpan="2" Foreground="Black"/>
                 </Grid>
         </Border>

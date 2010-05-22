@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Squiggle.Chat;
+using Squiggle.UI.Controls;
 
 namespace Squiggle.UI
 {
@@ -21,7 +22,6 @@ namespace Squiggle.UI
         IChat chatSession;
         Buddy buddy;
         FlashForm flash;
-        DateTime? lastTypingNotificationSent;
 
         public ChatWindow()
         {
@@ -46,14 +46,6 @@ namespace Squiggle.UI
         void chatSession_MessageReceived(object sender, ChatMessageReceivedEventArgs e)
         {
             OnMessageReceived(e.Sender, e.Message);
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            chatSession.SendMessage(txtMessage.Text);
-            WriteMessage("Me", txtMessage.Text);
-            txtMessage.Text = String.Empty;
-            txtMessage.Focus();
         }
 
         private void WriteMessage(string user, string message)
@@ -121,11 +113,15 @@ namespace Squiggle.UI
                     e.Handled = true;
         }
 
-        private void txtMessage_TextChanged(object sender, TextChangedEventArgs e)
+        private void editMessageBox_MessageSend(object sender, MessageSendEventArgs e)
         {
-            if (txtMessage.Text != String.Empty)
-                if (!lastTypingNotificationSent.HasValue || DateTime.Now.Subtract(lastTypingNotificationSent.Value).TotalSeconds > 5)
-                    chatSession.NotifyTyping();
+            chatSession.SendMessage(e.Message);
+            WriteMessage("Me", e.Message);
+        }
+
+        private void editMessageBox_MessageTyping(object sender, EventArgs e)
+        {
+            chatSession.NotifyTyping();
         }
     }
 }
