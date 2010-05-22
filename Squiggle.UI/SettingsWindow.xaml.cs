@@ -55,6 +55,8 @@ namespace Squiggle.UI
         {
             settingsVm.ConnectionSettings.AllIPs.AddRange(NetworkUtility.GetLocalIPAddresses().Select(ip => ip.ToString()));
             settingsVm.ConnectionSettings.BindToIP = Properties.Settings.Default.BindToIP;
+            if (String.IsNullOrEmpty(settingsVm.ConnectionSettings.BindToIP))
+                settingsVm.ConnectionSettings.BindToIP = settingsVm.ConnectionSettings.AllIPs.FirstOrDefault();
             settingsVm.ConnectionSettings.ChatPort = Properties.Settings.Default.ChatPort;
             settingsVm.ConnectionSettings.KeepAliveTime = Properties.Settings.Default.KeepAliveTime;
             settingsVm.ConnectionSettings.PresencePort = Properties.Settings.Default.PresencePort;            
@@ -100,9 +102,7 @@ namespace Squiggle.UI
         {
             try
             {
-                var runKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
-                bool run = runKey.GetValue("squiggle") != null;
-
+                bool run = WinStartup.IsAdded("squiggle");                
                 return run;
             }
             catch (Exception)
@@ -117,9 +117,9 @@ namespace Squiggle.UI
             {
                 var runKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
                 if (run)
-                    runKey.SetValue("squiggle", Assembly.GetExecutingAssembly().Location + " /background");
+                    WinStartup.Add("squiggle", Assembly.GetExecutingAssembly().Location + " /background");
                 else
-                    runKey.DeleteValue("squiggle", false);
+                    WinStartup.Remove("squiggle");
             }
             catch (Exception ex)
             {
