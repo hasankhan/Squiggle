@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Diagnostics;
 
 namespace Squiggle.UI.Controls
 {
@@ -43,6 +44,11 @@ namespace Squiggle.UI.Controls
             RaiseMessageSendEvent();            
         }
 
+        public void GetFocus()
+        {
+            txtMessage.Focus();
+        }
+
         private void RaiseMessageSendEvent()
         {
             MessageSend(this, new MessageSendEventArgs() { Message = txtMessage.Text });
@@ -53,10 +59,9 @@ namespace Squiggle.UI.Controls
         private void txtMessage_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (txtMessage.Text != String.Empty)
-                if (!lastTypingNotificationSent.HasValue || DateTime.Now.Subtract(lastTypingNotificationSent.Value).TotalSeconds > 5)
-                    MessageTyping(this, new EventArgs());
+                NotifyTyping();
             btnSend.IsEnabled = txtMessage.Text != String.Empty;
-        }
+        }        
 
         private void txtMessage_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -70,6 +75,15 @@ namespace Squiggle.UI.Controls
                     e.Handled = true;
                 }
               }
+        }
+
+        void NotifyTyping()
+        {
+            if (!lastTypingNotificationSent.HasValue || DateTime.Now.Subtract(lastTypingNotificationSent.Value).TotalSeconds > 5)
+            {
+                MessageTyping(this, new EventArgs());
+                lastTypingNotificationSent = DateTime.Now;
+            }
         }
     }
 

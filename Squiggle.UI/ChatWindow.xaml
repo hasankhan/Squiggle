@@ -3,8 +3,8 @@
     xmlns:controls="clr-namespace:Squiggle.UI.Controls"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="ChatWindow" Height="502" Width="654" FocusManager.FocusedElement="{Binding ElementName=txtMessage}"
-        Loaded="Window_Loaded" Closed="Window_Closed" >
-    <Grid Background="#FFF3F3F3">
+        Loaded="Window_Loaded" Closed="Window_Closed">
+    <Grid Background="#FFF3F3F3" Focusable="True" FocusManager.IsFocusScope="True">
         <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -35,8 +35,8 @@
                             </LinearGradientBrush>
                         </Border.Background>
                     </Border>
-                    <controls:MessageEditBox  Margin="2,5,5,0"  x:Name="editMessageBox" MessageTyping="editMessageBox_MessageTyping" MessageSend="editMessageBox_MessageSend" Grid.Row="1"/>
-                    <TextBlock Margin="0,10,0,0" x:Name="txbLastMessageReceived"  VerticalAlignment="Bottom" Grid.Row="2" Grid.ColumnSpan="2" Foreground="Black"/>
+                    <controls:MessageEditBox Focusable="True" FocusManager.IsFocusScope="True" TabIndex="0" Margin="2,5,5,0"  x:Name="editMessageBox" MessageTyping="editMessageBox_MessageTyping" MessageSend="editMessageBox_MessageSend" Grid.Row="1"/>
+                    <TextBlock Margin="0,10,0,0" x:Name="txbStatus"  VerticalAlignment="Bottom" Grid.Row="2" Grid.ColumnSpan="2" Foreground="Black"/>
                 </Grid>
         </Border>
         

@@ -163,5 +163,10 @@ namespace Squiggle.UI
             else
                 lastState = this.WindowState;
         }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Environment.Exit(0);
+        }
     }
 }

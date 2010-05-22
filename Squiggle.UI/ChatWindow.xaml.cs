@@ -11,6 +11,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Squiggle.Chat;
 using Squiggle.UI.Controls;
+using System.Windows.Threading;
+using System.Diagnostics;
 
 namespace Squiggle.UI
 {
@@ -22,18 +24,24 @@ namespace Squiggle.UI
         IChat chatSession;
         Buddy buddy;
         FlashForm flash;
+        DateTime? lastMessageReceived;
+        DispatcherTimer statusResetTimer;
 
         public ChatWindow()
         {
             InitializeComponent();
             flash = new FlashForm(this);
 
+            statusResetTimer = new DispatcherTimer();
+            statusResetTimer.Interval = TimeSpan.FromSeconds(5);
+            statusResetTimer.Tick += (sender, e) => ResetStatus();
             this.Activated += new EventHandler(ChatWindow_Activated);
-        }
+        }        
 
         void ChatWindow_Activated(object sender, EventArgs e)
         {
             flash.Stop();
+            Dispatcher.BeginInvoke(new Action(() => editMessageBox.GetFocus()));
         }
 
         public ChatWindow(Buddy buddy, string firstMessage) : this()
@@ -70,7 +78,9 @@ namespace Squiggle.UI
 
         void chatSession_BuddyTyping(object sender, BuddyEventArgs e)
         {
-            txbLastMessageReceived.Text = String.Format("{0} is typing", e.Buddy.DisplayName);
+            ChangeStatus(String.Format("{0} is typing", e.Buddy.DisplayName));
+            statusResetTimer.Stop();
+            statusResetTimer.Start();
         }
 
         void chatSession_MessageFailed(object sender, MessageFailedEventArgs e)
@@ -100,11 +110,12 @@ namespace Squiggle.UI
 
         void OnMessageReceived(Buddy buddy, string message)
         {
+            lastMessageReceived = DateTime.Now;
             WriteMessage(buddy.DisplayName, message);
-            txbLastMessageReceived.Text = String.Format("Last message received at " + String.Format("{0:T} on {0:d}", DateTime.Now));
+            ResetStatus();
             if (!this.IsActive)
                 flash.Start();
-        }
+        }        
 
         private void txtMessage_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -122,6 +133,17 @@ namespace Squiggle.UI
         private void editMessageBox_MessageTyping(object sender, EventArgs e)
         {
             chatSession.NotifyTyping();
+        }
+
+        void ResetStatus()
+        {
+            statusResetTimer.Stop();
+            ChangeStatus("Last message received at " + String.Format("{0:T} on {0:d}", lastMessageReceived));
+        }
+
+        void ChangeStatus(string message, params object[] args)
+        {
+            txbStatus.Text = String.Format(message, args);
         }
     }
 }
