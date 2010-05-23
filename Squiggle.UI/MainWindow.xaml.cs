@@ -28,14 +28,16 @@ namespace Squiggle.UI
            chatWindows = new Dictionary<Buddy, ChatWindow>();
 
            chatControl.SignIn.CredentialsVerfied += new EventHandler<Squiggle.UI.Controls.LogInEventArgs>(OnCredentialsVerfied);
-           chatControl.ContactList.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(OnStartChat);
-
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.DisplayName))
-                SignIn(Properties.Settings.Default.DisplayName);
+           chatControl.ContactList.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(OnStartChat);           
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            string name = SettingsProvider.Current.Settings.PersonalSettings.DisplayName;
+            chatControl.SignIn.txtdisplayName.Text = name;
+            chatControl.SignIn.txtdisplayName.SelectAll();
+            if (!String.IsNullOrEmpty(name))
+                chatControl.SignIn.chkRememberName.IsChecked = true;
             this.StateChanged += new EventHandler(Window_StateChanged);
         }   
 
