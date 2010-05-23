@@ -31,6 +31,6 @@
                 </ContextMenu>
             </tray:TaskbarIcon.ContextMenu>
         </tray:TaskbarIcon>
-        <controls:ChatClientControl x:Name="chatControl" />
+        <controls:ChatClientControl Width="Auto" Height="Auto" x:Name="chatControl" />
     </Grid>
 </Window>
