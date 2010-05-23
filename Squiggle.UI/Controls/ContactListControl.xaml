@@ -217,7 +217,7 @@
                             <GradientStop Color="#FFE4E4E4" Offset="0.593"/>
                         </LinearGradientBrush>
                     </StackPanel.Background>
-
+                    <Image Source="/Images/info.png" Cursor="Hand" Width="15" Height="15" Margin="5,0,0,0" MouseLeftButtonDown="About_MouseLeftButtonDown" />
                 </StackPanel>
                 <ItemsControl Margin="5" DataContext="{Binding}" ItemsSource="{Binding Path=Buddies}"  AlternationCount="2" />
 
