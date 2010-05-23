@@ -38,6 +38,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <controls:SignInControl x:Name="SignIn" Opacity="1" Width="Auto" Height="Auto" />
-        <controls:ContactListControl x:Name="ContactList" Width="Auto" Height="Auto" Opacity="0"/>
+        <controls:ContactListControl x:Name="ContactList" Width="Auto" Height="Auto" Visibility="Hidden" />
     </Grid>
 </UserControl>

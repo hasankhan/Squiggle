@@ -36,8 +36,9 @@ namespace Squiggle.UI
         {
             
             this.StateChanged += new EventHandler(Window_StateChanged);
-            
-        }   
+            chatControl.SignIn.OpenSettings += (s1, e1) => OpenSettings();
+            chatControl.ContactList.OpenSettings += (s1, e1) => OpenSettings();
+        }       
 
         void OnCredentialsVerfied(object sender, Squiggle.UI.Controls.LogInEventArgs e)
         {
@@ -135,6 +136,7 @@ namespace Squiggle.UI
             signoutMenu.IsEnabled = statusMenu.IsEnabled = false;
             DestroyMonitor();
             chatClient.Logout();
+            chatControl.ContactList.ChatContext = null;
             clientViewModel = null;
             this.DataContext = null;
             VisualStateManager.GoToState(chatControl, "OfflineState", true);
@@ -244,5 +246,19 @@ namespace Squiggle.UI
             if (App.RunInBackground)
                 this.Hide();
         }
+
+        void OpenSettings()
+        {
+            Buddy user = null;
+            if (chatControl.ContactList.ChatContext != null)
+                user = chatControl.ContactList.ChatContext.LoggedInUser;
+            var settings = new SettingsWindow(user);
+            settings.Owner = this;
+            if (settings.ShowDialog() == true)
+            {
+                if (chatControl.SignIn.Visibility == Visibility.Visible)
+                    chatControl.SignIn.txtdisplayName.Text = SettingsProvider.Current.Settings.PersonalSettings.DisplayName;
+            }
+        }   
     }
 }

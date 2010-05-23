@@ -22,6 +22,7 @@ namespace Squiggle.UI.Controls
     public partial class ContactListControl : UserControl
     {
         public event EventHandler<ChatStartEventArgs> ChatStart = delegate { };
+        public event EventHandler OpenSettings = delegate { };
 
         public static DependencyProperty ChatContextProperty = DependencyProperty.Register("ChatContext", typeof(ClientViewModel), typeof(ContactListControl), new PropertyMetadata(null));
         public ClientViewModel ChatContext
@@ -54,8 +55,7 @@ namespace Squiggle.UI.Controls
 
         private void ShowSettingsWindow()
         {
-            SettingsWindow settings = new SettingsWindow(ChatContext.LoggedInUser);
-            settings.ShowDialog();
+            OpenSettings(this, EventArgs.Empty);
         }
 
         private void ComboBoxItem_PreviewKeyDown(object sender, KeyEventArgs e)

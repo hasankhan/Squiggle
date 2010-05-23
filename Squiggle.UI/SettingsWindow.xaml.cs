@@ -55,15 +55,23 @@ namespace Squiggle.UI
             settingsVm = new SettingsViewModel(SettingsProvider.Current.Settings);
             settingsVm.ConnectionSettings.AllIPs.AddRange(NetworkUtility.GetLocalIPAddresses().Select(ip => ip.ToString()));
             settingsVm.GeneralSettings.RunAtStartup = GetRunAtStartup();
-            settingsVm.PersonalSettings.DisplayName = user.DisplayName;
-            settingsVm.PersonalSettings.DisplayMessage = user.DisplayMessage;
+
+            if (user != null)
+            {
+                settingsVm.PersonalSettings.DisplayName = user.DisplayName;
+                settingsVm.PersonalSettings.DisplayMessage = user.DisplayMessage;
+            }
         }
 
         void SaveSettings()
         {
             settingsVm.Update();
-            user.DisplayName = settingsVm.PersonalSettings.DisplayName;
-            user.DisplayMessage = settingsVm.PersonalSettings.DisplayMessage;
+
+            if (user != null)
+            {
+                user.DisplayName = settingsVm.PersonalSettings.DisplayName;
+                user.DisplayMessage = settingsVm.PersonalSettings.DisplayMessage;
+            }
             SetRunAtStartup(settingsVm.GeneralSettings.RunAtStartup);
 
             SettingsProvider.Current.Save();
