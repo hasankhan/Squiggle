@@ -110,12 +110,12 @@ namespace Squiggle.UI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("5")]
-        public int IdelTimeout {
+        public int IdleTimeout {
             get {
-                return ((int)(this["IdelTimeout"]));
+                return ((int)(this["IdleTimeout"]));
             }
             set {
-                this["IdelTimeout"] = value;
+                this["IdleTimeout"] = value;
             }
         }
         
@@ -128,6 +128,18 @@ namespace Squiggle.UI.Properties {
             }
             set {
                 this["KeepAliveTime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("224.10.11.12")]
+        public string PresenceAddress {
+            get {
+                return ((string)(this["PresenceAddress"]));
+            }
+            set {
+                this["PresenceAddress"] = value;
             }
         }
     }

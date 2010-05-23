@@ -5,6 +5,7 @@ using Squiggle.Chat;
 using System.Net;
 using System.Linq;
 using System.Windows.Threading;
+using Squiggle.UI.Settings;
 
 namespace Squiggle.UI
 {
@@ -18,7 +19,6 @@ namespace Squiggle.UI
         ClientViewModel clientViewModel;
         UserActivityMonitor activityMonitor;
         UserStatus lastStatus;
-        IPAddress presenceAddress = IPAddress.Parse("224.10.11.12");
         Dictionary<Buddy, ChatWindow> chatWindows;
 
         public MainWindow()
@@ -110,8 +110,17 @@ namespace Squiggle.UI
 
         private void SignIn(string displayName)
         {
-            signoutMenu.IsEnabled = statusMenu.IsEnabled = true;            
-            chatClient = CreateClient(displayName);
+            try
+            {
+                chatClient = CreateClient(displayName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            signoutMenu.IsEnabled = statusMenu.IsEnabled = true;
             CreateMonitor();
             clientViewModel = new ClientViewModel(chatClient);
             this.DataContext = clientViewModel;
@@ -132,9 +141,10 @@ namespace Squiggle.UI
 
         void CreateMonitor()
         {
+            TimeSpan timeout = SettingsProvider.Current.Settings.PersonalSettings.IdleTimeout.Minutes();
             if (activityMonitor != null)
                 activityMonitor.Dispose();
-            activityMonitor = new UserActivityMonitor(5.Minutes());
+            activityMonitor = new UserActivityMonitor(timeout);
             activityMonitor.Idle += (sender, e) =>
             {
                 if (chatClient.LoggedIn)
@@ -162,12 +172,25 @@ namespace Squiggle.UI
 
         IChatClient CreateClient(string displayName)
         {
-            int chatPort = NetworkUtility.GetFreePort();
-            IPAddress localIP = NetworkUtility.GetLocalIPAddress();
-            TimeSpan keepAliveTimeout = 2.Seconds();
+            var settings = SettingsProvider.Current.Settings;
+
+            int chatPort = settings.ConnectionSettings.ChatPort;
+            if (String.IsNullOrEmpty(settings.ConnectionSettings.BindToIP))
+                throw new OperationCanceledException("You are not on a network. Please make sure your network card is enabled.");
+
+            IPAddress localIP = IPAddress.Parse(settings.ConnectionSettings.BindToIP);
+            TimeSpan keepAliveTimeout = settings.ConnectionSettings.KeepAliveTime.Seconds();
+            IPAddress presenceAddress = IPAddress.Parse(settings.ConnectionSettings.PresenceAddress);
+            int presencePort = settings.ConnectionSettings.PresencePort;
+
             var chatEndPoint = new IPEndPoint(localIP, chatPort);
-            var presenceEndPoint = new IPEndPoint(presenceAddress, 9999);
-            var client = new ChatClient(chatEndPoint, presenceEndPoint, keepAliveTimeout);
+            if (!NetworkUtility.IsEndPointFree(chatEndPoint))
+                chatEndPoint.Port = NetworkUtility.GetFreePort();
+
+            var presenceEndPoint = new IPEndPoint(presenceAddress, presencePort);
+
+            ChatClient client = new ChatClient(chatEndPoint, presenceEndPoint, keepAliveTimeout);
+            
             client.Login(displayName);
             client.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
             client.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);

@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using Squiggle.Chat;
 using Microsoft.Win32;
 using System.Reflection;
+using Squiggle.UI.Settings;
 
 namespace Squiggle.UI
 {
@@ -21,7 +22,7 @@ namespace Squiggle.UI
     /// </summary>
     public partial class SettingsWindow : Window
     {
-        SettingsViewModel settingsVm = new SettingsViewModel();
+        SettingsViewModel settingsVm;
         Buddy user;
 
         public SettingsWindow()
@@ -36,66 +37,36 @@ namespace Squiggle.UI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            LoadGeneralSettings();
-            LoadPersonalSettings();
-            LoadConnectionSettings();
+            LoadSettings();
+
             this.DataContext = settingsVm;
-        }
+        }        
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            SaveGeneralSettings();
-            SavePersonalSettings();
-            SaveConnectionSettings();
+            SaveSettings();
             this.DialogResult = true;
             Close();
         }
 
-        private void LoadConnectionSettings()
+        void LoadSettings()
         {
+            SettingsProvider.Current.Load();
+            settingsVm = new SettingsViewModel(SettingsProvider.Current.Settings);
             settingsVm.ConnectionSettings.AllIPs.AddRange(NetworkUtility.GetLocalIPAddresses().Select(ip => ip.ToString()));
-            settingsVm.ConnectionSettings.BindToIP = Properties.Settings.Default.BindToIP;
-            if (String.IsNullOrEmpty(settingsVm.ConnectionSettings.BindToIP))
-                settingsVm.ConnectionSettings.BindToIP = settingsVm.ConnectionSettings.AllIPs.FirstOrDefault();
-            settingsVm.ConnectionSettings.ChatPort = Properties.Settings.Default.ChatPort;
-            settingsVm.ConnectionSettings.KeepAliveTime = Properties.Settings.Default.KeepAliveTime;
-            settingsVm.ConnectionSettings.PresencePort = Properties.Settings.Default.PresencePort;            
-        }
-
-        private void LoadGeneralSettings()
-        {
-            settingsVm.GeneralSettings.HideToSystemTray = Properties.Settings.Default.HideToTray;
-            settingsVm.GeneralSettings.ShowPopups = Properties.Settings.Default.ShowPopups;
             settingsVm.GeneralSettings.RunAtStartup = GetRunAtStartup();
-        }
-
-        private void LoadPersonalSettings()
-        {
             settingsVm.PersonalSettings.DisplayName = user.DisplayName;
             settingsVm.PersonalSettings.DisplayMessage = user.DisplayMessage;
-            settingsVm.PersonalSettings.IdleTimeout = Properties.Settings.Default.IdelTimeout;
         }
 
-        private void SavePersonalSettings()
+        void SaveSettings()
         {
+            settingsVm.Update();
             user.DisplayName = settingsVm.PersonalSettings.DisplayName;
             user.DisplayMessage = settingsVm.PersonalSettings.DisplayMessage;
-            Properties.Settings.Default.IdelTimeout = settingsVm.PersonalSettings.IdleTimeout;
-        }
-
-        private void SaveConnectionSettings()
-        {
-            Properties.Settings.Default.BindToIP = settingsVm.ConnectionSettings.BindToIP;
-            Properties.Settings.Default.ChatPort = settingsVm.ConnectionSettings.ChatPort;
-            Properties.Settings.Default.KeepAliveTime = settingsVm.ConnectionSettings.KeepAliveTime;
-            Properties.Settings.Default.PresencePort = settingsVm.ConnectionSettings.PresencePort;
-        }
-
-        private void SaveGeneralSettings()
-        {
-            Properties.Settings.Default.HideToTray = settingsVm.GeneralSettings.HideToSystemTray;
-            Properties.Settings.Default.ShowPopups = settingsVm.GeneralSettings.ShowPopups;
             SetRunAtStartup(settingsVm.GeneralSettings.RunAtStartup);
+
+            SettingsProvider.Current.Save();
         }
 
         private bool GetRunAtStartup()

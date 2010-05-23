@@ -18,6 +18,21 @@ namespace Squiggle.Chat
             return port;
         }
 
+        public static bool IsEndPointFree(IPEndPoint endpoint)
+        {
+            var listener = new TcpListener(endpoint);
+            try
+            {
+                listener.Start();
+                listener.Stop();
+            }
+            catch (SocketException)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public static IPAddress GetLocalIPAddress()
         {
             var address = GetLocalIPAddresses().FirstOrDefault();

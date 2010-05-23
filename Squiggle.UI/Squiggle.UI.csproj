@@ -168,7 +168,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Settings\ConnectionSettings.cs" />
+    <Compile Include="Settings\GeneralSettings.cs" />
+    <Compile Include="Settings\PersonalSettings.cs" />
+    <Compile Include="Settings\SettingsProvider.cs" />
     <Compile Include="SettingsViewModel.cs" />
+    <Compile Include="Settings\SquiggleSettings.cs" />
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
