@@ -1,7 +1,8 @@
 ﻿<UserControl x:Class="Squiggle.UI.Controls.ChatClientControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:Squiggle.UI.Controls">
+    xmlns:controls="clr-namespace:Squiggle.UI.Controls"
+    Width="200" Height="400">
     <Grid>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup Name="Common">
@@ -36,7 +37,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <controls:SignInControl x:Name="SignIn" Opacity="1"/>
+        <controls:SignInControl x:Name="SignIn" Opacity="1" Width="Auto" Height="Auto" />
         <controls:ContactListControl x:Name="ContactList" Width="Auto" Height="Auto" Opacity="0"/>
     </Grid>
 </UserControl>

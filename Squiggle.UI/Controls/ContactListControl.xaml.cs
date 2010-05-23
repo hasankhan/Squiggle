@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Squiggle.Chat;
+using System.Reflection;
 
 namespace Squiggle.UI.Controls
 {
@@ -66,6 +67,19 @@ namespace Squiggle.UI.Controls
             }
         }
 
+        private void About_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            string about = @"Squiggle Messenger {0} (BETA)
+
+Programmed by:
+Faisal Iqbal
+M. Hasan Khan
+
+Contact:       info@overroot.com
+Website:       www.overroot.com";
+            about = String.Format(about, Assembly.GetExecutingAssembly().GetName().Version.ToString(3));
+            MessageBox.Show(about, "About Squiggle Messenger", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
     }
 
     public class ChatStartEventArgs : EventArgs

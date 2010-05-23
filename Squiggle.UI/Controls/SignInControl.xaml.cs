@@ -13,12 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Squiggle.UI.Controls
-{
-    public class LogInEventArgs : EventArgs
-    {
-        public string UserName { get; set; }
-    }
-
+{   
     /// <summary>
     /// Interaction logic for SignInControl.xaml
     /// </summary>
@@ -52,5 +47,16 @@ namespace Squiggle.UI.Controls
         {
             txtdisplayName.Focus();
         }
+
+        private void SettingsLink_Click(object sender, RequestNavigateEventArgs e)
+        {
+            new SettingsWindow().ShowDialog();
+            e.Handled = true;
+        }
+    }
+
+    public class LogInEventArgs : EventArgs
+    {
+        public string UserName { get; set; }
     }
 }
