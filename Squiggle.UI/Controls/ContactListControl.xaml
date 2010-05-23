@@ -1,10 +1,12 @@
-﻿<UserControl x:Class="Squiggle.UI.Controls.UserInfoControl"
+﻿<UserControl x:Class="Squiggle.UI.Controls.ContactListControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:Squiggle.UI.Controls"
     xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+    xmlns:coll="clr-namespace:System.Collections;assembly=mscorlib"
     xmlns:local="clr-namespace:Squiggle.UI"
-    xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat">    
+    xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat"
+    Width="200" Height="400">
     <UserControl.Resources>
         <local:StatusConverter x:Key="statusConverter" />
         <Style x:Key="ContactInfoToolTipStyle" TargetType="{x:Type ToolTip}">
@@ -63,8 +65,17 @@
                 <DataTrigger Binding="{Binding Status}" Value="Idle">
                     <Setter Property="Background" Value="Orange"/>
                 </DataTrigger>
+                <DataTrigger Binding="{Binding Status}" Value="BeRightBack">
+                    <Setter Property="Background" Value="Orange"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Status}" Value="Away">
+                    <Setter Property="Background" Value="Orange"/>
+                </DataTrigger>
                 <DataTrigger Binding="{Binding Status}" Value="Busy">
                     <Setter Property="Background" Value="Red"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Status}" Value="Offline">
+                    <Setter Property="Background" Value="Gray"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -92,20 +103,6 @@
                 </Grid.RowDefinitions>
                 <StackPanel x:Name="signedInView" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left">
                     <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" Text="{Binding DisplayName}" Foreground="Black" FontSize="16" x:Name="txtLoggedInUser" HorizontalAlignment="Left" />
-                    <!--<ComboBox x:Name="statuses" SelectedValue="{Binding Path=Status}"
-                              ItemsSource="{Binding Source={StaticResource AvailableUserStatus}}"
-                              Background="{StaticResource HeaderBackground}" VerticalAlignment="Bottom" Height="20" Foreground="Black" Grid.Column="1" HorizontalAlignment="Left">
-                        <ComboBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Background="{StaticResource HeaderBackground}"/>
-                            </ItemsPanelTemplate>
-                        </ComboBox.ItemsPanel>
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <ContentPresenter Content="{Binding Converter={StaticResource statusConverter}}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>-->
                     <ComboBox Grid.Column="1" VerticalAlignment="Center" Style="{DynamicResource ComboBoxStyle}" Width="100" SelectedValue="{Binding Path=Status}"
                               Background="Gray" Focusable="False">
                         <ComboBox.ItemsSource>
@@ -147,9 +144,8 @@
             </StackPanel>
             <ItemsControl Margin="5" DataContext="{Binding}" ItemsSource="{Binding Path=Buddies}" >
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate>                        
                         <Border BorderThickness="0.5" Margin="1" Cursor="Hand" Tag="{Binding}" MouseDown="OnMouseDown">
-                            
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="30"/>
@@ -160,12 +156,13 @@
                                     <RowDefinition Height="0.01*"/>
                                 </Grid.RowDefinitions>
                                 <Border ToolTip="{Binding Path=Status}"
-                                            Style="{StaticResource StatusStyle}"/>
-                                <TextBlock Cursor="Hand" 
-                                               Text="{Binding Path=DisplayName}" HorizontalAlignment="Left" Grid.Column="1">                                        
-                                    </TextBlock>
-                                <TextBlock Grid.Row="1" Text="{Binding Path=DisplayMessage}" TextTrimming="WordEllipsis" ToolTip="{Binding Path=DisplayMessage}"  FontSize="10" Foreground="#FF9A9C9D" HorizontalAlignment="Left" Grid.Column="1"/>
-                                
+                                            Style="{StaticResource StatusStyle}"/>                                
+                                <StackPanel HorizontalAlignment="Left" Grid.Column="1"
+                                            Orientation="Horizontal" Margin="5,0,0,0" Cursor="Hand" >
+                                    <TextBlock Text="{Binding Path=DisplayName}" />
+                                    <TextBlock x:Name="buddyStatus" Margin="5,0,0,0" Text="{Binding Path=Status, Converter={StaticResource statusConverter}, StringFormat={}({0})}" />
+                                </StackPanel>
+                                <TextBlock Grid.Row="1" Text="{Binding Path=DisplayMessage}" TextTrimming="WordEllipsis" ToolTip="{Binding Path=DisplayMessage}"  FontSize="10" Foreground="#FF9A9C9D" HorizontalAlignment="Left" Grid.Column="1"/>                                
                             </Grid>
                             <Border.ToolTip>
                                 <ToolTip Placement="Left">
@@ -191,6 +188,14 @@
                                 </ToolTip>
                             </Border.ToolTip>
                         </Border>
+                        <DataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding Status}" Value="Online">
+                                <Setter TargetName="buddyStatus" Property="Visibility" Value="Hidden" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Status}" Value="Offline">
+                                <Setter TargetName="buddyStatus" Property="Visibility" Value="Hidden" />
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

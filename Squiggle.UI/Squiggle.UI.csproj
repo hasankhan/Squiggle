@@ -83,7 +83,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\UserInfoControl.xaml">
+    <Page Include="Controls\ContactListControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -130,8 +130,8 @@
     <Compile Include="Controls\SignInControl.xaml.cs">
       <DependentUpon>SignInControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\UserInfoControl.xaml.cs">
-      <DependentUpon>UserInfoControl.xaml</DependentUpon>
+    <Compile Include="Controls\ContactListControl.xaml.cs">
+      <DependentUpon>ContactListControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="FancyBalloon.xaml.cs">
       <DependentUpon>FancyBalloon.xaml</DependentUpon>

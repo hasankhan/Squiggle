@@ -26,8 +26,8 @@ namespace Squiggle.UI.Controls
     {
         public ClientViewModel ChatContext
         {
-            get { return UserInfo.ChatContext; }
-            set { UserInfo.ChatContext = value; }
+            get { return ContactList.ChatContext; }
+            set { ContactList.ChatContext = value; }
         }
 
         public ChatClientControl()

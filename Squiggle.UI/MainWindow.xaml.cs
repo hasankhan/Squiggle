@@ -28,7 +28,7 @@ namespace Squiggle.UI
            chatWindows = new Dictionary<Buddy, ChatWindow>();
 
            chatControl.SignIn.CredentialsVerfied += new EventHandler<Squiggle.UI.Controls.LogInEventArgs>(OnCredentialsVerfied);
-           chatControl.UserInfo.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(OnStartChat);
+           chatControl.ContactList.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(OnStartChat);
 
             if (!String.IsNullOrEmpty(Properties.Settings.Default.DisplayName))
                 SignIn(Properties.Settings.Default.DisplayName);

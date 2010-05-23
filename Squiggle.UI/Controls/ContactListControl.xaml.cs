@@ -15,16 +15,14 @@ using Squiggle.Chat;
 
 namespace Squiggle.UI.Controls
 {
-    
-    
     /// <summary>
     /// Interaction logic for BuddyList.xaml
     /// </summary>
-    public partial class UserInfoControl : UserControl
+    public partial class ContactListControl : UserControl
     {
         public event EventHandler<ChatStartEventArgs> ChatStart = delegate { };
 
-        public static DependencyProperty ChatContextProperty = DependencyProperty.Register("ChatContext", typeof(ClientViewModel), typeof(UserInfoControl), new PropertyMetadata(null));
+        public static DependencyProperty ChatContextProperty = DependencyProperty.Register("ChatContext", typeof(ClientViewModel), typeof(ContactListControl), new PropertyMetadata(null));
         public ClientViewModel ChatContext
         {
             get { return GetValue(ChatContextProperty) as ClientViewModel; }
@@ -34,7 +32,7 @@ namespace Squiggle.UI.Controls
             }
         } 
 
-        public UserInfoControl()
+        public ContactListControl()
         {
             InitializeComponent();            
         }
