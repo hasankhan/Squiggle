@@ -97,10 +97,71 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="ContactBorderStyle" TargetType="{x:Type Border}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsMouseOver,RelativeSource={RelativeSource TemplatedParent}}" 
+                                 Value="True">
+                    <Setter Property="Background" 
+                                Value="LightGray" />
+                </DataTrigger>
+
+            </Style.Triggers>
+        </Style>
         <ObjectDataProvider MethodName="GetChangableStatuses" 
             ObjectType="{x:Type local:ChatUtil}" 
             x:Key="AvailableUserStatus">
         </ObjectDataProvider>
+        <DataTemplate DataType="{x:Type chat:Buddy}">
+            <Border x:Name="contactBorder" Margin="1" Cursor="Hand" Tag="{Binding}" MouseDown="OnMouseDown">
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="0.01*"/>
+                    </Grid.RowDefinitions>
+                    <Border ToolTip="{Binding Path=Status}"
+                                            Style="{StaticResource StatusStyle}" VerticalAlignment="Center"/>
+                    <StackPanel HorizontalAlignment="Left" Grid.Column="1"
+                                            Orientation="Horizontal" Margin="5,0,0,0" Cursor="Hand" >
+                        <TextBlock Text="{Binding Path=DisplayName}" />
+                        <TextBlock x:Name="buddyStatus" Margin="5,0,0,0" Text="{Binding Path=Status, Converter={StaticResource statusConverter}, StringFormat={}({0})}" />
+                    </StackPanel>
+                    <TextBlock Grid.Row="1" Text="{Binding Path=DisplayMessage}" TextTrimming="WordEllipsis" ToolTip="{Binding Path=DisplayMessage}"  FontSize="10" Foreground="#FF9A9C9D" HorizontalAlignment="Left" Grid.Column="1"/>
+                </Grid>
+                
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Status}" Value="Online">
+                    <Setter TargetName="buddyStatus" Property="Visibility" Value="Hidden" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Status}" Value="Offline">
+                    <Setter TargetName="buddyStatus" Property="Visibility" Value="Hidden" />
+                </DataTrigger>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                <Setter Property="Background" Value="White" 
+                                TargetName="contactBorder"></Setter>
+                            </Trigger>
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                <Setter Property="Background" Value="WhiteSmoke" 
+                                TargetName="contactBorder"></Setter>
+                            </Trigger>
+                <Trigger SourceName="contactBorder" Property="IsMouseOver" Value="True">
+                    <Setter TargetName="contactBorder" Property="Background" >
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFF0F0F0" Offset="0.061"/>
+                                <GradientStop Color="#FFE3E4E4" Offset="0.939"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>                
+            </DataTemplate.Triggers>
+            
+        </DataTemplate>
     </UserControl.Resources>
     <Grid >
         <Grid.RowDefinitions>
@@ -147,73 +208,21 @@
                 <TextBlock VerticalAlignment="Bottom" Grid.Row="1" Grid.ColumnSpan="4" Margin="10,0,0,0" Text="{Binding DisplayMessage}" TextTrimming="WordEllipsis"  Foreground="Black"/>
             </Grid>
         </Border>
-        <StackPanel Orientation="Vertical" Grid.Row="1">
-            <StackPanel Height="25" Orientation="Horizontal">
-                <StackPanel.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#FFF9F9F9" Offset="0.111"/>
-                        <GradientStop Color="#FFE4E4E4" Offset="0.593"/>
-                    </LinearGradientBrush>
-                </StackPanel.Background>
-                
-            </StackPanel>
-            <ItemsControl Margin="5" DataContext="{Binding}" ItemsSource="{Binding Path=Buddies}" >
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>                        
-                        <Border BorderThickness="0.5" Margin="1" Cursor="Hand" Tag="{Binding}" MouseDown="OnMouseDown">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="30"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="0.01*"/>
-                                </Grid.RowDefinitions>
-                                <Border ToolTip="{Binding Path=Status}"
-                                            Style="{StaticResource StatusStyle}"/>                                
-                                <StackPanel HorizontalAlignment="Left" Grid.Column="1"
-                                            Orientation="Horizontal" Margin="5,0,0,0" Cursor="Hand" >
-                                    <TextBlock Text="{Binding Path=DisplayName}" />
-                                    <TextBlock x:Name="buddyStatus" Margin="5,0,0,0" Text="{Binding Path=Status, Converter={StaticResource statusConverter}, StringFormat={}({0})}" />
-                                </StackPanel>
-                                <TextBlock Grid.Row="1" Text="{Binding Path=DisplayMessage}" TextTrimming="WordEllipsis" ToolTip="{Binding Path=DisplayMessage}"  FontSize="10" Foreground="#FF9A9C9D" HorizontalAlignment="Left" Grid.Column="1"/>                                
-                            </Grid>
-                            <Border.ToolTip>
-                                <ToolTip Placement="Left">
-                                    <Border Width="200" Background="#FFF3F3F3">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="0.3*"/>
-                                                <RowDefinition Height="Auto"/>
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="0.3*"/>
-                                                <ColumnDefinition Width="0.7*"/>
-                                            </Grid.ColumnDefinitions>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
+            <StackPanel Orientation="Vertical" >
+                <StackPanel Height="25" Orientation="Horizontal">
+                    <StackPanel.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFF9F9F9" Offset="0.111"/>
+                            <GradientStop Color="#FFE4E4E4" Offset="0.593"/>
+                        </LinearGradientBrush>
+                    </StackPanel.Background>
 
-                                            <TextBlock VerticalAlignment="Top" Text="Contact" Foreground="Black" FontWeight="Bold"/>
-                                            <Image Source="..\Images\man.png" Grid.Row="1"/>
-                                            <StackPanel VerticalAlignment="Center" Orientation="Vertical" Grid.Column="1" Grid.Row="1">
-                                                <TextBlock Foreground="Black" Text="{Binding DisplayName, StringFormat=Display: \{0\}}"/>
-                                                <TextBlock Foreground="Black" Text="{Binding Status, StringFormat=Presence: \{0\}}"/>
-                                            </StackPanel>
-                                        </Grid>
-                                    </Border>
-                                </ToolTip>
-                            </Border.ToolTip>
-                        </Border>
-                        <DataTemplate.Triggers>
-                            <DataTrigger Binding="{Binding Status}" Value="Online">
-                                <Setter TargetName="buddyStatus" Property="Visibility" Value="Hidden" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Status}" Value="Offline">
-                                <Setter TargetName="buddyStatus" Property="Visibility" Value="Hidden" />
-                            </DataTrigger>
-                        </DataTemplate.Triggers>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </StackPanel>
+                </StackPanel>
+                <ItemsControl Margin="5" DataContext="{Binding}" ItemsSource="{Binding Path=Buddies}"  AlternationCount="2" />
+
+            </StackPanel>
+        </ScrollViewer>
+       
     </Grid>
 </UserControl>

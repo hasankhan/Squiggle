@@ -3,7 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <UserControl.Resources>
 
-        <!-- border style -->
         <Style x:Key="BorderStyle" TargetType="{x:Type Border}">
             <Setter Property="BorderBrush" Value="#FFBFCBD8" />
             <Setter Property="BorderThickness" Value="1" />
@@ -12,7 +11,6 @@
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
         </Style>
 
-        <!-- textbox style -->
         <Style x:Key="TextStyle" TargetType="{x:Type TextBox}">
             <Setter Property="Margin" Value="2,1,2,2" />
             <Setter Property="BorderThickness" Value="0" />
@@ -22,7 +20,6 @@
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
 
-        <!-- reset button style -->
         <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
             <Setter Property="Width" Value="60" />
@@ -33,7 +30,6 @@
         </Style>
         </UserControl.Resources>
 
-        <!-- filter control -->
         <Border Style="{StaticResource BorderStyle}">
             <DockPanel>                
                 <Button TabIndex="1" x:Name="btnSend" IsEnabled="False" DockPanel.Dock="Right" Content="Send" ToolTip="Send Message" 
