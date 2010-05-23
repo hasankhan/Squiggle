@@ -32,5 +32,8 @@
     <Setting Name="PresenceAddress" Type="System.String" Scope="User">
       <Value Profile="(Default)">224.10.11.12</Value>
     </Setting>
+    <Setting Name="AutoSignIn" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

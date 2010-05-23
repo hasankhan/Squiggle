@@ -142,5 +142,17 @@ namespace Squiggle.UI.Properties {
                 this["PresenceAddress"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoSignIn {
+            get {
+                return ((bool)(this["AutoSignIn"]));
+            }
+            set {
+                this["AutoSignIn"] = value;
+            }
+        }
     }
 }

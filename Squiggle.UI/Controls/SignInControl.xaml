@@ -38,6 +38,7 @@
                     <StackPanel Orientation="Vertical">
                         <TextBox Margin="5,10,5,0" x:Name="txtdisplayName" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="0.5" />
                         <CheckBox x:Name="chkRememberName" Margin="5,10,0,0" Content="Remember me" HorizontalAlignment="Left"/>
+                        <CheckBox x:Name="chkAutoSignIn" Margin="5,10,0,5" Content="Sign me in automatically" HorizontalAlignment="Left"/>
                     </StackPanel>
                 </Border>
                 <Button HorizontalAlignment="Center" IsDefault="True" Width="60" Height="25" Content="Sign In" Click="SignIn"/>

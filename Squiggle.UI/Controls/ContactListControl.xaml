@@ -27,55 +27,73 @@
             <GradientStop Color="#FFFCFCFD" Offset="0.04"/>
             <GradientStop Color="#FFE5E5F1" Offset="0.99"/>
         </LinearGradientBrush>
-        <LinearGradientBrush x:Key="HeaderBackground1" EndPoint="0.5,1" StartPoint="0.5,0">
-            <GradientStop Color="#FF1C8FB4" Offset="0"/>
-            <GradientStop Color="#FF1F9BBA" Offset="1"/>
-            <GradientStop Color="#FF01448B" Offset="0.517"/>
-        </LinearGradientBrush>
-        <LinearGradientBrush x:Key="HeaderBackground2" EndPoint="0.5,1" StartPoint="0.5,0" MappingMode="RelativeToBoundingBox">
-            <GradientStop Color="#FF3DB2E8" Offset="0.228"/>
-            <GradientStop Color="#FFA0DAF5" Offset="0.591"/>
-            <GradientStop Color="#FF99D7F4" Offset="0.693"/>
-            <GradientStop Color="#FF5BBFED" Offset="0.732"/>
-            <GradientStop Color="#FF40B4EB" Offset="0.895"/>
-        </LinearGradientBrush>
         <LinearGradientBrush x:Key="HeaderBackground" EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FFFCFCFC" Offset="0.087"/>
             <GradientStop Color="#FFECECEC" Offset="0.478"/>
         </LinearGradientBrush>
-        <LinearGradientBrush x:Key="ToolbarBackground1" EndPoint="0.5,1" StartPoint="0.5,0">
-            <GradientStop Color="#FFDEECF6" Offset="0"/>
-            <GradientStop Color="#FFDEEDF4" Offset="1"/>
-            <GradientStop Color="#FFC2DDED" Offset="0.517"/>
+
+        <LinearGradientBrush x:Key="OnlineStatusBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FF70BD68" Offset="0.032"/>
+            <GradientStop Color="#FF58AE58" Offset="0.265"/>
+            <GradientStop Color="#FF3FA63F" Offset="0.297"/>
+            <GradientStop Color="#FF058805" Offset="0.329"/>
+            <GradientStop Color="#FF0BE912" Offset="0.922"/>
         </LinearGradientBrush>
+        
+        <LinearGradientBrush x:Key="IdleStatusBrush" EndPoint="0.5,1" StartPoint="0.5,0" MappingMode="RelativeToBoundingBox">
+            <GradientStop Color="#FFF6CA58" Offset="0.069"/>
+            <GradientStop Color="#FFF6C547" Offset="0.243"/>
+            <GradientStop Color="#FFEDA600" Offset="0.327"/>
+            <GradientStop Color="#FFF6F20B" Offset="0.965"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="BusyStatusBrush" EndPoint="0.5,1" StartPoint="0.5,0" MappingMode="RelativeToBoundingBox">
+            <GradientStop Color="#FFC96A70" Offset="0"/>
+            <GradientStop Color="#FFC95A60" Offset="0.203"/>
+            <GradientStop Color="#FFC04A4F" Offset="0.235"/>
+            <GradientStop Color="#FFA5080B" Offset="0.281"/>
+            <GradientStop Color="#FFC01212" Offset="0.595"/>
+            <GradientStop Color="#FFFF1512" Offset="0.954"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="OfflineStatusBrush" EndPoint="0.5,1" StartPoint="0.5,0" MappingMode="RelativeToBoundingBox">
+            <GradientStop Color="#FFA1A1A1" Offset="0"/>
+            <GradientStop Color="#FFDCCBCC" Offset="0.026"/>
+            <GradientStop Color="#FFA3A3A3" Offset="0.241"/>
+            <GradientStop Color="#FF9F9F9F" Offset="0.281"/>
+            <GradientStop Color="#FF848484" Offset="0.599"/>
+            <GradientStop Color="#FFB7B7B7" Offset="0.954"/>
+        </LinearGradientBrush>
+
         <LinearGradientBrush x:Key="ToolbarBackground" EndPoint="0.5,1" StartPoint="0.5,0" MappingMode="RelativeToBoundingBox">
             <GradientStop Color="#FFEEF6FA" Offset="0"/>
             <GradientStop Color="#FFE4F1F7" Offset="0.9"/>
             <GradientStop Color="#FFE4F1F6" Offset="1"/>
         </LinearGradientBrush>
         <Style x:Key="StatusStyle" TargetType="Border">
-            <Setter Property="Width" Value="10"/>
-            <Setter Property="Height" Value="10"/>
-            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Width" Value="16"/>
+            <Setter Property="Height" Value="16"/>
+            <Setter Property="CornerRadius" Value="8"/>
             <Setter Property="Background" Value="Gray"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Status}" Value="Online">
-                    <Setter Property="Background" Value="Green"/>
+                    <Setter Property="Background" Value="{StaticResource OnlineStatusBrush}" />
+                       
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Status}" Value="Idle">
-                    <Setter Property="Background" Value="Orange"/>
+                    <Setter Property="Background" Value="{StaticResource IdleStatusBrush}"/>                    
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Status}" Value="BeRightBack">
-                    <Setter Property="Background" Value="Orange"/>
+                    <Setter Property="Background" Value="{StaticResource IdleStatusBrush}"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Status}" Value="Away">
-                    <Setter Property="Background" Value="Orange"/>
+                    <Setter Property="Background" Value="{StaticResource IdleStatusBrush}"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Status}" Value="Busy">
-                    <Setter Property="Background" Value="Red"/>
+                    <Setter Property="Background" Value="{StaticResource BusyStatusBrush}"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Status}" Value="Offline">
-                    <Setter Property="Background" Value="Gray"/>
+                    <Setter Property="Background" Value="{StaticResource OfflineStatusBrush}"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -137,10 +155,7 @@
                         <GradientStop Color="#FFE4E4E4" Offset="0.593"/>
                     </LinearGradientBrush>
                 </StackPanel.Background>
-                <Image Cursor="Hand" Source="..\Images\info.png" />
-                <Image Cursor="Hand" Source="..\Images\webcam.png" />
-                <Image Cursor="Hand" Source="..\Images\Distortions.png" />
-                <Image Cursor="Hand" Source="..\Images\itevent.png" />
+                
             </StackPanel>
             <ItemsControl Margin="5" DataContext="{Binding}" ItemsSource="{Binding Path=Buddies}" >
                 <ItemsControl.ItemTemplate>

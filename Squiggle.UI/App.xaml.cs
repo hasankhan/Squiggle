@@ -11,6 +11,8 @@ namespace Messenger
     /// </summary>
     public partial class App : Application
     {
+        public static bool RunInBackground { get; set; }
+
         public App()
         {
             this.DispatcherUnhandledException += new System.Windows.Threading.DispatcherUnhandledExceptionEventHandler(App_DispatcherUnhandledException);
@@ -19,6 +21,12 @@ namespace Messenger
         void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             MessageBox.Show(e.Exception.Message);
+        }
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            if (e.Args.Length > 0)
+                RunInBackground = e.Args[0].Trim() == "/background";
         }
     }
 }

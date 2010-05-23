@@ -36,6 +36,8 @@ namespace Squiggle.UI
 
             PersonalSettings.DisplayMessage = settings.PersonalSettings.DisplayMessage;
             PersonalSettings.DisplayName = settings.PersonalSettings.DisplayName;
+            PersonalSettings.RememberMe = settings.PersonalSettings.RememberMe;
+            PersonalSettings.AutoSignMeIn = settings.PersonalSettings.AutoSignMeIn;
             PersonalSettings.IdleTimeout = settings.PersonalSettings.IdleTimeout;
         }
 
@@ -55,6 +57,8 @@ namespace Squiggle.UI
             settings.PersonalSettings.DisplayMessage = PersonalSettings.DisplayMessage;
             settings.PersonalSettings.DisplayName = PersonalSettings.DisplayName;
             settings.PersonalSettings.IdleTimeout = PersonalSettings.IdleTimeout;
+            settings.PersonalSettings.RememberMe = PersonalSettings.RememberMe;
+            settings.PersonalSettings.AutoSignMeIn = PersonalSettings.AutoSignMeIn;
         }
     }
 
@@ -62,7 +66,9 @@ namespace Squiggle.UI
     {
         public string DisplayName { get; set; }
         public string DisplayMessage { get; set; }
-        public int IdleTimeout { get; set; }        
+        public int IdleTimeout { get; set; }
+        public bool RememberMe { get; set; }
+        public bool AutoSignMeIn { get; set; }
     }
 
     class GeneralSettingsViewModel

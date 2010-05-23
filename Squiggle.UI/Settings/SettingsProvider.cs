@@ -37,6 +37,8 @@ namespace Squiggle.UI.Settings
             SaveGeneralSettings();
             SavePersonalSettings();
             SaveConnectionSettings();
+
+            Properties.Settings.Default.Save();
         }
 
         private void LoadConnectionSettings()
@@ -61,15 +63,20 @@ namespace Squiggle.UI.Settings
 
         private void LoadPersonalSettings()
         {
-            Settings.PersonalSettings.DisplayName = Properties.Settings.Default.DisplayName;
-            Settings.PersonalSettings.DisplayMessage = Properties.Settings.Default.DisplayMessage;
+            Settings.PersonalSettings.RememberMe = !String.IsNullOrEmpty(Properties.Settings.Default.DisplayName);
+            Settings.PersonalSettings.AutoSignMeIn = Properties.Settings.Default.AutoSignIn;
             Settings.PersonalSettings.IdleTimeout = Properties.Settings.Default.IdleTimeout;
         }
 
         private void SavePersonalSettings()
         {
-            Properties.Settings.Default.DisplayName = Settings.PersonalSettings.DisplayName;
-            Properties.Settings.Default.DisplayMessage = Settings.PersonalSettings.DisplayMessage;
+            Properties.Settings.Default.DisplayName = Settings.PersonalSettings.RememberMe ?
+                                                                    Settings.PersonalSettings.DisplayName : String.Empty;
+
+            Properties.Settings.Default.DisplayMessage = Settings.PersonalSettings.RememberMe ?
+                                                                    Settings.PersonalSettings.DisplayMessage : String.Empty;
+    
+            Properties.Settings.Default.AutoSignIn = Settings.PersonalSettings.AutoSignMeIn;
             Properties.Settings.Default.IdleTimeout = Settings.PersonalSettings.IdleTimeout;
         }
 

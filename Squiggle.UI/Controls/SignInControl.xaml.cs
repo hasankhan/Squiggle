@@ -41,6 +41,8 @@ namespace Squiggle.UI.Controls
             else
                 Properties.Settings.Default.DisplayName = String.Empty;
 
+            Properties.Settings.Default.AutoSignIn = chkAutoSignIn.IsChecked.HasValue && chkAutoSignIn.IsChecked.Value;
+
             Properties.Settings.Default.Save();
 
             CredentialsVerfied(this, new LogInEventArgs() { UserName = txtdisplayName.Text.Trim() });

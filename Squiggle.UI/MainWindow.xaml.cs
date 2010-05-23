@@ -6,6 +6,7 @@ using System.Net;
 using System.Linq;
 using System.Windows.Threading;
 using Squiggle.UI.Settings;
+using Messenger;
 
 namespace Squiggle.UI
 {
@@ -33,12 +34,9 @@ namespace Squiggle.UI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            string name = SettingsProvider.Current.Settings.PersonalSettings.DisplayName;
-            chatControl.SignIn.txtdisplayName.Text = name;
-            chatControl.SignIn.txtdisplayName.SelectAll();
-            if (!String.IsNullOrEmpty(name))
-                chatControl.SignIn.chkRememberName.IsChecked = true;
+            
             this.StateChanged += new EventHandler(Window_StateChanged);
+            
         }   
 
         void OnCredentialsVerfied(object sender, Squiggle.UI.Controls.LogInEventArgs e)
@@ -125,6 +123,7 @@ namespace Squiggle.UI
             signoutMenu.IsEnabled = statusMenu.IsEnabled = true;
             CreateMonitor();
             clientViewModel = new ClientViewModel(chatClient);
+            clientViewModel.LoggedInUser.DisplayMessage = Properties.Settings.Default.DisplayMessage;
             this.DataContext = clientViewModel;
             chatControl.ChatContext = clientViewModel;
 
@@ -227,6 +226,23 @@ namespace Squiggle.UI
             window.Show();
             if (focused)
                 window.Activate();
+        }
+
+        private void Window_Initialized(object sender, EventArgs e)
+        {
+            string name = Properties.Settings.Default.DisplayName;
+            if (!String.IsNullOrEmpty(name) && Properties.Settings.Default.AutoSignIn)
+                SignIn(name);
+            else
+            {
+                chatControl.SignIn.txtdisplayName.Text = name;
+                chatControl.SignIn.txtdisplayName.SelectAll();
+                if (!String.IsNullOrEmpty(name))
+                    chatControl.SignIn.chkRememberName.IsChecked = true;
+            }
+
+            if (App.RunInBackground)
+                this.Hide();
         }
     }
 }

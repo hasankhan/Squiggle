@@ -75,6 +75,7 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" MinHeight="32" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="210*" />
@@ -89,6 +90,8 @@
                                     <TextBox  Width="80" HorizontalAlignment="Left" Text="{Binding Path=PersonalSettings.IdleTimeout}" Margin="0,0,0,5" />
                                     <TextBlock Margin="5,0,0,0">mins</TextBlock>
                                 </StackPanel>
+                                <CheckBox Content="Remember my display name and message" IsChecked="{Binding Path=PersonalSettings.RememberMe}" Grid.Row="7" Grid.ColumnSpan="2" Margin="5,5,0,0"/>
+                                <CheckBox Content="Automatically sign me in" Grid.Row="8" IsChecked="{Binding Path=PersonalSettings.AutoSignMeIn}" Grid.ColumnSpan="2" Margin="5,5,0,0"/>
                             </Grid>
                         </Grid>
                     </Border>
