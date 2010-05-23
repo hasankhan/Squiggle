@@ -49,16 +49,6 @@ namespace Squiggle.UI
             CreateChatWindow(e.Buddy, e.Message, e.Chat, false);
         }       
 
-        private void SignIn(string displayName)
-        {
-            InitializeClient(displayName);
-            clientViewModel = new ClientViewModel(chatClient);
-            this.DataContext = clientViewModel;
-            chatControl.ChatContext = clientViewModel;
-
-            VisualStateManager.GoToState(chatControl, "OnlineState", true);
-        }        
-
         void chatClient_BuddyOnline(object sender, BuddyOnlineEventArgs e)
         {
             if (!e.Discovered)
@@ -73,12 +63,6 @@ namespace Squiggle.UI
         void StartChat(Buddy buddy)
         {
             CreateChatWindow(buddy, String.Empty, buddy.StartChat(), true);
-        }
-
-        void InitializeClient(string displayName)
-        {
-            chatClient = CreateClient(displayName);
-            CreateMonitor();
         }
 
         private void trayIcon_TrayLeftMouseDown(object sender, RoutedEventArgs e)
@@ -103,6 +87,49 @@ namespace Squiggle.UI
                 window.Close();
         }
 
+        private void StatusMenu_Click(object sender, RoutedEventArgs e)
+        {
+            var status = (UserStatus)((System.Windows.Controls.MenuItem)e.OriginalSource).DataContext;
+            clientViewModel.LoggedInUser.Status = status;
+        }
+
+        private void OpenMenu_Click(object sender, RoutedEventArgs e)
+        {
+            RestoreWindow();
+        }
+
+        private void QuiteMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void SignOutMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SignOut();
+        }   
+
+        private void SignIn(string displayName)
+        {
+            signoutMenu.IsEnabled = statusMenu.IsEnabled = true;            
+            chatClient = CreateClient(displayName);
+            CreateMonitor();
+            clientViewModel = new ClientViewModel(chatClient);
+            this.DataContext = clientViewModel;
+            chatControl.ChatContext = clientViewModel;
+
+            VisualStateManager.GoToState(chatControl, "OnlineState", true);
+        }
+
+        private void SignOut()
+        {
+            signoutMenu.IsEnabled = statusMenu.IsEnabled = false;
+            DestroyMonitor();
+            chatClient.Logout();
+            clientViewModel = null;
+            this.DataContext = null;
+            VisualStateManager.GoToState(chatControl, "OfflineState", true);
+        }
+
         void CreateMonitor()
         {
             if (activityMonitor != null)
@@ -123,6 +150,15 @@ namespace Squiggle.UI
             };
             activityMonitor.Start();
         }
+
+        private void DestroyMonitor()
+        {
+            if (activityMonitor != null)
+            {
+                activityMonitor.Dispose();
+                activityMonitor = null;
+            }
+        }        
 
         IChatClient CreateClient(string displayName)
         {
@@ -166,6 +202,6 @@ namespace Squiggle.UI
             window.Show();
             if (focused)
                 window.Activate();
-        }   
+        }
     }
 }

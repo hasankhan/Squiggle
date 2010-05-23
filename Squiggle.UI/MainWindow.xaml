@@ -17,8 +17,8 @@
         <tray:TaskbarIcon IconSource="/Images/Squiggle.ico" TrayLeftMouseDown="trayIcon_TrayLeftMouseDown" x:Name="trayIcon">
             <tray:TaskbarIcon.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Open" />
-                    <MenuItem Header="Change Status" 
+                    <MenuItem Header="Open" Click="OpenMenu_Click" />
+                    <MenuItem Header="Change Status" MenuItem.Click="StatusMenu_Click" x:Name="statusMenu" IsEnabled="False"
                               ItemsSource="{Binding Source={StaticResource AvailableUserStatus}}">
                         <MenuItem.ItemTemplate>
                             <DataTemplate>
@@ -26,7 +26,8 @@
                             </DataTemplate>
                         </MenuItem.ItemTemplate>
                     </MenuItem>
-                    <MenuItem Header="Quit" />
+                    <MenuItem Header="Sign Out" x:Name="signoutMenu" Click="SignOutMenu_Click" IsEnabled="False" />
+                    <MenuItem Header="Quit" Click="QuiteMenu_Click" />
                 </ContextMenu>
             </tray:TaskbarIcon.ContextMenu>
         </tray:TaskbarIcon>

@@ -31,7 +31,6 @@ namespace Squiggle.UI.Controls
             set 
             {
                 SetValue(ChatContextProperty, value);
-                //displayMessageBox.SelfUser = value.LoggedInUser;
             }
         } 
 
