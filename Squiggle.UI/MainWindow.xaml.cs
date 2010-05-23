@@ -1,21 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Squiggle.Chat;
 using System.Net;
-using System.ComponentModel;
-using System.Threading;
-using StackOverflowClient;
-using System.Windows.Controls.Primitives;
+using System.Linq;
 using System.Windows.Threading;
 
 namespace Squiggle.UI
@@ -31,10 +19,13 @@ namespace Squiggle.UI
         UserActivityMonitor activityMonitor;
         UserStatus lastStatus;
         IPAddress presenceAddress = IPAddress.Parse("224.10.11.12");
+        Dictionary<Buddy, ChatWindow> chatWindows;
 
         public MainWindow()
         {
            InitializeComponent();
+
+           chatWindows = new Dictionary<Buddy, ChatWindow>();
 
            chatControl.SignIn.CredentialsVerfied += new EventHandler<Squiggle.UI.Controls.LogInEventArgs>(OnCredentialsVerfied);
            chatControl.UserInfo.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(OnStartChat);
@@ -56,19 +47,7 @@ namespace Squiggle.UI
         void chatClient_ChatStarted(object sender, ChatStartedEventArgs e)
         {
             CreateChatWindow(e.Buddy, e.Message, e.Chat, false);
-        }
-
-        static void CreateChatWindow(Buddy buddy, string message, IChat session, bool focused)
-        {
-            ChatWindow window = new ChatWindow(buddy, message);
-            window.Title = buddy.DisplayName;
-            window.DataContext = session;
-            if (!focused)
-                window.WindowState = WindowState.Minimized;
-            window.Show();
-            if (focused)
-                window.Activate();
-        }   
+        }       
 
         private void SignIn(string displayName)
         {
@@ -91,7 +70,7 @@ namespace Squiggle.UI
             StartChat(e.User);
         }
 
-        static void StartChat(Buddy buddy)
+        void StartChat(Buddy buddy)
         {
             CreateChatWindow(buddy, String.Empty, buddy.StartChat(), true);
         }
@@ -100,6 +79,28 @@ namespace Squiggle.UI
         {
             chatClient = CreateClient(displayName);
             CreateMonitor();
+        }
+
+        private void trayIcon_TrayLeftMouseDown(object sender, RoutedEventArgs e)
+        {
+            if (this.Visibility == Visibility.Visible)
+                this.Hide();
+            else
+                RestoreWindow();
+        }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            if (this.WindowState == System.Windows.WindowState.Minimized)
+                this.Visibility = System.Windows.Visibility.Hidden;
+            else
+                lastState = this.WindowState;
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            foreach (var window in chatWindows.Values.ToList())
+                window.Close();
         }
 
         void CreateMonitor()
@@ -125,7 +126,7 @@ namespace Squiggle.UI
 
         IChatClient CreateClient(string displayName)
         {
-            int chatPort = NetworkUtility.GetFreePort();            
+            int chatPort = NetworkUtility.GetFreePort();
             IPAddress localIP = NetworkUtility.GetLocalIPAddress();
             TimeSpan keepAliveTimeout = 2.Seconds();
             var chatEndPoint = new IPEndPoint(localIP, chatPort);
@@ -148,25 +149,23 @@ namespace Squiggle.UI
                 }));
         }
 
-        private void trayIcon_TrayLeftMouseDown(object sender, RoutedEventArgs e)
+        void CreateChatWindow(Buddy buddy, string message, IChat session, bool focused)
         {
-            if (this.Visibility == Visibility.Visible)
-                this.Hide();
-            else
-                RestoreWindow();
-        }
+            ChatWindow window;
 
-        private void Window_StateChanged(object sender, EventArgs e)
-        {
-            if (this.WindowState == System.Windows.WindowState.Minimized)
-                this.Visibility = System.Windows.Visibility.Hidden;
-            else
-                lastState = this.WindowState;
-        }
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            Environment.Exit(0);
-        }
+            if (!chatWindows.TryGetValue(buddy, out window))
+            {
+                window = new ChatWindow(buddy, message);
+                window.Title = buddy.DisplayName;
+                window.Closed += (sender, e) => chatWindows.Remove(buddy);
+                chatWindows.Add(buddy, window);
+            }
+            window.DataContext = session;
+            if (!focused)
+                window.WindowState = WindowState.Minimized;
+            window.Show();
+            if (focused)
+                window.Activate();
+        }   
     }
 }

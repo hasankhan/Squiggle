@@ -68,12 +68,19 @@ namespace Squiggle.UI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            this.KeyDown += new KeyEventHandler(ChatWindow_KeyDown);
             chatSession = this.DataContext as IChat;
             chatSession.MessageReceived += new EventHandler<ChatMessageReceivedEventArgs>(chatSession_MessageReceived);
             chatSession.BuddyJoined += new EventHandler<BuddyEventArgs>(chatSession_BuddyJoined);
             chatSession.BuddyLeft += new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
             chatSession.MessageFailed += new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
             chatSession.BuddyTyping += new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
+        }
+
+        void ChatWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+                Close();
         }
 
         void chatSession_BuddyTyping(object sender, BuddyEventArgs e)
