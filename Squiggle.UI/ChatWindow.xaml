@@ -3,7 +3,7 @@
     xmlns:controls="clr-namespace:Squiggle.UI.Controls"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="ChatWindow" Height="502" Width="654" FocusManager.FocusedElement="{Binding ElementName=txtMessage}"
-        Loaded="Window_Loaded" Closed="Window_Closed">
+        Loaded="Window_Loaded" Closed="Window_Closed" Icon="/Squiggle;component/Images/Squiggle.ico">
     <Grid Background="#FFF3F3F3" Focusable="True" FocusManager.IsFocusScope="True">
         <Grid Margin="10">
         <Grid.RowDefinitions>

@@ -52,16 +52,14 @@ namespace Squiggle.Chat.Services.Chat
             IChatSession session;
             if (!chatSessions.TryGetValue(endPoint, out session))
             {
-                Uri uri = CreateServiceUri(endPoint.ToString());
-                var binding = new NetTcpBinding();
-                IChatHost remoteHost = new ChatHostProxy(binding, new EndpointAddress(uri));
+                IChatHost remoteHost = CreateChatProxy(endPoint);
                 ChatSession temp = new ChatSession(chatHost, remoteHost, localEndPoint, endPoint);
                 temp.SessionEnded += (sender, e) => chatSessions.Remove(temp.RemoteUser);
                 session = temp;
                 this.chatSessions.Add(endPoint, session);
             }
             return session;
-        }
+        }        
 
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
 
@@ -80,6 +78,14 @@ namespace Squiggle.Chat.Services.Chat
         {
             var uri = new Uri("net.tcp://" + address + "/squiggle");
             return uri;
+        }
+
+        static IChatHost CreateChatProxy(IPEndPoint endPoint)
+        {
+            Uri uri = CreateServiceUri(endPoint.ToString());
+            var binding = new NetTcpBinding();
+            IChatHost remoteHost = new ChatHostProxy(binding, new EndpointAddress(uri));
+            return remoteHost;
         }
     }
 }

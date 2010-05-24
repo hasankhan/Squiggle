@@ -60,7 +60,10 @@ namespace Squiggle.Chat.Services.Presence
         void channel_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
             if (e.Message is LoginMessage)
+            {
                 OnLoginMessage((LoginMessage)e.Message, false);
+                SayHi();
+            }
             else if (e.Message is LogoutMessage)
                 OnLogoutMessage((LogoutMessage)e.Message);
             else if (e.Message is HiMessage)
@@ -108,7 +111,6 @@ namespace Squiggle.Chat.Services.Presence
             }
             else
                 OnUserOffline(newUser.ChatEndPoint);
-            SayHi();
         }
 
         void OnUserUpdated(UserInfo newUser)

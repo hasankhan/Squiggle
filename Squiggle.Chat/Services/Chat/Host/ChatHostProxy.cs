@@ -44,16 +44,27 @@ namespace Squiggle.Chat.Services.Chat.Host
 
         public void UserIsTyping(IPEndPoint user)
         {
+            EnsureConnection();
             base.Channel.UserIsTyping(user);
             Trace.WriteLine("Sending typing notification to: " + user.ToString());
-        }
+        }        
 
         public void ReceiveMessage(IPEndPoint user, string message)
         {
+            EnsureConnection();
             base.Channel.ReceiveMessage(user, message);
             Trace.WriteLine("Sending message to:" + user.ToString() + ", message = " + message);
         }
 
         #endregion
+
+        void EnsureConnection()
+        {
+            if (State == CommunicationState.Faulted || State == CommunicationState.Closed)
+            {
+                this.Close();
+                this.Open();
+            }
+        }
     }
 }

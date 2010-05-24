@@ -73,6 +73,7 @@ namespace StackOverflowClient
     /// </summary>
     private void imgClose_MouseDown(object sender, MouseButtonEventArgs e)
     {
+        e.Handled = true;
         Close();
     }
 
