@@ -13,7 +13,7 @@
         <TextBlock x:Name="txtUserLeftMessage" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="#FFFFFFE1" Visibility="Hidden"/>
         <Border BorderBrush="LightGray" BorderThickness="1">
             <ScrollViewer x:Name="scrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <TextBlock Padding="10" Background="White" TextWrapping="Wrap" x:Name="sentMessages" />
+                <RichTextBox Padding="10" Background="White" IsReadOnly="True" x:Name="sentMessages" />
             </ScrollViewer>
         </Border>
         <Border Grid.Row="2" >

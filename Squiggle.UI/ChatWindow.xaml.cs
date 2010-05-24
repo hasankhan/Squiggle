@@ -31,6 +31,7 @@ namespace Squiggle.UI
         {
             InitializeComponent();
             flash = new FlashForm(this);
+            sentMessages.Document = new FlowDocument();
 
             statusResetTimer = new DispatcherTimer();
             statusResetTimer.Interval = TimeSpan.FromSeconds(5);
@@ -60,9 +61,10 @@ namespace Squiggle.UI
         {
             var title = new Bold(new Run(user+": "));
             var text = new Run(message);
-            sentMessages.Inlines.Add(title);
-            sentMessages.Inlines.Add(text);
-            sentMessages.Inlines.Add(new Run("\r\n"));
+            Paragraph para = new Paragraph();
+            para.Inlines.Add(title);
+            para.Inlines.Add(text);
+            sentMessages.Document.Blocks.Add(para);
             scrollViewer.ScrollToBottom();
         }
 
@@ -112,9 +114,13 @@ namespace Squiggle.UI
             else
             {
                 var text = new Run("Following message could not be sent due to error: " + e.Exception.Message);
-                sentMessages.Inlines.Add(text);
-                sentMessages.Inlines.Add(new Run("\r\n\t"));
-                sentMessages.Inlines.Add(e.Message);
+                var para = new Paragraph();
+
+                para.Inlines.Add(text);
+                para.Inlines.Add(new Run("\r\n\t"));
+                para.Inlines.Add(e.Message);
+
+                sentMessages.Document.Blocks.Add(para);
                 scrollViewer.ScrollToBottom();
             }
         }
