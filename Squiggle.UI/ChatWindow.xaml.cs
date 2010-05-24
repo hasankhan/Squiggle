@@ -41,7 +41,7 @@ namespace Squiggle.UI
         void ChatWindow_Activated(object sender, EventArgs e)
         {
             flash.Stop();
-            Dispatcher.BeginInvoke(new Action(() => editMessageBox.GetFocus()));
+            Application.Current.Dispatcher.BeginInvoke(new Action(() => editMessageBox.GetFocus()));
         }
 
         public ChatWindow(Buddy buddy, string firstMessage) : this()
@@ -85,29 +85,67 @@ namespace Squiggle.UI
 
         void chatSession_BuddyTyping(object sender, BuddyEventArgs e)
         {
-            ChangeStatus(String.Format("{0} is typing", e.Buddy.DisplayName));
-            statusResetTimer.Stop();
-            statusResetTimer.Start();
+            OnBuddyTyping(e);
+        }
+
+        private void OnBuddyTyping(BuddyEventArgs e)
+        {
+            if (!Application.Current.Dispatcher.CheckAccess())
+                Application.Current.Dispatcher.BeginInvoke(new Action(() => OnBuddyTyping(e)));
+            else
+            {
+                ChangeStatus(String.Format("{0} is typing", e.Buddy.DisplayName));
+                statusResetTimer.Stop();
+                statusResetTimer.Start();
+            }
         }
 
         void chatSession_MessageFailed(object sender, MessageFailedEventArgs e)
         {
-            var text = new Run("Following message could not be sent due to error: " + e.Exception.Message);
-            sentMessages.Inlines.Add(text);
-            sentMessages.Inlines.Add(new Run("\r\n\t"));
-            sentMessages.Inlines.Add(e.Message);
-            scrollViewer.ScrollToBottom();
+            OnMessageFailed(e);
+        }
+
+        private void OnMessageFailed(MessageFailedEventArgs e)
+        {
+            if (!Application.Current.Dispatcher.CheckAccess())
+                Application.Current.Dispatcher.BeginInvoke(new Action(() => OnMessageFailed(e)));
+            else
+            {
+                var text = new Run("Following message could not be sent due to error: " + e.Exception.Message);
+                sentMessages.Inlines.Add(text);
+                sentMessages.Inlines.Add(new Run("\r\n\t"));
+                sentMessages.Inlines.Add(e.Message);
+                scrollViewer.ScrollToBottom();
+            }
         }
 
         void chatSession_BuddyLeft(object sender, BuddyEventArgs e)
         {
-            txtUserLeftMessage.Text = e.Buddy.DisplayName + " has left the chat.";
-            txtUserLeftMessage.Visibility = Visibility.Visible;
+            OnBuddyLeft(e);
+        }
+
+        private void OnBuddyLeft(BuddyEventArgs e)
+        {
+            if (!Application.Current.Dispatcher.CheckAccess())
+                Application.Current.Dispatcher.BeginInvoke(new Action(() => OnBuddyLeft(e)));
+            else
+            {
+                txtUserLeftMessage.Text = e.Buddy.DisplayName + " has left the chat.";
+                txtUserLeftMessage.Visibility = Visibility.Visible;
+            }
         }
 
         void chatSession_BuddyJoined(object sender, BuddyEventArgs e)
         {
-            txtUserLeftMessage.Visibility = Visibility.Hidden;            
+            OnBuddyJoined();          
+        }
+
+        void OnBuddyJoined()
+        {
+            if (!Application.Current.Dispatcher.CheckAccess())
+                Application.Current.Dispatcher.BeginInvoke(new Action(OnBuddyJoined));
+            else
+                txtUserLeftMessage.Visibility = Visibility.Hidden;
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -117,11 +155,16 @@ namespace Squiggle.UI
 
         void OnMessageReceived(Buddy buddy, string message)
         {
-            lastMessageReceived = DateTime.Now;
-            WriteMessage(buddy.DisplayName, message);
-            ResetStatus();
-            if (!this.IsActive)
-                flash.Start();
+            if (!Application.Current.Dispatcher.CheckAccess())
+                Application.Current.Dispatcher.BeginInvoke(new Action(() => OnMessageReceived(buddy, message)));
+            else
+            {
+                lastMessageReceived = DateTime.Now;
+                WriteMessage(buddy.DisplayName, message);
+                ResetStatus();
+                if (!this.IsActive)
+                    flash.Start();
+            }
         }        
 
         private void txtMessage_PreviewKeyDown(object sender, KeyEventArgs e)
