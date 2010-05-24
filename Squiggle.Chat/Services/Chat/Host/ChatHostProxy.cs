@@ -62,7 +62,7 @@ namespace Squiggle.Chat.Services.Chat.Host
         {
             if (State == CommunicationState.Faulted || State == CommunicationState.Closed)
             {
-                this.Close();
+                this.Abort();
                 this.Open();
             }
         }

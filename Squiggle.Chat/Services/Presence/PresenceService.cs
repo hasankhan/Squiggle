@@ -75,6 +75,7 @@ namespace Squiggle.Chat.Services.Presence
 
         void discovery_UserUpdated(object sender, UserEventArgs e)
         {
+            keepAlive.HeIsAlive(e.User);
             UserUpdated(this, e);
         }
 

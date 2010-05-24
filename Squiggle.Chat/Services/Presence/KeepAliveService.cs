@@ -67,6 +67,19 @@ namespace Squiggle.Chat.Services.Presence
             lostUsers.Remove(user);
         }
 
+        public void HeIsGone(UserInfo user)
+        {
+            lock (aliveUsers)
+                aliveUsers.Remove(user);
+        }
+
+        public void HeIsAlive(UserInfo user)
+        {
+            lock (aliveUsers)
+                aliveUsers[user] = DateTime.Now;
+            lostUsers.Remove(user);
+        }
+
         public void Stop()
         {
             lostUsers.Clear();
@@ -108,20 +121,7 @@ namespace Squiggle.Chat.Services.Presence
                         gone.Add(pair.Key);
                 return gone; 
             }
-        }
-
-        void HeIsGone(UserInfo user)
-        {
-            lock (aliveUsers)
-                aliveUsers.Remove(user); 
-        }
-
-        void HeIsAlive(UserInfo user)
-        {
-            lock (aliveUsers)
-                aliveUsers[user] = DateTime.Now;
-            lostUsers.Remove(user);
-        }
+        }        
 
         #region IDisposable Members
 

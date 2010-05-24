@@ -115,7 +115,7 @@ namespace Squiggle.Chat.Services.Presence
 
         void OnUserUpdated(UserInfo newUser)
         {
-            var oldUser = onlineUsers.First(u => u.Equals(newUser));
+            var oldUser = onlineUsers.FirstOrDefault(u => u.Equals(newUser));
             if (oldUser != null)
             {
                 oldUser.Update(newUser);
