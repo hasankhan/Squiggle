@@ -41,6 +41,12 @@ namespace Squiggle.UI.Settings
             Properties.Settings.Default.Save();
         }
 
+        public void Update(Action<SquiggleSettings> updateAction)
+        {
+            updateAction(Settings);
+            Save();
+        }
+
         private void LoadConnectionSettings()
         {
             Settings.ConnectionSettings.BindToIP = Properties.Settings.Default.BindToIP;

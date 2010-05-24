@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Net;
+using System.Diagnostics;
 
 namespace Squiggle.Chat.Services.Presence.Transport
 {
@@ -16,21 +17,22 @@ namespace Squiggle.Chat.Services.Presence.Transport
         IPEndPoint receiveEndPoint;
         IPEndPoint multicastEndPoint;
         Guid channelID = Guid.NewGuid();
+        bool started;
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
 
         public PresenceChannel(IPEndPoint multicastEndPoint)
         {
             receiveEndPoint = new IPEndPoint(IPAddress.Any, multicastEndPoint.Port);
-            this.multicastEndPoint = multicastEndPoint;
-
-            client = new UdpClient();
-            client.DontFragment = true;
-            client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            this.multicastEndPoint = multicastEndPoint;            
         }
 
         public void Start()
-        {            
+        {
+            started = true;
+            client = new UdpClient();
+            client.DontFragment = true;
+            client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             client.Client.Bind(receiveEndPoint);
             client.JoinMulticastGroup(multicastEndPoint.Address);
             BeginReceive();
@@ -38,6 +40,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
 
         public void Stop()
         {
+            started = false;
             client.Close();
         }
 
@@ -50,28 +53,38 @@ namespace Squiggle.Chat.Services.Presence.Transport
 
         void OnReceive(IAsyncResult ar)
         {
+            byte[] data = null;
+            IPEndPoint remoteEndPoint = null;
             try
             {
-                IPEndPoint remoteEndPoint = null;
-                byte[] data = client.EndReceive(ar, ref remoteEndPoint);
-                var message = Message.Deserialize(data);
-                BeginReceive();
-                if (!message.ChannelID.Equals(channelID))
-                {
-                    var args = new MessageReceivedEventArgs()
-                    {
-                        Message = message,
-                        Sender = remoteEndPoint
-                    };
-                    MessageReceived(this, args);
-                }
+                data = client.EndReceive(ar, ref remoteEndPoint);
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
+            }            
+
+            BeginReceive();
+            
+            if (data == null)
+                return;
+
+            var message = Message.Deserialize(data);                
+            if (!message.ChannelID.Equals(channelID))
+            {
+                var args = new MessageReceivedEventArgs()
+                {
+                    Message = message,
+                    Sender = remoteEndPoint
+                };
+                MessageReceived(this, args);
+            }            
         }
 
         void BeginReceive()
         {
-            client.BeginReceive(OnReceive, null);
+            if (started)
+                client.BeginReceive(OnReceive, null);
         }
     }
 }

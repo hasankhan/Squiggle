@@ -34,8 +34,7 @@ namespace Squiggle.Chat.Services.Chat
             localEndPoint = endpoint;
             serviceHost = new ServiceHost(chatHost);
             var address = CreateServiceUri(endpoint.ToString());
-            var binding = new NetTcpBinding();
-            binding.Security.Mode = SecurityMode.None;
+            var binding = new NetTcpBinding(SecurityMode.None);
             serviceHost.AddServiceEndpoint(typeof(IChatHost), binding, address);
             serviceHost.Open();
         }        
@@ -85,8 +84,7 @@ namespace Squiggle.Chat.Services.Chat
         static IChatHost CreateChatProxy(IPEndPoint endPoint)
         {
             Uri uri = CreateServiceUri(endPoint.ToString());
-            var binding = new NetTcpBinding();
-            binding.Security.Mode = SecurityMode.None;
+            var binding = new NetTcpBinding(SecurityMode.None);
             IChatHost remoteHost = new ChatHostProxy(binding, new EndpointAddress(uri));
             return remoteHost;
         }

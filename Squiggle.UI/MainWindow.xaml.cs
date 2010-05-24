@@ -124,7 +124,7 @@ namespace Squiggle.UI
             signoutMenu.IsEnabled = statusMenu.IsEnabled = true;
             CreateMonitor();
             clientViewModel = new ClientViewModel(chatClient);
-            clientViewModel.LoggedInUser.DisplayMessage = Properties.Settings.Default.DisplayMessage;
+            clientViewModel.LoggedInUser.DisplayMessage = SettingsProvider.Current.Settings.PersonalSettings.DisplayMessage;
             this.DataContext = clientViewModel;
             chatControl.ChatContext = clientViewModel;
 
@@ -140,6 +140,7 @@ namespace Squiggle.UI
             clientViewModel = null;
             this.DataContext = null;
             VisualStateManager.GoToState(chatControl, "OfflineState", true);
+            chatControl.SignIn.txtdisplayName.Text = SettingsProvider.Current.Settings.PersonalSettings.DisplayName;
         }
 
         void CreateMonitor()
@@ -232,8 +233,9 @@ namespace Squiggle.UI
 
         private void Window_Initialized(object sender, EventArgs e)
         {
-            string name = Properties.Settings.Default.DisplayName;
-            if (!String.IsNullOrEmpty(name) && Properties.Settings.Default.AutoSignIn)
+            var settings = SettingsProvider.Current.Settings;
+            string name = settings.PersonalSettings.DisplayName;
+            if (!String.IsNullOrEmpty(name) && settings.PersonalSettings.AutoSignMeIn)
                 SignIn(name);
             else
             {

@@ -82,6 +82,7 @@ namespace Squiggle.Chat.Services.Presence
 
         public void Stop()
         {
+            channel.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
             lostUsers.Clear();
             aliveUsers.Clear();
 

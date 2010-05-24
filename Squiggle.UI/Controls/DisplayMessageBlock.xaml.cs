@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Squiggle.Chat;
+using Squiggle.UI.Settings;
 
 namespace Squiggle.UI.Controls
 {
@@ -26,7 +27,7 @@ namespace Squiggle.UI.Controls
         public Buddy SelfUser 
         {
             get { return self; }
-            set { self = value; ShowDsiplayMessage(); }
+            set { self = value; ShowDisplayMessage(); }
         }
        
         public DisplayMessageBlock()
@@ -49,8 +50,7 @@ namespace Squiggle.UI.Controls
         {
             SelfUser.DisplayMessage = txtDisplayMessage.Text;
 
-            Properties.Settings.Default.DisplayMessage = txtDisplayMessage.Text;
-            Properties.Settings.Default.Save();
+            SettingsProvider.Current.Update(s => s.PersonalSettings.DisplayName = txtDisplayMessage.Text);
 
             if (txtDisplayMessage.Text.Trim() == String.Empty)
                 emptyMessageView.Visibility = Visibility.Visible;
@@ -60,11 +60,12 @@ namespace Squiggle.UI.Controls
             writableMessageView.Visibility = Visibility.Hidden;
         }
 
-        private void ShowDsiplayMessage()
+        private void ShowDisplayMessage()
         {
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.DisplayMessage))
+            string message = SettingsProvider.Current.Settings.PersonalSettings.DisplayMessage;
+            if (!String.IsNullOrEmpty(message))
             {
-                SelfUser.DisplayMessage = Properties.Settings.Default.DisplayMessage;
+                SelfUser.DisplayMessage = message;
                 emptyMessageView.Visibility = Visibility.Hidden;
                 readOnlyMessageView.Visibility = Visibility.Visible;
             }

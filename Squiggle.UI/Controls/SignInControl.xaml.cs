@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Squiggle.UI.Settings;
 
 namespace Squiggle.UI.Controls
 {   
@@ -32,14 +33,15 @@ namespace Squiggle.UI.Controls
             if (String.IsNullOrEmpty(txtdisplayName.Text.Trim()))
                 return;
 
+            var settings = SettingsProvider.Current.Settings;
+
             if (chkRememberName.IsChecked.HasValue && chkRememberName.IsChecked.Value)
-                Properties.Settings.Default.DisplayName = txtdisplayName.Text;
+                settings.PersonalSettings.DisplayName = txtdisplayName.Text;
             else
-                Properties.Settings.Default.DisplayName = String.Empty;
+                settings.PersonalSettings.DisplayName = String.Empty;
 
-            Properties.Settings.Default.AutoSignIn = chkAutoSignIn.IsChecked.HasValue && chkAutoSignIn.IsChecked.Value;
-
-            Properties.Settings.Default.Save();
+            settings.PersonalSettings.AutoSignMeIn = chkAutoSignIn.IsChecked.HasValue && chkAutoSignIn.IsChecked.Value;
+            SettingsProvider.Current.Save();
 
             CredentialsVerfied(this, new LogInEventArgs() { UserName = txtdisplayName.Text.Trim() });
         }
