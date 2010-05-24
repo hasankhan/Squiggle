@@ -40,13 +40,7 @@ namespace Squiggle.Chat.Services.Presence
             channel.MessageReceived += new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
             var message = LoginMessage.FromUserInfo(thisUser);
             channel.SendMessage(message);
-        }
-
-        public void SayHi()
-        {
-            var message = HiMessage.FromUserInfo(thisUser);
-            channel.SendMessage(message);
-        }
+        }        
 
         public void Update(UserInfo me)
         {
@@ -73,7 +67,13 @@ namespace Squiggle.Chat.Services.Presence
                 OnLoginMessage(((HiMessage)e.Message).Convert<LoginMessage>(), true);
             else if (e.Message is UserUpdateMessage)
                 OnUpdateMessage((UserUpdateMessage)e.Message);
-        }        
+        }
+
+        void SayHi()
+        {
+            var message = HiMessage.FromUserInfo(thisUser);
+            channel.SendMessage(message);
+        }
 
         void OnLogoutMessage(LogoutMessage message)
         {
@@ -108,6 +108,7 @@ namespace Squiggle.Chat.Services.Presence
             }
             else
                 OnUserOffline(newUser.ChatEndPoint);
+            SayHi();
         }
 
         void OnUserUpdated(UserInfo newUser)

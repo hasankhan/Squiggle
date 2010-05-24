@@ -21,6 +21,7 @@ namespace Squiggle.UI
         UserActivityMonitor activityMonitor;
         UserStatus lastStatus;
         Dictionary<Buddy, ChatWindow> chatWindows;
+        bool exiting;
 
         public MainWindow()
         {
@@ -76,9 +77,7 @@ namespace Squiggle.UI
 
         private void Window_StateChanged(object sender, EventArgs e)
         {
-            if (this.WindowState == System.Windows.WindowState.Minimized)
-                this.Visibility = System.Windows.Visibility.Hidden;
-            else
+            if (this.WindowState != System.Windows.WindowState.Minimized)
                 lastState = this.WindowState;
         }
 
@@ -101,6 +100,7 @@ namespace Squiggle.UI
 
         private void QuiteMenu_Click(object sender, RoutedEventArgs e)
         {
+            exiting = true;
             Close();
         }
 
@@ -258,6 +258,15 @@ namespace Squiggle.UI
             {
                 if (chatControl.SignIn.Visibility == Visibility.Visible)
                     chatControl.SignIn.txtdisplayName.Text = SettingsProvider.Current.Settings.PersonalSettings.DisplayName;
+            }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!exiting)
+            {
+                e.Cancel = true;
+                Hide();
             }
         }   
     }

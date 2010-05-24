@@ -35,7 +35,7 @@
                                     <ColumnDefinition Width="0.9*" />
                                 </Grid.ColumnDefinitions>
                                 <CheckBox  Content="Automatically run Squiggle messenger when window starts" IsChecked="{Binding Path=GeneralSettings.RunAtStartup}" Margin="0,0,0,5" Grid.Column="1"/>
-                                <CheckBox Grid.Row="1" Grid.Column="1" Content="Minimize to tray" IsChecked="{Binding Path=GeneralSettings.HideToSystemTray}" Margin="0,0,0,5"/>
+                                <CheckBox Grid.Row="1" Grid.Column="1" Content="Close to tray" IsChecked="{Binding Path=GeneralSettings.HideToSystemTray}" Margin="0,0,0,5"/>
                                 <CheckBox Grid.Row="2" Content="Show popups" IsChecked="{Binding Path=GeneralSettings.ShowPopups}" Margin="0,0,0,5" Grid.Column="1"/>
                                                             
                             </Grid>

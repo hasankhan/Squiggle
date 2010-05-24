@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
     xmlns:tray="clr-namespace:Hardcodet.Wpf.TaskbarNotification"
     xmlns:local="clr-namespace:Squiggle.UI"
-    Title="Squiggle Messenger" Height="600" Width="300" Icon="/Squiggle;component/Images/Squiggle.ico" Initialized="Window_Initialized" Loaded="Window_Loaded" Closed="Window_Closed">
+    Title="Squiggle Messenger" Height="600" Width="300" Icon="/Squiggle;component/Images/Squiggle.ico" Initialized="Window_Initialized" Loaded="Window_Loaded" Closed="Window_Closed" Closing="Window_Closing">
     <Window.Resources>
         <local:StatusConverter x:Key="statusConverter" />
         <ObjectDataProvider MethodName="GetChangableStatuses" 

@@ -90,7 +90,6 @@ namespace Squiggle.Chat.Services.Presence
 
         void discovery_UserOnline(object sender, UserEventArgs e)
         {
-            discovery.SayHi();
             OnUserOnline(e, false);
         }
 
