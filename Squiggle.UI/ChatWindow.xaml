@@ -11,12 +11,8 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <TextBlock x:Name="txtUserLeftMessage" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="#FFFFFFE1" Visibility="Hidden"/>
-        <Border BorderBrush="LightGray" BorderThickness="1">
-            <ScrollViewer x:Name="scrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <RichTextBox Padding="10" Background="White" IsReadOnly="True" x:Name="sentMessages" />
-            </ScrollViewer>
-        </Border>
-        <Border Grid.Row="2" >
+            <controls:ChatTextBox x:Name="chatTextBox" Height="Auto" Width="Auto" />
+            <Border Grid.Row="2" >
             <Grid >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>

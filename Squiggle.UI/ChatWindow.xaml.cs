@@ -32,7 +32,6 @@ namespace Squiggle.UI
         {
             InitializeComponent();
             flash = new FlashWindow(this);
-            sentMessages.Document = new FlowDocument();
 
             statusResetTimer = new DispatcherTimer();
             statusResetTimer.Interval = TimeSpan.FromSeconds(5);
@@ -103,15 +102,9 @@ namespace Squiggle.UI
                 Application.Current.Dispatcher.BeginInvoke(new Action(() => OnMessageFailed(e)));
             else
             {
-                var text = new Run("Following message could not be sent due to error: " + e.Exception.Message);
-                var para = new Paragraph();
-
-                para.Inlines.Add(text);
-                para.Inlines.Add(new Run("\r\n\t"));
-                para.Inlines.Add(e.Message);
-
-                sentMessages.Document.Blocks.Add(para);
-                scrollViewer.ScrollToBottom();
+                string message = "Following message could not be sent due to error: " + e.Exception.Message;
+                string detail = e.Message;
+                chatTextBox.AddError(message, detail);
             }
         }
 
@@ -156,7 +149,7 @@ namespace Squiggle.UI
             else
             {
                 lastMessageReceived = DateTime.Now;
-                WriteMessage(buddy.DisplayName, message);
+                chatTextBox.AddMessage(buddy.DisplayName, message);
                 ResetStatus();
                 if (!this.IsActive)
                     flash.Start();
@@ -173,7 +166,7 @@ namespace Squiggle.UI
         private void editMessageBox_MessageSend(object sender, MessageSendEventArgs e)
         {
             chatSession.SendMessage(e.Message);
-            WriteMessage("Me", e.Message);
+            chatTextBox.AddMessage("Me", e.Message);
         }
 
         private void editMessageBox_MessageTyping(object sender, EventArgs e)
@@ -192,15 +185,6 @@ namespace Squiggle.UI
             txbStatus.Text = String.Format(message, args);
         }
 
-        void WriteMessage(string user, string message)
-        {
-            var title = new Bold(new Run(user + ": "));
-            var text = new Run(message);
-            Paragraph para = new Paragraph();
-            para.Inlines.Add(title);
-            para.Inlines.Add(text);
-            sentMessages.Document.Blocks.Add(para);
-            scrollViewer.ScrollToBottom();
-        }
+       
     }
 }
