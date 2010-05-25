@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Height="300" Width="300">
     <Border BorderBrush="LightGray" BorderThickness="1">
-        <ScrollViewer x:Name="scrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <ScrollViewer x:Name="scrollViewer" Focusable="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <RichTextBox Padding="10" Background="White" IsReadOnly="True" x:Name="sentMessages" />
         </ScrollViewer>
     </Border>

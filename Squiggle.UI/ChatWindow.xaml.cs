@@ -60,7 +60,10 @@ namespace Squiggle.UI
 
         void ChatWindow_Activated(object sender, EventArgs e)
         {
-            Application.Current.Dispatcher.BeginInvoke(new Action(() => editMessageBox.GetFocus()));
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                editMessageBox.GetFocus();                
+            }));
         }
 
         void chatSession_MessageReceived(object sender, ChatMessageReceivedEventArgs e)
