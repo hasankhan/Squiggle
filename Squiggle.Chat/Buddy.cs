@@ -80,13 +80,13 @@ namespace Squiggle.Chat
         void chatClient_BuddyOnline(object sender, BuddyEventArgs e)
         {
             if (e.Buddy.Equals(this))
-                Status = UserStatus.Online;
+                Status = e.Buddy.Status;
         }
 
         void chatClient_BuddyOffline(object sender, BuddyEventArgs e)
         {
             if (e.Buddy.Equals(this))
-                Status = UserStatus.Offline;
+                Status = e.Buddy.Status;
         }
 
         void chatClient_BuddyUpdated(object sender, BuddyEventArgs e)
