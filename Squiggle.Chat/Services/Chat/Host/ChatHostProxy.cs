@@ -28,9 +28,24 @@ namespace Squiggle.Chat.Services.Chat.Host
          {
              if (proxy == null || proxy.State == CommunicationState.Faulted)
              {
-                 if (proxy != null)
-                     proxy.Abort();
-                 proxy = new InnerProxy(binding, address);
+                 if (proxy == null)
+                     proxy = new InnerProxy(binding, address);
+                 else
+                 {
+                     try
+                     {
+                         proxy.Close();
+                     }
+                     catch (Exception ex)
+                     {
+                         Trace.WriteLine(ex.Message);
+                         proxy.Abort();
+                     }
+                     finally
+                     {
+                         proxy = new InnerProxy(binding, address);
+                     }
+                 }
              }
          }       
 

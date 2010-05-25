@@ -136,7 +136,7 @@
     <Compile Include="FancyBalloon.xaml.cs">
       <DependentUpon>FancyBalloon.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FlashForm.cs" />
+    <Compile Include="FlashWindow.cs" />
     <Compile Include="NotifyIcon\BalloonIcon.cs" />
     <Compile Include="NotifyIcon\Interop\BalloonFlags.cs" />
     <Compile Include="NotifyIcon\Interop\IconDataMembers.cs" />

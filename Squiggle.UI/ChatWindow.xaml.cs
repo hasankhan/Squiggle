@@ -23,50 +23,28 @@ namespace Squiggle.UI
     {
         IChat chatSession;
         Buddy buddy;
-        FlashForm flash;
+        FlashWindow flash;
         DateTime? lastMessageReceived;
         DispatcherTimer statusResetTimer;
-
+        string firstMessage;
+ 
         public ChatWindow()
         {
             InitializeComponent();
-            flash = new FlashForm(this);
+            flash = new FlashWindow(this);
             sentMessages.Document = new FlowDocument();
 
             statusResetTimer = new DispatcherTimer();
             statusResetTimer.Interval = TimeSpan.FromSeconds(5);
             statusResetTimer.Tick += (sender, e) => ResetStatus();
             this.Activated += new EventHandler(ChatWindow_Activated);
-        }        
-
-        void ChatWindow_Activated(object sender, EventArgs e)
-        {
-            flash.Stop();
-            Application.Current.Dispatcher.BeginInvoke(new Action(() => editMessageBox.GetFocus()));
-        }
+        }               
 
         public ChatWindow(Buddy buddy, string firstMessage) : this()
         {
             this.buddy = buddy;
-            if(!String.IsNullOrEmpty(firstMessage))
-                OnMessageReceived(buddy, firstMessage);
+            this.firstMessage = firstMessage;            
         }        
-
-        void chatSession_MessageReceived(object sender, ChatMessageReceivedEventArgs e)
-        {
-            OnMessageReceived(e.Sender, e.Message);
-        }
-
-        private void WriteMessage(string user, string message)
-        {
-            var title = new Bold(new Run(user+": "));
-            var text = new Run(message);
-            Paragraph para = new Paragraph();
-            para.Inlines.Add(title);
-            para.Inlines.Add(text);
-            sentMessages.Document.Blocks.Add(para);
-            scrollViewer.ScrollToBottom();
-        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -77,7 +55,19 @@ namespace Squiggle.UI
             chatSession.BuddyLeft += new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
             chatSession.MessageFailed += new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
             chatSession.BuddyTyping += new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
+            if (!String.IsNullOrEmpty(firstMessage))
+                OnMessageReceived(buddy, firstMessage);
         }
+
+        void ChatWindow_Activated(object sender, EventArgs e)
+        {
+            Application.Current.Dispatcher.BeginInvoke(new Action(() => editMessageBox.GetFocus()));
+        }
+
+        void chatSession_MessageReceived(object sender, ChatMessageReceivedEventArgs e)
+        {
+            OnMessageReceived(e.Sender, e.Message);
+        }        
 
         void ChatWindow_KeyDown(object sender, KeyEventArgs e)
         {
@@ -200,6 +190,17 @@ namespace Squiggle.UI
         void ChangeStatus(string message, params object[] args)
         {
             txbStatus.Text = String.Format(message, args);
+        }
+
+        void WriteMessage(string user, string message)
+        {
+            var title = new Bold(new Run(user + ": "));
+            var text = new Run(message);
+            Paragraph para = new Paragraph();
+            para.Inlines.Add(title);
+            para.Inlines.Add(text);
+            sentMessages.Document.Blocks.Add(para);
+            scrollViewer.ScrollToBottom();
         }
     }
 }
