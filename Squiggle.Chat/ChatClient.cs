@@ -71,12 +71,7 @@ namespace Squiggle.Chat
             self.EnableUpdates = true;
             CurrentUser = self;
             LoggedIn = true;
-        }
-
-        private void Update()
-        {
-            presenceService.Update(CurrentUser.DisplayName, CurrentUser.DisplayMessage, CurrentUser.Status);
-        }
+        }        
 
         public void Logout()
         {
@@ -86,6 +81,11 @@ namespace Squiggle.Chat
             chatService.Stop();
             presenceService.Logout();
             LoggedIn = false;
+        }
+        
+        void Update()
+        {
+            presenceService.Update(CurrentUser.DisplayName, CurrentUser.DisplayMessage, CurrentUser.Status);
         }
 
         void chatService_ChatStarted(object sender, Squiggle.Chat.Services.ChatStartedEventArgs e)
@@ -112,12 +112,7 @@ namespace Squiggle.Chat
                 else
                     OnBuddyUpdated(buddy);
             }
-        }
-
-        void OnBuddyUpdated(Buddy buddy)
-        {
-            BuddyUpdated(this, new BuddyEventArgs() { Buddy = buddy });
-        }       
+        }              
 
         void presenceService_UserOnline(object sender, UserOnlineEventArgs e)
         {
@@ -132,24 +127,34 @@ namespace Squiggle.Chat
                 };
                 buddies.Add(buddy);
             }
+            else
+                buddy.Status = e.User.Status;
             OnBuddyOnline(buddy, e.Discovered);
+        }        
+
+        void presenceService_UserOffline(object sender, UserEventArgs e)
+        {
+            var buddy = buddies[e.User.ChatEndPoint];
+            if (buddy != null)
+            {
+                buddy.Status = UserStatus.Offline;
+                OnBuddyOffline(buddy);
+            }
         }
+
+        void OnBuddyUpdated(Buddy buddy)
+        {
+            BuddyUpdated(this, new BuddyEventArgs() { Buddy = buddy });
+        } 
 
         void OnBuddyOnline(Buddy buddy, bool discovered)
         {
             BuddyOnline(this, new BuddyOnlineEventArgs() { Buddy = buddy, Discovered = discovered });
         }
 
-        void presenceService_UserOffline(object sender, UserEventArgs e)
-        {
-            var buddy = buddies[e.User.ChatEndPoint];
-            OnBuddyOffline(buddy);
-        }
-
         void OnBuddyOffline(Buddy buddy)
         {
-            if (buddy != null)
-                BuddyOffline(this, new BuddyEventArgs() { Buddy = buddy });
+            BuddyOffline(this, new BuddyEventArgs() { Buddy = buddy });
         }        
 
         #region IDisposable Members
