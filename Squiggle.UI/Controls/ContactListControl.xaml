@@ -205,7 +205,7 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                 </StackPanel>
-                <TextBlock VerticalAlignment="Bottom" Grid.Row="1" Grid.ColumnSpan="4" Margin="10,0,0,0" Text="{Binding DisplayMessage}" TextTrimming="WordEllipsis"  Foreground="Black"/>
+                <controls:DisplayMessageBox DefaultMessage="Share a quick message here" VerticalAlignment="Bottom" Grid.Row="1" Width="Auto" Grid.ColumnSpan="4" Margin="5,-10,0,0" Text="{Binding DisplayMessage}" />
             </Grid>
         </Border>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
