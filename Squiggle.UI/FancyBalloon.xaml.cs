@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Hardcodet.Wpf.TaskbarNotification;
 using System.Diagnostics;
+using System.Timers;
 
 namespace StackOverflowClient
 {
@@ -49,10 +50,18 @@ namespace StackOverflowClient
 
     #endregion
 
+    Timer timer;
     public FancyBalloon()
     {
       InitializeComponent();
       TaskbarIcon.AddBalloonClosingHandler(this, OnBalloonClosing);
+    }
+
+    public FancyBalloon(int timeout):this()
+    {
+        timer = new Timer(timeout);
+        timer.Elapsed += (sender, e) => Close();
+        timer.Start();
     }
       
     /// <summary>

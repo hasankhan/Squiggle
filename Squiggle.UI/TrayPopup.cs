@@ -26,17 +26,18 @@ namespace Squiggle.UI
                 }));
             else
             {
-                FancyBalloon balloon = new FancyBalloon();
-                    balloon.BalloonText = title;
-                    balloon.DataContext = message;
-                    Hardcodet.Wpf.TaskbarNotification.TaskbarIcon icon = new Hardcodet.Wpf.TaskbarNotification.TaskbarIcon();
-                    icon.Visibility = Visibility.Hidden;
-                    icon.ShowCustomBalloon(balloon, PopupAnimation.Slide, 5000);
-                    balloon.MouseLeftButtonDown += (sender, e) =>
-                    {
-                        e.Handled = false;
-                        onClick(e);
-                    };                
+                int timeout = 5000;
+                FancyBalloon balloon = new FancyBalloon(timeout);
+                balloon.BalloonText = title;
+                balloon.DataContext = message;
+                Hardcodet.Wpf.TaskbarNotification.TaskbarIcon icon = new Hardcodet.Wpf.TaskbarNotification.TaskbarIcon();
+                icon.Visibility = Visibility.Hidden;
+                icon.ShowCustomBalloon(balloon, PopupAnimation.Slide, timeout);
+                balloon.MouseLeftButtonDown += (sender, e) =>
+                {
+                    e.Handled = false;
+                    onClick(e);
+                };                
             }
         }
     }
