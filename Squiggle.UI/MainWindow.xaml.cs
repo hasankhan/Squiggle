@@ -35,11 +35,27 @@ namespace Squiggle.UI
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            
+        {            
             this.StateChanged += new EventHandler(Window_StateChanged);
             chatControl.SignIn.OpenSettings += (s1, e1) => OpenSettings();
             chatControl.ContactList.OpenSettings += (s1, e1) => OpenSettings();
+
+            var settings = SettingsProvider.Current.Settings;
+
+            chatControl.SignIn.chkAutoSignIn.IsChecked = settings.PersonalSettings.AutoSignMeIn;
+            chatControl.SignIn.chkRememberName.IsChecked = settings.PersonalSettings.RememberMe;
+            chatControl.SignIn.txtdisplayName.Text = settings.PersonalSettings.DisplayName;
+
+            string name = settings.PersonalSettings.DisplayName;
+            if (!String.IsNullOrEmpty(name) && settings.PersonalSettings.AutoSignMeIn)
+                SignIn(name);
+            else
+            {
+                chatControl.SignIn.txtdisplayName.Text = name;
+                chatControl.SignIn.txtdisplayName.SelectAll();
+                if (!String.IsNullOrEmpty(name))
+                    chatControl.SignIn.chkRememberName.IsChecked = true;
+            }
         }       
 
         void OnCredentialsVerfied(object sender, Squiggle.UI.Controls.LogInEventArgs e)
@@ -238,19 +254,7 @@ namespace Squiggle.UI
         }
 
         private void Window_Initialized(object sender, EventArgs e)
-        {
-            var settings = SettingsProvider.Current.Settings;
-            string name = settings.PersonalSettings.DisplayName;
-            if (!String.IsNullOrEmpty(name) && settings.PersonalSettings.AutoSignMeIn)
-                SignIn(name);
-            else
-            {
-                chatControl.SignIn.txtdisplayName.Text = name;
-                chatControl.SignIn.txtdisplayName.SelectAll();
-                if (!String.IsNullOrEmpty(name))
-                    chatControl.SignIn.chkRememberName.IsChecked = true;
-            }
-
+        {            
             if (App.RunInBackground)
                 this.Hide();
         }

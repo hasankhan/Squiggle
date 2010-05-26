@@ -35,12 +35,13 @@ namespace Squiggle.UI.Controls
 
             var settings = SettingsProvider.Current.Settings;
 
-            if (chkRememberName.IsChecked.HasValue && chkRememberName.IsChecked.Value)
+            if (chkRememberName.IsChecked.GetValueOrDefault())
                 settings.PersonalSettings.DisplayName = txtdisplayName.Text;
             else
                 settings.PersonalSettings.DisplayName = String.Empty;
 
-            settings.PersonalSettings.AutoSignMeIn = chkAutoSignIn.IsChecked.HasValue && chkAutoSignIn.IsChecked.Value;
+            settings.PersonalSettings.RememberMe = chkRememberName.IsChecked.GetValueOrDefault();
+            settings.PersonalSettings.AutoSignMeIn = chkAutoSignIn.IsChecked.GetValueOrDefault();
             SettingsProvider.Current.Save();
 
             CredentialsVerfied(this, new LogInEventArgs() { UserName = txtdisplayName.Text.Trim() });

@@ -70,6 +70,8 @@ namespace Squiggle.UI.Settings
         private void LoadPersonalSettings()
         {
             Settings.PersonalSettings.RememberMe = !String.IsNullOrEmpty(Properties.Settings.Default.DisplayName);
+            Settings.PersonalSettings.DisplayName = Properties.Settings.Default.DisplayName;
+            Settings.PersonalSettings.DisplayMessage = Properties.Settings.Default.DisplayMessage;
             Settings.PersonalSettings.AutoSignMeIn = Properties.Settings.Default.AutoSignIn;
             Settings.PersonalSettings.IdleTimeout = Properties.Settings.Default.IdleTimeout;
         }
@@ -81,7 +83,7 @@ namespace Squiggle.UI.Settings
 
             Properties.Settings.Default.DisplayMessage = Settings.PersonalSettings.RememberMe ?
                                                                     Settings.PersonalSettings.DisplayMessage : String.Empty;
-    
+
             Properties.Settings.Default.AutoSignIn = Settings.PersonalSettings.AutoSignMeIn;
             Properties.Settings.Default.IdleTimeout = Settings.PersonalSettings.IdleTimeout;
         }
