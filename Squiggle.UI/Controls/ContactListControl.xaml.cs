@@ -23,6 +23,7 @@ namespace Squiggle.UI.Controls
     {
         public event EventHandler<ChatStartEventArgs> ChatStart = delegate { };
         public event EventHandler OpenSettings = delegate { };
+        public event EventHandler SignOut = delegate { };
 
         public static DependencyProperty ChatContextProperty = DependencyProperty.Register("ChatContext", typeof(ClientViewModel), typeof(ContactListControl), new PropertyMetadata(null));
         public ClientViewModel ChatContext
@@ -48,8 +49,8 @@ namespace Squiggle.UI.Controls
 
         private void ComboBoxItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ShowSettingsWindow();
-
+            //ShowSettingsWindow();
+            SignOut(this, new EventArgs());
             e.Handled = true;
         }
 
@@ -62,7 +63,8 @@ namespace Squiggle.UI.Controls
         {
             if (e.Key == Key.Enter)
             {
-                ShowSettingsWindow();
+                SignOut(this, new EventArgs());
+                //ShowSettingsWindow();
                 e.Handled = true;
             }
         }
@@ -79,6 +81,12 @@ Contact:       info@overroot.com
 Website:       www.overroot.com";
             about = String.Format(about, Assembly.GetExecutingAssembly().GetName().Version.ToString(3));
             MessageBox.Show(about, "About Squiggle Messenger", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            ShowSettingsWindow();
+            e.Handled = true;
         }
     }
 

@@ -30,7 +30,8 @@ namespace Squiggle.UI
            chatWindows = new Dictionary<Buddy, ChatWindow>();
 
            chatControl.SignIn.CredentialsVerfied += new EventHandler<Squiggle.UI.Controls.LogInEventArgs>(OnCredentialsVerfied);
-           chatControl.ContactList.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(OnStartChat);           
+           chatControl.ContactList.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(OnStartChat);
+           chatControl.ContactList.SignOut += new EventHandler(ContactList_SignOut);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -102,6 +103,11 @@ namespace Squiggle.UI
         {
             exiting = true;
             Close();
+        }
+
+        void ContactList_SignOut(object sender, EventArgs e)
+        {
+            SignOut();
         }
 
         private void SignOutMenu_Click(object sender, RoutedEventArgs e)

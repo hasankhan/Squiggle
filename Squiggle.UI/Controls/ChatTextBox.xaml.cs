@@ -24,29 +24,30 @@ namespace Squiggle.UI.Controls
             InitializeComponent();
 
             sentMessages.Document = new FlowDocument();
+            sentMessages.Document.Blocks.Add(new Paragraph());
         }
 
         public void AddError(string message, string detail)
         {
             var text = new Run(message);
-            var para = new Paragraph();
+            var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
 
             para.Inlines.Add(text);
             para.Inlines.Add(new Run("\r\n\t"));
             para.Inlines.Add(detail);
+            para.Inlines.Add(new LineBreak());
 
-            sentMessages.Document.Blocks.Add(para);
             scrollViewer.ScrollToBottom();
         }
 
         public void AddMessage(string user, string message)
         {
-            var title = new Bold(new Run(user + ": "));
             var text = new Run(message);
-            Paragraph para = new Paragraph();
-            para.Inlines.Add(title);
+            text.Foreground = new SolidColorBrush(Colors.Red);
+            var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
+            
             para.Inlines.Add(text);
-            sentMessages.Document.Blocks.Add(para);
+            para.Inlines.Add(new LineBreak());
             scrollViewer.ScrollToBottom();
         }
     }

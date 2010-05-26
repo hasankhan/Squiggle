@@ -1,8 +1,16 @@
 ﻿<UserControl x:Class="Squiggle.UI.Controls.ChatTextBox"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Height="300" Width="300">
-    <Border BorderBrush="LightGray" BorderThickness="1">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Resources>
+        <Style x:Key="BorderStyle" TargetType="{x:Type Border}">
+            <Setter Property="BorderBrush" Value="#FFBFCBD8" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="3" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+        </Style>
+    </UserControl.Resources>
+    <Border Style="{StaticResource BorderStyle}">
         <ScrollViewer x:Name="scrollViewer" Focusable="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <RichTextBox Padding="10" Background="White" IsReadOnly="True" x:Name="sentMessages" />
         </ScrollViewer>
