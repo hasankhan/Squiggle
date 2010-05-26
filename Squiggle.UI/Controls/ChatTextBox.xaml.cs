@@ -29,8 +29,10 @@ namespace Squiggle.UI.Controls
 
         public void AddError(string message, string detail)
         {
-            var text = new Run(message);
             var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
+
+            var text = new Run(message);
+            text.Foreground = new SolidColorBrush(Colors.Red);
 
             para.Inlines.Add(text);
             para.Inlines.Add(new Run("\r\n\t"));
@@ -42,10 +44,11 @@ namespace Squiggle.UI.Controls
 
         public void AddMessage(string user, string message)
         {
+            var title = new Bold(new Run(user + ": "));
             var text = new Run(message);
-            text.Foreground = new SolidColorBrush(Colors.Red);
             var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
-            
+
+            para.Inlines.Add(title);
             para.Inlines.Add(text);
             para.Inlines.Add(new LineBreak());
             scrollViewer.ScrollToBottom();

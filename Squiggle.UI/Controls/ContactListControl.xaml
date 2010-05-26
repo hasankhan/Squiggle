@@ -198,13 +198,13 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="0.50*"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="0.20*"/>
                 </Grid.RowDefinitions>
                 <TextBlock VerticalAlignment="Top" Grid.Column="1" HorizontalAlignment="Right" Margin="5"><Hyperlink NavigateUri="http://www.dummy.com" RequestNavigate="Hyperlink_RequestNavigate" Foreground="Gray">Settings</Hyperlink></TextBlock>
-                <StackPanel x:Name="signedInView" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left">
+                <StackPanel Margin="0,-5,0,0" x:Name="signedInView" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left">
                     <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" Text="{Binding DisplayName}" Foreground="Black" FontSize="16" x:Name="txtLoggedInUser" HorizontalAlignment="Left" />
                     <ComboBox  Grid.Column="1" VerticalAlignment="Center" Style="{DynamicResource ComboBoxStyle}" Width="100" SelectedValue="{Binding Path=Status}"
                               Background="Gray" Focusable="False">
@@ -229,7 +229,7 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                 </StackPanel>
-                <controls:DisplayMessageBox DefaultMessage="Share a quick message here" VerticalAlignment="Bottom" Grid.Row="2" Width="Auto" Grid.ColumnSpan="4" Text="{Binding DisplayMessage}" />
+                <controls:DisplayMessageBox Margin="0,-5,0,0" DefaultMessage="Share a quick message here" VerticalAlignment="Bottom" Grid.Row="2" Width="Auto" Grid.ColumnSpan="4" Text="{Binding DisplayMessage}" />
             </Grid>
         </Border>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
