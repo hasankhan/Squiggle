@@ -75,10 +75,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\DisplayMessageBlock.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Controls\DisplayMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -131,9 +127,6 @@
     </Compile>
     <Compile Include="Controls\ChatTextBox.xaml.cs">
       <DependentUpon>ChatTextBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\DisplayMessageBlock.xaml.cs">
-      <DependentUpon>DisplayMessageBlock.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\DisplayMessageBox.xaml.cs">
       <DependentUpon>DisplayMessageBox.xaml</DependentUpon>
