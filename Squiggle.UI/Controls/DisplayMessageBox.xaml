@@ -1,14 +1,15 @@
 ﻿<UserControl x:Class="Squiggle.UI.Controls.DisplayMessageBox"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="UserControl1" Loaded="UserControl1_Loaded">
-    <UserControl.Resources>       
+    xmlns:local="clr-namespace:Squiggle.UI"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="UserControl1" >
+    <UserControl.Resources>    
+        <local:DisplayMessageConverter x:Key="displayMessageConverter"/>
     </UserControl.Resources>
     <Grid>
         <Border Opacity="9" Margin="5" Padding="5,0,2,0" CornerRadius="3" Height="22">
             <Grid>
-                <TextBlock Cursor="Hand" Background="Transparent" x:Name="txbDefaultMessage" Foreground="Gray" Text="Share a quick message here" MouseDown="txbMessage_MouseDown"><TextBlock.TextDecorations><TextDecoration /></TextBlock.TextDecorations></TextBlock>
-                <TextBlock Cursor="Hand" Background="Transparent" x:Name="txbMessage" Foreground="Gray" Text="{Binding ElementName=UserControl1, Path=Text}" MouseDown="txbMessage_MouseDown" Visibility="Hidden"><TextBlock.TextDecorations><TextDecoration /></TextBlock.TextDecorations></TextBlock>
-                <TextBox BorderBrush="Transparent" BorderThickness="0" x:Name="txtMessage" Text="{Binding ElementName=UserControl1, Path=Text}" Visibility="Hidden"  KeyUp="txtMessage_KeyUp" LostFocus="txtMessage_LostFocus"/>
+                <TextBlock Cursor="Hand" Background="Transparent" x:Name="txbMessage" Foreground="Gray" Text="{Binding ElementName=UserControl1, Path=SelfUser.DisplayMessage, Converter={StaticResource displayMessageConverter}}" MouseDown="txbMessage_MouseDown" ><TextBlock.TextDecorations><TextDecoration /></TextBlock.TextDecorations></TextBlock>
+                <TextBox BorderBrush="Transparent" BorderThickness="0" x:Name="txtMessage" Text="{Binding ElementName=UserControl1, Path=SelfUser.DisplayMessage, UpdateSourceTrigger=PropertyChanged}" Visibility="Hidden"  KeyUp="txtMessage_KeyUp" LostFocus="txtMessage_LostFocus"/>
             </Grid>
         </Border>
     </Grid>

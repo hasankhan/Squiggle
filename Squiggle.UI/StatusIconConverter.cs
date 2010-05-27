@@ -18,7 +18,7 @@ namespace Squiggle.UI
             {
                 var status = (UserStatus)value;
                 switch (status)
-                {                    
+                {
                     case UserStatus.Online:
                         return new BitmapImage(new Uri("/Images/online.png", UriKind.Relative));
                     case UserStatus.Busy:
@@ -32,6 +32,8 @@ namespace Squiggle.UI
                     default:
                         return new BitmapImage(new Uri("/Images/online.png", UriKind.Relative));
                 }
+            }
+            return new BitmapImage(new Uri("/Images/online.png", UriKind.Relative));
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

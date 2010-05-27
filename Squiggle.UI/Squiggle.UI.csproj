@@ -140,6 +140,7 @@
     <Compile Include="Controls\ContactListControl.xaml.cs">
       <DependentUpon>ContactListControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DisplayMessageConverter.cs" />
     <Compile Include="DummyChatClient.cs" />
     <Compile Include="FancyBalloon.xaml.cs">
       <DependentUpon>FancyBalloon.xaml</DependentUpon>

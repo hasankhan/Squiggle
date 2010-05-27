@@ -36,7 +36,12 @@ namespace Squiggle.UI
             statusResetTimer = new DispatcherTimer();
             statusResetTimer.Interval = TimeSpan.FromSeconds(5);
             statusResetTimer.Tick += (sender, e) => ResetStatus();
-            this.Activated += new EventHandler(ChatWindow_Activated);
+            this.StateChanged += new EventHandler(ChatWindow_StateChanged);
+        }
+
+        void ChatWindow_StateChanged(object sender, EventArgs e)
+        {
+            editMessageBox.GetFocus();         
         }               
 
         public ChatWindow(Buddy buddy, string firstMessage) : this()
@@ -56,14 +61,6 @@ namespace Squiggle.UI
             chatSession.BuddyTyping += new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
             if (!String.IsNullOrEmpty(firstMessage))
                 OnMessageReceived(buddy, firstMessage);
-        }
-
-        void ChatWindow_Activated(object sender, EventArgs e)
-        {
-            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-            {
-                editMessageBox.GetFocus();                
-            }));
         }
 
         void chatSession_MessageReceived(object sender, ChatMessageReceivedEventArgs e)

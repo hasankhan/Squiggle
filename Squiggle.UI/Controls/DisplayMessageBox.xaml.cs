@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Squiggle.Chat;
 
 namespace Squiggle.UI.Controls
 {
@@ -19,23 +20,14 @@ namespace Squiggle.UI.Controls
     /// </summary>
     public partial class DisplayMessageBox : UserControl
     {
-        public static DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(DisplayMessageBox), new PropertyMetadata(null));
-        public string Text
+        public static DependencyProperty SelfUserProperty = DependencyProperty.Register("SelfUser", typeof(Buddy), typeof(DisplayMessageBox), new PropertyMetadata(null));
+        public Buddy SelfUser
         {
-            get { return GetValue(TextProperty) as string; }
+            get { return GetValue(SelfUserProperty) as Buddy; }
             set
             {
-                SetValue(TextProperty, value);
-            }
-        }
-
-        public static DependencyProperty DefaultMessageProperty = DependencyProperty.Register("DafaultMessage", typeof(string), typeof(DisplayMessageBox), new PropertyMetadata(null));
-        public string DefaultMessage
-        {
-            get { return GetValue(DefaultMessageProperty) as string; }
-            set
-            {
-                SetValue(DefaultMessageProperty, value);
+                SetValue(SelfUserProperty, value);
+                ShowAppropriateControl();
             }
         } 
 
@@ -54,13 +46,11 @@ namespace Squiggle.UI.Controls
         private void ShowEditableMessage()
         {
             txbMessage.Visibility = Visibility.Hidden;
-            txbDefaultMessage.Visibility = Visibility.Hidden;
             txtMessage.Visibility = Visibility.Visible;
         }
 
         private void txtMessage_LostFocus(object sender, RoutedEventArgs e)
         {
-            ForceUpdate(); 
             ShowAppropriateControl();
         }
 
@@ -68,7 +58,6 @@ namespace Squiggle.UI.Controls
         {
             if (e.Key == Key.Enter)
             {
-                ForceUpdate();
                 ShowAppropriateControl();
                 e.Handled = true;
             }
@@ -77,7 +66,6 @@ namespace Squiggle.UI.Controls
                 ShowAppropriateControl();
                 e.Handled = true;
             }
-
         }
 
         private void ForceUpdate()
@@ -87,14 +75,9 @@ namespace Squiggle.UI.Controls
                 expression.UpdateSource();
         }
 
-        private void UserControl1_Loaded(object sender, RoutedEventArgs e)
-        {
-            ShowAppropriateControl();
-        }
-
         private void ShowAppropriateControl()
         {
-            if (String.IsNullOrEmpty(Text))
+            if (String.IsNullOrEmpty(SelfUser.DisplayMessage))
                 ShowDefaultMessage();
             else
                 ShowReadOnlyMessage();
@@ -103,13 +86,11 @@ namespace Squiggle.UI.Controls
         private void ShowReadOnlyMessage()
         {
             txbMessage.Visibility = Visibility.Visible;
-            txbDefaultMessage.Visibility = Visibility.Hidden;
             txtMessage.Visibility = Visibility.Hidden;
         }
 
         private void ShowDefaultMessage()
         {
-            txbDefaultMessage.Visibility = Visibility.Visible;
             txbMessage.Visibility = Visibility.Hidden;
             txtMessage.Visibility = Visibility.Hidden;
         }
