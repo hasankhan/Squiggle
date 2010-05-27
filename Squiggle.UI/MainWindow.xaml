@@ -5,16 +5,17 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
     xmlns:tray="clr-namespace:Hardcodet.Wpf.TaskbarNotification"
     xmlns:local="clr-namespace:Squiggle.UI"
-    Title="Squiggle Messenger" Height="600" Width="300" Icon="/Squiggle;component/Images/Squiggle.ico" Initialized="Window_Initialized" Loaded="Window_Loaded" Closed="Window_Closed" Closing="Window_Closing">
+    Title="Squiggle Messenger" Height="600" Width="300" Icon="/Squiggle;component/Images/Chat.ico" Initialized="Window_Initialized" Loaded="Window_Loaded" Closed="Window_Closed" Closing="Window_Closing">
     <Window.Resources>
         <local:StatusConverter x:Key="statusConverter" />
+        <local:TrayIconConverter x:Key="trayIconConverter" />
         <ObjectDataProvider MethodName="GetChangableStatuses" 
             ObjectType="{x:Type local:ChatUtil}" 
             x:Key="AvailableUserStatus">
         </ObjectDataProvider>
     </Window.Resources>
     <Grid>
-        <tray:TaskbarIcon IconSource="/Images/Squiggle.ico" TrayLeftMouseDown="trayIcon_TrayLeftMouseDown" x:Name="trayIcon">
+        <tray:TaskbarIcon IconSource="{Binding LoggedInUser.Status, Converter={StaticResource trayIconConverter}, FallbackValue=Online}" TrayLeftMouseDown="trayIcon_TrayLeftMouseDown" x:Name="trayIcon">
             <tray:TaskbarIcon.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Open" Click="OpenMenu_Click" />

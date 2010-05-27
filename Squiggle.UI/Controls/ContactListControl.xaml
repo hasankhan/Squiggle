@@ -8,6 +8,7 @@
     xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat"
     Width="200" Height="400">
     <UserControl.Resources>
+        <local:StatusIconConverter x:Key="statusIconConverter" />
         <local:StatusConverter x:Key="statusConverter" />
         <Style x:Key="ContactInfoToolTipStyle" TargetType="{x:Type ToolTip}">
             <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -146,7 +147,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock VerticalAlignment="Top" Text="Contact" Foreground="Black" FontWeight="Bold"/>
-                                <Image Source="..\Images\man.png" Grid.Row="1"/>
+                                <Image Stretch="None" Source="..\Images\man.png" Grid.Row="1"/>
                                 <StackPanel VerticalAlignment="Center" Orientation="Vertical" Grid.Column="1" Grid.Row="1">
                                     <TextBlock Foreground="Black" Text="{Binding DisplayName, StringFormat=Display: \{0\}}"/>
                                     <TextBlock Foreground="Black" Text="{Binding Status, StringFormat=Presence: \{0\}}"/>

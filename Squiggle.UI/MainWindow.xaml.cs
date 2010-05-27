@@ -21,6 +21,8 @@ namespace Squiggle.UI
         UserActivityMonitor activityMonitor;
         UserStatus lastStatus;
         Dictionary<Buddy, ChatWindow> chatWindows;
+        ClientViewModel dummyViewModel;
+
         bool exiting;
 
         public MainWindow()
@@ -32,10 +34,12 @@ namespace Squiggle.UI
            chatControl.SignIn.CredentialsVerfied += new EventHandler<Squiggle.UI.Controls.LogInEventArgs>(OnCredentialsVerfied);
            chatControl.ContactList.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(OnStartChat);
            chatControl.ContactList.SignOut += new EventHandler(ContactList_SignOut);
+           dummyViewModel = new ClientViewModel(new DummyChatClient());
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
-        {            
+        {
+            this.DataContext = dummyViewModel;
             this.StateChanged += new EventHandler(Window_StateChanged);
             chatControl.SignIn.OpenSettings += (s1, e1) => OpenSettings();
             chatControl.ContactList.OpenSettings += (s1, e1) => OpenSettings();
@@ -160,7 +164,7 @@ namespace Squiggle.UI
             chatClient.Logout();
             chatControl.ContactList.ChatContext = null;
             clientViewModel = null;
-            this.DataContext = null;
+            this.DataContext = dummyViewModel;
             VisualStateManager.GoToState(chatControl, "OfflineState", true);
             chatControl.SignIn.txtdisplayName.Text = SettingsProvider.Current.Settings.PersonalSettings.DisplayName;
         }

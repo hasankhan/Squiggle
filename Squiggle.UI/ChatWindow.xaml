@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="ChatWindow" Height="502" Width="654"
     Loaded="Window_Loaded" Closed="Window_Closed" FocusManager.FocusedElement="{Binding ElementName=editMessageBox}"
-    Icon="/Squiggle;component/Images/Squiggle.ico">
+    Icon="/Squiggle;component/Images/chat.ico">
     <Grid Background="#FFF3F3F3">
         <Grid Margin="10">
             <Grid.RowDefinitions>

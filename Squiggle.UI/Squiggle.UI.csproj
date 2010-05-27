@@ -14,7 +14,8 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
-    <ApplicationIcon>Images\Squiggle.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -140,6 +141,7 @@
     <Compile Include="Controls\ContactListControl.xaml.cs">
       <DependentUpon>ContactListControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DummyChatClient.cs" />
     <Compile Include="FancyBalloon.xaml.cs">
       <DependentUpon>FancyBalloon.xaml</DependentUpon>
     </Compile>
@@ -185,6 +187,8 @@
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="StatusConverter.cs" />
+    <Compile Include="StatusIconConverter.cs" />
+    <Compile Include="TrayIconConverter.cs" />
     <Compile Include="TrayPopup.cs" />
     <Compile Include="WinStartup.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -220,13 +224,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\contacts.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\Close.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Squiggle.ico" />
+    <Resource Include="Images\chat.ico" />
+    <Resource Include="Images\away.png" />
+    <Resource Include="Images\busy.png" />
+    <Resource Include="Images\offline.png" />
+    <Resource Include="Images\online.png" />
+    <Resource Include="Images\chat-away.ico" />
+    <Resource Include="Images\chat-busy.ico" />
+    <Resource Include="Images\chat-offline.ico" />
+    <Resource Include="Images\Contacts.png" />
     <Content Include="Lib\WPFToolkit.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

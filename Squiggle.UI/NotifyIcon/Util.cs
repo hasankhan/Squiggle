@@ -173,7 +173,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     {
       if (imageSource == null) return null;
 
-      Uri uri = new Uri(imageSource.ToString());
+      Uri uri = new Uri(imageSource.ToString(), UriKind.RelativeOrAbsolute);
       StreamResourceInfo streamInfo = Application.GetResourceStream(uri);
 
       if (streamInfo == null)
