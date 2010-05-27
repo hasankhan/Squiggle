@@ -27,16 +27,21 @@ namespace Squiggle.UI.Controls
             sentMessages.Document.Blocks.Add(new Paragraph());
         }
 
-        public void AddError(string message, string detail)
+        public void AddError(string error, string detail)
         {
             var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
 
-            var text = new Run(message);
-            text.Foreground = new SolidColorBrush(Colors.Red);
+            var errorText = new Run(error);
+            errorText.Foreground = new SolidColorBrush(Colors.Red);
 
-            para.Inlines.Add(text);
-            para.Inlines.Add(new Run("\r\n\t"));
-            para.Inlines.Add(detail);
+            var detailText = new Run(detail);
+            detailText.Foreground = new SolidColorBrush(Colors.Gray);
+
+            para.Inlines.Add(new LineBreak());
+            para.Inlines.Add(errorText);
+            para.Inlines.Add(new LineBreak());
+            para.Inlines.Add(detailText);
+            para.Inlines.Add(new LineBreak());
             para.Inlines.Add(new LineBreak());
 
             scrollViewer.ScrollToBottom();
