@@ -245,9 +245,8 @@ namespace Squiggle.UI
 
         private void RestoreWindow()
         {
-            this.Visibility = Visibility.Visible;
+            this.Show();
             this.WindowState = lastState;
-            this.Activate();
         }
 
         void CreateChatWindow(Buddy buddy, string message, IChat session, bool focused)
