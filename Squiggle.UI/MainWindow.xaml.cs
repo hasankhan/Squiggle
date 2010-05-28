@@ -60,7 +60,13 @@ namespace Squiggle.UI
                 if (!String.IsNullOrEmpty(name))
                     chatControl.SignIn.chkRememberName.IsChecked = true;
             }
-        }       
+        }
+
+        private void Window_Initialized(object sender, EventArgs e)
+        {
+            if (App.RunInBackground)
+                this.Hide();
+        }
 
         void OnCredentialsVerfied(object sender, Squiggle.UI.Controls.LogInEventArgs e)
         {
@@ -90,10 +96,7 @@ namespace Squiggle.UI
 
         private void trayIcon_TrayLeftMouseDown(object sender, RoutedEventArgs e)
         {
-            if (this.Visibility == Visibility.Visible)
-                this.Hide();
-            else
-                RestoreWindow();
+            ToggleMainWindow();
         }
 
         private void Window_StateChanged(object sender, EventArgs e)
@@ -135,7 +138,7 @@ namespace Squiggle.UI
             SignOut();
         }   
 
-        private void SignIn(string displayName)
+        void SignIn(string displayName)
         {
             try
             {
@@ -157,7 +160,7 @@ namespace Squiggle.UI
             VisualStateManager.GoToState(chatControl, "OnlineState", true);
         }
 
-        private void SignOut()
+        void SignOut()
         {
             signoutMenu.IsEnabled = statusMenu.IsEnabled = false;
             DestroyMonitor();
@@ -167,6 +170,19 @@ namespace Squiggle.UI
             this.DataContext = dummyViewModel;
             VisualStateManager.GoToState(chatControl, "OfflineState", true);
             chatControl.SignIn.txtdisplayName.Text = SettingsProvider.Current.Settings.PersonalSettings.DisplayName;
+        }
+
+        void ToggleMainWindow()
+        {
+            if (!Application.Current.Dispatcher.CheckAccess())
+                Application.Current.Dispatcher.Invoke(new Action(ToggleMainWindow));
+            else
+            {
+                if (this.Visibility == Visibility.Visible)
+                    this.Hide();
+                else
+                    RestoreWindow();
+            }
         }
 
         void CreateMonitor()
@@ -229,13 +245,9 @@ namespace Squiggle.UI
 
         private void RestoreWindow()
         {
-            this.Visibility = System.Windows.Visibility.Visible;
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
-                new Action(delegate()
-                {
-                    this.WindowState = lastState;
-                    this.Activate();
-                }));
+            this.Visibility = Visibility.Visible;
+            this.WindowState = lastState;
+            this.Activate();
         }
 
         void CreateChatWindow(Buddy buddy, string message, IChat session, bool focused)
@@ -255,12 +267,6 @@ namespace Squiggle.UI
             window.Show();
             if (focused)
                 window.Activate();
-        }
-
-        private void Window_Initialized(object sender, EventArgs e)
-        {            
-            if (App.RunInBackground)
-                this.Hide();
         }
 
         void OpenSettings()
