@@ -71,7 +71,7 @@ namespace Squiggle.UI.Controls
 
         private void About_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            string about = @"Squiggle Messenger {0} (BETA)
+            string about = @"Squiggle Messenger {0}
 
 Programmed by:
 Faisal Iqbal
