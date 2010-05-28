@@ -27,7 +27,7 @@ namespace Squiggle.UI.Controls
             set
             {
                 SetValue(SelfUserProperty, value);
-                ShowAppropriateControl();
+                ShowReadOnlyMessage();
             }
         } 
 
@@ -51,19 +51,19 @@ namespace Squiggle.UI.Controls
 
         private void txtMessage_LostFocus(object sender, RoutedEventArgs e)
         {
-            ShowAppropriateControl();
+            ShowReadOnlyMessage();
         }
 
         private void txtMessage_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                ShowAppropriateControl();
+                ShowReadOnlyMessage();
                 e.Handled = true;
             }
             else if (e.Key == Key.Escape)
             {
-                ShowAppropriateControl();
+                ShowReadOnlyMessage();
                 e.Handled = true;
             }
         }
@@ -75,23 +75,9 @@ namespace Squiggle.UI.Controls
                 expression.UpdateSource();
         }
 
-        private void ShowAppropriateControl()
-        {
-            if (String.IsNullOrEmpty(SelfUser.DisplayMessage))
-                ShowDefaultMessage();
-            else
-                ShowReadOnlyMessage();
-        }
-
         private void ShowReadOnlyMessage()
         {
             txbMessage.Visibility = Visibility.Visible;
-            txtMessage.Visibility = Visibility.Hidden;
-        }
-
-        private void ShowDefaultMessage()
-        {
-            txbMessage.Visibility = Visibility.Hidden;
             txtMessage.Visibility = Visibility.Hidden;
         }
     }
