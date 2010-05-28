@@ -80,7 +80,7 @@ namespace Squiggle.UI
 
         void chatClient_BuddyOnline(object sender, BuddyOnlineEventArgs e)
         {
-            if (!e.Discovered)
+            if (!e.Discovered && SettingsProvider.Current.Settings.GeneralSettings.ShowPopups)
                 TrayPopup.Show("Budy Online", e.Buddy.DisplayName + " is online", _=> StartChat(e.Buddy));
         }
 

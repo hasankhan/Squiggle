@@ -49,7 +49,6 @@ namespace Squiggle.UI.Controls
 
         private void ComboBoxItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            //ShowSettingsWindow();
             SignOut(this, new EventArgs());
             e.Handled = true;
         }
@@ -64,7 +63,6 @@ namespace Squiggle.UI.Controls
             if (e.Key == Key.Enter)
             {
                 SignOut(this, new EventArgs());
-                //ShowSettingsWindow();
                 e.Handled = true;
             }
         }
