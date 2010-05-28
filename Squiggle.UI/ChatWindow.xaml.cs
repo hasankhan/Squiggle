@@ -42,12 +42,18 @@ namespace Squiggle.UI
 
         void ChatWindow_Activated(object sender, EventArgs e)
         {
-            editMessageBox.GetFocus();
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                editMessageBox.GetFocus();
+            }));
         }
 
         void ChatWindow_StateChanged(object sender, EventArgs e)
         {
-            editMessageBox.GetFocus();         
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                editMessageBox.GetFocus();
+            }));
         }               
 
         public ChatWindow(Buddy buddy, string firstMessage) : this()
