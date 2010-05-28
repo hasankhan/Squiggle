@@ -97,7 +97,7 @@ namespace Squiggle.UI
                 Application.Current.Dispatcher.BeginInvoke(new Action(() => OnBuddyTyping(e)));
             else
             {
-                ChangeStatus(String.Format("{0} is typing", e.Buddy.DisplayName));
+                ChangeStatus(String.Format("{0} is typing...", e.Buddy.DisplayName));
                 statusResetTimer.Stop();
                 statusResetTimer.Start();
             }
@@ -189,7 +189,10 @@ namespace Squiggle.UI
         void ResetStatus()
         {
             statusResetTimer.Stop();
-            ChangeStatus("Last message received at " + String.Format("{0:T} on {0:d}", lastMessageReceived));
+            if (!lastMessageReceived.HasValue)
+                ChangeStatus(String.Empty);
+            else
+                ChangeStatus("Last message received at " + String.Format("{0:T} on {0:d}", lastMessageReceived));
         }
 
         void ChangeStatus(string message, params object[] args)
