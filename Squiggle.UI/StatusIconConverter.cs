@@ -33,7 +33,8 @@ namespace Squiggle.UI
                         return new BitmapImage(new Uri("/Images/online.png", UriKind.Relative));
                 }
             }
-            return new BitmapImage(new Uri("/Images/online.png", UriKind.Relative));
+            else
+                return value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

@@ -36,7 +36,13 @@ namespace Squiggle.UI
             statusResetTimer = new DispatcherTimer();
             statusResetTimer.Interval = TimeSpan.FromSeconds(5);
             statusResetTimer.Tick += (sender, e) => ResetStatus();
+            this.Activated += new EventHandler(ChatWindow_Activated);
             this.StateChanged += new EventHandler(ChatWindow_StateChanged);
+        }
+
+        void ChatWindow_Activated(object sender, EventArgs e)
+        {
+            editMessageBox.GetFocus();
         }
 
         void ChatWindow_StateChanged(object sender, EventArgs e)
