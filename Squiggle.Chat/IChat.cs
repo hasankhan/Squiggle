@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using Squiggle.Chat.Services;
 
 namespace Squiggle.Chat
 {
@@ -18,6 +19,12 @@ namespace Squiggle.Chat
         public Exception Exception { get; set; }
     }
 
+    public class FileTransferInviteEventArgs : EventArgs
+    {
+        public Buddy Sender { get; set; }
+        public IFileTransfer Invitation { get; set; }
+    }
+
     public interface IChat
     {
         IEnumerable<Buddy> Buddies { get; }
@@ -27,9 +34,11 @@ namespace Squiggle.Chat
         event EventHandler<BuddyEventArgs> BuddyLeft;
         event EventHandler<BuddyEventArgs> BuddyTyping;
         event EventHandler<MessageFailedEventArgs> MessageFailed;
+        event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived;
 
         void NotifyTyping();
         void SendMessage(string Message);
+        IFileTransfer SendFile(string name, int size, Stream content);
         void Leave();
     }
 }

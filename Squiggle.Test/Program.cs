@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.Threading;
+using System.IO;
 
 namespace Squiggle.Chat
 {
@@ -11,7 +12,7 @@ namespace Squiggle.Chat
     {
         static void Main(string[] args)
         {
-            TestActivityMonitor();
+            //TestActivityMonitor();
             TestPresence();
             Console.ReadLine();
         }
@@ -24,6 +25,7 @@ namespace Squiggle.Chat
             monitor.Start();
         }
 
+        static IChat chat;
         private static void TestPresence()
         {
             ChatClient client1 = new ChatClient(new IPEndPoint(IPAddress.Loopback, 1234), new IPEndPoint(IPAddress.Parse("224.10.11.12"), 12345), 2.Seconds());
@@ -33,7 +35,23 @@ namespace Squiggle.Chat
             client2.BuddyOffline += new EventHandler<BuddyEventArgs>(client2_BuddyOffline);
             client1.Login("hasan");
             client2.Login("Ali");
+            Thread.Sleep(2000);
+            client2.ChatStarted += new EventHandler<ChatStartedEventArgs>(client2_ChatStarted);
+            chat = client1.StartChat(client1.Buddies.FirstOrDefault());
+            chat.SendMessage("Hello");
+            Console.ReadLine();
             client1.Logout();
+        }
+
+        static void client2_ChatStarted(object sender, ChatStartedEventArgs e)
+        {
+            e.Chat.TransferInvitationReceived += new EventHandler<FileTransferInviteEventArgs>(Chat_TransferInvitationReceived);
+            chat.SendFile("aloo", 1024, File.OpenRead(@"c:\test.txt"));
+        }
+
+        static void Chat_TransferInvitationReceived(object sender, FileTransferInviteEventArgs e)
+        {
+            e.Invitation.Accept(@"d:\dhuz.txt");
         }
 
         static void client2_BuddyOffline(object sender, BuddyEventArgs e)

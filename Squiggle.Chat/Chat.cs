@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Squiggle.Chat.Services;
 using System.IO;
 using System.Threading;
 using System.Diagnostics;
+using Squiggle.Chat.Services;
 
 namespace Squiggle.Chat
 {    
@@ -13,6 +13,15 @@ namespace Squiggle.Chat
     {
         Buddy buddy;
         IChatSession session;
+
+        public Chat(IChatSession session, Buddy buddy)
+        {
+            this.buddy = buddy;
+            this.session = session;
+            session.MessageReceived += new EventHandler<Squiggle.Chat.Services.Chat.Host.MessageReceivedEventArgs>(session_MessageReceived);
+            session.UserTyping += new EventHandler<Squiggle.Chat.Services.Chat.Host.UserEventArgs>(session_UserTyping);
+            session.TransferInvitationReceived += new EventHandler<Squiggle.Chat.Services.FileTransferInviteEventArgs>(session_TransferInvitationReceived);
+        }        
 
         #region IChat Members
 
@@ -26,6 +35,7 @@ namespace Squiggle.Chat
         public event EventHandler<BuddyEventArgs> BuddyJoined = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyLeft = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyTyping = delegate { };
+        public event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived = delegate { };
 
         public void SendMessage(string message)
         {
@@ -61,6 +71,11 @@ namespace Squiggle.Chat
             });
         }
 
+        public IFileTransfer SendFile(string name, int size, Stream content)
+        {
+            return session.SendFile(name, size, content);            
+        }
+
         public void Leave()
         {
             session.End();
@@ -68,12 +83,9 @@ namespace Squiggle.Chat
 
         #endregion
 
-        public Chat(IChatSession session, Buddy buddy)
+        void session_TransferInvitationReceived(object sender, Squiggle.Chat.Services.FileTransferInviteEventArgs e)
         {
-            this.buddy = buddy;
-            this.session = session;
-            session.MessageReceived += new EventHandler<Squiggle.Chat.Services.Chat.Host.MessageReceivedEventArgs>(session_MessageReceived);
-            session.UserTyping += new EventHandler<Squiggle.Chat.Services.Chat.Host.UserEventArgs>(session_UserTyping);
+            TransferInvitationReceived(this, new FileTransferInviteEventArgs() { Sender = buddy, Invitation = e.Invitation });
         }
 
         void session_UserTyping(object sender, Squiggle.Chat.Services.Chat.Host.UserEventArgs e)

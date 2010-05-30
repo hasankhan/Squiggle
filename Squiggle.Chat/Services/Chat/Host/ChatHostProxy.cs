@@ -7,6 +7,7 @@ using System.CodeDom.Compiler;
 using System.Net;
 using System.Diagnostics;
 using System.ServiceModel.Channels;
+using System.IO;
 
 namespace Squiggle.Chat.Services.Chat.Host
 {
@@ -57,10 +58,34 @@ namespace Squiggle.Chat.Services.Chat.Host
             proxy.UserIsTyping(user);
         }
 
+        public void ReceiveFileInvite(IPEndPoint user, Guid id, string name, int size)
+        {
+            EnsureProxy();
+            proxy.ReceiveFileInvite(user, id, name, size);
+        }
+
+        public void ReceiveFileContent(Guid id, byte[] chunk)
+        {
+            EnsureProxy();
+            proxy.ReceiveFileContent(id, chunk);
+        }
+
         public void ReceiveMessage(IPEndPoint user, string message)
         {
             EnsureProxy();
             proxy.ReceiveMessage(user, message);
+        }
+
+        public void AcceptFileInvite(Guid id)
+        {
+            EnsureProxy();
+            proxy.AcceptFileInvite(id);
+        }
+
+        public void CancelFileTransfer(Guid id)
+        {
+            EnsureProxy();
+            proxy.CancelFileTransfer(id);
         }
 
         #endregion
@@ -99,14 +124,38 @@ namespace Squiggle.Chat.Services.Chat.Host
 
             public void UserIsTyping(IPEndPoint user)
             {
-                base.Channel.UserIsTyping(user);
                 Trace.WriteLine("Sending typing notification to: " + user.ToString());
+                base.Channel.UserIsTyping(user);
+            }
+
+            public void ReceiveFileInvite(IPEndPoint user, Guid id, string name, int size)
+            {
+                Trace.WriteLine("Sending file invite to: " + user.ToString() + ", name = " + name);
+                base.Channel.ReceiveFileInvite(user, id, name, size);
+            }
+
+            public void ReceiveFileContent(Guid id, byte[] chunk)
+            {
+                Trace.WriteLine("Sending file content: " + id.ToString());
+                base.Channel.ReceiveFileContent(id, chunk);
+            }
+
+            public void AcceptFileInvite(Guid id)
+            {
+                Trace.WriteLine("Accepting file invite: " + id.ToString());
+                base.Channel.AcceptFileInvite(id);
+            }
+
+            public void CancelFileTransfer(Guid id)
+            {
+                Trace.WriteLine("Cancel file transfer: " + id.ToString());
+                base.Channel.CancelFileTransfer(id);
             }
 
             public void ReceiveMessage(IPEndPoint user, string message)
             {
+                Trace.WriteLine("Sending message to: " + user.ToString() + ", message = " + message);
                 base.Channel.ReceiveMessage(user, message);
-                Trace.WriteLine("Sending message to:" + user.ToString() + ", message = " + message);
             }
 
             #endregion
