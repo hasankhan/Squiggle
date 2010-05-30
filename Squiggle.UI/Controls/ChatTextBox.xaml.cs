@@ -11,6 +11,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text.RegularExpressions;
+using System.IO;
+using System.Diagnostics;
 
 namespace Squiggle.UI.Controls
 {
@@ -19,6 +22,8 @@ namespace Squiggle.UI.Controls
     /// </summary>
     public partial class ChatTextBox : UserControl
     {
+        static Regex urlRegex = new Regex(@"https?://[\w./]+");
+
         public ChatTextBox()
         {
             InitializeComponent();
@@ -49,14 +54,56 @@ namespace Squiggle.UI.Controls
 
         public void AddMessage(string user, string message)
         {
-            var title = new Bold(new Run(user + ": "));
-            var text = new Run(message);
             var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
 
-            para.Inlines.Add(title);
-            para.Inlines.Add(text);
+            var items = ParseText(user + ": ");
+            foreach (var item in items)
+            {
+                item.FontWeight = FontWeights.Bold;
+                para.Inlines.Add(item);
+            }
+            items = ParseText(message);
+            para.Inlines.AddRange(items);
             para.Inlines.Add(new LineBreak());
             scrollViewer.ScrollToBottom();
+        }
+
+        static List<Inline> ParseText(string message)
+        {
+            var items = new List<Inline>();
+            int lastIndex = 0;
+            foreach (Match match in urlRegex.Matches(message))
+            {
+                string text = message.Substring(lastIndex, match.Index - lastIndex);
+                AddText(items, text);
+                AddHyperlink(items, match.Value);
+                lastIndex = match.Index + match.Length;
+            }
+            AddText(items, message.Substring(lastIndex));
+            return items;
+        }
+
+        static void AddText(List<Inline> items, string text)
+        {
+            if (!String.IsNullOrEmpty(text))
+                items.Add(new Run(text));
+        }
+
+        static void AddHyperlink(List<Inline> items, string url)
+        {
+            var link = new Hyperlink(new Run(url));
+            link.NavigateUri = new Uri(url, UriKind.Absolute);
+            link.Cursor = Cursors.Hand;
+            link.MouseLeftButtonDown += (s, e) =>
+            {
+                try
+                {
+                    Process.Start(link.NavigateUri.AbsoluteUri);
+                    e.Handled = true;
+                }
+                catch { }
+            };
+            items.Add(link);
         }
     }
 }
