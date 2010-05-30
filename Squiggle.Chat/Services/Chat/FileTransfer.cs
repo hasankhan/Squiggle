@@ -7,32 +7,18 @@ using System.Net;
 using System.Threading;
 using Squiggle.Chat.Services.Chat.Host;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace Squiggle.Chat.Services.Chat
 {
     class FileTransfer: IFileTransfer
     {
-        #region IFileTransfer Members
-
         public event EventHandler TransferCompleted = delegate { };
         public event EventHandler TransferStarted = delegate { };
         public event EventHandler TransferCancelled = delegate { };
         public event EventHandler<ChunkReceivedEventArgs> ChunkReceived = delegate { };
         public event EventHandler<System.ComponentModel.ProgressChangedEventArgs> ProgressChanged = delegate { };
-        public event EventHandler<ErrorEventArgs> Error = delegate { };
-
-        public void Cancel()
-        {
-            if (sending)
-                worker.CancelAsync();
-            else
-            {
-                OnTransferFinished();
-                TransferCancelled(this, EventArgs.Empty);
-            }
-        }
-
-        #endregion
+        public event EventHandler<ErrorEventArgs> Error = delegate { };        
 
         IChatHost remoteUser;
         IPEndPoint localUser;
@@ -73,14 +59,7 @@ namespace Squiggle.Chat.Services.Chat
             localHost.InvitationAccepted += new EventHandler<FileTransferEventArgs>(localHost_InvitationAccepted);
             ThreadPool.QueueUserWorkItem(_ =>
             {
-                try
-                {
-                    this.remoteUser.ReceiveFileInvite(localUser, id, name, size);
-                }
-                catch (Exception ex)
-                {
-                    Error(this, new ErrorEventArgs(ex));
-                }
+                L(()=>this.remoteUser.ReceiveFileInvite(localUser, id, name, size));
             });
         }
 
@@ -90,34 +69,27 @@ namespace Squiggle.Chat.Services.Chat
                 throw new InvalidOperationException("This operation is only valid in context of an invitation.");
             content = File.OpenWrite(filePath);
             localHost.TransferDataReceived += new EventHandler<FileTransferDataReceivedEventArgs>(localHost_TransferDataReceived);
-            remoteUser.AcceptFileInvite(id);
+            L(()=>remoteUser.AcceptFileInvite(id));
+            OnTransferStarted();
+        }
+        
+        public void Cancel()
+        {
+            Cancel(true);
         }
 
-        void localHost_TransferDataReceived(object sender, FileTransferDataReceivedEventArgs e)
+        void Cancel(bool notifyOther)
         {
-            bytesReceived += e.Chunk.Length;
-            content.Write(e.Chunk, 0, e.Chunk.Length);
-
-            float progress = bytesReceived / (float)size * 100;
-            UpdateProgress((int)progress);
-
-            if (bytesReceived == size)
+            if (sending)
+                worker.CancelAsync();
+            else
             {
                 OnTransferFinished();
-                TransferCompleted(this, EventArgs.Empty);
+                TransferCancelled(this, EventArgs.Empty);
             }
-        }
-
-        void localHost_InvitationAccepted(object sender, FileTransferEventArgs e)
-        {
-            worker = new BackgroundWorker();
-            worker.WorkerReportsProgress = true;
-            worker.WorkerSupportsCancellation = true;
-            worker.DoWork += new DoWorkEventHandler(worker_DoWork);
-            worker.ProgressChanged += new ProgressChangedEventHandler(worker_ProgressChanged);
-            worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(worker_RunWorkerCompleted);
-            worker.RunWorkerAsync();
-        }
+            if (notifyOther)
+                L(() => this.remoteUser.CancelFileTransfer(id));
+        }        
 
         void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -131,26 +103,14 @@ namespace Squiggle.Chat.Services.Chat
                 TransferCompleted(this, EventArgs.Empty);
         }
 
-        void OnTransferFinished()
-        {
-            localHost.TransferDataReceived -= new EventHandler<FileTransferDataReceivedEventArgs>(localHost_TransferDataReceived);
-            localHost.InvitationAccepted -= new EventHandler<FileTransferEventArgs>(localHost_InvitationAccepted);
-            content.Dispose();
-        }
-
         void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             UpdateProgress(e.ProgressPercentage);
         }
 
-        void UpdateProgress(int percentage)
-        {
-            ProgressChanged(this, new ProgressChangedEventArgs(percentage, null));
-        }
-
         void worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            TransferStarted(this, EventArgs.Empty);
+            OnTransferStarted();
 
             byte[] buffer = new byte[1024];
             int bytesRemaining = size;
@@ -165,6 +125,78 @@ namespace Squiggle.Chat.Services.Chat
 
             if (worker.CancellationPending)
                 e.Cancel = true;
+        }
+
+        void localHost_TransferCancelled(object sender, FileTransferEventArgs e)
+        {
+            if (e.ID == id)
+            {
+                Cancel(false);
+                TransferCancelled(this, EventArgs.Empty);
+            }
+        }
+
+        void localHost_TransferDataReceived(object sender, FileTransferDataReceivedEventArgs e)
+        {
+            if (e.ID == id)
+            {
+                bytesReceived += e.Chunk.Length;
+                content.Write(e.Chunk, 0, e.Chunk.Length);
+
+                float progress = bytesReceived / (float)size * 100;
+                UpdateProgress((int)progress);
+
+                if (bytesReceived == size)
+                {
+                    OnTransferFinished();
+                    TransferCompleted(this, EventArgs.Empty);
+                }
+            }
+        }
+
+        void localHost_InvitationAccepted(object sender, FileTransferEventArgs e)
+        {
+            if (e.ID == id)
+            {
+                worker = new BackgroundWorker();
+                worker.WorkerReportsProgress = true;
+                worker.WorkerSupportsCancellation = true;
+                worker.DoWork += new DoWorkEventHandler(worker_DoWork);
+                worker.ProgressChanged += new ProgressChangedEventHandler(worker_ProgressChanged);
+                worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(worker_RunWorkerCompleted);
+                worker.RunWorkerAsync();
+            }
+        }
+
+        void OnTransferStarted()
+        {
+            localHost.TransferCancelled += new EventHandler<FileTransferEventArgs>(localHost_TransferCancelled);
+            TransferStarted(this, EventArgs.Empty);
         }        
+
+        void OnTransferFinished()
+        {
+            localHost.TransferDataReceived -= new EventHandler<FileTransferDataReceivedEventArgs>(localHost_TransferDataReceived);
+            localHost.InvitationAccepted -= new EventHandler<FileTransferEventArgs>(localHost_InvitationAccepted);
+            localHost.TransferCancelled -= new EventHandler<FileTransferEventArgs>(localHost_TransferCancelled);
+            content.Dispose();
+        }
+
+        void UpdateProgress(int percentage)
+        {
+            ProgressChanged(this, new ProgressChangedEventArgs(percentage, null));
+        }
+
+        void L(Action action)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
+            }
+        }
     }
 }
