@@ -59,7 +59,9 @@ namespace Squiggle.Chat.Services.Chat
             localHost.InvitationAccepted += new EventHandler<FileTransferEventArgs>(localHost_InvitationAccepted);
             ThreadPool.QueueUserWorkItem(_ =>
             {
-                L(()=>this.remoteUser.ReceiveFileInvite(localUser, id, name, size));
+                bool success = L(() => this.remoteUser.ReceiveFileInvite(localUser, id, name, size));
+                if (!success)
+                    OnTransferFinished();
             });
         }
 
@@ -67,10 +69,16 @@ namespace Squiggle.Chat.Services.Chat
         {
             if (sending)
                 throw new InvalidOperationException("This operation is only valid in context of an invitation.");
-            content = File.OpenWrite(filePath);
             localHost.TransferDataReceived += new EventHandler<FileTransferDataReceivedEventArgs>(localHost_TransferDataReceived);
-            L(()=>remoteUser.AcceptFileInvite(id));
-            OnTransferStarted();
+            bool success = L(()=>
+                            {
+                                content = File.OpenWrite(filePath);
+                                remoteUser.AcceptFileInvite(id);
+                            });
+            if (success)
+                OnTransferStarted();
+            else
+                OnTransferFinished();
         }
         
         public void Cancel()
@@ -187,16 +195,19 @@ namespace Squiggle.Chat.Services.Chat
             ProgressChanged(this, new ProgressChangedEventArgs(percentage, null));
         }
 
-        void L(Action action)
+        bool L(Action action)
         {
+            bool success = true;
             try
             {
                 action();
             }
             catch (Exception ex)
             {
+                success = false;
                 Trace.WriteLine(ex.Message);
             }
+            return success;
         }
     }
 }
