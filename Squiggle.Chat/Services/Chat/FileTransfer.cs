@@ -20,8 +20,7 @@ namespace Squiggle.Chat.Services.Chat
         public event EventHandler<ErrorEventArgs> Error = delegate { };        
 
         IChatHost remoteUser;
-        IPEndPoint localUser;
-        string name;
+        IPEndPoint localUser;        
         int size;
         Stream content;
         Guid id;
@@ -30,12 +29,14 @@ namespace Squiggle.Chat.Services.Chat
         bool sending;
         int bytesReceived;
 
+        public string Name { get; private set; }
+
         public FileTransfer(IChatHost remoteHost, ChatHost localHost, IPEndPoint localUser, string name, int size, Stream content)
         {
             this.localHost = localHost;
             this.remoteUser = remoteHost;
             this.localUser = localUser;
-            this.name = name;
+            this.Name = name;
             this.size = size;
             this.content = content;
             id = Guid.NewGuid();
@@ -47,7 +48,7 @@ namespace Squiggle.Chat.Services.Chat
             this.localHost = localHost;
             this.remoteUser = remoteHost;
             this.localUser = localUser;
-            this.name = name;
+            this.Name = name;
             this.size = size;
             this.id = id;
             sending = false;
@@ -58,7 +59,7 @@ namespace Squiggle.Chat.Services.Chat
             localHost.InvitationAccepted += new EventHandler<FileTransferEventArgs>(localHost_InvitationAccepted);
             ThreadPool.QueueUserWorkItem(_ =>
             {
-                bool success = L(() => this.remoteUser.ReceiveFileInvite(localUser, id, name, size));
+                bool success = L(() => this.remoteUser.ReceiveFileInvite(localUser, id, Name, size));
                 if (!success)
                     OnTransferFinished();
             });
