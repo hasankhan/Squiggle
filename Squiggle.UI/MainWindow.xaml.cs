@@ -60,10 +60,6 @@ namespace Squiggle.UI
                 if (!String.IsNullOrEmpty(name))
                     chatControl.SignIn.chkRememberName.IsChecked = true;
             }
-        }
-
-        private void Window_Initialized(object sender, EventArgs e)
-        {
             if (App.RunInBackground)
                 this.Hide();
         }
