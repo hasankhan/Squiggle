@@ -7,11 +7,6 @@ using System.IO;
 
 namespace Squiggle.Chat
 {
-    public class ChunkReceivedEventArgs: EventArgs
-    {
-        public byte[] Chunk {get; set; }
-    }
-
     public interface IFileTransfer
     {
         event EventHandler TransferCompleted;
@@ -19,6 +14,8 @@ namespace Squiggle.Chat
         event EventHandler TransferCancelled;
         event EventHandler<ProgressChangedEventArgs> ProgressChanged;
         event EventHandler<ErrorEventArgs> Error;
+
+        string Name { get; }
 
         void Cancel();
         void Accept(string filePath);
