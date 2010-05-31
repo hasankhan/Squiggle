@@ -242,6 +242,7 @@ namespace Squiggle.UI
         private void RestoreWindow()
         {
             this.Show();
+            this.Activate();
             this.WindowState = lastState;
         }
 
