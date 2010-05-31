@@ -17,7 +17,6 @@ namespace Squiggle.Chat
         event EventHandler TransferCompleted;
         event EventHandler TransferStarted;
         event EventHandler TransferCancelled;
-        event EventHandler<ChunkReceivedEventArgs> ChunkReceived;
         event EventHandler<ProgressChangedEventArgs> ProgressChanged;
         event EventHandler<ErrorEventArgs> Error;
 

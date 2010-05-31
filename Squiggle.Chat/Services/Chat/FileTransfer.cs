@@ -16,7 +16,6 @@ namespace Squiggle.Chat.Services.Chat
         public event EventHandler TransferCompleted = delegate { };
         public event EventHandler TransferStarted = delegate { };
         public event EventHandler TransferCancelled = delegate { };
-        public event EventHandler<ChunkReceivedEventArgs> ChunkReceived = delegate { };
         public event EventHandler<System.ComponentModel.ProgressChangedEventArgs> ProgressChanged = delegate { };
         public event EventHandler<ErrorEventArgs> Error = delegate { };        
 
