@@ -25,9 +25,8 @@ namespace Squiggle.UI.Controls
         IFileTransfer fileTransfer;
         string downloadFolder;
 
-        public int Size { get { return fileTransfer.Size; } }
         public string FileName { get; private set; }
-        public int FileSize { get; set; }
+        public int FileSize { get; private set; }
 
         public string DownloadFolder
         {
@@ -57,8 +56,6 @@ namespace Squiggle.UI.Controls
 
             this.fileTransfer.ProgressChanged += new EventHandler<System.ComponentModel.ProgressChangedEventArgs>(fileTransfer_ProgressChanged);
         }
-
-        
 
         private void Accept_Click(object sender, RoutedEventArgs e)
         {

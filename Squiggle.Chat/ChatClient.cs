@@ -92,7 +92,7 @@ namespace Squiggle.Chat
         {
             Buddy buddy = buddies[e.Session.RemoteUser];
             var chat = new Chat(e.Session, buddy);
-            ChatStarted(this, new ChatStartedEventArgs() { Chat = chat,Buddy = buddy, Message = e.Message });
+            ChatStarted(this, new ChatStartedEventArgs() { Chat = chat,Buddy = buddy});
         }
 
         void presenceService_UserUpdated(object sender, UserEventArgs e)

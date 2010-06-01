@@ -27,8 +27,9 @@ namespace Squiggle.UI
         FlashWindow flash;
         DateTime? lastMessageReceived;
         DispatcherTimer statusResetTimer;
-        string firstMessage;
- 
+        EventQueue eventQueue = new EventQueue();
+        bool loaded;        
+        
         public ChatWindow()
         {
             InitializeComponent();
@@ -39,6 +40,35 @@ namespace Squiggle.UI
             statusResetTimer.Tick += (sender, e) => ResetStatus();
             this.Activated += new EventHandler(ChatWindow_Activated);
             this.StateChanged += new EventHandler(ChatWindow_StateChanged);
+        }
+
+        public ChatWindow(Buddy buddy, IChat chatSession) : this()
+        {
+            ChatSession = chatSession;
+            this.buddy = buddy;            
+        }
+
+        public IChat ChatSession
+        {
+            get { return chatSession; }
+            set
+            {
+                chatSession = value;
+                this.DataContext = value;
+                chatSession.MessageReceived += new EventHandler<ChatMessageReceivedEventArgs>(chatSession_MessageReceived);
+                chatSession.BuddyJoined += new EventHandler<BuddyEventArgs>(chatSession_BuddyJoined);
+                chatSession.BuddyLeft += new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
+                chatSession.MessageFailed += new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
+                chatSession.BuddyTyping += new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
+                chatSession.TransferInvitationReceived += new EventHandler<FileTransferInviteEventArgs>(chatSession_TransferInvitationReceived);
+            }
+        }        
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.KeyDown += new KeyEventHandler(ChatWindow_KeyDown);
+            loaded = true;
+            eventQueue.DequeueAll();
         }
 
         void ChatWindow_Activated(object sender, EventArgs e)
@@ -55,110 +85,28 @@ namespace Squiggle.UI
             {
                 editMessageBox.GetFocus();
             }));
-        }               
-
-        public ChatWindow(Buddy buddy, string firstMessage) : this()
-        {
-            this.buddy = buddy;
-            this.firstMessage = firstMessage;            
-        }        
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            this.KeyDown += new KeyEventHandler(ChatWindow_KeyDown);
-            chatSession = this.DataContext as IChat;
-            chatSession.MessageReceived += new EventHandler<ChatMessageReceivedEventArgs>(chatSession_MessageReceived);
-            chatSession.BuddyJoined += new EventHandler<BuddyEventArgs>(chatSession_BuddyJoined);
-            chatSession.BuddyLeft += new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
-            chatSession.MessageFailed += new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
-            chatSession.BuddyTyping += new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
-            chatSession.TransferInvitationReceived += new EventHandler<FileTransferInviteEventArgs>(chatSession_TransferInvitationReceived);
-            if (!String.IsNullOrEmpty(firstMessage))
-                OnMessageReceived(buddy, firstMessage);
         }
-
-        void chatSession_TransferInvitationReceived(object sender, FileTransferInviteEventArgs e)
-        {
-            chatTextBox.AddFileTransfer(e.Sender.DisplayName, e.Invitation);
-        }
-
-        void chatSession_MessageReceived(object sender, ChatMessageReceivedEventArgs e)
-        {
-            OnMessageReceived(e.Sender, e.Message);
-        }        
 
         void ChatWindow_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
                 Close();
-        }
-
-        void chatSession_BuddyTyping(object sender, BuddyEventArgs e)
-        {
-            OnBuddyTyping(e);
-        }
-
-        private void OnBuddyTyping(BuddyEventArgs e)
-        {
-            if (!Application.Current.Dispatcher.CheckAccess())
-                Application.Current.Dispatcher.BeginInvoke(new Action(() => OnBuddyTyping(e)));
-            else
-            {
-                ChangeStatus(String.Format("{0} is typing...", e.Buddy.DisplayName));
-                statusResetTimer.Stop();
-                statusResetTimer.Start();
-            }
-        }
-
-        void chatSession_MessageFailed(object sender, MessageFailedEventArgs e)
-        {
-            OnMessageFailed(e);
-        }
-
-        private void OnMessageFailed(MessageFailedEventArgs e)
-        {
-            if (!Application.Current.Dispatcher.CheckAccess())
-                Application.Current.Dispatcher.BeginInvoke(new Action(() => OnMessageFailed(e)));
-            else
-            {
-                string message = "Following message could not be sent due to error: " + e.Exception.Message;
-                string detail = e.Message;
-                chatTextBox.AddError(message, detail);
-            }
-        }
-
-        void chatSession_BuddyLeft(object sender, BuddyEventArgs e)
-        {
-            OnBuddyLeft(e);
-        }
-
-        private void OnBuddyLeft(BuddyEventArgs e)
-        {
-            if (!Application.Current.Dispatcher.CheckAccess())
-                Application.Current.Dispatcher.BeginInvoke(new Action(() => OnBuddyLeft(e)));
-            else
-            {
-                txtUserLeftMessage.Text = e.Buddy.DisplayName + " has left the chat.";
-                txtUserLeftMessage.Visibility = Visibility.Visible;
-            }
-        }
-
-        void chatSession_BuddyJoined(object sender, BuddyEventArgs e)
-        {
-            OnBuddyJoined();          
-        }
-
-        void OnBuddyJoined()
-        {
-            if (!Application.Current.Dispatcher.CheckAccess())
-                Application.Current.Dispatcher.BeginInvoke(new Action(OnBuddyJoined));
-            else
-                txtUserLeftMessage.Visibility = Visibility.Hidden;
-        }
+        }       
 
         private void Window_Closed(object sender, EventArgs e)
         {
             chatSession.Leave();
+        }
+
+        void OnTransferInvite(FileTransferInviteEventArgs e)
+        {
+            if (!Application.Current.Dispatcher.CheckAccess())
+                Application.Current.Dispatcher.BeginInvoke(new Action(() => OnTransferInvite(e)));
+            else
+            {
+                chatTextBox.AddFileTransfer(e.Sender.DisplayName, e.Invitation);
+                FlashWindow();
+            }
         }
 
         void OnMessageReceived(Buddy buddy, string message)
@@ -170,8 +118,7 @@ namespace Squiggle.UI
                 lastMessageReceived = DateTime.Now;
                 chatTextBox.AddMessage(buddy.DisplayName, message);
                 ResetStatus();
-                if (!this.IsActive)
-                    flash.Start();
+                FlashWindow();
             }
         }        
 
@@ -193,6 +140,126 @@ namespace Squiggle.UI
             chatSession.NotifyTyping();
         }
 
+        private void SendFile_Click(object sender, RoutedEventArgs e)
+        {
+            using (var dlg = new System.Windows.Forms.OpenFileDialog())
+            {
+                if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    if (dlg.CheckFileExists)
+                    {
+                        FileInfo file = new FileInfo(dlg.FileName);
+                        FileStream fileStream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read);
+                        int size = Convert.ToInt32(Decimal.Divide(file.Length, 1024));
+                        chatSession.SendFile(file.Name, size, fileStream);
+                    }
+                }
+            }
+        }
+
+        void chatSession_TransferInvitationReceived(object sender, FileTransferInviteEventArgs e)
+        {
+            if (!loaded)
+            {
+                eventQueue.Enqueue(sender, e, chatSession_TransferInvitationReceived);
+                return;
+            }
+            OnTransferInvite(e);
+        }        
+
+        void chatSession_MessageReceived(object sender, ChatMessageReceivedEventArgs e)
+        {
+            if (!loaded)
+            {
+                eventQueue.Enqueue(sender, e, chatSession_MessageReceived);
+                return;
+            }
+            OnMessageReceived(e.Sender, e.Message);
+        }
+
+        void chatSession_BuddyTyping(object sender, BuddyEventArgs e)
+        {
+            if (!loaded)
+            {
+                eventQueue.Enqueue(sender, e, chatSession_BuddyTyping);
+                return;
+            }
+            OnBuddyTyping(e);
+        }
+
+        void chatSession_MessageFailed(object sender, MessageFailedEventArgs e)
+        {
+            if (!loaded)
+            {
+                eventQueue.Enqueue(sender, e, chatSession_MessageFailed);
+                return;
+            }
+            OnMessageFailed(e);
+        }
+
+        void chatSession_BuddyLeft(object sender, BuddyEventArgs e)
+        {
+            if (!loaded)
+            {
+                eventQueue.Enqueue(sender, e, chatSession_BuddyLeft);
+                return;
+            }
+            OnBuddyLeft(e);
+        }
+
+        void chatSession_BuddyJoined(object sender, BuddyEventArgs e)
+        {
+            if (!loaded)
+            {
+                eventQueue.Enqueue(sender, e, chatSession_BuddyJoined);
+                return;
+            }
+            OnBuddyJoined();
+        }            
+
+        void OnBuddyTyping(BuddyEventArgs e)
+        {
+            if (!Application.Current.Dispatcher.CheckAccess())
+                Application.Current.Dispatcher.BeginInvoke(new Action(() => OnBuddyTyping(e)));
+            else
+            {
+                ChangeStatus(String.Format("{0} is typing...", e.Buddy.DisplayName));
+                statusResetTimer.Stop();
+                statusResetTimer.Start();
+            }
+        }        
+
+        void OnMessageFailed(MessageFailedEventArgs e)
+        {
+            if (!Application.Current.Dispatcher.CheckAccess())
+                Application.Current.Dispatcher.BeginInvoke(new Action(() => OnMessageFailed(e)));
+            else
+            {
+                string message = "Following message could not be sent due to error: " + e.Exception.Message;
+                string detail = e.Message;
+                chatTextBox.AddError(message, detail);
+            }
+        }
+
+        void OnBuddyLeft(BuddyEventArgs e)
+        {
+            if (!Application.Current.Dispatcher.CheckAccess())
+                Application.Current.Dispatcher.BeginInvoke(new Action(() => OnBuddyLeft(e)));
+            else
+            {
+                txtUserLeftMessage.Text = e.Buddy.DisplayName + " has left the chat.";
+                txtUserLeftMessage.Visibility = Visibility.Visible;
+            }
+        }
+
+        void OnBuddyJoined()
+        {
+            if (!Application.Current.Dispatcher.CheckAccess())
+                Application.Current.Dispatcher.BeginInvoke(new Action(OnBuddyJoined));
+            else
+                txtUserLeftMessage.Visibility = Visibility.Hidden;
+        }               
+
         void ResetStatus()
         {
             statusResetTimer.Stop();
@@ -207,23 +274,10 @@ namespace Squiggle.UI
             txbStatus.Text = String.Format(message, args);
         }
 
-        private void SendFile_Click(object sender, RoutedEventArgs e)
+        void FlashWindow()
         {
-            using (var dlg = new System.Windows.Forms.OpenFileDialog())
-            {
-                if(dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    if (dlg.CheckFileExists)
-                    {
-                        FileInfo file = new FileInfo(dlg.FileName);
-                        FileStream fileStream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read);
-                        int size = Convert.ToInt32(Decimal.Divide(file.Length, 1024));
-                        chatSession.SendFile(file.Name, size, fileStream);
-                    }
-                }
-            }
+            if (!this.IsActive)
+                flash.Start();
         }
-
-       
     }
 }

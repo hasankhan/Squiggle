@@ -71,7 +71,7 @@ namespace Squiggle.UI
 
         void chatClient_ChatStarted(object sender, ChatStartedEventArgs e)
         {
-            CreateChatWindow(e.Buddy, e.Message, e.Chat, false);
+            CreateChatWindow(e.Buddy, e.Chat, false);
         }       
 
         void chatClient_BuddyOnline(object sender, BuddyOnlineEventArgs e)
@@ -87,7 +87,7 @@ namespace Squiggle.UI
 
         void StartChat(Buddy buddy)
         {
-            CreateChatWindow(buddy, String.Empty, buddy.StartChat(), true);
+            CreateChatWindow(buddy, buddy.StartChat(), true);
         }
 
         private void trayIcon_TrayLeftMouseDown(object sender, RoutedEventArgs e)
@@ -246,18 +246,19 @@ namespace Squiggle.UI
             this.WindowState = lastState;
         }
 
-        void CreateChatWindow(Buddy buddy, string message, IChat session, bool focused)
+        void CreateChatWindow(Buddy buddy, IChat session, bool focused)
         {
             ChatWindow window;
 
             if (!chatWindows.TryGetValue(buddy, out window))
             {
-                window = new ChatWindow(buddy, message);
-                window.Title = buddy.DisplayName;
+                window = new ChatWindow(buddy, session);
                 window.Closed += (sender, e) => chatWindows.Remove(buddy);
                 chatWindows.Add(buddy, window);
             }
-            window.DataContext = session;
+            else
+                window.ChatSession = session;
+            window.Title = buddy.DisplayName;
             if (!focused)
                 window.WindowState = WindowState.Minimized;
             window.Show();

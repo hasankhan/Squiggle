@@ -9,7 +9,6 @@ namespace Squiggle.Chat.Services
     public class ChatStartedEventArgs: EventArgs
     {
         public IChatSession Session {get; set; }
-        public string Message { get; set; }
     }
 
     public interface IChatService

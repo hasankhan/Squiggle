@@ -20,10 +20,10 @@ namespace Squiggle.Chat.Services.Chat
         public ChatService()
         {
             chatHost = new ChatHost();
-            chatHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(chatHost_MessageReceived);
+            chatHost.UserActivity += new EventHandler<UserActivityEventArgs>(chatHost_UserActivity);
             chatSessions = new Dictionary<IPEndPoint, IChatSession>();
-        }             
-
+        }        
+       
         #region IChatService Members
 
         public void Start(IPEndPoint endpoint)
@@ -66,13 +66,10 @@ namespace Squiggle.Chat.Services.Chat
 
         #endregion
 
-        void chatHost_MessageReceived(object sender, MessageReceivedEventArgs e)
+        void chatHost_UserActivity(object sender, UserActivityEventArgs e)
         {
-            if (!chatSessions.ContainsKey(e.User))
-            {
-                var session = CreateSession(e.User);
-                ChatStarted(this, new ChatStartedEventArgs() { Message=e.Message, Session = session });
-            }
+            if (e.Type == ActivityType.Message || e.Type == ActivityType.TransferInvite)
+                EnsureChatSession(e.User);
         }
 
         static Uri CreateServiceUri(string address)
@@ -87,6 +84,15 @@ namespace Squiggle.Chat.Services.Chat
             var binding = new NetTcpBinding(SecurityMode.None);
             IChatHost remoteHost = new ChatHostProxy(binding, new EndpointAddress(uri));
             return remoteHost;
+        }
+
+        void EnsureChatSession(IPEndPoint user)
+        {
+            if (!chatSessions.ContainsKey(user))
+            {
+                var session = CreateSession(user);
+                ChatStarted(this, new ChatStartedEventArgs() { Session = session });
+            }
         }
     }
 }

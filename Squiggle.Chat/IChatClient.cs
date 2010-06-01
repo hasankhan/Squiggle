@@ -10,7 +10,6 @@ namespace Squiggle.Chat
     {
         public Buddy Buddy { get; set; }
         public IChat Chat { get; set; }
-        public string Message { get; set; }
     }
 
     public class BuddyOnlineEventArgs : BuddyEventArgs

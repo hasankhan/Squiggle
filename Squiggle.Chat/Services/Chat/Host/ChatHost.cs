@@ -40,6 +40,19 @@ namespace Squiggle.Chat.Services.Chat.Host
         public byte[] Chunk { get; set; }
     }
 
+    public enum ActivityType
+    {
+        Message,
+        Typing,
+        TransferInvite
+    }
+
+    public class UserActivityEventArgs : EventArgs
+    {
+        public IPEndPoint User { get; set; }
+        public ActivityType Type { get; set; }
+    }
+
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)] 
     public class ChatHost: IChatHost
     {
@@ -49,17 +62,20 @@ namespace Squiggle.Chat.Services.Chat.Host
         public event EventHandler<FileTransferEventArgs> TransferCancelled = delegate { };
         public event EventHandler<TransferInvitationReceivedEventArgs> TransferInvitationReceived = delegate { };
         public event EventHandler<FileTransferDataReceivedEventArgs> TransferDataReceived = delegate { };
+        public event EventHandler<UserActivityEventArgs> UserActivity = delegate { };
 
         #region IChatHost Members
 
         public void UserIsTyping(IPEndPoint user)
         {
+            OnUserActivity(user, ActivityType.Typing);
             UserTyping(this, new UserEventArgs() { User = user });
             Trace.WriteLine(user.ToString() + " is typing.");
-        }
+        }        
 
         public void ReceiveFileInvite(IPEndPoint user, Guid id, string name, int size)
         {
+            OnUserActivity(user, ActivityType.TransferInvite);
             Trace.WriteLine(user.ToString() + " wants to send a file " + name);
             TransferInvitationReceived(this, new TransferInvitationReceivedEventArgs()
             {
@@ -68,6 +84,13 @@ namespace Squiggle.Chat.Services.Chat.Host
                 ID = id,
                 Size = size
             });
+        }
+
+        public void ReceiveMessage(IPEndPoint user, string message)
+        {
+            OnUserActivity(user, ActivityType.Message);
+            MessageReceived(this, new MessageReceivedEventArgs() { User = user, Message = message });
+            Trace.WriteLine("Message received from: " + user.ToString() + ", message = " + message);
         }
 
         public void ReceiveFileContent(Guid id, byte[] chunk)
@@ -83,14 +106,13 @@ namespace Squiggle.Chat.Services.Chat.Host
         public void CancelFileTransfer(Guid id)
         {
             TransferCancelled(this, new FileTransferEventArgs() { ID = id });
-        }
-
-        public void ReceiveMessage(IPEndPoint user, string message)
-        {            
-            MessageReceived(this, new MessageReceivedEventArgs() { User = user, Message = message });
-            Trace.WriteLine("Message received from: " + user.ToString() + ", message = " + message);
-        }
+        }       
 
         #endregion
+
+        void OnUserActivity(IPEndPoint user, ActivityType type)
+        {
+            UserActivity(this, new UserActivityEventArgs() { User = user, Type = type });
+        }
     }
 }
