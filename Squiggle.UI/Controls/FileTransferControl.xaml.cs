@@ -21,23 +21,37 @@ namespace Squiggle.UI.Controls
     public partial class FileTransferControl : UserControl
     {
         IFileTransfer fileTransfer;
+        string downloadFolder;
+
+        public int Size { get { return fileTransfer.Size; } }
         public string FileName { get { return fileTransfer.Name; } }
+        public string DownloadFolder
+        {
+            get { return downloadFolder; }
+            set
+            {
+                if (String.IsNullOrEmpty(value))
+                    throw new ArgumentException("Download folder can not be empty string");
+                else
+                    downloadFolder = value;
+            }
+        }
 
         public FileTransferControl()
         {
+            DownloadFolder = "Downloads";
             InitializeComponent();
         }
 
         public FileTransferControl(IFileTransfer fileTransfer) : this()
         {
             this.fileTransfer = fileTransfer;
-
             this.fileTransfer.ProgressChanged += new EventHandler<System.ComponentModel.ProgressChangedEventArgs>(fileTransfer_ProgressChanged);
         }
 
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
-            string filePath = "Documents\\" + fileTransfer.Name;
+            string filePath = System.IO.Path.Combine(DownloadFolder, fileTransfer.Name);
             AcceptDownload(filePath);
         }
 

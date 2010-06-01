@@ -20,8 +20,7 @@ namespace Squiggle.Chat.Services.Chat
         public event EventHandler<ErrorEventArgs> Error = delegate { };        
 
         IChatHost remoteUser;
-        IPEndPoint localUser;        
-        int size;
+        IPEndPoint localUser;
         Stream content;
         Guid id;
         ChatHost localHost;
@@ -29,6 +28,7 @@ namespace Squiggle.Chat.Services.Chat
         bool sending;
         int bytesReceived;
 
+        public int Size { get; private set; }
         public string Name { get; private set; }
 
         public FileTransfer(IChatHost remoteHost, ChatHost localHost, IPEndPoint localUser, string name, int size, Stream content)
@@ -37,7 +37,7 @@ namespace Squiggle.Chat.Services.Chat
             this.remoteUser = remoteHost;
             this.localUser = localUser;
             this.Name = name;
-            this.size = size;
+            this.Size = size;
             this.content = content;
             id = Guid.NewGuid();
             sending = true;
@@ -49,7 +49,7 @@ namespace Squiggle.Chat.Services.Chat
             this.remoteUser = remoteHost;
             this.localUser = localUser;
             this.Name = name;
-            this.size = size;
+            this.Size = size;
             this.id = id;
             sending = false;
         }
@@ -59,7 +59,7 @@ namespace Squiggle.Chat.Services.Chat
             localHost.InvitationAccepted += new EventHandler<FileTransferEventArgs>(localHost_InvitationAccepted);
             ThreadPool.QueueUserWorkItem(_ =>
             {
-                bool success = L(() => this.remoteUser.ReceiveFileInvite(localUser, id, Name, size));
+                bool success = L(() => this.remoteUser.ReceiveFileInvite(localUser, id, Name, Size));
                 if (!success)
                     OnTransferFinished();
             });
@@ -121,13 +121,13 @@ namespace Squiggle.Chat.Services.Chat
             OnTransferStarted();
 
             byte[] buffer = new byte[1024];
-            int bytesRemaining = size;
+            int bytesRemaining = Size;
             while (bytesRemaining > 0 && !worker.CancellationPending)
             {
                 int bytesRead = content.Read(buffer, 0, buffer.Length);
                 remoteUser.ReceiveFileContent(id, buffer);
                 bytesRemaining -= bytesRead;
-                float progress = (size - bytesRemaining) / (float)size * 100;
+                float progress = (Size - bytesRemaining) / (float)Size * 100;
                 worker.ReportProgress((int)progress);
             }
 
@@ -151,10 +151,10 @@ namespace Squiggle.Chat.Services.Chat
                 bytesReceived += e.Chunk.Length;
                 content.Write(e.Chunk, 0, e.Chunk.Length);
 
-                float progress = bytesReceived / (float)size * 100;
+                float progress = bytesReceived / (float)Size * 100;
                 UpdateProgress((int)progress);
 
-                if (bytesReceived == size)
+                if (bytesReceived == Size)
                 {
                     OnTransferFinished();
                     TransferCompleted(this, EventArgs.Empty);
