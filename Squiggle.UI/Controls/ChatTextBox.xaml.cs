@@ -28,15 +28,10 @@ namespace Squiggle.UI.Controls
         public ChatTextBox()
         {
             InitializeComponent();
-
-            sentMessages.Document = new FlowDocument();
-            sentMessages.Document.Blocks.Add(new Paragraph());
         }
 
         public void AddError(string error, string detail)
         {
-            var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
-
             var errorText = new Run(error);
             errorText.Foreground = new SolidColorBrush(Colors.Red);
 
@@ -50,7 +45,7 @@ namespace Squiggle.UI.Controls
             para.Inlines.Add(new LineBreak());
             para.Inlines.Add(new LineBreak());
 
-            scrollViewer.ScrollToBottom();
+            sentMessages.FindScrollViewer().ScrollToBottom();            
         }
 
         public void AddMessage(string user, string message)
@@ -66,7 +61,7 @@ namespace Squiggle.UI.Controls
             items = ParseText(message);
             para.Inlines.AddRange(items);
             para.Inlines.Add(new LineBreak());
-            scrollViewer.ScrollToBottom();
+            sentMessages.FindScrollViewer().ScrollToBottom();
         }
 
         public void AddFileTransfer(string user, IFileTransfer fileTransfer)

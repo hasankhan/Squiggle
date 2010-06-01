@@ -150,6 +150,7 @@
     </Compile>
     <Compile Include="DisplayMessageConverter.cs" />
     <Compile Include="DummyChatClient.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="FancyBalloon.xaml.cs">
       <DependentUpon>FancyBalloon.xaml</DependentUpon>
     </Compile>

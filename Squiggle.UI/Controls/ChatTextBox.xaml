@@ -11,8 +11,12 @@
         </Style>
     </UserControl.Resources>
     <Border Style="{StaticResource BorderStyle}">
-        <ScrollViewer x:Name="scrollViewer" Focusable="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <RichTextBox Padding="10" Background="White" IsReadOnly="True" x:Name="sentMessages" />
-        </ScrollViewer>
+        <FlowDocumentScrollViewer Padding="3" Background="White" x:Name="sentMessages" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
+            <FlowDocument>
+                <Paragraph x:Name="para" FontSize="12">
+                    
+                </Paragraph>
+            </FlowDocument>
+        </FlowDocumentScrollViewer>
     </Border>
 </UserControl>
