@@ -71,8 +71,14 @@ namespace Squiggle.UI
             chatSession.BuddyLeft += new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
             chatSession.MessageFailed += new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
             chatSession.BuddyTyping += new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
+            chatSession.TransferInvitationReceived += new EventHandler<FileTransferInviteEventArgs>(chatSession_TransferInvitationReceived);
             if (!String.IsNullOrEmpty(firstMessage))
                 OnMessageReceived(buddy, firstMessage);
+        }
+
+        void chatSession_TransferInvitationReceived(object sender, FileTransferInviteEventArgs e)
+        {
+            chatTextBox.AddFileTransfer(e.Sender.DisplayName, e.Invitation);
         }
 
         void chatSession_MessageReceived(object sender, ChatMessageReceivedEventArgs e)

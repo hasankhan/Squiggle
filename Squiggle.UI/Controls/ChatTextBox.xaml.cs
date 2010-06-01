@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Diagnostics;
+using Squiggle.Chat;
 
 namespace Squiggle.UI.Controls
 {
@@ -66,6 +67,13 @@ namespace Squiggle.UI.Controls
             para.Inlines.AddRange(items);
             para.Inlines.Add(new LineBreak());
             scrollViewer.ScrollToBottom();
+        }
+
+        public void AddFileTransfer(string user, IFileTransfer fileTransfer)
+        {
+            var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
+            para.Inlines.Add(new LineBreak());
+            para.Inlines.Add(new InlineUIContainer(new FileTransferControl(fileTransfer)));
         }
 
         static List<Inline> ParseText(string message)
