@@ -13,6 +13,7 @@ using Squiggle.Chat;
 using Squiggle.UI.Controls;
 using System.Windows.Threading;
 using System.Diagnostics;
+using System.IO;
 
 namespace Squiggle.UI
 {
@@ -204,6 +205,23 @@ namespace Squiggle.UI
         void ChangeStatus(string message, params object[] args)
         {
             txbStatus.Text = String.Format(message, args);
+        }
+
+        private void SendFile_Click(object sender, RoutedEventArgs e)
+        {
+            using (var dlg = new System.Windows.Forms.OpenFileDialog())
+            {
+                if(dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    if (dlg.CheckFileExists)
+                    {
+                        FileInfo file = new FileInfo(dlg.FileName);
+                        FileStream fileStream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read);
+                        int size = Convert.ToInt32(Decimal.Divide(file.Length, 1024));
+                        chatSession.SendFile(file.Name, size, fileStream);
+                    }
+                }
+            }
         }
 
        

@@ -12,19 +12,23 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Squiggle.Chat;
+using System.ComponentModel;
+using System.IO;
 
 namespace Squiggle.UI.Controls
 {
     /// <summary>
     /// Interaction logic for FileTransferControl.xaml
     /// </summary>
-    public partial class FileTransferControl : UserControl
+    public partial class FileTransferControl : UserControl, INotifyPropertyChanged
     {
         IFileTransfer fileTransfer;
         string downloadFolder;
 
         public int Size { get { return fileTransfer.Size; } }
-        public string FileName { get { return fileTransfer.Name; } }
+        public string FileName { get; private set; }
+        public int FileSize { get; set; }
+
         public string DownloadFolder
         {
             get { return downloadFolder; }
@@ -46,11 +50,21 @@ namespace Squiggle.UI.Controls
         public FileTransferControl(IFileTransfer fileTransfer) : this()
         {
             this.fileTransfer = fileTransfer;
+
+            FileName = fileTransfer.Name;
+            FileSize = fileTransfer.Size;
+            NotifyPropertyChanged();
+
             this.fileTransfer.ProgressChanged += new EventHandler<System.ComponentModel.ProgressChangedEventArgs>(fileTransfer_ProgressChanged);
         }
 
+        
+
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
+            if (!Directory.Exists(DownloadFolder))
+                Directory.CreateDirectory(DownloadFolder);
+
             string filePath = System.IO.Path.Combine(DownloadFolder, fileTransfer.Name);
             AcceptDownload(filePath);
         }
@@ -70,6 +84,13 @@ namespace Squiggle.UI.Controls
         void fileTransfer_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
         {
             progress.Value = e.ProgressPercentage;
+            if (e.ProgressPercentage == 100)
+            {
+                stkCompleted.Visibility = Visibility.Visible;
+                stkCancelled.Visibility = Visibility.Hidden;
+                stkAccepted.Visibility = Visibility.Hidden;
+                stkInvitation.Visibility = Visibility.Hidden;
+            }
         }
 
         private void RejectDownload()
@@ -77,6 +98,7 @@ namespace Squiggle.UI.Controls
             stkCancelled.Visibility = Visibility.Visible;
             stkAccepted.Visibility = Visibility.Hidden;
             stkInvitation.Visibility = Visibility.Hidden;
+            stkCompleted.Visibility = Visibility.Hidden;
 
             fileTransfer.Cancel();
         }
@@ -86,8 +108,24 @@ namespace Squiggle.UI.Controls
             stkAccepted.Visibility = Visibility.Visible;
             stkCancelled.Visibility = Visibility.Hidden;
             stkInvitation.Visibility = Visibility.Hidden;
+            stkCompleted.Visibility = Visibility.Hidden;
 
             fileTransfer.Accept(filePath);
         }
+
+        private void NotifyPropertyChanged()
+        {
+            OnPropertyChanged("FileName");
+            OnPropertyChanged("FileSize");
+        }
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
     }
 }

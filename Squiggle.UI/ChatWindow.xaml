@@ -31,6 +31,9 @@
                                 <GradientStop Color="#FFECECEC" Offset="0.478"/>
                             </LinearGradientBrush>
                         </Border.Background>
+                        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
+                            <Button Content="Send File" Margin="5,2,5,2" Click="SendFile_Click"/>
+                        </StackPanel>
                     </Border>
                     <controls:MessageEditBox Focusable="True" TabIndex="0" Margin="2,5,5,0" x:Name="editMessageBox" MessageTyping="editMessageBox_MessageTyping" MessageSend="editMessageBox_MessageSend" Grid.Row="1"/>
                     <TextBlock Margin="0,10,0,0" x:Name="txbStatus" VerticalAlignment="Bottom" Grid.Row="2" Grid.ColumnSpan="2" Foreground="Black"/>
