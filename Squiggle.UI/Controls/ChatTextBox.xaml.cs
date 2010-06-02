@@ -61,15 +61,27 @@ namespace Squiggle.UI.Controls
             items = ParseText(message);
             para.Inlines.AddRange(items);
             para.Inlines.Add(new LineBreak());
+            para.Inlines.Add(new LineBreak());
             sentMessages.FindScrollViewer().ScrollToBottom();
         }
 
-        public void AddFileTransfer(string user, IFileTransfer fileTransfer)
+        public void AddFileReceiveRequest(string user, IFileTransfer fileTransfer)
         {
             var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
             para.Inlines.Add(new LineBreak());
             var transferUI = new FileReceiveControl(fileTransfer);
             para.Inlines.Add(new InlineUIContainer(transferUI));
+            para.Inlines.Add(new LineBreak());
+        }
+
+        public void AddFileSentRequest(IFileTransfer fileTransfer)
+        {
+            var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
+            para.Inlines.Add(new LineBreak());
+            var transferUI = new FileSendControl(fileTransfer);
+            para.Inlines.Add(new InlineUIContainer(transferUI));
+            para.Inlines.Add(new LineBreak());
+            para.Inlines.Add(new LineBreak());
         }
 
         static List<Inline> ParseText(string message)
@@ -109,5 +121,7 @@ namespace Squiggle.UI.Controls
             };
             items.Add(link);
         }
+
+        
     }
 }

@@ -55,6 +55,15 @@ namespace Squiggle.UI.Controls
             NotifyPropertyChanged();
 
             this.fileTransfer.ProgressChanged += new EventHandler<System.ComponentModel.ProgressChangedEventArgs>(fileTransfer_ProgressChanged);
+            this.fileTransfer.TransferCompleted += new EventHandler(fileTransfer_TransferCompleted);
+        }
+
+        void fileTransfer_TransferCompleted(object sender, EventArgs e)
+        {
+            stkCompleted.Visibility = Visibility.Visible;
+            stkCancelled.Visibility = Visibility.Hidden;
+            stkAccepted.Visibility = Visibility.Hidden;
+            stkInvitation.Visibility = Visibility.Hidden;
         }
 
         private void Accept_Click(object sender, RoutedEventArgs e)
@@ -80,14 +89,7 @@ namespace Squiggle.UI.Controls
 
         void fileTransfer_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
         {
-            progress.Value = e.ProgressPercentage;
-            if (e.ProgressPercentage == 100)
-            {
-                stkCompleted.Visibility = Visibility.Visible;
-                stkCancelled.Visibility = Visibility.Hidden;
-                stkAccepted.Visibility = Visibility.Hidden;
-                stkInvitation.Visibility = Visibility.Hidden;
-            }
+            progress.Value = e.ProgressPercentage;            
         }
 
         private void RejectDownload()

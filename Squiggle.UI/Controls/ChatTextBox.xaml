@@ -11,7 +11,7 @@
         </Style>
     </UserControl.Resources>
     <Border Style="{StaticResource BorderStyle}">
-        <FlowDocumentScrollViewer Padding="3" Background="White" x:Name="sentMessages" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
+        <FlowDocumentScrollViewer Background="White" x:Name="sentMessages" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
             <FlowDocument>
                 <Paragraph x:Name="para" FontSize="12" />
             </FlowDocument>

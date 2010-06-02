@@ -104,7 +104,7 @@ namespace Squiggle.UI
                 Application.Current.Dispatcher.BeginInvoke(new Action(() => OnTransferInvite(e)));
             else
             {
-                chatTextBox.AddFileTransfer(e.Sender.DisplayName, e.Invitation);
+                chatTextBox.AddFileReceiveRequest(e.Sender.DisplayName, e.Invitation);
                 FlashWindow();
             }
         }
@@ -151,7 +151,8 @@ namespace Squiggle.UI
                         FileInfo file = new FileInfo(dlg.FileName);
                         FileStream fileStream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read);
                         int size = Convert.ToInt32(Decimal.Divide(file.Length, 1024));
-                        chatSession.SendFile(file.Name, size, fileStream);
+                        IFileTransfer fileTransfer = chatSession.SendFile(file.Name, size, fileStream);
+                        chatTextBox.AddFileSentRequest(fileTransfer);
                     }
                 }
             }
