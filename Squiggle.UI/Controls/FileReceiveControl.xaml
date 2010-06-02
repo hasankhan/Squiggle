@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="Squiggle.UI.Controls.FileReceiveControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Name="fileTransferControl">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="User wants to send you a file." Margin="0,5,5,5"/>
+        <StackPanel Grid.Row="1" x:Name="stkInvitation" Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock HorizontalAlignment="Center" Text="{Binding ElementName=fileTransferControl, Path=FileName}"/>
+                <TextBlock HorizontalAlignment="Center" Text="{Binding ElementName=fileTransferControl, Path=FileSize, StringFormat=({0} kb)}"/>
+            </StackPanel>
+            <Button Content="Accept" Width="60" Margin="5,0,0,0" Click="Accept_Click" />
+            <Button Content="Save As" Width="60" Margin="5,0,0,0" Click="SaveAs_Click"  />
+            <Button Content="Reject" Width="60" Margin="5,0,0,0" Click="Reject_Click"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" x:Name="stkAccepted" Orientation="Horizontal" Visibility="Hidden">
+            <ProgressBar x:Name="progress" Width="200"/>
+            <Button Content="Cancel" Width="60" Margin="5,0,0,0" Click="Reject_Click" />
+        </StackPanel>
+        <StackPanel Grid.Row="1" x:Name="stkCancelled" Orientation="Horizontal" Visibility="Hidden">
+            <TextBlock Text="User has rejected to receive the file"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" x:Name="stkCompleted" Orientation="Horizontal" Visibility="Hidden">
+            <TextBlock x:Name="txbCompleted" Text="File successfully downloaded"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

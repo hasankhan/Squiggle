@@ -80,7 +80,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\FileTransferControl.xaml">
+    <Page Include="Controls\FileReceiveControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -136,8 +136,8 @@
     <Compile Include="Controls\DisplayMessageBox.xaml.cs">
       <DependentUpon>DisplayMessageBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\FileTransferControl.xaml.cs">
-      <DependentUpon>FileTransferControl.xaml</DependentUpon>
+    <Compile Include="Controls\FileReceiveControl.xaml.cs">
+      <DependentUpon>FileReceiveControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\MessageEditBox.xaml.cs">
       <DependentUpon>MessageEditBox.xaml</DependentUpon>

@@ -68,7 +68,7 @@ namespace Squiggle.UI.Controls
         {
             var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
             para.Inlines.Add(new LineBreak());
-            var transferUI = new FileTransferControl(fileTransfer);
+            var transferUI = new FileReceiveControl(fileTransfer);
             para.Inlines.Add(new InlineUIContainer(transferUI));
         }
 
