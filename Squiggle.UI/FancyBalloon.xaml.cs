@@ -88,14 +88,14 @@ namespace StackOverflowClient
 
     private void Close()
     {
-        if (!Application.Current.Dispatcher.CheckAccess())
-            Application.Current.Dispatcher.Invoke(new Action(Close));
-        else
+        if (Application.Current.Dispatcher.CheckAccess())
         {
             //the tray icon assigned this attached property to simplify access
             TaskbarIcon taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
             taskbarIcon.CloseBalloon();
         }
+        else
+            Application.Current.Dispatcher.Invoke(new Action(Close));        
     }
 
     /// <summary>

@@ -38,31 +38,35 @@ namespace Squiggle.UI.Controls
 
         void fileTransfer_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
         {
-            progress.Value = e.ProgressPercentage;
-        }
-
-        private void OnTransferCompleted()
-        {
-            stkCompleted.Visibility = Visibility.Visible;
-            stkCancelled.Visibility = Visibility.Hidden;
-            stkAccepted.Visibility = Visibility.Hidden;
-        }
+            Dispatcher.Invoke(() =>
+            {
+                progress.Value = e.ProgressPercentage;
+            });
+        }  
 
         void fileTransfer_TransferStarted(object sender, EventArgs e)
         {
-            stkCancelled.Visibility = Visibility.Visible;
-            stkAccepted.Visibility = Visibility.Hidden;
-            stkCompleted.Visibility = Visibility.Hidden;
+            Dispatcher.Invoke(() =>
+            {
+                stkCancelled.Visibility = Visibility.Visible;
+                stkAccepted.Visibility = Visibility.Hidden;
+                stkCompleted.Visibility = Visibility.Hidden;
+            });
         }
 
         void fileTransfer_TransferCompleted(object sender, EventArgs e)
         {
-            OnTransferCompleted();
+            Dispatcher.Invoke(() =>
+            {
+                stkCompleted.Visibility = Visibility.Visible;
+                stkCancelled.Visibility = Visibility.Hidden;
+                stkAccepted.Visibility = Visibility.Hidden;
+            });
         }
 
         void fileTransfer_TransferCancelled(object sender, EventArgs e)
         {
-            CancelDownload();
+            Dispatcher.Invoke(() => CancelDownload());
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
@@ -70,7 +74,7 @@ namespace Squiggle.UI.Controls
             CancelDownload();
         }
 
-        private void CancelDownload()
+        void CancelDownload()
         {
             stkCancelled.Visibility = Visibility.Visible;
             stkAccepted.Visibility = Visibility.Hidden;

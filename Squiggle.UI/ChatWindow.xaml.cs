@@ -1,18 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Squiggle.Chat;
 using Squiggle.UI.Controls;
 using System.Windows.Threading;
-using System.Diagnostics;
 using System.IO;
 
 namespace Squiggle.UI
@@ -100,26 +91,22 @@ namespace Squiggle.UI
 
         void OnTransferInvite(FileTransferInviteEventArgs e)
         {
-            if (!Application.Current.Dispatcher.CheckAccess())
-                Application.Current.Dispatcher.BeginInvoke(new Action(() => OnTransferInvite(e)));
-            else
+            Dispatcher.Invoke(() =>
             {
                 chatTextBox.AddFileReceiveRequest(e.Sender.DisplayName, e.Invitation);
                 FlashWindow();
-            }
+            });
         }
 
         void OnMessageReceived(Buddy buddy, string message)
         {
-            if (!Application.Current.Dispatcher.CheckAccess())
-                Application.Current.Dispatcher.BeginInvoke(new Action(() => OnMessageReceived(buddy, message)));
-            else
+            Dispatcher.Invoke(() =>
             {
                 lastMessageReceived = DateTime.Now;
                 chatTextBox.AddMessage(buddy.DisplayName, message);
                 ResetStatus();
                 FlashWindow();
-            }
+            });
         }        
 
         private void txtMessage_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -142,18 +129,16 @@ namespace Squiggle.UI
 
         private void SendFile_Click(object sender, RoutedEventArgs e)
         {
-            using (var dlg = new System.Windows.Forms.OpenFileDialog())
+            using (var dialog = new System.Windows.Forms.OpenFileDialog())
             {
-                if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                dialog.CheckFileExists = true;
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    if (dlg.CheckFileExists)
-                    {
-                        FileInfo file = new FileInfo(dlg.FileName);
-                        FileStream fileStream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read);
-                        int size = Convert.ToInt32(Decimal.Divide(file.Length, 1024));
-                        IFileTransfer fileTransfer = chatSession.SendFile(file.Name, size, fileStream);
-                        chatTextBox.AddFileSentRequest(fileTransfer);
-                    }
+                    FileInfo file = new FileInfo(dialog.FileName);
+                    FileStream fileStream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read);
+                    int size = Convert.ToInt32(Decimal.Divide(file.Length, 1024));
+                    IFileTransfer fileTransfer = chatSession.SendFile(file.Name, size, fileStream);
+                    chatTextBox.AddFileSentRequest(fileTransfer);
                 }
             }
         }
@@ -220,45 +205,36 @@ namespace Squiggle.UI
 
         void OnBuddyTyping(BuddyEventArgs e)
         {
-            if (!Application.Current.Dispatcher.CheckAccess())
-                Application.Current.Dispatcher.BeginInvoke(new Action(() => OnBuddyTyping(e)));
-            else
+            Dispatcher.Invoke(() =>
             {
                 ChangeStatus(String.Format("{0} is typing...", e.Buddy.DisplayName));
                 statusResetTimer.Stop();
                 statusResetTimer.Start();
-            }
+            });
         }        
 
         void OnMessageFailed(MessageFailedEventArgs e)
         {
-            if (!Application.Current.Dispatcher.CheckAccess())
-                Application.Current.Dispatcher.BeginInvoke(new Action(() => OnMessageFailed(e)));
-            else
+            Dispatcher.Invoke(() =>
             {
                 string message = "Following message could not be sent due to error: " + e.Exception.Message;
                 string detail = e.Message;
                 chatTextBox.AddError(message, detail);
-            }
+            });
         }
 
         void OnBuddyLeft(BuddyEventArgs e)
         {
-            if (!Application.Current.Dispatcher.CheckAccess())
-                Application.Current.Dispatcher.BeginInvoke(new Action(() => OnBuddyLeft(e)));
-            else
+            Dispatcher.Invoke(() =>
             {
                 txtUserLeftMessage.Text = e.Buddy.DisplayName + " has left the chat.";
                 txtUserLeftMessage.Visibility = Visibility.Visible;
-            }
+            });
         }
 
         void OnBuddyJoined()
         {
-            if (!Application.Current.Dispatcher.CheckAccess())
-                Application.Current.Dispatcher.BeginInvoke(new Action(OnBuddyJoined));
-            else
-                txtUserLeftMessage.Visibility = Visibility.Hidden;
+            Dispatcher.Invoke(() => txtUserLeftMessage.Visibility = Visibility.Hidden);
         }               
 
         void ResetStatus()

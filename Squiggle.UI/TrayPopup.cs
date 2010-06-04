@@ -19,12 +19,7 @@ namespace Squiggle.UI
 
         public static void Show(string title, string message, Action<MouseEventArgs> onClick)
         {
-            if (!Application.Current.Dispatcher.CheckAccess())
-                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    Show(title, message, onClick);
-                }));
-            else
+            Application.Current.Dispatcher.Invoke(() =>
             {
                 int timeout = 5000;
                 FancyBalloon balloon = new FancyBalloon(timeout);
@@ -37,8 +32,8 @@ namespace Squiggle.UI
                 {
                     e.Handled = false;
                     onClick(e);
-                };                
-            }
+                };
+            });
         }
     }
 }

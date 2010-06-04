@@ -5,10 +5,11 @@ using System.Text;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace Squiggle.UI
 {
-    public static class Extensions
+    public static class WPFExtensions
     {
         public static ScrollViewer FindScrollViewer(this FlowDocumentScrollViewer flowDocumentScrollViewer)
         {
@@ -32,6 +33,14 @@ namespace Squiggle.UI
             }
 
             return border.Child as ScrollViewer;
-        } 
+        }
+
+        public static void Invoke(this Dispatcher dispatcher, Action action)
+        {
+            if (dispatcher.CheckAccess())
+                action();
+            else
+                dispatcher.Invoke(action);
+        }
     }
 }

@@ -14,11 +14,11 @@ namespace Squiggle.Chat.Services.Presence
     {
         Timer timer;
         PresenceChannel channel;
-        double keepAliveSyncTime;
+        TimeSpan keepAliveSyncTime;
         Message keepAliveMessage;
         Dictionary<UserInfo, DateTime> aliveUsers;
         HashSet<UserInfo> lostUsers;
-        int waitTolerance = 5; // no. of seconds to tolerate the alive message delay.
+        TimeSpan waitTolerance = 5.Seconds(); // no. of seconds to tolerate the alive message delay.
 
         public UserInfo User { get; private set; }
 
@@ -28,7 +28,7 @@ namespace Squiggle.Chat.Services.Presence
         public KeepAliveService(PresenceChannel channel, UserInfo user, TimeSpan keepAliveSyncTime)
         {
             this.channel = channel;
-            this.keepAliveSyncTime = keepAliveSyncTime.TotalMilliseconds;
+            this.keepAliveSyncTime = keepAliveSyncTime;
             this.User = user;
             aliveUsers = new Dictionary<UserInfo, DateTime>();
             lostUsers = new HashSet<UserInfo>();
@@ -38,8 +38,7 @@ namespace Squiggle.Chat.Services.Presence
         public void Start()
         {
             this.timer = new Timer();
-            timer.Interval = keepAliveSyncTime;
-            this.timer.AutoReset = true;
+            timer.Interval = keepAliveSyncTime.TotalMilliseconds;
             this.timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
             this.timer.Start();
             channel.MessageReceived += new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
@@ -107,8 +106,7 @@ namespace Squiggle.Chat.Services.Presence
         void OnKeepAliveMessage(KeepAliveMessage message)
         {
             var user = new UserInfo() { ChatEndPoint = message.ChatEndPoint };
-            if (!User.Equals(user))
-                HeIsAlive(user);
+            HeIsAlive(user);
         }
 
         List<UserInfo> GetLostUsers()
@@ -118,8 +116,12 @@ namespace Squiggle.Chat.Services.Presence
                 var now = DateTime.Now;
                 List<UserInfo> gone = new List<UserInfo>();
                 foreach (KeyValuePair<UserInfo, DateTime> pair in aliveUsers)
-                    if ((now.Subtract(pair.Value).TotalSeconds - pair.Key.KeepAliveSyncTime.TotalSeconds) > waitTolerance)
+                {
+                    TimeSpan inactiveTime = now.Subtract(pair.Value);
+                    TimeSpan waitTime = pair.Key.KeepAliveSyncTime + waitTolerance;
+                    if (inactiveTime > waitTime)
                         gone.Add(pair.Key);
+                }
                 return gone; 
             }
         }        

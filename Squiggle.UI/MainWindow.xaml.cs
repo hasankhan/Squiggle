@@ -170,15 +170,13 @@ namespace Squiggle.UI
 
         void ToggleMainWindow()
         {
-            if (!Application.Current.Dispatcher.CheckAccess())
-                Application.Current.Dispatcher.Invoke(new Action(ToggleMainWindow));
-            else
+            Dispatcher.Invoke(() =>
             {
                 if (this.Visibility == Visibility.Visible)
                     this.Hide();
                 else
                     RestoreWindow();
-            }
+            });
         }
 
         void CreateMonitor()
