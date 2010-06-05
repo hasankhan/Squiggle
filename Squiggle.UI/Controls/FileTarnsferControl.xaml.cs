@@ -14,19 +14,25 @@ using System.Windows.Shapes;
 using Squiggle.Chat;
 using System.ComponentModel;
 using System.IO;
+using System.Diagnostics;
 
 namespace Squiggle.UI.Controls
 {
     /// <summary>
     /// Interaction logic for FileTransferControl.xaml
     /// </summary>
-    public partial class FileReceiveControl : UserControl, INotifyPropertyChanged
+    public partial class FileTarnsferControl : UserControl, INotifyPropertyChanged
     {
         IFileTransfer fileTransfer;
+        bool sending;
+
         string downloadFolder;
 
+        public string FilePath { get; private set; }
         public string FileName { get; private set; }
         public int FileSize { get; private set; }
+        public string Status { get; private set; }
+
 
         public string DownloadFolder
         {
@@ -40,30 +46,36 @@ namespace Squiggle.UI.Controls
             }
         }
 
-        public FileReceiveControl()
+        public FileTarnsferControl()
         {
             DownloadFolder = "Downloads";
             InitializeComponent();
         }
 
-        public FileReceiveControl(IFileTransfer fileTransfer) : this()
+        public FileTarnsferControl(IFileTransfer fileTransfer, bool sending) : this()
         {
             this.fileTransfer = fileTransfer;
+            this.sending = sending;
 
             FileName = fileTransfer.Name;
             FileSize = fileTransfer.Size;
+            Status = "Waiting";
             NotifyPropertyChanged();
 
             this.fileTransfer.ProgressChanged += new EventHandler<System.ComponentModel.ProgressChangedEventArgs>(fileTransfer_ProgressChanged);
+            this.fileTransfer.TransferStarted += new EventHandler(fileTransfer_TransferStarted); 
+            this.fileTransfer.TransferCancelled += new EventHandler(fileTransfer_TransferCancelled);
             this.fileTransfer.TransferCompleted += new EventHandler(fileTransfer_TransferCompleted);
+
+            ShowWaiting();
         }
 
         void fileTransfer_TransferCompleted(object sender, EventArgs e)
         {
-            stkCompleted.Visibility = Visibility.Visible;
-            stkCancelled.Visibility = Visibility.Hidden;
-            stkAccepted.Visibility = Visibility.Hidden;
-            stkInvitation.Visibility = Visibility.Hidden;
+            Status = sending ? "File Sent" : "File Received";
+            NotifyPropertyChanged();
+
+            ShowFinished();
         }
 
         private void Accept_Click(object sender, RoutedEventArgs e)
@@ -84,7 +96,27 @@ namespace Squiggle.UI.Controls
 
         private void Reject_Click(object sender, RoutedEventArgs e)
         {
-            RejectDownload();
+            Dispatcher.Invoke(() =>
+            {
+                CancelDownload();
+            });
+
+        }
+
+        void fileTransfer_TransferCancelled(object sender, EventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                CancelDownload();
+            });
+        }
+
+        void fileTransfer_TransferStarted(object sender, EventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                ShowDownloading();
+            });
         }
 
         void fileTransfer_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
@@ -92,30 +124,58 @@ namespace Squiggle.UI.Controls
             progress.Value = e.ProgressPercentage;            
         }
 
-        private void RejectDownload()
+        private void CancelDownload()
         {
-            stkCancelled.Visibility = Visibility.Visible;
-            stkAccepted.Visibility = Visibility.Hidden;
-            stkInvitation.Visibility = Visibility.Hidden;
-            stkCompleted.Visibility = Visibility.Hidden;
+            ShowFinished();
+
+            Status = sending ? "Sending Cancelled" : "Cancelled";
+            NotifyPropertyChanged();
 
             fileTransfer.Cancel();
         }
 
         private void AcceptDownload(string filePath)
         {
-            stkAccepted.Visibility = Visibility.Visible;
-            stkCancelled.Visibility = Visibility.Hidden;
-            stkInvitation.Visibility = Visibility.Hidden;
-            stkCompleted.Visibility = Visibility.Hidden;
+            FilePath = filePath;
+            NotifyPropertyChanged();
+
+            ShowDownloading();
 
             fileTransfer.Accept(filePath);
+        }
+
+        void ShowFinished()
+        {
+            stkAccepted.Visibility = Visibility.Hidden;
+            stkInvitation.Visibility = Visibility.Hidden;
+            stkWaitingAcceptance.Visibility = Visibility.Hidden;
+            stkCompleted.Visibility = sending ? Visibility.Hidden : Visibility.Visible;
+        }
+
+        void ShowWaiting()
+        {
+            stkAccepted.Visibility = Visibility.Hidden;
+            stkInvitation.Visibility = sending ? Visibility.Hidden : Visibility.Visible;
+            stkWaitingAcceptance.Visibility = sending ? Visibility.Visible : Visibility.Hidden;
+            stkCompleted.Visibility = Visibility.Hidden;
+        }
+
+        private void ShowDownloading()
+        {
+            stkAccepted.Visibility = Visibility.Visible;
+            stkInvitation.Visibility = Visibility.Hidden;
+            stkWaitingAcceptance.Visibility = Visibility.Hidden;
+            stkCompleted.Visibility = Visibility.Hidden;
+
+            Status = sending ? "Sending" : "Receiving";
+            NotifyPropertyChanged();
         }
 
         private void NotifyPropertyChanged()
         {
             OnPropertyChanged("FileName");
             OnPropertyChanged("FileSize");
+            OnPropertyChanged("Status");
         }
 
         #region INotifyPropertyChanged Members
@@ -126,5 +186,20 @@ namespace Squiggle.UI.Controls
             PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
+
+        private void Open_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo(FilePath));
+        }
+
+        private void ShowInFolder_Click(object sender, RoutedEventArgs e)
+        {
+            string file = DataContext as string;
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = "explorer.exe";
+            startInfo.Arguments = "/select,\"" + FilePath + "\"";
+
+            Process.Start(startInfo);
+        }
     }
 }

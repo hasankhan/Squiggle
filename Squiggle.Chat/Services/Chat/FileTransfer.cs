@@ -189,7 +189,8 @@ namespace Squiggle.Chat.Services.Chat
             localHost.TransferDataReceived -= new EventHandler<FileTransferDataReceivedEventArgs>(localHost_TransferDataReceived);
             localHost.InvitationAccepted -= new EventHandler<FileTransferEventArgs>(localHost_InvitationAccepted);
             localHost.TransferCancelled -= new EventHandler<FileTransferEventArgs>(localHost_TransferCancelled);
-            content.Dispose();
+            if(content != null)
+                content.Dispose();
         }
 
         void UpdateProgress(int percentage)

@@ -80,13 +80,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\FileReceiveControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Controls\FileControl.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\FileSendControl.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Controls\FileTarnsferControl.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\MessageEditBox.xaml">
       <SubType>Designer</SubType>
@@ -140,11 +140,11 @@
     <Compile Include="Controls\DisplayMessageBox.xaml.cs">
       <DependentUpon>DisplayMessageBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\FileReceiveControl.xaml.cs">
-      <DependentUpon>FileReceiveControl.xaml</DependentUpon>
+    <Compile Include="Controls\FileControl.xaml.cs">
+      <DependentUpon>FileControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\FileSendControl.xaml.cs">
-      <DependentUpon>FileSendControl.xaml</DependentUpon>
+    <Compile Include="Controls\FileTarnsferControl.xaml.cs">
+      <DependentUpon>FileTarnsferControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\MessageEditBox.xaml.cs">
       <DependentUpon>MessageEditBox.xaml</DependentUpon>
@@ -158,6 +158,9 @@
     <Compile Include="DisplayMessageConverter.cs" />
     <Compile Include="DummyChatClient.cs" />
     <Compile Include="EventQueue.cs" />
+    <Compile Include="FileToIcon.cs" />
+    <Compile Include="PathToNameConverter.cs" />
+    <Compile Include="SysImageList.cs" />
     <Compile Include="WPFExtensions.cs" />
     <Compile Include="FancyBalloon.xaml.cs">
       <DependentUpon>FancyBalloon.xaml</DependentUpon>

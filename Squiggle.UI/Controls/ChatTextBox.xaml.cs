@@ -69,7 +69,7 @@ namespace Squiggle.UI.Controls
         {
             var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
             para.Inlines.Add(new LineBreak());
-            var transferUI = new FileReceiveControl(fileTransfer);
+            var transferUI = new FileTarnsferControl(fileTransfer, false);
             para.Inlines.Add(new InlineUIContainer(transferUI));
             para.Inlines.Add(new LineBreak());
         }
@@ -78,7 +78,7 @@ namespace Squiggle.UI.Controls
         {
             var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
             para.Inlines.Add(new LineBreak());
-            var transferUI = new FileSendControl(fileTransfer);
+            var transferUI = new FileTarnsferControl(fileTransfer, true);
             para.Inlines.Add(new InlineUIContainer(transferUI));
             para.Inlines.Add(new LineBreak());
             para.Inlines.Add(new LineBreak());
