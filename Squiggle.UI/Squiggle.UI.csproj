@@ -80,10 +80,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\FileControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\FileTarnsferControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -139,9 +135,6 @@
     </Compile>
     <Compile Include="Controls\DisplayMessageBox.xaml.cs">
       <DependentUpon>DisplayMessageBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\FileControl.xaml.cs">
-      <DependentUpon>FileControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\FileTarnsferControl.xaml.cs">
       <DependentUpon>FileTarnsferControl.xaml</DependentUpon>
