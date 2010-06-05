@@ -98,7 +98,7 @@ namespace Squiggle.UI.Controls
         {
             Dispatcher.Invoke(() =>
             {
-                CancelDownload();
+                CancelDownload(true);
             });
 
         }
@@ -107,7 +107,7 @@ namespace Squiggle.UI.Controls
         {
             Dispatcher.Invoke(() =>
             {
-                CancelDownload();
+                CancelDownload(false);
             });
         }
 
@@ -124,14 +124,15 @@ namespace Squiggle.UI.Controls
             progress.Value = e.ProgressPercentage;            
         }
 
-        private void CancelDownload()
+        private void CancelDownload(bool selfCancel)
         {
             ShowFinished();
 
             Status = sending ? "Sending Cancelled" : "Cancelled";
             NotifyPropertyChanged();
 
-            fileTransfer.Cancel();
+            if (selfCancel)
+                fileTransfer.Cancel();
         }
 
         private void AcceptDownload(string filePath)

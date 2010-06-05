@@ -151,7 +151,7 @@
     <Compile Include="DisplayMessageConverter.cs" />
     <Compile Include="DummyChatClient.cs" />
     <Compile Include="EventQueue.cs" />
-    <Compile Include="FileToIcon.cs" />
+    <Compile Include="FileToIconConverter.cs" />
     <Compile Include="PathToNameConverter.cs" />
     <Compile Include="SysImageList.cs" />
     <Compile Include="WPFExtensions.cs" />
