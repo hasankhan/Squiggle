@@ -75,7 +75,7 @@ namespace Squiggle.UI.Controls
             Status = sending ? "File Sent" : "File Received";
             NotifyPropertyChanged();
 
-            ShowFinished();
+            ShowCompleted();
         }
 
         private void Accept_Click(object sender, RoutedEventArgs e)
@@ -126,7 +126,7 @@ namespace Squiggle.UI.Controls
 
         private void CancelDownload(bool selfCancel)
         {
-            ShowFinished();
+            ShowCancelled();
 
             Status = sending ? "Sending Cancelled" : "Cancelled";
             NotifyPropertyChanged();
@@ -145,7 +145,15 @@ namespace Squiggle.UI.Controls
             fileTransfer.Accept(filePath);
         }
 
-        void ShowFinished()
+        void ShowCancelled()
+        {
+            stkAccepted.Visibility = Visibility.Hidden;
+            stkInvitation.Visibility = Visibility.Hidden;
+            stkWaitingAcceptance.Visibility = Visibility.Hidden;
+            stkCompleted.Visibility = Visibility.Hidden;
+        }
+
+        void ShowCompleted()
         {
             stkAccepted.Visibility = Visibility.Hidden;
             stkInvitation.Visibility = Visibility.Hidden;
