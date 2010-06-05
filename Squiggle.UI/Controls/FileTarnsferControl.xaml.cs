@@ -59,7 +59,7 @@ namespace Squiggle.UI.Controls
 
             FileName = fileTransfer.Name;
             FileSize = fileTransfer.Size;
-            Status = "Waiting";
+            Status = sending ? "Waiting" : FileSize.GetSize();
             NotifyPropertyChanged();
 
             this.fileTransfer.ProgressChanged += new EventHandler<System.ComponentModel.ProgressChangedEventArgs>(fileTransfer_ProgressChanged);

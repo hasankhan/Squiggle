@@ -61,14 +61,12 @@ namespace Squiggle.UI.Controls
             items = ParseText(message);
             para.Inlines.AddRange(items);
             para.Inlines.Add(new LineBreak());
-            para.Inlines.Add(new LineBreak());
             sentMessages.FindScrollViewer().ScrollToBottom();
         }
 
         public void AddFileReceiveRequest(string user, IFileTransfer fileTransfer)
         {
             var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
-            para.Inlines.Add(new LineBreak());
             var transferUI = new FileTarnsferControl(fileTransfer, false);
             para.Inlines.Add(new InlineUIContainer(transferUI));
             para.Inlines.Add(new LineBreak());
@@ -77,10 +75,8 @@ namespace Squiggle.UI.Controls
         public void AddFileSentRequest(IFileTransfer fileTransfer)
         {
             var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
-            para.Inlines.Add(new LineBreak());
             var transferUI = new FileTarnsferControl(fileTransfer, true);
             para.Inlines.Add(new InlineUIContainer(transferUI));
-            para.Inlines.Add(new LineBreak());
             para.Inlines.Add(new LineBreak());
         }
 

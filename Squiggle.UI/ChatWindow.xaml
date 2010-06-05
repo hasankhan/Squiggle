@@ -6,7 +6,7 @@
     Loaded="Window_Loaded" Closed="Window_Closed" FocusManager.FocusedElement="{Binding ElementName=editMessageBox}"
     Icon="/Squiggle;component/Images/chat.ico">
     <Grid Background="#FFF3F3F3">
-        <Grid Margin="10">
+        <Grid Margin="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>

@@ -13,8 +13,8 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <StackPanel Margin="5,0,100,0" DataContext="{Binding ElementName=fileTransferControl, Path=FileName}" Orientation="Horizontal" >
-                <Image x:Name="img" Height="48" Width="48" 
+            <StackPanel Margin="0,0,100,0" DataContext="{Binding ElementName=fileTransferControl, Path=FileName}" Orientation="Horizontal" >
+                <Image x:Name="img"  
                            ToolTip="{Binding Converter={x:Static local:PathToNameConverter.Instance}}">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource fic}">
@@ -22,28 +22,28 @@
                         </MultiBinding >
                     </Image.Source>
                 </Image>
-                <StackPanel Margin="10,0,0,0" Orientation="Vertical">
+                <StackPanel Margin="10,0,0,0" VerticalAlignment="Stretch" Orientation="Vertical">
                     <TextBlock FontSize="10" Text="{Binding Converter={x:Static local:PathToNameConverter.Instance}}"
-                                   TextTrimming="CharacterEllipsis"/>
+                                   TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
                     <TextBlock Margin="0,5,0,0" Foreground="Gray" FontSize="10" Text="{Binding ElementName=fileTransferControl, Path=Status}"/>
                 </StackPanel>
             </StackPanel>
             <Grid>
                 <StackPanel x:Name="stkInvitation" Orientation="Horizontal" Visibility="Hidden">
-                    <Button Content="Accept" FontSize="9" Height="20" Width="60" Margin="5,0,0,0" Click="Accept_Click" />
-                    <Button Content="Save As" FontSize="9" Height="20" Width="60" Margin="5,0,0,0" Click="SaveAs_Click"  />
-                    <Button Content="Reject" FontSize="9" Height="20" Width="60" Margin="5,0,0,0" Click="Reject_Click"/>
+                    <Button Content="Accept" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="5,0,0,0" Click="Accept_Click" />
+                    <Button Content="Save As" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="5,0,0,0" Click="SaveAs_Click"  />
+                    <Button Content="Reject" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="5,0,0,0" Click="Reject_Click"/>
                 </StackPanel>
                 <StackPanel x:Name="stkWaitingAcceptance" Orientation="Horizontal" Visibility="Hidden">
-                    <ProgressBar IsIndeterminate="True" Width="200" Height="20"/>
-                    <Button Content="Reject" FontSize="9" Height="20" Width="60" Margin="10,0,0,0" Click="Reject_Click"/>
+                    <ProgressBar IsIndeterminate="True" Width="200" Height="15"/>
+                    <Button Content="Reject" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="10,0,0,0" Click="Reject_Click"/>
                 </StackPanel>
                 <StackPanel x:Name="stkAccepted" Orientation="Horizontal" Visibility="Hidden">
-                    <ProgressBar x:Name="progress" Height="20" Width="200"/>
-                    <Button Content="Cancel" FontSize="9" Height="20" Width="60" Margin="5,0,0,0" Click="Reject_Click" />
+                    <ProgressBar x:Name="progress" Height="15" Width="200"/>
+                    <Button Content="Cancel" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="5,0,0,0" Click="Reject_Click" />
                 </StackPanel>
                 <StackPanel x:Name="stkCompleted" Orientation="Horizontal" Visibility="Hidden">
-                    <Button Content="Open" FontSize="9" Height="20" Width="60" Margin="0,0,30,0" Click="Open_Click"/>
+                    <Button Content="Open" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="0,0,30,0" Click="Open_Click"/>
                     <TextBlock VerticalAlignment="Center" FontSize="10">
                         <Hyperlink Click="ShowInFolder_Click">Show In Folder</Hyperlink>
                     </TextBlock>
