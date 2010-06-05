@@ -50,7 +50,13 @@ namespace Squiggle.UI.Settings
         private void LoadConnectionSettings()
         {
             Settings.ConnectionSettings.BindToIP = Properties.Settings.Default.BindToIP;
-            if (String.IsNullOrEmpty(Settings.ConnectionSettings.BindToIP))
+            bool requiresBindIP = String.IsNullOrEmpty(Settings.ConnectionSettings.BindToIP);
+            if (!requiresBindIP)
+            {
+                var ip = IPAddress.Parse(Settings.ConnectionSettings.BindToIP);
+                requiresBindIP = NetworkUtility.GetLocalIPAddresses().Contains(ip);
+            }
+            if (requiresBindIP)
             {
                 var ip = NetworkUtility.GetLocalIPAddress();
                 if (ip != null)
