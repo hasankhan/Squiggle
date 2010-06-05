@@ -63,9 +63,10 @@ namespace Squiggle.Chat.Services.Chat
             remoteHost.UserIsTyping(localUser);
         }
 
-        public IFileTransfer SendFile(string name, int size, Stream content)
+        public IFileTransfer SendFile(string name, Stream content)
         {
-            var transfer = new FileTransfer(remoteHost, localHost, localUser, name, size, content);
+            long size = content.Length;
+            var transfer = new FileTransfer(remoteHost, localHost, localUser, name, (int)size, content);
             transfer.Start();
             return transfer;
         }

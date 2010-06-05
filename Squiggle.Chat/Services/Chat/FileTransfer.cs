@@ -125,7 +125,9 @@ namespace Squiggle.Chat.Services.Chat
             while (bytesRemaining > 0 && !worker.CancellationPending)
             {
                 int bytesRead = content.Read(buffer, 0, buffer.Length);
-                remoteUser.ReceiveFileContent(id, buffer);
+                byte[] temp = new byte[bytesRead];
+                Buffer.BlockCopy(buffer, 0, temp, 0, temp.Length);
+                remoteUser.ReceiveFileContent(id, temp);
                 bytesRemaining -= bytesRead;
                 float progress = (Size - bytesRemaining) / (float)Size * 100;
                 worker.ReportProgress((int)progress);
@@ -154,7 +156,7 @@ namespace Squiggle.Chat.Services.Chat
                 float progress = bytesReceived / (float)Size * 100;
                 UpdateProgress((int)progress);
 
-                if (bytesReceived == Size)
+                if (bytesReceived >= Size)
                 {
                     OnTransferFinished();
                     TransferCompleted(this, EventArgs.Empty);

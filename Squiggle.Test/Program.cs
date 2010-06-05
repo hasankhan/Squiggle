@@ -46,7 +46,7 @@ namespace Squiggle.Chat
         static void client2_ChatStarted(object sender, ChatStartedEventArgs e)
         {
             e.Chat.TransferInvitationReceived += new EventHandler<FileTransferInviteEventArgs>(Chat_TransferInvitationReceived);
-            chat.SendFile("aloo", 1024, File.OpenRead(@"c:\test.txt"));
+            chat.SendFile("aloo", File.OpenRead(@"c:\test.txt"));
         }
 
         static void Chat_TransferInvitationReceived(object sender, FileTransferInviteEventArgs e)

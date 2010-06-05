@@ -136,8 +136,7 @@ namespace Squiggle.UI
                 {
                     FileInfo file = new FileInfo(dialog.FileName);
                     FileStream fileStream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read);
-                    int size = Convert.ToInt32(Decimal.Divide(file.Length, 1024));
-                    IFileTransfer fileTransfer = chatSession.SendFile(file.Name, size, fileStream);
+                    IFileTransfer fileTransfer = chatSession.SendFile(file.Name, fileStream);
                     chatTextBox.AddFileSentRequest(fileTransfer);
                 }
             }

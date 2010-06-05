@@ -38,7 +38,7 @@ namespace Squiggle.Chat
 
         void NotifyTyping();
         void SendMessage(string Message);
-        IFileTransfer SendFile(string name, int size, Stream content);
+        IFileTransfer SendFile(string name, Stream content);
         void Leave();
     }
 }

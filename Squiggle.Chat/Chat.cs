@@ -71,9 +71,9 @@ namespace Squiggle.Chat
             });
         }
 
-        public IFileTransfer SendFile(string name, int size, Stream content)
+        public IFileTransfer SendFile(string name, Stream content)
         {
-            return session.SendFile(name, size, content);            
+            return session.SendFile(name, content);            
         }
 
         public void Leave()
