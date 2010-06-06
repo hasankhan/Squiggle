@@ -2,7 +2,12 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:controls="clr-namespace:Squiggle.UI.Controls"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="ChatWindow" Height="502" Width="654"
+    xmlns:local="clr-namespace:Squiggle.UI"
+    Title="ChatWindow" 
+    Height="{local:SettingBinding ChatWindowHeight}"
+    Width="{local:SettingBinding ChatWindowWidth}"
+    Left="{local:SettingBinding ChatWindowLeft}"
+    Top="{local:SettingBinding ChatWindowTop}"
     Loaded="Window_Loaded" Closed="Window_Closed" FocusManager.FocusedElement="{Binding ElementName=editMessageBox}"
     Icon="/Squiggle;component/Images/chat.ico">
     <Grid Background="#FFF3F3F3">
@@ -32,7 +37,7 @@
                             </LinearGradientBrush>
                         </Border.Background>
                         <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
-                            <Button Content="Send File" Margin="5,2,5,2" Click="SendFile_Click"/>
+                            <Button Content="Send File" Height="20" FontSize="10" Margin="5,2,5,2" Click="SendFile_Click"/>
                         </StackPanel>
                     </Border>
                     <controls:MessageEditBox Focusable="True" TabIndex="0" Margin="2,5,5,0" x:Name="editMessageBox" MessageTyping="editMessageBox_MessageTyping" MessageSend="editMessageBox_MessageSend" Grid.Row="1"/>

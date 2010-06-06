@@ -28,5 +28,10 @@ namespace Messenger
             if (e.Args.Length > 0)
                 RunInBackground = e.Args[0].Trim() == "/background";
         }
+
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+            Squiggle.UI.Properties.Settings.Default.Save();
+        }
     }
 }
