@@ -7,7 +7,7 @@ namespace Squiggle.UI
 {
     static class IntExtensions
     {
-        public static string GetSize(this int bytes)
+        public static string ToReadableFileSize(this int bytes)
         {
             const int scale = 1024;
             string[] orders = new string[] { "GB", "MB", "KB", "Bytes" };
