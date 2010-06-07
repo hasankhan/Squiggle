@@ -52,11 +52,13 @@ namespace Squiggle.Chat.Services.Chat
             this.Size = size;
             this.id = id;
             sending = false;
+            localHost.TransferCancelled += new EventHandler<FileTransferEventArgs>(localHost_TransferCancelled);
         }
 
         public void Start()
         {
             localHost.InvitationAccepted += new EventHandler<FileTransferEventArgs>(localHost_InvitationAccepted);
+            localHost.TransferCancelled += new EventHandler<FileTransferEventArgs>(localHost_TransferCancelled);
             ThreadPool.QueueUserWorkItem(_ =>
             {
                 bool success = L(() => this.remoteUser.ReceiveFileInvite(localUser, id, Name, Size));
@@ -184,7 +186,6 @@ namespace Squiggle.Chat.Services.Chat
 
         void OnTransferStarted()
         {
-            localHost.TransferCancelled += new EventHandler<FileTransferEventArgs>(localHost_TransferCancelled);
             TransferStarted(this, EventArgs.Empty);
         }        
 
