@@ -86,17 +86,21 @@ namespace Squiggle.Chat.Services.Chat
             Cancel(true);
         }
 
-        void Cancel(bool notifyOther)
+        void Cancel(bool selfCancel)
         {
+            if (selfCancel)
+                L(() => this.remoteUser.CancelFileTransfer(id));
             if (sending)
-                worker.CancelAsync();
+            {
+                if (worker != null)
+                    worker.CancelAsync();
+            }
             else
             {
                 OnTransferFinished();
-                TransferCancelled(this, EventArgs.Empty);
+                if (!selfCancel)
+                    TransferCancelled(this, EventArgs.Empty);
             }
-            if (notifyOther)
-                L(() => this.remoteUser.CancelFileTransfer(id));
         }        
 
         void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

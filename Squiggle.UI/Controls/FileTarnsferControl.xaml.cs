@@ -131,7 +131,7 @@ namespace Squiggle.UI.Controls
             Status = sending ? "Sending Cancelled" : "Cancelled";
             NotifyPropertyChanged();
 
-            //if (selfCancel)
+            if (selfCancel)
                 fileTransfer.Cancel();
         }
 
