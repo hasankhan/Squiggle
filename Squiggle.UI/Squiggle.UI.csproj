@@ -251,6 +251,7 @@
     <Resource Include="Images\chat-busy.ico" />
     <Resource Include="Images\chat-offline.ico" />
     <Resource Include="Images\Contacts.png" />
+    <Resource Include="Images\Upload.png" />
     <Content Include="Lib\WPFToolkit.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

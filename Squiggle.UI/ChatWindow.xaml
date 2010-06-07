@@ -36,8 +36,15 @@
                                 <GradientStop Color="#FFECECEC" Offset="0.478"/>
                             </LinearGradientBrush>
                         </Border.Background>
-                        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
-                            <Button Content="Send File" Height="20" FontSize="10" Margin="5,2,5,2" Click="SendFile_Click"/>
+                        <StackPanel Orientation="Horizontal" ToolTip="Send File">
+                            <Button Height="20" FontSize="10" Margin="5,2,5,2" Click="SendFile_Click">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="Images/Upload.png" />
+                                        <TextBlock Text="Send File" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
                         </StackPanel>
                     </Border>
                     <controls:MessageEditBox Focusable="True" TabIndex="0" Margin="2,5,5,0" x:Name="editMessageBox" MessageTyping="editMessageBox_MessageTyping" MessageSend="editMessageBox_MessageSend" Grid.Row="1"/>
