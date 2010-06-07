@@ -116,8 +116,6 @@ namespace Squiggle.UI.Controls
                 catch { }
             };
             items.Add(link);
-        }
-
-        
+        }        
     }
 }

@@ -15,12 +15,17 @@ using System.Diagnostics;
 
 namespace Squiggle.UI.Controls
 {
+    public class FileDroppedEventArgs : EventArgs
+    {
+        public string[] Files { get; set; }
+    }
+
     /// <summary>
     /// Interaction logic for MessageEditBox.xaml
     /// </summary>
     public partial class MessageEditBox : UserControl
     {
-
+        public event EventHandler<FileDroppedEventArgs> FileDropped = delegate { };
         public event EventHandler<MessageSendEventArgs> MessageSend = delegate { };
         public event EventHandler MessageTyping = delegate { };
 
@@ -83,6 +88,26 @@ namespace Squiggle.UI.Controls
             {
                 MessageTyping(this, new EventArgs());
                 lastTypingNotificationSent = DateTime.Now;
+            }
+        }
+
+        private void txtMessage_PreviewDrag(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effects = DragDropEffects.All;
+                e.Handled = true;
+            }
+        }
+
+        private void txtMessage_PreviewDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                var files = e.Data.GetData(DataFormats.FileDrop) as string[];
+                if (files != null && files.Length > 0)
+                    FileDropped(this, new FileDroppedEventArgs() { Files = files });
+                e.Handled = true;
             }
         }
     }

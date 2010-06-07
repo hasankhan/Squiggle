@@ -47,7 +47,7 @@
                             </Button>
                         </StackPanel>
                     </Border>
-                    <controls:MessageEditBox Focusable="True" TabIndex="0" Margin="2,5,5,0" x:Name="editMessageBox" MessageTyping="editMessageBox_MessageTyping" MessageSend="editMessageBox_MessageSend" Grid.Row="1"/>
+                    <controls:MessageEditBox FileDropped="editMessageBox_FileDropped" Focusable="True" TabIndex="0" Margin="2,5,5,0" x:Name="editMessageBox" MessageTyping="editMessageBox_MessageTyping" MessageSend="editMessageBox_MessageSend" Grid.Row="1" />
                     <TextBlock Margin="0,10,0,0" x:Name="txbStatus" VerticalAlignment="Bottom" Grid.Row="2" Grid.ColumnSpan="2" Foreground="Black"/>
                 </Grid>
             </Border>

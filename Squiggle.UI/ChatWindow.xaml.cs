@@ -133,12 +133,18 @@ namespace Squiggle.UI
             {
                 dialog.CheckFileExists = true;
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    FileInfo file = new FileInfo(dialog.FileName);
-                    FileStream fileStream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read);
-                    IFileTransfer fileTransfer = chatSession.SendFile(file.Name, fileStream);
-                    chatTextBox.AddFileSentRequest(fileTransfer);
-                }
+                    SendFile(dialog.FileName);
+            }
+        }
+
+        void SendFile(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                var fileStream = File.OpenRead(filePath);
+                string fileName = Path.GetFileName(filePath);
+                IFileTransfer fileTransfer = chatSession.SendFile(fileName, fileStream);
+                chatTextBox.AddFileSentRequest(fileTransfer);
             }
         }
 
@@ -254,6 +260,12 @@ namespace Squiggle.UI
         {
             if (!this.IsActive)
                 flash.Start();
+        }
+
+        private void editMessageBox_FileDropped(object sender, FileDroppedEventArgs e)
+        {
+            foreach (string file in e.Files)
+                SendFile(file);
         }
     }
 }
