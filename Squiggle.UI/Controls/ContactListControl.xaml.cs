@@ -40,13 +40,6 @@ namespace Squiggle.UI.Controls
             InitializeComponent();            
         }
 
-        private void OnMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            Buddy buddy = ((Border)sender).Tag as Buddy;
-            if(buddy.Status != UserStatus.Offline)
-                ChatStart(this, new ChatStartEventArgs() { User=buddy });
-        }
-
         private void ComboBoxItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             SignOut(this, new EventArgs());
@@ -86,10 +79,56 @@ Website:       www.overroot.com";
             ShowSettingsWindow();
             e.Handled = true;
         }
+
+        private void Buddy_Click(object sender, MouseButtonEventArgs e)
+        {
+            Buddy buddy = ((Border)sender).Tag as Buddy;
+            StartChat(buddy, false, null);
+        }        
+
+        private void StartChat(Buddy buddy, bool sendFile, string filePath)
+        {
+            if (buddy.Status != UserStatus.Offline)
+                ChatStart(this, new ChatStartEventArgs() { User = buddy,
+                                                           SendFile = sendFile,
+                                                           File = filePath });
+        }
+
+        private void StartChat_Click(object sender, RoutedEventArgs e)
+        {
+            Buddy buddy = ((MenuItem)sender).Tag as Buddy;
+            StartChat(buddy, false, null);
+        }
+
+        private void SendFile_Click(object sender, RoutedEventArgs e)
+        {
+            Buddy buddy = ((MenuItem)sender).Tag as Buddy;
+            StartChat(buddy, true, null);
+        }
+
+        private void Buddy_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effects = DragDropEffects.All;
+            else
+                e.Effects = DragDropEffects.None;
+        }
+
+        private void Buddy_Drop(object sender, DragEventArgs e)
+        {
+            var files = e.Data.GetData(DataFormats.FileDrop) as string[];
+            if (files != null)
+            {
+                Buddy buddy = ((Border)sender).Tag as Buddy;
+                StartChat(buddy, true, files.FirstOrDefault());
+            }
+        }
     }
 
     public class ChatStartEventArgs : EventArgs
     {
         public Buddy User { get; set; }
+        public bool SendFile { get; set; }
+        public string File { get; set; }
     }
 }

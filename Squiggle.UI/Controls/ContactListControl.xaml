@@ -101,12 +101,9 @@
         <Style x:Key="ContactBorderStyle" TargetType="{x:Type Border}">
             <Setter Property="Background" Value="Transparent"/>
             <Style.Triggers>
-                <DataTrigger Binding="{Binding IsMouseOver,RelativeSource={RelativeSource TemplatedParent}}" 
-                                 Value="True">
-                    <Setter Property="Background" 
-                                Value="LightGray" />
+                <DataTrigger Binding="{Binding IsMouseOver,RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                    <Setter Property="Background" Value="LightGray" />
                 </DataTrigger>
-
             </Style.Triggers>
         </Style>
         <ObjectDataProvider MethodName="GetChangableStatuses" 
@@ -114,7 +111,14 @@
             x:Key="AvailableUserStatus">
         </ObjectDataProvider>
         <DataTemplate DataType="{x:Type chat:Buddy}">
-            <Border x:Name="contactBorder" Padding="1" Cursor="Hand" Tag="{Binding}" MouseDown="OnMouseDown">
+            <Border x:Name="contactBorder" Padding="1" Cursor="Hand" 
+                    Tag="{Binding}" MouseLeftButtonUp="Buddy_Click" AllowDrop="True" Drop="Buddy_Drop" DragOver="Buddy_DragOver">
+                <Border.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Start Chat" Tag="{Binding}" Click="StartChat_Click" />
+                        <MenuItem Header="Send File" Tag="{Binding}" Click="SendFile_Click" />
+                    </ContextMenu>
+                </Border.ContextMenu>
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="30"/>
@@ -239,6 +243,9 @@
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
             <StackPanel Orientation="Vertical" >
                 <StackPanel Height="25" Orientation="Horizontal">
+                    <StackPanel.ContextMenu>
+                        <ContextMenu />
+                    </StackPanel.ContextMenu>
                     <StackPanel.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FFF9F9F9" Offset="0.111"/>
@@ -247,8 +254,7 @@
                     </StackPanel.Background>
                     <Image Source="/Images/info.png" Cursor="Hand" Width="15" Height="15" Margin="5,0,0,0" MouseLeftButtonDown="About_MouseLeftButtonDown" />
                 </StackPanel>
-                <ItemsControl Margin="5" DataContext="{Binding}" ItemsSource="{Binding Path=Buddies}"  AlternationCount="2" />
-
+                <ItemsControl Margin="5" DataContext="{Binding}" ItemsSource="{Binding Path=Buddies}" AlternationCount="2" />
             </StackPanel>
         </ScrollViewer>
        

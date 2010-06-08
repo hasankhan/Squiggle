@@ -82,12 +82,17 @@ namespace Squiggle.UI
 
         void OnStartChat(object sender, Squiggle.UI.Controls.ChatStartEventArgs e)
         {
-            StartChat(e.User);
+            ChatWindow window = StartChat(e.User);
+            if (e.SendFile)
+                if (String.IsNullOrEmpty(e.File))
+                    window.SendFile();
+                else
+                    window.SendFile(e.File);
         }
 
-        void StartChat(Buddy buddy)
+        ChatWindow StartChat(Buddy buddy)
         {
-            CreateChatWindow(buddy, buddy.StartChat(), true);
+            return CreateChatWindow(buddy, buddy.StartChat(), true);
         }
 
         private void trayIcon_TrayLeftMouseDown(object sender, RoutedEventArgs e)
@@ -244,7 +249,7 @@ namespace Squiggle.UI
             this.WindowState = lastState;
         }
 
-        void CreateChatWindow(Buddy buddy, IChat session, bool focused)
+        ChatWindow CreateChatWindow(Buddy buddy, IChat session, bool focused)
         {
             ChatWindow window;
 
@@ -262,6 +267,8 @@ namespace Squiggle.UI
             window.Show();
             if (focused)
                 window.Activate();
+
+            return window;
         }
 
         void OpenSettings()

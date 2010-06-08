@@ -129,6 +129,11 @@ namespace Squiggle.UI
 
         private void SendFile_Click(object sender, RoutedEventArgs e)
         {
+            SendFile();
+        }
+
+        public void SendFile()
+        {
             using (var dialog = new System.Windows.Forms.OpenFileDialog())
             {
                 dialog.CheckFileExists = true;
@@ -137,7 +142,7 @@ namespace Squiggle.UI
             }
         }
 
-        void SendFile(string filePath)
+        public void SendFile(string filePath)
         {
             if (File.Exists(filePath))
             {
