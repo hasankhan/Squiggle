@@ -106,16 +106,21 @@ namespace Squiggle.UI.Controls
             var link = new Hyperlink(new Run(url));
             link.NavigateUri = new Uri(url, UriKind.Absolute);
             link.Cursor = Cursors.Hand;
-            link.MouseLeftButtonDown += (s, e) =>
+            link.RequestNavigate += (s, e) =>
             {
-                try
-                {
-                    Process.Start(link.NavigateUri.AbsoluteUri);
-                    e.Handled = true;
-                }
-                catch { }
+                OpenLink(link);
+                e.Handled = true;
             };
             items.Add(link);
+        }
+
+        static void OpenLink(Hyperlink link)
+        {
+            try
+            {
+                Process.Start(link.NavigateUri.AbsoluteUri);
+            }
+            catch { }
         }        
     }
 }
