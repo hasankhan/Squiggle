@@ -18,6 +18,7 @@
             </Grid.RowDefinitions>
             <TextBlock x:Name="txtUserLeftMessage" Focusable="False" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="#FFFFFFE1" Visibility="Hidden"/>
             <controls:ChatTextBox x:Name="chatTextBox" Focusable="False" Height="Auto" Width="Auto" />
+            
             <Border Grid.Row="2" >
                 <Grid >
                     <Grid.RowDefinitions>
@@ -37,13 +38,11 @@
                             </LinearGradientBrush>
                         </Border.Background>
                         <StackPanel Orientation="Horizontal" ToolTip="Send File">
-                            <Button Height="20" FontSize="10" Margin="5,2,5,2" Click="SendFile_Click">
-                                <Button.Content>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Source="Images/Upload.png" />
-                                        <TextBlock Text="Send File" />
-                                    </StackPanel>
-                                </Button.Content>
+                            <Button Height="22" Margin="5,0,0,0" Grid.Row="1" Template="{DynamicResource BlueGlassButton}"  Click="SendFile_Click" Foreground="Black">
+                                <StackPanel HorizontalAlignment="Left" Width="Auto" Height="Auto" Orientation="Horizontal">
+                                    <Image Width="20" Height="20" Source="Images/Upload.png" Stretch="Fill"/>
+                                    <TextBlock Margin="5,0,10,0" VerticalAlignment="Center" FontSize="10" Text="Send File" TextWrapping="Wrap"/>
+                                </StackPanel>
                             </Button>
                         </StackPanel>
                     </Border>

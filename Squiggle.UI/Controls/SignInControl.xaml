@@ -42,7 +42,8 @@
                         <CheckBox x:Name="chkAutoSignIn" Margin="5,10,0,5" Content="Sign me in automatically" HorizontalAlignment="Left"/>
                     </StackPanel>
                 </Border>
-                <Button HorizontalAlignment="Center" IsDefault="True" Width="60" Height="25" Content="Sign In" Click="SignIn"/>
+                <Button HorizontalAlignment="Center" IsDefault="True" Width="60" Height="25" Content="Sign In" Click="SignIn"
+                        Template="{DynamicResource BlueGlassButton}" />
             </StackPanel>
         </Grid>
     </Grid>
