@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
         <WrapPanel Grid.Row="1" Orientation="Horizontal">
             <StackPanel Margin="0,0,100,0" DataContext="{Binding ElementName=fileTransferControl, Path=FileName}" Orientation="Horizontal" >
-                <Image x:Name="img"  
+                <Image x:Name="img" Height="32" Width="32"
                            ToolTip="{Binding Converter={x:Static local:PathToNameConverter.Instance}}">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource fic}">
@@ -22,10 +22,10 @@
                         </MultiBinding >
                     </Image.Source>
                 </Image>
-                <StackPanel Margin="10,0,0,0" VerticalAlignment="Stretch" Orientation="Vertical">
+                <StackPanel Margin="5,5,0,0" VerticalAlignment="Bottom" Orientation="Vertical">
                     <TextBlock FontSize="10" Text="{Binding Converter={x:Static local:PathToNameConverter.Instance}}"
-                                   TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
-                    <TextBlock Margin="0,5,0,0" Foreground="Gray" FontSize="10" Text="{Binding ElementName=fileTransferControl, Path=Status}"/>
+                                   TextTrimming="CharacterEllipsis" VerticalAlignment="Bottom"/>
+                    <TextBlock Margin="0,0,0,0" Foreground="Gray" FontSize="10" Text="{Binding ElementName=fileTransferControl, Path=Status}"/>
                 </StackPanel>
             </StackPanel>
             <Grid>
