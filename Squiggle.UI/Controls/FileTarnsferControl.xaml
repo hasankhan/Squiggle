@@ -12,7 +12,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
+        <WrapPanel Grid.Row="1" Orientation="Horizontal">
             <StackPanel Margin="0,0,100,0" DataContext="{Binding ElementName=fileTransferControl, Path=FileName}" Orientation="Horizontal" >
                 <Image x:Name="img"  
                            ToolTip="{Binding Converter={x:Static local:PathToNameConverter.Instance}}">
@@ -49,7 +49,7 @@
                     </TextBlock>
                 </StackPanel>
             </Grid>
-        </StackPanel>
+        </WrapPanel>
        
     </Grid>
 </UserControl>
