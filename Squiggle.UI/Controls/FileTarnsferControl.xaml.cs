@@ -60,6 +60,8 @@ namespace Squiggle.UI.Controls
             FileName = fileTransfer.Name;
             FileSize = fileTransfer.Size;
             Status = sending ? "Waiting" : FileSize.ToReadableFileSize();
+            btnCancelTransfer.Content = sending ? "Cancel" : "Reject";
+
             NotifyPropertyChanged();
 
             this.fileTransfer.ProgressChanged += new EventHandler<System.ComponentModel.ProgressChangedEventArgs>(fileTransfer_ProgressChanged);

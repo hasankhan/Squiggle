@@ -39,7 +39,7 @@
                 </StackPanel>
                 <StackPanel x:Name="stkWaitingAcceptance" Orientation="Horizontal" Visibility="Hidden">
                     <ProgressBar IsIndeterminate="True" Width="200" Height="15"/>
-                    <Button Content="Reject" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="10,0,0,0" Click="Reject_Click"
+                    <Button x:Name="btnCancelTransfer" Content="Reject" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="10,0,0,0" Click="Reject_Click"
                             Template="{DynamicResource BlackGlassButton}" Foreground="White"/>
                 </StackPanel>
                 <StackPanel x:Name="stkAccepted" Orientation="Horizontal" Visibility="Hidden">
