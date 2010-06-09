@@ -18,13 +18,10 @@ namespace Squiggle.UI
 
         #region IChatClient Members
 
-        public event EventHandler<ChatStartedEventArgs> ChatStarted;
-
-        public event EventHandler<BuddyOnlineEventArgs> BuddyOnline;
-
-        public event EventHandler<BuddyEventArgs> BuddyOffline;
-
-        public event EventHandler<BuddyEventArgs> BuddyUpdated;
+        public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
+        public event EventHandler<BuddyOnlineEventArgs> BuddyOnline = delegate { };
+        public event EventHandler<BuddyEventArgs> BuddyOffline = delegate { };
+        public event EventHandler<BuddyEventArgs> BuddyUpdated = delegate { };
 
         public Buddy CurrentUser
         {

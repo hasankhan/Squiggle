@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Squiggle.Chat;
 using System.Net;
+using System.Diagnostics;
 
 namespace Squiggle.UI.Settings
 {
@@ -54,7 +55,7 @@ namespace Squiggle.UI.Settings
             if (!requiresBindIP)
             {
                 var ip = IPAddress.Parse(Settings.ConnectionSettings.BindToIP);
-                requiresBindIP = NetworkUtility.GetLocalIPAddresses().Contains(ip);
+                requiresBindIP = !NetworkUtility.GetLocalIPAddresses().Contains(ip);
             }
             if (requiresBindIP)
             {

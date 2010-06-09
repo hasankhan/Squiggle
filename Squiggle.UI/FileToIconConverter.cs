@@ -132,7 +132,7 @@ namespace Squiggle.UI
                     {
                         target.WritePixels(outRect, bits, stride, 0);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         System.Diagnostics.Debugger.Break();
                     }
@@ -148,7 +148,7 @@ namespace Squiggle.UI
                 {
                     target.WritePixels(outRect, bits, stride, 0);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     System.Diagnostics.Debugger.Break();
                 }
