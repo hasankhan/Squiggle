@@ -200,7 +200,8 @@ namespace Squiggle.UI.Controls
 
         private void Open_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(FilePath));
+            if (File.Exists(FilePath))
+                Process.Start(new ProcessStartInfo(FilePath));
         }
 
         private void ShowInFolder_Click(object sender, RoutedEventArgs e)

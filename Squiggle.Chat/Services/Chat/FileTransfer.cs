@@ -27,6 +27,8 @@ namespace Squiggle.Chat.Services.Chat
         BackgroundWorker worker;
         bool sending;
         int bytesReceived;
+        bool selfCancelled;
+        string saveToFile;
 
         public int Size { get; private set; }
         public string Name { get; private set; }
@@ -74,6 +76,7 @@ namespace Squiggle.Chat.Services.Chat
             localHost.TransferDataReceived += new EventHandler<FileTransferDataReceivedEventArgs>(localHost_TransferDataReceived);
             bool success = L(()=>
                             {
+                                saveToFile = filePath;
                                 content = File.OpenWrite(filePath);
                                 remoteUser.AcceptFileInvite(id);
                             });
@@ -90,20 +93,17 @@ namespace Squiggle.Chat.Services.Chat
 
         void Cancel(bool selfCancel)
         {
+            selfCancelled = selfCancel;
+
             if (selfCancel)
                 L(() => this.remoteUser.CancelFileTransfer(id));
-            if (sending)
-            {
-                if (worker == null)
-                    OnTransferFinished();
-                else
-                    worker.CancelAsync();
-            }
+
+            if (sending && worker!=null)            
+                 worker.CancelAsync();
             else
             {
                 OnTransferFinished();
-                if (!selfCancel)
-                    TransferCancelled(this, EventArgs.Empty);
+                OnTransferCancelled();
             }
         }        
 
@@ -112,11 +112,19 @@ namespace Squiggle.Chat.Services.Chat
             OnTransferFinished();
 
             if (e.Cancelled)
-                TransferCancelled(this, EventArgs.Empty);
+                OnTransferCancelled();
             else if (e.Error != null)
                 Error(this, new ErrorEventArgs(e.Error));
             else
                 TransferCompleted(this, EventArgs.Empty);
+        }
+
+        void OnTransferCancelled()
+        {
+            if (!sending && content != null)
+                File.Delete(saveToFile);
+            if (selfCancelled)
+                TransferCancelled(this, EventArgs.Empty);
         }
 
         void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
