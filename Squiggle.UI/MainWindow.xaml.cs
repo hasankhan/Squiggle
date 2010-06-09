@@ -262,8 +262,8 @@ namespace Squiggle.UI
             else
                 window.ChatSession = session;
             window.Title = buddy.DisplayName;
-            if (!focused)
-                window.WindowState = WindowState.Minimized;
+            
+            window.WindowState = focused ? WindowState.Normal : WindowState.Minimized;
             window.Show();
             if (focused)
                 window.Activate();
