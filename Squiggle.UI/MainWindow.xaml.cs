@@ -22,7 +22,7 @@ namespace Squiggle.UI
         UserStatus lastStatus;
         Dictionary<Buddy, ChatWindow> chatWindows;
         ClientViewModel dummyViewModel;
-
+        
         bool exiting;
 
         public MainWindow()

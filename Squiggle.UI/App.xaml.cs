@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Linq;
 using System.Windows;
+using System.Threading;
 
 namespace Messenger
 {
@@ -11,6 +13,8 @@ namespace Messenger
     /// </summary>
     public partial class App : Application
     {
+        Mutex mutex;
+
         public static bool RunInBackground { get; set; }
 
         public App()
@@ -25,6 +29,11 @@ namespace Messenger
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            bool first;
+            mutex = new Mutex(true, "Squiggle", out first);
+            if (!first)
+                this.Shutdown();
+
             if (e.Args.Length > 0)
                 RunInBackground = e.Args[0].Trim() == "/background";
         }
