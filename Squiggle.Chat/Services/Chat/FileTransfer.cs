@@ -94,7 +94,9 @@ namespace Squiggle.Chat.Services.Chat
                 L(() => this.remoteUser.CancelFileTransfer(id));
             if (sending)
             {
-                if (worker != null)
+                if (worker == null)
+                    OnTransferFinished();
+                else
                     worker.CancelAsync();
             }
             else
