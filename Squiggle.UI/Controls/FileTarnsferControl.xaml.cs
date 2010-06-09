@@ -85,9 +85,10 @@ namespace Squiggle.UI.Controls
             if (!Directory.Exists(DownloadFolder))
                 Directory.CreateDirectory(DownloadFolder);
 
-            string filePath = System.IO.Path.Combine(DownloadFolder, fileTransfer.Name);
+            string filePath = GetUniqueFilePath(DownloadFolder, fileTransfer.Name);         
+
             AcceptDownload(filePath);
-        }
+        }        
 
         private void SaveAs_Click(object sender, RoutedEventArgs e)
         {
@@ -212,6 +213,20 @@ namespace Squiggle.UI.Controls
             startInfo.Arguments = "/select,\"" + FilePath + "\"";
 
             Process.Start(startInfo);
+        }
+
+        static string GetUniqueFilePath(string downloadFolder, string originalFileName)
+        {
+            string extension = System.IO.Path.GetExtension(originalFileName);
+            string fileName = System.IO.Path.GetFileNameWithoutExtension(originalFileName);
+
+            string filePath = System.IO.Path.Combine(downloadFolder, originalFileName);
+            for (int i = 1; File.Exists(filePath); i++)
+            {
+                string temp = String.Format("{0}({1}){2}", fileName, i, extension);
+                filePath = System.IO.Path.Combine(downloadFolder, temp);
+            }
+            return filePath;
         }
     }
 }
