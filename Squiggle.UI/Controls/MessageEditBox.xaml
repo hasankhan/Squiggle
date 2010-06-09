@@ -35,10 +35,11 @@
             <DockPanel Focusable="True">                
                 <Button TabIndex="1" x:Name="btnSend" IsEnabled="False" DockPanel.Dock="Right" Content="Send" ToolTip="Send Message" 
         Style="{StaticResource ButtonStyle}" Click="btnSend_Click" />
-                <TextBox AllowDrop="True" PreviewDrop="txtMessage_PreviewDrop" PreviewDragOver="txtMessage_PreviewDrag" PreviewDragEnter="txtMessage_PreviewDrag" x:Name="txtMessage" SpellCheck.IsEnabled="True" DockPanel.Dock="Left" TabIndex="0" 
-        Style="{StaticResource TextStyle}" AcceptsReturn="True" Height="60" VerticalScrollBarVisibility="Auto"
-                         TextChanged="txtMessage_TextChanged"
-                         PreviewKeyDown="txtMessage_PreviewKeyDown"/>                
+                <TextBox AllowDrop="True" x:Name="txtMessage"
+                         PreviewDrop="txtMessage_PreviewDrop" PreviewDragOver="txtMessage_PreviewDrag" PreviewDragEnter="txtMessage_PreviewDrag"
+                         DockPanel.Dock="Left" TabIndex="0"  Style="{StaticResource TextStyle}" 
+                         AcceptsReturn="True" Height="60" VerticalScrollBarVisibility="Auto"
+                         TextChanged="txtMessage_TextChanged" PreviewKeyDown="txtMessage_PreviewKeyDown"/>                
             </DockPanel>
         </Border>
 

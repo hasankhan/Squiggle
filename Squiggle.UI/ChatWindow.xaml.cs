@@ -5,6 +5,7 @@ using Squiggle.Chat;
 using Squiggle.UI.Controls;
 using System.Windows.Threading;
 using System.IO;
+using Squiggle.UI.Settings;
 
 namespace Squiggle.UI
 {
@@ -31,6 +32,14 @@ namespace Squiggle.UI
             statusResetTimer.Tick += (sender, e) => ResetStatus();
             this.Activated += new EventHandler(ChatWindow_Activated);
             this.StateChanged += new EventHandler(ChatWindow_StateChanged);
+
+            SettingsProvider.Current.SettingsUpdated += (sender, e) => LoadSettings();
+            LoadSettings();
+        }
+
+        void LoadSettings()
+        {
+            editMessageBox.txtMessage.SpellCheck.IsEnabled = SettingsProvider.Current.Settings.GeneralSettings.SpellCheck;
         }
 
         public ChatWindow(Buddy buddy, IChat chatSession) : this()

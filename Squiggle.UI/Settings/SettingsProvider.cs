@@ -17,6 +17,8 @@ namespace Squiggle.UI.Settings
             Current = new SettingsProvider();
         }
 
+        public event EventHandler SettingsUpdated = delegate { };
+
         public SettingsProvider()
         {
             Load();
@@ -40,6 +42,8 @@ namespace Squiggle.UI.Settings
             SaveConnectionSettings();
 
             Properties.Settings.Default.Save();
+
+            SettingsUpdated(this, EventArgs.Empty);
         }
 
         public void Update(Action<SquiggleSettings> updateAction)
@@ -72,6 +76,7 @@ namespace Squiggle.UI.Settings
         {
             Settings.GeneralSettings.HideToSystemTray = Properties.Settings.Default.HideToTray;
             Settings.GeneralSettings.ShowPopups = Properties.Settings.Default.ShowPopups;
+            Settings.GeneralSettings.SpellCheck = Properties.Settings.Default.SpellCheck;
         }
 
         private void LoadPersonalSettings()
@@ -107,6 +112,7 @@ namespace Squiggle.UI.Settings
         {
             Properties.Settings.Default.HideToTray = Settings.GeneralSettings.HideToSystemTray;
             Properties.Settings.Default.ShowPopups = Settings.GeneralSettings.ShowPopups;
+            Properties.Settings.Default.SpellCheck = Settings.GeneralSettings.SpellCheck;
         }
     }
 }
