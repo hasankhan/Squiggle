@@ -242,7 +242,7 @@ namespace Squiggle.UI
             return client;
         }
 
-        private void RestoreWindow()
+        public void RestoreWindow()
         {
             this.Show();
             this.Activate();

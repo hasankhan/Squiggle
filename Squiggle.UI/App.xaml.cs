@@ -30,7 +30,9 @@ namespace Messenger
 
         public SingleInstanceManager()
         {
+#if !DEBUG
             this.IsSingleInstance = true;
+#endif
         }
 
         protected override bool OnStartup(Microsoft.VisualBasic.ApplicationServices.StartupEventArgs e)
@@ -49,7 +51,7 @@ namespace Messenger
         {
             // Subsequent launches
             base.OnStartupNextInstance(eventArgs);
-            app.MainWindow.Activate();
+            ((Squiggle.UI.MainWindow)app.MainWindow).RestoreWindow();
         }
     }
 
