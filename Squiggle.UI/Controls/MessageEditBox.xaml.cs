@@ -14,17 +14,16 @@ using System.Windows.Shapes;
 using System.Diagnostics;
 
 namespace Squiggle.UI.Controls
-{
-    public class FileDroppedEventArgs : EventArgs
-    {
-        public string[] Files { get; set; }
-    }
-
+{   
     /// <summary>
     /// Interaction logic for MessageEditBox.xaml
     /// </summary>
     public partial class MessageEditBox : UserControl
     {
+        const int maxMessages = 10;
+        int messageIndex = 0;
+        List<string> messages = new List<string>();
+
         public event EventHandler<FileDroppedEventArgs> FileDropped = delegate { };
         public event EventHandler<MessageSendEventArgs> MessageSend = delegate { };
         public event EventHandler MessageTyping = delegate { };
@@ -56,6 +55,11 @@ namespace Squiggle.UI.Controls
 
         private void RaiseMessageSendEvent()
         {
+            messages.Add(txtMessage.Text);
+            if (messages.Count > maxMessages)
+                messages.RemoveAt(0);
+            messageIndex = messages.Count - 1;
+
             MessageSend(this, new MessageSendEventArgs() { Message = txtMessage.Text });
             txtMessage.Text = String.Empty;
             txtMessage.Focus();
@@ -70,16 +74,39 @@ namespace Squiggle.UI.Controls
 
         private void txtMessage_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Up)
+            {
+                e.Handled = true;
+                ShowMessage();
+                messageIndex--;
+            }
+            else if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Down)
+            {
+                e.Handled = true;
+                ShowMessage();
+                messageIndex++;
+            }
+            else if (e.Key == Key.Enter)
             {
                 if (!(Keyboard.Modifiers == ModifierKeys.Control || Keyboard.Modifiers == ModifierKeys.Shift))
                 {
-                    
+
                     if (btnSend.IsEnabled)
                         RaiseMessageSendEvent();
                     e.Handled = true;
                 }
-              }
+            }
+        }
+
+        private void ShowMessage()
+        {
+            if (messageIndex < 0)
+                messageIndex = 0;
+            if (messageIndex >= messages.Count)
+                messageIndex = messages.Count - 1;
+
+            if (messages.Any())
+                txtMessage.Text = messages[messageIndex];
         }
 
         void NotifyTyping()
@@ -115,5 +142,10 @@ namespace Squiggle.UI.Controls
     public class MessageSendEventArgs : EventArgs
     {
         public string Message { get; set; }
+    }
+
+    public class FileDroppedEventArgs : EventArgs
+    {
+        public string[] Files { get; set; }
     }
 }
