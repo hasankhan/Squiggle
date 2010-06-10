@@ -236,7 +236,11 @@ namespace Squiggle.UI
         {
             Dispatcher.Invoke(() =>
             {
-                string message = "Following message could not be sent due to error: " + e.Exception.Message;
+#if DEBUG
+                string message = "Following message could not be delivered due to error: " + e.Exception.Message;
+#else
+                string message = "Following message could not be delivered";
+#endif
                 string detail = e.Message;
                 chatTextBox.AddError(message, detail);
             });
