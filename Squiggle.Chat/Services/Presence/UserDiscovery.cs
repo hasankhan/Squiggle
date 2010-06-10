@@ -8,6 +8,7 @@ using System.IO;
 using System.Threading;
 using Squiggle.Chat.Services.Presence.Transport;
 using Squiggle.Chat.Services.Presence.Transport.Messages;
+using System.Diagnostics;
 
 namespace Squiggle.Chat.Services.Presence
 {    
@@ -59,17 +60,24 @@ namespace Squiggle.Chat.Services.Presence
 
         void channel_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            if (e.Message is LoginMessage)
+            try
             {
-                OnLoginMessage((LoginMessage)e.Message, false);
-                SayHi();
+                if (e.Message is LoginMessage)
+                {
+                    OnLoginMessage((LoginMessage)e.Message, false);
+                    SayHi();
+                }
+                else if (e.Message is LogoutMessage)
+                    OnLogoutMessage((LogoutMessage)e.Message);
+                else if (e.Message is HiMessage)
+                    OnLoginMessage(((HiMessage)e.Message).Convert<LoginMessage>(), true);
+                else if (e.Message is UserUpdateMessage)
+                    OnUpdateMessage((UserUpdateMessage)e.Message);
             }
-            else if (e.Message is LogoutMessage)
-                OnLogoutMessage((LogoutMessage)e.Message);
-            else if (e.Message is HiMessage)
-                OnLoginMessage(((HiMessage)e.Message).Convert<LoginMessage>(), true);
-            else if (e.Message is UserUpdateMessage)
-                OnUpdateMessage((UserUpdateMessage)e.Message);
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
+            }            
         }
 
         void SayHi()
