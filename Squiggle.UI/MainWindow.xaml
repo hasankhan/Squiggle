@@ -18,25 +18,69 @@
             ObjectType="{x:Type local:ChatUtil}" 
             x:Key="AvailableUserStatus">
         </ObjectDataProvider>
+        <Style x:Key="signedInMenu" TargetType="{x:Type MenuItem}">
+            <Style.Setters>
+                <Setter Property="IsEnabled" Value="{Binding IsLoggedIn}" />
+            </Style.Setters>
+        </Style>
+        <Style x:Key="statusMenu" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource signedInMenu}">
+            <Style.Setters>
+                <Setter Property="ItemsSource" Value="{Binding Source={StaticResource AvailableUserStatus}}" />
+                <Setter Property="ItemTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <ContentPresenter Content="{Binding Converter={StaticResource statusConverter}}" />
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style.Setters>
+        </Style>
     </Window.Resources>
     <Grid>
-        <tray:TaskbarIcon IconSource="{Binding LoggedInUser.Status, Converter={StaticResource trayIconConverter}, FallbackValue=Online}" TrayLeftMouseDown="trayIcon_TrayLeftMouseDown" x:Name="trayIcon">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <tray:TaskbarIcon IconSource="{Binding LoggedInUser.Status, Converter={StaticResource trayIconConverter}, FallbackValue=Online}" 
+                          TrayLeftMouseDown="trayIcon_TrayLeftMouseDown" x:Name="trayIcon">
             <tray:TaskbarIcon.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Open" Click="OpenMenu_Click" />
-                    <MenuItem Header="Change Status" MenuItem.Click="StatusMenu_Click" x:Name="statusMenu" IsEnabled="False"
-                              ItemsSource="{Binding Source={StaticResource AvailableUserStatus}}">
-                        <MenuItem.ItemTemplate>
-                            <DataTemplate>
-                                <ContentPresenter Content="{Binding Converter={StaticResource statusConverter}}" />
-                            </DataTemplate>
-                        </MenuItem.ItemTemplate>
-                    </MenuItem>
-                    <MenuItem Header="Sign Out" x:Name="signoutMenu" Click="SignOutMenu_Click" IsEnabled="False" />
+                    <MenuItem Header="Change Status"
+                              MenuItem.Click="StatusMenu_Click"
+                              Style="{StaticResource statusMenu}" />
+                    <MenuItem Header="Sign Out" 
+                              Click="SignOutMenu_Click" 
+                              Style="{StaticResource signedInMenu}" />
                     <MenuItem Header="Quit" Click="QuiteMenu_Click" />
                 </ContextMenu>
             </tray:TaskbarIcon.ContextMenu>
         </tray:TaskbarIcon>
-        <controls:ChatClientControl Width="Auto" Height="Auto" x:Name="chatControl" />
+        <Menu Grid.Row="0">
+            <MenuItem Header="_File">
+                <MenuItem Header="Sig_n Out" 
+                          Click="SignOutMenu_Click" 
+                          Style="{StaticResource signedInMenu}" />
+                <Separator />
+                <MenuItem Header="S_tatus" 
+                          Style="{StaticResource statusMenu}"
+                          MenuItem.Click="StatusMenu_Click" />
+                <Separator />
+                <MenuItem Header="_Open received files folder" />
+                <Separator />
+                <MenuItem Header="_Close" />
+            </MenuItem>
+            <MenuItem Header="_Actions">
+                <MenuItem Header="_Send an instant message" />
+                <MenuItem Header="Send a _file" />
+            </MenuItem>
+            <MenuItem Header="_Tools">
+                <MenuItem Header="_Settings" />
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About Squiggle" />
+            </MenuItem>
+        </Menu>        
+        <controls:ChatClientControl Grid.Row="1" Width="Auto" Height="Auto" x:Name="chatControl" />
     </Grid>
 </Window>

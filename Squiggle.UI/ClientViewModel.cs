@@ -19,6 +19,10 @@ namespace Squiggle.UI
 
         public Buddy LoggedInUser { get; set; }
 
+        public bool IsLoggedIn
+        {
+            get { return chatClient.LoggedIn; }
+        }
 
         public ClientViewModel(IChatClient chatClient)
         {

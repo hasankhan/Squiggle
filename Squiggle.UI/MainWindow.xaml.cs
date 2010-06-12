@@ -151,7 +151,6 @@ namespace Squiggle.UI
                 return;
             }
 
-            signoutMenu.IsEnabled = statusMenu.IsEnabled = true;
             CreateMonitor();
             clientViewModel = new ClientViewModel(chatClient);
             clientViewModel.LoggedInUser.DisplayMessage = SettingsProvider.Current.Settings.PersonalSettings.DisplayMessage;
@@ -163,7 +162,6 @@ namespace Squiggle.UI
 
         void SignOut()
         {
-            signoutMenu.IsEnabled = statusMenu.IsEnabled = false;
             DestroyMonitor();
             chatClient.Logout();
             chatControl.ContactList.ChatContext = null;
