@@ -7,7 +7,7 @@ using System.Net;
 namespace Squiggle.Chat.Services.Presence.Transport.Messages
 {
     [Serializable]
-    class KeepAliveMessage: Message
+    public class KeepAliveMessage : Message
     {
         public IPEndPoint ChatEndPoint { get; set; }
     }

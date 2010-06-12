@@ -4,7 +4,7 @@ using System.Net;
 namespace Squiggle.Chat.Services.Presence.Transport.Messages
 {
     [Serializable]
-    class LoginMessage: PresenceMessage<LoginMessage>
+    public class LoginMessage : PresenceMessage<LoginMessage>
     {
         
     }

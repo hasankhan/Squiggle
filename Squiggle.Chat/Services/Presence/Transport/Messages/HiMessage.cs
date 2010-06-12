@@ -6,7 +6,7 @@ using System.Text;
 namespace Squiggle.Chat.Services.Presence.Transport.Messages
 {
     [Serializable]
-    class HiMessage: PresenceMessage<HiMessage>
+    public class HiMessage : PresenceMessage<HiMessage>
     {
     }
 }

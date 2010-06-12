@@ -7,7 +7,7 @@ using System.Net;
 namespace Squiggle.Chat.Services.Presence.Transport.Messages
 {
     [Serializable]
-    class LogoutMessage : Message
+    public class LogoutMessage : Message
     {
         public IPEndPoint ChatEndPoint { get; set; }
     }

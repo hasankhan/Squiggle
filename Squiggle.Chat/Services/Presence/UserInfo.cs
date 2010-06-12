@@ -8,7 +8,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Squiggle.Chat.Services.Presence
 {
-    class UserInfo
+    public class UserInfo
     {
         public string UserFriendlyName { get; set; }
         public IPEndPoint ChatEndPoint { get; set; }

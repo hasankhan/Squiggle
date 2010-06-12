@@ -5,13 +5,13 @@ using System.Diagnostics;
 
 namespace Squiggle.Chat.Services.Presence.Transport
 {
-    class MessageReceivedEventArgs : EventArgs
+    public class MessageReceivedEventArgs : EventArgs
     {
         public IPEndPoint Sender { get; set; }
         public Message Message { get; set; }
     }
 
-    class PresenceChannel
+    public class PresenceChannel
     {
         UdpClient client;
         IPEndPoint receiveEndPoint;

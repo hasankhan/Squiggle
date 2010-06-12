@@ -5,7 +5,7 @@ using System.IO;
 namespace Squiggle.Chat.Services.Presence.Transport
 {
     [Serializable]
-    class Message
+    public class Message
     {
         public Guid ChannelID { get; set; }
 

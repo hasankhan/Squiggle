@@ -6,7 +6,7 @@ using System.Text;
 namespace Squiggle.Chat.Services.Presence.Transport.Messages
 {
     [Serializable]
-    class UserUpdateMessage: PresenceMessage<UserUpdateMessage>
+    public class UserUpdateMessage : PresenceMessage<UserUpdateMessage>
     {
     }
 }

@@ -7,7 +7,7 @@ using System.Net;
 namespace Squiggle.Chat.Services.Presence.Transport.Messages
 {
     [Serializable]
-    abstract class PresenceMessage<TMessage>:Message where TMessage:PresenceMessage<TMessage>, new()
+    public abstract class PresenceMessage<TMessage> : Message where TMessage : PresenceMessage<TMessage>, new()
     {
         public string UserFriendlyName { get; set; }
         public string DisplayMessage { get; set; }
