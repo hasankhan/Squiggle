@@ -11,7 +11,38 @@
     Loaded="Window_Loaded" Closed="Window_Closed" FocusManager.FocusedElement="{Binding ElementName=editMessageBox}"
     Icon="/Squiggle;component/Images/chat.ico">
     <Grid Background="#FFF3F3F3">
-        <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Menu>
+            <MenuItem Header="_File">
+                <MenuItem Header="_Save" />
+                <MenuItem Header="Save _as..." />
+                <Separator />
+                <MenuItem Header="Send a single _file..." />
+                <MenuItem Header="_Open received files" />
+                <Separator />
+                <MenuItem Header="_Close" />
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Undo" InputGestureText="Ctrl+Z" />
+                <Separator />
+                <MenuItem Header="Cu_t" InputGestureText="Ctrl+X" />
+                <MenuItem Header="_Copy" InputGestureText="Ctrl+C" />
+                <MenuItem Header="_Paste" InputGestureText="Ctrl+V" />
+                <MenuItem Header="_Delete" InputGestureText="Del" />
+                <Separator />
+                <MenuItem Header="Select _all" InputGestureText="Ctrl+A" />
+            </MenuItem>
+            <MenuItem Header="_Tools">
+                <MenuItem Header="_Settings..." />
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About Squiggle" />
+            </MenuItem>
+        </Menu>
+        <Grid Margin="5" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
@@ -53,8 +84,6 @@
                     <TextBlock Margin="0,10,0,0" x:Name="txbStatus" VerticalAlignment="Bottom" Grid.Row="2" Grid.ColumnSpan="2" Foreground="Black"/>
                 </Grid>
             </Border>
-
         </Grid>
     </Grid>
-
 </Window>
