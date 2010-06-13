@@ -25,6 +25,8 @@ namespace Squiggle.UI.Controls
         public event EventHandler OpenSettings = delegate { };
         public event EventHandler SignOut = delegate { };
 
+        string filter = String.Empty;
+
         public static DependencyProperty ChatContextProperty = DependencyProperty.Register("ChatContext", typeof(ClientViewModel), typeof(ContactListControl), new PropertyMetadata(null));
         public ClientViewModel ChatContext
         {
@@ -123,6 +125,24 @@ Website:       www.overroot.com";
                 StartChat(buddy, true, files.FirstOrDefault());
             }
         }
+
+        private void CollectionViewSource_Filter(object sender, FilterEventArgs e)
+        {
+            Buddy buddy = (Buddy)e.Item;
+            if (filter == String.Empty)
+                e.Accepted = true;
+            else
+                e.Accepted = buddy.DisplayName.ToLower().Contains(filter.ToLower());
+        }
+
+        private void FilterTextBox_FilterChanged(object sender, BuddyFilterEventArs e)
+        {
+            filter = e.FilterBy;
+
+            CollectionViewSource cvs = (CollectionViewSource)this.FindResource("buddiesCollection");
+            cvs.View.Refresh();
+        }
+
     }
 
     public class ChatStartEventArgs : EventArgs

@@ -8,6 +8,7 @@
     xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat"
     Width="200" Height="400">
     <UserControl.Resources>
+        <CollectionViewSource Source="{Binding Buddies}" x:Key="buddiesCollection" Filter="CollectionViewSource_Filter"/>
         <local:StatusIconConverter x:Key="statusIconConverter" />
         <local:StatusConverter x:Key="statusConverter" />
         <Style x:Key="ContactInfoToolTipStyle" TargetType="{x:Type ToolTip}">
@@ -253,8 +254,9 @@
                         </LinearGradientBrush>
                     </StackPanel.Background>
                     <Image Source="/Images/info.png" Cursor="Hand" Width="15" Height="15" Margin="5,0,0,0" MouseLeftButtonDown="About_MouseLeftButtonDown" />
+                    <controls:FilterTextBox FilterChanged="FilterTextBox_FilterChanged" VerticalAlignment="Top" Width="200" Height="22" Margin="5,2,5,2"  />
                 </StackPanel>
-                <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}" ItemsSource="{Binding Path=Buddies}" AlternationCount="2" />
+                <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}" ItemsSource="{Binding Source={StaticResource buddiesCollection}}" AlternationCount="2" />
             </StackPanel>
         </ScrollViewer>
        
