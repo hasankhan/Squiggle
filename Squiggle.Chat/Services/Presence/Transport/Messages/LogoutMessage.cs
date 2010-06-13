@@ -9,6 +9,5 @@ namespace Squiggle.Chat.Services.Presence.Transport.Messages
     [Serializable]
     public class LogoutMessage : Message
     {
-        public IPEndPoint ChatEndPoint { get; set; }
     }
 }

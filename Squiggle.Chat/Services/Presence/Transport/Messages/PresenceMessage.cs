@@ -12,7 +12,6 @@ namespace Squiggle.Chat.Services.Presence.Transport.Messages
         public string UserFriendlyName { get; set; }
         public string DisplayMessage { get; set; }
         public UserStatus Status { get; set; }
-        public IPEndPoint ChatEndPoint { get; set; }
         public TimeSpan KeepAliveSyncTime { get; set; }
 
         public static TMessage FromUserInfo(UserInfo user) 

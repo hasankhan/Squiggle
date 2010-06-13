@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System.Net;
 
 namespace Squiggle.Chat.Services.Presence.Transport
 {
@@ -8,6 +9,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
     public class Message
     {
         public Guid ChannelID { get; set; }
+        public IPEndPoint ChatEndPoint { get; set; }
 
         public byte[] Serialize()
         {
@@ -26,6 +28,12 @@ namespace Squiggle.Chat.Services.Presence.Transport
             var formatter = new BinaryFormatter();
             var message = (Message)formatter.Deserialize(stream);
             return message;
+        }
+
+        public override string ToString()
+        {
+            string output = String.Format("Sender: {0}, Message: {1}", ChatEndPoint, base.ToString());
+            return output;
         }
     }
 }

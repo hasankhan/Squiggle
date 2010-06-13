@@ -21,6 +21,8 @@ namespace Squiggle.Chat.Services.Presence.Transport
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
 
+        public Guid ChannelID { get { return channelID; } }
+
         public PresenceChannel(IPEndPoint multicastEndPoint)
         {
             receiveEndPoint = new IPEndPoint(IPAddress.Any, multicastEndPoint.Port);

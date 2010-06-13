@@ -11,14 +11,19 @@ namespace Squiggle.Bridge
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        static void Main()
+        static void Main(string[] args)
         {
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[] 
-			{ 
-				new SquiggleBridge() 
-			};
-            ServiceBase.Run(ServicesToRun);
+            if (args.Length > 0 && args[0] == "/console")
+                new SquiggleBridge().RunConsole(args);
+            else
+            {
+                ServiceBase[] ServicesToRun;
+                ServicesToRun = new ServiceBase[] 
+			    { 
+				    new SquiggleBridge() 
+			    };
+                ServiceBase.Run(ServicesToRun);
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Net;
 
 namespace Squiggle.Bridge.Configuration
 {
@@ -15,6 +16,15 @@ namespace Squiggle.Bridge.Configuration
         public int Port
         {
             get { return Convert.ToInt32(this["port"]); }
+        }
+
+        public IPEndPoint EndPoint
+        {
+            get 
+            {
+                var ip = IPAddress.Parse(IP);
+                return new IPEndPoint(ip, Port); 
+            }
         }
     }
 }

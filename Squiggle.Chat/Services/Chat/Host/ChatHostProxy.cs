@@ -11,7 +11,6 @@ using System.IO;
 
 namespace Squiggle.Chat.Services.Chat.Host
 {
-    [GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     public class ChatHostProxy: IChatHost
     {
         InnerProxy proxy;

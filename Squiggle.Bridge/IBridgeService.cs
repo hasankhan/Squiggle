@@ -11,6 +11,6 @@ namespace Squiggle.Bridge
     public interface IBridgeService
     {
         [OperationContract]
-        void ReceiveMessage(Message message);
+        void ReceiveMessage(byte[] message);
     }
 }
