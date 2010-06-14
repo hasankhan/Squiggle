@@ -304,7 +304,7 @@ namespace Squiggle.UI
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (!exiting)
+            if (!exiting && SettingsProvider.Current.Settings.GeneralSettings.HideToSystemTray)
             {
                 e.Cancel = true;
                 Hide();
