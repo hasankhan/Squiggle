@@ -32,7 +32,6 @@ namespace Squiggle.Chat.Services.Presence
             this.User = user;
             aliveUsers = new Dictionary<UserInfo, DateTime>();
             lostUsers = new HashSet<UserInfo>();
-            keepAliveMessage = new KeepAliveMessage() { ChatEndPoint = user.ChatEndPoint };
         }
 
         public void Start()
@@ -42,6 +41,7 @@ namespace Squiggle.Chat.Services.Presence
             this.timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
             this.timer.Start();
             channel.MessageReceived += new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
+            keepAliveMessage = new KeepAliveMessage() { ChatEndPoint = User.ChatEndPoint };
         }
 
         void channel_MessageReceived(object sender, MessageReceivedEventArgs e)

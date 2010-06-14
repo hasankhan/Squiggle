@@ -72,7 +72,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
                 return;
 
             var message = Message.Deserialize(data);                
-            if (!message.ChannelID.Equals(channelID))
+            if (!message.ChannelID.Equals(channelID) && message.ChatEndPoint != null)
             {
                 var args = new MessageReceivedEventArgs()
                 {
