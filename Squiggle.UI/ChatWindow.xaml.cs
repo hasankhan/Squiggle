@@ -20,8 +20,10 @@ namespace Squiggle.UI
         DateTime? lastMessageReceived;
         DispatcherTimer statusResetTimer;
         EventQueue eventQueue = new EventQueue();
-        bool loaded;        
-        
+        bool loaded;
+        string lastSavedFile;
+        string lastSavedFormat;
+
         public ChatWindow()
         {
             InitializeComponent();
@@ -295,6 +297,70 @@ namespace Squiggle.UI
         private void CloseMenu_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void SaveMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Save();
+        }
+
+        private void SaveAsMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SaveAs();
+        }
+
+        public void SaveAs()
+        {
+            string file, format;
+            if (ShowSaveDialog(out file, out format))
+                SaveTo(file, format);
+        }
+
+        public void Save()
+        {
+            if (String.IsNullOrEmpty(lastSavedFile))
+            {
+                if (ShowSaveDialog(out lastSavedFile, out lastSavedFormat))
+                    Save();
+            }
+            else
+                SaveTo(lastSavedFile, lastSavedFormat);
+        }        
+
+        public void SaveTo(string fileName, string format)
+        {
+            chatTextBox.SaveTo(fileName);
+
+            if (format != DataFormats.Rtf)
+            {
+                var richTextBox = new System.Windows.Forms.RichTextBox();
+                richTextBox.LoadFile(fileName);
+                if (format == DataFormats.UnicodeText)
+                    richTextBox.SaveFile(fileName, System.Windows.Forms.RichTextBoxStreamType.UnicodePlainText);
+                else
+                    richTextBox.SaveFile(fileName, System.Windows.Forms.RichTextBoxStreamType.PlainText);
+            }
+        }        
+
+        static bool ShowSaveDialog(out string fileName, out string format)
+        {
+            var dialog = new System.Windows.Forms.SaveFileDialog();
+            dialog.Filter = "RTF Document|*.rtf|Unicode Text Document|*.txt|Text Document|*.txt";
+            dialog.CheckPathExists = true;
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                fileName = dialog.FileName;
+                if (dialog.FilterIndex == 1)
+                    format = DataFormats.Rtf;
+                else if (dialog.FilterIndex == 2)
+                    format = DataFormats.UnicodeText;
+                else
+                    format = DataFormats.Text;
+                return true;
+            }
+            fileName = null;
+            format = null;
+            return false;
         }
     }
 }

@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Diagnostics;
 using Squiggle.Chat;
+using System.Windows.Markup;
 
 namespace Squiggle.UI.Controls
 {
@@ -79,6 +80,13 @@ namespace Squiggle.UI.Controls
             var transferUI = new FileTarnsferControl(fileTransfer, true);
             para.Inlines.Add(new InlineUIContainer(transferUI));
             para.Inlines.Add(new LineBreak());
+        }
+
+        public void SaveTo(string fileName)
+        {
+            var range = new TextRange(sentMessages.Document.ContentStart, sentMessages.Document.ContentEnd);
+            using (var stream = new FileStream(fileName, FileMode.OpenOrCreate))
+                    range.Save(stream, DataFormats.Rtf);
         }
 
         static List<Inline> ParseText(string message)

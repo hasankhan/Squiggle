@@ -17,8 +17,8 @@
         </Grid.RowDefinitions>
         <Menu>
             <MenuItem Header="_File">
-                <MenuItem Header="_Save" />
-                <MenuItem Header="Save _as..." />
+                <MenuItem Header="_Save" MenuItem.Click="SaveMenu_Click" />
+                <MenuItem Header="Save _as..." MenuItem.Click="SaveAsMenu_Click" />
                 <Separator />
                 <MenuItem Header="Send a single _file..." />
                 <MenuItem Header="_Open received files" MenuItem.Click="OpenReceivedFilesMenu_Click" />
