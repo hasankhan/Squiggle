@@ -51,23 +51,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BridgeService.cs" />
-    <Compile Include="BridgeServiceProxy.cs" />
+    <Compile Include="BridgeHost.cs" />
+    <Compile Include="BridgeHostProxy.cs" />
     <Compile Include="Configuration\BridgeConfiguration.cs" />
     <Compile Include="Configuration\Target.cs" />
     <Compile Include="Configuration\TargetCollection.cs" />
-    <Compile Include="IBridgeService.cs" />
+    <Compile Include="IBridgeHost.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ProjectInstaller.Designer.cs">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </Compile>
-    <Compile Include="SquiggleBridge.cs">
+    <Compile Include="SquiggleBridge.cs" />
+    <Compile Include="SquiggleBridgeService.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SquiggleBridge.Designer.cs">
-      <DependentUpon>SquiggleBridge.cs</DependentUpon>
+    <Compile Include="SquiggleBridgeService.Designer.cs">
+      <DependentUpon>SquiggleBridgeService.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -79,8 +80,8 @@
     <EmbeddedResource Include="ProjectInstaller.resx">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SquiggleBridge.resx">
-      <DependentUpon>SquiggleBridge.cs</DependentUpon>
+    <EmbeddedResource Include="SquiggleBridgeService.resx">
+      <DependentUpon>SquiggleBridgeService.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

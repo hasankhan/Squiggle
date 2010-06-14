@@ -1,6 +1,6 @@
 ﻿namespace Squiggle.Bridge
 {
-    partial class SquiggleBridge
+    partial class SquiggleBridgeService
     {
         /// <summary> 
         /// Required designer variable.

@@ -16,13 +16,13 @@ namespace Squiggle.Bridge
         {
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             if (args.Length > 0 && args[0] == "/console")
-                new SquiggleBridge().RunConsole(args);
+                new SquiggleBridgeService().RunConsole(args);
             else
             {
                 ServiceBase[] ServicesToRun;
                 ServicesToRun = new ServiceBase[] 
 			    { 
-				    new SquiggleBridge() 
+				    new SquiggleBridgeService() 
 			    };
                 ServiceBase.Run(ServicesToRun);
             }

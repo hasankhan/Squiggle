@@ -13,7 +13,7 @@ namespace Squiggle.Bridge
     }
 
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)] 
-    public class BridgeService: IBridgeService
+    public class BridgeHost: IBridgeHost
     {
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
 

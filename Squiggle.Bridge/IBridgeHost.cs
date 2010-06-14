@@ -8,7 +8,7 @@ using Squiggle.Chat.Services.Presence.Transport;
 namespace Squiggle.Bridge
 {
     [ServiceContract]
-    public interface IBridgeService
+    public interface IBridgeHost
     {
         [OperationContract]
         void ReceiveMessage(byte[] message);

@@ -5,16 +5,17 @@ using System.Text;
 using System.ServiceModel;
 using System.Diagnostics;
 using System.ServiceModel.Channels;
+using System.Net;
 
 namespace Squiggle.Bridge
 {
-    class BridgeServiceProxy: IBridgeService, IDisposable
+    class BridgeHostProxy: IBridgeHost, IDisposable
     {
         InnerProxy proxy;
         Binding binding;
         EndpointAddress address;
 
-        public BridgeServiceProxy(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress)
+        public BridgeHostProxy(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress)
         {
             this.binding = binding;
             this.address = remoteAddress;
@@ -54,7 +55,7 @@ namespace Squiggle.Bridge
             proxy.ReceiveMessage(message);
         }
 
-        class InnerProxy : ClientBase<IBridgeService>, IBridgeService
+        class InnerProxy : ClientBase<IBridgeHost>, IBridgeHost
         {
             public InnerProxy()
             {
