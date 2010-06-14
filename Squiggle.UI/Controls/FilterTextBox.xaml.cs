@@ -29,6 +29,15 @@ namespace Squiggle.UI.Controls
             ShowWaterMarked();
         }
 
+        public bool IsFocusedOrNotEmpty
+        {
+            get { return (bool)GetValue(IsFocusedOrNotEmptyProperty); }
+            set { SetValue(IsFocusedOrNotEmptyProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsFocusedOrNotEmptyProperty =
+            DependencyProperty.Register("IsFocusedOrNotEmpty", typeof(bool), typeof(FilterTextBox), new UIPropertyMetadata(false));
+
         private void btnFilter_Click(object sender, RoutedEventArgs e)
         {
             txtFilter.Text = String.Empty;
@@ -37,12 +46,20 @@ namespace Squiggle.UI.Controls
 
         private void txtFilter_TextChanged(object sender, TextChangedEventArgs e)
         {
+            UpdateIsFocusedOrNotEmpty();
             if (!waterMarked)
                 FilterChanged(this, new BuddyFilterEventArs() { FilterBy = txtFilter.Text });
         }
 
+        void UpdateIsFocusedOrNotEmpty()
+        {
+            IsFocusedOrNotEmpty = txtFilter.IsFocused || !waterMarked;
+        }
+
         private void txtFilter_GotFocus(object sender, RoutedEventArgs e)
         {
+            UpdateIsFocusedOrNotEmpty();
+
             if (waterMarked)
             {
                 txtFilter.Text = String.Empty;
@@ -53,6 +70,8 @@ namespace Squiggle.UI.Controls
 
         private void txtFilter_LostFocus(object sender, RoutedEventArgs e)
         {
+            UpdateIsFocusedOrNotEmpty();
+
             if (txtFilter.Text == String.Empty)
                 ShowWaterMarked();
         }
@@ -68,7 +87,7 @@ namespace Squiggle.UI.Controls
         {
             txtFilter.Clear();
             ShowWaterMarked();
-        }
+        }        
     }
 
     public class BuddyFilterEventArs : EventArgs
