@@ -79,6 +79,9 @@
     <EmbeddedResource Include="ProjectInstaller.resx">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SquiggleBridge.resx">
+      <DependentUpon>SquiggleBridge.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Squiggle.Chat\Squiggle.Chat.csproj">
