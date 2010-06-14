@@ -29,6 +29,7 @@ namespace Squiggle.UI
             GeneralSettings.HideToSystemTray = settings.GeneralSettings.HideToSystemTray;
             GeneralSettings.ShowPopups = settings.GeneralSettings.ShowPopups;
             GeneralSettings.SpellCheck = settings.GeneralSettings.SpellCheck;
+            GeneralSettings.ContactListSortField = settings.GeneralSettings.ContactListSortField;
 
             ConnectionSettings.BindToIP = settings.ConnectionSettings.BindToIP;
             ConnectionSettings.ChatPort = settings.ConnectionSettings.ChatPort;
@@ -50,6 +51,7 @@ namespace Squiggle.UI
             settings.GeneralSettings.HideToSystemTray = GeneralSettings.HideToSystemTray;
             settings.GeneralSettings.ShowPopups = GeneralSettings.ShowPopups;
             settings.GeneralSettings.SpellCheck = GeneralSettings.SpellCheck;
+            settings.GeneralSettings.ContactListSortField = GeneralSettings.ContactListSortField;
 
             settings.ConnectionSettings.BindToIP = ConnectionSettings.BindToIP;
             settings.ConnectionSettings.ChatPort = ConnectionSettings.ChatPort;
@@ -78,6 +80,7 @@ namespace Squiggle.UI
         public bool RunAtStartup { get; set; }
         public bool HideToSystemTray { get; set; }
         public bool ShowPopups { get; set; }
+        public string ContactListSortField { get; set; }
         public bool SpellCheck { get; set; }
     }
 

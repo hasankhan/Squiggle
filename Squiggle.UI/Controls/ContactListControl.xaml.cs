@@ -13,6 +13,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Squiggle.Chat;
 using System.Reflection;
+using Squiggle.UI.Settings;
+using System.ComponentModel;
 
 namespace Squiggle.UI.Controls
 {
@@ -39,7 +41,16 @@ namespace Squiggle.UI.Controls
 
         public ContactListControl()
         {
-            InitializeComponent();            
+            InitializeComponent();
+
+            SettingsProvider.Current.SettingsUpdated += new EventHandler(Current_SettingsUpdated);
+        }
+
+        public void Refresh()
+        {
+            CollectionViewSource cvs = (CollectionViewSource)this.FindResource("buddiesCollection");
+            if (cvs.View != null)
+                cvs.View.Refresh();
         }
 
         private void ComboBoxItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -139,10 +150,33 @@ Website:       www.overroot.com";
         {
             filter = e.FilterBy;
 
-            CollectionViewSource cvs = (CollectionViewSource)this.FindResource("buddiesCollection");
-            cvs.View.Refresh();
+            Refresh();
         }
 
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            CollectionViewSource cvs = (CollectionViewSource)this.FindResource("buddiesCollection");
+            AddSortDescription(cvs);
+        }
+
+        private static void AddSortDescription(CollectionViewSource cvs)
+        {
+            var sd = new SortDescription();
+            sd.PropertyName = SettingsProvider.Current.Settings.GeneralSettings.ContactListSortField;
+            cvs.SortDescriptions.Add(sd);
+        }
+
+        void Current_SettingsUpdated(object sender, EventArgs e)
+        {
+            CollectionViewSource cvs = (CollectionViewSource)this.FindResource("buddiesCollection");
+            if (cvs.SortDescriptions[0].PropertyName != SettingsProvider.Current.Settings.GeneralSettings.ContactListSortField)
+            {
+                cvs.SortDescriptions.Clear();
+                AddSortDescription(cvs);
+
+                Refresh();
+            }
+        }
     }
 
     public class ChatStartEventArgs : EventArgs

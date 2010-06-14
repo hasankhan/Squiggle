@@ -77,6 +77,7 @@ namespace Squiggle.UI.Settings
             Settings.GeneralSettings.HideToSystemTray = Properties.Settings.Default.HideToTray;
             Settings.GeneralSettings.ShowPopups = Properties.Settings.Default.ShowPopups;
             Settings.GeneralSettings.SpellCheck = Properties.Settings.Default.SpellCheck;
+            Settings.GeneralSettings.ContactListSortField = Properties.Settings.Default.ContactListSortField;
         }
 
         private void LoadPersonalSettings()
@@ -112,6 +113,7 @@ namespace Squiggle.UI.Settings
         {
             Properties.Settings.Default.HideToTray = Settings.GeneralSettings.HideToSystemTray;
             Properties.Settings.Default.ShowPopups = Settings.GeneralSettings.ShowPopups;
+            Properties.Settings.Default.ContactListSortField = Settings.GeneralSettings.ContactListSortField;
             Properties.Settings.Default.SpellCheck = Settings.GeneralSettings.SpellCheck;
         }
     }

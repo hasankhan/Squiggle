@@ -262,5 +262,17 @@ namespace Squiggle.UI.Properties {
                 this["SpellCheck"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DisplayName")]
+        public string ContactListSortField {
+            get {
+                return ((string)(this["ContactListSortField"]));
+            }
+            set {
+                this["ContactListSortField"] = value;
+            }
+        }
     }
 }

@@ -160,6 +160,7 @@ namespace Squiggle.UI
             VisualStateManager.GoToState(chatControl, "OnlineState", true);
         }
 
+        
         void SignOut()
         {
             DestroyMonitor();
@@ -236,8 +237,26 @@ namespace Squiggle.UI
             
             client.Login(displayName);
             client.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
+            client.BuddyUpdated += new EventHandler<BuddyEventArgs>(client_BuddyUpdated);
             client.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);
+            client.BuddyOffline += new EventHandler<BuddyEventArgs>(client_BuddyOffline);
             return client;
+        }
+
+        void client_BuddyOffline(object sender, BuddyEventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                chatControl.ContactList.Refresh();
+            });
+        }
+
+        void client_BuddyUpdated(object sender, BuddyEventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                chatControl.ContactList.Refresh();
+            });
         }
 
         public void RestoreWindow()

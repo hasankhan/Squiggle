@@ -24,21 +24,31 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <Grid Grid.Row="1" Margin="5,50,0,0">
+                            <Grid Grid.Row="1" Margin="5,30,0,0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="35*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="0.1*" />
-                                    <ColumnDefinition Width="0.9*" />
+                                    <ColumnDefinition Width="40*" />
+                                    <ColumnDefinition Width="138" />
+                                    <ColumnDefinition Width="223" />
                                 </Grid.ColumnDefinitions>
-                                <CheckBox  Content="Run on Windows startup" IsChecked="{Binding Path=GeneralSettings.RunAtStartup}" Margin="0,0,0,5" Grid.Column="1"/>
-                                <CheckBox Grid.Row="1" Grid.Column="1" Content="Close to tray" IsChecked="{Binding Path=GeneralSettings.HideToSystemTray}" Margin="0,0,0,5"/>
-                                <CheckBox Grid.Row="2" Content="Show popups" IsChecked="{Binding Path=GeneralSettings.ShowPopups}" Margin="0,0,0,5" Grid.Column="1"/>
-                                <CheckBox Grid.Row="3" Content="Enable spell-check in chat window." IsChecked="{Binding Path=GeneralSettings.SpellCheck}" Margin="0,0,0,5" Grid.Column="1"/>
+                                <CheckBox  Content="Run on Windows startup" IsChecked="{Binding Path=GeneralSettings.RunAtStartup}" Margin="0,0,0,5" Grid.Column="1" Grid.ColumnSpan="2" />
+                                <CheckBox Grid.Row="1" Grid.Column="1" Content="Close to tray" IsChecked="{Binding Path=GeneralSettings.HideToSystemTray}" Margin="0,0,0,5" Grid.ColumnSpan="2" />
+                                <CheckBox Grid.Row="2" Content="Show popups" IsChecked="{Binding Path=GeneralSettings.ShowPopups}" Margin="0,0,0,5" Grid.Column="1" Grid.ColumnSpan="2" />
+                                <CheckBox Grid.Row="3" Content="Enable spell-check in chat window." IsChecked="{Binding Path=GeneralSettings.SpellCheck}" Margin="0,0,0,5" Grid.Column="1" Grid.ColumnSpan="2" />
+                                <StackPanel Grid.Row="4"  Grid.Column="1" Grid.ColumnSpan="2"  Orientation="Horizontal">
+                                    <TextBlock Text="Sort contacts by "></TextBlock>
+                                    <ComboBox Width="100" Margin="5,0,0,0" x:Name="cmbSortField">
+                                        <ComboBoxItem IsSelected="True">DisplayName</ComboBoxItem>
+                                        <ComboBoxItem >Status</ComboBoxItem>
+                                    </ComboBox>
+                                </StackPanel>
                             </Grid>
                         </Grid>
                     </Border>
