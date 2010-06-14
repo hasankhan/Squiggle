@@ -21,9 +21,9 @@
                 <MenuItem Header="Save _as..." />
                 <Separator />
                 <MenuItem Header="Send a single _file..." />
-                <MenuItem Header="_Open received files" />
+                <MenuItem Header="_Open received files" MenuItem.Click="OpenReceivedFilesMenu_Click" />
                 <Separator />
-                <MenuItem Header="_Close" />
+                <MenuItem Header="_Close" MenuItem.Click="CloseMenu_Click" />
             </MenuItem>
             <MenuItem Header="_Edit">
                 <MenuItem Header="_Undo" InputGestureText="Ctrl+Z" />

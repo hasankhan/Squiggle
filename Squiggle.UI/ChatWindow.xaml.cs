@@ -286,5 +286,15 @@ namespace Squiggle.UI
             foreach (string file in e.Files)
                 SendFile(file);
         }
+
+        private void OpenReceivedFilesMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SquiggleUtility.OpenDownloadsFolder();
+        }
+
+        private void CloseMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

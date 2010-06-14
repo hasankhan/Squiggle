@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Threading;
 using Squiggle.UI.Settings;
 using Messenger;
+using System.Diagnostics;
 
 namespace Squiggle.UI
 {
@@ -309,6 +310,16 @@ namespace Squiggle.UI
                 e.Cancel = true;
                 Hide();
             }
+        }
+
+        private void CloseMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void OpenReceivedFilesMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SquiggleUtility.OpenDownloadsFolder();
         }   
     }
 }

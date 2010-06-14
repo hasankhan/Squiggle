@@ -109,7 +109,7 @@
             </Style.Triggers>
         </Style>
         <ObjectDataProvider MethodName="GetChangableStatuses" 
-            ObjectType="{x:Type local:ChatUtil}" 
+            ObjectType="{x:Type local:SquiggleUtility}" 
             x:Key="AvailableUserStatus">
         </ObjectDataProvider>
         <DataTemplate DataType="{x:Type chat:Buddy}">

@@ -117,11 +117,7 @@ namespace Squiggle.UI.Controls
 
         static void OpenLink(Hyperlink link)
         {
-            try
-            {
-                Process.Start(link.NavigateUri.AbsoluteUri);
-            }
-            catch { }
+            Shell.OpenUrl(link.NavigateUri.AbsoluteUri);
         }        
     }
 }

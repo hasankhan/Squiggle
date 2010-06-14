@@ -85,7 +85,7 @@ namespace Squiggle.UI.Controls
             if (!Directory.Exists(DownloadFolder))
                 Directory.CreateDirectory(DownloadFolder);
 
-            string filePath = GetUniqueFilePath(DownloadFolder, fileTransfer.Name);         
+            string filePath = Shell.GetUniqueFilePath(DownloadFolder, fileTransfer.Name);         
 
             AcceptDownload(filePath);
         }        
@@ -201,32 +201,13 @@ namespace Squiggle.UI.Controls
 
         private void Open_Click(object sender, RoutedEventArgs e)
         {
-            if (File.Exists(FilePath))
-                Process.Start(new ProcessStartInfo(FilePath));
+            Shell.OpenFile(FilePath);
         }
 
         private void ShowInFolder_Click(object sender, RoutedEventArgs e)
         {
             string file = DataContext as string;
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = "explorer.exe";
-            startInfo.Arguments = "/select,\"" + FilePath + "\"";
-
-            Process.Start(startInfo);
-        }
-
-        static string GetUniqueFilePath(string downloadFolder, string originalFileName)
-        {
-            string extension = System.IO.Path.GetExtension(originalFileName);
-            string fileName = System.IO.Path.GetFileNameWithoutExtension(originalFileName);
-
-            string filePath = System.IO.Path.Combine(downloadFolder, originalFileName);
-            for (int i = 1; File.Exists(filePath); i++)
-            {
-                string temp = String.Format("{0}({1}){2}", fileName, i, extension);
-                filePath = System.IO.Path.Combine(downloadFolder, temp);
-            }
-            return filePath;
-        }
+            Shell.ShowInFolder(FilePath);
+        }      
     }
 }

@@ -15,7 +15,7 @@
         <local:StatusConverter x:Key="statusConverter" />
         <local:TrayIconConverter x:Key="trayIconConverter" />
         <ObjectDataProvider MethodName="GetChangableStatuses" 
-            ObjectType="{x:Type local:ChatUtil}" 
+            ObjectType="{x:Type local:SquiggleUtility}" 
             x:Key="AvailableUserStatus">
         </ObjectDataProvider>
         <Style x:Key="signedInMenu" TargetType="{x:Type MenuItem}">
@@ -66,9 +66,9 @@
                           Style="{StaticResource statusMenu}"
                           MenuItem.Click="StatusMenu_Click" />
                 <Separator />
-                <MenuItem Header="_Open received files folder" />
+                <MenuItem Header="_Open received files folder" MenuItem.Click="OpenReceivedFilesMenu_Click" />
                 <Separator />
-                <MenuItem Header="_Close" />
+                <MenuItem Header="_Close" MenuItem.Click="CloseMenu_Click" />
             </MenuItem>
             <MenuItem Header="_Actions">
                 <MenuItem Header="_Send an instant message" />

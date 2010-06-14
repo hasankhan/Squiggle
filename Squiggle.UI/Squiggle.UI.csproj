@@ -184,7 +184,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChatUtil.cs" />
     <Compile Include="ClientViewModel.cs" />
     <Compile Include="ChatWindow.xaml.cs">
       <DependentUpon>ChatWindow.xaml</DependentUpon>
@@ -217,6 +216,8 @@
     <Compile Include="IntExtensions.cs" />
     <Compile Include="PathToNameConverter.cs" />
     <Compile Include="SettingBinding.cs" />
+    <Compile Include="Shell.cs" />
+    <Compile Include="SquiggleUtility.cs" />
     <Compile Include="SysImageList.cs" />
     <Compile Include="WPFExtensions.cs" />
     <Compile Include="FancyBalloon.xaml.cs">
