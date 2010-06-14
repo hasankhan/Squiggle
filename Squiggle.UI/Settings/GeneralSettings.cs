@@ -11,6 +11,7 @@ namespace Squiggle.UI.Settings
         public bool ShowPopups { get; set; }
         public string ContactListSortField { get; set; }
         public bool SpellCheck { get; set; }
+        public string DownloadsFolder { get; set; }
 
         public GeneralSettings()
         {
@@ -18,6 +19,7 @@ namespace Squiggle.UI.Settings
             ShowPopups = true;
             ContactListSortField = "DisplayName";
             SpellCheck = true;
+            DownloadsFolder = "Downloads";
         }
     }
 }

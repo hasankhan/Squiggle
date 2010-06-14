@@ -102,7 +102,8 @@ namespace Squiggle.UI
         {
             Dispatcher.Invoke(() =>
             {
-                chatTextBox.AddFileReceiveRequest(e.Sender.DisplayName, e.Invitation);
+                string downloadsFolder = SettingsProvider.Current.Settings.GeneralSettings.DownloadsFolder;
+                chatTextBox.AddFileReceiveRequest(e.Sender.DisplayName, e.Invitation, downloadsFolder);
                 FlashWindow();
             });
         }

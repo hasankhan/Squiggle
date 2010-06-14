@@ -64,10 +64,11 @@ namespace Squiggle.UI.Controls
             sentMessages.FindScrollViewer().ScrollToBottom();
         }
 
-        public void AddFileReceiveRequest(string user, IFileTransfer fileTransfer)
+        public void AddFileReceiveRequest(string user, IFileTransfer fileTransfer, string downloadsFolder)
         {
             var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
             var transferUI = new FileTarnsferControl(fileTransfer, false);
+            transferUI.DownloadFolder = downloadsFolder;
             para.Inlines.Add(new InlineUIContainer(transferUI));
             para.Inlines.Add(new LineBreak());
         }

@@ -78,6 +78,7 @@ namespace Squiggle.UI.Settings
             Settings.GeneralSettings.ShowPopups = Properties.Settings.Default.ShowPopups;
             Settings.GeneralSettings.SpellCheck = Properties.Settings.Default.SpellCheck;
             Settings.GeneralSettings.ContactListSortField = Properties.Settings.Default.ContactListSortField;
+            Settings.GeneralSettings.DownloadsFolder = Properties.Settings.Default.DownloadsFolder;
         }
 
         private void LoadPersonalSettings()
@@ -87,18 +88,21 @@ namespace Squiggle.UI.Settings
             Settings.PersonalSettings.DisplayMessage = Properties.Settings.Default.DisplayMessage;
             Settings.PersonalSettings.AutoSignMeIn = Properties.Settings.Default.AutoSignIn;
             Settings.PersonalSettings.IdleTimeout = Properties.Settings.Default.IdleTimeout;
+            Settings.PersonalSettings.FontColor = Properties.Settings.Default.FontColor;
+            Settings.PersonalSettings.FontSize = Properties.Settings.Default.FontSize;
+            Settings.PersonalSettings.FontName = Properties.Settings.Default.FontName;
         }
 
         private void SavePersonalSettings()
         {
-            Properties.Settings.Default.DisplayName = Settings.PersonalSettings.RememberMe ?
-                                                                    Settings.PersonalSettings.DisplayName : String.Empty;
-
-            Properties.Settings.Default.DisplayMessage = Settings.PersonalSettings.RememberMe ?
-                                                                    Settings.PersonalSettings.DisplayMessage : String.Empty;
+            Properties.Settings.Default.DisplayName = Settings.PersonalSettings.RememberMe ? Settings.PersonalSettings.DisplayName : String.Empty;
+            Properties.Settings.Default.DisplayMessage = Settings.PersonalSettings.RememberMe ? Settings.PersonalSettings.DisplayMessage : String.Empty;
 
             Properties.Settings.Default.AutoSignIn = Settings.PersonalSettings.AutoSignMeIn;
             Properties.Settings.Default.IdleTimeout = Settings.PersonalSettings.IdleTimeout;
+            Properties.Settings.Default.FontColor = Settings.PersonalSettings.FontColor;
+            Properties.Settings.Default.FontSize = Settings.PersonalSettings.FontSize;
+            Properties.Settings.Default.FontName = Settings.PersonalSettings.FontName;
         }
 
         private void SaveConnectionSettings()
@@ -115,6 +119,7 @@ namespace Squiggle.UI.Settings
             Properties.Settings.Default.ShowPopups = Settings.GeneralSettings.ShowPopups;
             Properties.Settings.Default.ContactListSortField = Settings.GeneralSettings.ContactListSortField;
             Properties.Settings.Default.SpellCheck = Settings.GeneralSettings.SpellCheck;
+            Properties.Settings.Default.DownloadsFolder = Settings.GeneralSettings.DownloadsFolder;
         }
     }
 }

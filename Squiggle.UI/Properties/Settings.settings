@@ -65,5 +65,17 @@
     <Setting Name="ContactListSortField" Type="System.String" Scope="User">
       <Value Profile="(Default)">DisplayName</Value>
     </Setting>
+    <Setting Name="DownloadsFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Downloads</Value>
+    </Setting>
+    <Setting Name="FontName" Type="System.Windows.Media.FontFamily" Scope="User">
+      <Value Profile="(Default)">Georgia</Value>
+    </Setting>
+    <Setting Name="FontSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">12</Value>
+    </Setting>
+    <Setting Name="FontColor" Type="System.Windows.Media.Color" Scope="User">
+      <Value Profile="(Default)">#FF000000</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
