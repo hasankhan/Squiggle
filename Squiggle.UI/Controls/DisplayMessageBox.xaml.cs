@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Squiggle.Chat;
+using Squiggle.UI.Settings;
 
 namespace Squiggle.UI.Controls
 {
@@ -58,6 +59,7 @@ namespace Squiggle.UI.Controls
         {
             if (e.Key == Key.Enter)
             {
+                ForceUpdate();
                 ShowReadOnlyMessage();
                 e.Handled = true;
             }
@@ -73,6 +75,12 @@ namespace Squiggle.UI.Controls
             BindingExpression expression = txtMessage.GetBindingExpression(TextBox.TextProperty);
             if (expression != null)
                 expression.UpdateSource();
+
+            if (SettingsProvider.Current.Settings.PersonalSettings.RememberMe)
+            {
+                SettingsProvider.Current.Settings.PersonalSettings.DisplayMessage = txtMessage.Text;
+                SettingsProvider.Current.Save();
+            }
         }
 
         private void ShowReadOnlyMessage()

@@ -9,7 +9,7 @@
         <Border Opacity="9" Margin="5" Padding="5,0,2,0" CornerRadius="3" Height="22">
             <Grid>
                 <TextBlock Cursor="Hand" Background="Transparent" x:Name="txbMessage" Foreground="Gray" Text="{Binding ElementName=UserControl1, Path=SelfUser.DisplayMessage, Converter={StaticResource displayMessageConverter}}" MouseDown="txbMessage_MouseDown" ><TextBlock.TextDecorations><TextDecoration /></TextBlock.TextDecorations></TextBlock>
-                <TextBox BorderBrush="Transparent" BorderThickness="0" x:Name="txtMessage" Text="{Binding ElementName=UserControl1, Path=SelfUser.DisplayMessage, UpdateSourceTrigger=PropertyChanged}" Visibility="Hidden"  KeyUp="txtMessage_KeyUp" LostFocus="txtMessage_LostFocus"/>
+                <TextBox BorderBrush="Transparent" BorderThickness="0" x:Name="txtMessage" Text="{Binding ElementName=UserControl1, Path=SelfUser.DisplayMessage}" Visibility="Hidden"  KeyUp="txtMessage_KeyUp" LostFocus="txtMessage_LostFocus"/>
             </Grid>
         </Border>
     </Grid>
