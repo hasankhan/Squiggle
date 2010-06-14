@@ -63,6 +63,12 @@ namespace Squiggle.UI.Controls
             txtFilter.Text = "Search...";
             txtFilter.Foreground = new SolidColorBrush(Colors.LightGray);
         }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            txtFilter.Clear();
+            ShowWaterMarked();
+        }
     }
 
     public class BuddyFilterEventArs : EventArgs

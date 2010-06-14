@@ -244,7 +244,7 @@
         </Border>
         <ScrollViewer Focusable="False" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
             <StackPanel Focusable="False" Orientation="Vertical" >
-                <StackPanel Height="25" Orientation="Horizontal">
+                <StackPanel Height="30" Orientation="Horizontal">
                     <StackPanel.ContextMenu>
                         <ContextMenu />
                     </StackPanel.ContextMenu>
@@ -254,8 +254,8 @@
                             <GradientStop Color="#FFE4E4E4" Offset="0.593"/>
                         </LinearGradientBrush>
                     </StackPanel.Background>
-                    <Image Source="/Images/info.png" Cursor="Hand" Width="15" Height="15" Margin="5,0,0,0" MouseLeftButtonDown="About_MouseLeftButtonDown" />
-                    <controls:FilterTextBox FilterChanged="FilterTextBox_FilterChanged" VerticalAlignment="Top" Width="200" Height="22" Margin="5,2,5,2"  />
+                    <Image Source="/Images/info.png" Cursor="Hand" Width="18" Height="18" Margin="5,0,0,0" MouseLeftButtonDown="About_MouseLeftButtonDown" />
+                    <controls:FilterTextBox FilterChanged="FilterTextBox_FilterChanged" VerticalAlignment="Top" Width="200" Height="25" Margin="5,2,5,2"  />
                 </StackPanel>
                 <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}" ItemsSource="{Binding Source={StaticResource buddiesCollection}}" AlternationCount="2" />
             </StackPanel>

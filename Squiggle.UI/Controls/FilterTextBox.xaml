@@ -23,14 +23,16 @@
 
         <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Margin" Value="2"/>
             <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="BorderBrush" Value="Orange" />
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="BorderBrush" Value="White" />
             <Setter Property="BorderThickness" Value="0" />
         </Style>
     </UserControl.Resources>
     <Border Style="{StaticResource BorderStyle}">
         <DockPanel >
+            <Button TabIndex="1" x:Name="btnCancel" IsEnabled="{Binding ElementName=txtFilter, Path=IsFoucsed}" DockPanel.Dock="Right" Content="X" VerticalContentAlignment="Top" ToolTip="Send Message" 
+                Style="{StaticResource ButtonStyle}" Click="btnCancel_Click" />
             <TextBox x:Name="txtFilter"
                          DockPanel.Dock="Left" Style="{StaticResource TextStyle}" 
                          TextChanged="txtFilter_TextChanged" GotFocus="txtFilter_GotFocus" LostFocus="txtFilter_LostFocus" />
