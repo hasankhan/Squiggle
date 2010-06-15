@@ -8,7 +8,6 @@ using System.ServiceProcess;
 using System.Text;
 using Squiggle.Bridge.Configuration;
 using System.Net;
-using System.Linq;
 using System.ServiceModel;
 using Squiggle.Chat.Services.Presence.Transport;
 

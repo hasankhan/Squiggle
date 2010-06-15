@@ -5,6 +5,7 @@ using System.Text;
 using Squiggle.Chat.Services.Chat.Host;
 using System.Net;
 using System.IO;
+using System.Windows.Media;
 
 namespace Squiggle.Chat.Services.Chat
 {
@@ -71,9 +72,9 @@ namespace Squiggle.Chat.Services.Chat
             return transfer;
         }
 
-        public void SendMessage(string message)
+        public void SendMessage(string fontName, int fontSize, Color color, string message)
         {
-            remoteHost.ReceiveMessage(localUser, message);
+            remoteHost.ReceiveMessage(localUser, fontName, fontSize, color, message);
         }
 
         public void End()

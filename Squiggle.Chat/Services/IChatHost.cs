@@ -5,6 +5,7 @@ using System.Text;
 using System.ServiceModel;
 using System.Net;
 using System.IO;
+using System.Windows.Media;
 
 namespace Squiggle.Chat.Services
 {
@@ -15,7 +16,7 @@ namespace Squiggle.Chat.Services
         void UserIsTyping(IPEndPoint user);
 
         [OperationContract]
-        void ReceiveMessage(IPEndPoint user, string message);
+        void ReceiveMessage(IPEndPoint user, string fontName, int fontSize, Color color, string message);
 
         [OperationContract]
         void ReceiveFileInvite(IPEndPoint user, Guid id, string name, int size);

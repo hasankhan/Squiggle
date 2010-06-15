@@ -5,6 +5,7 @@ using System.Text;
 using Squiggle.Chat.Services.Chat.Host;
 using System.Net;
 using System.IO;
+using System.Windows.Media;
 
 namespace Squiggle.Chat.Services
 {
@@ -21,7 +22,7 @@ namespace Squiggle.Chat.Services
 
         IPEndPoint RemoteUser { get; set; }
 
-        void SendMessage(string message);        
+        void SendMessage(string fontName, int fontSize, Color color, string message);
         void NotifyTyping();
         IFileTransfer SendFile(string name, Stream content);
         void End();

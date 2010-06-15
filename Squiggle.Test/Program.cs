@@ -5,6 +5,7 @@ using System.Text;
 using System.Net;
 using System.Threading;
 using System.IO;
+using System.Windows.Media;
 
 namespace Squiggle.Chat
 {
@@ -38,7 +39,7 @@ namespace Squiggle.Chat
             Thread.Sleep(2000);
             client2.ChatStarted += new EventHandler<ChatStartedEventArgs>(client2_ChatStarted);
             chat = client1.StartChat(client1.Buddies.FirstOrDefault());
-            chat.SendMessage("Hello");
+            chat.SendMessage("Georgia", 12, Colors.Black, "Hello");
             Console.ReadLine();
             client1.Logout();
         }

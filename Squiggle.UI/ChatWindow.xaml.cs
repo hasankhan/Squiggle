@@ -130,7 +130,8 @@ namespace Squiggle.UI
 
         private void editMessageBox_MessageSend(object sender, MessageSendEventArgs e)
         {
-            chatSession.SendMessage(e.Message);
+            var settings = SettingsProvider.Current.Settings.PersonalSettings;
+            chatSession.SendMessage(settings.FontName.ToString(), settings.FontSize, settings.FontColor, e.Message);
             chatTextBox.AddMessage("Me", e.Message);
         }
 

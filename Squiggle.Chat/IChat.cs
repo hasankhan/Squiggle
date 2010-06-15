@@ -4,12 +4,16 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using Squiggle.Chat.Services;
+using System.Windows.Media;
 
 namespace Squiggle.Chat
 {
     public class ChatMessageReceivedEventArgs : EventArgs
     {
         public Buddy Sender { get; set; }
+        public string FontName { get; set; }
+        public int FontSize { get; set; }
+        public Color Color { get; set; }
         public string Message { get; set; }
     }
 
@@ -37,7 +41,7 @@ namespace Squiggle.Chat
         event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived;
 
         void NotifyTyping();
-        void SendMessage(string Message);
+        void SendMessage(string fontName, int fontSize, Color color, string Message);
         IFileTransfer SendFile(string name, Stream content);
         void Leave();
     }

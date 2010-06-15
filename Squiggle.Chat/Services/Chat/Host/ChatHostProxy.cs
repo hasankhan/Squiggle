@@ -8,6 +8,7 @@ using System.Net;
 using System.Diagnostics;
 using System.ServiceModel.Channels;
 using System.IO;
+using System.Windows.Media;
 
 namespace Squiggle.Chat.Services.Chat.Host
 {
@@ -69,10 +70,10 @@ namespace Squiggle.Chat.Services.Chat.Host
             proxy.ReceiveFileContent(id, chunk);
         }
 
-        public void ReceiveMessage(IPEndPoint user, string message)
+        public void ReceiveMessage(IPEndPoint user, string fontName, int fontSize, Color color, string message)
         {
             EnsureProxy();
-            proxy.ReceiveMessage(user, message);
+            proxy.ReceiveMessage(user, fontName, fontSize, color, message);
         }
 
         public void AcceptFileInvite(Guid id)
@@ -151,10 +152,10 @@ namespace Squiggle.Chat.Services.Chat.Host
                 base.Channel.CancelFileTransfer(id);
             }
 
-            public void ReceiveMessage(IPEndPoint user, string message)
+            public void ReceiveMessage(IPEndPoint user, string fontName, int fontSize, Color color, string message)
             {
                 Trace.WriteLine("Sending message to: " + user.ToString() + ", message = " + message);
-                base.Channel.ReceiveMessage(user, message);
+                base.Channel.ReceiveMessage(user, fontName, fontSize, color, message);
             }
 
             #endregion

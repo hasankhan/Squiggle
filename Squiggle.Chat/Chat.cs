@@ -6,6 +6,7 @@ using System.IO;
 using System.Threading;
 using System.Diagnostics;
 using Squiggle.Chat.Services;
+using System.Windows.Media;
 
 namespace Squiggle.Chat
 {    
@@ -37,13 +38,13 @@ namespace Squiggle.Chat
         public event EventHandler<BuddyEventArgs> BuddyTyping = delegate { };
         public event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived = delegate { };
 
-        public void SendMessage(string message)
+        public void SendMessage(string fontName, int fontSize, Color color, string message)
         {
             ThreadPool.QueueUserWorkItem(_ =>
             {
                 try
                 {
-                    session.SendMessage(message);
+                    session.SendMessage(fontName, fontSize, color, message);
                 }
                 catch (Exception ex)
                 {
@@ -95,7 +96,11 @@ namespace Squiggle.Chat
 
         void session_MessageReceived(object sender, Squiggle.Chat.Services.Chat.Host.MessageReceivedEventArgs e)
         {
-            MessageReceived(this, new ChatMessageReceivedEventArgs() { Sender = buddy, Message = e.Message});
+            MessageReceived(this, new ChatMessageReceivedEventArgs() { Sender = buddy, 
+                                                                       FontName = e.FontName,
+                                                                       FontSize = e.FontSize,
+                                                                       Color = e.Color,
+                                                                       Message = e.Message});
         }
     }
 }

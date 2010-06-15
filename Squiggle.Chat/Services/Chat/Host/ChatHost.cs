@@ -7,12 +7,16 @@ using System.ServiceModel.Channels;
 using System.Net;
 using System.Diagnostics;
 using System.IO;
+using System.Windows.Media;
 
 namespace Squiggle.Chat.Services.Chat.Host
 {
     public class MessageReceivedEventArgs : EventArgs
     {
         public IPEndPoint User { get; set; }
+        public string FontName { get; set; }
+        public int FontSize { get; set; }
+        public Color Color { get; set; }
         public string Message { get; set; }
     }
 
@@ -86,10 +90,14 @@ namespace Squiggle.Chat.Services.Chat.Host
             });
         }
 
-        public void ReceiveMessage(IPEndPoint user, string message)
+        public void ReceiveMessage(IPEndPoint user, string fontName, int fontSize, Color color, string message)
         {
             OnUserActivity(user, ActivityType.Message);
-            MessageReceived(this, new MessageReceivedEventArgs() { User = user, Message = message });
+            MessageReceived(this, new MessageReceivedEventArgs() { User = user, 
+                                                                   FontName = fontName,
+                                                                   FontSize = fontSize,
+                                                                   Color = color,
+                                                                   Message = message });
             Trace.WriteLine("Message received from: " + user.ToString() + ", message = " + message);
         }
 
