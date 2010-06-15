@@ -79,7 +79,7 @@ namespace Squiggle.UI
         void chatClient_BuddyOnline(object sender, BuddyOnlineEventArgs e)
         {
             if (!e.Discovered && SettingsProvider.Current.Settings.GeneralSettings.ShowPopups)
-                TrayPopup.Show("Budy Online", e.Buddy.DisplayName + " is online", _=> StartChat(e.Buddy));
+                TrayPopup.Show("Buddy Online", e.Buddy.DisplayName + " is online", _=> StartChat(e.Buddy));
         }
 
         void OnStartChat(object sender, Squiggle.UI.Controls.ChatStartEventArgs e)
@@ -155,13 +155,11 @@ namespace Squiggle.UI
 
             CreateMonitor();
             clientViewModel = new ClientViewModel(chatClient);
-            clientViewModel.LoggedInUser.DisplayMessage = SettingsProvider.Current.Settings.PersonalSettings.DisplayMessage;
             this.DataContext = clientViewModel;
             chatControl.ChatContext = clientViewModel;
 
             VisualStateManager.GoToState(chatControl, "OnlineState", true);
         }
-
         
         void SignOut()
         {
@@ -237,7 +235,7 @@ namespace Squiggle.UI
 
             ChatClient client = new ChatClient(chatEndPoint, presenceEndPoint, keepAliveTimeout);
             
-            client.Login(displayName);
+            client.Login(displayName, settings.PersonalSettings.DisplayMessage, new Dictionary<string,string>());
             client.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
             client.BuddyUpdated += new EventHandler<BuddyEventArgs>(client_BuddyUpdated);
             client.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);

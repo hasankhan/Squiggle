@@ -14,7 +14,8 @@ namespace Squiggle.Chat.Services.Presence
         public IPEndPoint ChatEndPoint { get; set; }
         public TimeSpan KeepAliveSyncTime { get; set; }
         public string DisplayMessage { get; set; }
-        public UserStatus Status { get; set; }       
+        public UserStatus Status { get; set; }
+        public Dictionary<string, string> Properties { get; set;  }
 
         public static UserInfo FromEndPoint(IPEndPoint endPoint)
         {
@@ -26,6 +27,7 @@ namespace Squiggle.Chat.Services.Presence
         {
             this.UserFriendlyName = user.UserFriendlyName;
             this.DisplayMessage = user.DisplayMessage;
+            this.Properties = user.Properties;
             this.Status = user.Status;
         }
 

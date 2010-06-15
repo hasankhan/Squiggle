@@ -20,8 +20,8 @@ namespace Squiggle.Chat.Services
 
         IEnumerable<UserInfo> Users { get; }
         
-        void Login(string name, string displayMessage);
-        void Update(string userFriendlyName, string displayMessage, UserStatus status);
+        void Login(string name, string displayMessage, Dictionary<string, string> properties);
+        void Update(string userFriendlyName, string displayMessage, Dictionary<string, string> properties, UserStatus status);
         void Logout();
     }
 }

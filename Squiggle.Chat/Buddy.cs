@@ -13,6 +13,7 @@ namespace Squiggle.Chat
         string displayName;
         UserStatus status;
         string displayMessage;
+        Dictionary<string, string> properties;
 
         protected IChatClient ChatClient { get; private set; }
 
@@ -48,10 +49,17 @@ namespace Squiggle.Chat
             }
         }
 
+        public IEnumerable<KeyValuePair<string, string>> Properties 
+        { 
+            get { return properties; }
+        }
+
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
         public event EventHandler Updated = delegate { };
 
-        public Buddy(IChatClient chatClient, object id)
+        public Buddy(IChatClient chatClient, object id) : this(chatClient, id, null) { }
+
+        public Buddy(IChatClient chatClient, object id, Dictionary<string, string> properties)
         {
             this.ID = id;
             this.ChatClient = chatClient;
@@ -59,6 +67,20 @@ namespace Squiggle.Chat
             this.ChatClient.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);
             this.ChatClient.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
             this.ChatClient.BuddyUpdated += new EventHandler<BuddyEventArgs>(chatClient_BuddyUpdated);
+
+            this.properties = properties ?? new Dictionary<string, string>();
+        }
+
+        public virtual void SetProperties(Dictionary<string, string> properties)
+        {
+            this.properties = properties;
+            OnPropertyChanged("Properties");
+        }
+
+        public virtual void SetProperty(string key, string value)
+        {
+            properties[key] = value;
+            OnPropertyChanged("Properties");
         }
         
         public IChat StartChat()

@@ -43,7 +43,7 @@ namespace Squiggle.UI
             throw new NotImplementedException();
         }
 
-        public void Login(string username)
+        public void Login(string username, string displayMessage, Dictionary<string, string> properties)
         {
             throw new NotImplementedException();
         }

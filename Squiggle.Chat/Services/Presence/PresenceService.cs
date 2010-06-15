@@ -47,22 +47,24 @@ namespace Squiggle.Chat.Services.Presence
             this.keepAlive.UserReturned += new EventHandler<UserEventArgs>(keepAlive_UserReturned);
         }             
 
-        public void Login(string name, string displayMessage)
+        public void Login(string name, string displayMessage, Dictionary<string, string> properties)
         {
             thisUser.UserFriendlyName = name;
             thisUser.DisplayMessage = displayMessage;
             thisUser.Status = UserStatus.Online;
+            thisUser.Properties = properties;
 
             channel.Start();
             discovery.Login(thisUser);
             keepAlive.Start();
         }
 
-        public void Update(string name, string displayMessage, UserStatus status)
+        public void Update(string name, string displayMessage, Dictionary<string, string> properties, UserStatus status)
         {
             thisUser.UserFriendlyName = name;
             thisUser.DisplayMessage = displayMessage;
             thisUser.Status = status;
+            thisUser.Properties = properties;
             discovery.Update(thisUser);
         }
 

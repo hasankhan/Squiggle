@@ -12,6 +12,7 @@ namespace Squiggle.Chat.Services.Presence.Transport.Messages
         public string UserFriendlyName { get; set; }
         public string DisplayMessage { get; set; }
         public UserStatus Status { get; set; }
+        public Dictionary<string, string> Properties { get; set; }
         public TimeSpan KeepAliveSyncTime { get; set; }
 
         public static TMessage FromUserInfo(UserInfo user) 
@@ -20,7 +21,8 @@ namespace Squiggle.Chat.Services.Presence.Transport.Messages
             {
                 ChatEndPoint = user.ChatEndPoint,
                 DisplayMessage = user.DisplayMessage,
-                Status = user.Status,
+                Status = user.Status,                
+                Properties = user.Properties,
                 KeepAliveSyncTime = user.KeepAliveSyncTime,
                 UserFriendlyName = user.UserFriendlyName
             };
@@ -35,6 +37,7 @@ namespace Squiggle.Chat.Services.Presence.Transport.Messages
             message.DisplayMessage = this.DisplayMessage;
             message.KeepAliveSyncTime = this.KeepAliveSyncTime;
             message.Status = this.Status;
+            message.Properties = this.Properties;
             message.UserFriendlyName = this.UserFriendlyName;
             return message;
         }
@@ -46,6 +49,7 @@ namespace Squiggle.Chat.Services.Presence.Transport.Messages
                 ChatEndPoint = this.ChatEndPoint,
                 DisplayMessage = this.DisplayMessage,
                 Status = this.Status,
+                Properties = this.Properties, 
                 KeepAliveSyncTime = this.KeepAliveSyncTime,
                 UserFriendlyName = this.UserFriendlyName
             };

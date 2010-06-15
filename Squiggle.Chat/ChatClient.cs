@@ -56,11 +56,11 @@ namespace Squiggle.Chat
             return chat;
         }        
 
-        public void Login(string username)
+        public void Login(string username, string displayMessage, Dictionary<string, string> properties)
         {
             chatService.Username = username;
             chatService.Start(localEndPoint);
-            presenceService.Login(username, String.Empty);
+            presenceService.Login(username, displayMessage, properties);
 
             var self = new SelfBuddy(this, localEndPoint) 
             { 
@@ -85,14 +85,18 @@ namespace Squiggle.Chat
         
         void Update()
         {
-            presenceService.Update(CurrentUser.DisplayName, CurrentUser.DisplayMessage, CurrentUser.Status);
+            var properties = CurrentUser.Properties.ToDictionary(kv=>kv.Key, kv=>kv.Value);
+            presenceService.Update(CurrentUser.DisplayName, CurrentUser.DisplayMessage, properties, CurrentUser.Status);
         }
 
         void chatService_ChatStarted(object sender, Squiggle.Chat.Services.ChatStartedEventArgs e)
         {
             Buddy buddy = buddies[e.Session.RemoteUser];
-            var chat = new Chat(e.Session, buddy);
-            ChatStarted(this, new ChatStartedEventArgs() { Chat = chat,Buddy = buddy});
+            if (buddy != null)
+            {
+                var chat = new Chat(e.Session, buddy);
+                ChatStarted(this, new ChatStartedEventArgs() { Chat = chat, Buddy = buddy });
+            }
         }
 
         void presenceService_UserUpdated(object sender, UserEventArgs e)
@@ -104,6 +108,7 @@ namespace Squiggle.Chat
                 buddy.Status = e.User.Status;
                 buddy.DisplayMessage = e.User.DisplayMessage;
                 buddy.DisplayName = e.User.UserFriendlyName;
+                buddy.SetProperties(e.User.Properties);
 
                 if (lastStatus != UserStatus.Offline && buddy.Status == UserStatus.Offline)
                     OnBuddyOffline(buddy);
@@ -119,11 +124,11 @@ namespace Squiggle.Chat
             var buddy = buddies[e.User.ChatEndPoint];
             if (buddy == null)
             {
-                buddy = new Buddy(this, e.User.ChatEndPoint)
+                buddy = new Buddy(this, e.User.ChatEndPoint, e.User.Properties)
                 {
                     DisplayName = e.User.UserFriendlyName,
                     Status = e.User.Status,
-                    DisplayMessage = e.User.DisplayMessage,
+                    DisplayMessage = e.User.DisplayMessage
                 };
                 buddies.Add(buddy);
             }
@@ -184,6 +189,7 @@ namespace Squiggle.Chat
                     Update();
                 }
             }
+            
             public override string DisplayName
             {
                 get
@@ -196,6 +202,7 @@ namespace Squiggle.Chat
                     Update();
                 }
             }
+            
             public override UserStatus Status
             {
                 get
@@ -207,6 +214,18 @@ namespace Squiggle.Chat
                     base.Status = value;
                     Update();
                 }
+            }
+
+            public override void SetProperties(Dictionary<string, string> properties)
+            {
+                base.SetProperties(properties);
+                Update();
+            }
+
+            public override void SetProperty(string key, string value)
+            {
+                base.SetProperty(key, value);
+                Update();
             }
 
             void Update()
