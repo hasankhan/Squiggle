@@ -362,5 +362,20 @@ namespace Squiggle.UI
             format = null;
             return false;
         }
+
+        private void SettingsMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SquiggleUtility.ShowSettingsDialog(this);
+        }
+
+        private void AboutMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SquiggleUtility.ShowAboutDialog();
+        }
+
+        private void SendFileMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SendFile();
+        }
     }
 }

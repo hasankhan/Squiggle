@@ -24,10 +24,13 @@ namespace Squiggle.UI
         Dictionary<Buddy, ChatWindow> chatWindows;
         ClientViewModel dummyViewModel;
         
+        public static MainWindow Instance { get; private set; }
+
         bool exiting;
 
         public MainWindow()
         {
+           Instance = this;
            InitializeComponent();
 
            chatWindows = new Dictionary<Buddy, ChatWindow>();
@@ -42,8 +45,6 @@ namespace Squiggle.UI
         {
             this.DataContext = dummyViewModel;
             this.StateChanged += new EventHandler(Window_StateChanged);
-            chatControl.SignIn.OpenSettings += (s1, e1) => OpenSettings();
-            chatControl.ContactList.OpenSettings += (s1, e1) => OpenSettings();
 
             var settings = SettingsProvider.Current.Settings;
 
@@ -287,21 +288,7 @@ namespace Squiggle.UI
                 window.Activate();
 
             return window;
-        }
-
-        void OpenSettings()
-        {
-            Buddy user = null;
-            if (chatControl.ContactList.ChatContext != null)
-                user = chatControl.ContactList.ChatContext.LoggedInUser;
-            var settings = new SettingsWindow(user);
-            settings.Owner = this;
-            if (settings.ShowDialog() == true)
-            {
-                if (chatControl.SignIn.Visibility == Visibility.Visible)
-                    chatControl.SignIn.txtdisplayName.Text = SettingsProvider.Current.Settings.PersonalSettings.DisplayName;
-            }
-        }
+        }        
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -320,6 +307,16 @@ namespace Squiggle.UI
         private void OpenReceivedFilesMenu_Click(object sender, RoutedEventArgs e)
         {
             SquiggleUtility.OpenDownloadsFolder();
+        }
+
+        private void SettingsMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SquiggleUtility.ShowSettingsDialog(this);
+        }
+
+        private void AboutMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SquiggleUtility.ShowAboutDialog();
         }   
     }
 }

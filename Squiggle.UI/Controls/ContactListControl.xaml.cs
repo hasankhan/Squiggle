@@ -24,7 +24,6 @@ namespace Squiggle.UI.Controls
     public partial class ContactListControl : UserControl
     {
         public event EventHandler<ChatStartEventArgs> ChatStart = delegate { };
-        public event EventHandler OpenSettings = delegate { };
         public event EventHandler SignOut = delegate { };
 
         string filter = String.Empty;
@@ -59,11 +58,6 @@ namespace Squiggle.UI.Controls
             e.Handled = true;
         }
 
-        private void ShowSettingsWindow()
-        {
-            OpenSettings(this, EventArgs.Empty);
-        }
-
         private void ComboBoxItem_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -75,22 +69,7 @@ namespace Squiggle.UI.Controls
 
         private void About_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            string about = @"Squiggle Messenger {0}
-
-Programmed by:
-Faisal Iqbal
-M. Hasan Khan
-
-Contact:       info@overroot.com
-Website:       www.overroot.com";
-            about = String.Format(about, Assembly.GetExecutingAssembly().GetName().Version.ToString(3));
-            MessageBox.Show(about, "About Squiggle Messenger", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
-        {
-            ShowSettingsWindow();
-            e.Handled = true;
+            SquiggleUtility.ShowAboutDialog();
         }
 
         private void Buddy_Click(object sender, MouseButtonEventArgs e)

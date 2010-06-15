@@ -31,7 +31,6 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>            
             <Image HorizontalAlignment="Center" Margin="0,30,0,0" Source="..\Images\contacts.png" Height="128" Width="128"/>                        
-            <TextBlock VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5"><Hyperlink NavigateUri="http://www.dummy.com" RequestNavigate="SettingsLink_Click" Foreground="Gray">Settings</Hyperlink></TextBlock>
             <StackPanel Grid.Row="1" Orientation="Vertical">
                 <TextBlock Text="Sign In"  FontSize="18" Foreground="#FF355A88" HorizontalAlignment="Center"/>
                 <TextBlock Margin="20,20,20,0" Text="Specify your display name here as you want others to see it." TextWrapping="Wrap" />

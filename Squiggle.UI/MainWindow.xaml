@@ -75,10 +75,10 @@
                 <MenuItem Header="Send a _file" />
             </MenuItem>
             <MenuItem Header="_Tools">
-                <MenuItem Header="_Settings..." />
+                <MenuItem Header="_Settings..." MenuItem.Click="SettingsMenu_Click" />
             </MenuItem>
             <MenuItem Header="_Help">
-                <MenuItem Header="_About Squiggle" />
+                <MenuItem Header="_About Squiggle" MenuItem.Click="AboutMenu_Click" />
             </MenuItem>
         </Menu>        
         <controls:ChatClientControl Grid.Row="1" Width="Auto" Height="Auto" x:Name="chatControl" />

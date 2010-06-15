@@ -21,7 +21,6 @@ namespace Squiggle.UI.Controls
     public partial class SignInControl : UserControl
     {
         public event EventHandler<LogInEventArgs> CredentialsVerfied = delegate { };
-        public event EventHandler OpenSettings = delegate { };
 
         public SignInControl()
         {
@@ -50,12 +49,6 @@ namespace Squiggle.UI.Controls
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             txtdisplayName.Focus();
-        }
-
-        private void SettingsLink_Click(object sender, RequestNavigateEventArgs e)
-        {
-            OpenSettings(this, EventArgs.Empty);
-            e.Handled = true;
         }
     }
 
