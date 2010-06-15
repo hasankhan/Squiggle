@@ -76,6 +76,7 @@
     <Compile Include="Buddy.cs" />
     <Compile Include="BuddyList.cs" />
     <Compile Include="BuddyEventArgs.cs" />
+    <Compile Include="BuddyProperties.cs" />
     <Compile Include="Chat.cs" />
     <Compile Include="ChatClient.cs" />
     <Compile Include="IChat.cs" />

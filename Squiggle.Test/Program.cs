@@ -32,7 +32,7 @@ namespace Squiggle.Chat
             ChatClient client1 = new ChatClient(new IPEndPoint(IPAddress.Loopback, 1234), new IPEndPoint(IPAddress.Parse("224.10.11.12"), 12345), 2.Seconds());
             ChatClient client2 = new ChatClient(new IPEndPoint(IPAddress.Loopback, 1236), new IPEndPoint(IPAddress.Parse("224.10.11.12"), 12345), 2.Seconds());
             client1.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(client_BuddyOnline);
-            client2.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(client_BuddyOnline);
+            //client2.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(client_BuddyOnline);
             client2.BuddyOffline += new EventHandler<BuddyEventArgs>(client2_BuddyOffline);
             client2.BuddyUpdated += new EventHandler<BuddyEventArgs>(client2_BuddyUpdated);
 
@@ -50,7 +50,7 @@ namespace Squiggle.Chat
 
         static void client2_BuddyUpdated(object sender, BuddyEventArgs e)
         {
-            Console.WriteLine(e.Buddy.Properties.FirstOrDefault().Value);
+            Console.WriteLine(e.Buddy.Properties.Values.FirstOrDefault());
         }
 
         static void client2_ChatStarted(object sender, ChatStartedEventArgs e)
@@ -71,10 +71,12 @@ namespace Squiggle.Chat
 
         static void client_BuddyOnline(object sender, BuddyEventArgs e)
         {
-            ((IChatClient)sender).CurrentUser.SetProperty("Machine", "Test2");
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                ((IChatClient)sender).CurrentUser.Properties["Machine"] = "Test2";
+            });
             Console.WriteLine("Online {0}", e.Buddy.DisplayName);
-            Console.WriteLine(e.Buddy.Properties.First().Key);
-
+            Console.WriteLine(e.Buddy.Properties.Values.First());
         }
     }
 }

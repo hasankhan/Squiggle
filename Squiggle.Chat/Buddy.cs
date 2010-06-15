@@ -13,46 +13,11 @@ namespace Squiggle.Chat
         string displayName;
         UserStatus status;
         string displayMessage;
-        Dictionary<string, string> properties;
+        BuddyProperties properties;
+        bool initialized;
 
         protected IChatClient ChatClient { get; private set; }
-
         public object ID { get; private set; }        
-
-        public virtual string DisplayName
-        {
-            get { return displayName; }
-            set
-            {
-                displayName = value;
-                OnPropertyChanged("DisplayName");
-            }
-        }
-
-        public virtual string DisplayMessage 
-        {
-            get { return displayMessage; }
-            set
-            {
-                displayMessage = value;
-                OnPropertyChanged("DisplayMessage");
-            }
-        }
-
-        public virtual UserStatus Status 
-        {
-            get { return status; }
-            set
-            {
-                status = value;
-                OnPropertyChanged("Status");
-            }
-        }
-
-        public IEnumerable<KeyValuePair<string, string>> Properties 
-        { 
-            get { return properties; }
-        }
 
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
         public event EventHandler Updated = delegate { };
@@ -68,18 +33,54 @@ namespace Squiggle.Chat
             this.ChatClient.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
             this.ChatClient.BuddyUpdated += new EventHandler<BuddyEventArgs>(chatClient_BuddyUpdated);
 
-            this.properties = properties ?? new Dictionary<string, string>();
+            SetProperties(properties);
+            initialized = true;
         }
 
-        public virtual void SetProperties(Dictionary<string, string> properties)
+        public virtual string DisplayName
         {
-            this.properties = properties;
+            get { return displayName; }
+            set
+            {
+                displayName = value;
+                OnPropertyChanged("DisplayName");
+            }
+        }
+
+        public virtual string DisplayMessage
+        {
+            get { return displayMessage; }
+            set
+            {
+                displayMessage = value;
+                OnPropertyChanged("DisplayMessage");
+            }
+        }
+
+        public virtual UserStatus Status
+        {
+            get { return status; }
+            set
+            {
+                status = value;
+                OnPropertyChanged("Status");
+            }
+        }
+
+        public BuddyProperties Properties
+        {
+            get { return properties; }
+        }
+
+        protected virtual void OnBuddyPropertiesChanged()
+        {
             OnPropertyChanged("Properties");
         }
 
-        public virtual void SetProperty(string key, string value)
+        public void SetProperties(Dictionary<string, string> properties)
         {
-            properties[key] = value;
+            this.properties = new BuddyProperties(properties ?? new Dictionary<string, string>());
+            this.properties.Changed += (sender, e) => OnBuddyPropertiesChanged();
             OnPropertyChanged("Properties");
         }
         
@@ -159,7 +160,8 @@ namespace Squiggle.Chat
 
         void OnPropertyChanged(string name)
         {
-            PropertyChanged(this, new PropertyChangedEventArgs(name));
+            if (initialized)
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
     }
 }

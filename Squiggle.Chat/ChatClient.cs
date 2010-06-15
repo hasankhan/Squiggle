@@ -85,7 +85,7 @@ namespace Squiggle.Chat
         
         void Update()
         {
-            var properties = CurrentUser.Properties.ToDictionary(kv=>kv.Key, kv=>kv.Value);
+            var properties = CurrentUser.Properties.ToDictionary();
             presenceService.Update(CurrentUser.DisplayName, CurrentUser.DisplayMessage, properties, CurrentUser.Status);
         }
 
@@ -216,15 +216,9 @@ namespace Squiggle.Chat
                 }
             }
 
-            public override void SetProperties(Dictionary<string, string> properties)
+            protected override void OnBuddyPropertiesChanged()
             {
-                base.SetProperties(properties);
-                Update();
-            }
-
-            public override void SetProperty(string key, string value)
-            {
-                base.SetProperty(key, value);
+                base.OnBuddyPropertiesChanged();
                 Update();
             }
 

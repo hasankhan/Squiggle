@@ -2,6 +2,7 @@
 using System.Net.Sockets;
 using System.Net;
 using System.Diagnostics;
+using System.Threading;
 
 namespace Squiggle.Chat.Services.Presence.Transport
 {
@@ -64,23 +65,24 @@ namespace Squiggle.Chat.Services.Presence.Transport
             catch (Exception ex)
             {
                 Trace.WriteLine(ex.Message);
-            }            
+            }
+
+            if (data != null)
+                ThreadPool.QueueUserWorkItem(_ =>
+                {
+                    var message = Message.Deserialize(data);
+                    if (!message.ChannelID.Equals(channelID) && message.ChatEndPoint != null)
+                    {
+                        var args = new MessageReceivedEventArgs()
+                        {
+                            Message = message,
+                            Sender = remoteEndPoint
+                        };
+                        MessageReceived(this, args);
+                    }
+                });
 
             BeginReceive();
-            
-            if (data == null)
-                return;
-
-            var message = Message.Deserialize(data);                
-            if (!message.ChannelID.Equals(channelID) && message.ChatEndPoint != null)
-            {
-                var args = new MessageReceivedEventArgs()
-                {
-                    Message = message,
-                    Sender = remoteEndPoint
-                };
-                MessageReceived(this, args);
-            }            
         }
 
         void BeginReceive()
