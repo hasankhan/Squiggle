@@ -18,7 +18,6 @@ namespace Squiggle.Chat.Services.Presence
         Message keepAliveMessage;
         Dictionary<UserInfo, DateTime> aliveUsers;
         HashSet<UserInfo> lostUsers;
-        TimeSpan waitTolerance = 5.Seconds(); // no. of seconds to tolerate the alive message delay.
 
         public UserInfo User { get; private set; }
 
@@ -63,7 +62,8 @@ namespace Squiggle.Chat.Services.Presence
         public void LeaveUser(UserInfo user)
         {
             HeIsGone(user);
-            lostUsers.Remove(user);
+            lock (aliveUsers)
+                lostUsers.Remove(user);
         }
 
         public void HeIsGone(UserInfo user)
@@ -75,8 +75,10 @@ namespace Squiggle.Chat.Services.Presence
         public void HeIsAlive(UserInfo user)
         {
             lock (aliveUsers)
+            {
                 aliveUsers[user] = DateTime.Now;
-            lostUsers.Remove(user);
+                lostUsers.Remove(user);
+            }
         }
 
         public void Stop()
@@ -93,13 +95,16 @@ namespace Squiggle.Chat.Services.Presence
         {
             ImAlive();
 
-            List<UserInfo> gone = GetLostUsers();
-
-            foreach (UserInfo user in gone)
+            lock (aliveUsers)
             {
-                lostUsers.Add(user);
-                HeIsGone(user);
-                UserLost(this, new UserEventArgs() { User = user });
+                List<UserInfo> gone = GetLostUsers();
+
+                foreach (UserInfo user in gone)
+                {
+                    lostUsers.Add(user);
+                    HeIsGone(user);
+                    UserLost(this, new UserEventArgs() { User = user });
+                }
             }
         }        
 
@@ -118,7 +123,8 @@ namespace Squiggle.Chat.Services.Presence
                 foreach (KeyValuePair<UserInfo, DateTime> pair in aliveUsers)
                 {
                     TimeSpan inactiveTime = now.Subtract(pair.Value);
-                    TimeSpan waitTime = pair.Key.KeepAliveSyncTime + waitTolerance;
+                    var tolerance = pair.Key.KeepAliveSyncTime + 5.Seconds();
+                    TimeSpan waitTime = pair.Key.KeepAliveSyncTime + tolerance;
                     if (inactiveTime > waitTime)
                         gone.Add(pair.Key);
                 }
