@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Media;
+using System.Drawing;
 
 namespace Squiggle.UI.Settings
 {
@@ -13,15 +13,15 @@ namespace Squiggle.UI.Settings
         public int IdleTimeout { get; set; }
         public bool RememberMe { get; set; }
         public bool AutoSignMeIn { get; set; }
-        public FontFamily FontName { get; set; }
+        public Font Font { get; set; }
         public int FontSize { get; set; }
         public Color FontColor { get; set; }
 
         public PersonalSettings()
         {
-            FontName = new FontFamily("Georgia");
+            Font = new Font(new FontFamily("Georgia"), 12);
             FontSize = 12;
-            FontColor = Colors.Black;
+            FontColor = System.Drawing.Color.Black;
             IdleTimeout = 5;
         }
     }

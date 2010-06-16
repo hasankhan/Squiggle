@@ -5,7 +5,7 @@ using System.Text;
 using Squiggle.Chat.Services.Chat.Host;
 using System.Net;
 using System.IO;
-using System.Windows.Media;
+using System.Drawing;
 
 namespace Squiggle.Chat.Services
 {

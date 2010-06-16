@@ -7,7 +7,7 @@ using System.ServiceModel.Channels;
 using System.Net;
 using System.Diagnostics;
 using System.IO;
-using System.Windows.Media;
+using System.Drawing;
 
 namespace Squiggle.Chat.Services.Chat.Host
 {

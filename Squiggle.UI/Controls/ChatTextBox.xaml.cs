@@ -49,7 +49,7 @@ namespace Squiggle.UI.Controls
             sentMessages.FindScrollViewer().ScrollToBottom();            
         }
 
-        public void AddMessage(string user, string message)
+        public void AddMessage(string user, string message, string fontName, int fontSize, System.Drawing.Color color)
         {
             var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
 
@@ -60,6 +60,13 @@ namespace Squiggle.UI.Controls
                 para.Inlines.Add(item);
             }
             items = ParseText(message);
+            foreach (var item in items)
+            {
+                item.FontFamily = new System.Windows.Media.FontFamily(fontName);
+                item.FontSize = fontSize;
+                item.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B));
+                para.Inlines.Add(item);
+            }
             para.Inlines.AddRange(items);
             para.Inlines.Add(new LineBreak());
             sentMessages.FindScrollViewer().ScrollToBottom();
@@ -126,6 +133,8 @@ namespace Squiggle.UI.Controls
         static void OpenLink(Hyperlink link)
         {
             Shell.OpenUrl(link.NavigateUri.AbsoluteUri);
-        }        
+        }
+
+
     }
 }

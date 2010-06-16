@@ -90,7 +90,7 @@ namespace Squiggle.UI.Settings
             Settings.PersonalSettings.IdleTimeout = Properties.Settings.Default.IdleTimeout;
             Settings.PersonalSettings.FontColor = Properties.Settings.Default.FontColor;
             Settings.PersonalSettings.FontSize = Properties.Settings.Default.FontSize;
-            Settings.PersonalSettings.FontName = Properties.Settings.Default.FontName;
+            Settings.PersonalSettings.Font = Properties.Settings.Default.FontName;
         }
 
         private void SavePersonalSettings()
@@ -102,7 +102,7 @@ namespace Squiggle.UI.Settings
             Properties.Settings.Default.IdleTimeout = Settings.PersonalSettings.IdleTimeout;
             Properties.Settings.Default.FontColor = Settings.PersonalSettings.FontColor;
             Properties.Settings.Default.FontSize = Settings.PersonalSettings.FontSize;
-            Properties.Settings.Default.FontName = Settings.PersonalSettings.FontName;
+            Properties.Settings.Default.FontName = Settings.PersonalSettings.Font;
         }
 
         private void SaveConnectionSettings()

@@ -68,14 +68,14 @@
     <Setting Name="DownloadsFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)">Downloads</Value>
     </Setting>
-    <Setting Name="FontName" Type="System.Windows.Media.FontFamily" Scope="User">
-      <Value Profile="(Default)">Georgia</Value>
+    <Setting Name="FontName" Type="System.Drawing.Font" Scope="User">
+      <Value Profile="(Default)">Georgia, 8.25pt</Value>
     </Setting>
     <Setting Name="FontSize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">12</Value>
     </Setting>
-    <Setting Name="FontColor" Type="System.Windows.Media.Color" Scope="User">
-      <Value Profile="(Default)">#FF000000</Value>
+    <Setting Name="FontColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Black</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -110,12 +110,12 @@ namespace Squiggle.UI
             });
         }
 
-        void OnMessageReceived(Buddy buddy, string message)
+        void OnMessageReceived(Buddy buddy, string message, string fontName, System.Drawing.Color color, int fontSize)
         {
             Dispatcher.Invoke(() =>
             {
                 lastMessageReceived = DateTime.Now;
-                chatTextBox.AddMessage(buddy.DisplayName, message);
+                chatTextBox.AddMessage(buddy.DisplayName, message, fontName, fontSize, color);
                 ResetStatus();
                 FlashWindow();
             });
@@ -131,8 +131,8 @@ namespace Squiggle.UI
         private void editMessageBox_MessageSend(object sender, MessageSendEventArgs e)
         {
             var settings = SettingsProvider.Current.Settings.PersonalSettings;
-            chatSession.SendMessage(settings.FontName.ToString(), settings.FontSize, settings.FontColor, e.Message);
-            chatTextBox.AddMessage("Me", e.Message);
+            chatSession.SendMessage(settings.Font.Name, settings.FontSize, settings.FontColor, e.Message);
+            chatTextBox.AddMessage("Me", e.Message, settings.Font.Name, settings.FontSize, settings.FontColor);
         }
 
         private void editMessageBox_MessageTyping(object sender, EventArgs e)
@@ -143,6 +143,32 @@ namespace Squiggle.UI
         private void SendFile_Click(object sender, RoutedEventArgs e)
         {
             SendFile();
+        }
+
+        private void ChangeFont_Click(object sender, RoutedEventArgs e)
+        {
+            using (var dlg = new System.Windows.Forms.FontDialog())
+            {
+                var settings = SettingsProvider.Current.Settings.PersonalSettings;
+                dlg.Font = settings.Font;
+                //dlg.Font.Size = (float)settings.FontSize;
+                dlg.ShowColor = true;
+
+                dlg.Color = settings.FontColor;
+
+                if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    System.Drawing.Font font = dlg.Font;
+                    float fontSize = dlg.Font.Size;
+                    System.Drawing.Color fontColor = dlg.Color;
+
+                    settings.FontColor = fontColor;
+                    settings.Font = font;
+                    settings.FontSize = Convert.ToInt32(fontSize);
+
+                    SettingsProvider.Current.Save();
+                }
+            }
         }
 
         public void SendFile()
@@ -183,7 +209,7 @@ namespace Squiggle.UI
                 eventQueue.Enqueue(sender, e, chatSession_MessageReceived);
                 return;
             }
-            OnMessageReceived(e.Sender, e.Message);
+            OnMessageReceived(e.Sender, e.Message, e.FontName, e.Color, e.FontSize);
         }
 
         void chatSession_BuddyTyping(object sender, BuddyEventArgs e)

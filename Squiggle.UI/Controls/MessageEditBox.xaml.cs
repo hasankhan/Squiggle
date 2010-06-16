@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
+using Squiggle.UI.Settings;
 
 namespace Squiggle.UI.Controls
 {   
@@ -41,6 +42,23 @@ namespace Squiggle.UI.Controls
         public MessageEditBox()
         {
             InitializeComponent();
+            SetFont();
+
+            SettingsProvider.Current.SettingsUpdated += new EventHandler(Current_SettingsUpdated);
+        }
+
+        void Current_SettingsUpdated(object sender, EventArgs e)
+        {
+            SetFont();
+        }
+
+        private void SetFont()
+        {
+            var settings = SettingsProvider.Current.Settings.PersonalSettings;
+            txtMessage.FontFamily = new System.Windows.Media.FontFamily(settings.Font.FontFamily.Name);
+            System.Drawing.Color color = settings.FontColor;
+            txtMessage.FontSize = settings.FontSize;
+            txtMessage.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B));
         }
 
         private void btnSend_Click(object sender, RoutedEventArgs e)

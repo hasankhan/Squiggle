@@ -6,7 +6,7 @@ using System.IO;
 using System.Threading;
 using System.Diagnostics;
 using Squiggle.Chat.Services;
-using System.Windows.Media;
+using System.Drawing;
 
 namespace Squiggle.Chat
 {    

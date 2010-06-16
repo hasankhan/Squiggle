@@ -289,10 +289,10 @@ namespace Squiggle.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Georgia")]
-        public global::System.Windows.Media.FontFamily FontName {
+        [global::System.Configuration.DefaultSettingValueAttribute("Georgia, 8.25pt")]
+        public global::System.Drawing.Font FontName {
             get {
-                return ((global::System.Windows.Media.FontFamily)(this["FontName"]));
+                return ((global::System.Drawing.Font)(this["FontName"]));
             }
             set {
                 this["FontName"] = value;
@@ -313,10 +313,10 @@ namespace Squiggle.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#FF000000")]
-        public global::System.Windows.Media.Color FontColor {
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
+        public global::System.Drawing.Color FontColor {
             get {
-                return ((global::System.Windows.Media.Color)(this["FontColor"]));
+                return ((global::System.Drawing.Color)(this["FontColor"]));
             }
             set {
                 this["FontColor"] = value;
