@@ -235,7 +235,9 @@ namespace Squiggle.UI
 
             ChatClient client = new ChatClient(chatEndPoint, presenceEndPoint, keepAliveTimeout);
             
-            client.Login(displayName, settings.PersonalSettings.DisplayMessage, new Dictionary<string,string>());
+            var properties = new Dictionary<string,string>();
+            properties["MachineName"] = Environment.MachineName;
+            client.Login(displayName, settings.PersonalSettings.DisplayMessage, properties);
             client.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
             client.BuddyUpdated += new EventHandler<BuddyEventArgs>(client_BuddyUpdated);
             client.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);

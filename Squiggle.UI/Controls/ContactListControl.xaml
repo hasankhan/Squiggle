@@ -130,8 +130,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="0.01*"/>
                     </Grid.RowDefinitions>
-                    <Image ToolTip="{Binding Path=Status}"
-                                            Source="{Binding Path=Status, Converter={StaticResource statusIconConverter}}" VerticalAlignment="Center"/>
+                    <Image ToolTip="{Binding Path=Status}" Source="{Binding Path=Status, Converter={StaticResource statusIconConverter}}" VerticalAlignment="Center"/>
                     <StackPanel Orientation="Vertical" Grid.Column="1">
                         <StackPanel HorizontalAlignment="Left" Grid.Column="1"
                                             Orientation="Horizontal" Margin="5,0,0,0" Cursor="Hand" >
@@ -139,12 +138,11 @@
                             <TextBlock x:Name="buddyStatus" Margin="5,0,0,0" Text="{Binding Path=Status, Converter={StaticResource statusConverter}, StringFormat={}({0})}" />
                         </StackPanel>
                         <TextBlock Margin="5,0,0,0" Text="{Binding Path=DisplayMessage}" TextTrimming="WordEllipsis" ToolTip="{Binding Path=DisplayMessage}"  FontSize="10" Foreground="#FF9A9C9D" HorizontalAlignment="Left" />
-                    </StackPanel>
-                    
+                    </StackPanel>                    
                 </Grid>
                 <Border.ToolTip>
                     <ToolTip Placement="Left">
-                        <Border Width="200">
+                        <Border Margin="5">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="0.3*"/>
@@ -160,6 +158,7 @@
                                 <StackPanel VerticalAlignment="Center" Orientation="Vertical" Grid.Column="1" Grid.Row="1">
                                     <TextBlock Foreground="Black" Text="{Binding DisplayName, StringFormat=Display: \{0\}}"/>
                                     <TextBlock Foreground="Black" Text="{Binding Status, StringFormat=Presence: \{0\}}"/>
+                                    <TextBlock Foreground="Black" Text="{Binding Path=Properties[MachineName], StringFormat=Machine name: \{0\}}" />
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -260,6 +259,5 @@
                 <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}" ItemsSource="{Binding Source={StaticResource buddiesCollection}}" AlternationCount="2" />
             </StackPanel>
         </ScrollViewer>
-       
     </Grid>
 </UserControl>
