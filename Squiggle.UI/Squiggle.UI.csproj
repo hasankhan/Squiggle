@@ -218,6 +218,7 @@
     <Compile Include="EventQueue.cs" />
     <Compile Include="FileToIconConverter.cs" />
     <Compile Include="IntExtensions.cs" />
+    <Compile Include="NetworkSignout.cs" />
     <Compile Include="PathToNameConverter.cs" />
     <Compile Include="SettingBinding.cs" />
     <Compile Include="Shell.cs" />

@@ -8,6 +8,7 @@ using System.Windows.Threading;
 using Squiggle.UI.Settings;
 using Messenger;
 using System.Diagnostics;
+using System.Net.NetworkInformation;
 
 namespace Squiggle.UI
 {
@@ -23,7 +24,8 @@ namespace Squiggle.UI
         UserStatus lastStatus;
         Dictionary<Buddy, ChatWindow> chatWindows;
         ClientViewModel dummyViewModel;
-        
+        NetworkSignout autoSignout;
+
         public static MainWindow Instance { get; private set; }
 
         bool exiting;
@@ -39,6 +41,7 @@ namespace Squiggle.UI
            chatControl.ContactList.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(OnStartChat);
            chatControl.ContactList.SignOut += new EventHandler(ContactList_SignOut);
            dummyViewModel = new ClientViewModel(new DummyChatClient());
+           autoSignout = new NetworkSignout(u=>SignIn(u, false), ()=>SignOut(false));
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -54,7 +57,7 @@ namespace Squiggle.UI
 
             string name = settings.PersonalSettings.DisplayName;
             if (!String.IsNullOrEmpty(name) && settings.PersonalSettings.AutoSignMeIn)
-                SignIn(name);
+                SignIn(name, true);
             else
             {
                 chatControl.SignIn.txtdisplayName.Text = name;
@@ -68,7 +71,7 @@ namespace Squiggle.UI
 
         void OnCredentialsVerfied(object sender, Squiggle.UI.Controls.LogInEventArgs e)
         {
-            SignIn(e.UserName);
+            SignIn(e.UserName, true);
         }
 
         void chatClient_ChatStarted(object sender, ChatStartedEventArgs e)
@@ -133,43 +136,59 @@ namespace Squiggle.UI
 
         void ContactList_SignOut(object sender, EventArgs e)
         {
-            SignOut();
+            SignOut(true);
         }
 
         private void SignOutMenu_Click(object sender, RoutedEventArgs e)
         {
-            SignOut();
+            SignOut(true);
         }   
 
-        void SignIn(string displayName)
+        void SignIn(string displayName, bool byUser)
         {
-            try
+            Dispatcher.Invoke(() =>
             {
-                chatClient = CreateClient(displayName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+                if (chatClient != null && chatClient.LoggedIn)
+                    return;
 
-            CreateMonitor();
-            clientViewModel = new ClientViewModel(chatClient);
-            this.DataContext = clientViewModel;
-            chatControl.ChatContext = clientViewModel;
+                try
+                {
+                    chatClient = CreateClient(displayName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
 
-            VisualStateManager.GoToState(chatControl, "OnlineState", true);
+                CreateMonitor();
+                clientViewModel = new ClientViewModel(chatClient);
+                this.DataContext = clientViewModel;
+                chatControl.ChatContext = clientViewModel;
+
+                VisualStateManager.GoToState(chatControl, "OnlineState", true);
+                if (byUser)
+                    autoSignout.OnSignIn(displayName);
+            });
         }
         
-        void SignOut()
+        void SignOut(bool byUser)
         {
-            DestroyMonitor();
-            chatClient.Logout();
-            chatControl.ContactList.ChatContext = null;
-            clientViewModel = null;
-            this.DataContext = dummyViewModel;
-            VisualStateManager.GoToState(chatControl, "OfflineState", true);
-            chatControl.SignIn.txtdisplayName.Text = SettingsProvider.Current.Settings.PersonalSettings.DisplayName;
+            Dispatcher.Invoke(() =>
+            {
+                if (chatClient == null || !chatClient.LoggedIn)
+                    return;
+
+                DestroyMonitor();
+                chatClient.Logout();
+                chatControl.ContactList.ChatContext = null;
+                clientViewModel = null;
+                this.DataContext = dummyViewModel;
+                VisualStateManager.GoToState(chatControl, "OfflineState", true);
+                chatControl.SignIn.txtdisplayName.Text = SettingsProvider.Current.Settings.PersonalSettings.DisplayName;
+                if (byUser)
+                    autoSignout.OnSignOut();
+            });
         }
 
         void ToggleMainWindow()

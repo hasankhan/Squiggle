@@ -45,7 +45,7 @@ namespace Squiggle.Chat
 
             foreach (IPAddress ip in entry.AddressList)
             {
-                if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork && !ip.Equals(IPAddress.Loopback))
                     yield return ip;
             }
         }
