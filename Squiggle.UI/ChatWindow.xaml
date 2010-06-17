@@ -10,6 +10,20 @@
     Top="{local:SettingBinding ChatWindowTop}"
     Loaded="Window_Loaded" Closed="Window_Closed" FocusManager.FocusedElement="{Binding ElementName=editMessageBox}"
     Icon="/Squiggle;component/Images/chat.ico">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources\RoundButton.xaml" />
+                <ResourceDictionary>                  
+                    <Style x:Key="toolbarButton" BasedOn="{StaticResource RoundButton}" TargetType="{x:Type Button}">
+                        <Setter Property="Height" Value="25" />
+                        <Setter Property="Width" Value="25" />
+                        <Setter Property="Background" Value="#704682B4" />
+                    </Style>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>        
+    </Window.Resources>
     <Grid Background="#FFF3F3F3">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -69,18 +83,15 @@
                             </LinearGradientBrush>
                         </Border.Background>
                         <StackPanel Orientation="Horizontal" ToolTip="Send File">
-                            <Button Height="22" Margin="5,0,0,0" Grid.Row="1" Template="{DynamicResource BlueGlassButton}"  Click="SendFile_Click" Foreground="Black">
-                                <StackPanel HorizontalAlignment="Left" Width="Auto" Height="Auto" Orientation="Horizontal">
-                                    <Image Width="20" Height="20" Source="Images/Upload.png" Stretch="Fill"/>
-                                    <TextBlock Margin="5,0,10,0" VerticalAlignment="Center" FontSize="10" Text="Send File" TextWrapping="Wrap"/>
-                                </StackPanel>
+                            <Button Style="{StaticResource toolbarButton}" 
+                                    ToolTip="Send File"
+                                    Click="SendFile_Click" Foreground="Black">                                
+                                <Image Width="16" Height="16" Source="Images/Upload.png" Stretch="Fill"/>                                
                             </Button>
-
-                            <Button Height="22" Margin="5,0,0,0" Grid.Row="1" Template="{DynamicResource BlueGlassButton}"  Click="ChangeFont_Click" Foreground="Black">
-                                <StackPanel HorizontalAlignment="Left" Width="Auto" Height="Auto" Orientation="Horizontal">
-                                    <Image Width="20" Height="20" Source="Images/Upload.png" Stretch="Fill"/>
-                                    <TextBlock Margin="5,0,10,0" VerticalAlignment="Center" FontSize="10" Text="Change Font" TextWrapping="Wrap"/>
-                                </StackPanel>
+                            <Button Style="{StaticResource toolbarButton}" 
+                                    Margin="5,0,0,0" ToolTip="Change Font"
+                                    Click="ChangeFont_Click" Foreground="Black">
+                                <Image Width="16" Height="16" Source="Images/Font.png" Stretch="Fill"/>
                             </Button>
                         </StackPanel>
                     </Border>
