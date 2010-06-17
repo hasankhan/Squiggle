@@ -322,5 +322,17 @@ namespace Squiggle.UI.Properties {
                 this["FontColor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Regular")]
+        public string FontWeight {
+            get {
+                return ((string)(this["FontWeight"]));
+            }
+            set {
+                this["FontWeight"] = value;
+            }
+        }
     }
 }

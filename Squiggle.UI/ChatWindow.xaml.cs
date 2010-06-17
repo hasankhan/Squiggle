@@ -150,8 +150,7 @@ namespace Squiggle.UI
             using (var dlg = new System.Windows.Forms.FontDialog())
             {
                 var settings = SettingsProvider.Current.Settings.PersonalSettings;
-                dlg.Font = settings.Font;
-                //dlg.Font.Size = (float)settings.FontSize;
+                dlg.Font = new System.Drawing.Font(settings.Font.FontFamily.Name, settings.FontSize);
                 dlg.ShowColor = true;
 
                 dlg.Color = settings.FontColor;

@@ -91,6 +91,8 @@ namespace Squiggle.UI.Settings
             Settings.PersonalSettings.FontColor = Properties.Settings.Default.FontColor;
             Settings.PersonalSettings.FontSize = Properties.Settings.Default.FontSize;
             Settings.PersonalSettings.Font = Properties.Settings.Default.FontName;
+            Settings.PersonalSettings.FontWeight = Properties.Settings.Default.FontWeight;
+
         }
 
         private void SavePersonalSettings()
@@ -103,6 +105,7 @@ namespace Squiggle.UI.Settings
             Properties.Settings.Default.FontColor = Settings.PersonalSettings.FontColor;
             Properties.Settings.Default.FontSize = Settings.PersonalSettings.FontSize;
             Properties.Settings.Default.FontName = Settings.PersonalSettings.Font;
+            Properties.Settings.Default.FontWeight = Settings.PersonalSettings.FontWeight;
         }
 
         private void SaveConnectionSettings()

@@ -77,5 +77,8 @@
     <Setting Name="FontColor" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">Black</Value>
     </Setting>
+    <Setting Name="FontWeight" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Regular</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

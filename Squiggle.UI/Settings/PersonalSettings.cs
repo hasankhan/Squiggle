@@ -16,13 +16,16 @@ namespace Squiggle.UI.Settings
         public Font Font { get; set; }
         public int FontSize { get; set; }
         public Color FontColor { get; set; }
+        public string FontWeight { get; set; }
 
         public PersonalSettings()
         {
             Font = new Font(new FontFamily("Georgia"), 12);
             FontSize = 12;
             FontColor = System.Drawing.Color.Black;
+            FontWeight = "Regular";
             IdleTimeout = 5;
         }
+
     }
 }
