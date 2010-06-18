@@ -58,6 +58,12 @@ namespace Squiggle.Chat.Services.Chat.Host
             proxy.UserIsTyping(user);
         }
 
+        public void Buzz(IPEndPoint user)
+        {
+            EnsureProxy();
+            proxy.Buzz(user);
+        }
+
         public void ReceiveFileInvite(IPEndPoint user, Guid id, string name, int size)
         {
             EnsureProxy();
@@ -126,6 +132,12 @@ namespace Squiggle.Chat.Services.Chat.Host
             {
                 Trace.WriteLine("Sending typing notification to: " + user.ToString());
                 base.Channel.UserIsTyping(user);
+            }
+
+            public void Buzz(IPEndPoint user)
+            {
+                Trace.WriteLine("Sending buzz to: " + user.ToString());
+                base.Channel.Buzz(user);
             }
 
             public void ReceiveFileInvite(IPEndPoint user, Guid id, string name, int size)

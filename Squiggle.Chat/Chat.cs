@@ -21,6 +21,7 @@ namespace Squiggle.Chat
             this.session = session;
             session.MessageReceived += new EventHandler<Squiggle.Chat.Services.Chat.Host.MessageReceivedEventArgs>(session_MessageReceived);
             session.UserTyping += new EventHandler<Squiggle.Chat.Services.Chat.Host.UserEventArgs>(session_UserTyping);
+            session.BuzzReceived += new EventHandler<Squiggle.Chat.Services.Chat.Host.UserEventArgs>(session_BuzzReceived);
             session.TransferInvitationReceived += new EventHandler<Squiggle.Chat.Services.FileTransferInviteEventArgs>(session_TransferInvitationReceived);
         }        
 
@@ -36,6 +37,7 @@ namespace Squiggle.Chat
         public event EventHandler<BuddyEventArgs> BuddyJoined = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyLeft = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyTyping = delegate { };
+        public event EventHandler<BuddyEventArgs> BuzzReceived = delegate { };
         public event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived = delegate { };
 
         public void SendMessage(string fontName, int fontSize, Color color, string message)
@@ -88,6 +90,11 @@ namespace Squiggle.Chat
         {
             TransferInvitationReceived(this, new FileTransferInviteEventArgs() { Sender = buddy, Invitation = e.Invitation });
         }
+
+        void session_BuzzReceived(object sender, Squiggle.Chat.Services.Chat.Host.UserEventArgs e)
+        {
+            BuzzReceived(this, new BuddyEventArgs() { Buddy = buddy });
+        } 
 
         void session_UserTyping(object sender, Squiggle.Chat.Services.Chat.Host.UserEventArgs e)
         {

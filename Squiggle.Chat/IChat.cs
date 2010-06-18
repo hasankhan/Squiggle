@@ -34,8 +34,9 @@ namespace Squiggle.Chat
         IEnumerable<Buddy> Buddies { get; }
 
         event EventHandler<ChatMessageReceivedEventArgs> MessageReceived;
-        event EventHandler<BuddyEventArgs> BuddyJoined;
+        event EventHandler<BuddyEventArgs> BuddyJoined;        
         event EventHandler<BuddyEventArgs> BuddyLeft;
+        event EventHandler<BuddyEventArgs> BuzzReceived;
         event EventHandler<BuddyEventArgs> BuddyTyping;
         event EventHandler<MessageFailedEventArgs> MessageFailed;
         event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived;

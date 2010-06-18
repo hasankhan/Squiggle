@@ -13,6 +13,9 @@ namespace Squiggle.Chat.Services
     public interface IChatHost
     {
         [OperationContract]
+        void Buzz(IPEndPoint user);
+
+        [OperationContract]
         void UserIsTyping(IPEndPoint user);
 
         [OperationContract]

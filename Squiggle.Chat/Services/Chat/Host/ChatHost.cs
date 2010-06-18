@@ -48,6 +48,7 @@ namespace Squiggle.Chat.Services.Chat.Host
     {
         Message,
         Typing,
+        Buzz,
         TransferInvite
     }
 
@@ -60,6 +61,7 @@ namespace Squiggle.Chat.Services.Chat.Host
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)] 
     public class ChatHost: IChatHost
     {
+        public event EventHandler<UserEventArgs> BuzzReceived = delegate { };
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
         public event EventHandler<UserEventArgs> UserTyping = delegate { };
         public event EventHandler<FileTransferEventArgs> InvitationAccepted = delegate { };
@@ -69,6 +71,13 @@ namespace Squiggle.Chat.Services.Chat.Host
         public event EventHandler<UserActivityEventArgs> UserActivity = delegate { };
 
         #region IChatHost Members
+
+        public void Buzz(IPEndPoint user)
+        {
+            OnUserActivity(user, ActivityType.Buzz);
+            BuzzReceived(this, new UserEventArgs() { User = user });
+            Trace.WriteLine(user.ToString() + " is buzzing.");
+        }
 
         public void UserIsTyping(IPEndPoint user)
         {

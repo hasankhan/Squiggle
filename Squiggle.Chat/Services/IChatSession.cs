@@ -17,6 +17,7 @@ namespace Squiggle.Chat.Services
     public interface IChatSession
     {
         event EventHandler<MessageReceivedEventArgs> MessageReceived;
+        event EventHandler<UserEventArgs> BuzzReceived;
         event EventHandler<UserEventArgs> UserTyping;
         event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived;
 

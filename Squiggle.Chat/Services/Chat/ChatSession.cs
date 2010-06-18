@@ -18,6 +18,8 @@ namespace Squiggle.Chat.Services.Chat
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
         public event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived = delegate { };
         public event EventHandler<UserEventArgs> UserTyping = delegate { };
+        public event EventHandler<UserEventArgs> BuzzReceived = delegate { };
+
         public event EventHandler SessionEnded = delegate { };
 
         public IPEndPoint RemoteUser { get; set; }
@@ -31,6 +33,7 @@ namespace Squiggle.Chat.Services.Chat
             localHost.TransferInvitationReceived += new EventHandler<TransferInvitationReceivedEventArgs>(localHost_TransferInvitationReceived);
             localHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(host_MessageReceived);
             localHost.UserTyping += new EventHandler<UserEventArgs>(localHost_UserTyping);
+            localHost.BuzzReceived += new EventHandler<UserEventArgs>(localHost_BuzzReceived);
         }
 
         void localHost_TransferInvitationReceived(object sender, TransferInvitationReceivedEventArgs e)
@@ -48,6 +51,12 @@ namespace Squiggle.Chat.Services.Chat
                 UserTyping(this, e);
         }
 
+        void localHost_BuzzReceived(object sender, UserEventArgs e)
+        {
+            if (IsRemoteUser(e.User))
+                BuzzReceived(this, e);
+        }
+
         private bool IsRemoteUser(IPEndPoint iPEndPoint)
         {
             return iPEndPoint.Equals(RemoteUser);
@@ -57,6 +66,11 @@ namespace Squiggle.Chat.Services.Chat
         {
             if (IsRemoteUser(e.User))
                 MessageReceived(this, e);
+        }
+
+        public void SendBuzz()
+        {
+            remoteHost.Buzz(localUser);
         }
 
         public void NotifyTyping()
