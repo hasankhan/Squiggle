@@ -40,13 +40,13 @@ namespace Squiggle.Chat
         public event EventHandler<BuddyEventArgs> BuzzReceived = delegate { };
         public event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived = delegate { };
 
-        public void SendMessage(string fontName, int fontSize, Color color, string message)
+        public void SendMessage(string fontName, int fontSize, Color color, string fontStyle, bool bold, string message)
         {
             ThreadPool.QueueUserWorkItem(_ =>
             {
                 try
                 {
-                    session.SendMessage(fontName, fontSize, color, message);
+                    session.SendMessage(fontName, fontSize, color, fontStyle, bold, message);
                 }
                 catch (Exception ex)
                 {

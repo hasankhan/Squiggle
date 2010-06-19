@@ -54,11 +54,12 @@ namespace Squiggle.UI.Controls
 
         private void SetFont()
         {
-            var settings = SettingsProvider.Current.Settings.PersonalSettings;
-            txtMessage.FontFamily = new System.Windows.Media.FontFamily(settings.Font.FontFamily.Name);
-            System.Drawing.Color color = settings.FontColor;
-            txtMessage.FontSize = settings.FontSize;
-            txtMessage.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B));
+            var settings = SquiggleUtility.GetFontSettings();
+            txtMessage.FontFamily = settings.Family;
+            txtMessage.FontSize = settings.Size;
+            txtMessage.Foreground = settings.Foreground;
+            txtMessage.FontWeight = settings.Weight;
+            txtMessage.FontStyle = settings.Style;
         }
 
         private void btnSend_Click(object sender, RoutedEventArgs e)

@@ -31,6 +31,16 @@ namespace Squiggle.UI.Controls
             InitializeComponent();
         }
 
+        public void AddInfo(string info)
+        {
+            var errorText = new Run(info);
+            errorText.Foreground = new SolidColorBrush(Colors.DarkGray);
+            para.Inlines.Add(errorText);
+            para.Inlines.Add(new LineBreak());
+
+            sentMessages.FindScrollViewer().ScrollToBottom();
+        }
+
         public void AddError(string error, string detail)
         {
             var errorText = new Run(error);
@@ -46,10 +56,10 @@ namespace Squiggle.UI.Controls
             para.Inlines.Add(new LineBreak());
             para.Inlines.Add(new LineBreak());
 
-            sentMessages.FindScrollViewer().ScrollToBottom();            
+            sentMessages.FindScrollViewer().ScrollToBottom();
         }
 
-        public void AddMessage(string user, string message, string fontName, int fontSize, System.Drawing.Color color)
+        public void AddMessage(string user, string message, string fontName, int fontSize, string fontStyle, bool bold, System.Drawing.Color color)
         {
             var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
 
@@ -60,13 +70,17 @@ namespace Squiggle.UI.Controls
                 para.Inlines.Add(item);
             }
             items = ParseText(message);
+            var fontsettings = new FontSetting(color, fontName, fontSize, fontStyle, bold);
             foreach (var item in items)
             {
-                item.FontFamily = new System.Windows.Media.FontFamily(fontName);
-                item.FontSize = fontSize;
-                item.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B));
+                item.FontFamily = fontsettings.Family;
+                item.FontSize = fontsettings.Size;
+                item.Foreground = fontsettings.Foreground;
+                item.FontStyle = fontsettings.Style;
+                item.FontWeight = fontsettings.Weight;
                 para.Inlines.Add(item);
             }
+
             para.Inlines.AddRange(items);
             para.Inlines.Add(new LineBreak());
             sentMessages.FindScrollViewer().ScrollToBottom();
@@ -93,7 +107,7 @@ namespace Squiggle.UI.Controls
         {
             var range = new TextRange(sentMessages.Document.ContentStart, sentMessages.Document.ContentEnd);
             using (var stream = new FileStream(fileName, FileMode.OpenOrCreate))
-                    range.Save(stream, DataFormats.Rtf);
+                range.Save(stream, DataFormats.Rtf);
         }
 
         static List<Inline> ParseText(string message)
@@ -135,6 +149,6 @@ namespace Squiggle.UI.Controls
             Shell.OpenUrl(link.NavigateUri.AbsoluteUri);
         }
 
-
     }
+    
 }

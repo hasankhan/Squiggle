@@ -76,10 +76,10 @@ namespace Squiggle.Chat.Services.Chat.Host
             proxy.ReceiveFileContent(id, chunk);
         }
 
-        public void ReceiveMessage(IPEndPoint user, string fontName, int fontSize, Color color, string message)
+        public void ReceiveMessage(IPEndPoint user, string fontName, int fontSize, Color color, string fontStyle, bool bold, string message)
         {
             EnsureProxy();
-            proxy.ReceiveMessage(user, fontName, fontSize, color, message);
+            proxy.ReceiveMessage(user, fontName, fontSize, color, fontStyle, bold, message);
         }
 
         public void AcceptFileInvite(Guid id)
@@ -164,10 +164,10 @@ namespace Squiggle.Chat.Services.Chat.Host
                 base.Channel.CancelFileTransfer(id);
             }
 
-            public void ReceiveMessage(IPEndPoint user, string fontName, int fontSize, Color color, string message)
+            public void ReceiveMessage(IPEndPoint user, string fontName, int fontSize, Color color, string fontStyle, bool bold, string message)
             {
                 Trace.WriteLine("Sending message to: " + user.ToString() + ", message = " + message);
-                base.Channel.ReceiveMessage(user, fontName, fontSize, color, message);
+                base.Channel.ReceiveMessage(user, fontName, fontSize, color, fontStyle, bold, message);
             }
 
             #endregion

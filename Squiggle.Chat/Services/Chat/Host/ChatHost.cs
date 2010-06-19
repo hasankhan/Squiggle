@@ -17,6 +17,8 @@ namespace Squiggle.Chat.Services.Chat.Host
         public string FontName { get; set; }
         public int FontSize { get; set; }
         public Color Color { get; set; }
+        public string FontStyle { get; set; }
+        public bool Bold { get; set; }
         public string Message { get; set; }
     }
 
@@ -99,13 +101,15 @@ namespace Squiggle.Chat.Services.Chat.Host
             });
         }
 
-        public void ReceiveMessage(IPEndPoint user, string fontName, int fontSize, Color color, string message)
+        public void ReceiveMessage(IPEndPoint user, string fontName, int fontSize, Color color, string fontStyle, bool bold, string message)
         {
             OnUserActivity(user, ActivityType.Message);
             MessageReceived(this, new MessageReceivedEventArgs() { User = user, 
                                                                    FontName = fontName,
                                                                    FontSize = fontSize,
                                                                    Color = color,
+                                                                   FontStyle = fontStyle,
+                                                                   Bold = bold,
                                                                    Message = message });
             Trace.WriteLine("Message received from: " + user.ToString() + ", message = " + message);
         }

@@ -89,9 +89,10 @@ namespace Squiggle.UI.Settings
             Settings.PersonalSettings.AutoSignMeIn = Properties.Settings.Default.AutoSignIn;
             Settings.PersonalSettings.IdleTimeout = Properties.Settings.Default.IdleTimeout;
             Settings.PersonalSettings.FontColor = Properties.Settings.Default.FontColor;
+            Settings.PersonalSettings.FontStyle = Properties.Settings.Default.FontStyle;
             Settings.PersonalSettings.FontSize = Properties.Settings.Default.FontSize;
             Settings.PersonalSettings.Font = Properties.Settings.Default.FontName;
-            Settings.PersonalSettings.FontWeight = Properties.Settings.Default.FontWeight;
+            Settings.PersonalSettings.BoldFont = Properties.Settings.Default.BoldFont;
 
         }
 
@@ -103,9 +104,10 @@ namespace Squiggle.UI.Settings
             Properties.Settings.Default.AutoSignIn = Settings.PersonalSettings.AutoSignMeIn;
             Properties.Settings.Default.IdleTimeout = Settings.PersonalSettings.IdleTimeout;
             Properties.Settings.Default.FontColor = Settings.PersonalSettings.FontColor;
+            Properties.Settings.Default.FontStyle = Settings.PersonalSettings.FontStyle;
             Properties.Settings.Default.FontSize = Settings.PersonalSettings.FontSize;
             Properties.Settings.Default.FontName = Settings.PersonalSettings.Font;
-            Properties.Settings.Default.FontWeight = Settings.PersonalSettings.FontWeight;
+            Properties.Settings.Default.BoldFont = Settings.PersonalSettings.BoldFont;
         }
 
         private void SaveConnectionSettings()

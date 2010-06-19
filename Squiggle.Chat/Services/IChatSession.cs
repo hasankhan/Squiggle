@@ -24,7 +24,7 @@ namespace Squiggle.Chat.Services
         IPEndPoint RemoteUser { get; set; }
 
         void SendBuzz();
-        void SendMessage(string fontName, int fontSize, Color color, string message);
+        void SendMessage(string fontName, int fontSize, Color color, string fontStyle, bool bold, string message);
         void NotifyTyping();
         IFileTransfer SendFile(string name, Stream content);
         void End();

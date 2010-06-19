@@ -14,6 +14,8 @@ namespace Squiggle.Chat
         public string FontName { get; set; }
         public int FontSize { get; set; }
         public Color Color { get; set; }
+        public string FontStyle { get; set; }
+        public bool Bold { get; set; }
         public string Message { get; set; }
     }
 
@@ -43,7 +45,7 @@ namespace Squiggle.Chat
 
         void NotifyTyping();
         void SendBuzz();
-        void SendMessage(string fontName, int fontSize, Color color, string Message);
+        void SendMessage(string fontName, int fontSize, Color color, string style, bool bold, string Message);
         IFileTransfer SendFile(string name, Stream content);
         void Leave();
     }

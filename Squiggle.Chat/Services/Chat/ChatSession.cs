@@ -86,9 +86,9 @@ namespace Squiggle.Chat.Services.Chat
             return transfer;
         }
 
-        public void SendMessage(string fontName, int fontSize, Color color, string message)
+        public void SendMessage(string fontName, int fontSize, Color color, string fontStyle, bool bold, string message)
         {
-            remoteHost.ReceiveMessage(localUser, fontName, fontSize, color, message);
+            remoteHost.ReceiveMessage(localUser, fontName, fontSize, color, fontStyle, bold, message);
         }
 
         public void End()

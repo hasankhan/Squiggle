@@ -325,13 +325,25 @@ namespace Squiggle.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Regular")]
-        public string FontWeight {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool BoldFont {
             get {
-                return ((string)(this["FontWeight"]));
+                return ((bool)(this["BoldFont"]));
             }
             set {
-                this["FontWeight"] = value;
+                this["BoldFont"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("\"Regular\"")]
+        public string FontStyle {
+            get {
+                return ((string)(this["FontStyle"]));
+            }
+            set {
+                this["FontStyle"] = value;
             }
         }
     }
