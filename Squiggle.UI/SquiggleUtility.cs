@@ -8,6 +8,7 @@ using System.Diagnostics;
 using Squiggle.Chat;
 using System.Reflection;
 using System.Windows;
+using System.Threading;
 
 namespace Squiggle.UI
 {
@@ -63,6 +64,26 @@ Contact:       info@overroot.com
 Website:       www.overroot.com";
             about = String.Format(about, Assembly.GetExecutingAssembly().GetName().Version.ToString(3));
             MessageBox.Show(about, "About Squiggle Messenger", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        public static void ShakeWindow(ChatWindow window)
+        {            
+            if (window.WindowState != System.Windows.WindowState.Minimized)
+            {
+                var rand = new Random();
+                double top = window.Top;
+                double left = window.Left;
+
+                for (int i = 0; i < 10; i++)
+                {
+                    window.Top = top + rand.Next(-100, 100);
+                    window.Left = left + rand.Next(-100, 100);
+                    Thread.Sleep(10);                    
+                }
+
+                window.Top = top;
+                window.Left = left;
+            }
         }
     }
 }

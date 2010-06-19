@@ -42,6 +42,7 @@ namespace Squiggle.Chat
         event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived;
 
         void NotifyTyping();
+        void SendBuzz();
         void SendMessage(string fontName, int fontSize, Color color, string Message);
         IFileTransfer SendFile(string name, Stream content);
         void Leave();

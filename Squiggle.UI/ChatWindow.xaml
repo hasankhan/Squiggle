@@ -93,6 +93,11 @@
                                     Click="ChangeFont_Click" Foreground="Black">
                                 <Image Width="16" Height="16" Source="Images/Font.png" Stretch="Fill"/>
                             </Button>
+                            <Button Style="{StaticResource toolbarButton}" 
+                                    Margin="5,0,0,0" ToolTip="Send Buzz"
+                                    Click="SendBuzz_Click" Foreground="Black">
+                                <Image Width="16" Height="16" Source="Images/Buzz.png" Stretch="Fill"/>
+                            </Button>
                         </StackPanel>
                     </Border>
                     <controls:MessageEditBox FileDropped="editMessageBox_FileDropped" Focusable="True" TabIndex="0"

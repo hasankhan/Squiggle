@@ -6,6 +6,7 @@ using Squiggle.UI.Controls;
 using System.Windows.Threading;
 using System.IO;
 using Squiggle.UI.Settings;
+using System.Threading;
 
 namespace Squiggle.UI
 {
@@ -20,9 +21,13 @@ namespace Squiggle.UI
         DateTime? lastMessageReceived;
         DispatcherTimer statusResetTimer;
         EventQueue eventQueue = new EventQueue();
+        DateTime? lastBuzzSent;
+        DateTime? lastBuzzReceived;
+
         bool loaded;
         string lastSavedFile;
         string lastSavedFormat;
+        bool buzzPending;
 
         public ChatWindow()
         {
@@ -57,6 +62,7 @@ namespace Squiggle.UI
             {
                 chatSession = value;
                 this.DataContext = value;
+                chatSession.BuzzReceived += new EventHandler<BuddyEventArgs>(chatSession_BuzzReceived);
                 chatSession.MessageReceived += new EventHandler<ChatMessageReceivedEventArgs>(chatSession_MessageReceived);
                 chatSession.BuddyJoined += new EventHandler<BuddyEventArgs>(chatSession_BuddyJoined);
                 chatSession.BuddyLeft += new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
@@ -64,7 +70,7 @@ namespace Squiggle.UI
                 chatSession.BuddyTyping += new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
                 chatSession.TransferInvitationReceived += new EventHandler<FileTransferInviteEventArgs>(chatSession_TransferInvitationReceived);
             }
-        }        
+        }            
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -75,18 +81,30 @@ namespace Squiggle.UI
 
         void ChatWindow_Activated(object sender, EventArgs e)
         {
-            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            Dispatcher.Invoke(() =>
             {
                 editMessageBox.GetFocus();
-            }));
+            });
         }
 
         void ChatWindow_StateChanged(object sender, EventArgs e)
         {
-            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            Dispatcher.Invoke(() =>
             {
-                editMessageBox.GetFocus();
-            }));
+                if (this.WindowState != System.Windows.WindowState.Minimized)
+                {
+                    editMessageBox.GetFocus();
+                    if (buzzPending)
+                    {
+                        ThreadPool.QueueUserWorkItem(_ =>
+                        {
+                            Thread.Sleep(500);
+                            Dispatcher.Invoke(() => SquiggleUtility.ShakeWindow(this));
+                        });
+                        buzzPending = false;
+                    }
+                }
+            });
         }
 
         void ChatWindow_KeyDown(object sender, KeyEventArgs e)
@@ -98,27 +116,6 @@ namespace Squiggle.UI
         private void Window_Closed(object sender, EventArgs e)
         {
             chatSession.Leave();
-        }
-
-        void OnTransferInvite(FileTransferInviteEventArgs e)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                string downloadsFolder = SettingsProvider.Current.Settings.GeneralSettings.DownloadsFolder;
-                chatTextBox.AddFileReceiveRequest(e.Sender.DisplayName, e.Invitation, downloadsFolder);
-                FlashWindow();
-            });
-        }
-
-        void OnMessageReceived(Buddy buddy, string message, string fontName, System.Drawing.Color color, int fontSize)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                lastMessageReceived = DateTime.Now;
-                chatTextBox.AddMessage(buddy.DisplayName, message, fontName, fontSize, color);
-                ResetStatus();
-                FlashWindow();
-            });
         }        
 
         private void txtMessage_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -170,6 +167,52 @@ namespace Squiggle.UI
             }
         }
 
+        private void editMessageBox_FileDropped(object sender, FileDroppedEventArgs e)
+        {
+            foreach (string file in e.Files)
+                SendFile(file);
+        }
+
+        private void OpenReceivedFilesMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SquiggleUtility.OpenDownloadsFolder();
+        }
+
+        private void SettingsMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SquiggleUtility.ShowSettingsDialog(this);
+        }
+
+        private void AboutMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SquiggleUtility.ShowAboutDialog();
+        }
+
+        private void SendFileMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SendFile();
+        }
+
+        private void SendBuzz_Click(object sender, RoutedEventArgs e)
+        {
+            SendBuzz();
+        }
+
+        private void CloseMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void SaveMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Save();
+        }
+
+        private void SaveAsMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SaveAs();
+        }
+
         public void SendFile()
         {
             using (var dialog = new System.Windows.Forms.OpenFileDialog())
@@ -199,7 +242,17 @@ namespace Squiggle.UI
                 return;
             }
             OnTransferInvite(e);
-        }        
+        }
+
+        void chatSession_BuzzReceived(object sender, BuddyEventArgs e)
+        {
+            if (!loaded)
+            {
+                eventQueue.Enqueue(sender, e, chatSession_BuzzReceived);
+                return;
+            }
+            OnBuzzReceived(e.Buddy);
+        }           
 
         void chatSession_MessageReceived(object sender, ChatMessageReceivedEventArgs e)
         {
@@ -284,55 +337,59 @@ namespace Squiggle.UI
             });
         }
 
+        void OnBuzzReceived(Buddy buddy)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (lastBuzzReceived == null || DateTime.Now.Subtract(lastBuzzReceived.Value).TotalSeconds > 5)
+                {
+                    //chatTextBox.AddInfo(String.Format("{0} sent you a buzz.", buddy.DisplayName));
+                    if (this.WindowState != System.Windows.WindowState.Minimized)
+                        SquiggleUtility.ShakeWindow(this);
+                    else
+                        buzzPending = true;
+                    FlashWindow();
+                    lastBuzzReceived = DateTime.Now;
+                }
+            });
+        }
+
+        void OnMessageReceived(Buddy buddy, string message, string fontName, System.Drawing.Color color, int fontSize)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                lastMessageReceived = DateTime.Now;
+                chatTextBox.AddMessage(buddy.DisplayName, message, fontName, fontSize, color);
+                ResetStatus();
+                FlashWindow();
+            });
+        }
+
+        void OnTransferInvite(FileTransferInviteEventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                string downloadsFolder = SettingsProvider.Current.Settings.GeneralSettings.DownloadsFolder;
+                chatTextBox.AddFileReceiveRequest(e.Sender.DisplayName, e.Invitation, downloadsFolder);
+                FlashWindow();
+            });
+        }        
+
         void OnBuddyJoined()
         {
             Dispatcher.Invoke(() => txtUserLeftMessage.Visibility = Visibility.Hidden);
-        }               
+        }                       
 
-        void ResetStatus()
+        public void SendBuzz()
         {
-            statusResetTimer.Stop();
-            if (!lastMessageReceived.HasValue)
-                ChangeStatus(String.Empty);
+            if (lastBuzzSent == null || DateTime.Now.Subtract(lastBuzzSent.Value).TotalSeconds > 5)
+            {
+                //chatTextBox.AddInfo("You have sent a buzz.");
+                chatSession.SendBuzz();
+                lastBuzzSent = DateTime.Now;
+            }
             else
-                ChangeStatus("Last message received at " + String.Format("{0:T} on {0:d}", lastMessageReceived));
-        }
-
-        void ChangeStatus(string message, params object[] args)
-        {
-            txbStatus.Text = String.Format(message, args);
-        }
-
-        void FlashWindow()
-        {
-            if (!this.IsActive)
-                flash.Start();
-        }
-
-        private void editMessageBox_FileDropped(object sender, FileDroppedEventArgs e)
-        {
-            foreach (string file in e.Files)
-                SendFile(file);
-        }
-
-        private void OpenReceivedFilesMenu_Click(object sender, RoutedEventArgs e)
-        {
-            SquiggleUtility.OpenDownloadsFolder();
-        }
-
-        private void CloseMenu_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-        private void SaveMenu_Click(object sender, RoutedEventArgs e)
-        {
-            Save();
-        }
-
-        private void SaveAsMenu_Click(object sender, RoutedEventArgs e)
-        {
-            SaveAs();
+                chatTextBox.AddError("Buzz can not be sent too frequently.", String.Empty);
         }
 
         public void SaveAs()
@@ -366,7 +423,27 @@ namespace Squiggle.UI
                 else
                     richTextBox.SaveFile(fileName, System.Windows.Forms.RichTextBoxStreamType.PlainText);
             }
-        }        
+        }
+
+        void ChangeStatus(string message, params object[] args)
+        {
+            txbStatus.Text = String.Format(message, args);
+        }
+
+        void ResetStatus()
+        {
+            statusResetTimer.Stop();
+            if (!lastMessageReceived.HasValue)
+                ChangeStatus(String.Empty);
+            else
+                ChangeStatus("Last message received at " + String.Format("{0:T} on {0:d}", lastMessageReceived));
+        }
+
+        void FlashWindow()
+        {
+            if (!this.IsActive)
+                flash.Start();
+        }
 
         static bool ShowSaveDialog(out string fileName, out string format)
         {
@@ -387,21 +464,6 @@ namespace Squiggle.UI
             fileName = null;
             format = null;
             return false;
-        }
-
-        private void SettingsMenu_Click(object sender, RoutedEventArgs e)
-        {
-            SquiggleUtility.ShowSettingsDialog(this);
-        }
-
-        private void AboutMenu_Click(object sender, RoutedEventArgs e)
-        {
-            SquiggleUtility.ShowAboutDialog();
-        }
-
-        private void SendFileMenu_Click(object sender, RoutedEventArgs e)
-        {
-            SendFile();
-        }
+        }        
     }
 }

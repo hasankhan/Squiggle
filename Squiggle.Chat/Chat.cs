@@ -74,6 +74,11 @@ namespace Squiggle.Chat
             });
         }
 
+        public void SendBuzz()
+        {
+            session.SendBuzz();
+        }
+
         public IFileTransfer SendFile(string name, Stream content)
         {
             return session.SendFile(name, content);            

@@ -289,16 +289,7 @@
     <Resource Include="Images\info.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\webcam.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\man.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Distortions.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ITEVENT.PNG" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Squiggle.Chat\Squiggle.Chat.csproj">
@@ -321,6 +312,7 @@
     <Resource Include="Images\Contacts.png" />
     <Resource Include="Images\Upload.png" />
     <Resource Include="Images\font.png" />
+    <Resource Include="Images\Buzz.png" />
     <Content Include="Lib\WPFToolkit.dll" />
   </ItemGroup>
   <ItemGroup>
