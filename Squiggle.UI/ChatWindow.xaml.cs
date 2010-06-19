@@ -127,9 +127,10 @@ namespace Squiggle.UI
 
         private void txtMessageEditBox_MessageSend(object sender, MessageSendEventArgs e)
         {
+            string displayName = MainWindow.Instance.ChatClient == null ? "You" : MainWindow.Instance.ChatClient.CurrentUser.DisplayName;
             var settings = SettingsProvider.Current.Settings.PersonalSettings;
             chatSession.SendMessage(settings.Font.Name, settings.FontSize, settings.FontColor, settings.FontStyle, settings.BoldFont, e.Message);
-            chatTextBox.AddMessage("Me", e.Message, settings.Font.Name, settings.FontSize, settings.FontStyle, settings.BoldFont, settings.FontColor);
+            chatTextBox.AddMessage(displayName, e.Message, settings.Font.Name, settings.FontSize, settings.FontStyle, settings.BoldFont, settings.FontColor);
         }
 
         private void txtMessageEditBox_MessageTyping(object sender, EventArgs e)

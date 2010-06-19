@@ -49,11 +49,12 @@ namespace Squiggle.UI.Controls
             var detailText = new Run(detail);
             detailText.Foreground = new SolidColorBrush(Colors.Gray);
 
-            para.Inlines.Add(new LineBreak());
             para.Inlines.Add(errorText);
-            para.Inlines.Add(new LineBreak());
-            para.Inlines.Add(detailText);
-            para.Inlines.Add(new LineBreak());
+            if (!String.IsNullOrEmpty(detail))
+            {
+                para.Inlines.Add(new LineBreak());
+                para.Inlines.Add(detailText);
+            }            
             para.Inlines.Add(new LineBreak());
 
             sentMessages.FindScrollViewer().ScrollToBottom();
@@ -63,12 +64,14 @@ namespace Squiggle.UI.Controls
         {
             var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
 
-            var items = ParseText(user + ": ");
+            string text = String.Format("{0} said ({1}): ", user, DateTime.Now.ToShortTimeString());
+            var items = ParseText(text);
             foreach (var item in items)
             {
-                item.FontWeight = FontWeights.Bold;
+                item.Foreground = Brushes.Gray;
                 para.Inlines.Add(item);
             }
+            para.Inlines.Add(new LineBreak());
             items = ParseText(message);
             var fontsettings = new FontSetting(color, fontName, fontSize, fontStyle, bold);
             foreach (var item in items)

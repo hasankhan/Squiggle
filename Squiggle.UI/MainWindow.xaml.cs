@@ -18,7 +18,6 @@ namespace Squiggle.UI
     public partial class MainWindow : Window
     {
         WindowState lastState;
-        IChatClient chatClient;
         ClientViewModel clientViewModel;
         UserActivityMonitor activityMonitor;
         UserStatus lastStatus;
@@ -27,6 +26,7 @@ namespace Squiggle.UI
         NetworkSignout autoSignout;
 
         public static MainWindow Instance { get; private set; }
+        public IChatClient ChatClient { get; private set; }
 
         bool exiting;
 
@@ -148,12 +148,12 @@ namespace Squiggle.UI
         {
             Dispatcher.Invoke(() =>
             {
-                if (chatClient != null && chatClient.LoggedIn)
+                if (ChatClient != null && ChatClient.LoggedIn)
                     return;
 
                 try
                 {
-                    chatClient = CreateClient(displayName);
+                    ChatClient = CreateClient(displayName);
                 }
                 catch (Exception ex)
                 {
@@ -162,7 +162,7 @@ namespace Squiggle.UI
                 }
 
                 CreateMonitor();
-                clientViewModel = new ClientViewModel(chatClient);
+                clientViewModel = new ClientViewModel(ChatClient);
                 this.DataContext = clientViewModel;
                 chatControl.ChatContext = clientViewModel;
 
@@ -176,11 +176,11 @@ namespace Squiggle.UI
         {
             Dispatcher.Invoke(() =>
             {
-                if (chatClient == null || !chatClient.LoggedIn)
+                if (ChatClient == null || !ChatClient.LoggedIn)
                     return;
 
                 DestroyMonitor();
-                chatClient.Logout();
+                ChatClient.Logout();
                 chatControl.ContactList.ChatContext = null;
                 clientViewModel = null;
                 this.DataContext = dummyViewModel;
@@ -210,16 +210,16 @@ namespace Squiggle.UI
             activityMonitor = new UserActivityMonitor(timeout);
             activityMonitor.Idle += (sender, e) =>
             {
-                if (chatClient.LoggedIn)
+                if (ChatClient.LoggedIn)
                 {
-                    lastStatus = chatClient.CurrentUser.Status;
-                    chatClient.CurrentUser.Status = UserStatus.Idle;
+                    lastStatus = ChatClient.CurrentUser.Status;
+                    ChatClient.CurrentUser.Status = UserStatus.Idle;
                 }
             };
             activityMonitor.Active += (sender, e) =>
             {
-                if (chatClient.LoggedIn)
-                    chatClient.CurrentUser.Status = lastStatus;
+                if (ChatClient.LoggedIn)
+                    ChatClient.CurrentUser.Status = lastStatus;
             };
             activityMonitor.Start();
         }
