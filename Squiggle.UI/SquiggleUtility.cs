@@ -110,5 +110,13 @@ Website:       www.overroot.com";
                 window.Left = left;
             }
         }
+
+        public static FontSetting GetFontSettings()
+        {
+            var settings = SettingsProvider.Current.Settings.PersonalSettings;
+            var fontSettings = new FontSetting(settings.FontColor, settings.Font.FontFamily.Name, settings.FontSize, settings.Font.Style.ToString(), settings.BoldFont);
+
+            return fontSettings;
+        }
     }
 }

@@ -128,8 +128,8 @@ namespace Squiggle.UI
         private void txtMessageEditBox_MessageSend(object sender, MessageSendEventArgs e)
         {
             var settings = SettingsProvider.Current.Settings.PersonalSettings;
-            chatSession.SendMessage(settings.Font.Name, settings.FontSize, settings.FontColor, e.Message);
-            chatTextBox.AddMessage("Me", e.Message, settings.Font.Name, settings.FontSize, settings.FontColor);
+            chatSession.SendMessage(settings.Font.Name, settings.FontSize, settings.FontColor, settings.FontStyle, settings.BoldFont, e.Message);
+            chatTextBox.AddMessage("Me", e.Message, settings.Font.Name, settings.FontSize, settings.FontStyle, settings.BoldFont, settings.FontColor);
         }
 
         private void txtMessageEditBox_MessageTyping(object sender, EventArgs e)
@@ -223,7 +223,7 @@ namespace Squiggle.UI
                 eventQueue.Enqueue(sender, e, chatSession_MessageReceived);
                 return;
             }
-            OnMessageReceived(e.Sender, e.Message, e.FontName, e.Color, e.FontSize);
+            OnMessageReceived(e.Sender, e.Message, e.FontName, e.Color, e.FontSize, e.FontStyle, e.Bold);
         }
 
         void chatSession_BuddyTyping(object sender, BuddyEventArgs e)
@@ -305,7 +305,7 @@ namespace Squiggle.UI
             {
                 if (lastBuzzReceived == null || DateTime.Now.Subtract(lastBuzzReceived.Value).TotalSeconds > 5)
                 {
-                    //chatTextBox.AddInfo(String.Format("{0} sent you a buzz.", buddy.DisplayName));
+                    chatTextBox.AddInfo(String.Format("{0} sent you a buzz.", buddy.DisplayName));
                     if (this.WindowState != System.Windows.WindowState.Minimized)
                         SquiggleUtility.ShakeWindow(this);
                     else
@@ -316,12 +316,12 @@ namespace Squiggle.UI
             });
         }
 
-        void OnMessageReceived(Buddy buddy, string message, string fontName, System.Drawing.Color color, int fontSize)
+        void OnMessageReceived(Buddy buddy, string message, string fontName, System.Drawing.Color color, int fontSize, string fontStyle, bool bold)
         {
             Dispatcher.Invoke(() =>
             {
                 lastMessageReceived = DateTime.Now;
-                chatTextBox.AddMessage(buddy.DisplayName, message, fontName, fontSize, color);
+                chatTextBox.AddMessage(buddy.DisplayName, message, fontName, fontSize, fontStyle, bold, color);
                 ResetStatus();
                 FlashWindow();
             });
@@ -346,7 +346,7 @@ namespace Squiggle.UI
         {
             if (lastBuzzSent == null || DateTime.Now.Subtract(lastBuzzSent.Value).TotalSeconds > 5)
             {
-                //chatTextBox.AddInfo("You have sent a buzz.");
+                chatTextBox.AddInfo("You have sent a buzz.");
                 chatSession.SendBuzz();
                 lastBuzzSent = DateTime.Now;
             }
