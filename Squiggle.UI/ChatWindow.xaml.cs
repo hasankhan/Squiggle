@@ -46,7 +46,7 @@ namespace Squiggle.UI
 
         void LoadSettings()
         {
-            editMessageBox.txtMessage.SpellCheck.IsEnabled = SettingsProvider.Current.Settings.GeneralSettings.SpellCheck;
+            txtMessageEditBox.txtMessage.SpellCheck.IsEnabled = SettingsProvider.Current.Settings.GeneralSettings.SpellCheck;
         }
 
         public ChatWindow(Buddy buddy, IChat chatSession) : this()
@@ -83,7 +83,7 @@ namespace Squiggle.UI
         {
             Dispatcher.Invoke(() =>
             {
-                editMessageBox.GetFocus();
+                txtMessageEditBox.GetFocus();
             });
         }
 
@@ -93,7 +93,7 @@ namespace Squiggle.UI
             {
                 if (this.WindowState != System.Windows.WindowState.Minimized)
                 {
-                    editMessageBox.GetFocus();
+                    txtMessageEditBox.GetFocus();
                     if (buzzPending)
                     {
                         ThreadPool.QueueUserWorkItem(_ =>
@@ -125,14 +125,14 @@ namespace Squiggle.UI
                     e.Handled = true;
         }
 
-        private void editMessageBox_MessageSend(object sender, MessageSendEventArgs e)
+        private void txtMessageEditBox_MessageSend(object sender, MessageSendEventArgs e)
         {
             var settings = SettingsProvider.Current.Settings.PersonalSettings;
             chatSession.SendMessage(settings.Font.Name, settings.FontSize, settings.FontColor, e.Message);
             chatTextBox.AddMessage("Me", e.Message, settings.Font.Name, settings.FontSize, settings.FontColor);
         }
 
-        private void editMessageBox_MessageTyping(object sender, EventArgs e)
+        private void txtMessageEditBox_MessageTyping(object sender, EventArgs e)
         {
             chatSession.NotifyTyping();
         }
@@ -140,34 +140,22 @@ namespace Squiggle.UI
         private void SendFile_Click(object sender, RoutedEventArgs e)
         {
             SendFile();
+            txtMessageEditBox.GetFocus();
         }
 
         private void ChangeFont_Click(object sender, RoutedEventArgs e)
         {
-            using (var dlg = new System.Windows.Forms.FontDialog())
-            {
-                var settings = SettingsProvider.Current.Settings.PersonalSettings;
-                dlg.Font = new System.Drawing.Font(settings.Font.FontFamily.Name, settings.FontSize);
-                dlg.ShowColor = true;
-
-                dlg.Color = settings.FontColor;
-
-                if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    System.Drawing.Font font = dlg.Font;
-                    float fontSize = dlg.Font.Size;
-                    System.Drawing.Color fontColor = dlg.Color;
-
-                    settings.FontColor = fontColor;
-                    settings.Font = font;
-                    settings.FontSize = Convert.ToInt32(fontSize);
-
-                    SettingsProvider.Current.Save();
-                }
-            }
+            SquiggleUtility.ShowFontDialog();
+            txtMessageEditBox.GetFocus();
         }
 
-        private void editMessageBox_FileDropped(object sender, FileDroppedEventArgs e)
+        private void SendBuzz_Click(object sender, RoutedEventArgs e)
+        {
+            SendBuzz();
+            txtMessageEditBox.GetFocus();
+        }
+
+        private void txtMessageEditBox_FileDropped(object sender, FileDroppedEventArgs e)
         {
             foreach (string file in e.Files)
                 SendFile(file);
@@ -191,12 +179,7 @@ namespace Squiggle.UI
         private void SendFileMenu_Click(object sender, RoutedEventArgs e)
         {
             SendFile();
-        }
-
-        private void SendBuzz_Click(object sender, RoutedEventArgs e)
-        {
-            SendBuzz();
-        }
+        }        
 
         private void CloseMenu_Click(object sender, RoutedEventArgs e)
         {
@@ -211,27 +194,6 @@ namespace Squiggle.UI
         private void SaveAsMenu_Click(object sender, RoutedEventArgs e)
         {
             SaveAs();
-        }
-
-        public void SendFile()
-        {
-            using (var dialog = new System.Windows.Forms.OpenFileDialog())
-            {
-                dialog.CheckFileExists = true;
-                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    SendFile(dialog.FileName);
-            }
-        }
-
-        public void SendFile(string filePath)
-        {
-            if (File.Exists(filePath))
-            {
-                var fileStream = File.OpenRead(filePath);
-                string fileName = Path.GetFileName(filePath);
-                IFileTransfer fileTransfer = chatSession.SendFile(fileName, fileStream);
-                chatTextBox.AddFileSentRequest(fileTransfer);
-            }
         }
 
         void chatSession_TransferInvitationReceived(object sender, FileTransferInviteEventArgs e)
@@ -390,6 +352,27 @@ namespace Squiggle.UI
             }
             else
                 chatTextBox.AddError("Buzz can not be sent too frequently.", String.Empty);
+        }        
+
+        public void SendFile()
+        {
+            using (var dialog = new System.Windows.Forms.OpenFileDialog())
+            {
+                dialog.CheckFileExists = true;
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    SendFile(dialog.FileName);
+            }
+        }
+
+        public void SendFile(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                var fileStream = File.OpenRead(filePath);
+                string fileName = Path.GetFileName(filePath);
+                IFileTransfer fileTransfer = chatSession.SendFile(fileName, fileStream);
+                chatTextBox.AddFileSentRequest(fileTransfer);
+            }
         }
 
         public void SaveAs()

@@ -38,6 +38,31 @@ namespace Squiggle.UI
             }
         }
 
+        public static void ShowFontDialog()
+        {
+            using (var dialog = new System.Windows.Forms.FontDialog())
+            {
+                var settings = SettingsProvider.Current.Settings.PersonalSettings;
+                dialog.Font = new System.Drawing.Font(settings.Font.FontFamily.Name, settings.FontSize);
+                dialog.ShowColor = true;
+
+                dialog.Color = settings.FontColor;
+
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    System.Drawing.Font font = dialog.Font;
+                    float fontSize = dialog.Font.Size;
+                    System.Drawing.Color fontColor = dialog.Color;
+
+                    settings.FontColor = fontColor;
+                    settings.Font = font;
+                    settings.FontSize = Convert.ToInt32(fontSize);
+
+                    SettingsProvider.Current.Save();
+                }
+            }
+        }
+
         public static void ShowSettingsDialog(Window owner)
         {
             Buddy user = null;

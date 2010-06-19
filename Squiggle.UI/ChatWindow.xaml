@@ -8,7 +8,7 @@
     Width="{local:SettingBinding ChatWindowWidth}"
     Left="{local:SettingBinding ChatWindowLeft}"
     Top="{local:SettingBinding ChatWindowTop}"
-    Loaded="Window_Loaded" Closed="Window_Closed" FocusManager.FocusedElement="{Binding ElementName=editMessageBox}"
+    Loaded="Window_Loaded" Closed="Window_Closed" FocusManager.FocusedElement="{Binding ElementName=txtMessageEditBox}"
     Icon="/Squiggle;component/Images/chat.ico">
     <Window.Resources>
         <ResourceDictionary>
@@ -100,10 +100,10 @@
                             </Button>
                         </StackPanel>
                     </Border>
-                    <controls:MessageEditBox FileDropped="editMessageBox_FileDropped" Focusable="True" TabIndex="0"
-                                             Margin="2,5,5,0" x:Name="editMessageBox" 
-                                             MessageTyping="editMessageBox_MessageTyping" 
-                                             MessageSend="editMessageBox_MessageSend" Grid.Row="1" />
+                    <controls:MessageEditBox FileDropped="txtMessageEditBox_FileDropped" Focusable="True" TabIndex="0"
+                                             Margin="2,5,5,0" x:Name="txtMessageEditBox" 
+                                             MessageTyping="txtMessageEditBox_MessageTyping" 
+                                             MessageSend="txtMessageEditBox_MessageSend" Grid.Row="1" />
                     <TextBlock Margin="0,10,0,0" x:Name="txbStatus" VerticalAlignment="Bottom" Grid.Row="2" Grid.ColumnSpan="2" Foreground="Black"/>
                 </Grid>
             </Border>
