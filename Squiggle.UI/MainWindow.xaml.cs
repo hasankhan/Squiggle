@@ -9,6 +9,7 @@ using Squiggle.UI.Settings;
 using Messenger;
 using System.Diagnostics;
 using System.Net.NetworkInformation;
+using System.Windows.Input;
 
 namespace Squiggle.UI
 {
@@ -27,6 +28,9 @@ namespace Squiggle.UI
 
         public static MainWindow Instance { get; private set; }
         public IChatClient ChatClient { get; private set; }
+
+        public static RoutedUICommand SendInstantMessageToContacts = new RoutedUICommand("SendInstantMessage", "SendInstantMessage", typeof(MainWindow));
+        public static RoutedUICommand SendFileToContacts = new RoutedUICommand("SendFile", "SendFile", typeof(MainWindow));
 
         bool exiting;
 
@@ -345,18 +349,30 @@ namespace Squiggle.UI
             SquiggleUtility.ShowAboutDialog();
         }
 
-        private void SendInstantMessage_Click(object sender, RoutedEventArgs e)
+        private void SendInstantMessage_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             IEnumerable<Buddy> selectedBuddies = SquiggleUtility.ShowSendInstantMessageDialog(clientViewModel);
             foreach (Buddy buddy in selectedBuddies)
                 StartChat(buddy);
         }
 
-        private void SendFile_Click(object sender, RoutedEventArgs e)
+        private void SendInstantMessage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = clientViewModel != null;
+        }
+
+        private void SendFile_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             IEnumerable<Buddy> selectedBuddies = SquiggleUtility.ShowSendInstantMessageDialog(clientViewModel);
             foreach (Buddy buddy in selectedBuddies)
                 StartChat(buddy, true, null);
         }
+
+        private void SendFile_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = clientViewModel != null;
+        }
+
+
     }
 }

@@ -36,6 +36,10 @@
             </Style.Setters>
         </Style>
     </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="local:MainWindow.SendInstantMessageToContacts" Executed="SendInstantMessage_Executed" CanExecute="SendInstantMessage_CanExecute" />
+        <CommandBinding Command="local:MainWindow.SendFileToContacts" Executed="SendFile_Executed" CanExecute="SendFile_CanExecute" />
+    </Window.CommandBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -71,8 +75,8 @@
                 <MenuItem Header="_Close" MenuItem.Click="CloseMenu_Click" />
             </MenuItem>
             <MenuItem Header="_Actions">
-                <MenuItem Header="_Send an instant message" MenuItem.Click="SendInstantMessage_Click" />
-                <MenuItem Header="Send a _file" MenuItem.Click="SendFile_Click" />
+                <MenuItem Header="_Send an instant message" Command="local:MainWindow.SendInstantMessageToContacts"/>
+                <MenuItem Header="Send a _file" Command="local:MainWindow.SendFileToContacts" />
             </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Settings..." MenuItem.Click="SettingsMenu_Click" />
