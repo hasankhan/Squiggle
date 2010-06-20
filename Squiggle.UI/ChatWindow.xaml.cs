@@ -448,6 +448,36 @@ namespace Squiggle.UI
             fileName = null;
             format = null;
             return false;
-        }        
+        }
+
+        private void UndoMenu_Click(object sender, RoutedEventArgs e)
+        {
+            txtMessageEditBox.txtMessage.Undo();
+        }
+
+        private void CutMenu_Click(object sender, RoutedEventArgs e)
+        {
+            txtMessageEditBox.txtMessage.Cut();
+        }
+
+        private void CopyMenu_Click(object sender, RoutedEventArgs e)
+        {
+            txtMessageEditBox.txtMessage.Copy();
+        }
+
+        private void PasteMenu_Click(object sender, RoutedEventArgs e)
+        {
+            txtMessageEditBox.txtMessage.Paste();
+        }
+
+        private void DeleteMenu_Click(object sender, RoutedEventArgs e)
+        {
+            txtMessageEditBox.txtMessage.SelectedText = String.Empty;
+        }
+
+        private void SelectAllMenu_Click(object sender, RoutedEventArgs e)
+        {
+            txtMessageEditBox.txtMessage.SelectAll();
+        }       
     }
 }

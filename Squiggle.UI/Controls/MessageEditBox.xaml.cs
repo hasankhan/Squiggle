@@ -29,7 +29,7 @@ namespace Squiggle.UI.Controls
         public event EventHandler<MessageSendEventArgs> MessageSend = delegate { };
         public event EventHandler MessageTyping = delegate { };
 
-        DateTime? lastTypingNotificationSent;
+        DateTime? lastTypingNotificationSent;                
 
         public string Text 
         {
@@ -38,6 +38,15 @@ namespace Squiggle.UI.Controls
                 return txtMessage.Text;
             }
         }
+
+        public bool CanUndo
+        {
+            get { return (bool)GetValue(CanUndoProperty); }
+            set { SetValue(CanUndoProperty, value); }
+        }
+
+        public static readonly DependencyProperty CanUndoProperty =
+            DependencyProperty.Register("CanUndo", typeof(bool), typeof(MessageEditBox), new UIPropertyMetadata(false));
 
         public MessageEditBox()
         {
@@ -86,6 +95,7 @@ namespace Squiggle.UI.Controls
 
         private void txtMessage_TextChanged(object sender, TextChangedEventArgs e)
         {
+            CanUndo = txtMessage.CanUndo;
             if (txtMessage.Text != String.Empty)
                 NotifyTyping();
             btnSend.IsEnabled = txtMessage.Text != String.Empty;

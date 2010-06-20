@@ -40,14 +40,14 @@
                 <MenuItem Header="_Close" MenuItem.Click="CloseMenu_Click" />
             </MenuItem>
             <MenuItem Header="_Edit">
-                <MenuItem Header="_Undo" InputGestureText="Ctrl+Z" />
+                <MenuItem Header="_Undo" InputGestureText="Ctrl+Z" IsEnabled="{Binding ElementName=txtMessageEditBox, Path=CanUndo}" Click="UndoMenu_Click" />
                 <Separator />
-                <MenuItem Header="Cu_t" InputGestureText="Ctrl+X" />
-                <MenuItem Header="_Copy" InputGestureText="Ctrl+C" />
-                <MenuItem Header="_Paste" InputGestureText="Ctrl+V" />
-                <MenuItem Header="_Delete" InputGestureText="Del" />
+                <MenuItem Header="Cu_t" InputGestureText="Ctrl+X" Click="CutMenu_Click" />
+                <MenuItem Header="_Copy" InputGestureText="Ctrl+C" Click="CopyMenu_Click" />
+                <MenuItem Header="_Paste" InputGestureText="Ctrl+V" Click="PasteMenu_Click" />
+                <MenuItem Header="_Delete" InputGestureText="Del" Click="DeleteMenu_Click" />
                 <Separator />
-                <MenuItem Header="Select _all" InputGestureText="Ctrl+A" />
+                <MenuItem Header="Select _all" InputGestureText="Ctrl+A" Click="SelectAllMenu_Click" />
             </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Settings..." MenuItem.Click="SettingsMenu_Click" />
