@@ -87,12 +87,19 @@ namespace Squiggle.UI
 
         void OnStartChat(object sender, Squiggle.UI.Controls.ChatStartEventArgs e)
         {
-            ChatWindow window = StartChat(e.User);
-            if (e.SendFile)
-                if (String.IsNullOrEmpty(e.File))
+            StartChat(e.User, e.SendFile, e.File);
+        }
+
+        ChatWindow StartChat(Buddy buddy, bool sendFile, string filePath)
+        {
+            ChatWindow window = StartChat(buddy);
+            if (sendFile)
+                if (String.IsNullOrEmpty(filePath))
                     window.SendFile();
                 else
-                    window.SendFile(e.File);
+                    window.SendFile(filePath);
+
+            return window;
         }
 
         ChatWindow StartChat(Buddy buddy)
@@ -349,9 +356,7 @@ namespace Squiggle.UI
         {
             IEnumerable<Buddy> selectedBuddies = SquiggleUtility.ShowSendInstantMessageDialog(clientViewModel);
             foreach (Buddy buddy in selectedBuddies)
-            {
-                //send file        
-            }
+                StartChat(buddy, true, null);
         }
     }
 }
