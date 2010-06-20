@@ -43,21 +43,20 @@ namespace Squiggle.UI
             using (var dialog = new System.Windows.Forms.FontDialog())
             {
                 var settings = SettingsProvider.Current.Settings.PersonalSettings;
-                dialog.Font = new System.Drawing.Font(settings.Font.FontFamily.Name, settings.FontSize);
+                dialog.Font = new System.Drawing.Font(settings.FontName, settings.FontSize, settings.FontStyle);
                 dialog.ShowColor = true;
 
                 dialog.Color = settings.FontColor;
 
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    System.Drawing.Font font = dialog.Font;
                     float fontSize = dialog.Font.Size;
                     System.Drawing.Color fontColor = dialog.Color;
 
                     settings.FontColor = fontColor;
-                    settings.Font = font;
+                    settings.FontName = dialog.Font.Name;
                     settings.FontSize = Convert.ToInt32(fontSize);
-
+                    settings.FontStyle = dialog.Font.Style;
                     SettingsProvider.Current.Save();
                 }
             }
@@ -114,7 +113,7 @@ Website:       www.overroot.com";
         public static FontSetting GetFontSettings()
         {
             var settings = SettingsProvider.Current.Settings.PersonalSettings;
-            var fontSettings = new FontSetting(settings.FontColor, settings.Font.FontFamily.Name, settings.FontSize, settings.Font.Style.ToString(), settings.BoldFont);
+            var fontSettings = new FontSetting(settings.FontColor, settings.FontName, settings.FontSize, settings.FontStyle);
 
             return fontSettings;
         }

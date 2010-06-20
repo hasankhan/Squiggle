@@ -60,7 +60,7 @@ namespace Squiggle.UI.Controls
             sentMessages.FindScrollViewer().ScrollToBottom();
         }
 
-        public void AddMessage(string user, string message, string fontName, int fontSize, string fontStyle, bool bold, System.Drawing.Color color)
+        public void AddMessage(string user, string message, string fontName, int fontSize, System.Drawing.FontStyle fontStyle, System.Drawing.Color color)
         {
             var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
 
@@ -73,7 +73,7 @@ namespace Squiggle.UI.Controls
             }
             para.Inlines.Add(new LineBreak());
             items = ParseText(message);
-            var fontsettings = new FontSetting(color, fontName, fontSize, fontStyle, bold);
+            var fontsettings = new FontSetting(color, fontName, fontSize, fontStyle);
             foreach (var item in items)
             {
                 item.FontFamily = fontsettings.Family;

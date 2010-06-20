@@ -68,8 +68,8 @@
     <Setting Name="DownloadsFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)">Downloads</Value>
     </Setting>
-    <Setting Name="FontName" Type="System.Drawing.Font" Scope="User">
-      <Value Profile="(Default)">Georgia, 8.25pt</Value>
+    <Setting Name="FontName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Georgia</Value>
     </Setting>
     <Setting Name="FontSize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">12</Value>
@@ -77,11 +77,8 @@
     <Setting Name="FontColor" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">Black</Value>
     </Setting>
-    <Setting Name="BoldFont" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="FontStyle" Type="System.String" Scope="User">
-      <Value Profile="(Default)">"Regular"</Value>
+    <Setting Name="FontStyle" Type="System.Drawing.FontStyle" Scope="User">
+      <Value Profile="(Default)">Regular</Value>
     </Setting>
   </Settings>
 </SettingsFile>

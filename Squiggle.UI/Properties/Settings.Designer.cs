@@ -289,10 +289,10 @@ namespace Squiggle.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Georgia, 8.25pt")]
-        public global::System.Drawing.Font FontName {
+        [global::System.Configuration.DefaultSettingValueAttribute("Georgia")]
+        public string FontName {
             get {
-                return ((global::System.Drawing.Font)(this["FontName"]));
+                return ((string)(this["FontName"]));
             }
             set {
                 this["FontName"] = value;
@@ -325,22 +325,10 @@ namespace Squiggle.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool BoldFont {
+        [global::System.Configuration.DefaultSettingValueAttribute("Regular")]
+        public global::System.Drawing.FontStyle FontStyle {
             get {
-                return ((bool)(this["BoldFont"]));
-            }
-            set {
-                this["BoldFont"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("\"Regular\"")]
-        public string FontStyle {
-            get {
-                return ((string)(this["FontStyle"]));
+                return ((global::System.Drawing.FontStyle)(this["FontStyle"]));
             }
             set {
                 this["FontStyle"] = value;

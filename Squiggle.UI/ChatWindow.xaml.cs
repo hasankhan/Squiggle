@@ -129,8 +129,8 @@ namespace Squiggle.UI
         {
             string displayName = MainWindow.Instance.ChatClient == null ? "You" : MainWindow.Instance.ChatClient.CurrentUser.DisplayName;
             var settings = SettingsProvider.Current.Settings.PersonalSettings;
-            chatSession.SendMessage(settings.Font.Name, settings.FontSize, settings.FontColor, settings.FontStyle, settings.BoldFont, e.Message);
-            chatTextBox.AddMessage(displayName, e.Message, settings.Font.Name, settings.FontSize, settings.FontStyle, settings.BoldFont, settings.FontColor);
+            chatSession.SendMessage(settings.FontName, settings.FontSize, settings.FontColor, settings.FontStyle, e.Message);
+            chatTextBox.AddMessage(displayName, e.Message, settings.FontName, settings.FontSize, settings.FontStyle, settings.FontColor);
         }
 
         private void txtMessageEditBox_MessageTyping(object sender, EventArgs e)
@@ -224,7 +224,7 @@ namespace Squiggle.UI
                 eventQueue.Enqueue(sender, e, chatSession_MessageReceived);
                 return;
             }
-            OnMessageReceived(e.Sender, e.Message, e.FontName, e.Color, e.FontSize, e.FontStyle, e.Bold);
+            OnMessageReceived(e.Sender, e.Message, e.FontName, e.Color, e.FontSize, e.FontStyle);
         }
 
         void chatSession_BuddyTyping(object sender, BuddyEventArgs e)
@@ -317,12 +317,12 @@ namespace Squiggle.UI
             });
         }
 
-        void OnMessageReceived(Buddy buddy, string message, string fontName, System.Drawing.Color color, int fontSize, string fontStyle, bool bold)
+        void OnMessageReceived(Buddy buddy, string message, string fontName, System.Drawing.Color color, int fontSize, System.Drawing.FontStyle fontStyle)
         {
             Dispatcher.Invoke(() =>
             {
                 lastMessageReceived = DateTime.Now;
-                chatTextBox.AddMessage(buddy.DisplayName, message, fontName, fontSize, fontStyle, bold, color);
+                chatTextBox.AddMessage(buddy.DisplayName, message, fontName, fontSize, fontStyle, color);
                 ResetStatus();
                 FlashWindow();
             });
