@@ -76,6 +76,15 @@ namespace Squiggle.UI
             }
         }
 
+        public static IEnumerable<Buddy> ShowSendInstantMessageDialog(ClientViewModel clientViewModel)
+        {
+            var sendInstantMssg = new ContactsSelectWindow(clientViewModel, false);
+            if (sendInstantMssg.ShowDialog() == true)
+                return sendInstantMssg.SelectedContacts;
+
+            return Enumerable.Empty<Buddy>();
+        }
+
         public static void ShowAboutDialog()
         {
             string about = @"Squiggle Messenger {0}

@@ -96,7 +96,9 @@
         </Grid.RowDefinitions>
         <TextBlock x:Name="txtMessage" Text="To send an instant message, select a contact" Margin="10,0,0,0" />
         <controls:FilterTextBox FilterChanged="FilterTextBox_FilterChanged" VerticalAlignment="Top" Grid.Row="1"  Width="Auto" HorizontalAlignment="Stretch" Margin="10" Height="25"/>
-        <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}" ItemsSource="{Binding Source={StaticResource buddiesCollection}}" AlternationCount="2" Grid.Row="2" />
+        <ScrollViewer Grid.Row="2" Focusable="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
+            <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}" ItemsSource="{Binding Source={StaticResource buddiesCollection}}" AlternationCount="2"  />
+        </ScrollViewer>
         <Grid Grid.Row="3">
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                 <Button Content="OK" Width="70" Click="OnOK" Visibility="{Binding ElementName=contactSelectControl, Path=AllowMultiSelect, Converter={StaticResource visibilityConverter}}" />
