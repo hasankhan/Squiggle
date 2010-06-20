@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Squiggle.UI"
         xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat"
-        xmlns:controls="clr-namespace:Squiggle.UI.Controls"
+        xmlns:controls="clr-namespace:Squiggle.UI.Controls" KeyDown="Window_KeyDown"
         Title="Send an instant message" Height="500" Width="450" x:Name="contactSelectControl">
     <Window.Resources>
         <CollectionViewSource Source="{Binding Buddies}" x:Key="buddiesCollection" Filter="CollectionViewSource_Filter" />

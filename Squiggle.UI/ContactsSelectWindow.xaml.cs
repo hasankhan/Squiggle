@@ -108,6 +108,12 @@ namespace Squiggle.UI
                 cvs.View.Refresh();
         }
 
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+                CloseDialog(false);
+        }  
+
         private void contactBorder_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var parent = sender as Border;
