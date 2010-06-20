@@ -336,6 +336,22 @@ namespace Squiggle.UI
         private void AboutMenu_Click(object sender, RoutedEventArgs e)
         {
             SquiggleUtility.ShowAboutDialog();
-        }   
+        }
+
+        private void SendInstantMessage_Click(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<Buddy> selectedBuddies = SquiggleUtility.ShowSendInstantMessageDialog(clientViewModel);
+            foreach (Buddy buddy in selectedBuddies)
+                StartChat(buddy);
+        }
+
+        private void SendFile_Click(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<Buddy> selectedBuddies = SquiggleUtility.ShowSendInstantMessageDialog(clientViewModel);
+            foreach (Buddy buddy in selectedBuddies)
+            {
+                //send file        
+            }
+        }
     }
 }

@@ -1,0 +1,107 @@
+﻿<Window x:Class="Squiggle.UI.ContactsSelectWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Squiggle.UI"
+        xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat"
+        xmlns:controls="clr-namespace:Squiggle.UI.Controls"
+        Title="Send an instant message" Height="500" Width="450" x:Name="contactSelectControl">
+    <Window.Resources>
+        <CollectionViewSource Source="{Binding Buddies}" x:Key="buddiesCollection" Filter="CollectionViewSource_Filter" />
+        <local:StatusIconConverter x:Key="statusIconConverter" />
+        <local:StatusConverter x:Key="statusConverter" />
+        <local:BoolToVisibilityConverter x:Key="visibilityConverter"/>
+        
+        <DataTemplate DataType="{x:Type chat:Buddy}">
+            <Border x:Name="contactBorder" Padding="1" Cursor="Hand" 
+                    Tag="{Binding}" MouseLeftButtonUp="contactBorder_MouseLeftButtonUp">
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="0.01*"/>
+                    </Grid.RowDefinitions>
+                    <Image ToolTip="{Binding Path=Status}" Source="{Binding Path=Status, Converter={StaticResource statusIconConverter}}" VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Vertical" Grid.Column="1">
+                        <StackPanel HorizontalAlignment="Left" Grid.Column="1"
+                                            Orientation="Horizontal" Margin="5,0,0,0" Cursor="Hand" >
+                            <CheckBox x:Name="chkSelection" Tag="{Binding}" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Margin="0,0,10,0" Visibility="{Binding ElementName=contactSelectControl, Path=AllowMultiSelect, Converter={StaticResource visibilityConverter}}" />
+                            <TextBlock Text="{Binding Path=DisplayName}" />
+                            <TextBlock x:Name="buddyStatus" Margin="5,0,0,0" Text="{Binding Path=Status, Converter={StaticResource statusConverter}, StringFormat={}({0})}" />
+                        </StackPanel>
+                        <TextBlock Margin="5,0,0,0" Text="{Binding Path=DisplayMessage}" TextTrimming="WordEllipsis" ToolTip="{Binding Path=DisplayMessage}"  FontSize="10" Foreground="#FF9A9C9D" HorizontalAlignment="Left" />
+                    </StackPanel>
+                </Grid>
+                <Border.ToolTip>
+                    <ToolTip Placement="Left">
+                        <Border Margin="5">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.3*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.3*"/>
+                                    <ColumnDefinition Width="0.7*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock VerticalAlignment="Top" Text="Contact" Foreground="Black" FontWeight="Bold"/>
+                                <Image Stretch="None" Source="..\Images\man.png" Grid.Row="1"/>
+                                <StackPanel VerticalAlignment="Center" Orientation="Vertical" Grid.Column="1" Grid.Row="1">
+                                    <TextBlock Foreground="Black" Text="{Binding DisplayName, StringFormat=Display: \{0\}}"/>
+                                    <TextBlock Foreground="Black" Text="{Binding Status, StringFormat=Presence: \{0\}}"/>
+                                    <TextBlock Foreground="Black" Text="{Binding Path=Properties[MachineName], StringFormat=Machine name: \{0\}}" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </ToolTip>
+                </Border.ToolTip>
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Status}" Value="Online">
+                    <Setter TargetName="buddyStatus" Property="Visibility" Value="Hidden" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Status}" Value="Offline">
+                    <Setter TargetName="buddyStatus" Property="Visibility" Value="Hidden" />
+                </DataTrigger>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                    <Setter Property="Background" Value="White" 
+                                TargetName="contactBorder"></Setter>
+                </Trigger>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                    <Setter Property="Background" Value="WhiteSmoke" 
+                                TargetName="contactBorder"></Setter>
+                </Trigger>
+                <Trigger SourceName="contactBorder" Property="IsMouseOver" Value="True">
+                    <Setter TargetName="contactBorder" Property="Background" >
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFF0F0F0" Offset="0.061"/>
+                                <GradientStop Color="#FFE3E4E4" Offset="0.939"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="txtMessage" Text="To send an instant message, select a contact" Margin="10,0,0,0" />
+        <controls:FilterTextBox FilterChanged="FilterTextBox_FilterChanged" VerticalAlignment="Top" Grid.Row="1"  Width="Auto" HorizontalAlignment="Stretch" Margin="10" Height="25"/>
+        <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}" ItemsSource="{Binding Source={StaticResource buddiesCollection}}" AlternationCount="2" Grid.Row="2" />
+        <Grid Grid.Row="3">
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button Content="OK" Width="70" Click="OnOK" Visibility="{Binding ElementName=contactSelectControl, Path=AllowMultiSelect, Converter={StaticResource visibilityConverter}}" />
+                <Button Content="Cancel" Width="70" Margin="5,0,0,0" Click="OnCancel" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

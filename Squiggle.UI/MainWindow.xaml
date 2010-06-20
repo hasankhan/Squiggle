@@ -71,8 +71,8 @@
                 <MenuItem Header="_Close" MenuItem.Click="CloseMenu_Click" />
             </MenuItem>
             <MenuItem Header="_Actions">
-                <MenuItem Header="_Send an instant message" />
-                <MenuItem Header="Send a _file" />
+                <MenuItem Header="_Send an instant message" MenuItem.Click="SendInstantMessage_Click" />
+                <MenuItem Header="Send a _file" MenuItem.Click="SendFile_Click" />
             </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Settings..." MenuItem.Click="SettingsMenu_Click" />

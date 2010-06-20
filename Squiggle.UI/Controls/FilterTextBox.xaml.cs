@@ -79,7 +79,7 @@ namespace Squiggle.UI.Controls
         private void ShowWaterMarked()
         {
             waterMarked = true;
-            txtFilter.Text = "Search...";
+            txtFilter.Text = "Search contacts...";
             txtFilter.Foreground = new SolidColorBrush(Colors.LightGray);
         }
 

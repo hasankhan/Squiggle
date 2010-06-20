@@ -7,7 +7,7 @@
     xmlns:local="clr-namespace:Squiggle.UI"
     xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat"
     xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-    Width="200" Height="400" Loaded="UserControl_Loaded">
+    Width="200" Height="400" Loaded="UserControl_Loaded" >
     <UserControl.Resources>
         <CollectionViewSource Source="{Binding Buddies}" x:Key="buddiesCollection" Filter="CollectionViewSource_Filter" />
         <local:StatusIconConverter x:Key="statusIconConverter" />
