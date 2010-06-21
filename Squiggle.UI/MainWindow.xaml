@@ -57,6 +57,13 @@
             </tray:TaskbarIcon.ContextMenu>
         </tray:TaskbarIcon>
         <Menu Grid.Row="0">
+            <Menu.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFEFEEF3" Offset="0.125"/>
+                    <GradientStop Color="#FFD8DDE6" Offset="0.312"/>
+                    <GradientStop Color="#FFECECEC" Offset="0.875"/>
+                </LinearGradientBrush>
+            </Menu.Background>
             <MenuItem Header="_File">
                 <MenuItem Header="Sig_n Out" 
                           Click="SignOutMenu_Click" 

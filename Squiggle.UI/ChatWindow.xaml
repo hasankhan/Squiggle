@@ -30,6 +30,13 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Menu>
+            <Menu.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFEFEEF3" Offset="0.125"/>
+                    <GradientStop Color="#FFD8DDE6" Offset="0.312"/>
+                    <GradientStop Color="#FFECECEC" Offset="0.875"/>
+                </LinearGradientBrush>
+            </Menu.Background>
             <MenuItem Header="_File">
                 <MenuItem Header="_Save" MenuItem.Click="SaveMenu_Click" />
                 <MenuItem Header="Save _as..." MenuItem.Click="SaveAsMenu_Click" />
