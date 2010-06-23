@@ -27,7 +27,7 @@
       <Value Profile="(Default)">5</Value>
     </Setting>
     <Setting Name="KeepAliveTime" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
+      <Value Profile="(Default)">60</Value>
     </Setting>
     <Setting Name="PresenceAddress" Type="System.String" Scope="User">
       <Value Profile="(Default)">224.10.11.12</Value>
