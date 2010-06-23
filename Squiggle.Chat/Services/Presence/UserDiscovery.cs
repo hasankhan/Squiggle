@@ -107,7 +107,8 @@ namespace Squiggle.Chat.Services.Presence
         void OnLoginMessage(Message message)
         {
             UserInfo newUser = channel.GetUserInfo(message.PresenceEndPoint);
-            OnPresenceMessage(newUser, false);
+            if (newUser != null)
+                OnPresenceMessage(newUser, false);
         }
 
         void OnPresenceMessage(UserInfo user, bool discovered)
@@ -147,7 +148,8 @@ namespace Squiggle.Chat.Services.Presence
         void OnUpdateMessage(UserUpdateMessage message)
         {
             UserInfo newUser = channel.GetUserInfo(message.PresenceEndPoint);
-            OnUserUpdated(newUser);
+            if (newUser != null)
+                OnUserUpdated(newUser);
         }        
     }
 }

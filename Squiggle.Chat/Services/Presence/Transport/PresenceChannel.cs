@@ -88,13 +88,28 @@ namespace Squiggle.Chat.Services.Presence.Transport
         public void SendMessage(Message message, IPEndPoint presenceEndPoint)
         {
             IPresenceHost host = GetPresenceHost(presenceEndPoint);
-            host.ReceiveMessage(serviceEndPoint, message.Serialize());
+            try
+            {
+                host.ReceiveMessage(serviceEndPoint, message.Serialize());
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("Could send message to " + presenceEndPoint + " due to exception: " + ex.Message);
+            }
         }
 
         public UserInfo GetUserInfo(IPEndPoint endPoint)
         {
             IPresenceHost host = GetPresenceHost(endPoint);
-            UserInfo info = host.GetUserInfo();
+            UserInfo info = null;
+            try
+            {
+                info = host.GetUserInfo();
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("Could not get user info of " + endPoint + " due to exception: " + ex.Message);
+            }
             return info;
         }
 
