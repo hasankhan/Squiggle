@@ -68,10 +68,10 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBlock x:Name="txtUserLeftMessage" Focusable="False" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="#FFFFFFE1" Visibility="Hidden"/>
-            <controls:ChatTextBox x:Name="chatTextBox" Focusable="False" Height="Auto" Width="Auto" />
-            
-            <Border Grid.Row="2" >
+            <controls:ChatTextBox x:Name="chatTextBox" Focusable="False" Height="Auto" Width="Auto" Grid.ColumnSpan="2" />
+            <TextBlock x:Name="txtUserLeftMessage" Margin="3,0,2,0" Text="User has left the chat" Focusable="False" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="#FFFFFFE1" Visibility="Hidden" Grid.ColumnSpan="2" />
+
+            <Border Grid.Row="1" Grid.ColumnSpan="2">
                 <Grid >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>

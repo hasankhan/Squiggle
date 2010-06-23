@@ -20,6 +20,8 @@ namespace Squiggle.Chat
         public object ID { get; private set; }        
 
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
+        public event EventHandler OffLine = delegate { };
+        public event EventHandler OnLine = delegate { };
         public event EventHandler Updated = delegate { };
 
         public Buddy(IChatClient chatClient, object id) : this(chatClient, id, null) { }
@@ -103,13 +105,19 @@ namespace Squiggle.Chat
         void chatClient_BuddyOnline(object sender, BuddyEventArgs e)
         {
             if (e.Buddy.Equals(this))
+            {
                 Status = e.Buddy.Status;
+                OnLine(this, EventArgs.Empty);
+            }
         }
 
         void chatClient_BuddyOffline(object sender, BuddyEventArgs e)
         {
             if (e.Buddy.Equals(this))
+            {
                 Status = e.Buddy.Status;
+                OffLine(this, EventArgs.Empty);
+            }
         }
 
         void chatClient_BuddyUpdated(object sender, BuddyEventArgs e)

@@ -52,7 +52,10 @@ namespace Squiggle.UI
         public ChatWindow(Buddy buddy, IChat chatSession) : this()
         {
             ChatSession = chatSession;
-            this.buddy = buddy;            
+            this.buddy = buddy;
+
+            this.buddy.OffLine += new EventHandler(buddy_OffLine);
+            this.buddy.OnLine += new EventHandler(buddy_OnLine);
         }
 
         public IChat ChatSession
@@ -247,6 +250,16 @@ namespace Squiggle.UI
             OnMessageFailed(e);
         }
 
+        void buddy_OnLine(object sender, EventArgs e)
+        {
+            OnBuddyJoined();
+        }
+
+        void buddy_OffLine(object sender, EventArgs e)
+        {
+            OnBuddyLeft(this.buddy.DisplayName);
+        }
+
         void chatSession_BuddyLeft(object sender, BuddyEventArgs e)
         {
             if (!loaded)
@@ -254,7 +267,7 @@ namespace Squiggle.UI
                 eventQueue.Enqueue(sender, e, chatSession_BuddyLeft);
                 return;
             }
-            OnBuddyLeft(e);
+            OnBuddyLeft(e.Buddy.DisplayName);
         }
 
         void chatSession_BuddyJoined(object sender, BuddyEventArgs e)
@@ -291,11 +304,11 @@ namespace Squiggle.UI
             });
         }
 
-        void OnBuddyLeft(BuddyEventArgs e)
+        void OnBuddyLeft(string buddyName)
         {
             Dispatcher.Invoke(() =>
             {
-                txtUserLeftMessage.Text = e.Buddy.DisplayName + " has left the chat.";
+                txtUserLeftMessage.Text = buddyName + " has left the chat.";
                 txtUserLeftMessage.Visibility = Visibility.Visible;
             });
         }
