@@ -35,7 +35,7 @@ namespace Squiggle.Bridge
             host = new ServiceHost(service);
             host.AddServiceEndpoint(typeof(IBridgeHost), binding, address);
             host.Open();
-            channel = new PresenceChannel(presenceEndPoint);
+            channel = new PresenceChannel(presenceEndPoint, new IPEndPoint(bridgeEndPoint.Address, presenceEndPoint.Port));
             channel.Start();
             channel.MessageReceived += new EventHandler<Chat.Services.Presence.Transport.MessageReceivedEventArgs>(channel_MessageReceived);
         }

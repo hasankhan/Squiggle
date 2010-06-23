@@ -9,7 +9,16 @@ namespace Squiggle.Chat.Services.Presence.Transport
     public class Message
     {
         public Guid ChannelID { get; set; }
-        public IPEndPoint ChatEndPoint { get; set; }
+        public IPEndPoint PresenceEndPoint { get; set; }
+
+        public static TMessage FromUserInfo<TMessage>(UserInfo user) where TMessage:Message, new()
+        {
+            var message = new TMessage()
+            {
+                PresenceEndPoint = user.PresenceEndPoint,
+            };
+            return message;
+        }
 
         public byte[] Serialize()
         {
@@ -32,7 +41,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
 
         public override string ToString()
         {
-            string output = String.Format("Sender: {0}, Message: {1}", ChatEndPoint, base.ToString());
+            string output = String.Format("Sender: {0}, Message: {1}", PresenceEndPoint, base.ToString());
             return output;
         }
     }

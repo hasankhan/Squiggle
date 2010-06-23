@@ -259,8 +259,11 @@ namespace Squiggle.UI
                 chatEndPoint.Port = NetworkUtility.GetFreePort();
 
             var presenceEndPoint = new IPEndPoint(presenceAddress, presencePort);
+            var presenceServiceEndPoint = new IPEndPoint(localIP, presencePort);
+            if (!NetworkUtility.IsEndPointFree(presenceServiceEndPoint))
+                presenceServiceEndPoint.Port = NetworkUtility.GetFreePort();
 
-            ChatClient client = new ChatClient(chatEndPoint, presenceEndPoint, keepAliveTimeout);
+            ChatClient client = new ChatClient(chatEndPoint, presenceEndPoint, presenceServiceEndPoint, keepAliveTimeout);
             
             var properties = new Dictionary<string,string>();
             properties["MachineName"] = Environment.MachineName;

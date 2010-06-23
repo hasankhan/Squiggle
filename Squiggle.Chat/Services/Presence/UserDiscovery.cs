@@ -9,6 +9,8 @@ using System.Threading;
 using Squiggle.Chat.Services.Presence.Transport;
 using Squiggle.Chat.Services.Presence.Transport.Messages;
 using System.Diagnostics;
+using Squiggle.Chat.Services.Presence.Transport.Host;
+using System.ServiceModel;
 
 namespace Squiggle.Chat.Services.Presence
 {    
@@ -39,14 +41,14 @@ namespace Squiggle.Chat.Services.Presence
             thisUser = me;
             channel.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
             channel.MessageReceived += new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
-            var message = LoginMessage.FromUserInfo(thisUser);
+            var message = Message.FromUserInfo<LoginMessage>(thisUser);
             channel.SendMessage(message);
         }        
 
         public void Update(UserInfo me)
         {
             thisUser = me;
-            var message = UserUpdateMessage.FromUserInfo(thisUser);
+            var message = Message.FromUserInfo<UserUpdateMessage>(thisUser);
             channel.SendMessage(message);
         }
 
@@ -54,7 +56,7 @@ namespace Squiggle.Chat.Services.Presence
         {
             channel.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
 
-            var message = new LogoutMessage() { ChatEndPoint = thisUser.ChatEndPoint };
+            var message = Message.FromUserInfo<LogoutMessage>(thisUser);
             channel.SendMessage(message);
         }
 
@@ -64,13 +66,13 @@ namespace Squiggle.Chat.Services.Presence
             {
                 if (e.Message is LoginMessage)
                 {
-                    OnLoginMessage((LoginMessage)e.Message, false);
-                    SayHi();
+                    OnLoginMessage(e.Message);
+                    SayHi(e.Message.PresenceEndPoint);
                 }
                 else if (e.Message is LogoutMessage)
                     OnLogoutMessage((LogoutMessage)e.Message);
                 else if (e.Message is HiMessage)
-                    OnLoginMessage(((HiMessage)e.Message).Convert<LoginMessage>(), true);
+                    OnHiMessage((HiMessage)e.Message);
                 else if (e.Message is UserUpdateMessage)
                     OnUpdateMessage((UserUpdateMessage)e.Message);
             }
@@ -78,23 +80,23 @@ namespace Squiggle.Chat.Services.Presence
             {
                 Trace.WriteLine(ex.Message);
             }            
-        }
+        }        
 
-        void SayHi()
+        void SayHi(IPEndPoint presenceEndPoint)
         {
-            var message = HiMessage.FromUserInfo(thisUser);
-            channel.SendMessage(message);
+            var message = PresenceMessage.FromUserInfo<HiMessage>(thisUser);
+            channel.SendMessage(message, presenceEndPoint);            
         }
 
         void OnLogoutMessage(LogoutMessage message)
         {
-            IPEndPoint chatEndPoint = message.ChatEndPoint;
-            OnUserOffline(chatEndPoint);
+            IPEndPoint presenceEndPoint = message.PresenceEndPoint;
+            OnUserOffline(presenceEndPoint);
         }
 
-        void OnUserOffline(IPEndPoint chatEndPoint)
+        void OnUserOffline(IPEndPoint endPoint)
         {
-            var user = onlineUsers.FirstOrDefault(u => u.ChatEndPoint.Equals(chatEndPoint));
+            var user = onlineUsers.FirstOrDefault(u => u.ChatEndPoint.Equals(endPoint));
             if (user != null)
             {
                 onlineUsers.Remove(user);
@@ -102,23 +104,28 @@ namespace Squiggle.Chat.Services.Presence
             }
         }
 
-        void OnLoginMessage(LoginMessage message, bool discovered)
+        void OnLoginMessage(Message message)
         {
-            UserInfo newUser = message.GetUser();
-            if (newUser.Status != UserStatus.Offline)
+            UserInfo newUser = channel.GetUserInfo(message.PresenceEndPoint);
+            OnPresenceMessage(newUser, false);
+        }
+
+        void OnPresenceMessage(UserInfo user, bool discovered)
+        {
+            if (user.Status != UserStatus.Offline)
             {
-                if (onlineUsers.Add(newUser))
+                if (onlineUsers.Add(user))
                 {
                     if (discovered)
-                        UserDiscovered(this, new UserEventArgs() { User = newUser });
+                        UserDiscovered(this, new UserEventArgs() { User = user });
                     else
-                        UserOnline(this, new UserEventArgs() { User = newUser });
+                        UserOnline(this, new UserEventArgs() { User = user });
                 }
                 else
-                    OnUserUpdated(newUser);
+                    OnUserUpdated(user);
             }
             else
-                OnUserOffline(newUser.ChatEndPoint);
+                OnUserOffline(user.ChatEndPoint);
         }
 
         void OnUserUpdated(UserInfo newUser)
@@ -131,10 +138,16 @@ namespace Squiggle.Chat.Services.Presence
             }
         }
 
+        void OnHiMessage(HiMessage message)
+        {
+            UserInfo user = message.GetUser();
+            OnPresenceMessage(user, true);
+        }
+
         void OnUpdateMessage(UserUpdateMessage message)
         {
-            UserInfo newUser = message.GetUser();
+            UserInfo newUser = channel.GetUserInfo(message.PresenceEndPoint);
             OnUserUpdated(newUser);
-        }
+        }        
     }
 }
