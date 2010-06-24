@@ -126,7 +126,7 @@ namespace Squiggle.Chat.Services.Presence
                     OnUserUpdated(user);
             }
             else
-                OnUserOffline(user.ChatEndPoint);
+                OnUserOffline(user.PresenceEndPoint);
         }
 
         void OnUserUpdated(UserInfo newUser)

@@ -50,8 +50,6 @@ namespace Squiggle.Chat
         {
             var endpoint = (IPEndPoint)buddy.ID;
             IChatSession session = chatService.CreateSession(endpoint);
-            if (session == null)
-                Debugger.Break();
             var chat = new Chat(session, buddy);
             return chat;
         }        

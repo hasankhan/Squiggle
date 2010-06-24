@@ -54,8 +54,8 @@ namespace Squiggle.UI
             ChatSession = chatSession;
             this.buddy = buddy;
 
-            this.buddy.OffLine += new EventHandler(buddy_Offline);
-            this.buddy.OnLine += new EventHandler(buddy_Online);
+            this.buddy.Offline += new EventHandler(buddy_Offline);
+            this.buddy.Online += new EventHandler(buddy_Online);
         }
 
         public IChat ChatSession

@@ -158,7 +158,7 @@ namespace Squiggle.UI
         {
             Dispatcher.Invoke(() =>
             {
-                clientAvailable.WaitOne();
+                clientAvailable.WaitOne(TimeSpan.FromSeconds(20));
 
                 if (ChatClient != null && ChatClient.LoggedIn)
                     return;

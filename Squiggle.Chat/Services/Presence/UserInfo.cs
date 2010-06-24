@@ -48,16 +48,16 @@ namespace Squiggle.Chat.Services.Presence
 
             if (obj is UserInfo)
             {
-                IPEndPoint endPoint = ((UserInfo)obj).ChatEndPoint;
-                return endPoint.Equals(ChatEndPoint);
+                IPEndPoint endPoint = ((UserInfo)obj).PresenceEndPoint;
+                return endPoint.Equals(PresenceEndPoint);
             }
             return base.Equals(obj);
         }
 
         public override int GetHashCode()
         {
-            if (this.ChatEndPoint != null)
-                return ChatEndPoint.GetHashCode();
+            if (this.PresenceEndPoint != null)
+                return PresenceEndPoint.GetHashCode();
             return base.GetHashCode();
         }
     }
