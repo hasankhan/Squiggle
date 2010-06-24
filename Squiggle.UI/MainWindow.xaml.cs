@@ -10,6 +10,7 @@ using Messenger;
 using System.Diagnostics;
 using System.Net.NetworkInformation;
 using System.Windows.Input;
+using System.Threading;
 
 namespace Squiggle.UI
 {
@@ -188,7 +189,7 @@ namespace Squiggle.UI
                     return;
 
                 DestroyMonitor();
-                ChatClient.Logout();
+                ThreadPool.QueueUserWorkItem(_=>ChatClient.Logout());
                 chatControl.ContactList.ChatContext = null;
                 clientViewModel = null;
                 this.DataContext = dummyViewModel;

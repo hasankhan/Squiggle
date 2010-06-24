@@ -54,8 +54,8 @@ namespace Squiggle.UI
             ChatSession = chatSession;
             this.buddy = buddy;
 
-            this.buddy.OffLine += new EventHandler(buddy_OffLine);
-            this.buddy.OnLine += new EventHandler(buddy_OnLine);
+            this.buddy.OffLine += new EventHandler(buddy_Offline);
+            this.buddy.OnLine += new EventHandler(buddy_Online);
         }
 
         public IChat ChatSession
@@ -250,14 +250,18 @@ namespace Squiggle.UI
             OnMessageFailed(e);
         }
 
-        void buddy_OnLine(object sender, EventArgs e)
+        void buddy_Online(object sender, EventArgs e)
         {
-            OnBuddyJoined();
+            Dispatcher.Invoke(() => buddyOfflineMessage.Visibility = Visibility.Collapsed);
         }
 
-        void buddy_OffLine(object sender, EventArgs e)
+        void buddy_Offline(object sender, EventArgs e)
         {
-            OnBuddyLeft(this.buddy.DisplayName);
+            Dispatcher.Invoke(() =>
+            {
+                buddyOfflineMessage.DataContext = buddy.DisplayName;
+                buddyOfflineMessage.Visibility = Visibility.Visible;
+            });
         }
 
         void chatSession_BuddyLeft(object sender, BuddyEventArgs e)
@@ -306,12 +310,8 @@ namespace Squiggle.UI
 
         void OnBuddyLeft(string buddyName)
         {
-            Dispatcher.Invoke(() =>
-            {
-                txtUserLeftMessage.Text = buddyName + " has left the chat.";
-                txtUserLeftMessage.Visibility = Visibility.Visible;
-            });
-        }
+            
+        }        
 
         void OnBuzzReceived(Buddy buddy)
         {
@@ -353,7 +353,7 @@ namespace Squiggle.UI
 
         void OnBuddyJoined()
         {
-            Dispatcher.Invoke(() => txtUserLeftMessage.Visibility = Visibility.Hidden);
+            
         }                       
 
         public void SendBuzz()
