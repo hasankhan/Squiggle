@@ -74,7 +74,7 @@ namespace Squiggle.Chat.Services.Chat
 
         static Uri CreateServiceUri(string address)
         {
-            var uri = new Uri("net.tcp://" + address + "/squiggle");
+            var uri = new Uri("net.tcp://" + address + "/squigglechat");
             return uri;
         }
 

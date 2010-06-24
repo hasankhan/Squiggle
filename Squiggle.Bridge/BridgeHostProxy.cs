@@ -6,6 +6,7 @@ using System.ServiceModel;
 using System.Diagnostics;
 using System.ServiceModel.Channels;
 using System.Net;
+using System.Net.Sockets;
 
 namespace Squiggle.Bridge
 {
@@ -22,9 +23,31 @@ namespace Squiggle.Bridge
             EnsureProxy();
         }
 
+        void EnsureProxy(Action<IBridgeHost> action)
+        {
+            EnsureProxy();
+            try
+            {
+                action(proxy);
+            }
+            catch (CommunicationException ex)
+            {
+                if (ex.InnerException is SocketException)
+                {
+                    EnsureProxy();
+                    action(proxy);
+                }
+                else
+                    throw;
+            }
+        }
+
         void EnsureProxy()
         {
-            if (proxy == null || proxy.State == CommunicationState.Faulted)
+            if (proxy == null ||
+                proxy.State == CommunicationState.Faulted ||
+                proxy.State == CommunicationState.Closed ||
+                proxy.State == CommunicationState.Closing)
             {
                 if (proxy == null)
                     proxy = new InnerProxy(binding, address);
@@ -51,8 +74,7 @@ namespace Squiggle.Bridge
 
         public void ReceiveMessage(byte[] message)
         {
-            EnsureProxy();
-            proxy.ReceiveMessage(message);
+            EnsureProxy(p => p.ReceiveMessage(message));
         }
 
         class InnerProxy : ClientBase<IBridgeHost>, IBridgeHost

@@ -9,10 +9,11 @@ using System.Diagnostics;
 using System.ServiceModel.Channels;
 using System.IO;
 using System.Drawing;
+using System.Net.Sockets;
 
 namespace Squiggle.Chat.Services.Chat.Host
 {
-    public class ChatHostProxy: IChatHost
+    public class ChatHostProxy : IChatHost
     {
         InnerProxy proxy;
         Binding binding;
@@ -25,73 +26,88 @@ namespace Squiggle.Chat.Services.Chat.Host
             EnsureProxy();
         }
 
-         void EnsureProxy()
-         {
-             if (proxy == null || proxy.State == CommunicationState.Faulted)
-             {
-                 if (proxy == null)
-                     proxy = new InnerProxy(binding, address);
-                 else
-                 {
-                     try
-                     {
-                         proxy.Close();
-                     }
-                     catch (Exception ex)
-                     {
-                         Trace.WriteLine(ex.Message);
-                         proxy.Abort();
-                     }
-                     finally
-                     {
-                         proxy = new InnerProxy(binding, address);
-                     }
-                 }
-             }
-         }       
+        void EnsureProxy(Action<IChatHost> action)
+        {
+            EnsureProxy();
+            try
+            {
+                action(proxy);
+            }
+            catch (CommunicationException ex)
+            {
+                if (ex.InnerException is SocketException)
+                {
+                    EnsureProxy();
+                    action(proxy);
+                }
+                else
+                    throw;
+            }
+        }
+
+        void EnsureProxy()
+        {
+            if (proxy == null ||
+                proxy.State == CommunicationState.Faulted ||
+                proxy.State == CommunicationState.Closed ||
+                proxy.State == CommunicationState.Closing)
+            {
+                if (proxy == null)
+                    proxy = new InnerProxy(binding, address);
+                else
+                {
+                    try
+                    {
+                        proxy.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.WriteLine(ex.Message);
+                        proxy.Abort();
+                    }
+                    finally
+                    {
+                        proxy = new InnerProxy(binding, address);
+                    }
+                }
+            }
+        }
 
         #region IChatHost Members
 
         public void UserIsTyping(IPEndPoint user)
         {
-            EnsureProxy();
-            proxy.UserIsTyping(user);
+            EnsureProxy(p => p.UserIsTyping(user));
         }
 
         public void Buzz(IPEndPoint user)
         {
-            EnsureProxy();
-            proxy.Buzz(user);
+            EnsureProxy(p => p.Buzz(user));
         }
 
         public void ReceiveFileInvite(IPEndPoint user, Guid id, string name, int size)
         {
-            EnsureProxy();
-            proxy.ReceiveFileInvite(user, id, name, size);
+            EnsureProxy(p => p.ReceiveFileInvite(user, id, name, size));
         }
 
         public void ReceiveFileContent(Guid id, byte[] chunk)
         {
-            EnsureProxy();
-            proxy.ReceiveFileContent(id, chunk);
+            EnsureProxy(p => p.ReceiveFileContent(id, chunk));
         }
 
         public void ReceiveMessage(IPEndPoint user, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
         {
-            EnsureProxy();
-            proxy.ReceiveMessage(user, fontName, fontSize, color, fontStyle, message);
+            EnsureProxy(p => p.ReceiveMessage(user, fontName, fontSize, color, fontStyle, message));
         }
 
         public void AcceptFileInvite(Guid id)
         {
-            EnsureProxy();
-            proxy.AcceptFileInvite(id);
+            EnsureProxy(p => p.AcceptFileInvite(id));
         }
 
         public void CancelFileTransfer(Guid id)
         {
-            EnsureProxy();
-            proxy.CancelFileTransfer(id);
+            EnsureProxy(p => p.CancelFileTransfer(id));
         }
 
         #endregion

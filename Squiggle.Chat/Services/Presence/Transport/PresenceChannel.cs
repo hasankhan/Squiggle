@@ -178,7 +178,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
 
         static Uri CreateServiceUri(string address)
         {
-            var uri = new Uri("net.tcp://" + address + "/squiggle");
+            var uri = new Uri("net.tcp://" + address + "/squigglepresence");
             return uri;
         }
     }

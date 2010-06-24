@@ -26,6 +26,7 @@ namespace Squiggle.UI
         Dictionary<Buddy, ChatWindow> chatWindows;
         ClientViewModel dummyViewModel;
         NetworkSignout autoSignout;
+        ManualResetEvent clientAvailable = new ManualResetEvent(true);
 
         public static MainWindow Instance { get; private set; }
         public IChatClient ChatClient { get; private set; }
@@ -157,6 +158,8 @@ namespace Squiggle.UI
         {
             Dispatcher.Invoke(() =>
             {
+                clientAvailable.WaitOne();
+
                 if (ChatClient != null && ChatClient.LoggedIn)
                     return;
 
@@ -185,11 +188,16 @@ namespace Squiggle.UI
         {
             Dispatcher.Invoke(() =>
             {
+                clientAvailable.Reset();
                 if (ChatClient == null || !ChatClient.LoggedIn)
                     return;
 
                 DestroyMonitor();
-                ThreadPool.QueueUserWorkItem(_=>ChatClient.Logout());
+                ThreadPool.QueueUserWorkItem(_=>
+                {
+                    ChatClient.Logout();
+                    clientAvailable.Set();
+                });
                 chatControl.ContactList.ChatContext = null;
                 clientViewModel = null;
                 this.DataContext = dummyViewModel;
@@ -260,11 +268,8 @@ namespace Squiggle.UI
                 chatEndPoint.Port = NetworkUtility.GetFreePort();
 
             var presenceEndPoint = new IPEndPoint(presenceAddress, presencePort);
-            var presenceServiceEndPoint = new IPEndPoint(localIP, presencePort);
-            if (!NetworkUtility.IsEndPointFree(presenceServiceEndPoint))
-                presenceServiceEndPoint.Port = NetworkUtility.GetFreePort();
 
-            ChatClient client = new ChatClient(chatEndPoint, presenceEndPoint, presenceServiceEndPoint, keepAliveTimeout);
+            ChatClient client = new ChatClient(chatEndPoint, presenceEndPoint, keepAliveTimeout);
             
             var properties = new Dictionary<string,string>();
             properties["MachineName"] = Environment.MachineName;
