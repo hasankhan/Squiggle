@@ -12,6 +12,8 @@ namespace Squiggle.UI
     {
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
         public event EventHandler BuddyUpdated = delegate { };
+        public event EventHandler BuddyOffline = delegate { };
+
 
         IChatClient chatClient;
         Dispatcher currentDispatcher;
@@ -31,9 +33,15 @@ namespace Squiggle.UI
             this.chatClient = chatClient;
             LoggedInUser = chatClient.CurrentUser;
             this.chatClient.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);
+            this.chatClient.BuddyOffline += new EventHandler<BuddyEventArgs>(chatClient_BuddyOffline);
             this.chatClient.BuddyUpdated += new EventHandler<BuddyEventArgs>(chatClient_BuddyUpdated);
             this.chatClient.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
             Buddies = new ObservableCollection<Buddy>(chatClient.Buddies);
+        }
+
+        void chatClient_BuddyOffline(object sender, BuddyEventArgs e)
+        {
+            BuddyOffline(this, EventArgs.Empty);
         }
 
         void chatClient_BuddyUpdated(object sender, BuddyEventArgs e)

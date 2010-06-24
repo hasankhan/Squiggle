@@ -49,12 +49,18 @@ namespace Squiggle.UI
         {
             this.clientViewModel = clientViewModel;
             this.AllowMultiSelect = allowMultiSelect;
-
             if (allowMultiSelect)
                 txtMessage.Text = "To send an instant message, select one or more contacts";
 
+            this.clientViewModel.BuddyOffline += new EventHandler(clientViewModel_BuddyOffline);
+
             selectedContacts = new List<Buddy>();
             this.DataContext = this.clientViewModel;
+        }
+
+        void clientViewModel_BuddyOffline(object sender, EventArgs e)
+        {
+            Refresh();
         }
 
         private void OnCancel(object sender, RoutedEventArgs e)
@@ -89,10 +95,13 @@ namespace Squiggle.UI
         private void CollectionViewSource_Filter(object sender, FilterEventArgs e)
         {
             Buddy buddy = (Buddy)e.Item;
-            if (filter == String.Empty)
+            if (buddy.Status == UserStatus.Offline)
+                e.Accepted = false;
+
+            else if (filter == String.Empty)
                 e.Accepted = true;
             else
-                e.Accepted = buddy.Status == UserStatus.Online && buddy.DisplayName.ToLower().Contains(filter.ToLower());
+                e.Accepted = buddy.DisplayName.ToLower().Contains(filter.ToLower());
         }
 
         private void FilterTextBox_FilterChanged(object sender, BuddyFilterEventArs e)
