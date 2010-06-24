@@ -50,7 +50,7 @@ namespace Squiggle.UI
             this.clientViewModel = clientViewModel;
             this.AllowMultiSelect = allowMultiSelect;
             if (allowMultiSelect)
-                txtMessage.Text = "To send an instant message, select one or more contacts";
+                txtMessage.Text = "Select one or more contacts";
 
             this.clientViewModel.BuddyOffline += new EventHandler(clientViewModel_BuddyOffline);
 
@@ -112,9 +112,12 @@ namespace Squiggle.UI
 
         void Refresh()
         {
-            CollectionViewSource cvs = (CollectionViewSource)this.FindResource("buddiesCollection");
-            if (cvs.View != null)
-                cvs.View.Refresh();
+            Dispatcher.Invoke(() =>
+            {
+                CollectionViewSource cvs = (CollectionViewSource)this.FindResource("buddiesCollection");
+                if (cvs.View != null)
+                    cvs.View.Refresh();
+            });
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)

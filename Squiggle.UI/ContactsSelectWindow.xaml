@@ -94,7 +94,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="txtMessage" Text="To send an instant message, select a contact" Margin="10,0,0,0" />
+        <TextBlock x:Name="txtMessage" Text="Select a contact" Margin="10,0,0,0" />
         <controls:FilterTextBox FilterChanged="FilterTextBox_FilterChanged" VerticalAlignment="Top" Grid.Row="1"  Width="Auto" HorizontalAlignment="Stretch" Margin="10" Height="25"/>
         <ScrollViewer Grid.Row="2" Focusable="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
             <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}" ItemsSource="{Binding Source={StaticResource buddiesCollection}}" AlternationCount="2"  />
