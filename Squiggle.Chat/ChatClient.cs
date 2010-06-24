@@ -75,12 +75,12 @@ namespace Squiggle.Chat
 
         public void Logout()
         {
+            LoggedIn = false;
             foreach (Buddy buddy in buddies)
                 buddy.Dispose();
             buddies.Clear();
             chatService.Stop();
             presenceService.Logout();
-            LoggedIn = false;
         }
         
         void Update()

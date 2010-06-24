@@ -96,7 +96,7 @@ namespace Squiggle.Chat.Services.Presence
 
         void OnUserOffline(IPEndPoint endPoint)
         {
-            var user = onlineUsers.FirstOrDefault(u => u.ChatEndPoint.Equals(endPoint));
+            var user = onlineUsers.FirstOrDefault(u => u.PresenceEndPoint.Equals(endPoint));
             if (user != null)
             {
                 onlineUsers.Remove(user);
