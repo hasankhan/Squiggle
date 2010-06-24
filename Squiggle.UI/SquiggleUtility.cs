@@ -78,7 +78,18 @@ namespace Squiggle.UI
 
         public static IEnumerable<Buddy> ShowSendInstantMessageDialog(ClientViewModel clientViewModel)
         {
+            return SelectContacts(clientViewModel, "Send an instant message");
+        }
+
+        public static IEnumerable<Buddy> ShowSendFileDialog(ClientViewModel clientViewModel)
+        {
+            return SelectContacts(clientViewModel, "Send a file");
+        }
+
+        private static IEnumerable<Buddy> SelectContacts(ClientViewModel clientViewModel, string title)
+        {
             var sendInstantMssg = new ContactsSelectWindow(clientViewModel, false);
+            sendInstantMssg.Title = title;
             if (sendInstantMssg.ShowDialog() == true)
                 return sendInstantMssg.SelectedContacts;
 

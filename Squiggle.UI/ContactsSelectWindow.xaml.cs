@@ -92,7 +92,7 @@ namespace Squiggle.UI
             if (filter == String.Empty)
                 e.Accepted = true;
             else
-                e.Accepted = buddy.DisplayName.ToLower().Contains(filter.ToLower());
+                e.Accepted = buddy.Status == UserStatus.Online && buddy.DisplayName.ToLower().Contains(filter.ToLower());
         }
 
         private void FilterTextBox_FilterChanged(object sender, BuddyFilterEventArs e)
