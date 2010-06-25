@@ -76,22 +76,23 @@ namespace Squiggle.UI
             }
         }
 
-        public static IEnumerable<Buddy> ShowSendInstantMessageDialog(ClientViewModel clientViewModel)
+        public static IEnumerable<Buddy> ShowSendInstantMessageDialog(ClientViewModel clientViewModel, Window owner)
         {
-            return SelectContacts(clientViewModel, "Send an instant message");
+            return SelectContacts(clientViewModel, "Send an instant message", owner);
         }
 
-        public static IEnumerable<Buddy> ShowSendFileDialog(ClientViewModel clientViewModel)
+        public static IEnumerable<Buddy> ShowSendFileDialog(ClientViewModel clientViewModel, Window owner)
         {
-            return SelectContacts(clientViewModel, "Send a file");
+            return SelectContacts(clientViewModel, "Send a file", owner);
         }
 
-        private static IEnumerable<Buddy> SelectContacts(ClientViewModel clientViewModel, string title)
+        private static IEnumerable<Buddy> SelectContacts(ClientViewModel clientViewModel, string title, Window owner)
         {
-            var sendInstantMssg = new ContactsSelectWindow(clientViewModel, false);
-            sendInstantMssg.Title = title;
-            if (sendInstantMssg.ShowDialog() == true)
-                return sendInstantMssg.SelectedContacts;
+            var selectContactDialog = new ContactsSelectWindow(clientViewModel, false);
+            selectContactDialog.Owner = owner;
+            selectContactDialog.Title = title;
+            if (selectContactDialog.ShowDialog() == true)
+                return selectContactDialog.SelectedContacts;
 
             return Enumerable.Empty<Buddy>();
         }
