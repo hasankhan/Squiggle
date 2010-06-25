@@ -33,6 +33,8 @@ namespace Squiggle.UI.Controls
 
         public void AddInfo(string info)
         {
+            info = String.Format("[{0}] {1}", DateTime.Now.ToShortTimeString(), info);
+
             var errorText = new Run(info);
             errorText.Foreground = new SolidColorBrush(Colors.DarkGray);
             para.Inlines.Add(errorText);
