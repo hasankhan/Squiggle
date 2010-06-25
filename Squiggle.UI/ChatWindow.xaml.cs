@@ -187,7 +187,7 @@ namespace Squiggle.UI
 
         private void AboutMenu_Click(object sender, RoutedEventArgs e)
         {
-            SquiggleUtility.ShowAboutDialog();
+            SquiggleUtility.ShowAboutDialog(this);
         }
 
         private void SendFileMenu_Click(object sender, RoutedEventArgs e)

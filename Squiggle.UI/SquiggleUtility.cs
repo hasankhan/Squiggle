@@ -97,18 +97,12 @@ namespace Squiggle.UI
             return Enumerable.Empty<Buddy>();
         }
 
-        public static void ShowAboutDialog()
+
+        public static void ShowAboutDialog(Window owner)
         {
-            string about = @"Squiggle Messenger {0}
-
-Programmed by:
-Faisal Iqbal
-M. Hasan Khan
-
-Contact:       info@overroot.com
-Website:       www.overroot.com";
-            about = String.Format(about, Assembly.GetExecutingAssembly().GetName().Version.ToString(3));
-            MessageBox.Show(about, "About Squiggle Messenger", MessageBoxButton.OK, MessageBoxImage.Information);
+            var about = new About();
+            about.Owner = owner;
+            about.ShowDialog();
         }
 
         public static void ShakeWindow(ChatWindow window)

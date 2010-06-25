@@ -69,7 +69,7 @@ namespace Squiggle.UI.Controls
 
         private void About_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            SquiggleUtility.ShowAboutDialog();
+            SquiggleUtility.ShowAboutDialog(null);
         }
 
         private void Buddy_Click(object sender, MouseButtonEventArgs e)
