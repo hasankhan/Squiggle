@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+using System.Reflection;
 
 namespace Squiggle.UI.Settings
 {
@@ -19,7 +21,7 @@ namespace Squiggle.UI.Settings
             ShowPopups = true;
             ContactListSortField = "DisplayName";
             SpellCheck = true;
-            DownloadsFolder = "Downloads";
+            DownloadsFolder = Path.Combine(Assembly.GetExecutingAssembly().Location, "Downloads");
         }
     }
 }
