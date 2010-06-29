@@ -57,7 +57,12 @@ namespace Squiggle.UI
             settingsVm.ConnectionSettings.AllIPs.AddRange(NetworkUtility.GetLocalIPAddresses().Select(ip => ip.ToString()));
             settingsVm.GeneralSettings.RunAtStartup = GetRunAtStartup();
 
-            if (user != null)
+            if (user == null)
+            {
+                settingsVm.PersonalSettings.DisplayName = SettingsProvider.Current.Settings.PersonalSettings.DisplayName;
+                settingsVm.PersonalSettings.DisplayMessage = SettingsProvider.Current.Settings.PersonalSettings.DisplayMessage;
+            }
+            else
             {
                 settingsVm.PersonalSettings.DisplayName = user.DisplayName;
                 settingsVm.PersonalSettings.DisplayMessage = user.DisplayMessage;
