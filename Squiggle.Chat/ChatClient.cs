@@ -60,11 +60,11 @@ namespace Squiggle.Chat
             chatService.Start(localEndPoint);
             presenceService.Login(username, displayMessage, properties);
 
-            var self = new SelfBuddy(this, localEndPoint) 
+            var self = new SelfBuddy(this, localEndPoint, properties) 
             { 
                 DisplayName = username, 
                 DisplayMessage = String.Empty,
-                Status = UserStatus.Online 
+                Status = UserStatus.Online,
             };
             self.EnableUpdates = true;
             CurrentUser = self;
@@ -173,7 +173,7 @@ namespace Squiggle.Chat
         {
             public bool EnableUpdates { get; set; }
 
-            public SelfBuddy(IChatClient client, IPEndPoint id) : base(client, id) { }
+            public SelfBuddy(IChatClient client, IPEndPoint id, Dictionary<string, string> properties) : base(client, id, properties) { }
 
             public override string DisplayMessage
             {
