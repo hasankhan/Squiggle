@@ -15,6 +15,7 @@ using Squiggle.Chat;
 using System.ComponentModel;
 using System.IO;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace Squiggle.UI.Controls
 {
@@ -48,7 +49,7 @@ namespace Squiggle.UI.Controls
 
         public FileTarnsferControl()
         {
-            DownloadFolder = "Downloads";
+            DownloadFolder = System.IO.Path.Combine(Assembly.GetExecutingAssembly().Location, "Downloads");
             InitializeComponent();
         }
 
