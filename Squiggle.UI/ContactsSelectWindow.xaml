@@ -9,7 +9,7 @@
         <CollectionViewSource Source="{Binding Buddies}" x:Key="buddiesCollection" Filter="CollectionViewSource_Filter" />
         <local:StatusIconConverter x:Key="statusIconConverter" />
         <local:StatusConverter x:Key="statusConverter" />
-        <local:BoolToVisibilityConverter x:Key="visibilityConverter"/>
+        <BooleanToVisibilityConverter x:Key="visibilityConverter"/>
         
         <DataTemplate DataType="{x:Type chat:Buddy}">
             <Border x:Name="contactBorder" Padding="1" Cursor="Hand" 
