@@ -63,30 +63,31 @@ namespace Squiggle.Chat
         {
             ThreadPool.QueueUserWorkItem(_ => 
             {
-                try
-                {
-                    session.NotifyTyping();
-                }
-                catch (Exception ex)
-                {
-                    Trace.WriteLine(ex.Message);
-                }
+                L(() => session.NotifyTyping());
             });
         }
 
         public void SendBuzz()
         {
-            session.SendBuzz();
+            L(()=>session.SendBuzz());
         }
 
         public IFileTransfer SendFile(string name, Stream content)
         {
-            return session.SendFile(name, content);            
+            try
+            {
+                return session.SendFile(name, content);            
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         public void Leave()
         {
-            session.End();
+            L(()=>session.End());
         }
 
         #endregion
@@ -114,6 +115,21 @@ namespace Squiggle.Chat
                                                                        Color = e.Color,
                                                                        FontStyle = e.FontStyle,                                                                       
                                                                        Message = e.Message});
+        }
+
+        bool L(Action action)
+        {
+            bool success = true;
+            try
+            {
+                action();
+            }
+            catch (Exception ex)
+            {
+                success = false;
+                Trace.WriteLine(ex.Message);
+            }
+            return success;
         }
     }
 }

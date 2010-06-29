@@ -395,7 +395,8 @@ namespace Squiggle.UI
                 var fileStream = File.OpenRead(filePath);
                 string fileName = Path.GetFileName(filePath);
                 IFileTransfer fileTransfer = chatSession.SendFile(fileName, fileStream);
-                chatTextBox.AddFileSentRequest(fileTransfer);
+                if (fileTransfer != null)
+                    chatTextBox.AddFileSentRequest(fileTransfer);
             }
         }
 

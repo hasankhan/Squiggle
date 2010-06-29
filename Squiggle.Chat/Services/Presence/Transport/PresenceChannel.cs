@@ -82,7 +82,14 @@ namespace Squiggle.Chat.Services.Presence.Transport
         {
             message.ChannelID = channelID;
             byte[] data = message.Serialize();
-            client.Send(data, data.Length, multicastEndPoint);
+            try
+            {
+                client.Send(data, data.Length, multicastEndPoint);
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("Could not send broadcast message due to exception: " + ex.Message);
+            }
         }
 
         public void SendMessage(Message message, IPEndPoint presenceEndPoint)
@@ -160,7 +167,14 @@ namespace Squiggle.Chat.Services.Presence.Transport
         void BeginReceive()
         {
             if (started)
-                client.BeginReceive(OnReceive, null);
+                try
+                {
+                    client.BeginReceive(OnReceive, null);
+                }
+                catch (Exception ex)
+                {
+                    Trace.WriteLine("Could not receive data on presence channel due to exception: " + ex.Message);
+                }
         }        
 
         IPresenceHost GetPresenceHost(IPEndPoint endPoint)
