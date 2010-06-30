@@ -328,6 +328,7 @@
     <Resource Include="Images\Upload.png" />
     <Resource Include="Images\font.png" />
     <Resource Include="Images\Buzz.png" />
+    <Resource Include="Images\chat.png" />
     <Content Include="Lib\WPFToolkit.dll" />
   </ItemGroup>
   <ItemGroup>

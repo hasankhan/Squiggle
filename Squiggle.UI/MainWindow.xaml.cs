@@ -45,6 +45,7 @@ namespace Squiggle.UI
            chatControl.ContactList.SignOut += new EventHandler(ContactList_SignOut);
            dummyViewModel = new ClientViewModel(new DummyChatClient());
            autoSignout = new NetworkSignout(u=>SignIn(u, false), ()=>SignOut(false));
+           chatControl.ContactList.OpenAbout += (sender, e) => SquiggleUtility.ShowAboutDialog(this);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

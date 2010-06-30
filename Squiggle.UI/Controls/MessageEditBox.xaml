@@ -3,7 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     FocusManager.FocusedElement="{Binding ElementName=txtMessage}">
     <UserControl.Resources>
-
         <Style x:Key="BorderStyle" TargetType="{x:Type Border}">
             <Setter Property="BorderBrush" Value="#FFBFCBD8" />
             <Setter Property="BorderThickness" Value="1" />
@@ -39,7 +38,7 @@
                          PreviewDrop="txtMessage_PreviewDrop" PreviewDragOver="txtMessage_PreviewDrag" PreviewDragEnter="txtMessage_PreviewDrag"
                          DockPanel.Dock="Left" TabIndex="0"  Style="{StaticResource TextStyle}" 
                          AcceptsReturn="True" Height="60" VerticalScrollBarVisibility="Auto"
-                         TextChanged="txtMessage_TextChanged" PreviewKeyDown="txtMessage_PreviewKeyDown"/>                
+                         TextChanged="txtMessage_TextChanged" PreviewKeyDown="txtMessage_PreviewKeyDown" TextWrapping="Wrap" />                
             </DockPanel>
         </Border>
 

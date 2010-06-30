@@ -25,6 +25,7 @@ namespace Squiggle.UI.Controls
     {
         public event EventHandler<ChatStartEventArgs> ChatStart = delegate { };
         public event EventHandler SignOut = delegate { };
+        public event EventHandler OpenAbout = delegate { };
 
         string filter = String.Empty;
 
@@ -69,7 +70,7 @@ namespace Squiggle.UI.Controls
 
         private void About_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            SquiggleUtility.ShowAboutDialog(null);
+            OpenAbout(this, EventArgs.Empty);
         }
 
         private void Buddy_Click(object sender, MouseButtonEventArgs e)
