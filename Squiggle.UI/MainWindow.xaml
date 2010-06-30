@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
     xmlns:tray="clr-namespace:Hardcodet.Wpf.TaskbarNotification"
     xmlns:local="clr-namespace:Squiggle.UI"
+    xmlns:converters="clr-namespace:Squiggle.UI.Converters"
     Title="Squiggle Messenger" 
     Height="{local:SettingBinding MainWindowHeight}"
     Width="{local:SettingBinding MainWindowWidth}"
@@ -12,8 +13,9 @@
     Top="{local:SettingBinding MainWindowTop}"
     Icon="/Squiggle;component/Images/Chat.ico" Loaded="Window_Loaded" Closed="Window_Closed" Closing="Window_Closing">
     <Window.Resources>
-        <local:StatusConverter x:Key="statusConverter" />
-        <local:TrayIconConverter x:Key="trayIconConverter" />
+        <converters:ConditionAndConverter x:Key="andConverter" />
+        <converters:StatusConverter x:Key="statusConverter" />
+        <converters:TrayIconConverter x:Key="trayIconConverter" />
         <ObjectDataProvider MethodName="GetChangableStatuses" 
             ObjectType="{x:Type local:SquiggleUtility}" 
             x:Key="AvailableUserStatus">
@@ -23,16 +25,23 @@
                 <Setter Property="IsEnabled" Value="{Binding IsLoggedIn}" />
             </Style.Setters>
         </Style>
+        <Style x:Key="statusMenuItem" TargetType="{x:Type MenuItem}">
+            <Style.Setters>
+                <Setter Property="Header" Value="{Binding Converter={StaticResource statusConverter}}" />
+                <Setter Property="IsChecked">
+                    <Setter.Value>
+                        <MultiBinding Converter="{StaticResource ResourceKey=andConverter}">
+                            <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type MenuItem}}" Path="DataContext.LoggedInUser.Status" />
+                            <Binding Path="." />
+                        </MultiBinding>
+                    </Setter.Value>
+                </Setter>
+            </Style.Setters>
+        </Style>
         <Style x:Key="statusMenu" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource signedInMenu}">
             <Style.Setters>
                 <Setter Property="ItemsSource" Value="{Binding Source={StaticResource AvailableUserStatus}}" />
-                <Setter Property="ItemTemplate">
-                    <Setter.Value>
-                        <DataTemplate>
-                            <ContentPresenter Content="{Binding Converter={StaticResource statusConverter}}" />
-                        </DataTemplate>
-                    </Setter.Value>
-                </Setter>
+                <Setter Property="ItemContainerStyle" Value="{StaticResource statusMenuItem}" />
             </Style.Setters>
         </Style>
     </Window.Resources>

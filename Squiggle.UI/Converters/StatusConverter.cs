@@ -6,7 +6,7 @@ using System.Windows.Data;
 using Squiggle.Chat;
 using System.Windows;
 
-namespace Squiggle.UI
+namespace Squiggle.UI.Converters
 {
     public class StatusConverter: IValueConverter
     {

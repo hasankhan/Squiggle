@@ -196,6 +196,7 @@
     <Compile Include="Controls\FilterTextBox.xaml.cs">
       <DependentUpon>FilterTextBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\ConditionAndConverter.cs" />
     <Compile Include="FontSetting.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -228,13 +229,13 @@
     <Compile Include="Controls\ContactListControl.xaml.cs">
       <DependentUpon>ContactListControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DisplayMessageConverter.cs" />
+    <Compile Include="Converters\DisplayMessageConverter.cs" />
     <Compile Include="DummyChatClient.cs" />
     <Compile Include="EventQueue.cs" />
-    <Compile Include="FileToIconConverter.cs" />
+    <Compile Include="Converters\FileToIconConverter.cs" />
     <Compile Include="IntExtensions.cs" />
     <Compile Include="NetworkSignout.cs" />
-    <Compile Include="PathToNameConverter.cs" />
+    <Compile Include="Converters\PathToNameConverter.cs" />
     <Compile Include="SettingBinding.cs" />
     <Compile Include="Shell.cs" />
     <Compile Include="SquiggleUtility.cs" />
@@ -284,9 +285,9 @@
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StatusConverter.cs" />
-    <Compile Include="StatusIconConverter.cs" />
-    <Compile Include="TrayIconConverter.cs" />
+    <Compile Include="Converters\StatusConverter.cs" />
+    <Compile Include="Converters\StatusIconConverter.cs" />
+    <Compile Include="Converters\TrayIconConverter.cs" />
     <Compile Include="TrayPopup.cs" />
     <Compile Include="WinStartup.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -4,14 +4,15 @@
     xmlns:controls="clr-namespace:Squiggle.UI.Controls"
     xmlns:sys="clr-namespace:System;assembly=mscorlib" 
     xmlns:coll="clr-namespace:System.Collections;assembly=mscorlib"
-    xmlns:local="clr-namespace:Squiggle.UI"
+    xmlns:converters="clr-namespace:Squiggle.UI.Converters"
+    xmlns:local="clr-namespace:Squiggle.UI"             
     xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat"
     xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
     Width="200" Height="400" Loaded="UserControl_Loaded" >
     <UserControl.Resources>
         <CollectionViewSource Source="{Binding Buddies}" x:Key="buddiesCollection" Filter="CollectionViewSource_Filter" />
-        <local:StatusIconConverter x:Key="statusIconConverter" />
-        <local:StatusConverter x:Key="statusConverter" />
+        <converters:StatusIconConverter x:Key="statusIconConverter" />
+        <converters:StatusConverter x:Key="statusConverter" />
         <Style x:Key="ContactInfoToolTipStyle" TargetType="{x:Type ToolTip}">
             <Setter Property="SnapsToDevicePixels" Value="True"/>
             <Setter Property="Template">

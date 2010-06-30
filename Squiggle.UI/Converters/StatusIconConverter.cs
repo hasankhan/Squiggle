@@ -6,9 +6,9 @@ using System.Windows.Data;
 using Squiggle.Chat;
 using System.Windows.Media.Imaging;
 
-namespace Squiggle.UI
+namespace Squiggle.UI.Converters
 {
-    public class TrayIconConverter: IValueConverter
+    public class StatusIconConverter: IValueConverter
     {
         #region IValueConverter Members
 
@@ -18,19 +18,19 @@ namespace Squiggle.UI
             {
                 var status = (UserStatus)value;
                 switch (status)
-                {                    
+                {
                     case UserStatus.Online:
-                        return new BitmapImage(new Uri("/Images/Chat.ico", UriKind.Relative));
+                        return new BitmapImage(new Uri("/Images/online.png", UriKind.Relative));
                     case UserStatus.Busy:
-                        return new BitmapImage(new Uri("/Images/Chat-Busy.ico", UriKind.Relative));
+                        return new BitmapImage(new Uri("/Images/busy.png", UriKind.Relative));
                     case UserStatus.BeRightBack:
                     case UserStatus.Away:
                     case UserStatus.Idle:
-                        return new BitmapImage(new Uri("/Images/Chat-Away.ico", UriKind.Relative));
+                        return new BitmapImage(new Uri("/Images/away.png", UriKind.Relative));
                     case UserStatus.Offline:
-                        return new BitmapImage(new Uri("/Images/Chat-Offline.ico", UriKind.Relative));
+                        return new BitmapImage(new Uri("/Images/offline.png", UriKind.Relative));
                     default:
-                        return new BitmapImage(new Uri("/Images/Chat.ico", UriKind.Relative));
+                        return new BitmapImage(new Uri("/Images/online.png", UriKind.Relative));
                 }
             }
             else

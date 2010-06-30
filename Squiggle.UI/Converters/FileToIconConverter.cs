@@ -14,7 +14,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Windows.Threading;
 
-namespace Squiggle.UI
+namespace Squiggle.UI.Converters
 {
     [ValueConversion(typeof(string), typeof(ImageSource))]
     public class FileToIconConverter : IMultiValueConverter
