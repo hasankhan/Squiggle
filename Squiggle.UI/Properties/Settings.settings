@@ -53,12 +53,6 @@
     <Setting Name="ChatWindowWidth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">600</Value>
     </Setting>
-    <Setting Name="ChatWindowLeft" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">100</Value>
-    </Setting>
-    <Setting Name="ChatWindowTop" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">100</Value>
-    </Setting>
     <Setting Name="SpellCheck" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>

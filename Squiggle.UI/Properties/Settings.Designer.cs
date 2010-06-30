@@ -229,30 +229,6 @@ namespace Squiggle.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
-        public double ChatWindowLeft {
-            get {
-                return ((double)(this["ChatWindowLeft"]));
-            }
-            set {
-                this["ChatWindowLeft"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
-        public double ChatWindowTop {
-            get {
-                return ((double)(this["ChatWindowTop"]));
-            }
-            set {
-                this["ChatWindowTop"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool SpellCheck {
             get {

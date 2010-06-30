@@ -6,8 +6,6 @@
     Title="ChatWindow" 
     Height="{local:SettingBinding ChatWindowHeight}"
     Width="{local:SettingBinding ChatWindowWidth}"
-    Left="{local:SettingBinding ChatWindowLeft}"
-    Top="{local:SettingBinding ChatWindowTop}"
     Loaded="Window_Loaded" Closed="Window_Closed" FocusManager.FocusedElement="{Binding ElementName=txtMessageEditBox}"
     Icon="/Squiggle;component/Images/chat.ico">
     <Window.Resources>
