@@ -1,12 +1,12 @@
 ﻿using System;
+using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Squiggle.Chat;
 using Squiggle.UI.Controls;
-using System.Windows.Threading;
-using System.IO;
 using Squiggle.UI.Settings;
-using System.Threading;
 
 namespace Squiggle.UI
 {

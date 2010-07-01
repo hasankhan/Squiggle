@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Net;
-using Squiggle.Chat.Services.Presence;
-using Squiggle.Chat.Services.Chat;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Windows.Threading;
 using Squiggle.Chat.Services;
-using System.Diagnostics;
+using Squiggle.Chat.Services.Chat;
+using Squiggle.Chat.Services.Presence;
 
 namespace Squiggle.Chat
 {

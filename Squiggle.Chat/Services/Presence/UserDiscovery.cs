@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Net.Sockets;
 using System.Net;
-using System.IO;
-using System.Threading;
 using Squiggle.Chat.Services.Presence.Transport;
 using Squiggle.Chat.Services.Presence.Transport.Messages;
-using System.Diagnostics;
-using Squiggle.Chat.Services.Presence.Transport.Host;
-using System.ServiceModel;
 
 namespace Squiggle.Chat.Services.Presence
 {    

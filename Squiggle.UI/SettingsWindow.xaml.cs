@@ -1,18 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Squiggle.Chat;
-using Microsoft.Win32;
 using System.Reflection;
+using System.Windows;
+using System.Windows.Input;
+using Microsoft.Win32;
+using Squiggle.Chat;
 using Squiggle.UI.Settings;
 
 namespace Squiggle.UI
@@ -55,7 +47,7 @@ namespace Squiggle.UI
             SettingsProvider.Current.Load();
             settingsVm = new SettingsViewModel(SettingsProvider.Current.Settings);
             settingsVm.ConnectionSettings.AllIPs.AddRange(NetworkUtility.GetLocalIPAddresses().Select(ip => ip.ToString()));
-            settingsVm.GeneralSettings.RunAtStartup = GetRunAtStartup();
+            settingsVm.GeneralSettings.RunAtStartup = GetRunAtStartup();            
 
             if (user == null)
             {
@@ -122,6 +114,15 @@ namespace Squiggle.UI
         {
             if (e.Key == Key.Escape)
                 Close();
+        }
+
+        private void btnBrowseDownloadsFolder_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+            dialog.SelectedPath = settingsVm.GeneralSettings.DownloadsFolder;
+            dialog.RootFolder = System.Environment.SpecialFolder.MyComputer;
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                txtDownloadsFolder.Text = settingsVm.GeneralSettings.DownloadsFolder = dialog.SelectedPath;
         }        
     }
 }

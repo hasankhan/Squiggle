@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using Squiggle.Chat.Services;
 using System.Drawing;
+using System.IO;
 
 namespace Squiggle.Chat
 {

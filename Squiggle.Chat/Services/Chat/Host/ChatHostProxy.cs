@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ServiceModel;
-using System.CodeDom.Compiler;
-using System.Net;
 using System.Diagnostics;
-using System.ServiceModel.Channels;
-using System.IO;
 using System.Drawing;
+using System.Net;
 using System.Net.Sockets;
+using System.ServiceModel;
+using System.ServiceModel.Channels;
 
 namespace Squiggle.Chat.Services.Chat.Host
 {

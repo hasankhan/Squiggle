@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Squiggle.Chat;
-
+﻿
 namespace Squiggle.UI.Settings
 {
     class SquiggleSettings

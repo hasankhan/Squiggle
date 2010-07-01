@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Timers;
 using System.Net;
-using Squiggle.Chat;
 using Squiggle.Chat.Services.Presence.Transport;
 
 namespace Squiggle.Chat.Services.Presence

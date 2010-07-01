@@ -23,6 +23,7 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -30,11 +31,9 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Threading;
 using Hardcodet.Wpf.TaskbarNotification.Interop;
-using Point=Hardcodet.Wpf.TaskbarNotification.Interop.Point;
-using System.Collections.Generic;
+using Point = Hardcodet.Wpf.TaskbarNotification.Interop.Point;
 
 
 

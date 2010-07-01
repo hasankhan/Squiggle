@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Reflection;
-
+﻿
 namespace Squiggle.UI.Settings
 {
     class GeneralSettings
@@ -21,7 +15,6 @@ namespace Squiggle.UI.Settings
             ShowPopups = true;
             ContactListSortField = "DisplayName";
             SpellCheck = true;
-            DownloadsFolder = Path.Combine(Assembly.GetExecutingAssembly().Location, "Downloads");
         }
     }
 }

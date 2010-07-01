@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows;
-using Squiggle.Chat;
-using System.Net;
 using System.Linq;
-using System.Windows.Threading;
-using Squiggle.UI.Settings;
-using Messenger;
-using System.Diagnostics;
-using System.Net.NetworkInformation;
-using System.Windows.Input;
+using System.Net;
 using System.Threading;
+using System.Windows;
+using System.Windows.Threading;
+using Messenger;
+using Squiggle.Chat;
+using Squiggle.UI.Settings;
 
 namespace Squiggle.UI
 {

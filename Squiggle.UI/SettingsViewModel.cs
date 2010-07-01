@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Squiggle.Chat;
+﻿using System.Collections.Generic;
 using Squiggle.UI.Settings;
 
 namespace Squiggle.UI
@@ -30,6 +26,7 @@ namespace Squiggle.UI
             GeneralSettings.ShowPopups = settings.GeneralSettings.ShowPopups;
             GeneralSettings.SpellCheck = settings.GeneralSettings.SpellCheck;
             GeneralSettings.ContactListSortField = settings.GeneralSettings.ContactListSortField;
+            GeneralSettings.DownloadsFolder = settings.GeneralSettings.DownloadsFolder;
 
             ConnectionSettings.BindToIP = settings.ConnectionSettings.BindToIP;
             ConnectionSettings.ChatPort = settings.ConnectionSettings.ChatPort;
@@ -52,6 +49,7 @@ namespace Squiggle.UI
             settings.GeneralSettings.ShowPopups = GeneralSettings.ShowPopups;
             settings.GeneralSettings.SpellCheck = GeneralSettings.SpellCheck;
             settings.GeneralSettings.ContactListSortField = GeneralSettings.ContactListSortField;
+            settings.GeneralSettings.DownloadsFolder = GeneralSettings.DownloadsFolder;
 
             settings.ConnectionSettings.BindToIP = ConnectionSettings.BindToIP;
             settings.ConnectionSettings.ChatPort = ConnectionSettings.ChatPort;
@@ -82,6 +80,7 @@ namespace Squiggle.UI
         public bool ShowPopups { get; set; }
         public string ContactListSortField { get; set; }
         public bool SpellCheck { get; set; }
+        public string DownloadsFolder { get; set; }
     }
 
     class ConnectionSettingsViewModel

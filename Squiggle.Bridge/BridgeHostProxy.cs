@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ServiceModel;
 using System.Diagnostics;
-using System.ServiceModel.Channels;
-using System.Net;
 using System.Net.Sockets;
+using System.ServiceModel;
+using System.ServiceModel.Channels;
 
 namespace Squiggle.Bridge
 {

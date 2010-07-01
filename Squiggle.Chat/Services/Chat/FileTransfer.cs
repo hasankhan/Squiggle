@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Threading;
 using Squiggle.Chat.Services.Chat.Host;
-using System.ComponentModel;
-using System.Diagnostics;
 
 namespace Squiggle.Chat.Services.Chat
 {

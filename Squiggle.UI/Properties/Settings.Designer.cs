@@ -253,7 +253,7 @@ namespace Squiggle.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Downloads")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string DownloadsFolder {
             get {
                 return ((string)(this["DownloadsFolder"]));

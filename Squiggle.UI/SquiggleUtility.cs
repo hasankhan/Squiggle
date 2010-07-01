@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Squiggle.UI.Settings;
-using System.IO;
 using System.Diagnostics;
-using Squiggle.Chat;
-using System.Reflection;
-using System.Windows;
+using System.IO;
+using System.Linq;
 using System.Threading;
+using System.Windows;
+using Squiggle.Chat;
+using Squiggle.UI.Settings;
 
 namespace Squiggle.UI
 {

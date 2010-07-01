@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ServiceModel;
-using Squiggle.Chat.Services.Presence.Transport;
+﻿using System.ServiceModel;
 
 namespace Squiggle.Bridge
 {

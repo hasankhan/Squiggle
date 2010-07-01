@@ -60,7 +60,7 @@
       <Value Profile="(Default)">DisplayName</Value>
     </Setting>
     <Setting Name="DownloadsFolder" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Downloads</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="FontName" Type="System.String" Scope="User">
       <Value Profile="(Default)">Georgia</Value>

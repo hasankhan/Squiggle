@@ -1,9 +1,7 @@
 ﻿// Some interop code taken from Mike Marshall's AnyForm
 
 using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Windows.Shapes;
 
 
 namespace Hardcodet.Wpf.TaskbarNotification.Interop

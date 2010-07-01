@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using Squiggle.Chat;
 using System.Net;
-using System.Diagnostics;
+using System.Reflection;
+using Squiggle.Chat;
 
 namespace Squiggle.UI.Settings
 {
@@ -78,7 +77,10 @@ namespace Squiggle.UI.Settings
             Settings.GeneralSettings.ShowPopups = Properties.Settings.Default.ShowPopups;
             Settings.GeneralSettings.SpellCheck = Properties.Settings.Default.SpellCheck;
             Settings.GeneralSettings.ContactListSortField = Properties.Settings.Default.ContactListSortField;
-            Settings.GeneralSettings.DownloadsFolder = Properties.Settings.Default.DownloadsFolder;
+            if (String.IsNullOrEmpty(Properties.Settings.Default.DownloadsFolder))
+                Settings.GeneralSettings.DownloadsFolder = Path.Combine(Assembly.GetExecutingAssembly().Location, "Downloads");
+            else
+                Settings.GeneralSettings.DownloadsFolder = Properties.Settings.Default.DownloadsFolder;
         }
 
         private void LoadPersonalSettings()
@@ -118,6 +120,7 @@ namespace Squiggle.UI.Settings
 
         private void SaveGeneralSettings()
         {
+            Properties.Settings.Default.DownloadsFolder = Settings.GeneralSettings.DownloadsFolder;
             Properties.Settings.Default.HideToTray = Settings.GeneralSettings.HideToSystemTray;
             Properties.Settings.Default.ShowPopups = Settings.GeneralSettings.ShowPopups;
             Properties.Settings.Default.ContactListSortField = Settings.GeneralSettings.ContactListSortField;

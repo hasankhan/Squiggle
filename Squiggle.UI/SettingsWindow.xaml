@@ -24,14 +24,14 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <Grid Grid.Row="1" Margin="5,30,0,0">
+                            <Grid Grid.Row="1" Margin="5">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="35*" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="40*" />
@@ -48,6 +48,11 @@
                                         <ComboBoxItem IsSelected="True">DisplayName</ComboBoxItem>
                                         <ComboBoxItem >Status</ComboBoxItem>
                                     </ComboBox>
+                                </StackPanel>
+                                <StackPanel Grid.Row="5"  Grid.Column="1" Grid.ColumnSpan="2"  Orientation="Horizontal" Margin="0,5,0,0">
+                                    <TextBlock Text="Downloads folder: " />
+                                    <TextBox x:Name="txtDownloadsFolder" IsReadOnly="True" Text="{Binding Path=GeneralSettings.DownloadsFolder}" Width="200" />
+                                    <Button Content="Browse" Click="btnBrowseDownloadsFolder_Click" />
                                 </StackPanel>
                             </Grid>
                         </Grid>

@@ -1,15 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
 using System.ServiceProcess;
-using System.Text;
 using Squiggle.Bridge.Configuration;
-using System.Net;
-using System.ServiceModel;
-using Squiggle.Chat.Services.Presence.Transport;
 
 namespace Squiggle.Bridge
 {
