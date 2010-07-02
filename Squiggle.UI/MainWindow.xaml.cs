@@ -374,18 +374,22 @@ namespace Squiggle.UI
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            Properties.Settings.Default.MainWindowHeight = this.Height;
-            Properties.Settings.Default.MainWindowWidth = this.Width;
-
-            Properties.Settings.Default.Save();
+            if (WindowState == System.Windows.WindowState.Normal)
+            {
+                Properties.Settings.Default.MainWindowHeight = this.Height;
+                Properties.Settings.Default.MainWindowWidth = this.Width;
+                Properties.Settings.Default.Save();
+            }
         }
 
         private void Window_LocationChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.MainWindowLeft = this.Left;
-            Properties.Settings.Default.MainWindowTop = this.Top;
-
-            Properties.Settings.Default.Save();
+            if (WindowState == System.Windows.WindowState.Normal)
+            {
+                Properties.Settings.Default.MainWindowLeft = this.Left;
+                Properties.Settings.Default.MainWindowTop = this.Top;
+                Properties.Settings.Default.Save();
+            }
         }
     }
 }

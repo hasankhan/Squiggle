@@ -510,10 +510,12 @@ namespace Squiggle.UI
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            Properties.Settings.Default.ChatWindowHeight = this.Height;
-            Properties.Settings.Default.ChatWindowWidth = this.Width;
-
-            Properties.Settings.Default.Save();
+            if (WindowState == System.Windows.WindowState.Normal)
+            {
+                Properties.Settings.Default.ChatWindowHeight = this.Height;
+                Properties.Settings.Default.ChatWindowWidth = this.Width;
+                Properties.Settings.Default.Save();
+            }
         }       
     }
 }
