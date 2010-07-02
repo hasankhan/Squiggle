@@ -35,6 +35,11 @@ namespace Squiggle.UI
            Instance = this;
            InitializeComponent();
 
+           this.Left = Properties.Settings.Default.MainWindowLeft;
+           this.Top = Properties.Settings.Default.MainWindowTop;
+           this.Height = Properties.Settings.Default.MainWindowHeight;
+           this.Width = Properties.Settings.Default.MainWindowWidth;
+
            chatWindows = new Dictionary<Buddy, ChatWindow>();
 
            chatControl.SignIn.CredentialsVerfied += new EventHandler<Squiggle.UI.Controls.LogInEventArgs>(OnCredentialsVerfied);
@@ -365,6 +370,22 @@ namespace Squiggle.UI
             IEnumerable<Buddy> selectedBuddies = SquiggleUtility.ShowSendInstantMessageDialog(clientViewModel, this);
             foreach (Buddy buddy in selectedBuddies)
                 StartChat(buddy);
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Properties.Settings.Default.MainWindowHeight = this.Height;
+            Properties.Settings.Default.MainWindowWidth = this.Width;
+
+            Properties.Settings.Default.Save();
+        }
+
+        private void Window_LocationChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.MainWindowLeft = this.Left;
+            Properties.Settings.Default.MainWindowTop = this.Top;
+
+            Properties.Settings.Default.Save();
         }
     }
 }

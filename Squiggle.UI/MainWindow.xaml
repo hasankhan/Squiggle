@@ -7,10 +7,8 @@
     xmlns:local="clr-namespace:Squiggle.UI"
     xmlns:converters="clr-namespace:Squiggle.UI.Converters"
     Title="Squiggle Messenger" 
-    Height="{local:SettingBinding MainWindowHeight}"
-    Width="{local:SettingBinding MainWindowWidth}"
-    Left="{local:SettingBinding MainWindowLeft}"
-    Top="{local:SettingBinding MainWindowTop}"
+    SizeChanged="Window_SizeChanged"
+    LocationChanged="Window_LocationChanged"
     Icon="/Squiggle;component/Images/Chat.ico" Loaded="Window_Loaded" Closed="Window_Closed" Closing="Window_Closing">
     <Window.Resources>
         <converters:ConditionAndConverter x:Key="andConverter" />

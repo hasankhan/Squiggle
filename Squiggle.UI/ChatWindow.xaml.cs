@@ -32,6 +32,10 @@ namespace Squiggle.UI
         public ChatWindow()
         {
             InitializeComponent();
+
+            this.Height = Properties.Settings.Default.ChatWindowHeight;
+            this.Width = Properties.Settings.Default.ChatWindowWidth;
+
             flash = new FlashWindow(this);
 
             statusResetTimer = new DispatcherTimer();
@@ -502,6 +506,14 @@ namespace Squiggle.UI
         private void SelectAllMenu_Click(object sender, RoutedEventArgs e)
         {
             txtMessageEditBox.txtMessage.SelectAll();
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Properties.Settings.Default.ChatWindowHeight = this.Height;
+            Properties.Settings.Default.ChatWindowWidth = this.Width;
+
+            Properties.Settings.Default.Save();
         }       
     }
 }
