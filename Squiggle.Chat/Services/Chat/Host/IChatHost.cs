@@ -9,16 +9,16 @@ namespace Squiggle.Chat.Services.Chat.Host
     public interface IChatHost
     {
         [OperationContract]
-        void Buzz(IPEndPoint user);
+        void Buzz(Guid sessionId, IPEndPoint user);
 
         [OperationContract]
-        void UserIsTyping(IPEndPoint user);
+        void UserIsTyping(Guid sessionId, IPEndPoint user);
 
         [OperationContract]
-        void ReceiveMessage(IPEndPoint user, string fontName, int fontSize, Color color, FontStyle fontStyle, string message);
+        void ReceiveMessage(Guid sessionId, IPEndPoint user, string fontName, int fontSize, Color color, FontStyle fontStyle, string message);
 
         [OperationContract]
-        void ReceiveFileInvite(IPEndPoint user, Guid id, string name, int size);
+        void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, int size);
 
         [OperationContract]
         void ReceiveFileContent(Guid id, byte[] chunk);

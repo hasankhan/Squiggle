@@ -3,10 +3,11 @@ using System.Drawing;
 using System.IO;
 using System.Net;
 using Squiggle.Chat.Services.Chat.Host;
+using System.Collections.Generic;
 
 namespace Squiggle.Chat.Services
 {
-    public class FileTransferInviteEventArgs: EventArgs
+    public class FileTransferInviteEventArgs: SessionEventArgs
     {
         public IFileTransfer Invitation {get; set; }
     }
@@ -14,11 +15,13 @@ namespace Squiggle.Chat.Services
     public interface IChatSession
     {
         event EventHandler<MessageReceivedEventArgs> MessageReceived;
-        event EventHandler<UserEventArgs> BuzzReceived;
-        event EventHandler<UserEventArgs> UserTyping;
+        event EventHandler<SessionEventArgs> BuzzReceived;
+        event EventHandler<SessionEventArgs> UserTyping;
         event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived;
 
-        IPEndPoint RemoteUser { get; set; }
+        IEnumerable<IPEndPoint> RemoteUsers { get; }
+        Guid ID { get; }
+        bool IsGroupSession { get; }
 
         void SendBuzz();
         void SendMessage(string fontName, int fontSize, Color color, FontStyle fontStyle, string message);

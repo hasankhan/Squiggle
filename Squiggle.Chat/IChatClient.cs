@@ -1,11 +1,16 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Squiggle.Chat
 {
     public class ChatStartedEventArgs : EventArgs
     {
-        public Buddy Buddy { get; set; }
+        public Buddy Buddy
+        {
+            get { return Buddies.FirstOrDefault(); }
+        }
+        public List<Buddy> Buddies { get; set; }
         public IChat Chat { get; set; }
     }
 

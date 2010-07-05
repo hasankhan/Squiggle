@@ -83,11 +83,17 @@ namespace Squiggle.Chat
 
         void chatService_ChatStarted(object sender, Squiggle.Chat.Services.ChatStartedEventArgs e)
         {
-            Buddy buddy = buddies[e.Session.RemoteUser];
-            if (buddy != null)
+            var buddyList = new List<Buddy>();
+            foreach (IPEndPoint user in e.Session.RemoteUsers)
             {
-                var chat = new Chat(e.Session, buddy);
-                ChatStarted(this, new ChatStartedEventArgs() { Chat = chat, Buddy = buddy });
+                Buddy buddy = buddies[user];
+                if (buddy != null)
+                    buddyList.Add(buddy);
+            }
+            if (buddyList.Count > 0)
+            {
+                var chat = new Chat(e.Session, buddyList);
+                ChatStarted(this, new ChatStartedEventArgs() { Chat = chat, Buddies = buddyList });
             }
         }
 

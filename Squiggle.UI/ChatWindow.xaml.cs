@@ -377,6 +377,7 @@ namespace Squiggle.UI
                 chatTextBox.AddInfo("You have sent a buzz.");
                 chatSession.SendBuzz();
                 lastBuzzSent = DateTime.Now;
+                SquiggleUtility.ShakeWindow(this);
             }
             else
                 chatTextBox.AddError("Buzz can not be sent too frequently.", String.Empty);
@@ -453,8 +454,7 @@ namespace Squiggle.UI
 
         void FlashWindow()
         {
-            if (!this.IsActive)
-                flash.Start();
+            flash.Start();
         }
 
         static bool ShowSaveDialog(out string fileName, out string format)

@@ -11,16 +11,20 @@ namespace Squiggle.Chat
 {    
     class Chat: IChat
     {
-        Buddy buddy;
+        Dictionary<object, Buddy> buddies;
         IChatSession session;
 
-        public Chat(IChatSession session, Buddy buddy)
+        public Chat(IChatSession session, Buddy buddy) : this(session, Enumerable.Repeat(buddy, 1)) { }
+
+        public Chat(IChatSession session, IEnumerable<Buddy> buddies)
         {
-            this.buddy = buddy;
+            this.buddies = new Dictionary<object, Buddy>();
+            foreach (Buddy buddy in buddies)
+                this.buddies[buddy.ID] = buddy;
             this.session = session;
             session.MessageReceived += new EventHandler<Squiggle.Chat.Services.Chat.Host.MessageReceivedEventArgs>(session_MessageReceived);
-            session.UserTyping += new EventHandler<Squiggle.Chat.Services.Chat.Host.UserEventArgs>(session_UserTyping);
-            session.BuzzReceived += new EventHandler<Squiggle.Chat.Services.Chat.Host.UserEventArgs>(session_BuzzReceived);
+            session.UserTyping += new EventHandler<Squiggle.Chat.Services.Chat.Host.SessionEventArgs>(session_UserTyping);
+            session.BuzzReceived += new EventHandler<Squiggle.Chat.Services.Chat.Host.SessionEventArgs>(session_BuzzReceived);
             session.TransferInvitationReceived += new EventHandler<Squiggle.Chat.Services.FileTransferInviteEventArgs>(session_TransferInvitationReceived);
         }        
 
@@ -28,7 +32,7 @@ namespace Squiggle.Chat
 
         public IEnumerable<Buddy> Buddies
         {
-            get { return Enumerable.Repeat(buddy, 1); }
+            get { return buddies.Values; }
         }
 
         public event EventHandler<ChatMessageReceivedEventArgs> MessageReceived = delegate { };
@@ -93,27 +97,35 @@ namespace Squiggle.Chat
 
         void session_TransferInvitationReceived(object sender, Squiggle.Chat.Services.FileTransferInviteEventArgs e)
         {
-            TransferInvitationReceived(this, new FileTransferInviteEventArgs() { Sender = buddy, Invitation = e.Invitation });
+            Buddy buddy;
+            if (buddies.TryGetValue(e.User, out buddy))
+                TransferInvitationReceived(this, new FileTransferInviteEventArgs() { Sender = buddy, Invitation = e.Invitation });
         }
 
-        void session_BuzzReceived(object sender, Squiggle.Chat.Services.Chat.Host.UserEventArgs e)
+        void session_BuzzReceived(object sender, Squiggle.Chat.Services.Chat.Host.SessionEventArgs e)
         {
-            BuzzReceived(this, new BuddyEventArgs() { Buddy = buddy });
+            Buddy buddy;
+            if (buddies.TryGetValue(e.User, out buddy))
+                BuzzReceived(this, new BuddyEventArgs() { Buddy = buddy });
         } 
 
-        void session_UserTyping(object sender, Squiggle.Chat.Services.Chat.Host.UserEventArgs e)
+        void session_UserTyping(object sender, Squiggle.Chat.Services.Chat.Host.SessionEventArgs e)
         {
-            BuddyTyping(this, new BuddyEventArgs() { Buddy = buddy });
+            Buddy buddy;
+            if (buddies.TryGetValue(e.User, out buddy))
+                BuddyTyping(this, new BuddyEventArgs() { Buddy = buddy });
         }                
 
         void session_MessageReceived(object sender, Squiggle.Chat.Services.Chat.Host.MessageReceivedEventArgs e)
         {
-            MessageReceived(this, new ChatMessageReceivedEventArgs() { Sender = buddy, 
-                                                                       FontName = e.FontName,
-                                                                       FontSize = e.FontSize,
-                                                                       Color = e.Color,
-                                                                       FontStyle = e.FontStyle,                                                                       
-                                                                       Message = e.Message});
+            Buddy buddy;
+            if (buddies.TryGetValue(e.User, out buddy))
+                MessageReceived(this, new ChatMessageReceivedEventArgs() { Sender = buddy, 
+                                                                           FontName = e.FontName,
+                                                                           FontSize = e.FontSize,
+                                                                           Color = e.Color,
+                                                                           FontStyle = e.FontStyle,                                                                       
+                                                                           Message = e.Message});
         }
 
         bool L(Action action)

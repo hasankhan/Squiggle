@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.ServiceModel;
+using System.Linq;
 using Squiggle.Chat.Services.Chat.Host;
 
 namespace Squiggle.Chat.Services.Chat
@@ -10,7 +11,7 @@ namespace Squiggle.Chat.Services.Chat
     {
         ChatHost chatHost;
         ServiceHost serviceHost;
-        Dictionary<IPEndPoint, IChatSession> chatSessions;
+        ChatSessionCollection chatSessions;
         IPEndPoint localEndPoint;
 
         public string Username { get; set; }
@@ -19,7 +20,7 @@ namespace Squiggle.Chat.Services.Chat
         {
             chatHost = new ChatHost();
             chatHost.UserActivity += new EventHandler<UserActivityEventArgs>(chatHost_UserActivity);
-            chatSessions = new Dictionary<IPEndPoint, IChatSession>();
+            chatSessions = new ChatSessionCollection();
         }        
        
         #region IChatService Members
@@ -48,17 +49,11 @@ namespace Squiggle.Chat.Services.Chat
 
         public IChatSession CreateSession(IPEndPoint endPoint)
         {
-            IChatSession session;
-            if (!chatSessions.TryGetValue(endPoint, out session))
-            {
-                IChatHost remoteHost = CreateChatProxy(endPoint);
-                ChatSession temp = new ChatSession(chatHost, remoteHost, localEndPoint, endPoint);
-                temp.SessionEnded += (sender, e) => chatSessions.Remove(temp.RemoteUser);
-                session = temp;
-                this.chatSessions.Add(endPoint, session);
-            }
+            IChatSession session = chatSessions.FindSessions(endPoint).FirstOrDefault(s=>!s.IsGroupSession);
+            if (session == null)
+                session = CreateSession(Guid.NewGuid(), endPoint);
             return session;
-        }        
+        }       
 
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
 
@@ -67,7 +62,7 @@ namespace Squiggle.Chat.Services.Chat
         void chatHost_UserActivity(object sender, UserActivityEventArgs e)
         {
             if (e.Type == ActivityType.Message || e.Type == ActivityType.TransferInvite || e.Type == ActivityType.Buzz)
-                EnsureChatSession(e.User);
+                EnsureChatSession(e.SessionID, e.User);
         }
 
         static Uri CreateServiceUri(string address)
@@ -76,19 +71,20 @@ namespace Squiggle.Chat.Services.Chat
             return uri;
         }
 
-        static IChatHost CreateChatProxy(IPEndPoint endPoint)
+        IChatSession CreateSession(Guid sessionId, IPEndPoint endPoint)
         {
-            Uri uri = CreateServiceUri(endPoint.ToString());
-            var binding = new NetTcpBinding(SecurityMode.None);
-            IChatHost remoteHost = new ChatHostProxy(binding, new EndpointAddress(uri));
-            return remoteHost;
-        }
+            IChatHost remoteHost = new ChatHostProxy(endPoint);
+            ChatSession temp = new ChatSession(sessionId, chatHost, localEndPoint, endPoint);
+            temp.SessionEnded += (sender, e) => chatSessions.Remove(temp);
+            this.chatSessions.Add(temp);
+            return temp;
+        } 
 
-        void EnsureChatSession(IPEndPoint user)
+        void EnsureChatSession(Guid sessionId, IPEndPoint user)
         {
-            if (!chatSessions.ContainsKey(user))
+            if (!chatSessions.Contains(sessionId))
             {
-                var session = CreateSession(user);
+                var session = CreateSession(sessionId, user);
                 ChatStarted(this, new ChatStartedEventArgs() { Session = session });
             }
         }

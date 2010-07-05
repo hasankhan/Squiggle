@@ -8,17 +8,25 @@ using System.ServiceModel.Channels;
 
 namespace Squiggle.Chat.Services.Chat.Host
 {
-    public class ChatHostProxy : IChatHost
+    public class ChatHostProxy: IChatHost
     {
         InnerProxy proxy;
         Binding binding;
         EndpointAddress address;
 
-        public ChatHostProxy(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress)
+        public ChatHostProxy(IPEndPoint remoteEndPoint)
         {
+            Uri uri = CreateServiceUri(remoteEndPoint.ToString());
+            var binding = new NetTcpBinding(SecurityMode.None);
             this.binding = binding;
-            this.address = remoteAddress;
+            this.address = new EndpointAddress(uri);
             EnsureProxy();
+        }
+
+        static Uri CreateServiceUri(string address)
+        {
+            var uri = new Uri("net.tcp://" + address + "/squigglechat");
+            return uri;
         }
 
         void EnsureProxy(Action<IChatHost> action)
@@ -70,30 +78,30 @@ namespace Squiggle.Chat.Services.Chat.Host
 
         #region IChatHost Members
 
-        public void UserIsTyping(IPEndPoint user)
+        public void UserIsTyping(Guid sessionId, IPEndPoint user)
         {
-            EnsureProxy(p => p.UserIsTyping(user));
+            EnsureProxy(p => p.UserIsTyping(sessionId, user));
         }
 
-        public void Buzz(IPEndPoint user)
+        public void Buzz(Guid sessionId, IPEndPoint user)
         {
-            EnsureProxy(p => p.Buzz(user));
+            EnsureProxy(p => p.Buzz(sessionId, user));
         }
 
-        public void ReceiveFileInvite(IPEndPoint user, Guid id, string name, int size)
+        public void ReceiveMessage(Guid sessionId, IPEndPoint user, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
         {
-            EnsureProxy(p => p.ReceiveFileInvite(user, id, name, size));
+            EnsureProxy(p => p.ReceiveMessage(sessionId, user, fontName, fontSize, color, fontStyle, message));
+        }
+
+        public void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, int size)
+        {
+            EnsureProxy(p => p.ReceiveFileInvite(sessionId, user, id, name, size));
         }
 
         public void ReceiveFileContent(Guid id, byte[] chunk)
         {
             EnsureProxy(p => p.ReceiveFileContent(id, chunk));
-        }
-
-        public void ReceiveMessage(IPEndPoint user, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
-        {
-            EnsureProxy(p => p.ReceiveMessage(user, fontName, fontSize, color, fontStyle, message));
-        }
+        }        
 
         public void AcceptFileInvite(Guid id)
         {
@@ -139,22 +147,28 @@ namespace Squiggle.Chat.Services.Chat.Host
 
             #region IChatHost Members
 
-            public void UserIsTyping(IPEndPoint user)
+            public void UserIsTyping(Guid sessionId, IPEndPoint user)
             {
                 Trace.WriteLine("Sending typing notification to: " + user.ToString());
-                base.Channel.UserIsTyping(user);
+                base.Channel.UserIsTyping(sessionId, user);
             }
 
-            public void Buzz(IPEndPoint user)
+            public void Buzz(Guid sessionId, IPEndPoint user)
             {
                 Trace.WriteLine("Sending buzz to: " + user.ToString());
-                base.Channel.Buzz(user);
+                base.Channel.Buzz(sessionId, user);
             }
 
-            public void ReceiveFileInvite(IPEndPoint user, Guid id, string name, int size)
+            public void ReceiveMessage(Guid sessionId, IPEndPoint user, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
+            {
+                Trace.WriteLine("Sending message to: " + user.ToString() + ", message = " + message);
+                base.Channel.ReceiveMessage(sessionId, user, fontName, fontSize, color, fontStyle, message);
+            }
+
+            public void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, int size)
             {
                 Trace.WriteLine("Sending file invite to: " + user.ToString() + ", name = " + name);
-                base.Channel.ReceiveFileInvite(user, id, name, size);
+                base.Channel.ReceiveFileInvite(sessionId, user, id, name, size);
             }
 
             public void ReceiveFileContent(Guid id, byte[] chunk)
@@ -173,12 +187,6 @@ namespace Squiggle.Chat.Services.Chat.Host
             {
                 Trace.WriteLine("Cancel file transfer: " + id.ToString());
                 base.Channel.CancelFileTransfer(id);
-            }
-
-            public void ReceiveMessage(IPEndPoint user, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
-            {
-                Trace.WriteLine("Sending message to: " + user.ToString() + ", message = " + message);
-                base.Channel.ReceiveMessage(user, fontName, fontSize, color, fontStyle, message);
             }
 
             #endregion
