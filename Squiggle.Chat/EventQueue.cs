@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Squiggle.UI
+namespace Squiggle.Chat
 {
-    class EventQueue
+    public class EventQueue
     {
         class EventItem
         {
@@ -20,12 +20,7 @@ namespace Squiggle.UI
             }
         }
 
-        Queue<EventItem> events = new Queue<EventItem>();
-
-        public void Enqueue(object sender, EventArgs args, EventHandler handler)
-        {
-            EnqueueInternal(sender, args, handler);
-        }        
+        Queue<EventItem> events = new Queue<EventItem>();      
 
         public void Enqueue<T>(object sender, T args, EventHandler<T> handler) where T:EventArgs
         {
@@ -34,18 +29,24 @@ namespace Squiggle.UI
 
         void EnqueueInternal(object sender, EventArgs args, Delegate handler)
         {
-            events.Enqueue(new EventItem()
-            {
-                Sender = sender,
-                Args = args,
-                Handler = handler
-            });
+            lock (events)
+                events.Enqueue(new EventItem()
+                {
+                    Sender = sender,
+                    Args = args,
+                    Handler = handler
+                });
         }
 
         public void DequeueAll()
         {
             while (events.Count > 0)
-                events.Dequeue().Invoke();
+            {
+                EventItem eventItem;
+                lock(events)
+                    eventItem = events.Dequeue();
+                eventItem.Invoke();
+            }
         }
     }
 }

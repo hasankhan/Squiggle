@@ -38,11 +38,14 @@ namespace Squiggle.Chat
         event EventHandler<BuddyEventArgs> BuddyTyping;
         event EventHandler<MessageFailedEventArgs> MessageFailed;
         event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived;
+        event EventHandler GroupChatStarted;
 
         void NotifyTyping();
         void SendBuzz();
         void SendMessage(string fontName, int fontSize, Color color, FontStyle style, string Message);
         IFileTransfer SendFile(string name, Stream content);
         void Leave();
+
+        void Invite(Buddy buddy);
     }
 }

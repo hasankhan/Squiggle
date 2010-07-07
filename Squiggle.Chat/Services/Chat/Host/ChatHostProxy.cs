@@ -19,6 +19,7 @@ namespace Squiggle.Chat.Services.Chat.Host
             Uri uri = CreateServiceUri(remoteEndPoint.ToString());
             var binding = new NetTcpBinding(SecurityMode.None);
             this.binding = binding;
+            this.binding.SendTimeout = TimeSpan.FromSeconds(5);
             this.address = new EndpointAddress(uri);
             EnsureProxy();
         }
@@ -93,6 +94,21 @@ namespace Squiggle.Chat.Services.Chat.Host
             EnsureProxy(p => p.ReceiveMessage(sessionId, user, fontName, fontSize, color, fontStyle, message));
         }
 
+        public void ReceiveChatInvite(Guid sessionId, IPEndPoint user, IPEndPoint[] participants)
+        {
+            EnsureProxy(p => p.ReceiveChatInvite(sessionId, user, participants));
+        }
+
+        public void JoinChat(Guid sessionId, IPEndPoint user)
+        {
+            EnsureProxy(p => p.JoinChat(sessionId, user));
+        }
+
+        public void LeaveChat(Guid sessionId, IPEndPoint user)
+        {
+            EnsureProxy(p => p.LeaveChat(sessionId, user));
+        }
+
         public void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, int size)
         {
             EnsureProxy(p => p.ReceiveFileInvite(sessionId, user, id, name, size));
@@ -163,6 +179,24 @@ namespace Squiggle.Chat.Services.Chat.Host
             {
                 Trace.WriteLine("Sending message to: " + user.ToString() + ", message = " + message);
                 base.Channel.ReceiveMessage(sessionId, user, fontName, fontSize, color, fontStyle, message);
+            }
+
+            public void ReceiveChatInvite(Guid sessionId, IPEndPoint user, IPEndPoint[] participants)
+            {
+                Trace.WriteLine("Sending chat invite to: " + user.ToString());
+                base.Channel.ReceiveChatInvite(sessionId, user, participants);
+            }
+
+            public void JoinChat(Guid sessionId, IPEndPoint user)
+            {
+                Trace.WriteLine(user.ToString() + " has joined chat: " + sessionId);
+                base.Channel.JoinChat(sessionId, user);
+            }
+
+            public void LeaveChat(Guid sessionId, IPEndPoint user)
+            {
+                Trace.WriteLine(user.ToString() + " has left chat: " + sessionId);
+                base.Channel.LeaveChat(sessionId, user);
             }
 
             public void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, int size)

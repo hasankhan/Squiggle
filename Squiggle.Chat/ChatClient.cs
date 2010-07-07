@@ -44,7 +44,7 @@ namespace Squiggle.Chat
         {
             var endpoint = (IPEndPoint)buddy.ID;
             IChatSession session = chatService.CreateSession(endpoint);
-            var chat = new Chat(session, buddy);
+            var chat = new Chat(session, buddy, id=>buddies[id]);
             return chat;
         }        
 
@@ -92,7 +92,7 @@ namespace Squiggle.Chat
             }
             if (buddyList.Count > 0)
             {
-                var chat = new Chat(e.Session, buddyList);
+                var chat = new Chat(e.Session, buddyList, id=>buddies[id]);
                 ChatStarted(this, new ChatStartedEventArgs() { Chat = chat, Buddies = buddyList });
             }
         }
@@ -147,7 +147,7 @@ namespace Squiggle.Chat
 
         void OnBuddyUpdated(Buddy buddy)
         {
-            BuddyUpdated(this, new BuddyEventArgs() { Buddy = buddy });
+            BuddyUpdated(this, new BuddyEventArgs( buddy ));
         } 
 
         void OnBuddyOnline(Buddy buddy, bool discovered)
@@ -157,7 +157,7 @@ namespace Squiggle.Chat
 
         void OnBuddyOffline(Buddy buddy)
         {
-            BuddyOffline(this, new BuddyEventArgs() { Buddy = buddy });
+            BuddyOffline(this, new BuddyEventArgs( buddy ));
         }        
 
         #region IDisposable Members

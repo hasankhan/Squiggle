@@ -18,8 +18,11 @@ namespace Squiggle.Chat.Services.Chat
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
         public event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived = delegate { };
         public event EventHandler<SessionEventArgs> UserTyping = delegate { };
+        public event EventHandler<SessionEventArgs> UserJoined = delegate { };
+        public event EventHandler<SessionEventArgs> UserLeft = delegate { };
         public event EventHandler<SessionEventArgs> BuzzReceived = delegate { };
         public event EventHandler SessionEnded = delegate { };
+        public event EventHandler GroupChatStarted = delegate { };
 
         public Guid ID { get; private set; }
         public IEnumerable<IPEndPoint> RemoteUsers
@@ -39,14 +42,49 @@ namespace Squiggle.Chat.Services.Chat
             this.localHost = localHost;
             this.localUser = localUser;
             this.remoteUsers = new HashSet<IPEndPoint>(remoteUsers);
+            localHost.ChatInviteReceived += new EventHandler<ChatInviteReceivedEventArgs>(localHost_ChatInviteReceived);
             localHost.TransferInvitationReceived += new EventHandler<TransferInvitationReceivedEventArgs>(localHost_TransferInvitationReceived);
             localHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(host_MessageReceived);
             localHost.UserTyping += new EventHandler<SessionEventArgs>(localHost_UserTyping);
             localHost.BuzzReceived += new EventHandler<SessionEventArgs>(localHost_BuzzReceived);
-
+            localHost.UserJoined += new EventHandler<SessionEventArgs>(localHost_UserJoined);
+            localHost.UserLeft += new EventHandler<SessionEventArgs>(localHost_UserLeft);
             remoteHosts = new Dictionary<IPEndPoint, IChatHost>();
-            foreach (IPEndPoint user in RemoteUsers)
-                remoteHosts[user] = new ChatHostProxy(user);
+            CreateRemoteHosts();
+        }
+
+        void localHost_UserLeft(object sender, SessionEventArgs e)
+        {
+            if (!IsGroupSession)
+                return;
+
+            if (remoteUsers.Remove(e.User))
+            {
+                remoteHosts.Remove(e.User);
+                UserLeft(this, e);
+            }
+        }
+
+        void localHost_UserJoined(object sender, SessionEventArgs e)
+        {
+            if (remoteUsers.Add(e.User))
+            {
+                remoteHosts[e.User] = ChatHostProxyFactory.Get(e.User);
+                UserJoined(this, e);
+            }
+        }        
+
+        void localHost_ChatInviteReceived(object sender, ChatInviteReceivedEventArgs e)
+        {
+            if (IsGroupSession)
+                return;
+
+            foreach (IPEndPoint user in e.Participants)
+                remoteUsers.Add(user);
+
+            CreateRemoteHosts();
+            BroadCast(h => h.JoinChat(ID, localUser));
+            GroupChatStarted(this, EventArgs.Empty);
         }
 
         void localHost_TransferInvitationReceived(object sender, TransferInvitationReceivedEventArgs e)
@@ -88,14 +126,12 @@ namespace Squiggle.Chat.Services.Chat
 
         public void SendBuzz()
         {
-            foreach (IChatHost host in remoteHosts.Values)
-                host.Buzz(ID, localUser);
+            BroadCast(h => h.Buzz(ID, localUser));
         }
 
         public void NotifyTyping()
         {
-            foreach (IChatHost host in remoteHosts.Values)
-                host.UserIsTyping(ID, localUser);
+            BroadCast(h => h.UserIsTyping(ID, localUser));
         }
 
         public IFileTransfer SendFile(string name, Stream content)
@@ -111,13 +147,31 @@ namespace Squiggle.Chat.Services.Chat
 
         public void SendMessage(string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
         {
-            foreach (IChatHost host in remoteHosts.Values)
-                host.ReceiveMessage(ID, localUser, fontName, fontSize, color, fontStyle, message);
+            BroadCast(h => h.ReceiveMessage(ID, localUser, fontName, fontSize, color, fontStyle, message));
         }
 
         public void End()
         {
+            BroadCast(h => h.LeaveChat(ID, localUser));
             SessionEnded(this, EventArgs.Empty);
+        }
+
+        public void Invite(IPEndPoint iPEndPoint)
+        {
+            var proxy = ChatHostProxyFactory.Get(iPEndPoint);
+            proxy.ReceiveChatInvite(ID, localUser, remoteUsers.ToArray());
+        }
+
+        void CreateRemoteHosts()
+        {
+            foreach (IPEndPoint user in RemoteUsers)
+                remoteHosts[user] = ChatHostProxyFactory.Get(user);
+        }
+
+        void BroadCast(Action<IChatHost> hostAction)
+        {
+            foreach (IChatHost host in remoteHosts.Values)
+                hostAction(host);
         }
 
         public override bool Equals(object obj)
@@ -134,6 +188,6 @@ namespace Squiggle.Chat.Services.Chat
         public override int GetHashCode()
         {
             return ID.GetHashCode();
-        }
+        }        
     }
 }

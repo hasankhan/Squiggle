@@ -14,19 +14,22 @@ namespace Squiggle.Chat.Services.Chat
         ChatSessionCollection chatSessions;
         IPEndPoint localEndPoint;
 
+        public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
+
         public string Username { get; set; }
         
         public ChatService()
         {
-            chatHost = new ChatHost();
-            chatHost.UserActivity += new EventHandler<UserActivityEventArgs>(chatHost_UserActivity);
-            chatSessions = new ChatSessionCollection();
         }        
        
         #region IChatService Members
 
         public void Start(IPEndPoint endpoint)
         {
+            chatHost = new ChatHost();
+            chatHost.UserActivity += new EventHandler<UserActivityEventArgs>(chatHost_UserActivity);
+            chatSessions = new ChatSessionCollection();
+
             if (serviceHost != null)
                 throw new InvalidOperationException("Service already started.");
 
@@ -41,9 +44,13 @@ namespace Squiggle.Chat.Services.Chat
         public void Stop()
         {
             if (serviceHost != null)
-            {
+            {                
                 serviceHost.Close();
                 serviceHost = null;
+
+                chatHost.Dispose();
+                chatHost = null;
+                chatSessions.Clear();
             }
         }
 
@@ -55,13 +62,14 @@ namespace Squiggle.Chat.Services.Chat
             return session;
         }       
 
-        public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
-
         #endregion
 
         void chatHost_UserActivity(object sender, UserActivityEventArgs e)
         {
-            if (e.Type == ActivityType.Message || e.Type == ActivityType.TransferInvite || e.Type == ActivityType.Buzz)
+            if (e.Type == ActivityType.Message || 
+                e.Type == ActivityType.TransferInvite || 
+                e.Type == ActivityType.Buzz || 
+                e.Type == ActivityType.ChatInvite)
                 EnsureChatSession(e.SessionID, e.User);
         }
 
@@ -73,7 +81,6 @@ namespace Squiggle.Chat.Services.Chat
 
         IChatSession CreateSession(Guid sessionId, IPEndPoint endPoint)
         {
-            IChatHost remoteHost = new ChatHostProxy(endPoint);
             ChatSession temp = new ChatSession(sessionId, chatHost, localEndPoint, endPoint);
             temp.SessionEnded += (sender, e) => chatSessions.Remove(temp);
             this.chatSessions.Add(temp);

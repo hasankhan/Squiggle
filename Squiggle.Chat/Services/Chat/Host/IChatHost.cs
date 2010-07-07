@@ -18,6 +18,15 @@ namespace Squiggle.Chat.Services.Chat.Host
         void ReceiveMessage(Guid sessionId, IPEndPoint user, string fontName, int fontSize, Color color, FontStyle fontStyle, string message);
 
         [OperationContract]
+        void ReceiveChatInvite(Guid sessionId, IPEndPoint user, IPEndPoint[] participants);
+
+        [OperationContract]
+        void JoinChat(Guid sessionId, IPEndPoint user);
+
+        [OperationContract]
+        void LeaveChat(Guid sessionId, IPEndPoint user);
+
+        [OperationContract]
         void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, int size);
 
         [OperationContract]

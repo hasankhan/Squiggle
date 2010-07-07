@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Squiggle.Chat;
+using System.Linq;
 using Squiggle.UI.Controls;
 using Squiggle.UI.Settings;
 
@@ -76,6 +77,7 @@ namespace Squiggle.UI
                     chatSession.MessageFailed -= new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
                     chatSession.BuddyTyping -= new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
                     chatSession.TransferInvitationReceived -= new EventHandler<FileTransferInviteEventArgs>(chatSession_TransferInvitationReceived);
+                    chatSession.GroupChatStarted -= new EventHandler(chatSession_GroupChatStarted);
                 }
                 chatSession = value;
                 this.DataContext = value;
@@ -86,8 +88,9 @@ namespace Squiggle.UI
                 chatSession.MessageFailed += new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
                 chatSession.BuddyTyping += new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
                 chatSession.TransferInvitationReceived += new EventHandler<FileTransferInviteEventArgs>(chatSession_TransferInvitationReceived);
+                chatSession.GroupChatStarted += new EventHandler(chatSession_GroupChatStarted);
             }
-        }            
+        }                 
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -214,6 +217,16 @@ namespace Squiggle.UI
             SaveAs();
         }
 
+        void chatSession_GroupChatStarted(object sender, EventArgs e)
+        {
+            if (!loaded)
+            {
+                eventQueue.Enqueue(sender, e, chatSession_GroupChatStarted);
+                return;
+            }
+            Dispatcher.Invoke(()=>UpdateTitle());
+        }        
+
         void chatSession_TransferInvitationReceived(object sender, FileTransferInviteEventArgs e)
         {
             if (!loaded)
@@ -285,7 +298,7 @@ namespace Squiggle.UI
                 eventQueue.Enqueue(sender, e, chatSession_BuddyLeft);
                 return;
             }
-            OnBuddyLeft(e.Buddy.DisplayName);
+            OnBuddyLeft(e.Buddy);
         }
 
         void chatSession_BuddyJoined(object sender, BuddyEventArgs e)
@@ -295,7 +308,7 @@ namespace Squiggle.UI
                 eventQueue.Enqueue(sender, e, chatSession_BuddyJoined);
                 return;
             }
-            OnBuddyJoined();
+            OnBuddyJoined(e.Buddy);
         }            
 
         void OnBuddyTyping(BuddyEventArgs e)
@@ -322,9 +335,23 @@ namespace Squiggle.UI
             });
         }
 
-        void OnBuddyLeft(string buddyName)
+
+        void OnBuddyJoined(Buddy buddy)
         {
-            
+            Dispatcher.Invoke(() =>
+            {
+                chatTextBox.AddInfo(String.Format("{0} has joined the conversation.", buddy.DisplayName));
+                UpdateTitle();
+            });
+        }  
+
+        void OnBuddyLeft(Buddy buddy)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                chatTextBox.AddInfo(String.Format("{0} has left the conversation.", buddy.DisplayName));
+                UpdateTitle();
+            });
         }        
 
         void OnBuzzReceived(Buddy buddy)
@@ -363,12 +390,7 @@ namespace Squiggle.UI
                 chatTextBox.AddFileReceiveRequest(e.Sender.DisplayName, e.Invitation, downloadsFolder);
                 FlashWindow();
             });
-        }        
-
-        void OnBuddyJoined()
-        {
-            
-        }                       
+        }                                     
 
         public void SendBuzz()
         {
@@ -437,6 +459,12 @@ namespace Squiggle.UI
                     richTextBox.SaveFile(fileName, System.Windows.Forms.RichTextBoxStreamType.PlainText);
             }
         }
+
+        void UpdateTitle()
+        {
+            string title = String.Join(", ", chatSession.Buddies.Select(b => b.DisplayName).ToArray());
+            this.Title = title;
+        }   
 
         void ChangeStatus(string message, params object[] args)
         {
@@ -516,6 +544,13 @@ namespace Squiggle.UI
                 Properties.Settings.Default.ChatWindowWidth = this.Width;
                 Properties.Settings.Default.Save();
             }
+        }
+
+        private void InviteContactMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Buddy buddy = SquiggleUtility.SelectContact("Invite someone to this conversation.", this);
+            if (buddy != null)
+                chatSession.Invite(buddy);
         }       
     }
 }

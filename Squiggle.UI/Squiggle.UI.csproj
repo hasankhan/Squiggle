@@ -231,7 +231,6 @@
     </Compile>
     <Compile Include="Converters\DisplayMessageConverter.cs" />
     <Compile Include="DummyChatClient.cs" />
-    <Compile Include="EventQueue.cs" />
     <Compile Include="Converters\FileToIconConverter.cs" />
     <Compile Include="IntExtensions.cs" />
     <Compile Include="NetworkSignout.cs" />

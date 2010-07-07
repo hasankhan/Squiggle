@@ -52,6 +52,9 @@
                 <Separator />
                 <MenuItem Header="Select _all" InputGestureText="Ctrl+A" Click="SelectAllMenu_Click" />
             </MenuItem>
+            <MenuItem Header="_Actions">
+                <MenuItem Header="_Invite a contact to join this conversation..." MenuItem.Click="InviteContactMenu_Click" />
+            </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Settings..." MenuItem.Click="SettingsMenu_Click" />
             </MenuItem>

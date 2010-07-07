@@ -19,42 +19,33 @@
                     General settings
                     </TextBlock>
                     <Border Grid.Row="1" Background="{StaticResource WorkAreaBackgroud}" BorderBrush="Black" BorderThickness="1" CornerRadius="3" Margin="5">
-                        <Grid>
+                        <Grid Margin="10">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <Grid Grid.Row="1" Margin="5">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="40*" />
-                                    <ColumnDefinition Width="138" />
-                                    <ColumnDefinition Width="223" />
-                                </Grid.ColumnDefinitions>
-                                <CheckBox  Content="Run on Windows startup" IsChecked="{Binding Path=GeneralSettings.RunAtStartup}" Margin="0,0,0,5" Grid.Column="1" Grid.ColumnSpan="2" />
-                                <CheckBox Grid.Row="1" Grid.Column="1" Content="Close to tray" IsChecked="{Binding Path=GeneralSettings.HideToSystemTray}" Margin="0,0,0,5" Grid.ColumnSpan="2" />
-                                <CheckBox Grid.Row="2" Content="Show popups" IsChecked="{Binding Path=GeneralSettings.ShowPopups}" Margin="0,0,0,5" Grid.Column="1" Grid.ColumnSpan="2" />
-                                <CheckBox Grid.Row="3" Content="Enable spell-check in chat window." IsChecked="{Binding Path=GeneralSettings.SpellCheck}" Margin="0,0,0,5" Grid.Column="1" Grid.ColumnSpan="2" />
-                                <StackPanel Grid.Row="4"  Grid.Column="1" Grid.ColumnSpan="2"  Orientation="Horizontal">
-                                    <TextBlock Text="Sort contacts by "></TextBlock>
-                                    <ComboBox Width="100" Margin="5,0,0,0" x:Name="cmbSortField">
-                                        <ComboBoxItem IsSelected="True">DisplayName</ComboBoxItem>
-                                        <ComboBoxItem >Status</ComboBoxItem>
-                                    </ComboBox>
-                                </StackPanel>
-                                <StackPanel Grid.Row="5"  Grid.Column="1" Grid.ColumnSpan="2"  Orientation="Horizontal" Margin="0,5,0,0">
-                                    <TextBlock Text="Downloads folder: " />
-                                    <TextBox x:Name="txtDownloadsFolder" IsReadOnly="True" Text="{Binding Path=GeneralSettings.DownloadsFolder}" Width="200" />
-                                    <Button Content="Browse" Click="btnBrowseDownloadsFolder_Click" />
-                                </StackPanel>
-                            </Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="138" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox  Content="Run on Windows startup" IsChecked="{Binding Path=GeneralSettings.RunAtStartup}" Margin="0,0,0,5" Grid.Column="0" Grid.ColumnSpan="2" />
+                            <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="Close to tray" IsChecked="{Binding Path=GeneralSettings.HideToSystemTray}" Margin="0,0,0,5" />
+                            <CheckBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="Show popups" IsChecked="{Binding Path=GeneralSettings.ShowPopups}" Margin="0,0,0,5" />
+                            <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="Enable spell-check in chat window." IsChecked="{Binding Path=GeneralSettings.SpellCheck}" Margin="0,0,0,5" />
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="Sort contacts by:" />
+                            <ComboBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Width="100" Margin="5" x:Name="cmbSortField">
+                                <ComboBoxItem IsSelected="True">DisplayName</ComboBoxItem>
+                                <ComboBoxItem >Status</ComboBoxItem>
+                            </ComboBox>
+                            <TextBlock Grid.Row="5"  Grid.Column="0" Text="Downloads folder: " />
+                            <StackPanel Orientation="Horizontal" Grid.Row="5"  Grid.Column="1">
+                                <TextBox x:Name="txtDownloadsFolder" IsReadOnly="True" Text="{Binding Path=GeneralSettings.DownloadsFolder}" Width="200" />
+                                <Button Content="Browse" Click="btnBrowseDownloadsFolder_Click" Margin="5,0" />
+                            </StackPanel>                            
                         </Grid>
                     </Border>
                     <Grid Grid.Row="2">
@@ -81,7 +72,7 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <Grid Grid.Row="1" Margin="5">
+                            <Grid Grid.Row="1" Margin="10">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" MinHeight="16" />
                                     <RowDefinition Height="Auto" MinHeight="22" />
@@ -120,7 +111,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Connection">
-                <Grid >
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*" />
@@ -130,38 +121,32 @@
                     Configure connection settings
                     </TextBlock>
                     <Border Grid.Row="1" Background="{StaticResource WorkAreaBackgroud}" BorderBrush="Black" BorderThickness="1" CornerRadius="3" Margin="5">
-                        <Grid>
+                        <Grid Margin="10">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <Grid Grid.Row="1" Margin="5">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>                                                                
-                                <TextBlock Grid.Row="4" Grid.Column="0">Presence Port:</TextBlock>
-                                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=ConnectionSettings.PresencePort}" Margin="0,0,0,5"/>
-                                <TextBlock Grid.Row="5" Grid.Column="0">Chat Port:</TextBlock>
-                                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Path=ConnectionSettings.ChatPort}" Margin="0,0,0,5"/>
-                                <TextBlock Grid.Row="6" Grid.Column="0">Keep Alive Time:</TextBlock>
-                                <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
-                                    <TextBox Text="{Binding Path=ConnectionSettings.KeepAliveTime}" Width="80" Margin="0,0,5,5" HorizontalAlignment="Left" />
-                                    <TextBlock>secs</TextBlock>
-                                </StackPanel>                                
-                                <TextBlock Grid.Row="7" Grid.Column="0">Bind To IP:</TextBlock>
-                                <ComboBox Grid.Row="7" Grid.Column="1" ItemsSource="{Binding Path=ConnectionSettings.AllIPs}" SelectedValue="{Binding Path=ConnectionSettings.BindToIP}" Margin="0,0,0,5"/>
-                            </Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="138" />
+                                <ColumnDefinition Width="200" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="4" Grid.Column="0">Presence Port:</TextBlock>
+                            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=ConnectionSettings.PresencePort}" Margin="0,0,0,5"/>
+                            <TextBlock Grid.Row="5" Grid.Column="0">Chat Port:</TextBlock>
+                            <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Path=ConnectionSettings.ChatPort}" Margin="0,0,0,5"/>
+                            <TextBlock Grid.Row="6" Grid.Column="0">Keep Alive Time:</TextBlock>
+                            <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
+                                <TextBox Text="{Binding Path=ConnectionSettings.KeepAliveTime}" Width="80" Margin="0,0,5,5" HorizontalAlignment="Left" />
+                                <TextBlock>secs</TextBlock>
+                            </StackPanel>
+                            <TextBlock Grid.Row="7" Grid.Column="0">Bind To IP:</TextBlock>
+                            <ComboBox Grid.Row="7" Grid.Column="1" ItemsSource="{Binding Path=ConnectionSettings.AllIPs}" SelectedValue="{Binding Path=ConnectionSettings.BindToIP}" Width="150" HorizontalAlignment="Left" Margin="0,0,0,5"/>
                         </Grid>
                     </Border>
                     <Grid Grid.Row="2">

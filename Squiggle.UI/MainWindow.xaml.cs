@@ -360,14 +360,14 @@ namespace Squiggle.UI
 
         private void SendFileMenu_Click(object sender, RoutedEventArgs e)
         {
-            IEnumerable<Buddy> selectedBuddies = SquiggleUtility.ShowSendFileDialog(clientViewModel, this);
+            IEnumerable<Buddy> selectedBuddies = SquiggleUtility.ShowSendFileDialog(this);
             foreach (Buddy buddy in selectedBuddies)
                 StartChat(buddy, true, null);
         }
 
         private void SendMessageMenu_Click(object sender, RoutedEventArgs e)
         {
-            IEnumerable<Buddy> selectedBuddies = SquiggleUtility.ShowSendInstantMessageDialog(clientViewModel, this);
+            IEnumerable<Buddy> selectedBuddies = SquiggleUtility.ShowSendInstantMessageDialog(this);
             foreach (Buddy buddy in selectedBuddies)
                 StartChat(buddy);
         }
