@@ -5,6 +5,8 @@ using System.Net;
 using Squiggle.Chat.Services.Chat.Host;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Diagnostics;
 
 namespace Squiggle.Chat.Services.Chat
 {
@@ -49,8 +51,44 @@ namespace Squiggle.Chat.Services.Chat
             localHost.BuzzReceived += new EventHandler<SessionEventArgs>(localHost_BuzzReceived);
             localHost.UserJoined += new EventHandler<SessionEventArgs>(localHost_UserJoined);
             localHost.UserLeft += new EventHandler<SessionEventArgs>(localHost_UserLeft);
+            localHost.SessionInfoRequested += new EventHandler<SessionInfoRequestedEventArgs>(localHost_SessionInfoRequested);
             remoteHosts = new Dictionary<IPEndPoint, IChatHost>();
             CreateRemoteHosts();
+        }
+
+        IChatHost PrimaryHost
+        {
+            get
+            {
+                IChatHost remoteHost;
+                lock (remoteHosts)
+                    remoteHost = remoteHosts.FirstOrDefault().Value;
+                return remoteHost;
+            }
+        }
+
+        public void UpdateSessionInfo()
+        {
+            try
+            {
+                SessionInfo info = remoteHosts.FirstOrDefault().Value.GetSessionInfo(ID, localUser);
+                if (info != null && info.Participants != null)
+                {
+                    bool wasGroupSession = IsGroupSession;
+                    AddParticipants(info.Participants);
+                    if (!wasGroupSession && IsGroupSession)
+                        GroupChatStarted(this, EventArgs.Empty);
+                }
+            }
+            catch (Exception ex) 
+            {
+                Trace.WriteLine("Could not get session info due to exception: " + ex.Message);
+            }
+        }
+
+        void localHost_SessionInfoRequested(object sender, SessionInfoRequestedEventArgs e)
+        {
+            e.Info.Participants = remoteUsers.Except(Enumerable.Repeat(e.User, 1)).ToArray();
         }
 
         void localHost_UserLeft(object sender, SessionEventArgs e)
@@ -79,13 +117,17 @@ namespace Squiggle.Chat.Services.Chat
             if (IsGroupSession)
                 return;
 
-            foreach (IPEndPoint user in e.Participants)
-                remoteUsers.Add(user);
-
-            CreateRemoteHosts();
-            BroadCast(h => h.JoinChat(ID, localUser));
+            try
+            {
+                AddParticipants(e.Participants);
+                BroadCast(h => h.JoinChat(ID, localUser));
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("Could not respond to chat invite due to exception: " + ex.Message);
+            }
             GroupChatStarted(this, EventArgs.Empty);
-        }
+        }       
 
         void localHost_TransferInvitationReceived(object sender, TransferInvitationReceivedEventArgs e)
         {
@@ -94,7 +136,7 @@ namespace Squiggle.Chat.Services.Chat
 
             if (IsRemoteUser(e.User))
             {
-                IChatHost remoteHost = remoteHosts.Values.FirstOrDefault();
+                IChatHost remoteHost = PrimaryHost;
                 IFileTransfer invitation = new FileTransfer(ID, remoteHost, localHost, localUser, e.Name, e.Size, e.ID);
                 TransferInvitationReceived(this, new FileTransferInviteEventArgs() { User = e.User, 
                                                                                      Invitation = invitation });
@@ -138,7 +180,7 @@ namespace Squiggle.Chat.Services.Chat
         {
             if (IsGroupSession)
                 throw new InvalidOperationException("Cannot send files in a group chat session.");
-            IChatHost remoteHost = remoteHosts.Values.FirstOrDefault();
+            IChatHost remoteHost = PrimaryHost;
             long size = content.Length;
             var transfer = new FileTransfer(ID, remoteHost, localHost, localUser, name, (int)size, content);
             transfer.Start();
@@ -152,7 +194,14 @@ namespace Squiggle.Chat.Services.Chat
 
         public void End()
         {
-            BroadCast(h => h.LeaveChat(ID, localUser));
+            try
+            {
+                BroadCast(h => h.LeaveChat(ID, localUser));
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("Could not send leave message due to exception: " + ex.Message);
+            }
             SessionEnded(this, EventArgs.Empty);
         }
 
@@ -164,14 +213,26 @@ namespace Squiggle.Chat.Services.Chat
 
         void CreateRemoteHosts()
         {
-            foreach (IPEndPoint user in RemoteUsers)
-                remoteHosts[user] = ChatHostProxyFactory.Get(user);
+            lock (remoteHosts)
+                foreach (IPEndPoint user in RemoteUsers)
+                    remoteHosts[user] = ChatHostProxyFactory.Get(user);
         }
 
         void BroadCast(Action<IChatHost> hostAction)
         {
-            foreach (IChatHost host in remoteHosts.Values)
+            IEnumerable<IChatHost> hosts;
+            lock (remoteHosts)
+                hosts = remoteHosts.Values.ToList(); 
+            foreach (IChatHost host in hosts)
                 hostAction(host);
+        }
+
+        void AddParticipants(IPEndPoint[] participants)
+        {
+            foreach (IPEndPoint user in participants)
+                remoteUsers.Add(user);
+
+            CreateRemoteHosts();
         }
 
         public override bool Equals(object obj)

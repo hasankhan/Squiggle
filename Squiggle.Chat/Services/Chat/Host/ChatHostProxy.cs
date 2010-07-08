@@ -19,7 +19,9 @@ namespace Squiggle.Chat.Services.Chat.Host
             Uri uri = CreateServiceUri(remoteEndPoint.ToString());
             var binding = new NetTcpBinding(SecurityMode.None);
             this.binding = binding;
+#if !DEBUG
             this.binding.SendTimeout = TimeSpan.FromSeconds(5);
+#endif
             this.address = new EndpointAddress(uri);
             EnsureProxy();
         }
@@ -82,6 +84,13 @@ namespace Squiggle.Chat.Services.Chat.Host
         public void UserIsTyping(Guid sessionId, IPEndPoint user)
         {
             EnsureProxy(p => p.UserIsTyping(sessionId, user));
+        }
+
+        public SessionInfo GetSessionInfo(Guid sessionId, IPEndPoint user)
+        {
+            SessionInfo info = null;
+            EnsureProxy(p => info = p.GetSessionInfo(sessionId, user));
+            return info;
         }
 
         public void Buzz(Guid sessionId, IPEndPoint user)
@@ -165,25 +174,31 @@ namespace Squiggle.Chat.Services.Chat.Host
 
             public void UserIsTyping(Guid sessionId, IPEndPoint user)
             {
-                Trace.WriteLine("Sending typing notification to: " + user.ToString());
+                Trace.WriteLine("Sending typing notification from: " + user.ToString());
                 base.Channel.UserIsTyping(sessionId, user);
+            }
+
+            public SessionInfo GetSessionInfo(Guid sessionId, IPEndPoint user)
+            {
+                Trace.WriteLine("Getting session information from: " + user.ToString());
+                return base.Channel.GetSessionInfo(sessionId, user);
             }
 
             public void Buzz(Guid sessionId, IPEndPoint user)
             {
-                Trace.WriteLine("Sending buzz to: " + user.ToString());
+                Trace.WriteLine("Sending buzz from: " + user.ToString());
                 base.Channel.Buzz(sessionId, user);
             }
 
             public void ReceiveMessage(Guid sessionId, IPEndPoint user, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
             {
-                Trace.WriteLine("Sending message to: " + user.ToString() + ", message = " + message);
+                Trace.WriteLine("Sending message from: " + user.ToString() + ", message = " + message);
                 base.Channel.ReceiveMessage(sessionId, user, fontName, fontSize, color, fontStyle, message);
             }
 
             public void ReceiveChatInvite(Guid sessionId, IPEndPoint user, IPEndPoint[] participants)
             {
-                Trace.WriteLine("Sending chat invite to: " + user.ToString());
+                Trace.WriteLine("Sending chat invite from: " + user.ToString());
                 base.Channel.ReceiveChatInvite(sessionId, user, participants);
             }
 
@@ -201,7 +216,7 @@ namespace Squiggle.Chat.Services.Chat.Host
 
             public void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, int size)
             {
-                Trace.WriteLine("Sending file invite to: " + user.ToString() + ", name = " + name);
+                Trace.WriteLine("Sending file invite from: " + user.ToString() + ", name = " + name);
                 base.Channel.ReceiveFileInvite(sessionId, user, id, name, size);
             }
 

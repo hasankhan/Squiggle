@@ -9,25 +9,17 @@ namespace Squiggle.Chat.Services.Chat
     class ChatSessionCollection: ICollection<IChatSession>
     {
         Dictionary<Guid, IChatSession> chatSessions = new Dictionary<Guid, IChatSession>();
-        Dictionary<IPEndPoint, List<IChatSession>> userSessions = new Dictionary<IPEndPoint, List<IChatSession>>();
 
         public void Add(IChatSession item)
         {
-            chatSessions[item.ID] = item;
-            foreach (IPEndPoint user in item.RemoteUsers)
-            {
-                List<IChatSession> sessions;
-                if (!userSessions.TryGetValue(user, out sessions))
-                    sessions = new List<IChatSession>();
-                sessions.Add(item);
-                userSessions[user] = sessions;
-            }
+            lock (chatSessions)
+                chatSessions[item.ID] = item;
         }
 
         public void Clear()
         {
-            chatSessions.Clear();
-            userSessions.Clear();
+            lock (chatSessions)
+                chatSessions.Clear();
         }
 
         public bool Contains(IChatSession item)
@@ -37,21 +29,20 @@ namespace Squiggle.Chat.Services.Chat
 
         public bool Contains(Guid sessionId)
         {
-            return chatSessions.ContainsKey(sessionId);
+            lock (chatSessions)
+                return chatSessions.ContainsKey(sessionId);
         }
 
         public IEnumerable<IChatSession> FindSessions(IPEndPoint user)
         {
-            List<IChatSession> sessions;
-            if (userSessions.TryGetValue(user, out sessions))
-                return sessions;
-            else
-                return Enumerable.Empty<IChatSession>();
+            lock (chatSessions)
+                return chatSessions.Values.Where(s=>s.RemoteUsers.Contains(user)).ToList();
         }
 
         public void CopyTo(IChatSession[] array, int arrayIndex)
         {
-            chatSessions.Values.CopyTo(array, arrayIndex);
+            lock (chatSessions)
+                chatSessions.Values.CopyTo(array, arrayIndex);
         }
 
         public int Count
@@ -66,14 +57,11 @@ namespace Squiggle.Chat.Services.Chat
 
         public bool Remove(IChatSession item)
         {
-            bool removed = chatSessions.Remove(item.ID);
-            foreach (IPEndPoint user in item.RemoteUsers)
+            lock (chatSessions)
             {
-                List<IChatSession> sessions;
-                if (userSessions.TryGetValue(user, out sessions))
-                    sessions.Remove(item);
+                bool removed = chatSessions.Remove(item.ID);
+                return removed;
             }
-            return removed;
         }
 
         public IEnumerator<IChatSession> GetEnumerator()

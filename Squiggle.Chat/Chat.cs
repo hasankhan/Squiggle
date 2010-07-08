@@ -79,7 +79,10 @@ namespace Squiggle.Chat
 
         public void SendBuzz()
         {
-            L(()=>session.SendBuzz());
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                L(() => session.SendBuzz());
+            });
         }
 
         public IFileTransfer SendFile(string name, Stream content)
@@ -101,8 +104,11 @@ namespace Squiggle.Chat
         }
 
         public void Invite(Buddy buddy)
-        {            
-            L(()=>session.Invite((IPEndPoint)buddy.ID));
+        {
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                L(() => session.Invite((IPEndPoint)buddy.ID));
+            });
         }
 
         #endregion

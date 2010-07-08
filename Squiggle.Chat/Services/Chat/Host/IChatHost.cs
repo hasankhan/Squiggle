@@ -9,6 +9,9 @@ namespace Squiggle.Chat.Services.Chat.Host
     public interface IChatHost
     {
         [OperationContract]
+        SessionInfo GetSessionInfo(Guid sessionId, IPEndPoint user);
+
+        [OperationContract]
         void Buzz(Guid sessionId, IPEndPoint user);
 
         [OperationContract]

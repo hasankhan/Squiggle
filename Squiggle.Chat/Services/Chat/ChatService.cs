@@ -4,6 +4,7 @@ using System.Net;
 using System.ServiceModel;
 using System.Linq;
 using Squiggle.Chat.Services.Chat.Host;
+using System.Threading;
 
 namespace Squiggle.Chat.Services.Chat
 {
@@ -79,12 +80,17 @@ namespace Squiggle.Chat.Services.Chat
             return uri;
         }
 
-        IChatSession CreateSession(Guid sessionId, IPEndPoint endPoint)
+        ChatSession CreateSession(Guid sessionId, IPEndPoint endPoint)
         {
-            ChatSession temp = new ChatSession(sessionId, chatHost, localEndPoint, endPoint);
-            temp.SessionEnded += (sender, e) => chatSessions.Remove(temp);
-            this.chatSessions.Add(temp);
-            return temp;
+            ChatSession session = new ChatSession(sessionId, chatHost, localEndPoint, endPoint);
+            RegisterSession(session);
+            return session;
+        }
+
+        void RegisterSession(ChatSession session)
+        {
+            session.SessionEnded += (sender, e) => chatSessions.Remove(session);
+            this.chatSessions.Add(session);
         } 
 
         void EnsureChatSession(Guid sessionId, IPEndPoint user)
@@ -93,6 +99,7 @@ namespace Squiggle.Chat.Services.Chat
             {
                 var session = CreateSession(sessionId, user);
                 ChatStarted(this, new ChatStartedEventArgs() { Session = session });
+                ThreadPool.QueueUserWorkItem(_=>session.UpdateSessionInfo());
             }
         }
     }

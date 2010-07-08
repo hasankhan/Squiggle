@@ -21,6 +21,7 @@ namespace Squiggle.Chat.Services.Chat.Host
         public event EventHandler<TransferInvitationReceivedEventArgs> TransferInvitationReceived = delegate { };
         public event EventHandler<FileTransferDataReceivedEventArgs> TransferDataReceived = delegate { };
         public event EventHandler<UserActivityEventArgs> UserActivity = delegate { };
+        public event EventHandler<SessionInfoRequestedEventArgs> SessionInfoRequested = delegate { };
 
         EventQueue eventQueue = new EventQueue();
         Thread eventProcessor;
@@ -42,17 +43,24 @@ namespace Squiggle.Chat.Services.Chat.Host
 
         #region IChatHost Members
 
+        public SessionInfo GetSessionInfo(Guid sessionId, IPEndPoint user)
+        {
+            var args = new SessionInfoRequestedEventArgs() { SessionID = sessionId, User = user, Info = new SessionInfo() };
+            SessionInfoRequested(this, args);
+            return args.Info;
+        }
+
         public void Buzz(Guid sessionId, IPEndPoint user)
         {
             OnUserActivity(sessionId, user, ActivityType.Buzz);
-            eventQueue.Enqueue(this, new SessionEventArgs() { SessionID = sessionId, User = user }, BuzzReceived);
+            eventQueue.Enqueue(this, new SessionEventArgs(sessionId, user ), BuzzReceived);
             Trace.WriteLine(user.ToString() + " is buzzing.");
         }
 
         public void UserIsTyping(Guid sessionId, IPEndPoint user)
         {
             OnUserActivity(sessionId, user, ActivityType.Typing);
-            eventQueue.Enqueue(this, new SessionEventArgs() { SessionID = sessionId, User = user }, UserTyping);
+            eventQueue.Enqueue(this, new SessionEventArgs(sessionId, user ), UserTyping);
             Trace.WriteLine(user.ToString() + " is typing.");
         }                
 
@@ -138,6 +146,14 @@ namespace Squiggle.Chat.Services.Chat.Host
     {
         public Guid SessionID { get; set; }
         public IPEndPoint User { get; set; }
+
+        public SessionEventArgs(){}
+
+        public SessionEventArgs(Guid sessionId, IPEndPoint user)
+        {
+            this.SessionID = sessionId;
+            this.User = user;
+        }        
     }
 
     public class ChatInviteReceivedEventArgs : SessionEventArgs
@@ -184,5 +200,10 @@ namespace Squiggle.Chat.Services.Chat.Host
     public class UserActivityEventArgs : SessionEventArgs
     {
         public ActivityType Type { get; set; }
+    }
+
+    public class SessionInfoRequestedEventArgs : SessionEventArgs
+    {
+        public SessionInfo Info { get; set; }
     }
 }
