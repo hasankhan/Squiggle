@@ -57,7 +57,7 @@ namespace Squiggle.Chat.Services.Chat
 
         public IChatSession CreateSession(IPEndPoint endPoint)
         {
-            IChatSession session = chatSessions.FindSessions(endPoint).FirstOrDefault(s=>!s.IsGroupSession);
+            IChatSession session = chatSessions.Find(s=>!s.IsGroupSession && s.RemoteUsers.Contains(endPoint));
             if (session == null)
                 session = CreateSession(Guid.NewGuid(), endPoint);
             return session;

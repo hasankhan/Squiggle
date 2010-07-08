@@ -33,10 +33,10 @@ namespace Squiggle.Chat.Services.Chat
                 return chatSessions.ContainsKey(sessionId);
         }
 
-        public IEnumerable<IChatSession> FindSessions(IPEndPoint user)
+        public IChatSession Find(Func<IChatSession, bool> criterea)
         {
             lock (chatSessions)
-                return chatSessions.Values.Where(s=>s.RemoteUsers.Contains(user)).ToList();
+                return chatSessions.Values.Where(criterea).FirstOrDefault();
         }
 
         public void CopyTo(IChatSession[] array, int arrayIndex)

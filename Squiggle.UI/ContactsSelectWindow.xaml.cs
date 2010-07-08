@@ -52,6 +52,8 @@ namespace Squiggle.UI
             this.DataContext = this.clientViewModel;
         }
 
+        public Predicate<Buddy> ExcludeCriterea { get; set; }
+
         void clientViewModel_BuddyOffline(object sender, EventArgs e)
         {
             Refresh();
@@ -96,6 +98,9 @@ namespace Squiggle.UI
                 e.Accepted = true;
             else
                 e.Accepted = buddy.DisplayName.ToLower().Contains(filter.ToLower());
+
+            if (ExcludeCriterea != null)
+                e.Accepted &= !ExcludeCriterea(buddy);
         }
 
         private void FilterTextBox_FilterChanged(object sender, BuddyFilterEventArs e)

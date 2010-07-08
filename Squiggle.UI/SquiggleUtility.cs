@@ -86,13 +86,24 @@ namespace Squiggle.UI
 
         public static Buddy SelectContact(string title, Window owner)
         {
-            return SelectContacts(title, owner).FirstOrDefault();
+            return SelectContact(title, owner, null);
+        }
+
+        public static Buddy SelectContact(string title, Window owner, Predicate<Buddy> exclusionFilter)
+        {
+            return SelectContacts(title, owner, exclusionFilter).FirstOrDefault();
         }
 
         public static IEnumerable<Buddy> SelectContacts(string title, Window owner)
         {
+            return SelectContacts(title, owner, null);
+        }
+
+        public static IEnumerable<Buddy> SelectContacts(string title, Window owner, Predicate<Buddy> exclusionFilter)
+        {
             var clientViewModel = (ClientViewModel)MainWindow.Instance.DataContext;
             var selectContactDialog = new ContactsSelectWindow(clientViewModel, false);
+            selectContactDialog.ExcludeCriterea = exclusionFilter;
             selectContactDialog.Owner = owner;
             selectContactDialog.Title = title;
             if (selectContactDialog.ShowDialog() == true)
