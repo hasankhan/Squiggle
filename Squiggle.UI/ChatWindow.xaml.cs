@@ -549,7 +549,7 @@ namespace Squiggle.UI
         private void InviteContactMenu_Click(object sender, RoutedEventArgs e)
         {
             Buddy self = MainWindow.Instance.ChatClient.CurrentUser;
-            Buddy buddy = SquiggleUtility.SelectContact("Invite someone to this conversation.", this, b=>b.Equals(self) || chatSession.Buddies.Contains(b));
+            Buddy buddy = SquiggleUtility.SelectContact("Invite someone to this conversation.", this, b=>chatSession.Buddies.Contains(b));
             if (buddy != null)
                 chatSession.Invite(buddy);
         }       

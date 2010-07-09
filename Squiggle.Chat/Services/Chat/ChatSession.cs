@@ -114,9 +114,6 @@ namespace Squiggle.Chat.Services.Chat
 
         void localHost_ChatInviteReceived(object sender, ChatInviteReceivedEventArgs e)
         {
-            if (IsGroupSession)
-                return;
-
             try
             {
                 AddParticipants(e.Participants);
@@ -220,11 +217,32 @@ namespace Squiggle.Chat.Services.Chat
 
         void BroadCast(Action<IChatHost> hostAction)
         {
+            BroadCast(hostAction, true);
+        }
+
+        void BroadCast(Action<IChatHost> hostAction, bool continueOnError)
+        {
+            bool allSuccess = true;
+
             IEnumerable<IChatHost> hosts;
             lock (remoteHosts)
                 hosts = remoteHosts.Values.ToList(); 
             foreach (IChatHost host in hosts)
-                hostAction(host);
+                try
+                {
+                    hostAction(host);
+                }
+                catch (Exception ex)
+                {
+                    allSuccess = false;
+                    if (continueOnError)
+                        Trace.WriteLine(ex.Message);
+                    else
+                        throw;
+                }
+
+            if (continueOnError && !allSuccess)
+                throw new OperationFailedException();
         }
 
         void AddParticipants(IPEndPoint[] participants)

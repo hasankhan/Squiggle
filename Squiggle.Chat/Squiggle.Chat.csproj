@@ -89,6 +89,7 @@
     <Compile Include="Services\Chat\FileTransfer.cs" />
     <Compile Include="Services\Chat\Host\ChatHostProxyFactory.cs" />
     <Compile Include="Services\Chat\Host\SessionInfo.cs" />
+    <Compile Include="OperationFailedException.cs" />
     <Compile Include="Services\IPresenceService.cs" />
     <Compile Include="Services\Chat\Host\ChatHost.cs" />
     <Compile Include="Services\Chat\Host\ChatHostProxy.cs" />
