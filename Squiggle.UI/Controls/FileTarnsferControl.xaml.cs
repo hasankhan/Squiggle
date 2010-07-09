@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using Squiggle.Chat;
+using System.Diagnostics;
 
 namespace Squiggle.UI.Controls
 {
@@ -72,8 +73,15 @@ namespace Squiggle.UI.Controls
 
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
-            if (!Directory.Exists(DownloadFolder))
-                Directory.CreateDirectory(DownloadFolder);
+            try
+            {
+                if (!Directory.Exists(DownloadFolder))
+                    Directory.CreateDirectory(DownloadFolder);
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
+            }
 
             string filePath = Shell.GetUniqueFilePath(DownloadFolder, fileTransfer.Name);         
 

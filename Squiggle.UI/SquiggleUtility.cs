@@ -43,7 +43,6 @@ namespace Squiggle.UI
                 var settings = SettingsProvider.Current.Settings.PersonalSettings;
                 dialog.Font = new System.Drawing.Font(settings.FontName, settings.FontSize, settings.FontStyle);
                 dialog.ShowColor = true;
-
                 dialog.Color = settings.FontColor;
 
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
