@@ -79,8 +79,7 @@ namespace Squiggle.UI.Settings
             Settings.GeneralSettings.ContactListSortField = Properties.Settings.Default.ContactListSortField;
             if (String.IsNullOrEmpty(Properties.Settings.Default.DownloadsFolder))
             {
-                string location = Assembly.GetExecutingAssembly().Location;
-                location = Path.GetDirectoryName(location);
+                string location = SquiggleUtility.GetInstallDirectory();
                 Settings.GeneralSettings.DownloadsFolder = Path.Combine(location, "Downloads");
             }
             else

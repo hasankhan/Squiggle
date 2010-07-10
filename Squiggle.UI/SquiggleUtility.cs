@@ -7,11 +7,19 @@ using System.Threading;
 using System.Windows;
 using Squiggle.Chat;
 using Squiggle.UI.Settings;
+using System.Reflection;
 
 namespace Squiggle.UI
 {
     class SquiggleUtility
     {
+        public static string GetInstallDirectory()
+        {
+            string location = Assembly.GetExecutingAssembly().Location;
+            location = Path.GetDirectoryName(location);
+            return location;
+        }
+
         public static IEnumerable<UserStatus> GetChangableStatuses()
         {
             var statuses = from status in Enum.GetValues(typeof(UserStatus)).Cast<UserStatus>()
@@ -124,11 +132,12 @@ namespace Squiggle.UI
                 var rand = new Random();
                 double top = window.Top;
                 double left = window.Left;
+                const int power = 10;
 
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 30; i++)
                 {
-                    window.Top = top + rand.Next(-100, 100);
-                    window.Left = left + rand.Next(-100, 100);
+                    window.Top = top + rand.Next(-power, power);
+                    window.Left = left + rand.Next(-power, power);
                     Thread.Sleep(10);                    
                 }
 

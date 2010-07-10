@@ -12,7 +12,13 @@ namespace Squiggle.UI
             try
             {
                 if (!Directory.Exists(path))
-                    Directory.CreateDirectory(path);
+                {
+                    DirectoryInfo dirInfo = Directory.GetParent(path);
+                    if (dirInfo != null)
+                        success = CreateDirectoryIfNotExists(dirInfo.FullName);
+                    if (success)
+                        Directory.CreateDirectory(path);
+                }
             }
             catch (Exception ex)
             {
