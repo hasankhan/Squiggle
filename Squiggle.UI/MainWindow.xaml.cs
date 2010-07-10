@@ -35,8 +35,6 @@ namespace Squiggle.UI
            Instance = this;
            InitializeComponent();
 
-           this.Left = Properties.Settings.Default.MainWindowLeft;
-           this.Top = Properties.Settings.Default.MainWindowTop;
            this.Height = Properties.Settings.Default.MainWindowHeight;
            this.Width = Properties.Settings.Default.MainWindowWidth;
 
@@ -385,16 +383,6 @@ namespace Squiggle.UI
             {
                 Properties.Settings.Default.MainWindowHeight = this.Height;
                 Properties.Settings.Default.MainWindowWidth = this.Width;
-                Properties.Settings.Default.Save();
-            }
-        }
-
-        private void Window_LocationChanged(object sender, EventArgs e)
-        {
-            if (WindowState == System.Windows.WindowState.Normal)
-            {
-                Properties.Settings.Default.MainWindowLeft = this.Left;
-                Properties.Settings.Default.MainWindowTop = this.Top;
                 Properties.Settings.Default.Save();
             }
         }

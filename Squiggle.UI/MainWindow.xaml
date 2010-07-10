@@ -8,8 +8,10 @@
     xmlns:converters="clr-namespace:Squiggle.UI.Converters"
     Title="Squiggle Messenger" 
     SizeChanged="Window_SizeChanged"
-    LocationChanged="Window_LocationChanged"
-    Icon="/Squiggle;component/Images/Chat.ico" Loaded="Window_Loaded" Closed="Window_Closed" Closing="Window_Closing">
+    Icon="/Squiggle;component/Images/Chat.ico" 
+    Loaded="Window_Loaded" 
+    Closed="Window_Closed" 
+    Closing="Window_Closing">
     <Window.Resources>
         <converters:ConditionAndConverter x:Key="andConverter" />
         <converters:StatusConverter x:Key="statusConverter" />
