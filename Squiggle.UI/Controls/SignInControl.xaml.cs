@@ -17,6 +17,12 @@ namespace Squiggle.UI.Controls
             InitializeComponent();
         }
 
+        public void SetDisplayName(string name)
+        {
+            txtdisplayName.Text = name;
+            txtdisplayName.SelectAll();
+        }
+
         private void SignIn(object sender, RoutedEventArgs e)
         {
             if (String.IsNullOrEmpty(txtdisplayName.Text.Trim()))

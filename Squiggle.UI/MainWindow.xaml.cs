@@ -54,18 +54,16 @@ namespace Squiggle.UI
             this.StateChanged += new EventHandler(Window_StateChanged);
 
             var settings = SettingsProvider.Current.Settings;
+            string name = settings.PersonalSettings.DisplayName;
 
             chatControl.SignIn.chkAutoSignIn.IsChecked = settings.PersonalSettings.AutoSignMeIn;
             chatControl.SignIn.chkRememberName.IsChecked = settings.PersonalSettings.RememberMe;
-            chatControl.SignIn.txtdisplayName.Text = settings.PersonalSettings.DisplayName;
+            chatControl.SignIn.SetDisplayName(name);
 
-            string name = settings.PersonalSettings.DisplayName;
             if (!String.IsNullOrEmpty(name) && settings.PersonalSettings.AutoSignMeIn)
                 SignIn(name, true);
             else
             {
-                chatControl.SignIn.txtdisplayName.Text = name;
-                chatControl.SignIn.txtdisplayName.SelectAll();
                 if (!String.IsNullOrEmpty(name))
                     chatControl.SignIn.chkRememberName.IsChecked = true;
             }
@@ -193,6 +191,8 @@ namespace Squiggle.UI
         {
             Dispatcher.Invoke(() =>
             {
+                chatControl.SignIn.SetDisplayName(ChatClient.CurrentUser.DisplayName);
+
                 foreach (var window in chatWindows)
                     window.DestroySession();
 
@@ -210,7 +210,7 @@ namespace Squiggle.UI
                 clientViewModel = null;
                 this.DataContext = dummyViewModel;
                 VisualStateManager.GoToState(chatControl, "OfflineState", true);
-                chatControl.SignIn.txtdisplayName.Text = SettingsProvider.Current.Settings.PersonalSettings.DisplayName;
+                
                 if (byUser)
                     autoSignout.OnSignOut();
             });
