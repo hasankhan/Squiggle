@@ -155,6 +155,7 @@ namespace Squiggle.UI
         {
             if (chatSession != null)
                 chatSession.Leave();
+            DestroySession();
         }        
 
         private void txtMessage_PreviewKeyDown(object sender, KeyEventArgs e)
