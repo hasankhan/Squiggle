@@ -20,7 +20,7 @@ namespace Squiggle.UI
         ClientViewModel clientViewModel;
         UserActivityMonitor activityMonitor;
         UserStatus lastStatus;
-        Dictionary<Buddy, ChatWindow> chatWindows;
+        ChatWindowCollection chatWindows;
         ClientViewModel dummyViewModel;
         NetworkSignout autoSignout;
         ManualResetEvent clientAvailable = new ManualResetEvent(true);
@@ -40,7 +40,7 @@ namespace Squiggle.UI
            this.Height = Properties.Settings.Default.MainWindowHeight;
            this.Width = Properties.Settings.Default.MainWindowWidth;
 
-           chatWindows = new Dictionary<Buddy, ChatWindow>();
+           chatWindows = new ChatWindowCollection();
 
            chatControl.SignIn.CredentialsVerfied += new EventHandler<Squiggle.UI.Controls.LogInEventArgs>(OnCredentialsVerfied);
            chatControl.ContactList.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(OnStartChat);
@@ -110,7 +110,8 @@ namespace Squiggle.UI
 
         ChatWindow StartChat(Buddy buddy)
         {
-            return CreateChatWindow(buddy, buddy.StartChat(), true);
+            var window = CreateChatWindow(buddy, null, true);
+            return window;
         }
 
         private void trayIcon_TrayLeftMouseDown(object sender, RoutedEventArgs e)
@@ -126,7 +127,7 @@ namespace Squiggle.UI
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            foreach (var window in chatWindows.Values.ToList())
+            foreach (var window in chatWindows.ToList())
                 window.Close();
         }
 
@@ -307,22 +308,24 @@ namespace Squiggle.UI
             this.WindowState = lastState;
         }
 
-        ChatWindow CreateChatWindow(Buddy buddy, IChat session, bool focused)
+        ChatWindow CreateChatWindow(Buddy buddy, IChat chatSession, bool focused)
         {
-            ChatWindow window;
+            ChatWindow window = chatWindows.Find(w=>w.Buddies.Contains(buddy) && !w.IsGroupChat);
 
-            if (!chatWindows.TryGetValue(buddy, out window))
+            if (window == null)
             {
-                window = new ChatWindow(buddy, session);
-                window.Closed += (sender, e) => chatWindows.Remove(buddy);
-                chatWindows.Add(buddy, window);
+                window = new ChatWindow(buddy);
+                window.Closed += (sender, e) => chatWindows.Remove(window);
+                window.SetChatSession(chatSession ?? buddy.StartChat());
+                chatWindows.Add(window);
             }
-            else
-                window.ChatSession = session;
-            window.Title = buddy.DisplayName;
+            else if (chatSession != null)
+                window.SetChatSession(chatSession);
             
+            window.Title = buddy.DisplayName;            
             window.WindowState = focused ? WindowState.Normal : WindowState.Minimized;
             window.Show();
+
             if (focused)
                 window.Activate();
 

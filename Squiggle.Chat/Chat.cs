@@ -41,6 +41,11 @@ namespace Squiggle.Chat
             get { return buddies.Values; }
         }
 
+        public bool IsGroupChat
+        {
+            get { return session.IsGroupSession; }
+        }
+
         public event EventHandler<ChatMessageReceivedEventArgs> MessageReceived = delegate { };
         public event EventHandler<MessageFailedEventArgs> MessageFailed = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyJoined = delegate { };

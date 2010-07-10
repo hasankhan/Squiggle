@@ -8,6 +8,7 @@ using Squiggle.Chat;
 using System.Linq;
 using Squiggle.UI.Controls;
 using Squiggle.UI.Settings;
+using System.Collections.Generic;
 
 namespace Squiggle.UI
 {
@@ -54,43 +55,49 @@ namespace Squiggle.UI
             txtMessageEditBox.txtMessage.SpellCheck.IsEnabled = SettingsProvider.Current.Settings.GeneralSettings.SpellCheck;
         }
 
-        public ChatWindow(Buddy buddy, IChat chatSession) : this()
+        public ChatWindow(Buddy buddy) : this()
         {
-            ChatSession = chatSession;
             this.buddy = buddy;
 
             this.buddy.Offline += new EventHandler(buddy_Offline);
             this.buddy.Online += new EventHandler(buddy_Online);
         }
 
-        public IChat ChatSession
+        public IEnumerable<Buddy> Buddies
         {
-            get { return chatSession; }
-            set
+            get
             {
-                if (chatSession != null)
-                {
-                    chatSession.BuzzReceived -= new EventHandler<BuddyEventArgs>(chatSession_BuzzReceived);
-                    chatSession.MessageReceived -= new EventHandler<ChatMessageReceivedEventArgs>(chatSession_MessageReceived);
-                    chatSession.BuddyJoined -= new EventHandler<BuddyEventArgs>(chatSession_BuddyJoined);
-                    chatSession.BuddyLeft -= new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
-                    chatSession.MessageFailed -= new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
-                    chatSession.BuddyTyping -= new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
-                    chatSession.TransferInvitationReceived -= new EventHandler<FileTransferInviteEventArgs>(chatSession_TransferInvitationReceived);
-                    chatSession.GroupChatStarted -= new EventHandler(chatSession_GroupChatStarted);
-                }
-                chatSession = value;
-                this.DataContext = value;
-                chatSession.BuzzReceived += new EventHandler<BuddyEventArgs>(chatSession_BuzzReceived);
-                chatSession.MessageReceived += new EventHandler<ChatMessageReceivedEventArgs>(chatSession_MessageReceived);
-                chatSession.BuddyJoined += new EventHandler<BuddyEventArgs>(chatSession_BuddyJoined);
-                chatSession.BuddyLeft += new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
-                chatSession.MessageFailed += new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
-                chatSession.BuddyTyping += new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
-                chatSession.TransferInvitationReceived += new EventHandler<FileTransferInviteEventArgs>(chatSession_TransferInvitationReceived);
-                chatSession.GroupChatStarted += new EventHandler(chatSession_GroupChatStarted);
+                if (chatSession == null)
+                    return Enumerable.Empty<Buddy>();
+                else
+                    return chatSession.Buddies;
             }
-        }                 
+        }
+
+        public bool IsGroupChat
+        {
+            get 
+            {
+                if (chatSession == null)
+                    return false;
+                else
+                    return chatSession.IsGroupChat;
+            }
+        }
+
+        public void SetChatSession(IChat chat)
+        {
+            EndChatSession();
+            chatSession = chat;
+            chatSession.BuzzReceived += new EventHandler<BuddyEventArgs>(chatSession_BuzzReceived);
+            chatSession.MessageReceived += new EventHandler<ChatMessageReceivedEventArgs>(chatSession_MessageReceived);
+            chatSession.BuddyJoined += new EventHandler<BuddyEventArgs>(chatSession_BuddyJoined);
+            chatSession.BuddyLeft += new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
+            chatSession.MessageFailed += new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
+            chatSession.BuddyTyping += new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
+            chatSession.TransferInvitationReceived += new EventHandler<FileTransferInviteEventArgs>(chatSession_TransferInvitationReceived);
+            chatSession.GroupChatStarted += new EventHandler(chatSession_GroupChatStarted);
+        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -460,6 +467,29 @@ namespace Squiggle.UI
             }
         }
 
+        public void Invite(Buddy buddy)
+        {
+            if (buddy != null)
+                chatSession.Invite(buddy);
+        }      
+
+        void EndChatSession()
+        {
+            if (chatSession != null)
+            {
+                chatSession.BuzzReceived -= new EventHandler<BuddyEventArgs>(chatSession_BuzzReceived);
+                chatSession.MessageReceived -= new EventHandler<ChatMessageReceivedEventArgs>(chatSession_MessageReceived);
+                chatSession.BuddyJoined -= new EventHandler<BuddyEventArgs>(chatSession_BuddyJoined);
+                chatSession.BuddyLeft -= new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
+                chatSession.MessageFailed -= new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
+                chatSession.BuddyTyping -= new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
+                chatSession.TransferInvitationReceived -= new EventHandler<FileTransferInviteEventArgs>(chatSession_TransferInvitationReceived);
+                chatSession.GroupChatStarted -= new EventHandler(chatSession_GroupChatStarted);
+                chatSession.Leave();
+                chatSession = null;
+            }
+        }                 
+
         void UpdateTitle()
         {
             string title = String.Join(", ", chatSession.Buddies.Select(b => b.DisplayName).ToArray());
@@ -548,10 +578,8 @@ namespace Squiggle.UI
 
         private void InviteContactMenu_Click(object sender, RoutedEventArgs e)
         {
-            Buddy self = MainWindow.Instance.ChatClient.CurrentUser;
             Buddy buddy = SquiggleUtility.SelectContact("Invite someone to this conversation.", this, b=>chatSession.Buddies.Contains(b));
-            if (buddy != null)
-                chatSession.Invite(buddy);
-        }       
+            Invite(buddy);
+        }         
     }
 }

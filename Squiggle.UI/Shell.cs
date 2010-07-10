@@ -6,6 +6,22 @@ namespace Squiggle.UI
 {
     class Shell
     {
+        public static bool CreateDirectoryIfNotExists(string path)
+        {
+            bool success = true;
+            try
+            {
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+            }
+            catch (Exception ex)
+            {
+                success = false;
+                Trace.WriteLine(ex.Message);
+            }
+            return success;
+        }
+
         public static void ShowInFolder(string filePath)
         {
             ProcessStartInfo startInfo = new ProcessStartInfo();

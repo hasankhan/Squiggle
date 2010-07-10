@@ -73,15 +73,7 @@ namespace Squiggle.UI.Controls
 
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                if (!Directory.Exists(DownloadFolder))
-                    Directory.CreateDirectory(DownloadFolder);
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex.Message);
-            }
+            Shell.CreateDirectoryIfNotExists(DownloadFolder);
 
             string filePath = Shell.GetUniqueFilePath(DownloadFolder, fileTransfer.Name);         
 

@@ -25,9 +25,7 @@ namespace Squiggle.UI
             string downloadsFolder = SettingsProvider.Current.Settings.GeneralSettings.DownloadsFolder;
             try
             {
-                if (!Directory.Exists(downloadsFolder))
-                    Directory.CreateDirectory(downloadsFolder);
-
+                Shell.CreateDirectoryIfNotExists(downloadsFolder);
                 Process.Start(downloadsFolder);
             }
             catch (Exception ex)
