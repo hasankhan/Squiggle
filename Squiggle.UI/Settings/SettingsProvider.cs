@@ -78,7 +78,11 @@ namespace Squiggle.UI.Settings
             Settings.GeneralSettings.SpellCheck = Properties.Settings.Default.SpellCheck;
             Settings.GeneralSettings.ContactListSortField = Properties.Settings.Default.ContactListSortField;
             if (String.IsNullOrEmpty(Properties.Settings.Default.DownloadsFolder))
-                Settings.GeneralSettings.DownloadsFolder = Path.Combine(Assembly.GetExecutingAssembly().Location, "Downloads");
+            {
+                string location = Assembly.GetExecutingAssembly().Location;
+                location = Path.GetDirectoryName(location);
+                Settings.GeneralSettings.DownloadsFolder = Path.Combine(location, "Downloads");
+            }
             else
                 Settings.GeneralSettings.DownloadsFolder = Properties.Settings.Default.DownloadsFolder;
         }
