@@ -164,6 +164,9 @@ namespace Squiggle.UI
             {
                 clientAvailable.WaitOne(TimeSpan.FromSeconds(20));
 
+                foreach (var window in chatWindows)
+                    window.Enabled = true;
+
                 if (ChatClient != null && ChatClient.LoggedIn)
                     return;
 
@@ -192,6 +195,9 @@ namespace Squiggle.UI
         {
             Dispatcher.Invoke(() =>
             {
+                foreach (var window in chatWindows)
+                    window.DestroySession();
+
                 clientAvailable.Reset();
                 if (ChatClient == null || !ChatClient.LoggedIn)
                     return;
@@ -318,13 +324,11 @@ namespace Squiggle.UI
                 window.Closed += (sender, e) => chatWindows.Remove(window);
                 window.SetChatSession(chatSession ?? buddy.StartChat());
                 chatWindows.Add(window);
+                window.WindowState = focused ? WindowState.Normal : WindowState.Minimized;
+                window.Show();
             }
             else if (chatSession != null)
-                window.SetChatSession(chatSession);
-            
-            window.Title = buddy.DisplayName;            
-            window.WindowState = focused ? WindowState.Normal : WindowState.Minimized;
-            window.Show();
+                window.SetChatSession(chatSession);                       
 
             if (focused)
                 window.Activate();

@@ -40,6 +40,16 @@ namespace Squiggle.UI.Controls
         public static readonly DependencyProperty CanUndoProperty =
             DependencyProperty.Register("CanUndo", typeof(bool), typeof(MessageEditBox), new UIPropertyMetadata(false));
 
+        public bool Enabled
+        {
+            get { return txtMessage.IsEnabled; }
+            set
+            {
+                txtMessage.IsEnabled = value;
+                UpdateButtonState();
+            }
+        }
+
         public MessageEditBox()
         {
             InitializeComponent();
@@ -90,7 +100,12 @@ namespace Squiggle.UI.Controls
             CanUndo = txtMessage.CanUndo;
             if (txtMessage.Text != String.Empty)
                 NotifyTyping();
-            btnSend.IsEnabled = txtMessage.Text != String.Empty;
+            UpdateButtonState();
+        }
+
+        private void UpdateButtonState()
+        {
+            btnSend.IsEnabled = Enabled && txtMessage.Text != String.Empty;
         }        
 
         private void txtMessage_PreviewKeyDown(object sender, KeyEventArgs e)
