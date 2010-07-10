@@ -43,7 +43,7 @@
             <GradientStop Color="#FF058805" Offset="0.329"/>
             <GradientStop Color="#FF0BE912" Offset="0.922"/>
         </LinearGradientBrush>
-        
+
         <LinearGradientBrush x:Key="IdleStatusBrush" EndPoint="0.5,1" StartPoint="0.5,0" MappingMode="RelativeToBoundingBox">
             <GradientStop Color="#FFF6CA58" Offset="0.069"/>
             <GradientStop Color="#FFF6C547" Offset="0.243"/>
@@ -82,10 +82,10 @@
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Status}" Value="Online">
                     <Setter Property="Background" Value="{StaticResource OnlineStatusBrush}" />
-                       
+
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Status}" Value="Idle">
-                    <Setter Property="Background" Value="{StaticResource IdleStatusBrush}"/>                    
+                    <Setter Property="Background" Value="{StaticResource IdleStatusBrush}"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Status}" Value="BeRightBack">
                     <Setter Property="Background" Value="{StaticResource IdleStatusBrush}"/>
@@ -139,7 +139,7 @@
                             <TextBlock x:Name="buddyStatus" Margin="5,0,0,0" Text="{Binding Path=Status, Converter={StaticResource statusConverter}, StringFormat={}({0})}" />
                         </StackPanel>
                         <TextBlock Margin="5,0,0,0" Text="{Binding Path=DisplayMessage}" TextTrimming="WordEllipsis" ToolTip="{Binding Path=DisplayMessage}"  FontSize="10" Foreground="#FF9A9C9D" HorizontalAlignment="Left" />
-                    </StackPanel>                    
+                    </StackPanel>
                 </Grid>
                 <Border.ToolTip>
                     <ToolTip Placement="Left">
@@ -174,13 +174,13 @@
                     <Setter TargetName="buddyStatus" Property="Visibility" Value="Hidden" />
                 </DataTrigger>
                 <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                                <Setter Property="Background" Value="White" 
+                    <Setter Property="Background" Value="White" 
                                 TargetName="contactBorder"></Setter>
-                            </Trigger>
-                            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                                <Setter Property="Background" Value="WhiteSmoke" 
+                </Trigger>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                    <Setter Property="Background" Value="WhiteSmoke" 
                                 TargetName="contactBorder"></Setter>
-                            </Trigger>
+                </Trigger>
                 <Trigger SourceName="contactBorder" Property="IsMouseOver" Value="True">
                     <Setter TargetName="contactBorder" Property="Background" >
                         <Setter.Value>
@@ -190,9 +190,9 @@
                             </LinearGradientBrush>
                         </Setter.Value>
                     </Setter>
-                </Trigger>                
+                </Trigger>
             </DataTemplate.Triggers>
-            
+
         </DataTemplate>
     </UserControl.Resources>
     <Grid >
@@ -241,23 +241,29 @@
                 <controls:DisplayMessageBox Margin="0,-5,0,0" VerticalAlignment="Bottom" Grid.Row="2" Width="Auto" Grid.ColumnSpan="4" SelfUser="{Binding}"/>
             </Grid>
         </Border>
-        <ScrollViewer Focusable="False" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
-            <StackPanel Focusable="False" Orientation="Vertical" >
-                <StackPanel Height="30" Orientation="Horizontal">
-                    <StackPanel.ContextMenu>
-                        <ContextMenu />
-                    </StackPanel.ContextMenu>
-                    <StackPanel.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FFF9F9F9" Offset="0.111"/>
-                            <GradientStop Color="#FFE4E4E4" Offset="0.593"/>
-                        </LinearGradientBrush>
-                    </StackPanel.Background>
-                    <Image Source="/Images/info.png" Cursor="Hand" Width="18" Height="18" Margin="5,0,0,0" MouseLeftButtonDown="About_MouseLeftButtonDown" />
-                    <controls:FilterTextBox FilterChanged="FilterTextBox_FilterChanged" VerticalAlignment="Top" Width="200" Height="25" Margin="5,2,5,2"  />
-                </StackPanel>
-                <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}" ItemsSource="{Binding Source={StaticResource buddiesCollection}}" AlternationCount="2" />
+        <Grid Grid.Row="1" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <StackPanel Height="30" Orientation="Horizontal">
+                <StackPanel.ContextMenu>
+                    <ContextMenu />
+                </StackPanel.ContextMenu>
+                <StackPanel.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFF9F9F9" Offset="0.111"/>
+                        <GradientStop Color="#FFE4E4E4" Offset="0.593"/>
+                    </LinearGradientBrush>
+                </StackPanel.Background>
+                <Image Source="/Images/info.png" Cursor="Hand" Width="18" Height="18" Margin="5,0,0,0" MouseLeftButtonDown="About_MouseLeftButtonDown" />
+                <controls:FilterTextBox FilterChanged="FilterTextBox_FilterChanged" VerticalAlignment="Top" Width="200" Height="25" Margin="5,2,5,2"  />
             </StackPanel>
-        </ScrollViewer>
+            <ScrollViewer Grid.Row="1" Focusable="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
+                <StackPanel>
+                    <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}" ItemsSource="{Binding Source={StaticResource buddiesCollection}}" AlternationCount="2" />
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </UserControl>
