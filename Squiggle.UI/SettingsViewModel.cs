@@ -22,6 +22,7 @@ namespace Squiggle.UI
         {
             this.settings = settings;
 
+            GeneralSettings.ShowEmoticons = settings.GeneralSettings.ShowEmoticons;
             GeneralSettings.HideToSystemTray = settings.GeneralSettings.HideToSystemTray;
             GeneralSettings.ShowPopups = settings.GeneralSettings.ShowPopups;
             GeneralSettings.SpellCheck = settings.GeneralSettings.SpellCheck;
@@ -45,6 +46,7 @@ namespace Squiggle.UI
             if (settings == null)
                 return;
 
+            settings.GeneralSettings.ShowEmoticons = GeneralSettings.ShowEmoticons;
             settings.GeneralSettings.HideToSystemTray = GeneralSettings.HideToSystemTray;
             settings.GeneralSettings.ShowPopups = GeneralSettings.ShowPopups;
             settings.GeneralSettings.SpellCheck = GeneralSettings.SpellCheck;
@@ -75,6 +77,7 @@ namespace Squiggle.UI
 
     class GeneralSettingsViewModel
     {
+        public bool ShowEmoticons { get; set; }
         public bool RunAtStartup { get; set; }
         public bool HideToSystemTray { get; set; }
         public bool ShowPopups { get; set; }

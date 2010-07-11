@@ -73,6 +73,7 @@ namespace Squiggle.UI.Settings
 
         private void LoadGeneralSettings()
         {
+            Settings.GeneralSettings.ShowEmoticons = Properties.Settings.Default.ShowEmoticons;
             Settings.GeneralSettings.HideToSystemTray = Properties.Settings.Default.HideToTray;
             Settings.GeneralSettings.ShowPopups = Properties.Settings.Default.ShowPopups;
             Settings.GeneralSettings.SpellCheck = Properties.Settings.Default.SpellCheck;
@@ -123,6 +124,7 @@ namespace Squiggle.UI.Settings
 
         private void SaveGeneralSettings()
         {
+            Properties.Settings.Default.ShowEmoticons = Settings.GeneralSettings.ShowEmoticons;
             Properties.Settings.Default.DownloadsFolder = Settings.GeneralSettings.DownloadsFolder;
             Properties.Settings.Default.HideToTray = Settings.GeneralSettings.HideToSystemTray;
             Properties.Settings.Default.ShowPopups = Settings.GeneralSettings.ShowPopups;

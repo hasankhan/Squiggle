@@ -10,7 +10,7 @@ namespace Squiggle.UI.MessageParsers
 {
     class HyperlinkParser: IMessageParser
     {
-        static Regex urlRegex = new Regex(@"(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9=:\-\.\?\,\'\/\\\+&%\$#_]*)?", RegexOptions.Compiled);
+        static Regex urlRegex = new Regex(@"(((ht|f)tp(s?)\:\/\/)|([w|W]{3}\.))[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9=:\-\.\?\,\'\/\\\+&%\$#_]*)?", RegexOptions.Compiled);
 
         public Regex Pattern
         {
@@ -20,6 +20,8 @@ namespace Squiggle.UI.MessageParsers
         public IEnumerable<Inline> ParseText(string text)
         {
             var link = new Hyperlink(new Run(text));
+            if (text.ToLower().StartsWith("www"))
+                text = "http://" + text;
             link.NavigateUri = new Uri(text, UriKind.Absolute);
             link.Cursor = Cursors.Hand;
             link.RequestNavigate += (s, e) =>

@@ -286,5 +286,17 @@ namespace Squiggle.UI.Properties {
                 this["FontStyle"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowEmoticons {
+            get {
+                return ((bool)(this["ShowEmoticons"]));
+            }
+            set {
+                this["ShowEmoticons"] = value;
+            }
+        }
     }
 }

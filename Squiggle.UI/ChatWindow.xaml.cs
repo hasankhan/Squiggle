@@ -9,6 +9,7 @@ using System.Linq;
 using Squiggle.UI.Controls;
 using Squiggle.UI.Settings;
 using System.Collections.Generic;
+using Squiggle.UI.MessageParsers;
 
 namespace Squiggle.UI
 {
@@ -25,7 +26,7 @@ namespace Squiggle.UI
         EventQueue eventQueue = new EventQueue();
         DateTime? lastBuzzSent;
         DateTime? lastBuzzReceived;
-
+        EmoticonParser emoticonParser = new EmoticonParser();
         bool loaded;
         string lastSavedFile;
         string lastSavedFormat;
@@ -52,6 +53,10 @@ namespace Squiggle.UI
 
         void LoadSettings()
         {
+            chatTextBox.MessageParsers.Remove(emoticonParser);
+            if (SettingsProvider.Current.Settings.GeneralSettings.ShowEmoticons)
+                chatTextBox.MessageParsers.Add(emoticonParser);
+
             txtMessageEditBox.txtMessage.SpellCheck.IsEnabled = SettingsProvider.Current.Settings.GeneralSettings.SpellCheck;
         }
 

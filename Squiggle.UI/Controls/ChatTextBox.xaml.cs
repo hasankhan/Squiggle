@@ -25,7 +25,6 @@ namespace Squiggle.UI.Controls
             InitializeComponent();
             MessageParsers = new List<IMessageParser>();
             MessageParsers.Add(new HyperlinkParser());
-            MessageParsers.Add(new EmoticonParser());
         }        
 
         public void AddInfo(string info)
@@ -116,19 +115,20 @@ namespace Squiggle.UI.Controls
         {
             var items = new List<Inline>();
 
-            foreach (IMessageParser parser in MessageParsers)
-            {
-                var match = parser.Pattern.Match(message);
-                if (match.Success)
+            lock (MessageParsers)
+                foreach (IMessageParser parser in MessageParsers)
                 {
-                    string text = message.Substring(0, match.Index);
-                    items.AddRange(ParseText(text));
-                    items.AddRange(parser.ParseText(match.Value));
-                    int lastIndex = match.Index + match.Length;
-                    items.AddRange(ParseText(message.Substring(lastIndex)));
-                    return items;
+                    var match = parser.Pattern.Match(message);
+                    if (match.Success)
+                    {
+                        string text = message.Substring(0, match.Index);
+                        items.AddRange(ParseText(text));
+                        items.AddRange(parser.ParseText(match.Value));
+                        int lastIndex = match.Index + match.Length;
+                        items.AddRange(ParseText(message.Substring(lastIndex)));
+                        return items;
+                    }
                 }
-            }
 
             AddText(items, message);
             return items;
