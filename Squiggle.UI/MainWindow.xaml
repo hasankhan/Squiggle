@@ -11,7 +11,7 @@
     Icon="/Squiggle;component/Images/Chat.ico" 
     Loaded="Window_Loaded" 
     Closed="Window_Closed" 
-    Closing="Window_Closing">
+    Closing="Window_Closing" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <converters:ConditionAndConverter x:Key="andConverter" />
         <converters:StatusConverter x:Key="statusConverter" />
