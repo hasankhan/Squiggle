@@ -7,7 +7,9 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Linq;
 using Squiggle.Chat;
+using Squiggle.UI.MessageParsers;
 
 namespace Squiggle.UI.Controls
 {
@@ -16,12 +18,15 @@ namespace Squiggle.UI.Controls
     /// </summary>
     public partial class ChatTextBox : UserControl
     {
-        static Regex urlRegex = new Regex(@"(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9=:\-\.\?\,\'\/\\\+&%\$#_]*)?");
+        public IList<IMessageParser> MessageParsers { get; private set; }
 
         public ChatTextBox()
         {
             InitializeComponent();
-        }
+            MessageParsers = new List<IMessageParser>();
+            MessageParsers.Add(new HyperlinkParser());
+            MessageParsers.Add(new EmoticonParser());
+        }        
 
         public void AddInfo(string info)
         {
@@ -107,18 +112,25 @@ namespace Squiggle.UI.Controls
                 range.Save(stream, DataFormats.Rtf);
         }
 
-        static List<Inline> ParseText(string message)
+        List<Inline> ParseText(string message)
         {
             var items = new List<Inline>();
-            int lastIndex = 0;
-            foreach (Match match in urlRegex.Matches(message))
+
+            foreach (IMessageParser parser in MessageParsers)
             {
-                string text = message.Substring(lastIndex, match.Index - lastIndex);
-                AddText(items, text);
-                AddHyperlink(items, match.Value);
-                lastIndex = match.Index + match.Length;
+                var match = parser.Pattern.Match(message);
+                if (match.Success)
+                {
+                    string text = message.Substring(0, match.Index);
+                    items.AddRange(ParseText(text));
+                    items.AddRange(parser.ParseText(match.Value));
+                    int lastIndex = match.Index + match.Length;
+                    items.AddRange(ParseText(message.Substring(lastIndex)));
+                    return items;
+                }
             }
-            AddText(items, message.Substring(lastIndex));
+
+            AddText(items, message);
             return items;
         }
 
@@ -127,25 +139,6 @@ namespace Squiggle.UI.Controls
             if (!String.IsNullOrEmpty(text))
                 items.Add(new Run(text));
         }
-
-        static void AddHyperlink(List<Inline> items, string url)
-        {
-            var link = new Hyperlink(new Run(url));
-            link.NavigateUri = new Uri(url, UriKind.Absolute);
-            link.Cursor = Cursors.Hand;
-            link.RequestNavigate += (s, e) =>
-            {
-                OpenLink(link);
-                e.Handled = true;
-            };
-            items.Add(link);
-        }
-
-        static void OpenLink(Hyperlink link)
-        {
-            Shell.OpenUrl(link.NavigateUri.AbsoluteUri);
-        }
-
     }
     
 }

@@ -7,6 +7,11 @@ namespace Squiggle.UI.Converters
 {
     public class TrayIconConverter: IValueConverter
     {
+        static BitmapImage onlineIcon = new BitmapImage(new Uri("/Images/Chat.ico", UriKind.Relative));
+        static BitmapImage offlineIcon = new BitmapImage(new Uri("/Images/Chat-Offline.ico", UriKind.Relative));
+        static BitmapImage awayIcon = new BitmapImage(new Uri("/Images/Chat-Away.ico", UriKind.Relative));
+        static BitmapImage busyIcon = new BitmapImage(new Uri("/Images/Chat-Busy.ico", UriKind.Relative));
+
         #region IValueConverter Members
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -17,17 +22,17 @@ namespace Squiggle.UI.Converters
                 switch (status)
                 {                    
                     case UserStatus.Online:
-                        return new BitmapImage(new Uri("/Images/Chat.ico", UriKind.Relative));
+                        return onlineIcon;
                     case UserStatus.Busy:
-                        return new BitmapImage(new Uri("/Images/Chat-Busy.ico", UriKind.Relative));
+                        return busyIcon;
                     case UserStatus.BeRightBack:
                     case UserStatus.Away:
                     case UserStatus.Idle:
-                        return new BitmapImage(new Uri("/Images/Chat-Away.ico", UriKind.Relative));
+                        return awayIcon;
                     case UserStatus.Offline:
-                        return new BitmapImage(new Uri("/Images/Chat-Offline.ico", UriKind.Relative));
+                        return offlineIcon;
                     default:
-                        return new BitmapImage(new Uri("/Images/Chat.ico", UriKind.Relative));
+                        return onlineIcon;
                 }
             }
             else

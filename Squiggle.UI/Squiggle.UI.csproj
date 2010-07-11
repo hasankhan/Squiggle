@@ -194,9 +194,12 @@
     <Compile Include="ContactsSelectWindow.xaml.cs">
       <DependentUpon>ContactsSelectWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MessageParsers\EmoticonParser.cs" />
     <Compile Include="Controls\FilterTextBox.xaml.cs">
       <DependentUpon>FilterTextBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MessageParsers\HyperlinkParser.cs" />
+    <Compile Include="MessageParsers\IMessageParser.cs" />
     <Compile Include="Converters\ConditionAndConverter.cs" />
     <Compile Include="FontSetting.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -330,6 +333,17 @@
     <Resource Include="Images\font.png" />
     <Resource Include="Images\Buzz.png" />
     <Resource Include="Images\chat.png" />
+    <Resource Include="Images\Emoticons\angry.png" />
+    <Resource Include="Images\Emoticons\crying.png" />
+    <Resource Include="Images\Emoticons\embarrassed.png" />
+    <Resource Include="Images\Emoticons\hot.png" />
+    <Resource Include="Images\Emoticons\laughing.png" />
+    <Resource Include="Images\Emoticons\nerd.png" />
+    <Resource Include="Images\Emoticons\sad.png" />
+    <Resource Include="Images\Emoticons\smile.png" />
+    <Resource Include="Images\Emoticons\surprize.png" />
+    <Resource Include="Images\Emoticons\tounge.png" />
+    <Resource Include="Images\Emoticons\wink.png" />
     <Content Include="Lib\WPFToolkit.dll" />
   </ItemGroup>
   <ItemGroup>
@@ -349,6 +363,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
