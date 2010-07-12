@@ -78,7 +78,7 @@ namespace Squiggle.UI.Settings
             Settings.GeneralSettings.ShowPopups = Properties.Settings.Default.ShowPopups;
             Settings.GeneralSettings.SpellCheck = Properties.Settings.Default.SpellCheck;
             Settings.GeneralSettings.ContactListSortField = Properties.Settings.Default.ContactListSortField;
-            if (String.IsNullOrEmpty(Properties.Settings.Default.DownloadsFolder))
+            if (String.IsNullOrEmpty(Properties.Settings.Default.DownloadsFolder) || !Shell.CreateDirectoryIfNotExists(Properties.Settings.Default.DownloadsFolder))
             {
                 string location = SquiggleUtility.GetInstallDirectory();
                 Settings.GeneralSettings.DownloadsFolder = Path.Combine(location, "Downloads");

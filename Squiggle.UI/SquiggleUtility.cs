@@ -33,8 +33,8 @@ namespace Squiggle.UI
             string downloadsFolder = SettingsProvider.Current.Settings.GeneralSettings.DownloadsFolder;
             try
             {
-                Shell.CreateDirectoryIfNotExists(downloadsFolder);
-                Process.Start(downloadsFolder);
+                if (Shell.CreateDirectoryIfNotExists(downloadsFolder))
+                    Process.Start(downloadsFolder);
             }
             catch (Exception ex)
             {

@@ -322,14 +322,18 @@ namespace Squiggle.UI
                 window.Closed += (sender, e) => chatWindows.Remove(window);
                 window.SetChatSession(chatSession ?? buddy.StartChat());
                 chatWindows.Add(window);
-                window.WindowState = focused ? WindowState.Normal : WindowState.Minimized;
+                if (!focused)
+                    window.WindowState = WindowState.Minimized;
                 window.Show();
             }
             else if (chatSession != null)
-                window.SetChatSession(chatSession);                       
+                window.SetChatSession(chatSession);
 
             if (focused)
+            {
+                window.WindowState = lastState;
                 window.Activate();
+            }
 
             return window;
         }        

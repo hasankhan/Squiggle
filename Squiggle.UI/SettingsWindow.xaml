@@ -23,16 +23,16 @@
                     <Border Grid.Row="1" Background="{StaticResource WorkAreaBackgroud}" BorderBrush="Black" BorderThickness="1" CornerRadius="3" Margin="5">
                         <Grid Margin="10">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="138" />
+                                <ColumnDefinition Width="110" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>                            
                             <CheckBox  Content="Run on Windows startup" IsChecked="{Binding Path=GeneralSettings.RunAtStartup}" Margin="0,0,0,5" Grid.Column="0" Grid.ColumnSpan="2" />
@@ -41,12 +41,12 @@
                             <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="Show popups" IsChecked="{Binding Path=GeneralSettings.ShowPopups}" Margin="0,0,0,5" />
                             <CheckBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Content="Enable spell-check in chat window." IsChecked="{Binding Path=GeneralSettings.SpellCheck}" Margin="0,0,0,5" />
                             <TextBlock Grid.Row="5" Grid.Column="0" Text="Sort contacts by:" />
-                            <ComboBox Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" Width="100" Margin="5" x:Name="cmbSortField">
+                            <ComboBox Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" x:Name="cmbSortField">
                                 <ComboBoxItem IsSelected="True">DisplayName</ComboBoxItem>
                                 <ComboBoxItem >Status</ComboBoxItem>
                             </ComboBox>
                             <TextBlock Grid.Row="6" Grid.Column="0" Text="Downloads folder: " />
-                            <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
+                            <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
                                 <TextBox x:Name="txtDownloadsFolder" IsReadOnly="True" Text="{Binding Path=GeneralSettings.DownloadsFolder}" Width="200" />
                                 <Button Content="Browse" Click="btnBrowseDownloadsFolder_Click" Margin="5,0" />
                             </StackPanel>                            

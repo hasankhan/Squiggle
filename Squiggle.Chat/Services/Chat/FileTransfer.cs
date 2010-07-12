@@ -164,7 +164,7 @@ namespace Squiggle.Chat.Services.Chat
 
         void localHost_TransferDataReceived(object sender, FileTransferDataReceivedEventArgs e)
         {
-            if (e.ID == id)
+            if (e.ID == id && content != null)
             {
                 bytesReceived += e.Chunk.Length;
                 content.Write(e.Chunk, 0, e.Chunk.Length);
@@ -204,8 +204,11 @@ namespace Squiggle.Chat.Services.Chat
             localHost.TransferDataReceived -= new EventHandler<FileTransferDataReceivedEventArgs>(localHost_TransferDataReceived);
             localHost.InvitationAccepted -= new EventHandler<FileTransferEventArgs>(localHost_InvitationAccepted);
             localHost.TransferCancelled -= new EventHandler<FileTransferEventArgs>(localHost_TransferCancelled);
-            if(content != null)
+            if (content != null)
+            {
                 content.Dispose();
+                content = null;
+            }
         }
 
         void UpdateProgress(int percentage)

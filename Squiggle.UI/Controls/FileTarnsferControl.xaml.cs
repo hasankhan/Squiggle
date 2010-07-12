@@ -65,19 +65,22 @@ namespace Squiggle.UI.Controls
 
         void fileTransfer_TransferCompleted(object sender, EventArgs e)
         {
-            Status = sending ? "File Sent" : "File Received";
-            NotifyPropertyChanged();
+            Dispatcher.Invoke(() =>
+            {
+                Status = sending ? "File Sent" : "File Received";
+                NotifyPropertyChanged();
 
-            ShowCompleted();
+                ShowCompleted();
+            });
         }
 
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
-            Shell.CreateDirectoryIfNotExists(DownloadFolder);
-
-            string filePath = Shell.GetUniqueFilePath(DownloadFolder, fileTransfer.Name);         
-
-            AcceptDownload(filePath);
+            if (Shell.CreateDirectoryIfNotExists(DownloadFolder))
+            {
+                string filePath = Shell.GetUniqueFilePath(DownloadFolder, fileTransfer.Name);
+                AcceptDownload(filePath);
+            }
         }        
 
         private void SaveAs_Click(object sender, RoutedEventArgs e)
@@ -114,7 +117,10 @@ namespace Squiggle.UI.Controls
 
         void fileTransfer_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
         {
-            progress.Value = e.ProgressPercentage;            
+            Dispatcher.Invoke(() =>
+            {
+                progress.Value = e.ProgressPercentage;
+            });
         }
 
         private void CancelDownload(bool selfCancel)
