@@ -88,24 +88,23 @@ namespace Squiggle.Chat.Services.Chat
 
         void localHost_SessionInfoRequested(object sender, SessionInfoRequestedEventArgs e)
         {
-            e.Info.Participants = remoteUsers.Except(Enumerable.Repeat(e.User, 1)).ToArray();
+            if (e.SessionID == ID)
+                e.Info.Participants = remoteUsers.Except(Enumerable.Repeat(e.User, 1)).ToArray();
         }
 
         void localHost_UserLeft(object sender, SessionEventArgs e)
         {
-            if (!IsGroupSession)
-                return;
-
-            if (remoteUsers.Remove(e.User))
-            {
-                remoteHosts.Remove(e.User);
-                UserLeft(this, e);
-            }
+            if (e.SessionID == ID && IsGroupSession)
+                if (remoteUsers.Remove(e.User))
+                {
+                    remoteHosts.Remove(e.User);
+                    UserLeft(this, e);
+                }
         }
 
         void localHost_UserJoined(object sender, SessionEventArgs e)
         {
-            if (remoteUsers.Add(e.User))
+            if (e.SessionID == ID && remoteUsers.Add(e.User))
             {
                 remoteHosts[e.User] = ChatHostProxyFactory.Get(e.User);
                 UserJoined(this, e);
@@ -114,52 +113,53 @@ namespace Squiggle.Chat.Services.Chat
 
         void localHost_ChatInviteReceived(object sender, ChatInviteReceivedEventArgs e)
         {
-            try
+            if (e.SessionID == ID)
             {
-                AddParticipants(e.Participants);
-                BroadCast(h => h.JoinChat(ID, localUser));
+                try
+                {
+                    AddParticipants(e.Participants);
+                    BroadCast(h => h.JoinChat(ID, localUser));
+                }
+                catch (Exception ex)
+                {
+                    Trace.WriteLine("Could not respond to chat invite due to exception: " + ex.Message);
+                }
+                GroupChatStarted(this, EventArgs.Empty);
             }
-            catch (Exception ex)
-            {
-                Trace.WriteLine("Could not respond to chat invite due to exception: " + ex.Message);
-            }
-            GroupChatStarted(this, EventArgs.Empty);
         }       
 
         void localHost_TransferInvitationReceived(object sender, TransferInvitationReceivedEventArgs e)
         {
-            if (IsGroupSession)
-                return;
-
-            if (IsRemoteUser(e.User))
+            if (e.SessionID == ID && !IsGroupSession)
             {
-                IChatHost remoteHost = PrimaryHost;
-                IFileTransfer invitation = new FileTransfer(ID, remoteHost, localHost, localUser, e.Name, e.Size, e.ID);
-                TransferInvitationReceived(this, new FileTransferInviteEventArgs() { User = e.User, 
-                                                                                     Invitation = invitation });
+                if (IsRemoteUser(e.User))
+                {
+                    IChatHost remoteHost = PrimaryHost;
+                    IFileTransfer invitation = new FileTransfer(ID, remoteHost, localHost, localUser, e.Name, e.Size, e.ID);
+                    TransferInvitationReceived(this, new FileTransferInviteEventArgs()
+                    {
+                        User = e.User,
+                        Invitation = invitation
+                    });
+                }
             }
         }
 
         void localHost_UserTyping(object sender, SessionEventArgs e)
         {
-            if (IsRemoteUser(e.User))
+            if (e.SessionID == ID && IsRemoteUser(e.User))
                 UserTyping(this, e);
         }
 
         void localHost_BuzzReceived(object sender, SessionEventArgs e)
         {
-            if (IsRemoteUser(e.User))
+            if (e.SessionID == ID && IsRemoteUser(e.User))
                 BuzzReceived(this, e);
-        }
-
-        private bool IsRemoteUser(IPEndPoint iPEndPoint)
-        {
-            return remoteUsers.Contains(iPEndPoint);
         }
 
         void host_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            if (IsRemoteUser(e.User))
+            if (e.SessionID == ID && IsRemoteUser(e.User))
                 MessageReceived(this, e);
         }
 
@@ -206,6 +206,11 @@ namespace Squiggle.Chat.Services.Chat
         {
             var proxy = ChatHostProxyFactory.Get(iPEndPoint);
             proxy.ReceiveChatInvite(ID, localUser, remoteUsers.ToArray());
+        }
+
+        bool IsRemoteUser(IPEndPoint iPEndPoint)
+        {
+            return remoteUsers.Contains(iPEndPoint);
         }
 
         void CreateRemoteHosts()
