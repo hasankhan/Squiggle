@@ -23,7 +23,7 @@ namespace Squiggle.Chat.Services.Chat.Host
         public event EventHandler<UserActivityEventArgs> UserActivity = delegate { };
         public event EventHandler<SessionInfoRequestedEventArgs> SessionInfoRequested = delegate { };
 
-        EventQueue eventQueue = new EventQueue();
+        ActionQueue eventQueue = new ActionQueue();
         Thread eventProcessor;
         bool disposed = false;
 
@@ -60,78 +60,78 @@ namespace Squiggle.Chat.Services.Chat.Host
         public void UserIsTyping(Guid sessionId, IPEndPoint user)
         {
             OnUserActivity(sessionId, user, ActivityType.Typing);
-            eventQueue.Enqueue(this, new SessionEventArgs(sessionId, user ), UserTyping);
+            eventQueue.Enqueue(()=>UserTyping(this, new SessionEventArgs(sessionId, user )));
             Trace.WriteLine(user.ToString() + " is typing.");
         }                
 
         public void ReceiveMessage(Guid sessionId, IPEndPoint user, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
         {
             OnUserActivity(sessionId, user, ActivityType.Message);
-            eventQueue.Enqueue(this, new MessageReceivedEventArgs() { SessionID = sessionId, 
-                                                                   User = user,
-                                                                   FontName = fontName,
-                                                                   FontSize = fontSize,
-                                                                   Color = color,
-                                                                   FontStyle = fontStyle,
-                                                                   Message = message }, MessageReceived);
-            Trace.WriteLine("Message received from: " + user.ToString() + ", message = " + message);
+            eventQueue.Enqueue(() => MessageReceived(this, new MessageReceivedEventArgs(){SessionID = sessionId, 
+                                                                                          User = user,
+                                                                                          FontName = fontName,
+                                                                                          FontSize = fontSize,
+                                                                                          Color = color,
+                                                                                          FontStyle = fontStyle,
+                                                                                          Message = message }));
+            Trace.WriteLine("Message received from: " + user.ToString() + ", sessionId= " + sessionId + ", message = " + message);
         }
 
         public void ReceiveChatInvite(Guid sessionId, IPEndPoint user, IPEndPoint[] participants)
         {
             OnUserActivity(sessionId, user, ActivityType.ChatInvite);
             Trace.WriteLine(user.ToString() + " invited you to group chat.");
-            eventQueue.Enqueue(this, new ChatInviteReceivedEventArgs() { SessionID = sessionId, User = user, Participants = participants }, ChatInviteReceived);
+            eventQueue.Enqueue(() => ChatInviteReceived(this, new ChatInviteReceivedEventArgs() { SessionID = sessionId, User = user, Participants = participants }));
         }
 
         public void JoinChat(Guid sessionId, IPEndPoint user)
         {
             Trace.WriteLine(user.ToString() + " has joined the chat.");
-            eventQueue.Enqueue(this, new UserActivityEventArgs() { SessionID = sessionId, User = user }, UserJoined);
+            eventQueue.Enqueue(() => UserJoined(this, new UserActivityEventArgs() { SessionID = sessionId, User = user }));
         }
 
         public void LeaveChat(Guid sessionId, IPEndPoint user)
         {
             Trace.WriteLine(user.ToString() + " has left the chat.");
-            eventQueue.Enqueue(this, new UserActivityEventArgs() { SessionID = sessionId, User = user }, UserLeft);
+            eventQueue.Enqueue(() => UserLeft(this, new UserActivityEventArgs() { SessionID = sessionId, User = user }));
         }
 
         public void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, int size)
         {
             OnUserActivity(sessionId, user, ActivityType.TransferInvite);
             Trace.WriteLine(user.ToString() + " wants to send a file " + name);
-            eventQueue.Enqueue(this, new TransferInvitationReceivedEventArgs()
+            eventQueue.Enqueue(() => TransferInvitationReceived(this, new TransferInvitationReceivedEventArgs()
             {
                 SessionID = sessionId,
                 User = user,
                 Name = name,
                 ID = id,
                 Size = size
-            }, TransferInvitationReceived);
+            }));
         }
 
         public void ReceiveFileContent(Guid id, byte[] chunk)
         {
-            eventQueue.Enqueue(this, new FileTransferDataReceivedEventArgs() { ID = id, Chunk = chunk }, TransferDataReceived);
+            eventQueue.Enqueue(() => TransferDataReceived(this, new FileTransferDataReceivedEventArgs() { ID = id, Chunk = chunk }));
         }
 
         public void AcceptFileInvite(Guid id)
         {
-            eventQueue.Enqueue(this, new FileTransferEventArgs() { ID = id }, InvitationAccepted);
+            eventQueue.Enqueue(() => InvitationAccepted(this, new FileTransferEventArgs() { ID = id }));
         }
 
         public void CancelFileTransfer(Guid id)
         {
-            eventQueue.Enqueue(this, new FileTransferEventArgs() { ID = id }, TransferCancelled);
+            eventQueue.Enqueue(() => TransferCancelled(this, new FileTransferEventArgs() { ID = id }));
         }       
 
         #endregion
 
         void OnUserActivity(Guid sessionId, IPEndPoint user, ActivityType type)
         {
-            UserActivity(this, new UserActivityEventArgs() { User = user, 
-                                                             SessionID = sessionId,
-                                                             Type = type });
+            eventQueue.Enqueue(() => UserActivity(this, new UserActivityEventArgs(){User = user, 
+                                                                                    SessionID = sessionId,
+                                                                                    Type = type}));
         }
 
         public void Dispose()

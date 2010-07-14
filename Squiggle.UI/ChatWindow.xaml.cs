@@ -23,7 +23,7 @@ namespace Squiggle.UI
         FlashWindow flash;
         DateTime? lastMessageReceived;
         DispatcherTimer statusResetTimer;
-        EventQueue eventQueue = new EventQueue();
+        ActionQueue eventQueue = new ActionQueue();
         DateTime? lastBuzzSent;
         DateTime? lastBuzzReceived;
         EmoticonParser emoticonParser = new EmoticonParser();
@@ -31,6 +31,7 @@ namespace Squiggle.UI
         string lastSavedFile;
         string lastSavedFormat;
         bool buzzPending;
+        WindowState lastState;
 
         public ChatWindow()
         {
@@ -132,6 +133,9 @@ namespace Squiggle.UI
 
         void ChatWindow_StateChanged(object sender, EventArgs e)
         {
+            if (this.WindowState != System.Windows.WindowState.Minimized)
+                lastState = this.WindowState;
+
             Dispatcher.Invoke(() =>
             {
                 if (this.WindowState != System.Windows.WindowState.Minimized)
@@ -556,7 +560,13 @@ namespace Squiggle.UI
         {
             if (buddy != null && chatSession != null)
                 chatSession.Invite(buddy);
-        }      
+        }
+
+        public void Restore()
+        {
+            if (WindowState == System.Windows.WindowState.Minimized)
+                WindowState = lastState;
+        }
 
         public void DestroySession()
         {

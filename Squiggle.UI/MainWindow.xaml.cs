@@ -78,7 +78,7 @@ namespace Squiggle.UI
 
         void chatClient_ChatStarted(object sender, ChatStartedEventArgs e)
         {
-            CreateChatWindow(e.Buddy, e.Chat, false);
+            Dispatcher.Invoke(()=>CreateChatWindow(e.Buddy, e.Chat, false));
         }       
 
         void chatClient_BuddyOnline(object sender, BuddyOnlineEventArgs e)
@@ -314,7 +314,10 @@ namespace Squiggle.UI
 
         ChatWindow CreateChatWindow(Buddy buddy, IChat chatSession, bool focused)
         {
-            ChatWindow window = chatWindows.Find(w=>w.Buddies.Contains(buddy) && !w.IsGroupChat);
+            ChatWindow window = null;
+            
+            if (chatSession == null || !chatSession.IsGroupChat)
+                window = chatWindows.Find(w => w.Buddies.Contains(buddy) && !w.IsGroupChat);
 
             if (window == null)
             {
@@ -331,7 +334,7 @@ namespace Squiggle.UI
 
             if (focused)
             {
-                window.WindowState = lastState;
+                window.Restore();
                 window.Activate();
             }
 

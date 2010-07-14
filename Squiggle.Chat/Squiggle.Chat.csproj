@@ -81,7 +81,7 @@
     <Compile Include="BuddyProperties.cs" />
     <Compile Include="Chat.cs" />
     <Compile Include="ChatClient.cs" />
-    <Compile Include="EventQueue.cs" />
+    <Compile Include="ActionQueue.cs" />
     <Compile Include="IChat.cs" />
     <Compile Include="IChatClient.cs" />
     <Compile Include="IFileTransfer.cs" />

@@ -191,6 +191,14 @@ namespace Squiggle.Chat.Services.Chat
 
         public void End()
         {
+            localHost.ChatInviteReceived -= new EventHandler<ChatInviteReceivedEventArgs>(localHost_ChatInviteReceived);
+            localHost.TransferInvitationReceived -= new EventHandler<TransferInvitationReceivedEventArgs>(localHost_TransferInvitationReceived);
+            localHost.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(host_MessageReceived);
+            localHost.UserTyping -= new EventHandler<SessionEventArgs>(localHost_UserTyping);
+            localHost.BuzzReceived -= new EventHandler<SessionEventArgs>(localHost_BuzzReceived);
+            localHost.UserJoined -= new EventHandler<SessionEventArgs>(localHost_UserJoined);
+            localHost.UserLeft -= new EventHandler<SessionEventArgs>(localHost_UserLeft);
+            localHost.SessionInfoRequested -= new EventHandler<SessionInfoRequestedEventArgs>(localHost_SessionInfoRequested);
             try
             {
                 BroadCast(h => h.LeaveChat(ID, localUser));

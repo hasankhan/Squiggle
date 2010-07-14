@@ -5,6 +5,7 @@ using System.ServiceModel;
 using System.Linq;
 using Squiggle.Chat.Services.Chat.Host;
 using System.Threading;
+using System.Diagnostics;
 
 namespace Squiggle.Chat.Services.Chat
 {
@@ -67,6 +68,7 @@ namespace Squiggle.Chat.Services.Chat
 
         void chatHost_UserActivity(object sender, UserActivityEventArgs e)
         {
+            Trace.WriteLine("Ensuring chat session=" + e.SessionID);
             if (e.Type == ActivityType.Message || 
                 e.Type == ActivityType.TransferInvite || 
                 e.Type == ActivityType.Buzz || 
@@ -98,8 +100,8 @@ namespace Squiggle.Chat.Services.Chat
             if (!chatSessions.Contains(sessionId))
             {
                 var session = CreateSession(sessionId, user);
+                session.UpdateSessionInfo();
                 ChatStarted(this, new ChatStartedEventArgs() { Session = session });
-                ThreadPool.QueueUserWorkItem(_=>session.UpdateSessionInfo());
             }
         }
     }
