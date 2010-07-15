@@ -79,16 +79,6 @@ namespace Squiggle.UI
             }
         }
 
-        public static IEnumerable<Buddy> ShowSendInstantMessageDialog(Window owner)
-        {
-            return SelectContacts("Send an instant message", owner);
-        }
-
-        public static IEnumerable<Buddy> ShowSendFileDialog(Window owner)
-        {
-            return SelectContacts("Send a file", owner);
-        }
-
         public static Buddy SelectContact(string title, Window owner)
         {
             return SelectContact(title, owner, null);
@@ -96,19 +86,25 @@ namespace Squiggle.UI
 
         public static Buddy SelectContact(string title, Window owner, Predicate<Buddy> exclusionFilter)
         {
-            return SelectContacts(title, owner, exclusionFilter).FirstOrDefault();
+            return SelectContacts(title, owner, exclusionFilter, false).FirstOrDefault();
         }
 
         public static IEnumerable<Buddy> SelectContacts(string title, Window owner)
         {
-            return SelectContacts(title, owner, null);
+            return SelectContacts(title, owner, null, true);
         }
 
         public static IEnumerable<Buddy> SelectContacts(string title, Window owner, Predicate<Buddy> exclusionFilter)
         {
+            return SelectContacts(title, owner, exclusionFilter, true);
+        }
+
+        static IEnumerable<Buddy> SelectContacts(string title, Window owner, Predicate<Buddy> exclusionFilter, bool multiple)
+        {
             var clientViewModel = (ClientViewModel)MainWindow.Instance.DataContext;
             var selectContactDialog = new ContactsSelectWindow(clientViewModel, false);
             selectContactDialog.ExcludeCriterea = exclusionFilter;
+            selectContactDialog.AllowMultiSelect = multiple;
             selectContactDialog.Owner = owner;
             selectContactDialog.Title = title;
             if (selectContactDialog.ShowDialog() == true)

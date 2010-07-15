@@ -680,8 +680,9 @@ namespace Squiggle.UI
 
         private void InviteContactMenu_Click(object sender, RoutedEventArgs e)
         {
-            Buddy buddy = SquiggleUtility.SelectContact("Invite someone to this conversation.", this, b=>Buddies.Contains(b));
-            Invite(buddy);
+            IEnumerable<Buddy> buddies = SquiggleUtility.SelectContacts("Invite someone to this conversation.", this, b=>Buddies.Contains(b));
+            foreach (Buddy buddy in buddies)
+                Invite(buddy);
         }         
     }
 }
