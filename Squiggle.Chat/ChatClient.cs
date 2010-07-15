@@ -56,8 +56,8 @@ namespace Squiggle.Chat
 
             var self = new SelfBuddy(this, localEndPoint, properties) 
             { 
-                DisplayName = username, 
-                DisplayMessage = String.Empty,
+                DisplayName = username,
+                DisplayMessage = displayMessage,
                 Status = UserStatus.Online,
             };
             self.EnableUpdates = true;
