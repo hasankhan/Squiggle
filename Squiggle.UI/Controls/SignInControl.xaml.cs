@@ -31,9 +31,13 @@ namespace Squiggle.UI.Controls
             var settings = SettingsProvider.Current.Settings;
 
             if (chkRememberName.IsChecked.GetValueOrDefault())
+            {
+                if (settings.PersonalSettings.RememberMe && settings.PersonalSettings.DisplayName != txtdisplayName.Text)
+                    settings.PersonalSettings.DisplayMessage = String.Empty;
                 settings.PersonalSettings.DisplayName = txtdisplayName.Text;
+            }
             else
-                settings.PersonalSettings.DisplayName = String.Empty;
+                settings.PersonalSettings.DisplayName = settings.PersonalSettings.DisplayMessage = String.Empty;
 
             settings.PersonalSettings.RememberMe = chkRememberName.IsChecked.GetValueOrDefault();
             settings.PersonalSettings.AutoSignMeIn = chkAutoSignIn.IsChecked.GetValueOrDefault();
