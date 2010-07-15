@@ -35,80 +35,11 @@
             <GradientStop Color="#FFFCFCFC" Offset="0.087"/>
             <GradientStop Color="#FFECECEC" Offset="0.478"/>
         </LinearGradientBrush>
-
-        <LinearGradientBrush x:Key="OnlineStatusBrush" EndPoint="0.5,1" StartPoint="0.5,0">
-            <GradientStop Color="#FF70BD68" Offset="0.032"/>
-            <GradientStop Color="#FF58AE58" Offset="0.265"/>
-            <GradientStop Color="#FF3FA63F" Offset="0.297"/>
-            <GradientStop Color="#FF058805" Offset="0.329"/>
-            <GradientStop Color="#FF0BE912" Offset="0.922"/>
-        </LinearGradientBrush>
-
-        <LinearGradientBrush x:Key="IdleStatusBrush" EndPoint="0.5,1" StartPoint="0.5,0" MappingMode="RelativeToBoundingBox">
-            <GradientStop Color="#FFF6CA58" Offset="0.069"/>
-            <GradientStop Color="#FFF6C547" Offset="0.243"/>
-            <GradientStop Color="#FFEDA600" Offset="0.327"/>
-            <GradientStop Color="#FFF6F20B" Offset="0.965"/>
-        </LinearGradientBrush>
-
-        <LinearGradientBrush x:Key="BusyStatusBrush" EndPoint="0.5,1" StartPoint="0.5,0" MappingMode="RelativeToBoundingBox">
-            <GradientStop Color="#FFC96A70" Offset="0"/>
-            <GradientStop Color="#FFC95A60" Offset="0.203"/>
-            <GradientStop Color="#FFC04A4F" Offset="0.235"/>
-            <GradientStop Color="#FFA5080B" Offset="0.281"/>
-            <GradientStop Color="#FFC01212" Offset="0.595"/>
-            <GradientStop Color="#FFFF1512" Offset="0.954"/>
-        </LinearGradientBrush>
-
-        <LinearGradientBrush x:Key="OfflineStatusBrush" EndPoint="0.5,1" StartPoint="0.5,0" MappingMode="RelativeToBoundingBox">
-            <GradientStop Color="#FFA1A1A1" Offset="0"/>
-            <GradientStop Color="#FFDCCBCC" Offset="0.026"/>
-            <GradientStop Color="#FFA3A3A3" Offset="0.241"/>
-            <GradientStop Color="#FF9F9F9F" Offset="0.281"/>
-            <GradientStop Color="#FF848484" Offset="0.599"/>
-            <GradientStop Color="#FFB7B7B7" Offset="0.954"/>
-        </LinearGradientBrush>
-
         <LinearGradientBrush x:Key="ToolbarBackground" EndPoint="0.5,1" StartPoint="0.5,0" MappingMode="RelativeToBoundingBox">
             <GradientStop Color="#FFEEF6FA" Offset="0"/>
             <GradientStop Color="#FFE4F1F7" Offset="0.9"/>
             <GradientStop Color="#FFE4F1F6" Offset="1"/>
         </LinearGradientBrush>
-        <Style x:Key="StatusStyle" TargetType="Border">
-            <Setter Property="Width" Value="12"/>
-            <Setter Property="Height" Value="12"/>
-            <Setter Property="CornerRadius" Value="8"/>
-            <Setter Property="Background" Value="Gray"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Status}" Value="Online">
-                    <Setter Property="Background" Value="{StaticResource OnlineStatusBrush}" />
-
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Status}" Value="Idle">
-                    <Setter Property="Background" Value="{StaticResource IdleStatusBrush}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Status}" Value="BeRightBack">
-                    <Setter Property="Background" Value="{StaticResource IdleStatusBrush}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Status}" Value="Away">
-                    <Setter Property="Background" Value="{StaticResource IdleStatusBrush}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Status}" Value="Busy">
-                    <Setter Property="Background" Value="{StaticResource BusyStatusBrush}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Status}" Value="Offline">
-                    <Setter Property="Background" Value="{StaticResource OfflineStatusBrush}"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="ContactBorderStyle" TargetType="{x:Type Border}">
-            <Setter Property="Background" Value="Transparent"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsMouseOver,RelativeSource={RelativeSource TemplatedParent}}" Value="True">
-                    <Setter Property="Background" Value="LightGray" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
         <ObjectDataProvider MethodName="GetChangableStatuses" 
             ObjectType="{x:Type local:SquiggleUtility}" 
             x:Key="AvailableUserStatus">
@@ -131,7 +62,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="0.01*"/>
                     </Grid.RowDefinitions>
-                    <Image ToolTip="{Binding Path=Status}" Source="{Binding Path=Status, Converter={StaticResource statusIconConverter}}" VerticalAlignment="Center"/>
+                    <Image Width="20" Height="20" ToolTip="{Binding Path=Status}" Source="{Binding Path=Status, Converter={StaticResource statusIconConverter}}" VerticalAlignment="Top"/>
                     <StackPanel Orientation="Vertical" Grid.Column="1">
                         <StackPanel HorizontalAlignment="Left" Grid.Column="1"
                                             Orientation="Horizontal" Margin="5,0,0,0" Cursor="Hand" >
