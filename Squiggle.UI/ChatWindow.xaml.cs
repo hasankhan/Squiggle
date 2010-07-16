@@ -32,6 +32,7 @@ namespace Squiggle.UI
         string lastSavedFormat;
         bool buzzPending;
         WindowState lastState;
+        EmoticonSelector selector;
 
         public ChatWindow()
         {
@@ -49,7 +50,7 @@ namespace Squiggle.UI
             this.StateChanged += new EventHandler(ChatWindow_StateChanged);
 
             SettingsProvider.Current.SettingsUpdated += (sender, e) => LoadSettings();
-            LoadSettings();
+            LoadSettings();            
         }
 
         void LoadSettings()
@@ -683,6 +684,23 @@ namespace Squiggle.UI
             IEnumerable<Buddy> buddies = SquiggleUtility.SelectContacts("Invite someone to this conversation.", this, b=>Buddies.Contains(b));
             foreach (Buddy buddy in buddies)
                 Invite(buddy);
-        }         
+        }
+
+        private void SendEmoticon_Click(object sender, RoutedEventArgs e)
+        {
+            Point pos = PointToScreen(Mouse.GetPosition(this));
+            var selector = new EmoticonSelector();
+            selector.EmoticonSelected += (s1, e1) => OnEmoticonSelected();
+            selector.Top = pos.Y;
+            selector.Left = pos.X;
+            selector.Show();
+        }
+
+        void OnEmoticonSelected()
+        {
+            txtMessageEditBox.txtMessage.SelectedText = selector.Code;
+            txtMessageEditBox.txtMessage.SelectionStart += selector.Code.Length;
+            txtMessageEditBox.txtMessage.SelectionLength = 0;
+        }
     }
 }

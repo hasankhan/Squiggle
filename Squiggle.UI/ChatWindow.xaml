@@ -108,13 +108,18 @@
                                     Click="SendBuzz_Click" Foreground="Black">
                                 <Image Width="16" Height="16" Source="Images/Buzz.png" Stretch="Fill"/>
                             </Button>
-                        </StackPanel>
-                    </Border>
+                            <Button Style="{StaticResource toolbarButton}" 
+                                    Margin="5,0,0,0" ToolTip="Select an emoticon"
+                                    Click="SendEmoticon_Click" Foreground="Black">
+                                <Image Width="16" Height="16" Source="Images/Emoticons/Smile.png" Stretch="Fill"/>                                                                
+                            </Button>                            
+                        </StackPanel>                        
+                    </Border>                    
                     <controls:MessageEditBox FileDropped="txtMessageEditBox_FileDropped" Focusable="True" TabIndex="0"
                                              Margin="2,5,5,0" x:Name="txtMessageEditBox" 
                                              MessageTyping="txtMessageEditBox_MessageTyping" 
                                              MessageSend="txtMessageEditBox_MessageSend" Grid.Row="1" />
-                    <TextBlock Margin="0,10,0,0" x:Name="txbStatus" VerticalAlignment="Bottom" Grid.Row="2" Grid.ColumnSpan="2" Foreground="Black"/>
+                    <TextBlock Margin="0,10,0,0" x:Name="txbStatus" VerticalAlignment="Bottom" Grid.Row="2" Grid.ColumnSpan="2" Foreground="Black"/>                    
                 </Grid>
             </Border>
         </Grid>

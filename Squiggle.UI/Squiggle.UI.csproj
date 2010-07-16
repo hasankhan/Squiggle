@@ -149,6 +149,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="EmoticonSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FancyBalloon.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -193,6 +197,11 @@
     <Compile Include="ChatWindowCollection.cs" />
     <Compile Include="ContactsSelectWindow.xaml.cs">
       <DependentUpon>ContactsSelectWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Emoticon.cs" />
+    <Compile Include="Emoticons.cs" />
+    <Compile Include="EmoticonSelector.xaml.cs">
+      <DependentUpon>EmoticonSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="MessageParsers\EmoticonParser.cs" />
     <Compile Include="Controls\FilterTextBox.xaml.cs">

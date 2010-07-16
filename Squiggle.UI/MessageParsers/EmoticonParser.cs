@@ -11,13 +11,13 @@ namespace Squiggle.UI.MessageParsers
 {
     class EmoticonParser: IMessageParser
     {
-        class Emoticon
+        class EmoticonEntry
         {
             public BitmapImage Image { get; set; }
             public string Title { get; set; }
         }
 
-        Dictionary<string, Emoticon> emoticons = new Dictionary<string, Emoticon>();
+        Dictionary<string, EmoticonEntry> emoticons = new Dictionary<string, EmoticonEntry>();
         Regex pattern;
 
         public Regex Pattern
@@ -27,26 +27,17 @@ namespace Squiggle.UI.MessageParsers
 
         public EmoticonParser()
         {
-            AddEmoticon(new Uri("pack://application:,,,/Images/Emoticons/angry.png"), "Angry", ":@", ":-@");
-            AddEmoticon(new Uri("pack://application:,,,/Images/Emoticons/crying.png"), "Crying", ":'(");
-            AddEmoticon(new Uri("pack://application:,,,/Images/Emoticons/embarrassed.png"), "Embarrassed", ":-$", ":$");
-            AddEmoticon(new Uri("pack://application:,,,/Images/Emoticons/hot.png"), "Hot", "(h)");
-            AddEmoticon(new Uri("pack://application:,,,/Images/Emoticons/laughing.png"), "Open-mouthed", ":-D", ":d");
-            AddEmoticon(new Uri("pack://application:,,,/Images/Emoticons/nerd.png"), "Nerd", "8-|");
-            AddEmoticon(new Uri("pack://application:,,,/Images/Emoticons/sad.png"), "Sad", ":-(", ":(");
-            AddEmoticon(new Uri("pack://application:,,,/Images/Emoticons/smile.png"), "Smile", ":-)", ":)");
-            AddEmoticon(new Uri("pack://application:,,,/Images/Emoticons/surprize.png"), "Surprised", ":-O", ":o");
-            AddEmoticon(new Uri("pack://application:,,,/Images/Emoticons/tounge.png"), "Tongue out", ":-p", ":p");
-            AddEmoticon(new Uri("pack://application:,,,/Images/Emoticons/wink.png"), "Wink", ";-)", ";)");
+            foreach (var emoticon in Emoticons.All)
+                AddEmoticon(emoticon);
         }
 
-        public void AddEmoticon(Uri imageUrl, string title, params string[] codes)
+        public void AddEmoticon(Squiggle.UI.Emoticon emoticon)
         {
-            var emoticon = new Emoticon() { Image = new BitmapImage(imageUrl),
-                                            Title = title };
+            var entry = new EmoticonEntry() { Image = new BitmapImage(emoticon.ImageUri),
+                                              Title = emoticon.Title };
 
-            foreach (var code in codes)
-                emoticons[code.ToLower()] = emoticon;
+            foreach (var code in emoticon.Codes)
+                emoticons[code.ToLower()] = entry;
 
             string regex = String.Join(")|(", emoticons.Keys.Select(c => Regex.Escape(c)).ToArray());
             pattern = new Regex("(" + regex + ")", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -54,7 +45,7 @@ namespace Squiggle.UI.MessageParsers
 
         public IEnumerable<Inline> ParseText(string text)
         {
-            Emoticon emoticon;
+            EmoticonEntry emoticon;
             if (emoticons.TryGetValue(text.ToLower(), out emoticon))
             {
                 var image = new Image() { Source = emoticon.Image };
