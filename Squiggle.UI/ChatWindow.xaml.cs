@@ -690,16 +690,16 @@ namespace Squiggle.UI
         {
             Point pos = PointToScreen(Mouse.GetPosition(this));
             var selector = new EmoticonSelector();
-            selector.EmoticonSelected += (s1, e1) => OnEmoticonSelected();
+            selector.EmoticonSelected += (s1, e1) => OnEmoticonSelected(((EmoticonSelector)s1).Code);
             selector.Top = pos.Y;
             selector.Left = pos.X;
             selector.Show();
         }
 
-        void OnEmoticonSelected()
+        void OnEmoticonSelected(string code)
         {
-            txtMessageEditBox.txtMessage.SelectedText = selector.Code;
-            txtMessageEditBox.txtMessage.SelectionStart += selector.Code.Length;
+            txtMessageEditBox.txtMessage.SelectedText = code;
+            txtMessageEditBox.txtMessage.SelectionStart += code.Length;
             txtMessageEditBox.txtMessage.SelectionLength = 0;
         }
     }

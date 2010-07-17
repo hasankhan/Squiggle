@@ -30,26 +30,28 @@ namespace Squiggle.UI
 
             foreach (Emoticon emoticon in Emoticons.All)
             {
-                var border = new Border();
-                border.BorderBrush = Brushes.LightGray;
-                border.BorderThickness = new Thickness(0.5);
-                border.Margin = new Thickness(3);
-                border.MouseDown += (sender, e) =>
+                var emoUi = new Controls.Emoticon();
+                emoUi.DataContext = emoticon;
+                //var border = new Border();
+                //border.BorderBrush = Brushes.LightGray;
+                //border.BorderThickness = new Thickness(0.5);
+                //border.Margin = new Thickness(3);
+                emoUi.MouseDown += (sender, e) =>
                 {
                     Code = emoticon.Codes.FirstOrDefault();
                     EmoticonSelected(this, EventArgs.Empty);
                     Close();
                 };
-                var img = new Image();
-                img.BeginInit();
-                img.Source = new BitmapImage(emoticon.ImageUri);
-                img.Stretch = Stretch.None;
-                img.Margin = new Thickness(3);
-                img.ToolTip = emoticon.Title + " " + emoticon.Codes.FirstOrDefault();
-                img.EndInit();
+                //var img = new Image();
+                //img.BeginInit();
+                //img.Source = new BitmapImage(emoticon.ImageUri);
+                //img.Stretch = Stretch.None;
+                //img.Margin = new Thickness(3);
+                //img.ToolTip = emoticon.Title + " " + emoticon.Codes.FirstOrDefault();
+                //img.EndInit();
 
-                border.Child = img;
-                root.Children.Add(border);
+                //border.Child = img;
+                root.Children.Add(emoUi);
             }
         }
 

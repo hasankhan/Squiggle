@@ -11,6 +11,11 @@ namespace Squiggle.UI
         public string Title { get; private set; }
         public string[] Codes { get; private set; }
 
+        public string Description
+        {
+            get { return String.Format("{0} {1}", Title, Codes == null ? null : Codes.FirstOrDefault()); }
+        }
+
         public Emoticon(Uri imageUri, string title, params string[] codes)
         {
             this.ImageUri = imageUri;

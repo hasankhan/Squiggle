@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="Squiggle.UI.Controls.Emoticon"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Squiggle.UI.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Style x:Key="MouseOverStyle" TargetType="Border">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=IsMouseOver}" Value="True">
+                    <Setter Property="BorderBrush" Value="Blue" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Border Margin="4" BorderBrush="LightGray" BorderThickness="0.5">
+            <Image Source="{Binding ImageUri}" Stretch="None" Margin="3" ToolTip="{Binding Description}" />
+        </Border>
+        <Border Style="{StaticResource MouseOverStyle}" Margin="1" BorderThickness="1" />
+    </Grid>
+</UserControl>
