@@ -20,13 +20,21 @@ namespace Squiggle.Chat
 
         public void DequeueAll()
         {
-            while (actions.Count > 0)
-            {
-                Action action;
-                lock (actions)
+            while (Dequeue()) ;
+        }
+
+        public bool Dequeue()
+        {
+            Action action = null;
+            lock (actions)
+                if (actions.Count > 0)
                     action = actions.Dequeue();
-                action();
-            }
+
+            if (action == null)
+                return false;
+            
+            action();
+            return true;
         }
     }
 }

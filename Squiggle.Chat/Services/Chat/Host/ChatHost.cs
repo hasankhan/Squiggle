@@ -33,7 +33,7 @@ namespace Squiggle.Chat.Services.Chat.Host
             {
                 while (!disposed)
                 {
-                    eventQueue.DequeueAll();
+                    eventQueue.Dequeue();
                     Thread.Sleep(1);
                 }
             });
