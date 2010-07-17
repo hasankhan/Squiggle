@@ -120,8 +120,11 @@ namespace Squiggle.UI
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.KeyDown += new KeyEventHandler(ChatWindow_KeyDown);
-            loaded = true;
-            eventQueue.DequeueAll();
+            lock (eventQueue)
+            {
+                loaded = true;
+                eventQueue.DequeueAll();
+            }
         }
 
         void ChatWindow_Activated(object sender, EventArgs e)
@@ -245,63 +248,43 @@ namespace Squiggle.UI
 
         void chatSession_GroupChatStarted(object sender, EventArgs e)
         {
-            if (!loaded)
-            {
-                eventQueue.Enqueue(sender, e, chatSession_GroupChatStarted);
-                return;
-            }
-            OnGroupChatStarted();
+            DeferIfNotLoaded(OnGroupChatStarted);
         }        
 
         void chatSession_TransferInvitationReceived(object sender, FileTransferInviteEventArgs e)
         {
-            if (!loaded)
-            {
-                eventQueue.Enqueue(sender, e, chatSession_TransferInvitationReceived);
-                return;
-            }
-            OnTransferInvite(e);
+            DeferIfNotLoaded(()=>OnTransferInvite(e));
         }
 
         void chatSession_BuzzReceived(object sender, BuddyEventArgs e)
         {
-            if (!loaded)
-            {
-                eventQueue.Enqueue(sender, e, chatSession_BuzzReceived);
-                return;
-            }
-            OnBuzzReceived(e.Buddy);
+            DeferIfNotLoaded(()=>OnBuzzReceived(e.Buddy));
         }           
 
         void chatSession_MessageReceived(object sender, ChatMessageReceivedEventArgs e)
         {
-            if (!loaded)
-            {
-                eventQueue.Enqueue(sender, e, chatSession_MessageReceived);
-                return;
-            }
-            OnMessageReceived(e.Sender, e.Message, e.FontName, e.Color, e.FontSize, e.FontStyle);
+            DeferIfNotLoaded(()=>OnMessageReceived(e.Sender, e.Message, e.FontName, e.Color, e.FontSize, e.FontStyle));
         }
 
         void chatSession_BuddyTyping(object sender, BuddyEventArgs e)
         {
-            if (!loaded)
-            {
-                eventQueue.Enqueue(sender, e, chatSession_BuddyTyping);
-                return;
-            }
-            OnBuddyTyping(e);
+            DeferIfNotLoaded(()=>OnBuddyTyping(e));
         }
 
         void chatSession_MessageFailed(object sender, MessageFailedEventArgs e)
         {
-            if (!loaded)
-            {
-                eventQueue.Enqueue(sender, e, chatSession_MessageFailed);
-                return;
-            }
-            OnMessageFailed(e);
+            DeferIfNotLoaded(()=>OnMessageFailed(e));
         }
+
+        void chatSession_BuddyLeft(object sender, BuddyEventArgs e)
+        {
+            DeferIfNotLoaded(() => OnBuddyLeft(e.Buddy));
+        }
+
+        void chatSession_BuddyJoined(object sender, BuddyEventArgs e)
+        {
+            DeferIfNotLoaded(() => OnBuddyJoined(e.Buddy));
+        }  
 
         void buddy_Updated(object sender, EventArgs e)
         {
@@ -327,27 +310,7 @@ namespace Squiggle.UI
                     buddyOfflineMessage.Visibility = Visibility.Visible;
                 }
             });
-        }
-
-        void chatSession_BuddyLeft(object sender, BuddyEventArgs e)
-        {
-            if (!loaded)
-            {
-                eventQueue.Enqueue(sender, e, chatSession_BuddyLeft);
-                return;
-            }
-            OnBuddyLeft(e.Buddy);
-        }
-
-        void chatSession_BuddyJoined(object sender, BuddyEventArgs e)
-        {
-            if (!loaded)
-            {
-                eventQueue.Enqueue(sender, e, chatSession_BuddyJoined);
-                return;
-            }
-            OnBuddyJoined(e.Buddy);
-        }            
+        }          
 
         void OnBuddyTyping(BuddyEventArgs e)
         {
@@ -701,6 +664,15 @@ namespace Squiggle.UI
             txtMessageEditBox.txtMessage.SelectedText = code;
             txtMessageEditBox.txtMessage.SelectionStart += code.Length;
             txtMessageEditBox.txtMessage.SelectionLength = 0;
+        }
+
+        void DeferIfNotLoaded(Action action)
+        {
+            lock (eventQueue)
+                if (!loaded)
+                    eventQueue.Enqueue(action);
+                else
+                    action();
         }
     }
 }
