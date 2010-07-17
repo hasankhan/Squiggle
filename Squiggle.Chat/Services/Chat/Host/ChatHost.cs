@@ -53,7 +53,7 @@ namespace Squiggle.Chat.Services.Chat.Host
         public void Buzz(Guid sessionId, IPEndPoint user)
         {
             OnUserActivity(sessionId, user, ActivityType.Buzz);
-            eventQueue.Enqueue(this, new SessionEventArgs(sessionId, user ), BuzzReceived);
+            eventQueue.Enqueue(()=>BuzzReceived(this, new SessionEventArgs(sessionId, user )));
             Trace.WriteLine(user.ToString() + " is buzzing.");
         }
 
