@@ -25,7 +25,7 @@ namespace Squiggle.Chat.Services.Chat.Host
 
         ActionQueue eventQueue = new ActionQueue();
         Thread eventProcessor;
-        bool disposed = false;
+        volatile bool disposed = false;
 
         public ChatHost()
         {

@@ -46,7 +46,7 @@ namespace Squiggle.UI
             if (allowMultiSelect)
                 txtMessage.Text = "Select one or more contacts";
 
-            this.clientViewModel.BuddyOffline += new EventHandler(clientViewModel_BuddyOffline);
+            this.clientViewModel.ContactListUpdated += new EventHandler(clientViewModel_ContactListUpdated);
 
             selectedContacts = new List<Buddy>();
             this.DataContext = this.clientViewModel;
@@ -54,7 +54,7 @@ namespace Squiggle.UI
 
         public Predicate<Buddy> ExcludeCriterea { get; set; }
 
-        void clientViewModel_BuddyOffline(object sender, EventArgs e)
+        void clientViewModel_ContactListUpdated(object sender, EventArgs e)
         {
             Refresh();
         }

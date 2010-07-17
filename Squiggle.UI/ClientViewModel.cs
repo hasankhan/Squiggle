@@ -7,10 +7,7 @@ namespace Squiggle.UI
 {
     public class ClientViewModel
     {
-        public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
-        public event EventHandler BuddyUpdated = delegate { };
-        public event EventHandler BuddyOffline = delegate { };
-
+        public event EventHandler ContactListUpdated = delegate { };
 
         IChatClient chatClient;
         Dispatcher currentDispatcher;
@@ -32,29 +29,24 @@ namespace Squiggle.UI
             this.chatClient.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);
             this.chatClient.BuddyOffline += new EventHandler<BuddyEventArgs>(chatClient_BuddyOffline);
             this.chatClient.BuddyUpdated += new EventHandler<BuddyEventArgs>(chatClient_BuddyUpdated);
-            this.chatClient.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
             Buddies = new ObservableCollection<Buddy>(chatClient.Buddies);
         }
 
         void chatClient_BuddyOffline(object sender, BuddyEventArgs e)
         {
-            BuddyOffline(this, EventArgs.Empty);
+            ContactListUpdated(this, EventArgs.Empty);
         }
 
         void chatClient_BuddyUpdated(object sender, BuddyEventArgs e)
         {
-            BuddyUpdated(this, EventArgs.Empty);
-        }
-
-        void chatClient_ChatStarted(object sender, ChatStartedEventArgs e)
-        {
-            ChatStarted(this, e);
+            ContactListUpdated(this, EventArgs.Empty);
         }
 
         void chatClient_BuddyOnline(object sender, BuddyOnlineEventArgs e)
         {
             if (!Buddies.Contains(e.Buddy))
                 currentDispatcher.Invoke(new Action(delegate() { Buddies.Add(e.Buddy); }));
+            ContactListUpdated(this, EventArgs.Empty);
         }
     }
 }
