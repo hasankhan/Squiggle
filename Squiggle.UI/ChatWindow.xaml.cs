@@ -479,8 +479,18 @@ namespace Squiggle.UI
         {
             if (File.Exists(filePath))
             {
-                var fileStream = File.OpenRead(filePath);
                 string fileName = Path.GetFileName(filePath);
+                FileStream fileStream;
+                try
+                {
+                    fileStream = File.OpenRead(filePath);
+                }
+                catch (Exception)
+                {
+                    chatTextBox.AddError(String.Format("Could not read file '{0}'. Please make sure its not in use.", fileName), null);
+                    return;
+                }
+                                
                 IFileTransfer fileTransfer = chatSession.SendFile(fileName, fileStream);
                 if (fileTransfer != null)
                     chatTextBox.AddFileSentRequest(fileTransfer);

@@ -85,9 +85,12 @@ namespace Squiggle.UI.Controls
 
         private void SaveAs_Click(object sender, RoutedEventArgs e)
         {
-            using (var dlg = new System.Windows.Forms.FolderBrowserDialog())
+            using (var dlg = new System.Windows.Forms.SaveFileDialog())
+            {
+                dlg.FileName = fileTransfer.Name;
                 if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    AcceptDownload(dlg.SelectedPath);
+                    AcceptDownload(dlg.FileName);
+            }
         }
 
         private void Reject_Click(object sender, RoutedEventArgs e)

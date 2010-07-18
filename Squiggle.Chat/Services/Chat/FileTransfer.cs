@@ -65,7 +65,10 @@ namespace Squiggle.Chat.Services.Chat
             {
                 bool success = L(() => this.remoteUser.ReceiveFileInvite(sessionId, localUser, id, Name, Size));
                 if (!success)
+                {
                     OnTransferFinished();
+                    OnError(new OperationFailedException());
+                }
             });
         }
 
@@ -83,7 +86,10 @@ namespace Squiggle.Chat.Services.Chat
             if (success)
                 OnTransferStarted();
             else
+            {
                 OnTransferFinished();
+                OnError(new OperationFailedException());
+            }
         }
         
         public void Cancel()
@@ -114,9 +120,14 @@ namespace Squiggle.Chat.Services.Chat
             if (e.Cancelled)
                 OnTransferCancelled();
             else if (e.Error != null)
-                Error(this, new ErrorEventArgs(e.Error));
+                OnError(e.Error);
             else
                 TransferCompleted(this, EventArgs.Empty);
+        }
+
+        void OnError(Exception error)
+        {
+            Error(this, new ErrorEventArgs(error));
         }
 
         void OnTransferCancelled()
