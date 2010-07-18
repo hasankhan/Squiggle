@@ -372,14 +372,16 @@ namespace Squiggle.UI
 
         private void SendFileMenu_Click(object sender, RoutedEventArgs e)
         {
-            Buddy buddy = SquiggleUtility.SelectContact("Send an instant message", this);
-            StartChat(buddy, true, null);
+            Buddy buddy = SquiggleUtility.SelectContact("Send a file", this);
+            if (buddy != null)
+                StartChat(buddy, true, null);
         }
 
         private void SendMessageMenu_Click(object sender, RoutedEventArgs e)
         {
-            Buddy buddy = SquiggleUtility.SelectContact("Send a file", this);
-            StartChat(buddy);
+            Buddy buddy = SquiggleUtility.SelectContact("Send an instant message", this);
+            if (buddy != null)
+                StartChat(buddy);
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
