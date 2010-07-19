@@ -4,7 +4,7 @@
         xmlns:converters="clr-namespace:Squiggle.UI.Converters"
         xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat"
         xmlns:controls="clr-namespace:Squiggle.UI.Controls" KeyDown="Window_KeyDown"
-        Title="Send an instant message" Height="500" Width="360" x:Name="contactSelectControl" WindowStartupLocation="CenterScreen" ShowInTaskbar="False">
+        Title="Send an instant message" Height="500" Width="360" x:Name="contactSelectControl" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
     <Window.Resources>
         <CollectionViewSource Source="{Binding Buddies}" x:Key="buddiesCollection" Filter="CollectionViewSource_Filter" />
         <converters:StatusIconConverter x:Key="statusIconConverter" />

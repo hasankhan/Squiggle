@@ -32,25 +32,13 @@ namespace Squiggle.UI
             {
                 var emoUi = new Controls.Emoticon();
                 emoUi.DataContext = emoticon;
-                //var border = new Border();
-                //border.BorderBrush = Brushes.LightGray;
-                //border.BorderThickness = new Thickness(0.5);
-                //border.Margin = new Thickness(3);
+                string code = emoticon.Codes.FirstOrDefault();
                 emoUi.MouseDown += (sender, e) =>
                 {
-                    Code = emoticon.Codes.FirstOrDefault();
+                    Code = code;
                     EmoticonSelected(this, EventArgs.Empty);
                     Close();
                 };
-                //var img = new Image();
-                //img.BeginInit();
-                //img.Source = new BitmapImage(emoticon.ImageUri);
-                //img.Stretch = Stretch.None;
-                //img.Margin = new Thickness(3);
-                //img.ToolTip = emoticon.Title + " " + emoticon.Codes.FirstOrDefault();
-                //img.EndInit();
-
-                //border.Child = img;
                 root.Children.Add(emoUi);
             }
         }
