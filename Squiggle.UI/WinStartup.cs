@@ -4,11 +4,11 @@ namespace Squiggle.UI
 {
     class WinStartup
     {
-        public static bool IsAdded(string key)
+        public static bool IsAdded(string key, string path)
         {
             using (var runKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true))
             {
-                bool added = runKey.GetValue(key) != null;
+                bool added = path.Equals(runKey.GetValue(key));
                 return added;
             }
         }

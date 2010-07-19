@@ -71,8 +71,8 @@ namespace Squiggle.UI
                 user.DisplayName = settingsVm.PersonalSettings.DisplayName;
                 user.DisplayMessage = settingsVm.PersonalSettings.DisplayMessage;
             }
-            SetRunAtStartup(settingsVm.GeneralSettings.RunAtStartup);
 
+            SetRunAtStartup(settingsVm.GeneralSettings.RunAtStartup);
             SettingsProvider.Current.Save();
         }
 
@@ -80,7 +80,7 @@ namespace Squiggle.UI
         {
             try
             {
-                bool run = WinStartup.IsAdded("squiggle");                
+                bool run = WinStartup.IsAdded("squiggle", GetStartupPath());                
                 return run;
             }
             catch (Exception)
@@ -95,7 +95,7 @@ namespace Squiggle.UI
             {
                 var runKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
                 if (run)
-                    WinStartup.Add("squiggle", Assembly.GetExecutingAssembly().Location + " /background");
+                    WinStartup.Add("squiggle", GetStartupPath());
                 else
                     WinStartup.Remove("squiggle");
             }
@@ -103,7 +103,7 @@ namespace Squiggle.UI
             {
                 MessageBox.Show("Could not set Squiggle to run at startup due to exception: " + ex.Message, "Squiggle", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
+        }        
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
@@ -123,6 +123,11 @@ namespace Squiggle.UI
             dialog.RootFolder = System.Environment.SpecialFolder.MyComputer;
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 txtDownloadsFolder.Text = settingsVm.GeneralSettings.DownloadsFolder = dialog.SelectedPath;
-        }        
+        }
+
+        static string GetStartupPath()
+        {
+            return Assembly.GetExecutingAssembly().Location + " /background";
+        }
     }
 }
