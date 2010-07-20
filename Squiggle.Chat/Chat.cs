@@ -92,6 +92,9 @@ namespace Squiggle.Chat
 
         public IFileTransfer SendFile(string name, Stream content)
         {
+            if (IsGroupChat)
+                throw new InvalidOperationException("Can not send a file in a group chat session.");
+
             try
             {
                 return session.SendFile(name, content);            

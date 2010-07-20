@@ -32,7 +32,6 @@ namespace Squiggle.UI
         string lastSavedFormat;
         bool buzzPending;
         WindowState lastState;
-        EmoticonSelector selector;
 
         public ChatWindow()
         {
@@ -471,6 +470,9 @@ namespace Squiggle.UI
 
         public void SendFile()
         {
+            if (chatSession.IsGroupChat)
+                return;
+
             using (var dialog = new System.Windows.Forms.OpenFileDialog())
             {
                 dialog.CheckFileExists = true;
@@ -481,6 +483,9 @@ namespace Squiggle.UI
 
         public void SendFile(string filePath)
         {
+            if (chatSession.IsGroupChat)
+                return;
+
             if (File.Exists(filePath))
             {
                 string fileName = Path.GetFileName(filePath);
