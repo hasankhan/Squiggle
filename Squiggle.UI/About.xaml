@@ -29,13 +29,13 @@
             <StackPanel Margin="0,30,0,0" Orientation="Horizontal">
                 <TextBlock>Website:</TextBlock>
                 <TextBlock Margin="10,0,0,0">
-                    <Hyperlink NavigateUri="http://www.overroot.com">www.overroot.com</Hyperlink>
+                    <Hyperlink NavigateUri="http://www.overroot.com" RequestNavigate="Link_RequestNavigate">www.overroot.com</Hyperlink>
                 </TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                 <TextBlock>Support:</TextBlock>
                 <TextBlock Margin="10,0,0,0">
-                    <Hyperlink NavigateUri="mailto:info@overroot.com">info@overroot.com</Hyperlink>
+                    <Hyperlink NavigateUri="mailto:info@overroot.com" RequestNavigate="Link_RequestNavigate">info@overroot.com</Hyperlink>
                 </TextBlock>
             </StackPanel>
         </StackPanel>

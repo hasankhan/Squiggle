@@ -19,5 +19,10 @@ namespace Squiggle.UI
         {
             this.Close();
         }
+
+        private void Link_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+        {
+            Shell.OpenUrl(e.Uri.ToString());
+        }
     }
 }
