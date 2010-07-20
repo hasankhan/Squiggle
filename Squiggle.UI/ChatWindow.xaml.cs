@@ -119,6 +119,7 @@ namespace Squiggle.UI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            UpdateGroupChatControls();
             this.KeyDown += new KeyEventHandler(ChatWindow_KeyDown);
             lock (eventQueue)
             {
@@ -342,6 +343,7 @@ namespace Squiggle.UI
             Monitor(buddy);
             Dispatcher.Invoke(() =>
             {
+                UpdateGroupChatControls();
                 chatTextBox.AddInfo(String.Format("{0} has joined the conversation.", buddy.DisplayName));
                 UpdateTitle();
             });
@@ -352,6 +354,7 @@ namespace Squiggle.UI
             StopMonitoring(buddy);
             Dispatcher.Invoke(() =>
             {
+                UpdateGroupChatControls();
                 chatTextBox.AddInfo(String.Format("{0} has left the conversation.", buddy.DisplayName));
                 UpdateTitle();
             });
@@ -412,10 +415,11 @@ namespace Squiggle.UI
         {
             Dispatcher.Invoke(()=>
             {
+                UpdateGroupChatControls();
                 MonitorAll();
                 UpdateTitle();
             });
-        }
+        }        
 
         void OnTransferInvite(FileTransferInviteEventArgs e)
         {
@@ -683,6 +687,11 @@ namespace Squiggle.UI
                     eventQueue.Enqueue(action);
                 else
                     action();
+        }
+
+        void UpdateGroupChatControls()
+        {
+            btnSendFile.IsEnabled = mnuSendFile.IsEnabled = chatSession == null || !chatSession.IsGroupChat;
         }
     }
 }

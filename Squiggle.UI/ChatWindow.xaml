@@ -5,7 +5,7 @@
     xmlns:local="clr-namespace:Squiggle.UI"
     Title="ChatWindow"  
     Loaded="Window_Loaded" Closed="Window_Closed" FocusManager.FocusedElement="{Binding ElementName=txtMessageEditBox}"
-    SizeChanged="Window_SizeChanged" Icon="/Squiggle;component/Images/chat.ico">
+    SizeChanged="Window_SizeChanged" Icon="/Squiggle;component/Images/chat.ico" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -37,7 +37,7 @@
                 <MenuItem Header="_Save" MenuItem.Click="SaveMenu_Click" />
                 <MenuItem Header="Save _as..." MenuItem.Click="SaveAsMenu_Click" />
                 <Separator />
-                <MenuItem Header="Send a single _file..." MenuItem.Click="SendFileMenu_Click" />
+                <MenuItem x:Name="mnuSendFile" Header="Send a single _file..." MenuItem.Click="SendFileMenu_Click" />
                 <MenuItem Header="_Open received files" MenuItem.Click="OpenReceivedFilesMenu_Click" />
                 <Separator />
                 <MenuItem Header="_Close" MenuItem.Click="CloseMenu_Click" />
@@ -93,7 +93,7 @@
                             </LinearGradientBrush>
                         </Border.Background>
                         <StackPanel Orientation="Horizontal" ToolTip="Send File">
-                            <Button Style="{StaticResource toolbarButton}" 
+                            <Button x:Name="btnSendFile" Style="{StaticResource toolbarButton}" 
                                     ToolTip="Send File"
                                     Click="SendFile_Click" Foreground="Black">                                
                                 <Image Width="16" Height="16" Source="Images/Upload.png" Stretch="Fill"/>                                
