@@ -34,9 +34,12 @@ namespace Squiggle.UI
         {
            Instance = this;
            InitializeComponent();
-
+           
            this.Height = Properties.Settings.Default.MainWindowHeight;
            this.Width = Properties.Settings.Default.MainWindowWidth;
+
+           this.Top = Properties.Settings.Default.MainWindowTop > 0 ? Properties.Settings.Default.MainWindowTop : System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height / 2 - this.Height / 2;
+           this.Left = Properties.Settings.Default.MainWindowLeft > 0 ? Properties.Settings.Default.MainWindowLeft : System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width /2 - this.Width / 2;
 
            chatWindows = new ChatWindowCollection();
 
@@ -347,6 +350,11 @@ namespace Squiggle.UI
             {
                 e.Cancel = true;
                 Hide();
+            }
+            else
+            {
+                Properties.Settings.Default.MainWindowTop = Top;
+                Properties.Settings.Default.MainWindowLeft = Left;
             }
         }
 
