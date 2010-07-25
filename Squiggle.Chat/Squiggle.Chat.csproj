@@ -85,6 +85,7 @@
     <Compile Include="IChat.cs" />
     <Compile Include="IChatClient.cs" />
     <Compile Include="IFileTransfer.cs" />
+    <Compile Include="LinqExtensions.cs" />
     <Compile Include="Services\Chat\ChatSessionCollection.cs" />
     <Compile Include="Services\Chat\FileTransfer.cs" />
     <Compile Include="Services\Chat\Host\ChatHostProxyFactory.cs" />

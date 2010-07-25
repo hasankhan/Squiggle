@@ -18,12 +18,11 @@ namespace Squiggle.UI
     {
         WindowState lastState;
         ClientViewModel clientViewModel;
-        UserActivityMonitor activityMonitor;
-        UserStatus lastStatus;
         ChatWindowCollection chatWindows;
         ClientViewModel dummyViewModel;
         NetworkSignout autoSignout;
         ManualResetEvent clientAvailable = new ManualResetEvent(true);
+        IdleStatusChanger idleStatusChanger;
 
         public static MainWindow Instance { get; private set; }
         public IChatClient ChatClient { get; private set; }
@@ -233,32 +232,13 @@ namespace Squiggle.UI
         void CreateMonitor()
         {
             TimeSpan timeout = SettingsProvider.Current.Settings.PersonalSettings.IdleTimeout.Minutes();
-            if (activityMonitor != null)
-                activityMonitor.Dispose();
-            activityMonitor = new UserActivityMonitor(timeout);
-            activityMonitor.Idle += (sender, e) =>
-            {
-                if (ChatClient.LoggedIn)
-                {
-                    lastStatus = ChatClient.CurrentUser.Status;
-                    ChatClient.CurrentUser.Status = UserStatus.Idle;
-                }
-            };
-            activityMonitor.Active += (sender, e) =>
-            {
-                if (ChatClient.LoggedIn)
-                    ChatClient.CurrentUser.Status = lastStatus;
-            };
-            activityMonitor.Start();
+            idleStatusChanger = new IdleStatusChanger(ChatClient, timeout);
         }
 
         private void DestroyMonitor()
         {
-            if (activityMonitor != null)
-            {
-                activityMonitor.Dispose();
-                activityMonitor = null;
-            }
+            idleStatusChanger.Dispose();
+            idleStatusChanger = null;
         }        
 
         IChatClient CreateClient(string displayName)
