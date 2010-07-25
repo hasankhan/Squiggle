@@ -71,8 +71,10 @@ namespace Squiggle.Chat.Services.Presence
         public void HeIsAlive(UserInfo user)
         {
             lock (aliveUsers)
-            {
+            {                
                 aliveUsers[user] = DateTime.Now;
+                if (lostUsers.Contains(user))
+                    UserReturned(this, new UserEventArgs() { User = user });
                 lostUsers.Remove(user);
             }
         }

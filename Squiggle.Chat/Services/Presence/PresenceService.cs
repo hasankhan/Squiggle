@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Linq;
 using Squiggle.Chat.Services.Presence.Transport;
 
 namespace Squiggle.Chat.Services.Presence
@@ -73,48 +74,59 @@ namespace Squiggle.Chat.Services.Presence
             channel.Stop();
         }
 
+        void keepAlive_UserReturned(object sender, UserEventArgs e)
+        {
+            if (ResolveUser(e))
+                OnUserOnline(e, false);
+        }
+
+        void keepAlive_UserLost(object sender, UserEventArgs e)
+        {
+            if (ResolveUser(e))
+                OnUserOffline(e);
+        }        
+
         void discovery_UserUpdated(object sender, UserEventArgs e)
         {
             keepAlive.HeIsAlive(e.User);
             UserUpdated(this, e);
         }
-
-        void keepAlive_UserReturned(object sender, UserEventArgs e)
-        {
-            OnUserOnline(e, false);
-        }
-
-        void keepAlive_UserLost(object sender, UserEventArgs e)
-        {
-            OnUserOffline(e);
-        }        
-
+        
         void discovery_UserOnline(object sender, UserEventArgs e)
         {
+            keepAlive.MonitorUser(e.User);
             OnUserOnline(e, false);
         }
 
         void discovery_UserDiscovered(object sender, UserEventArgs e)
         {
+            keepAlive.MonitorUser(e.User);
             OnUserOnline(e, true);
         }   
 
         void discovery_UserOffline(object sender, UserEventArgs e)
         {
+            keepAlive.LeaveUser(e.User);
             OnUserOffline(e);
         }
 
         void OnUserOnline(UserEventArgs e, bool discovered)
-        {
-            keepAlive.MonitorUser(e.User);
+        {                
             UserOnline(this, new UserOnlineEventArgs() { User = e.User, Discovered = discovered });
         }
 
         void OnUserOffline(UserEventArgs e)
         {
-            keepAlive.LeaveUser(e.User);
             UserOffline(this, e);
-        }                   
+        }
+
+        bool ResolveUser(UserEventArgs e)
+        {
+            // userinfo coming from keepaliveservice only has presenceendpoint. Complete information is with discovery service.
+            UserInfo user = discovery.Users.FirstOrDefault(u => u.Equals(e.User));
+            e.User = user;
+            return user != null;
+        }
 
         #region IDisposable Members
 
