@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 
-namespace Squiggle.UI
+namespace Squiggle.UI.Helpers
 {
     public class FlashWindow
     {

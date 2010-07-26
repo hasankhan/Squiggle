@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 
-namespace Squiggle.UI
+namespace Squiggle.UI.Helpers
 {
     class Shell
     {

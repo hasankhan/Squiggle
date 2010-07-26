@@ -6,6 +6,8 @@ using System.Windows.Input;
 using Microsoft.Win32;
 using Squiggle.Chat;
 using Squiggle.UI.Settings;
+using Squiggle.UI.Helpers;
+using Squiggle.UI.ViewModel;
 
 namespace Squiggle.UI
 {

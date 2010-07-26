@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Squiggle.UI.Settings;
+using Squiggle.UI.Helpers;
 
 namespace Squiggle.UI.Controls
 {   

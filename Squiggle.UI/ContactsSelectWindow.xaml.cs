@@ -7,6 +7,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using Squiggle.Chat;
 using Squiggle.UI.Controls;
+using Squiggle.UI.ViewModel;
 
 namespace Squiggle.UI
 {

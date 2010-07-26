@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Squiggle.Chat;
 
-namespace Squiggle.UI
+namespace Squiggle.UI.ViewModel
 {
     class DummyChatClient: IChatClient
     {

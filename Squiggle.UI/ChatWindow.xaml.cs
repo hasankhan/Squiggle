@@ -10,6 +10,7 @@ using Squiggle.UI.Controls;
 using Squiggle.UI.Settings;
 using System.Collections.Generic;
 using Squiggle.UI.MessageParsers;
+using Squiggle.UI.Helpers;
 
 namespace Squiggle.UI
 {
@@ -52,21 +53,12 @@ namespace Squiggle.UI
             LoadSettings();            
         }
 
-        void LoadSettings()
-        {
-            chatTextBox.MessageParsers.Remove(emoticonParser);
-            if (SettingsProvider.Current.Settings.GeneralSettings.ShowEmoticons)
-                chatTextBox.MessageParsers.Add(emoticonParser);
-
-            txtMessageEditBox.txtMessage.SpellCheck.IsEnabled = SettingsProvider.Current.Settings.GeneralSettings.SpellCheck;
-        }
-
         public ChatWindow(Buddy buddy) : this()
         {
             this.buddy = buddy;
             this.buddy.Online += new EventHandler(buddy_Online);
             this.buddy.Offline += new EventHandler(buddy_Offline);
-        }
+        }        
 
         public IEnumerable<Buddy> Buddies
         {
@@ -94,6 +86,15 @@ namespace Squiggle.UI
         {
             get { return txtMessageEditBox.Enabled; }
             set { txtMessageEditBox.Enabled = value; }
+        }
+
+        void LoadSettings()
+        {
+            chatTextBox.MessageParsers.Remove(emoticonParser);
+            if (SettingsProvider.Current.Settings.GeneralSettings.ShowEmoticons)
+                chatTextBox.MessageParsers.Add(emoticonParser);
+
+            txtMessageEditBox.txtMessage.SpellCheck.IsEnabled = SettingsProvider.Current.Settings.GeneralSettings.SpellCheck;
         }
 
         public void SetChatSession(IChat chat)

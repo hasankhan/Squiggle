@@ -43,7 +43,7 @@ namespace Squiggle.Chat
 
         void NotifyTyping();
         void SendBuzz();
-        void SendMessage(string fontName, int fontSize, Color color, FontStyle style, string Message);
+        void SendMessage(string fontName, int fontSize, Color color, FontStyle style, string message);
         IFileTransfer SendFile(string name, Stream content);
         void Leave();
 

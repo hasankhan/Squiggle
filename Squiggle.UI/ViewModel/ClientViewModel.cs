@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Threading;
 using Squiggle.Chat;
 
-namespace Squiggle.UI
+namespace Squiggle.UI.ViewModel
 {
     public class ClientViewModel
     {

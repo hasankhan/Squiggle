@@ -4,7 +4,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using StackOverflowClient;
 
-namespace Squiggle.UI
+namespace Squiggle.UI.Helpers
 {
     class TrayPopup
     {

@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using Squiggle.UI.ViewModel;
 
 namespace Squiggle.UI.Controls
 {

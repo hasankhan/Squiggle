@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Windows;
+using Squiggle.UI.Helpers;
 
 namespace Squiggle.UI
 {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Squiggle.UI.Settings;
 
-namespace Squiggle.UI
+namespace Squiggle.UI.ViewModel
 {
     class SettingsViewModel
     {

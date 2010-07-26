@@ -4,7 +4,7 @@
     xmlns:controls="clr-namespace:Squiggle.UI.Controls"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
     xmlns:tray="clr-namespace:Hardcodet.Wpf.TaskbarNotification"
-    xmlns:local="clr-namespace:Squiggle.UI"
+    xmlns:local="clr-namespace:Squiggle.UI.Helpers"
     xmlns:converters="clr-namespace:Squiggle.UI.Converters"
     Title="Squiggle Messenger" 
     SizeChanged="Window_SizeChanged"

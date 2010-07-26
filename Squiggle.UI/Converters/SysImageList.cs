@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace Squiggle.UI
+namespace Squiggle.UI.Converters
 {
     #region Public Enumerations
     /// <summary>

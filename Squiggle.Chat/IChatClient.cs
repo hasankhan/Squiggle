@@ -26,7 +26,7 @@ namespace Squiggle.Chat
         event EventHandler<BuddyEventArgs> BuddyOffline;
         event EventHandler<BuddyEventArgs> BuddyUpdated;
 
-        Buddy CurrentUser{get; }
+        Buddy CurrentUser {get; }
         IEnumerable<Buddy> Buddies { get; }
         bool LoggedIn { get; }
 

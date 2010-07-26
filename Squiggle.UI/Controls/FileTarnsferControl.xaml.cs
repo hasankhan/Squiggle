@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Squiggle.Chat;
 using System.Diagnostics;
+using Squiggle.UI.Helpers;
 
 namespace Squiggle.UI.Controls
 {
@@ -50,7 +51,7 @@ namespace Squiggle.UI.Controls
 
             FileName = fileTransfer.Name;
             FileSize = fileTransfer.Size;
-            Status = sending ? "Waiting" : FileSize.ToReadableFileSize();
+            Status = sending ? "Waiting" : ToReadableFileSize(FileSize);
             btnCancelTransfer.Content = sending ? "Cancel" : "Reject";
 
             NotifyPropertyChanged();
@@ -207,6 +208,22 @@ namespace Squiggle.UI.Controls
         {
             string file = DataContext as string;
             Shell.ShowInFolder(FilePath);
-        }      
+        }
+
+        static string ToReadableFileSize(int bytes)
+        {
+            const int scale = 1024;
+            string[] orders = new string[] { "GB", "MB", "KB", "Bytes" };
+            long max = (long)Math.Pow(scale, orders.Length - 1);
+
+            foreach (string order in orders)
+            {
+                if (bytes > max)
+                    return String.Format("{0:##.##} {1}", Decimal.Divide(bytes, max), order);
+
+                max /= scale;
+            }
+            return "0 Bytes";
+        }
     }
 }

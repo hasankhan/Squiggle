@@ -12,5 +12,11 @@ namespace Squiggle.Chat
             bool result = options.Any(o=>o.Equals(item));
             return result;
         }
+
+        public static void ForEach<T>(this IEnumerable<T> items, Action<T> action)
+        {
+            foreach (var item in items)
+                action(item);
+        }
     }
 }

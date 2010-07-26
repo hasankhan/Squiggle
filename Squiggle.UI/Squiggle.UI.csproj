@@ -225,7 +225,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientViewModel.cs" />
+    <Compile Include="ViewModel\ClientViewModel.cs" />
     <Compile Include="ChatWindow.xaml.cs">
       <DependentUpon>ChatWindow.xaml</DependentUpon>
     </Compile>
@@ -251,20 +251,18 @@
       <DependentUpon>ContactListControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\DisplayMessageConverter.cs" />
-    <Compile Include="DummyChatClient.cs" />
+    <Compile Include="ViewModel\DummyChatClient.cs" />
     <Compile Include="Converters\FileToIconConverter.cs" />
-    <Compile Include="IntExtensions.cs" />
     <Compile Include="NetworkSignout.cs" />
     <Compile Include="Converters\PathToNameConverter.cs" />
-    <Compile Include="SettingBinding.cs" />
-    <Compile Include="Shell.cs" />
-    <Compile Include="SquiggleUtility.cs" />
-    <Compile Include="SysImageList.cs" />
+    <Compile Include="Helpers\Shell.cs" />
+    <Compile Include="Helpers\SquiggleUtility.cs" />
+    <Compile Include="Converters\SysImageList.cs" />
     <Compile Include="WPFExtensions.cs" />
     <Compile Include="FancyBalloon.xaml.cs">
       <DependentUpon>FancyBalloon.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FlashWindow.cs" />
+    <Compile Include="Helpers\FlashWindow.cs" />
     <Compile Include="NotifyIcon\BalloonIcon.cs" />
     <Compile Include="NotifyIcon\Interop\BalloonFlags.cs" />
     <Compile Include="NotifyIcon\Interop\IconDataMembers.cs" />
@@ -300,7 +298,7 @@
     <Compile Include="Settings\GeneralSettings.cs" />
     <Compile Include="Settings\PersonalSettings.cs" />
     <Compile Include="Settings\SettingsProvider.cs" />
-    <Compile Include="SettingsViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="Settings\SquiggleSettings.cs" />
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
@@ -308,8 +306,8 @@
     <Compile Include="Converters\StatusConverter.cs" />
     <Compile Include="Converters\StatusIconConverter.cs" />
     <Compile Include="Converters\TrayIconConverter.cs" />
-    <Compile Include="TrayPopup.cs" />
-    <Compile Include="WinStartup.cs" />
+    <Compile Include="Helpers\TrayPopup.cs" />
+    <Compile Include="Helpers\WinStartup.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

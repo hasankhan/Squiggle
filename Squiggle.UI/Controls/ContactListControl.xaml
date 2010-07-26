@@ -5,7 +5,7 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib" 
     xmlns:coll="clr-namespace:System.Collections;assembly=mscorlib"
     xmlns:converters="clr-namespace:Squiggle.UI.Converters"
-    xmlns:local="clr-namespace:Squiggle.UI"             
+    xmlns:local="clr-namespace:Squiggle.UI.Helpers"             
     xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat"
     xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
     Width="200" Height="400" Loaded="UserControl_Loaded" >

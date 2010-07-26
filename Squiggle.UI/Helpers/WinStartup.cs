@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
 
-namespace Squiggle.UI
+namespace Squiggle.UI.Helpers
 {
     class WinStartup
     {

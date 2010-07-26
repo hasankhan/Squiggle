@@ -75,6 +75,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BroadcastChat.cs" />
     <Compile Include="Buddy.cs" />
     <Compile Include="BuddyList.cs" />
     <Compile Include="BuddyEventArgs.cs" />

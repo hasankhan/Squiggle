@@ -8,8 +8,9 @@ using System.Windows;
 using Squiggle.Chat;
 using Squiggle.UI.Settings;
 using System.Reflection;
+using Squiggle.UI.ViewModel;
 
-namespace Squiggle.UI
+namespace Squiggle.UI.Helpers
 {
     class SquiggleUtility
     {

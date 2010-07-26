@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Documents;
 using System.Windows.Input;
+using Squiggle.UI.Helpers;
 
 namespace Squiggle.UI.MessageParsers
 {

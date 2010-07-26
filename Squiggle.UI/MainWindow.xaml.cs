@@ -8,6 +8,8 @@ using System.Windows.Threading;
 using Messenger;
 using Squiggle.Chat;
 using Squiggle.UI.Settings;
+using Squiggle.UI.Helpers;
+using Squiggle.UI.ViewModel;
 
 namespace Squiggle.UI
 {
