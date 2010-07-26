@@ -41,10 +41,7 @@ namespace Squiggle.Chat.Services.Presence.Transport.Host
 
         void EnsureProxy()
         {
-            if (proxy == null || 
-                proxy.State == CommunicationState.Faulted || 
-                proxy.State == CommunicationState.Closed || 
-                proxy.State == CommunicationState.Closing)
+            if (proxy == null || proxy.State.In(CommunicationState.Faulted, CommunicationState.Closed, CommunicationState.Closing))
             {
                 if (proxy == null)
                     proxy = new InnerProxy(binding, address);

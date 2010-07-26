@@ -69,10 +69,7 @@ namespace Squiggle.Chat.Services.Chat
         void chatHost_UserActivity(object sender, UserActivityEventArgs e)
         {
             Trace.WriteLine("Ensuring chat session=" + e.SessionID);
-            if (e.Type == ActivityType.Message || 
-                e.Type == ActivityType.TransferInvite || 
-                e.Type == ActivityType.Buzz || 
-                e.Type == ActivityType.ChatInvite)
+            if (e.Type.In(ActivityType.Message, ActivityType.TransferInvite, ActivityType.Buzz, ActivityType.ChatInvite))
                 EnsureChatSession(e.SessionID, e.User);
         }
 
