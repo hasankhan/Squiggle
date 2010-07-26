@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Squiggle.Chat
 {
-    class BroadcastChat: IChat
+    public class BroadcastChat: IChat
     {
         IEnumerable<IChat> chatSessions;
 

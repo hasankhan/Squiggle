@@ -324,7 +324,7 @@ namespace Squiggle.UI
             }
 
             return window;
-        }        
+        }      
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -381,6 +381,17 @@ namespace Squiggle.UI
                 Properties.Settings.Default.MainWindowHeight = this.Height;
                 Properties.Settings.Default.MainWindowWidth = this.Width;
                 Properties.Settings.Default.Save();
+            }
+        }
+
+        private void SendBroadcastMessageMenu_Click(object sender, RoutedEventArgs e)
+        {
+            var onlineBuddies = ChatClient.Buddies.Where(b => b.Status != UserStatus.Offline);
+            if (onlineBuddies.Any())
+            {
+                var chatSessions = onlineBuddies.Select(b => b.StartChat()).ToList();
+                var groupChat = new BroadcastChat(chatSessions);
+                CreateChatWindow(groupChat.Buddies.First(), groupChat, true);
             }
         }
     }

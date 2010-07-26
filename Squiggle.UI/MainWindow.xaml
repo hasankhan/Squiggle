@@ -88,6 +88,7 @@
             </MenuItem>
             <MenuItem Header="_Actions">
                 <MenuItem Header="_Send an instant message" Style="{StaticResource signedInMenu}" Click="SendMessageMenu_Click" />
+                <MenuItem Header="Send an instant _broadcast message" Style="{StaticResource signedInMenu}" Click="SendBroadcastMessageMenu_Click" />
                 <MenuItem Header="Send a _file" Style="{StaticResource signedInMenu}" Click="SendFileMenu_Click" />
             </MenuItem>
             <MenuItem Header="_Tools">

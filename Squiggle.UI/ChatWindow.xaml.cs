@@ -88,6 +88,11 @@ namespace Squiggle.UI
             set { txtMessageEditBox.Enabled = value; }
         }
 
+        bool IsBroadcastChat
+        {
+            get { return (chatSession is BroadcastChat); }
+        }
+
         void LoadSettings()
         {
             chatTextBox.MessageParsers.Remove(emoticonParser);
@@ -100,7 +105,7 @@ namespace Squiggle.UI
         public void SetChatSession(IChat chat)
         {
             if (chat == null)
-                return;
+                return;            
 
             DestroySession();
             chatSession = chat;
@@ -113,9 +118,10 @@ namespace Squiggle.UI
             chatSession.TransferInvitationReceived += new EventHandler<FileTransferInviteEventArgs>(chatSession_TransferInvitationReceived);
             chatSession.GroupChatStarted += new EventHandler(chatSession_GroupChatStarted);
             txtMessageEditBox.Enabled = true;
+            mnuInviteContact.IsEnabled = !IsBroadcastChat;
             UpdateTitle();
             MonitorAll(); 
-        }
+        }        
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -330,7 +336,7 @@ namespace Squiggle.UI
 #if DEBUG
                 string message = "Following message could not be delivered due to error: " + e.Exception.Message;
 #else
-                string message = "Following message could not be delivered";
+                string message = "Following message could not be delivered to some of the recepients: ";
 #endif
                 string detail = e.Message;
                 chatTextBox.AddError(message, detail);
@@ -578,8 +584,13 @@ namespace Squiggle.UI
 
         void UpdateTitle()
         {
-            string title = String.Join(", ", Buddies.Select(b => b.DisplayName).ToArray());
-            this.Title = String.IsNullOrEmpty(title) ? buddy.DisplayName : title;
+            if (IsBroadcastChat)
+                this.Title = "Broadcast chat";
+            else
+            {
+                string title = String.Join(", ", Buddies.Select(b => b.DisplayName).ToArray());
+                this.Title = String.IsNullOrEmpty(title) ? buddy.DisplayName : title;
+            }
         }   
 
         void ChangeStatus(string message, params object[] args)
@@ -698,6 +709,6 @@ namespace Squiggle.UI
         void UpdateGroupChatControls()
         {
             btnSendFile.IsEnabled = mnuSendFile.IsEnabled = chatSession == null || !chatSession.IsGroupChat;
-        }
+        }        
     }
 }
