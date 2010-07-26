@@ -80,27 +80,12 @@ namespace Squiggle.UI.Helpers
             }
         }
 
-        public static Buddy SelectContact(string title, Window owner)
-        {
-            return SelectContact(title, owner, null);
-        }
-
-        public static Buddy SelectContact(string title, Window owner, Predicate<Buddy> exclusionFilter)
+        public static Buddy SelectContact(string title, Window owner, Predicate<Buddy> exclusionFilter = null)
         {
             return SelectContacts(title, owner, exclusionFilter, false).FirstOrDefault();
         }
 
-        public static IEnumerable<Buddy> SelectContacts(string title, Window owner)
-        {
-            return SelectContacts(title, owner, null, true);
-        }
-
-        public static IEnumerable<Buddy> SelectContacts(string title, Window owner, Predicate<Buddy> exclusionFilter)
-        {
-            return SelectContacts(title, owner, exclusionFilter, true);
-        }
-
-        static IEnumerable<Buddy> SelectContacts(string title, Window owner, Predicate<Buddy> exclusionFilter, bool multiple)
+        public static IEnumerable<Buddy> SelectContacts(string title, Window owner, Predicate<Buddy> exclusionFilter = null, bool multiple = true)
         {
             var clientViewModel = (ClientViewModel)MainWindow.Instance.DataContext;
             var selectContactDialog = new ContactsSelectWindow(clientViewModel, false);

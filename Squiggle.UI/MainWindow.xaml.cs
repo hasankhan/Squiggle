@@ -144,6 +144,7 @@ namespace Squiggle.UI
 
         private void QuiteMenu_Click(object sender, RoutedEventArgs e)
         {
+            SignOut(true, true);
             exiting = true;
             Close();
         }
@@ -191,25 +192,34 @@ namespace Squiggle.UI
             });
         }
         
-        void SignOut(bool byUser)
+        void SignOut(bool byUser, bool immediate = false)
         {
             Dispatcher.Invoke(() =>
             {
+                if (ChatClient == null || !ChatClient.LoggedIn)
+                    return;
+
                 chatControl.SignIn.SetDisplayName(ChatClient.CurrentUser.DisplayName);
 
                 foreach (var window in chatWindows)
                     window.DestroySession();
 
-                clientAvailable.Reset();
-                if (ChatClient == null || !ChatClient.LoggedIn)
-                    return;
+                clientAvailable.Reset();                
 
                 DestroyMonitor();
-                ThreadPool.QueueUserWorkItem(_=>
+
+                if (immediate)
                 {
                     ChatClient.Logout();
                     clientAvailable.Set();
-                });
+                }
+                else
+                    ThreadPool.QueueUserWorkItem(_=>
+                    {
+                        ChatClient.Logout();
+                        clientAvailable.Set();
+                    });
+
                 chatControl.ContactList.ChatContext = null;
                 clientViewModel = null;
                 this.DataContext = dummyViewModel;
@@ -386,12 +396,23 @@ namespace Squiggle.UI
 
         private void SendBroadcastMessageMenu_Click(object sender, RoutedEventArgs e)
         {
+            StartBroadcastChat();
+        }
+
+        private void StartBroadcastChat()
+        {
             var onlineBuddies = ChatClient.Buddies.Where(b => b.Status != UserStatus.Offline);
             if (onlineBuddies.Any())
             {
                 var chatSessions = onlineBuddies.Select(b => b.StartChat()).ToList();
                 var groupChat = new BroadcastChat(chatSessions);
                 CreateChatWindow(groupChat.Buddies.First(), groupChat, true);
+                ChatClient.BuddyOnline += (s, b) => groupChat.AddSession(b.Buddy.StartChat());
+                ChatClient.BuddyOffline += (s, b) =>
+                {
+                    var session = groupChat.ChatSessions.FirstOrDefault(c => c.Buddies.Contains(b.Buddy) && !c.IsGroupChat);
+                    groupChat.RemoveSession(session);
+                };
             }
         }
     }

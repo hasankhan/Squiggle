@@ -7,23 +7,31 @@ namespace Squiggle.Chat
 {
     public class BroadcastChat: IChat
     {
-        IEnumerable<IChat> chatSessions;
+        List<IChat> chatSessions;
 
         public BroadcastChat(IEnumerable<IChat> chatSessions)
         {
-            this.chatSessions = chatSessions;
+            this.chatSessions = new List<IChat>();
             foreach (var session in chatSessions)
-            {
-                session.MessageReceived += new EventHandler<ChatMessageReceivedEventArgs>(session_MessageReceived);
-                session.MessageFailed += new EventHandler<MessageFailedEventArgs>(session_MessageFailed);
-                session.BuzzReceived += new EventHandler<BuddyEventArgs>(session_BuzzReceived);
-                session.BuddyTyping += new EventHandler<BuddyEventArgs>(session_BuddyTyping);
-            }
-        }
+                AddSession(session);
+        }        
 
         public IEnumerable<Buddy> Buddies
         {
-            get { return chatSessions.SelectMany(session => session.Buddies); }
+            get 
+            { 
+                lock (chatSessions)
+                    return chatSessions.SelectMany(session => session.Buddies).ToList(); 
+            }
+        }
+
+        public IEnumerable<IChat> ChatSessions
+        {
+            get
+            {
+                lock (chatSessions)
+                    return chatSessions.ToList();
+            }
         }
 
         public bool IsGroupChat
@@ -42,17 +50,20 @@ namespace Squiggle.Chat
 
         public void NotifyTyping()
         {
-            chatSessions.ForEach(s => s.NotifyTyping());
+            lock(chatSessions)
+                chatSessions.ForEach(s => s.NotifyTyping());
         }
 
         public void SendBuzz()
         {
-            chatSessions.ForEach(s => s.SendBuzz());
+            lock (chatSessions)
+                chatSessions.ForEach(s => s.SendBuzz());
         }
 
         public void SendMessage(string fontName, int fontSize, System.Drawing.Color color, System.Drawing.FontStyle style, string message)
         {
-            chatSessions.ForEach(s => s.SendMessage(fontName, fontSize, color, style, message));
+            lock (chatSessions)
+                chatSessions.ForEach(s => s.SendMessage(fontName, fontSize, color, style, message));
         }
 
         public IFileTransfer SendFile(string name, System.IO.Stream content)
@@ -62,12 +73,37 @@ namespace Squiggle.Chat
 
         public void Leave()
         {
-            chatSessions.ForEach(s=>s.Leave());
+            lock (chatSessions)
+                chatSessions.ForEach(s=>s.Leave());
         }
 
         public void Invite(Buddy buddy)
         {
             throw new InvalidOperationException("Can not invite buddies in a broadcast chat session.");
+        }
+
+        public void AddSession(IChat session)
+        {
+            lock (chatSessions)
+            {
+                this.chatSessions.Add(session);
+                session.MessageReceived += new EventHandler<ChatMessageReceivedEventArgs>(session_MessageReceived);
+                session.MessageFailed += new EventHandler<MessageFailedEventArgs>(session_MessageFailed);
+                session.BuzzReceived += new EventHandler<BuddyEventArgs>(session_BuzzReceived);
+                session.BuddyTyping += new EventHandler<BuddyEventArgs>(session_BuddyTyping);
+            }
+        }
+
+        public void RemoveSession(IChat session)
+        {
+            lock (chatSessions)
+            {
+                this.chatSessions.Remove(session);
+                session.MessageReceived -= new EventHandler<ChatMessageReceivedEventArgs>(session_MessageReceived);
+                session.MessageFailed -= new EventHandler<MessageFailedEventArgs>(session_MessageFailed);
+                session.BuzzReceived -= new EventHandler<BuddyEventArgs>(session_BuzzReceived);
+                session.BuddyTyping -= new EventHandler<BuddyEventArgs>(session_BuddyTyping);
+            }
         }
 
         void session_BuddyTyping(object sender, BuddyEventArgs e)
