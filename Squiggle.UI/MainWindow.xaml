@@ -92,6 +92,10 @@
                 <MenuItem Header="Send a _file" Style="{StaticResource signedInMenu}" Click="SendFileMenu_Click" />
             </MenuItem>
             <MenuItem Header="_Tools">
+                <MenuItem Header="S_ort Buddies" Style="{StaticResource signedInMenu}">
+                    <MenuItem x:Name="mnuSortByName" Header="By _name" MenuItem.Click="SortMenu_Click" Tag="DisplayName" />
+                    <MenuItem x:Name="mnuSortByStatus" Header="By _status"  MenuItem.Click="SortMenu_Click" Tag="Status" />
+                </MenuItem>
                 <MenuItem Header="_Settings..." MenuItem.Click="SettingsMenu_Click" />
             </MenuItem>
             <MenuItem Header="_Help">

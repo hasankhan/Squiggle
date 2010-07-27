@@ -48,7 +48,7 @@
                             <TextBlock Grid.Row="6" Grid.Column="0" Text="Downloads folder: " />
                             <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
                                 <TextBox x:Name="txtDownloadsFolder" IsReadOnly="True" Text="{Binding Path=GeneralSettings.DownloadsFolder}" Width="200" />
-                                <Button Content="Browse" Click="btnBrowseDownloadsFolder_Click" Margin="5,0" />
+                                <Button Content="Browse" Click="btnBrowseDownloadsFolder_Click" Margin="5,0,0,0" />
                             </StackPanel>                            
                         </Grid>
                     </Border>

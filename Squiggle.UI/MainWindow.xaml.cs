@@ -10,6 +10,7 @@ using Squiggle.Chat;
 using Squiggle.UI.Settings;
 using Squiggle.UI.Helpers;
 using Squiggle.UI.ViewModel;
+using System.Windows.Controls;
 
 namespace Squiggle.UI
 {
@@ -71,6 +72,7 @@ namespace Squiggle.UI
                 if (!String.IsNullOrEmpty(name))
                     chatControl.SignIn.chkRememberName.IsChecked = true;
             }
+            UpdateSortMenu();
             if (App.RunInBackground)
                 this.Hide();
         }
@@ -414,6 +416,19 @@ namespace Squiggle.UI
                     groupChat.RemoveSession(session);
                 };
             }
+        }
+
+        private void SortMenu_Click(object sender, RoutedEventArgs e)
+        {
+            string sortBy = ((MenuItem)sender).Tag.ToString();
+            SettingsProvider.Current.Settings.GeneralSettings.ContactListSortField = sortBy;
+            SettingsProvider.Current.Save();
+            UpdateSortMenu();
+        }
+
+        void UpdateSortMenu()
+        {
+            mnuSortByName.IsChecked = !(mnuSortByStatus.IsChecked = (SettingsProvider.Current.Settings.GeneralSettings.ContactListSortField == "Status"));
         }
     }
 }
