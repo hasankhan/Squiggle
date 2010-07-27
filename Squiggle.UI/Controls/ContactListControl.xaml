@@ -45,7 +45,7 @@
             x:Key="AvailableUserStatus">
         </ObjectDataProvider>
         <DataTemplate DataType="{x:Type chat:Buddy}">
-            <Border x:Name="contactBorder" Padding="1" Cursor="Hand" 
+            <Border x:Name="contactBorder" Padding="1" Cursor="Hand" Style="{StaticResource ContactListItem}"
                     Tag="{Binding}" MouseLeftButtonUp="Buddy_Click" AllowDrop="True" Drop="Buddy_Drop" DragOver="Buddy_DragOver">
                 <Border.ContextMenu>
                     <ContextMenu>
@@ -72,30 +72,6 @@
                         <TextBlock Margin="5,0,0,0" Text="{Binding Path=DisplayMessage}" TextTrimming="WordEllipsis" ToolTip="{Binding Path=DisplayMessage}"  FontSize="10" Foreground="#FF9A9C9D" HorizontalAlignment="Left" />
                     </StackPanel>
                 </Grid>
-                <Border.ToolTip>
-                    <ToolTip Placement="Left">
-                        <Border Margin="5">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="0.3*"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="0.3*"/>
-                                    <ColumnDefinition Width="0.7*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock VerticalAlignment="Top" Text="Contact" Foreground="Black" FontWeight="Bold"/>
-                                <Image Stretch="None" Source="..\Images\man.png" Grid.Row="1"/>
-                                <StackPanel VerticalAlignment="Center" Orientation="Vertical" Grid.Column="1" Grid.Row="1">
-                                    <TextBlock Foreground="Black" Text="{Binding DisplayName, StringFormat=Display: \{0\}}"/>
-                                    <TextBlock Foreground="Black" Text="{Binding Status, StringFormat=Presence: \{0\}}"/>
-                                    <TextBlock Foreground="Black" Text="{Binding Path=Properties[MachineName], StringFormat=Machine name: \{0\}}" />
-                                </StackPanel>
-                            </Grid>
-                        </Border>
-                    </ToolTip>
-                </Border.ToolTip>
             </Border>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding Status}" Value="Online">

@@ -7,6 +7,32 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources\ComboBoxResource.xaml"/>
                 <ResourceDictionary Source="Resources\GlassButton.xaml"/>
+                <ResourceDictionary>
+                    <Border Margin="5" x:Key="BuddyToolTip">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.3*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.3*"/>
+                                <ColumnDefinition Width="0.7*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Top" Text="Contact" Foreground="Black" FontWeight="Bold"/>
+                            <Image Stretch="None" Source="Images\man.png" Grid.Row="1"/>
+                            <StackPanel VerticalAlignment="Center" Orientation="Vertical" Grid.Column="1" Grid.Row="1">
+                                <TextBlock Foreground="Black" Text="{Binding DisplayName, StringFormat=Display: \{0\}}"/>
+                                <TextBlock Foreground="Black" Text="{Binding Status, StringFormat=Presence: \{0\}}"/>
+                                <TextBlock Foreground="Black" Text="{Binding Properties[MachineName], StringFormat='Machine name: \{0\}'}" />
+                                <TextBlock Foreground="Black" Text="{Binding LastUpdated, StringFormat='Last updated: \{0:T\}'}" />
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <Style TargetType="{x:Type Border}" x:Key="ContactListItem">
+                        <Setter Property="ToolTip" Value="{StaticResource BuddyToolTip}" />
+                        <Setter Property="ToolTip.Placement" Value="Left" />
+                    </Style>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

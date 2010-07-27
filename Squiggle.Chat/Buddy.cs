@@ -13,26 +13,25 @@ namespace Squiggle.Chat
         bool initialized;
 
         protected IChatClient ChatClient { get; private set; }
-        public object ID { get; private set; }        
+        public object ID { get; private set; }
+        public DateTime LastUpdated { get; set; }
 
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
         public event EventHandler Offline = delegate { };
         public event EventHandler Online = delegate { };
-        public event EventHandler Updated = delegate { };
 
-        public Buddy(IChatClient chatClient, object id) : this(chatClient, id, null) { }
-
-        public Buddy(IChatClient chatClient, object id, Dictionary<string, string> properties)
+        public Buddy(IChatClient chatClient, object id, Dictionary<string, string> properties = null)
         {
             this.ID = id;
             this.ChatClient = chatClient;
             this.ChatClient.BuddyOffline += new EventHandler<BuddyEventArgs>(chatClient_BuddyOffline);
             this.ChatClient.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);
             this.ChatClient.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
-            this.ChatClient.BuddyUpdated += new EventHandler<BuddyEventArgs>(chatClient_BuddyUpdated);
 
             SetProperties(properties);
             initialized = true;
+
+            LastUpdated = DateTime.Now;
         }
 
         public virtual string DisplayName
@@ -116,17 +115,6 @@ namespace Squiggle.Chat
             }
         }
 
-        void chatClient_BuddyUpdated(object sender, BuddyEventArgs e)
-        {
-            if (e.Buddy.Equals(this))
-                OnBuddyUpdated();
-        }
-
-        protected void OnBuddyUpdated()
-        {
-            Updated(this, EventArgs.Empty);
-        }        
-
         public override bool Equals(object obj)
         {
             if (obj != null && obj is Buddy)
@@ -151,7 +139,6 @@ namespace Squiggle.Chat
             this.ChatClient.BuddyOffline -= new EventHandler<BuddyEventArgs>(chatClient_BuddyOffline);
             this.ChatClient.BuddyOnline -= new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);
             this.ChatClient.ChatStarted -= new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
-            this.ChatClient.BuddyUpdated -= new EventHandler<BuddyEventArgs>(chatClient_BuddyUpdated);
         }
 
         #endregion
@@ -165,7 +152,10 @@ namespace Squiggle.Chat
         void OnPropertyChanged(string name)
         {
             if (initialized)
+            {
+                LastUpdated = DateTime.Now;
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
+            }
         }
     }
 }

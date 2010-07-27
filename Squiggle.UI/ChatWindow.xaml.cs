@@ -291,9 +291,9 @@ namespace Squiggle.UI
         void chatSession_BuddyJoined(object sender, BuddyEventArgs e)
         {
             DeferIfNotLoaded(() => OnBuddyJoined(e.Buddy));
-        }  
+        }
 
-        void buddy_Updated(object sender, EventArgs e)
+        void buddy_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             Dispatcher.Invoke(UpdateTitle);
         } 
@@ -369,7 +369,7 @@ namespace Squiggle.UI
         void Monitor(Buddy buddy)
         {
             StopMonitoring(buddy);
-            buddy.Updated += new EventHandler(buddy_Updated);
+            buddy.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(buddy_PropertyChanged);
         }
 
         void MonitorAll()
@@ -380,7 +380,7 @@ namespace Squiggle.UI
 
         void StopMonitoring(Buddy buddy)
         {
-            buddy.Updated -= new EventHandler(buddy_Updated);
+            buddy.PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(buddy_PropertyChanged);
         }
 
         void StopMonitoringAll()

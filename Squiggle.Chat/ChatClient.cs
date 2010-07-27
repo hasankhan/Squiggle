@@ -222,7 +222,6 @@ namespace Squiggle.Chat
 
             void Update()
             {
-                OnBuddyUpdated();
                 if (EnableUpdates)
                     ((ChatClient)base.ChatClient).Update();
             }
