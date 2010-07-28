@@ -54,6 +54,12 @@ namespace Squiggle.Chat.Services.Presence
             channel.SendMessage(message);
         }
 
+        public void DiscoverUser(IPEndPoint presenceEndPoint)
+        {
+            UserInfo user = channel.GetUserInfo(presenceEndPoint);
+            OnPresenceMessage(user, true);
+        }
+
         void channel_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
             try
@@ -96,7 +102,7 @@ namespace Squiggle.Chat.Services.Presence
                 onlineUsers.Remove(user);
                 UserOffline(this, new UserEventArgs() { User = user });
             }
-        }
+        }        
 
         void OnLoginMessage(Message message)
         {

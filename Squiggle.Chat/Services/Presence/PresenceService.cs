@@ -77,7 +77,12 @@ namespace Squiggle.Chat.Services.Presence
         void keepAlive_UserDiscovered(object sender, UserEventArgs e)
         {
             if (ResolveUser(e))
+            {
+                keepAlive.MonitorUser(e.User);
                 OnUserOnline(e, true);
+            }
+            else
+                discovery.DiscoverUser(e.User.PresenceEndPoint);
         }
 
         void keepAlive_UserLost(object sender, UserEventArgs e)

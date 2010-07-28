@@ -73,9 +73,7 @@ namespace Squiggle.Chat.Services.Presence
         {
             lock (aliveUsers)
             {                                
-                if (!aliveUsers.ContainsKey(user))
-                    UserDiscovered(this, new UserEventArgs() { User = user });
-                aliveUsers[user] = DateTime.Now;
+                aliveUsers[user] = DateTime.Now;                
                 lostUsers.Remove(user);
             }
         }
@@ -110,7 +108,10 @@ namespace Squiggle.Chat.Services.Presence
         void OnKeepAliveMessage(KeepAliveMessage message)
         {
             var user = new UserInfo() { PresenceEndPoint = message.PresenceEndPoint };
-            HeIsAlive(user);
+            if (aliveUsers.ContainsKey(user))
+                HeIsAlive(user);
+            else
+                UserDiscovered(this, new UserEventArgs() { User = user });
         }
 
         List<UserInfo> GetLostUsers()
