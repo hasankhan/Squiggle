@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Timers;
 using Squiggle.Chat.Services.Presence.Transport;
 using Squiggle.Chat.Services.Presence.Transport.Messages;
+using System.Diagnostics;
 
 namespace Squiggle.Chat.Services.Presence
 {
@@ -18,7 +19,7 @@ namespace Squiggle.Chat.Services.Presence
         public UserInfo User { get; private set; }
 
         public event EventHandler<UserEventArgs> UserLost = delegate { };
-        public event EventHandler<UserEventArgs> UserReturned = delegate { };
+        public event EventHandler<UserEventArgs> UserDiscovered = delegate { };
 
         public KeepAliveService(PresenceChannel channel, UserInfo user, TimeSpan keepAliveSyncTime)
         {
@@ -71,10 +72,10 @@ namespace Squiggle.Chat.Services.Presence
         public void HeIsAlive(UserInfo user)
         {
             lock (aliveUsers)
-            {                
+            {                                
+                if (!aliveUsers.ContainsKey(user))
+                    UserDiscovered(this, new UserEventArgs() { User = user });
                 aliveUsers[user] = DateTime.Now;
-                if (lostUsers.Contains(user))
-                    UserReturned(this, new UserEventArgs() { User = user });
                 lostUsers.Remove(user);
             }
         }

@@ -43,7 +43,7 @@ namespace Squiggle.Chat.Services.Presence
 
             this.keepAlive = new KeepAliveService(channel, thisUser, keepAliveTime);
             this.keepAlive.UserLost += new EventHandler<UserEventArgs>(keepAlive_UserLost);
-            this.keepAlive.UserReturned += new EventHandler<UserEventArgs>(keepAlive_UserReturned);
+            this.keepAlive.UserDiscovered += new EventHandler<UserEventArgs>(keepAlive_UserDiscovered);
         }             
 
         public void Login(string name, string displayMessage, Dictionary<string, string> properties)
@@ -74,10 +74,10 @@ namespace Squiggle.Chat.Services.Presence
             channel.Stop();
         }
 
-        void keepAlive_UserReturned(object sender, UserEventArgs e)
+        void keepAlive_UserDiscovered(object sender, UserEventArgs e)
         {
             if (ResolveUser(e))
-                OnUserOnline(e, false);
+                OnUserOnline(e, true);
         }
 
         void keepAlive_UserLost(object sender, UserEventArgs e)
