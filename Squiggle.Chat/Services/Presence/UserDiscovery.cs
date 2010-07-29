@@ -57,7 +57,8 @@ namespace Squiggle.Chat.Services.Presence
         public void DiscoverUser(IPEndPoint presenceEndPoint)
         {
             UserInfo user = channel.GetUserInfo(presenceEndPoint);
-            OnPresenceMessage(user, true);
+            if (user != null)
+                OnPresenceMessage(user, true);
         }
 
         void channel_MessageReceived(object sender, MessageReceivedEventArgs e)
