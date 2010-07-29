@@ -129,7 +129,8 @@ namespace Squiggle.Chat.Services.Presence
         {
             // userinfo coming from keepaliveservice only has presenceendpoint. Complete information is with discovery service.
             UserInfo user = discovery.Users.FirstOrDefault(u => u.Equals(e.User));
-            e.User = user;
+            if (user != null)
+                e.User = user;
             return user != null;
         }
 
