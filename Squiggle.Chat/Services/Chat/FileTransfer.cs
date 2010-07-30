@@ -13,6 +13,7 @@ namespace Squiggle.Chat.Services.Chat
         public event EventHandler TransferCompleted = delegate { };
         public event EventHandler TransferStarted = delegate { };
         public event EventHandler TransferCancelled = delegate { };
+        public event EventHandler TransferFinished = delegate { };
         public event EventHandler<System.ComponentModel.ProgressChangedEventArgs> ProgressChanged = delegate { };
         public event EventHandler<ErrorEventArgs> Error = delegate { };        
 
@@ -220,6 +221,7 @@ namespace Squiggle.Chat.Services.Chat
                 content.Dispose();
                 content = null;
             }
+            TransferFinished(this, EventArgs.Empty);
         }
 
         void UpdateProgress(int percentage)

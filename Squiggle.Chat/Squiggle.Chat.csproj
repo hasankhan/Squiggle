@@ -83,6 +83,7 @@
     <Compile Include="Chat.cs" />
     <Compile Include="ChatClient.cs" />
     <Compile Include="ActionQueue.cs" />
+    <Compile Include="FileTransferCollection.cs" />
     <Compile Include="IChat.cs" />
     <Compile Include="IChatClient.cs" />
     <Compile Include="IFileTransfer.cs" />

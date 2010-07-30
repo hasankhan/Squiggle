@@ -33,6 +33,7 @@ namespace Squiggle.UI
         string lastSavedFormat;
         bool buzzPending;
         WindowState lastState;
+        FileTransferCollection fileTransfers = new FileTransferCollection();
 
         public ChatWindow()
         {
@@ -433,6 +434,7 @@ namespace Squiggle.UI
             {
                 string downloadsFolder = SettingsProvider.Current.Settings.GeneralSettings.DownloadsFolder;
                 chatTextBox.AddFileReceiveRequest(e.Sender.DisplayName, e.Invitation, downloadsFolder);
+                fileTransfers.Add(e.Invitation);
                 FlashWindow();
             });
         }
@@ -499,7 +501,7 @@ namespace Squiggle.UI
                 FileStream fileStream;
                 try
                 {
-                    fileStream = File.OpenRead(filePath);
+                    fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Delete);
                 }
                 catch (Exception)
                 {
@@ -508,6 +510,7 @@ namespace Squiggle.UI
                 }
                                 
                 IFileTransfer fileTransfer = chatSession.SendFile(fileName, fileStream);
+                fileTransfers.Add(fileTransfer);
                 if (fileTransfer != null)
                     chatTextBox.AddFileSentRequest(fileTransfer);
             }
@@ -560,6 +563,7 @@ namespace Squiggle.UI
 
         public void DestroySession()
         {
+            fileTransfers.CancelAll();
             if (chatSession != null)
             {
                 StopMonitoringAll();

@@ -25,6 +25,7 @@ namespace Messenger
 
         public SingleInstanceManager()
         {
+
 #if !DEBUG
             this.IsSingleInstance = true;
 #endif
