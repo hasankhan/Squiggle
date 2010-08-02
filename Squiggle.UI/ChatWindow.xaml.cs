@@ -501,7 +501,7 @@ namespace Squiggle.UI
                 FileStream fileStream;
                 try
                 {
-                    fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Delete);
+                    fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete);
                 }
                 catch (Exception)
                 {
