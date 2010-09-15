@@ -54,6 +54,7 @@ namespace Squiggle.UI.Settings
 
         private void LoadConnectionSettings()
         {
+            Settings.ConnectionSettings.PresenceAddress = Properties.Settings.Default.PresenceAddress;
             Settings.ConnectionSettings.BindToIP = Properties.Settings.Default.BindToIP;
             bool requiresBindIP = String.IsNullOrEmpty(Settings.ConnectionSettings.BindToIP);
             if (!requiresBindIP)
@@ -117,6 +118,7 @@ namespace Squiggle.UI.Settings
 
         private void SaveConnectionSettings()
         {
+            Properties.Settings.Default.PresenceAddress = Settings.ConnectionSettings.PresenceAddress;
             Properties.Settings.Default.BindToIP = Settings.ConnectionSettings.BindToIP;
             Properties.Settings.Default.ChatPort = Settings.ConnectionSettings.ChatPort;
             Properties.Settings.Default.KeepAliveTime = Settings.ConnectionSettings.KeepAliveTime;
