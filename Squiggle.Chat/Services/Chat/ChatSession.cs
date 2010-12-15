@@ -179,7 +179,7 @@ namespace Squiggle.Chat.Services.Chat
                 throw new InvalidOperationException("Cannot send files in a group chat session.");
             IChatHost remoteHost = PrimaryHost;
             long size = content.Length;
-            var transfer = new FileTransfer(ID, remoteHost, localHost, localUser, name, (int)size, content);
+            var transfer = new FileTransfer(ID, remoteHost, localHost, localUser, name, size, content);
             transfer.Start();
             return transfer;
         }

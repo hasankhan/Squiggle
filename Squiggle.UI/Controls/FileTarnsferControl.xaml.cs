@@ -22,7 +22,7 @@ namespace Squiggle.UI.Controls
 
         public string FilePath { get; private set; }
         public string FileName { get; private set; }
-        public int FileSize { get; private set; }
+        public long FileSize { get; private set; }
         public string Status { get; private set; }
 
 
@@ -210,7 +210,7 @@ namespace Squiggle.UI.Controls
             Shell.ShowInFolder(FilePath);
         }
 
-        static string ToReadableFileSize(int bytes)
+        static string ToReadableFileSize(long bytes)
         {
             const int scale = 1024;
             string[] orders = new string[] { "GB", "MB", "KB", "Bytes" };

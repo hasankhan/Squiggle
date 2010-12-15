@@ -38,7 +38,7 @@ namespace Squiggle.Chat.Services.Chat
             localEndPoint = endpoint;
             serviceHost = new ServiceHost(chatHost);
             var address = CreateServiceUri(endpoint.ToString());
-            var binding = new NetTcpBinding(SecurityMode.None);
+            var binding = BindingHelper.CreateBinding();
             serviceHost.AddServiceEndpoint(typeof(IChatHost), binding, address);
             serviceHost.Open();
         }        

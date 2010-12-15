@@ -65,7 +65,7 @@ namespace Squiggle.Bridge
             throw new NotImplementedException();
         }
 
-        public void ReceiveFileInvite(Guid sessionId, System.Net.IPEndPoint user, Guid id, string name, int size)
+        public void ReceiveFileInvite(Guid sessionId, System.Net.IPEndPoint user, Guid id, string name, long size)
         {
             throw new NotImplementedException();
         }

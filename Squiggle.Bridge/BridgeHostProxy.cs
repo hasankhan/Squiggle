@@ -149,7 +149,7 @@ namespace Squiggle.Bridge
             EnsureProxy(p => p.LeaveChat(sessionId, user));
         }
 
-        public void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, int size)
+        public void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, long size)
         {
             EnsureProxy(p => p.ReceiveFileInvite(sessionId, user, id, name, size));
         }
@@ -259,7 +259,7 @@ namespace Squiggle.Bridge
                 this.Channel.LeaveChat(sessionId, user);
             }
 
-            public void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, int size)
+            public void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, long size)
             {
                 this.Channel.ReceiveFileInvite(sessionId, user, id, name, size);
             }

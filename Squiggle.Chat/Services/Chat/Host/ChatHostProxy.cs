@@ -17,8 +17,7 @@ namespace Squiggle.Chat.Services.Chat.Host
         public ChatHostProxy(IPEndPoint remoteEndPoint)
         {
             Uri uri = CreateServiceUri(remoteEndPoint.ToString());
-            var binding = new NetTcpBinding(SecurityMode.None);
-            this.binding = binding;
+            this.binding = BindingHelper.CreateBinding(); ;
 #if !DEBUG
             this.binding.SendTimeout = TimeSpan.FromSeconds(5);
 #endif
@@ -115,7 +114,7 @@ namespace Squiggle.Chat.Services.Chat.Host
             EnsureProxy(p => p.LeaveChat(sessionId, user));
         }
 
-        public void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, int size)
+        public void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, long size)
         {
             EnsureProxy(p => p.ReceiveFileInvite(sessionId, user, id, name, size));
         }
@@ -211,7 +210,7 @@ namespace Squiggle.Chat.Services.Chat.Host
                 base.Channel.LeaveChat(sessionId, user);
             }
 
-            public void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, int size)
+            public void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, long size)
             {
                 Trace.WriteLine("Sending file invite from: " + user.ToString() + ", name = " + name);
                 base.Channel.ReceiveFileInvite(sessionId, user, id, name, size);

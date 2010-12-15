@@ -96,7 +96,7 @@ namespace Squiggle.Chat.Services.Chat.Host
             eventQueue.Enqueue(() => UserLeft(this, new UserActivityEventArgs() { SessionID = sessionId, User = user }));
         }
 
-        public void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, int size)
+        public void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, long size)
         {
             OnUserActivity(sessionId, user, ActivityType.TransferInvite);
             Trace.WriteLine(user.ToString() + " wants to send a file " + name);
@@ -179,7 +179,7 @@ namespace Squiggle.Chat.Services.Chat.Host
     {
         public Guid ID { get; set; }
         public string Name { get; set; }
-        public int Size { get; set; }
+        public long Size { get; set; }
     }
 
     public class FileTransferDataReceivedEventArgs : EventArgs

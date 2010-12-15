@@ -24,15 +24,15 @@ namespace Squiggle.Chat.Services.Chat
         ChatHost localHost;
         BackgroundWorker worker;
         bool sending;
-        int bytesReceived;
+        long bytesReceived;
         bool selfCancelled;
         string saveToFile;
         Guid sessionId;
 
-        public int Size { get; private set; }
+        public long Size { get; private set; }
         public string Name { get; private set; }
 
-        public FileTransfer(Guid sessionId, IChatHost remoteHost, ChatHost localHost, IPEndPoint localUser, string name, int size, Stream content)
+        public FileTransfer(Guid sessionId, IChatHost remoteHost, ChatHost localHost, IPEndPoint localUser, string name, long size, Stream content)
         {
             this.sessionId = sessionId;
             this.localHost = localHost;
@@ -45,7 +45,7 @@ namespace Squiggle.Chat.Services.Chat
             sending = true;
         }
 
-        public FileTransfer(Guid sessionId, IChatHost remoteHost, ChatHost localHost, IPEndPoint localUser, string name, int size, Guid id)
+        public FileTransfer(Guid sessionId, IChatHost remoteHost, ChatHost localHost, IPEndPoint localUser, string name, long size, Guid id)
         {
             this.sessionId = sessionId;
             this.localHost = localHost;
@@ -148,8 +148,8 @@ namespace Squiggle.Chat.Services.Chat
         {
             OnTransferStarted();
 
-            byte[] buffer = new byte[1024];
-            int bytesRemaining = Size;
+            byte[] buffer = new byte[61440];
+            long bytesRemaining = Size;
             while (bytesRemaining > 0 && !worker.CancellationPending)
             {
                 int bytesRead = content.Read(buffer, 0, buffer.Length);

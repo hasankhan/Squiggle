@@ -59,7 +59,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
            
             serviceHost = new ServiceHost(host);
             var address = CreateServiceUri(serviceEndPoint.ToString());
-            var binding = new NetTcpBinding(SecurityMode.None);
+            var binding = BindingHelper.CreateBinding();
             serviceHost.AddServiceEndpoint(typeof(IPresenceHost), binding, address);
             serviceHost.Open();
 
@@ -183,7 +183,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
             if (!presenceHosts.TryGetValue(endPoint, out host))
             {
                 Uri uri = CreateServiceUri(endPoint.ToString());
-                var binding = new NetTcpBinding(SecurityMode.None);
+                var binding = BindingHelper.CreateBinding();
                 host = new PresenceHostProxy(binding, new EndpointAddress(uri));
                 presenceHosts[endPoint] = host;
             }

@@ -13,7 +13,7 @@ namespace Squiggle.Chat
         event EventHandler<ProgressChangedEventArgs> ProgressChanged;
         event EventHandler<ErrorEventArgs> Error;
 
-        int Size { get; }
+        long Size { get; }
         string Name { get; }
 
         void Cancel();

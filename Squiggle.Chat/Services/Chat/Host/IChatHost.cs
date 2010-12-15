@@ -30,7 +30,7 @@ namespace Squiggle.Chat.Services.Chat.Host
         void LeaveChat(Guid sessionId, IPEndPoint user);
 
         [OperationContract]
-        void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, int size);
+        void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, long size);
 
         [OperationContract]
         void ReceiveFileContent(Guid id, byte[] chunk);
