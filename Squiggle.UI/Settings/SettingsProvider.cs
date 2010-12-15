@@ -60,7 +60,7 @@ namespace Squiggle.UI.Settings
             if (!requiresBindIP)
             {
                 var ip = IPAddress.Parse(Settings.ConnectionSettings.BindToIP);
-                requiresBindIP = !NetworkUtility.GetLocalIPAddresses().Contains(ip);
+                requiresBindIP = !NetworkUtility.IsValidIP(ip);
             }
             if (requiresBindIP)
             {

@@ -31,6 +31,12 @@ namespace Squiggle.Chat
             return true;
         }
 
+        public static bool IsValidIP(IPAddress ip)
+        {
+            bool isValid = GetLocalIPAddresses().Contains(ip);
+            return isValid;
+        }
+
         public static IPAddress GetLocalIPAddress()
         {
             var address = GetLocalIPAddresses().FirstOrDefault();
