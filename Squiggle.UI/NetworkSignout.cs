@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using Squiggle.UI.Helpers;
 
 namespace Squiggle.UI
 {
@@ -34,12 +35,11 @@ namespace Squiggle.UI
         {
             if (e.IsAvailable)
             {
-                ThreadPool.QueueUserWorkItem(_ =>
+                Async.Invoke(()=>
                 {
-                    Thread.Sleep(10000);
                     if (autoSignout && !String.IsNullOrEmpty(userName) && !loggedIn)
                         signinFunction(userName);
-                });
+                }, TimeSpan.FromSeconds(10));
             }
             else
             {

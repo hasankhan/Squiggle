@@ -155,11 +155,10 @@ namespace Squiggle.UI
                     txtMessageEditBox.GetFocus();
                     if (buzzPending)
                     {
-                        ThreadPool.QueueUserWorkItem(_ =>
+                        Async.Invoke(()=>
                         {
-                            Thread.Sleep(500);
                             Dispatcher.Invoke(() => SquiggleUtility.ShakeWindow(this));
-                        });
+                        }, TimeSpan.FromSeconds(.5));
                         buzzPending = false;
                     }
                 }

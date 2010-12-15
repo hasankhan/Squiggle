@@ -49,7 +49,7 @@ namespace Squiggle.UI
            chatControl.ContactList.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(OnStartChat);
            chatControl.ContactList.SignOut += new EventHandler(ContactList_SignOut);
            dummyViewModel = new ClientViewModel(new DummyChatClient());
-           autoSignout = new NetworkSignout(u=>SignIn(u, false), ()=>SignOut(false));
+           autoSignout = new NetworkSignout(u=>SignIn(u, false, ()=>{}), ()=>SignOut(false));
            chatControl.ContactList.OpenAbout += (sender, e) => SquiggleUtility.ShowAboutDialog(this);
         }
 
@@ -66,20 +66,20 @@ namespace Squiggle.UI
             chatControl.SignIn.SetDisplayName(name);
 
             if (!String.IsNullOrEmpty(name) && settings.PersonalSettings.AutoSignMeIn)
-                SignIn(name, true);
+                Async.Invoke(()=>SignIn(name, true, ()=>UpdateSortMenu()), 
+                             TimeSpan.FromSeconds(5));
             else
             {
                 if (!String.IsNullOrEmpty(name))
                     chatControl.SignIn.chkRememberName.IsChecked = true;
-            }
-            UpdateSortMenu();
+            }            
             if (App.RunInBackground)
                 this.Hide();
         }
 
         void OnCredentialsVerfied(object sender, Squiggle.UI.Controls.LogInEventArgs e)
         {
-            SignIn(e.UserName, true);
+            SignIn(e.UserName, true, () => { });
         }
 
         void chatClient_ChatStarted(object sender, ChatStartedEventArgs e)
@@ -161,9 +161,9 @@ namespace Squiggle.UI
             SignOut(true);
         }   
 
-        void SignIn(string displayName, bool byUser)
+        void SignIn(string displayName, bool byUser, Action onSignIn)
         {
-            Dispatcher.Invoke(() =>
+            Dispatcher.BeginInvoke((Action)(() =>
             {
                 clientAvailable.WaitOne(TimeSpan.FromSeconds(20));
 
@@ -191,12 +191,14 @@ namespace Squiggle.UI
                 VisualStateManager.GoToState(chatControl, "OnlineState", true);
                 if (byUser)
                     autoSignout.OnSignIn(displayName);
-            });
+
+                onSignIn();
+            }));
         }
         
         void SignOut(bool byUser, bool immediate = false)
         {
-            Dispatcher.Invoke(() =>
+            Dispatcher.BeginInvoke((Action)(() =>
             {
                 if (ChatClient == null || !ChatClient.LoggedIn)
                     return;
@@ -229,7 +231,7 @@ namespace Squiggle.UI
                 
                 if (byUser)
                     autoSignout.OnSignOut();
-            });
+            }));
         }
 
         void ToggleMainWindow()

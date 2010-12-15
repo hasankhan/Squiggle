@@ -211,6 +211,7 @@
     <Compile Include="EmoticonSelector.xaml.cs">
       <DependentUpon>EmoticonSelector.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Async.cs" />
     <Compile Include="IdleStatusChanger.cs" />
     <Compile Include="MessageParsers\EmoticonParser.cs" />
     <Compile Include="Controls\FilterTextBox.xaml.cs">
