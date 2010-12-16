@@ -24,7 +24,7 @@ namespace Squiggle.Chat.Services.Presence.Transport.Messages
                 Status = user.Status,                
                 Properties = user.Properties,
                 KeepAliveSyncTime = user.KeepAliveSyncTime,
-                UserFriendlyName = user.UserFriendlyName
+                UserFriendlyName = user.DisplayName
             };
             return message;
         }
@@ -39,7 +39,7 @@ namespace Squiggle.Chat.Services.Presence.Transport.Messages
                 Status = this.Status,
                 Properties = this.Properties, 
                 KeepAliveSyncTime = this.KeepAliveSyncTime,
-                UserFriendlyName = this.UserFriendlyName
+                DisplayName = this.UserFriendlyName
             };
             return user;
         }

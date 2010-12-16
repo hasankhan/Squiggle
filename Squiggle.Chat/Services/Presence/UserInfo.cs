@@ -9,7 +9,7 @@ namespace Squiggle.Chat.Services.Presence
     public class UserInfo
     {
         [DataMember]
-        public string UserFriendlyName { get; set; }
+        public string DisplayName { get; set; }
         [DataMember]
         public IPEndPoint ChatEndPoint { get; set; }
         [DataMember]
@@ -31,7 +31,7 @@ namespace Squiggle.Chat.Services.Presence
 
         public void Update(UserInfo user)
         {
-            this.UserFriendlyName = user.UserFriendlyName;
+            this.DisplayName = user.DisplayName;
             this.DisplayMessage = user.DisplayMessage;
             this.Properties = user.Properties;
             this.Status = user.Status;

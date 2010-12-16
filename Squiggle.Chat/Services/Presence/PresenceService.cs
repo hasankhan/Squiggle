@@ -48,7 +48,7 @@ namespace Squiggle.Chat.Services.Presence
 
         public void Login(string name, string displayMessage, BuddyProperties properties)
         {
-            thisUser.UserFriendlyName = name;
+            thisUser.DisplayName = name;
             thisUser.DisplayMessage = displayMessage;
             thisUser.Status = UserStatus.Online;
             thisUser.Properties = properties.ToDictionary();
@@ -60,7 +60,7 @@ namespace Squiggle.Chat.Services.Presence
 
         public void Update(string name, string displayMessage, Dictionary<string, string> properties, UserStatus status)
         {
-            thisUser.UserFriendlyName = name;
+            thisUser.DisplayName = name;
             thisUser.DisplayMessage = displayMessage;
             thisUser.Status = status;
             thisUser.Properties = properties;

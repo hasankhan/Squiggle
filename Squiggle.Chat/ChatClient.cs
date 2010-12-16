@@ -105,7 +105,7 @@ namespace Squiggle.Chat
                 UserStatus lastStatus = buddy.Status;
                 buddy.Status = e.User.Status;
                 buddy.DisplayMessage = e.User.DisplayMessage;
-                buddy.DisplayName = e.User.UserFriendlyName;
+                buddy.DisplayName = e.User.DisplayName;
                 buddy.SetProperties(e.User.Properties);
 
                 if (lastStatus != UserStatus.Offline && buddy.Status == UserStatus.Offline)
@@ -124,7 +124,7 @@ namespace Squiggle.Chat
             {
                 buddy = new Buddy(this, e.User.ChatEndPoint, new BuddyProperties(e.User.Properties))
                 {
-                    DisplayName = e.User.UserFriendlyName,
+                    DisplayName = e.User.DisplayName,
                     Status = e.User.Status,
                     DisplayMessage = e.User.DisplayMessage
                 };
@@ -134,7 +134,7 @@ namespace Squiggle.Chat
             {
                 buddy.Status = e.User.Status;
                 buddy.DisplayMessage = e.User.DisplayMessage;
-                buddy.DisplayName = e.User.UserFriendlyName;
+                buddy.DisplayName = e.User.DisplayName;
                 buddy.SetProperties(e.User.Properties);
             }
             
