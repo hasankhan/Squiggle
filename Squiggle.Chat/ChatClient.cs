@@ -131,7 +131,13 @@ namespace Squiggle.Chat
                 buddies.Add(buddy);
             }
             else
+            {
                 buddy.Status = e.User.Status;
+                buddy.DisplayMessage = e.User.DisplayMessage;
+                buddy.DisplayName = e.User.UserFriendlyName;
+                buddy.SetProperties(e.User.Properties);
+            }
+            
             OnBuddyOnline(buddy, e.Discovered);
         }        
 
