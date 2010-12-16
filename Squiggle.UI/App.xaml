@@ -23,8 +23,8 @@
                             <StackPanel VerticalAlignment="Center" Orientation="Vertical" Grid.Column="1" Grid.Row="1">
                                 <TextBlock Foreground="Black" Text="{Binding DisplayName, StringFormat=Display: \{0\}}"/>
                                 <TextBlock Foreground="Black" Text="{Binding Status, StringFormat=Presence: \{0\}}"/>
-                                <TextBlock Foreground="Black" Text="{Binding Properties[MachineName], StringFormat='Machine name: \{0\}'}" />
-                                <TextBlock Foreground="Black" Text="{Binding Properties[GroupName], StringFormat='Group name: \{0\}'}" />
+                                <TextBlock Foreground="Black" Text="{Binding Properties.MachineName, StringFormat='Machine name: \{0\}'}" />
+                                <TextBlock Foreground="Black" Text="{Binding Properties.GroupName, StringFormat='Group name: \{0\}'}" />
                                 <TextBlock Foreground="Black" Text="{Binding LastUpdated, StringFormat='Last updated: \{0:T\}'}" />
                             </StackPanel>
                         </Grid>

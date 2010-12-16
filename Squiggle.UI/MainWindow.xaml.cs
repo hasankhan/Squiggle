@@ -282,10 +282,10 @@ namespace Squiggle.UI
             var presenceEndPoint = new IPEndPoint(presenceAddress, presencePort);
 
             ChatClient client = new ChatClient(chatEndPoint, presenceEndPoint, keepAliveTimeout);
-            
-            var properties = new Dictionary<string,string>();
-            properties[BuddyProperties.GroupName] = groupName;
-            properties[BuddyProperties.MachineName] = Environment.MachineName;
+
+            var properties = new BuddyProperties();
+            properties.GroupName = groupName;
+            properties.MachineName = Environment.MachineName;
             client.Login(displayName, settings.PersonalSettings.DisplayMessage, properties);
             client.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
             client.BuddyUpdated += new EventHandler<BuddyEventArgs>(client_BuddyUpdated);

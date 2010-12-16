@@ -48,7 +48,7 @@ namespace Squiggle.Chat
             return chat;
         }        
 
-        public void Login(string username, string displayMessage, Dictionary<string, string> properties)
+        public void Login(string username, string displayMessage, BuddyProperties properties)
         {
             chatService.Username = username;
             chatService.Start(localEndPoint);
@@ -122,7 +122,7 @@ namespace Squiggle.Chat
             var buddy = buddies[e.User.ChatEndPoint];
             if (buddy == null)
             {
-                buddy = new Buddy(this, e.User.ChatEndPoint, e.User.Properties)
+                buddy = new Buddy(this, e.User.ChatEndPoint, new BuddyProperties(e.User.Properties))
                 {
                     DisplayName = e.User.UserFriendlyName,
                     Status = e.User.Status,
@@ -173,7 +173,7 @@ namespace Squiggle.Chat
         {
             public bool EnableUpdates { get; set; }
 
-            public SelfBuddy(IChatClient client, IPEndPoint id, Dictionary<string, string> properties) : base(client, id, properties) { }
+            public SelfBuddy(IChatClient client, IPEndPoint id, BuddyProperties properties) : base(client, id, properties) { }
 
             public override string DisplayMessage
             {

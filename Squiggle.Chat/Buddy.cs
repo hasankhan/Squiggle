@@ -21,7 +21,7 @@ namespace Squiggle.Chat
         public event EventHandler Offline = delegate { };
         public event EventHandler Online = delegate { };
 
-        public Buddy(IChatClient chatClient, object id, Dictionary<string, string> properties = null)
+        public Buddy(IChatClient chatClient, object id, BuddyProperties properties = null)
         {
             this.ID = id;
             this.ChatClient = chatClient;
@@ -29,16 +29,10 @@ namespace Squiggle.Chat
             this.ChatClient.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);
             this.ChatClient.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
 
-            SetProperties(properties);
+            this.properties = properties;
             initialized = true;
 
             LastUpdated = DateTime.Now;
-        }
-
-        public string GroupName
-        {
-            get { return properties[BuddyProperties.GroupName]; }
-            set { properties[BuddyProperties.GroupName] = value; }
         }
 
         public virtual string DisplayName

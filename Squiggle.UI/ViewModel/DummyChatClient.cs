@@ -42,7 +42,7 @@ namespace Squiggle.UI.ViewModel
             throw new NotImplementedException();
         }
 
-        public void Login(string username, string displayMessage, Dictionary<string, string> properties)
+        public void Login(string username, string displayMessage, BuddyProperties properties)
         {
             throw new NotImplementedException();
         }

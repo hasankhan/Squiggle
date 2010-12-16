@@ -60,7 +60,7 @@ namespace Squiggle.UI
             else
             {
                 settingsVm.PersonalSettings.DisplayName = user.DisplayName;
-                settingsVm.PersonalSettings.GroupName = user.GroupName;
+                settingsVm.PersonalSettings.GroupName = user.Properties.GroupName;
                 settingsVm.PersonalSettings.DisplayMessage = user.DisplayMessage;
             }
         }

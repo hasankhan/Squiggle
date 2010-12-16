@@ -5,9 +5,6 @@ namespace Squiggle.Chat
 {
     public class BuddyProperties
     {
-        public const string GroupName = "GroupName";
-        public const string MachineName = "MachineName";
-
         Dictionary<string, string> dictionary;
 
         public event EventHandler Changed = delegate { };
@@ -15,6 +12,11 @@ namespace Squiggle.Chat
         public BuddyProperties(Dictionary<string, string> properties)
         {
             this.dictionary = properties;
+        }
+
+        public BuddyProperties()
+        {
+            this.dictionary = new Dictionary<string, string>();
         }
 
         public string this[string key]
@@ -30,6 +32,18 @@ namespace Squiggle.Chat
                 dictionary[key] = value;
                 Changed(this, EventArgs.Empty);
             }
+        }
+
+        public string GroupName
+        {
+            get { return this["GroupName"]; }
+            set { this["GroupName"] = value; }
+        }
+
+        public string MachineName
+        {
+            get { return this["MachineName"]; }
+            set { this["MachineName"] = value; }
         }
 
         public Dictionary<string,string>.KeyCollection Keys
