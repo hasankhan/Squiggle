@@ -21,7 +21,7 @@ namespace Squiggle.Chat
         public event EventHandler Offline = delegate { };
         public event EventHandler Online = delegate { };
 
-        public Buddy(IChatClient chatClient, object id, BuddyProperties properties = null)
+        public Buddy(IChatClient chatClient, object id, BuddyProperties properties)
         {
             this.ID = id;
             this.ChatClient = chatClient;
@@ -30,6 +30,7 @@ namespace Squiggle.Chat
             this.ChatClient.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
 
             this.properties = properties;
+            this.properties.PropertyChanged += (sender, e) => OnBuddyPropertiesChanged();
             initialized = true;
 
             LastUpdated = DateTime.Now;
@@ -42,16 +43,6 @@ namespace Squiggle.Chat
             {
                 displayName = value;
                 OnPropertyChanged("DisplayName");
-            }
-        }
-
-        public virtual string DisplayMessage
-        {
-            get { return displayMessage; }
-            set
-            {
-                displayMessage = value;
-                OnPropertyChanged("DisplayMessage");
             }
         }
 
@@ -78,7 +69,7 @@ namespace Squiggle.Chat
         public void SetProperties(Dictionary<string, string> properties)
         {
             this.properties = new BuddyProperties(properties ?? new Dictionary<string, string>());
-            this.properties.Changed += (sender, e) => OnBuddyPropertiesChanged();
+            this.properties.PropertyChanged += (sender, e) => OnBuddyPropertiesChanged();
             OnPropertyChanged("Properties");
         }
         

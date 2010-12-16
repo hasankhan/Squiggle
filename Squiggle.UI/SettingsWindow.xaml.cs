@@ -61,7 +61,7 @@ namespace Squiggle.UI
             {
                 settingsVm.PersonalSettings.DisplayName = user.DisplayName;
                 settingsVm.PersonalSettings.GroupName = user.Properties.GroupName;
-                settingsVm.PersonalSettings.DisplayMessage = user.DisplayMessage;
+                settingsVm.PersonalSettings.DisplayMessage = user.Properties.DisplayMessage;
             }
         }
 
@@ -73,7 +73,7 @@ namespace Squiggle.UI
             if (user != null)
             {
                 user.DisplayName = settingsVm.PersonalSettings.DisplayName;
-                user.DisplayMessage = settingsVm.PersonalSettings.DisplayMessage;
+                user.Properties.DisplayMessage = settingsVm.PersonalSettings.DisplayMessage;
             }
 
             SetRunAtStartup(settingsVm.GeneralSettings.RunAtStartup);

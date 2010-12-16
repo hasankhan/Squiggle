@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Squiggle.Chat
 {
-    public class BuddyProperties
+    public class BuddyProperties: INotifyPropertyChanged
     {
         Dictionary<string, string> dictionary;
 
-        public event EventHandler Changed = delegate { };
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
         public BuddyProperties(Dictionary<string, string> properties)
         {
@@ -30,7 +31,7 @@ namespace Squiggle.Chat
             set
             {
                 dictionary[key] = value;
-                Changed(this, EventArgs.Empty);
+                PropertyChanged(this, new PropertyChangedEventArgs(key));
             }
         }
 
@@ -44,6 +45,12 @@ namespace Squiggle.Chat
         {
             get { return this["MachineName"]; }
             set { this["MachineName"] = value; }
+        }
+
+        public string DisplayMessage
+        {
+            get { return this["DisplayMessage"]; }
+            set { this["DisplayMessage"] = value; }
         }
 
         public Dictionary<string,string>.KeyCollection Keys

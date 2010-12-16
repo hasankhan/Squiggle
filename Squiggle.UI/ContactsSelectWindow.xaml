@@ -31,7 +31,7 @@
                             <TextBlock Text="{Binding Path=DisplayName}" />
                             <TextBlock x:Name="buddyStatus" Margin="5,0,0,0" Text="{Binding Path=Status, Converter={StaticResource statusConverter}, StringFormat={}({0})}" />
                         </StackPanel>
-                        <TextBlock Margin="5,0,0,0" Text="{Binding Path=DisplayMessage}" TextTrimming="WordEllipsis" ToolTip="{Binding Path=DisplayMessage}"  FontSize="10" Foreground="#FF9A9C9D" HorizontalAlignment="Left" />
+                        <TextBlock Margin="5,0,0,0" Text="{Binding Path=Properties.DisplayMessage}" TextTrimming="WordEllipsis" ToolTip="{Binding Path=DisplayMessage}"  FontSize="10" Foreground="#FF9A9C9D" HorizontalAlignment="Left" />
                     </StackPanel>
                 </Grid>
             </Border>

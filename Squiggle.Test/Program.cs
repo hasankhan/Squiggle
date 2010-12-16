@@ -34,8 +34,8 @@ namespace Squiggle.Chat
             client2.BuddyOffline += new EventHandler<BuddyEventArgs>(client2_BuddyOffline);
             client2.BuddyUpdated += new EventHandler<BuddyEventArgs>(client2_BuddyUpdated);
 
-            client1.Login("hasan", String.Empty, new BuddyProperties());
-            client2.Login("Ali", String.Empty, new BuddyProperties());
+            client1.Login("hasan", new BuddyProperties());
+            client2.Login("Ali", new BuddyProperties());
             //Thread.Sleep(2000);
             //client2.ChatStarted += new EventHandler<ChatStartedEventArgs>(client2_ChatStarted);
             //var buddy = client1.Buddies.FirstOrDefault();

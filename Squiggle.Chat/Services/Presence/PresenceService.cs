@@ -46,10 +46,9 @@ namespace Squiggle.Chat.Services.Presence
             this.keepAlive.UserDiscovered += new EventHandler<UserEventArgs>(keepAlive_UserDiscovered);
         }             
 
-        public void Login(string name, string displayMessage, BuddyProperties properties)
+        public void Login(string name, BuddyProperties properties)
         {
             thisUser.DisplayName = name;
-            thisUser.DisplayMessage = displayMessage;
             thisUser.Status = UserStatus.Online;
             thisUser.Properties = properties.ToDictionary();
 
@@ -58,10 +57,9 @@ namespace Squiggle.Chat.Services.Presence
             keepAlive.Start();
         }
 
-        public void Update(string name, string displayMessage, Dictionary<string, string> properties, UserStatus status)
+        public void Update(string name, Dictionary<string, string> properties, UserStatus status)
         {
             thisUser.DisplayName = name;
-            thisUser.DisplayMessage = displayMessage;
             thisUser.Status = status;
             thisUser.Properties = properties;
             discovery.Update(thisUser);

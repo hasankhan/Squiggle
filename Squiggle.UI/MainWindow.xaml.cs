@@ -286,7 +286,8 @@ namespace Squiggle.UI
             var properties = new BuddyProperties();
             properties.GroupName = groupName;
             properties.MachineName = Environment.MachineName;
-            client.Login(displayName, settings.PersonalSettings.DisplayMessage, properties);
+            properties.DisplayMessage = settings.PersonalSettings.DisplayMessage;
+            client.Login(displayName, properties);
             client.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
             client.BuddyUpdated += new EventHandler<BuddyEventArgs>(client_BuddyUpdated);
             client.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);

@@ -11,7 +11,7 @@ namespace Squiggle.UI.ViewModel
 
         public DummyChatClient()
         {
-            self = new Buddy(this, new object());
+            self = new Buddy(this, new object(), new BuddyProperties());
             self.Status = UserStatus.Offline;
         }
 
@@ -42,7 +42,7 @@ namespace Squiggle.UI.ViewModel
             throw new NotImplementedException();
         }
 
-        public void Login(string username, string displayMessage, BuddyProperties properties)
+        public void Login(string username, BuddyProperties properties)
         {
             throw new NotImplementedException();
         }

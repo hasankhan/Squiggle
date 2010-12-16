@@ -17,8 +17,6 @@ namespace Squiggle.Chat.Services.Presence
         [DataMember]
         public TimeSpan KeepAliveSyncTime { get; set; }
         [DataMember]
-        public string DisplayMessage { get; set; }
-        [DataMember]
         public UserStatus Status { get; set; }
         [DataMember]
         public Dictionary<string, string> Properties { get; set;  }
@@ -32,7 +30,6 @@ namespace Squiggle.Chat.Services.Presence
         public void Update(UserInfo user)
         {
             this.DisplayName = user.DisplayName;
-            this.DisplayMessage = user.DisplayMessage;
             this.Properties = user.Properties;
             this.Status = user.Status;
         }

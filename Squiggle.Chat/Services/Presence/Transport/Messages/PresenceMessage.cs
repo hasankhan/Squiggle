@@ -8,8 +8,7 @@ namespace Squiggle.Chat.Services.Presence.Transport.Messages
     public abstract class PresenceMessage: Message
     {
         public IPEndPoint ChatEndPoint { get; set; }
-        public string UserFriendlyName { get; set; }
-        public string DisplayMessage { get; set; }
+        public string DisplayName { get; set; }
         public UserStatus Status { get; set; }
         public Dictionary<string, string> Properties { get; set; }
         public TimeSpan KeepAliveSyncTime { get; set; }
@@ -20,11 +19,10 @@ namespace Squiggle.Chat.Services.Presence.Transport.Messages
             {   
                 ChatEndPoint = user.ChatEndPoint,
                 PresenceEndPoint = user.PresenceEndPoint,
-                DisplayMessage = user.DisplayMessage,
                 Status = user.Status,                
                 Properties = user.Properties,
                 KeepAliveSyncTime = user.KeepAliveSyncTime,
-                UserFriendlyName = user.DisplayName
+                DisplayName = user.DisplayName
             };
             return message;
         }
@@ -35,11 +33,10 @@ namespace Squiggle.Chat.Services.Presence.Transport.Messages
             {
                 ChatEndPoint = this.ChatEndPoint,
                 PresenceEndPoint = this.PresenceEndPoint,
-                DisplayMessage = this.DisplayMessage,
                 Status = this.Status,
                 Properties = this.Properties, 
                 KeepAliveSyncTime = this.KeepAliveSyncTime,
-                DisplayName = this.UserFriendlyName
+                DisplayName = this.DisplayName
             };
             return user;
         }
