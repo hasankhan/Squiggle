@@ -322,5 +322,17 @@ namespace Squiggle.UI.Properties {
                 this["MainWindowLeft"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string GroupName {
+            get {
+                return ((string)(this["GroupName"]));
+            }
+            set {
+                this["GroupName"] = value;
+            }
+        }
     }
 }

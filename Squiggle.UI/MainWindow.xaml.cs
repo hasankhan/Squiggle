@@ -45,11 +45,11 @@ namespace Squiggle.UI
 
            chatWindows = new ChatWindowCollection();
 
-           chatControl.SignIn.CredentialsVerfied += new EventHandler<Squiggle.UI.Controls.LogInEventArgs>(OnCredentialsVerfied);
+           chatControl.SignIn.LoginInitiated += new EventHandler<Squiggle.UI.Controls.LogInEventArgs>(OnLoginInitiated);
            chatControl.ContactList.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(OnStartChat);
            chatControl.ContactList.SignOut += new EventHandler(ContactList_SignOut);
            dummyViewModel = new ClientViewModel(new DummyChatClient());
-           autoSignout = new NetworkSignout(u=>SignIn(u, false, ()=>{}), ()=>SignOut(false));
+           autoSignout = new NetworkSignout(u=>SignIn(u.DisplayName, u.GroupName, false, ()=>{}), ()=>SignOut(false));
            chatControl.ContactList.OpenAbout += (sender, e) => SquiggleUtility.ShowAboutDialog(this);
         }
 
@@ -60,13 +60,15 @@ namespace Squiggle.UI
 
             var settings = SettingsProvider.Current.Settings;
             string name = settings.PersonalSettings.DisplayName;
+            string groupName = settings.PersonalSettings.GroupName;
 
             chatControl.SignIn.chkAutoSignIn.IsChecked = settings.PersonalSettings.AutoSignMeIn;
             chatControl.SignIn.chkRememberName.IsChecked = settings.PersonalSettings.RememberMe;
             chatControl.SignIn.SetDisplayName(name);
+            chatControl.SignIn.SetGroupName(groupName);
 
             if (!String.IsNullOrEmpty(name) && settings.PersonalSettings.AutoSignMeIn)
-                Async.Invoke(()=>SignIn(name, true, ()=>UpdateSortMenu()), 
+                Async.Invoke(()=>SignIn(name, groupName, true, ()=>UpdateSortMenu()), 
                              TimeSpan.FromSeconds(5));
             else
             {
@@ -77,9 +79,9 @@ namespace Squiggle.UI
                 this.Hide();
         }
 
-        void OnCredentialsVerfied(object sender, Squiggle.UI.Controls.LogInEventArgs e)
+        void OnLoginInitiated(object sender, Squiggle.UI.Controls.LogInEventArgs e)
         {
-            SignIn(e.UserName, true, () => { });
+            SignIn(e.UserName, e.GroupName, true, () => { });
         }
 
         void chatClient_ChatStarted(object sender, ChatStartedEventArgs e)
@@ -161,7 +163,7 @@ namespace Squiggle.UI
             SignOut(true);
         }   
 
-        void SignIn(string displayName, bool byUser, Action onSignIn)
+        void SignIn(string displayName, string groupName, bool byUser, Action onSignIn)
         {
             Dispatcher.BeginInvoke((Action)(() =>
             {
@@ -175,7 +177,7 @@ namespace Squiggle.UI
 
                 try
                 {
-                    ChatClient = CreateClient(displayName);
+                    ChatClient = CreateClient(displayName, groupName);
                 }
                 catch (Exception ex)
                 {
@@ -190,7 +192,7 @@ namespace Squiggle.UI
 
                 VisualStateManager.GoToState(chatControl, "OnlineState", true);
                 if (byUser)
-                    autoSignout.OnSignIn(displayName);
+                    autoSignout.OnSignIn(displayName, groupName);
 
                 onSignIn();
             }));
@@ -257,7 +259,7 @@ namespace Squiggle.UI
             idleStatusChanger = null;
         }        
 
-        IChatClient CreateClient(string displayName)
+        IChatClient CreateClient(string displayName, string groupName)
         {
             var settings = SettingsProvider.Current.Settings;
 
@@ -282,7 +284,8 @@ namespace Squiggle.UI
             ChatClient client = new ChatClient(chatEndPoint, presenceEndPoint, keepAliveTimeout);
             
             var properties = new Dictionary<string,string>();
-            properties["MachineName"] = Environment.MachineName;
+            properties[BuddyProperties.GroupName] = groupName;
+            properties[BuddyProperties.MachineName] = Environment.MachineName;
             client.Login(displayName, settings.PersonalSettings.DisplayMessage, properties);
             client.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
             client.BuddyUpdated += new EventHandler<BuddyEventArgs>(client_BuddyUpdated);

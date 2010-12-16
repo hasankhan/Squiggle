@@ -33,10 +33,14 @@
             <Image HorizontalAlignment="Center" Margin="0,30,0,0" Source="..\Images\contacts.png" Height="128" Width="128"/>                        
             <StackPanel Grid.Row="1" Orientation="Vertical">
                 <TextBlock Text="Sign In"  FontSize="18" Foreground="#FF355A88" HorizontalAlignment="Center"/>
-                <TextBlock Margin="20,20,20,0" Text="Specify your display name here as you want others to see it." TextWrapping="Wrap" />
                 <Border CornerRadius="5" BorderBrush="#FFD8E8F0" BorderThickness="1" Margin="20,5,20,5">
                     <StackPanel Orientation="Vertical">
-                        <TextBox Margin="5,10,5,0" x:Name="txtdisplayName" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="0.5" />
+                        <TextBlock Text="Display name:" TextWrapping="Wrap" />
+                        <TextBox Margin="5,10,5,0" x:Name="txtdisplayName"
+                                 BorderBrush="{x:Null}" />
+                        <TextBlock Margin="0,5,0,0" Text="Group name:" TextWrapping="Wrap" />
+                        <TextBox Margin="5,10,5,0" x:Name="txtGroupName"
+                                 BorderBrush="{x:Null}" />
                         <CheckBox x:Name="chkRememberName" Margin="5,10,0,0" Content="Remember me" HorizontalAlignment="Left"/>
                         <CheckBox x:Name="chkAutoSignIn" Margin="5,10,0,5" Content="Sign me in automatically" HorizontalAlignment="Left"/>
                     </StackPanel>

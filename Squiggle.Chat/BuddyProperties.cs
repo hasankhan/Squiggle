@@ -5,6 +5,9 @@ namespace Squiggle.Chat
 {
     public class BuddyProperties
     {
+        public const string GroupName = "GroupName";
+        public const string MachineName = "MachineName";
+
         Dictionary<string, string> dictionary;
 
         public event EventHandler Changed = delegate { };

@@ -4,24 +4,34 @@ using Squiggle.UI.Helpers;
 
 namespace Squiggle.UI
 {
+    class NetworkSinginInfo
+    {
+        public string DisplayName { get; set; }
+        public string GroupName { get; set; }
+    }
+
     class NetworkSignout
     {
         bool autoSignout;
+        
         string userName;
-        Action<string> signinFunction;
+        string groupName;
+
+        Action<NetworkSinginInfo> signinFunction;
         Action signoutFunction;
         bool loggedIn;
 
-        public NetworkSignout(Action<string> signinFunction, Action signoutFunction)
+        public NetworkSignout(Action<NetworkSinginInfo> signinFunction, Action signoutFunction)
         {
             this.signinFunction = signinFunction;
             this.signoutFunction = signoutFunction;
             System.Net.NetworkInformation.NetworkChange.NetworkAvailabilityChanged += new System.Net.NetworkInformation.NetworkAvailabilityChangedEventHandler(NetworkChange_NetworkAvailabilityChanged);
         }
 
-        public void OnSignIn(string userName)
+        public void OnSignIn(string userName, string groupName)
         {
             this.userName = userName;
+            this.groupName = groupName;
             loggedIn = true;
         }
 
@@ -38,7 +48,7 @@ namespace Squiggle.UI
                 Async.Invoke(()=>
                 {
                     if (autoSignout && !String.IsNullOrEmpty(userName) && !loggedIn)
-                        signinFunction(userName);
+                        signinFunction(new NetworkSinginInfo() { DisplayName = userName, GroupName = groupName });
                 }, TimeSpan.FromSeconds(10));
             }
             else

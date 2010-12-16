@@ -94,6 +94,7 @@ namespace Squiggle.UI.Settings
             Settings.PersonalSettings.RememberMe = !String.IsNullOrEmpty(Properties.Settings.Default.DisplayName);
             Settings.PersonalSettings.DisplayName = Properties.Settings.Default.DisplayName;
             Settings.PersonalSettings.DisplayMessage = Properties.Settings.Default.DisplayMessage;
+            Settings.PersonalSettings.GroupName = Properties.Settings.Default.GroupName;
             Settings.PersonalSettings.AutoSignMeIn = Properties.Settings.Default.AutoSignIn;
             Settings.PersonalSettings.IdleTimeout = Properties.Settings.Default.IdleTimeout;
             Settings.PersonalSettings.FontColor = Properties.Settings.Default.FontColor;
@@ -107,6 +108,7 @@ namespace Squiggle.UI.Settings
         {
             Properties.Settings.Default.DisplayName = Settings.PersonalSettings.RememberMe ? Settings.PersonalSettings.DisplayName : String.Empty;
             Properties.Settings.Default.DisplayMessage = Settings.PersonalSettings.RememberMe ? Settings.PersonalSettings.DisplayMessage : String.Empty;
+            Properties.Settings.Default.GroupName = Settings.PersonalSettings.RememberMe ? Settings.PersonalSettings.GroupName : String.Empty;
 
             Properties.Settings.Default.AutoSignIn = Settings.PersonalSettings.AutoSignMeIn;
             Properties.Settings.Default.IdleTimeout = Settings.PersonalSettings.IdleTimeout;

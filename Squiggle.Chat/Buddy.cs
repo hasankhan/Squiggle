@@ -11,6 +11,7 @@ namespace Squiggle.Chat
         string displayMessage;
         BuddyProperties properties;
         bool initialized;
+        DateTime lastUpdated;
 
         protected IChatClient ChatClient { get; private set; }
         public object ID { get; private set; }
@@ -32,6 +33,12 @@ namespace Squiggle.Chat
             initialized = true;
 
             LastUpdated = DateTime.Now;
+        }
+
+        public string GroupName
+        {
+            get { return properties[BuddyProperties.GroupName]; }
+            set { properties[BuddyProperties.GroupName] = value; }
         }
 
         public virtual string DisplayName

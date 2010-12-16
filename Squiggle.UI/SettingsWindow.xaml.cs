@@ -54,11 +54,13 @@ namespace Squiggle.UI
             if (user == null)
             {
                 settingsVm.PersonalSettings.DisplayName = SettingsProvider.Current.Settings.PersonalSettings.DisplayName;
+                settingsVm.PersonalSettings.GroupName = SettingsProvider.Current.Settings.PersonalSettings.GroupName;
                 settingsVm.PersonalSettings.DisplayMessage = SettingsProvider.Current.Settings.PersonalSettings.DisplayMessage;
             }
             else
             {
                 settingsVm.PersonalSettings.DisplayName = user.DisplayName;
+                settingsVm.PersonalSettings.GroupName = user.GroupName;
                 settingsVm.PersonalSettings.DisplayMessage = user.DisplayMessage;
             }
         }

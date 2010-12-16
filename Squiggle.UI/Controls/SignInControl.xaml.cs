@@ -10,7 +10,7 @@ namespace Squiggle.UI.Controls
     /// </summary>
     public partial class SignInControl : UserControl
     {
-        public event EventHandler<LogInEventArgs> CredentialsVerfied = delegate { };
+        public event EventHandler<LogInEventArgs> LoginInitiated = delegate { };
 
         public SignInControl()
         {
@@ -23,27 +23,47 @@ namespace Squiggle.UI.Controls
             txtdisplayName.SelectAll();
         }
 
+        public void SetGroupName(string name)
+        {
+            txtGroupName.Text = name;
+            txtGroupName.SelectAll();
+        }
+
         private void SignIn(object sender, RoutedEventArgs e)
         {
             if (String.IsNullOrEmpty(txtdisplayName.Text.Trim()))
                 return;
 
             var settings = SettingsProvider.Current.Settings;
+            
+            string displayName = txtdisplayName.Text.Trim();
+            string groupName = txtGroupName.Text.Trim();
 
             if (chkRememberName.IsChecked.GetValueOrDefault())
             {
-                if (settings.PersonalSettings.RememberMe && settings.PersonalSettings.DisplayName != txtdisplayName.Text)
+                // reset the display message if display name changes for saved user
+                if (settings.PersonalSettings.RememberMe &&
+                    settings.PersonalSettings.DisplayName != displayName)
                     settings.PersonalSettings.DisplayMessage = String.Empty;
-                settings.PersonalSettings.DisplayName = txtdisplayName.Text;
+
+                settings.PersonalSettings.DisplayName = displayName;
+                settings.PersonalSettings.GroupName = groupName;
             }
             else
+            {
                 settings.PersonalSettings.DisplayName = settings.PersonalSettings.DisplayMessage = String.Empty;
+                settings.PersonalSettings.GroupName = settings.PersonalSettings.GroupName = String.Empty;
+            }
 
             settings.PersonalSettings.RememberMe = chkRememberName.IsChecked.GetValueOrDefault();
             settings.PersonalSettings.AutoSignMeIn = chkAutoSignIn.IsChecked.GetValueOrDefault();
             SettingsProvider.Current.Save();
 
-            CredentialsVerfied(this, new LogInEventArgs() { UserName = txtdisplayName.Text.Trim() });
+            LoginInitiated(this, new LogInEventArgs()
+            {
+                UserName = displayName,
+                GroupName = groupName
+            });
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -55,5 +75,6 @@ namespace Squiggle.UI.Controls
     public class LogInEventArgs : EventArgs
     {
         public string UserName { get; set; }
+        public string GroupName { get; set; }
     }
 }
