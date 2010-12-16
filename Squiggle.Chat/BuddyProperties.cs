@@ -37,7 +37,11 @@ namespace Squiggle.Chat
 
         public string GroupName
         {
-            get { return this["GroupName"]; }
+            get 
+            { 
+                string groupName = this["GroupName"];
+                return String.IsNullOrEmpty(groupName) ? "Others" : groupName;
+            }
             set { this["GroupName"] = value; }
         }
 

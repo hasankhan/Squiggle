@@ -334,5 +334,17 @@ namespace Squiggle.UI.Properties {
                 this["GroupName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool GroupContacts {
+            get {
+                return ((bool)(this["GroupContacts"]));
+            }
+            set {
+                this["GroupContacts"] = value;
+            }
+        }
     }
 }

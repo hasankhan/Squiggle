@@ -27,6 +27,30 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <ControlTemplate x:Key="groupTemplate">
+            <Expander IsExpanded="True">
+                <Expander.Header>
+                    <TextBlock>
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0} ({1}/{2})">
+                                <Binding Path="Name" />
+                                <Binding Path="Items" Converter="{x:Static converters:ContactListGroupConverter.Instance}" />
+                                <Binding Path="ItemCount" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </Expander.Header>
+                <Expander.Resources>
+                    <ResourceDictionary>
+                        <ResourceDictionary.MergedDictionaries>
+                            <ResourceDictionary 
+            Source="/PresentationFramework.Aero;V3.0.0.0;31bf3856ad364e35;component\themes/aero.normalcolor.xaml" />
+                        </ResourceDictionary.MergedDictionaries>
+                    </ResourceDictionary>
+                </Expander.Resources>
+                <ItemsPresenter />
+            </Expander>
+        </ControlTemplate>
         <LinearGradientBrush x:Key="ContactInfoBackground" EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FFFCFCFD" Offset="0.04"/>
             <GradientStop Color="#FFE5E5F1" Offset="0.99"/>
@@ -168,7 +192,17 @@
             </StackPanel>
             <ScrollViewer Grid.Row="1" Focusable="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
                 <StackPanel>
-                    <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}" ItemsSource="{Binding Source={StaticResource buddiesCollection}}" AlternationCount="2" />
+                    <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}" ItemsSource="{Binding Source={StaticResource buddiesCollection}}" AlternationCount="2">
+                        <ItemsControl.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.ContainerStyle>
+                                    <Style TargetType="{x:Type GroupItem}">
+                                        <Setter Property="Template" Value="{StaticResource groupTemplate}" />
+                                    </Style>
+                                </GroupStyle.ContainerStyle>
+                            </GroupStyle>
+                        </ItemsControl.GroupStyle>
+                    </ItemsControl>
                 </StackPanel>
             </ScrollViewer>
         </Grid>

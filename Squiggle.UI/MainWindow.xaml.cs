@@ -68,13 +68,14 @@ namespace Squiggle.UI
             chatControl.SignIn.SetGroupName(groupName);
 
             if (!String.IsNullOrEmpty(name) && settings.PersonalSettings.AutoSignMeIn)
-                Async.Invoke(()=>SignIn(name, groupName, true, ()=>UpdateSortMenu()), 
+                Async.Invoke(() => SignIn(name, groupName, true, () => { }),
                              TimeSpan.FromSeconds(5));
-            else
-            {
-                if (!String.IsNullOrEmpty(name))
+            else if (!String.IsNullOrEmpty(name))
                     chatControl.SignIn.chkRememberName.IsChecked = true;
-            }            
+            
+            UpdateSortMenu();
+            UpdateGroupMenu();
+
             if (App.RunInBackground)
                 this.Hide();
         }
@@ -437,7 +438,20 @@ namespace Squiggle.UI
 
         void UpdateSortMenu()
         {
-            mnuSortByName.IsChecked = !(mnuSortByStatus.IsChecked = (SettingsProvider.Current.Settings.GeneralSettings.ContactListSortField == "Status"));
+            mnuSortByStatus.IsChecked = (SettingsProvider.Current.Settings.GeneralSettings.ContactListSortField == "Status");
+            mnuSortByName.IsChecked = !mnuSortByStatus.IsChecked;
+        }
+
+        private void GroupMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsProvider.Current.Settings.GeneralSettings.GroupContacts = !SettingsProvider.Current.Settings.GeneralSettings.GroupContacts;
+            SettingsProvider.Current.Save();
+            UpdateGroupMenu();
+        }
+
+        void UpdateGroupMenu()
+        {
+            mnuGroupBuddies.IsChecked = SettingsProvider.Current.Settings.GeneralSettings.GroupContacts;
         }
     }
 }

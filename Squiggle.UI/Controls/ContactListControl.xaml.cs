@@ -130,25 +130,36 @@ namespace Squiggle.UI.Controls
         {
             CollectionViewSource cvs = (CollectionViewSource)this.FindResource("buddiesCollection");
             AddSortDescription(cvs);
+            AddGroupDescription(cvs);
+        }
+
+        private void AddGroupDescription(CollectionViewSource cvs)
+        {
+            if (SettingsProvider.Current.Settings.GeneralSettings.GroupContacts)
+            {
+                var group = new PropertyGroupDescription("Properties.GroupName", null, StringComparison.InvariantCultureIgnoreCase);
+                cvs.GroupDescriptions.Add(group);
+            }
         }
 
         private static void AddSortDescription(CollectionViewSource cvs)
         {
-            var sd = new SortDescription();
-            sd.PropertyName = SettingsProvider.Current.Settings.GeneralSettings.ContactListSortField;
-            cvs.SortDescriptions.Add(sd);
+            var sort = new SortDescription();
+            sort.PropertyName = SettingsProvider.Current.Settings.GeneralSettings.ContactListSortField;
+            cvs.SortDescriptions.Add(sort);
         }
 
         void Current_SettingsUpdated(object sender, EventArgs e)
         {
-            CollectionViewSource cvs = (CollectionViewSource)this.FindResource("buddiesCollection");
+            var cvs = (CollectionViewSource)this.FindResource("buddiesCollection");
             if (cvs.SortDescriptions[0].PropertyName != SettingsProvider.Current.Settings.GeneralSettings.ContactListSortField)
             {
                 cvs.SortDescriptions.Clear();
                 AddSortDescription(cvs);
-
-                Refresh();
             }
+            cvs.GroupDescriptions.Clear();
+            AddGroupDescription(cvs);
+            Refresh();
         }
     }
 

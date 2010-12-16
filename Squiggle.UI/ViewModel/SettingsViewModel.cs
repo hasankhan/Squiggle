@@ -27,6 +27,7 @@ namespace Squiggle.UI.ViewModel
             GeneralSettings.ShowPopups = settings.GeneralSettings.ShowPopups;
             GeneralSettings.SpellCheck = settings.GeneralSettings.SpellCheck;
             GeneralSettings.ContactListSortField = settings.GeneralSettings.ContactListSortField;
+            GeneralSettings.GroupContacts = settings.GeneralSettings.GroupContacts;
             GeneralSettings.DownloadsFolder = settings.GeneralSettings.DownloadsFolder;
 
             ConnectionSettings.BindToIP = settings.ConnectionSettings.BindToIP;
@@ -51,6 +52,7 @@ namespace Squiggle.UI.ViewModel
             settings.GeneralSettings.HideToSystemTray = GeneralSettings.HideToSystemTray;
             settings.GeneralSettings.ShowPopups = GeneralSettings.ShowPopups;
             settings.GeneralSettings.SpellCheck = GeneralSettings.SpellCheck;
+            settings.GeneralSettings.GroupContacts = GeneralSettings.GroupContacts;
             settings.GeneralSettings.ContactListSortField = GeneralSettings.ContactListSortField;
             settings.GeneralSettings.DownloadsFolder = GeneralSettings.DownloadsFolder;
 
@@ -85,6 +87,7 @@ namespace Squiggle.UI.ViewModel
         public bool HideToSystemTray { get; set; }
         public bool ShowPopups { get; set; }
         public string ContactListSortField { get; set; }
+        public bool GroupContacts { get; set; }
         public bool SpellCheck { get; set; }
         public string DownloadsFolder { get; set; }
     }
