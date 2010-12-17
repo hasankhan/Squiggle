@@ -59,7 +59,7 @@ namespace Squiggle.UI
             this.StateChanged += new EventHandler(Window_StateChanged);
 
             var settings = SettingsProvider.Current.Settings;
-            settings.GeneralSettings.Groups.FlushItems();
+            settings.GeneralSettings.ContactGroups.FlushItems();
             SettingsProvider.Current.Save();
 
             string name = settings.PersonalSettings.DisplayName;
@@ -69,7 +69,7 @@ namespace Squiggle.UI
             chatControl.SignIn.chkRememberName.IsChecked = settings.PersonalSettings.RememberMe;
             chatControl.SignIn.SetDisplayName(name);
             chatControl.SignIn.SetGroupName(groupName);
-            chatControl.SignIn.LoadGroups(settings.GeneralSettings.Groups);
+            chatControl.SignIn.LoadGroups(settings.GeneralSettings.ContactGroups);
 
             if (!String.IsNullOrEmpty(name) && settings.PersonalSettings.AutoSignMeIn)
                 Async.Invoke(() => SignIn(name, groupName, true, () => { }),
@@ -239,7 +239,7 @@ namespace Squiggle.UI
         {
             if (!groupName.Equals(BuddyProperties.DefaultGroupName))
             {
-                SettingsProvider.Current.Settings.GeneralSettings.Groups.Add(groupName);
+                SettingsProvider.Current.Settings.GeneralSettings.ContactGroups.Add(groupName);
                 SettingsProvider.Current.Save();
             }
         }

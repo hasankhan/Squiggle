@@ -81,7 +81,7 @@ namespace Squiggle.UI.Settings
             Settings.GeneralSettings.SpellCheck = Properties.Settings.Default.SpellCheck;
             Settings.GeneralSettings.ContactListSortField = Properties.Settings.Default.ContactListSortField;
             Settings.GeneralSettings.GroupContacts = Properties.Settings.Default.GroupContacts;
-            Settings.GeneralSettings.Groups = Properties.Settings.Default.Groups ?? new ContactGroups();
+            Settings.GeneralSettings.ContactGroups = Properties.Settings.Default.Groups ?? new ContactGroups();
             if (String.IsNullOrEmpty(Properties.Settings.Default.DownloadsFolder) || !Shell.CreateDirectoryIfNotExists(Properties.Settings.Default.DownloadsFolder))
             {
                 string location = SquiggleUtility.GetInstallDirectory();
@@ -139,7 +139,7 @@ namespace Squiggle.UI.Settings
             Properties.Settings.Default.SpellCheck = Settings.GeneralSettings.SpellCheck;
             Properties.Settings.Default.DownloadsFolder = Settings.GeneralSettings.DownloadsFolder;
             Properties.Settings.Default.GroupContacts = Settings.GeneralSettings.GroupContacts;
-            Properties.Settings.Default.Groups = Settings.GeneralSettings.Groups;
+            Properties.Settings.Default.Groups = Settings.GeneralSettings.ContactGroups;
         }
     }
 }

@@ -174,6 +174,24 @@ namespace Squiggle.UI.Controls
             }
             return refresh;
         }
+
+        private void Group_ExpandChanged(object sender, RoutedEventArgs e)
+        {
+            var expander = (Expander)sender;
+            ContactGroup group = SettingsProvider.Current.Settings.GeneralSettings.ContactGroups.FirstOrDefault(g => g.GroupName.Equals(expander.Tag));
+            if (group != null)
+            {
+                group.Expanded = expander.IsExpanded;
+                SettingsProvider.Current.Save();
+            }
+        }
+
+        private void Group_Loaded(object sender, RoutedEventArgs e)
+        {
+            var expander = (Expander)sender;
+            ContactGroup group = SettingsProvider.Current.Settings.GeneralSettings.ContactGroups.FirstOrDefault(g => g.GroupName.Equals(expander.Tag));
+            expander.IsExpanded = group != null ? group.Expanded : true;
+        }
     }
 
     public class ChatStartEventArgs : EventArgs

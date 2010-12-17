@@ -28,7 +28,10 @@
             </Setter>
         </Style>
         <ControlTemplate x:Key="groupTemplate">
-            <Expander IsExpanded="True">
+            <Expander Tag="{Binding Name}" 
+                      Loaded="Group_Loaded"
+                      Collapsed="Group_ExpandChanged" 
+                      Expanded="Group_ExpandChanged">
                 <Expander.Header>
                     <TextBlock>
                         <TextBlock.Text>

@@ -11,7 +11,7 @@ namespace Squiggle.UI.Settings
         public string DownloadsFolder { get; set; }
         public bool ShowEmoticons { get; set; }
         public bool GroupContacts { get; set; }
-        public ContactGroups Groups { get; set; }
+        public ContactGroups ContactGroups { get; set; }
 
         public GeneralSettings()
         {
@@ -21,7 +21,7 @@ namespace Squiggle.UI.Settings
             ContactListSortField = "DisplayName";
             GroupContacts = true;
             SpellCheck = true;
-            Groups = new ContactGroups();
+            ContactGroups = new ContactGroups();
         }
     }
 }
