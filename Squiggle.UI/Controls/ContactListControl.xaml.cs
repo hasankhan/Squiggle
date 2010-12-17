@@ -41,7 +41,7 @@ namespace Squiggle.UI.Controls
 
         public void Refresh()
         {
-            CollectionViewSource cvs = (CollectionViewSource)this.FindResource("buddiesCollection");
+            var cvs = (CollectionViewSource)this.FindResource("buddiesCollection");
             if (cvs.View != null)
                 cvs.View.Refresh();
         }
@@ -128,33 +128,38 @@ namespace Squiggle.UI.Controls
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            CollectionViewSource cvs = (CollectionViewSource)this.FindResource("buddiesCollection");
-            AddSortDescription(cvs);
-            AddGroupDescription(cvs);
+            var cvs = (CollectionViewSource)this.FindResource("buddiesCollection");
+            ConfigureCollectionView(cvs);
         }
 
-        private void AddGroupDescription(CollectionViewSource cvs)
+        void AddGroupDescription(CollectionViewSource cvs)
         {
-            if (SettingsProvider.Current.Settings.GeneralSettings.GroupContacts)
-            {
-                var group = new PropertyGroupDescription("Properties.GroupName", null, StringComparison.InvariantCultureIgnoreCase);
-                cvs.GroupDescriptions.Add(group);
-            }
+            var group = new PropertyGroupDescription("Properties.GroupName", null, StringComparison.InvariantCultureIgnoreCase);
+            cvs.GroupDescriptions.Add(group);
         }
 
-        private static void AddSortDescription(CollectionViewSource cvs)
+        void AddSortDescription(CollectionViewSource cvs)
         {
             var sort = new SortDescription();
             sort.PropertyName = SettingsProvider.Current.Settings.GeneralSettings.ContactListSortField;
-            cvs.SortDescriptions.Add(sort);
+            cvs.SortDescriptions.Add(sort);         
         }
 
         void Current_SettingsUpdated(object sender, EventArgs e)
         {
-            bool refresh = false;
             var cvs = (CollectionViewSource)this.FindResource("buddiesCollection");
-            if (cvs.SortDescriptions.Any() && 
-                cvs.SortDescriptions[0].PropertyName != SettingsProvider.Current.Settings.GeneralSettings.ContactListSortField)
+
+            bool refresh = ConfigureCollectionView(cvs);
+            
+            if (refresh)
+                Refresh();
+        }
+
+        bool ConfigureCollectionView(CollectionViewSource cvs)
+        {
+            bool refresh = false;
+            if (!cvs.SortDescriptions.Any() ||
+                (cvs.SortDescriptions[0].PropertyName != SettingsProvider.Current.Settings.GeneralSettings.ContactListSortField))
             {
                 cvs.SortDescriptions.Clear();
                 AddSortDescription(cvs);
@@ -163,12 +168,11 @@ namespace Squiggle.UI.Controls
             if (cvs.GroupDescriptions.Any() ^ SettingsProvider.Current.Settings.GeneralSettings.GroupContacts)
             {
                 cvs.GroupDescriptions.Clear();
-                AddGroupDescription(cvs);
+                if (SettingsProvider.Current.Settings.GeneralSettings.GroupContacts)
+                    AddGroupDescription(cvs);
                 refresh = true;
             }
-            
-            if (refresh)
-                Refresh();
+            return refresh;
         }
     }
 

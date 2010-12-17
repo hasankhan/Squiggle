@@ -89,15 +89,16 @@ namespace Squiggle.UI
             SignIn(e.UserName, e.GroupName, true, () => { });
         }
 
-        void chatClient_ChatStarted(object sender, ChatStartedEventArgs e)
+        void client_ChatStarted(object sender, ChatStartedEventArgs e)
         {
             Dispatcher.Invoke(()=>CreateChatWindow(e.Buddy, e.Chat, false));
         }       
 
-        void chatClient_BuddyOnline(object sender, BuddyOnlineEventArgs e)
+        void client_BuddyOnline(object sender, BuddyOnlineEventArgs e)
         {
             if (!e.Discovered && SettingsProvider.Current.Settings.GeneralSettings.ShowPopups)
                 TrayPopup.Show("Buddy Online", e.Buddy.DisplayName + " is online", _=> StartChat(e.Buddy));
+            RefreshContactList();
         }
 
         void OnStartChat(object sender, Squiggle.UI.Controls.ChatStartEventArgs e)
@@ -293,34 +294,36 @@ namespace Squiggle.UI
             properties.MachineName = Environment.MachineName;
             properties.DisplayMessage = settings.PersonalSettings.DisplayMessage;
             client.Login(displayName, properties);
-            client.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
+            client.ChatStarted += new EventHandler<ChatStartedEventArgs>(client_ChatStarted);
             client.BuddyUpdated += new EventHandler<BuddyEventArgs>(client_BuddyUpdated);
-            client.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);
+            client.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(client_BuddyOnline);
             client.BuddyOffline += new EventHandler<BuddyEventArgs>(client_BuddyOffline);
             return client;
         }
 
         void client_BuddyOffline(object sender, BuddyEventArgs e)
         {
-            Dispatcher.Invoke(() =>
-            {
-                chatControl.ContactList.Refresh();
-            });
+            RefreshContactList();
         }
 
         void client_BuddyUpdated(object sender, BuddyEventArgs e)
         {
-            Dispatcher.Invoke(() =>
-            {
-                chatControl.ContactList.Refresh();
-            });
-        }
+            RefreshContactList();
+        }        
 
         public void RestoreWindow()
         {
             this.Show();
             this.Activate();
             this.WindowState = lastState;
+        }
+
+        void RefreshContactList()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                chatControl.ContactList.Refresh();
+            });
         }
 
         ChatWindow CreateChatWindow(Buddy buddy, IChat chatSession, bool focused)

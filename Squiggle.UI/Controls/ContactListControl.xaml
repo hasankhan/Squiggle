@@ -33,7 +33,7 @@
                     <TextBlock>
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0} ({1}/{2})">
-                                <Binding Path="Name" />
+                                <Binding Path="Name" Converter="{x:Static converters:TitleCaseConverter.Instance}" />
                                 <Binding Path="Items" Converter="{x:Static converters:ContactListGroupConverter.Instance}" />
                                 <Binding Path="ItemCount" />
                             </MultiBinding>

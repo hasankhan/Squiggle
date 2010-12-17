@@ -207,6 +207,7 @@
       <DependentUpon>Emoticon.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\ContactListGroupConverter.cs" />
+    <Compile Include="Converters\TitleCaseConverter.cs" />
     <Compile Include="Emoticon.cs" />
     <Compile Include="Emoticons.cs" />
     <Compile Include="EmoticonSelector.xaml.cs">
