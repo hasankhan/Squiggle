@@ -59,6 +59,9 @@ namespace Squiggle.UI
             this.StateChanged += new EventHandler(Window_StateChanged);
 
             var settings = SettingsProvider.Current.Settings;
+            settings.GeneralSettings.Groups.FlushItems();
+            SettingsProvider.Current.Save();
+
             string name = settings.PersonalSettings.DisplayName;
             string groupName = settings.PersonalSettings.GroupName;
 
@@ -66,6 +69,7 @@ namespace Squiggle.UI
             chatControl.SignIn.chkRememberName.IsChecked = settings.PersonalSettings.RememberMe;
             chatControl.SignIn.SetDisplayName(name);
             chatControl.SignIn.SetGroupName(groupName);
+            chatControl.SignIn.LoadGroups(settings.GeneralSettings.Groups.Select(g => g.GroupName));
 
             if (!String.IsNullOrEmpty(name) && settings.PersonalSettings.AutoSignMeIn)
                 Async.Invoke(() => SignIn(name, groupName, true, () => { }),

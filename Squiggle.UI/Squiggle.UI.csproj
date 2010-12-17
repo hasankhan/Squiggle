@@ -228,6 +228,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Settings\ContactGroup.cs" />
+    <Compile Include="Settings\ContactGroups.cs" />
     <Compile Include="ViewModel\ClientViewModel.cs" />
     <Compile Include="ChatWindow.xaml.cs">
       <DependentUpon>ChatWindow.xaml</DependentUpon>

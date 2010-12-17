@@ -26,7 +26,11 @@ namespace Squiggle.UI.Controls
         public void SetGroupName(string name)
         {
             txtGroupName.Text = name;
-            txtGroupName.SelectAll();
+        }
+
+        public void LoadGroups(System.Collections.Generic.IEnumerable<string> groupNames)
+        {
+            txtGroupName.ItemsSource = groupNames;
         }
 
         private void SignIn(object sender, RoutedEventArgs e)
@@ -57,6 +61,9 @@ namespace Squiggle.UI.Controls
 
             settings.PersonalSettings.RememberMe = chkRememberName.IsChecked.GetValueOrDefault();
             settings.PersonalSettings.AutoSignMeIn = chkAutoSignIn.IsChecked.GetValueOrDefault();
+            if (!String.IsNullOrEmpty(groupName))
+                settings.GeneralSettings.Groups.Add(groupName);
+
             SettingsProvider.Current.Save();
 
             LoginInitiated(this, new LogInEventArgs()
@@ -69,7 +76,7 @@ namespace Squiggle.UI.Controls
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             txtdisplayName.Focus();
-        }
+        }        
     }
 
     public class LogInEventArgs : EventArgs

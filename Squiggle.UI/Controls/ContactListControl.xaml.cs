@@ -151,15 +151,24 @@ namespace Squiggle.UI.Controls
 
         void Current_SettingsUpdated(object sender, EventArgs e)
         {
+            bool refresh = false;
             var cvs = (CollectionViewSource)this.FindResource("buddiesCollection");
-            if (cvs.SortDescriptions[0].PropertyName != SettingsProvider.Current.Settings.GeneralSettings.ContactListSortField)
+            if (cvs.SortDescriptions.Any() && 
+                cvs.SortDescriptions[0].PropertyName != SettingsProvider.Current.Settings.GeneralSettings.ContactListSortField)
             {
                 cvs.SortDescriptions.Clear();
                 AddSortDescription(cvs);
+                refresh = true;
             }
-            cvs.GroupDescriptions.Clear();
-            AddGroupDescription(cvs);
-            Refresh();
+            if (cvs.GroupDescriptions.Any() ^ SettingsProvider.Current.Settings.GeneralSettings.GroupContacts)
+            {
+                cvs.GroupDescriptions.Clear();
+                AddGroupDescription(cvs);
+                refresh = true;
+            }
+            
+            if (refresh)
+                Refresh();
         }
     }
 

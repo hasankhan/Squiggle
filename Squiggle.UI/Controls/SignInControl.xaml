@@ -39,8 +39,8 @@
                         <TextBox Margin="5,10,5,0" x:Name="txtdisplayName"
                                  BorderBrush="{x:Null}" />
                         <TextBlock Margin="0,5,0,0" Text="Group name:" TextWrapping="Wrap" />
-                        <TextBox Margin="5,10,5,0" x:Name="txtGroupName"
-                                 BorderBrush="{x:Null}" />
+                        <ComboBox Margin="5,10,5,0" x:Name="txtGroupName"
+                                  BorderBrush="{x:Null}" BorderThickness="0" IsEditable="True" />
                         <CheckBox x:Name="chkRememberName" Margin="5,10,0,0" Content="Remember me" HorizontalAlignment="Left"/>
                         <CheckBox x:Name="chkAutoSignIn" Margin="5,10,0,5" Content="Sign me in automatically" HorizontalAlignment="Left"/>
                     </StackPanel>
