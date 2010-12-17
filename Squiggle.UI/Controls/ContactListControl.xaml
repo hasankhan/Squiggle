@@ -39,15 +39,7 @@
                             </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>
-                </Expander.Header>
-                <Expander.Resources>
-                    <ResourceDictionary>
-                        <ResourceDictionary.MergedDictionaries>
-                            <ResourceDictionary 
-            Source="/PresentationFramework.Aero;V3.0.0.0;31bf3856ad364e35;component\themes/aero.normalcolor.xaml" />
-                        </ResourceDictionary.MergedDictionaries>
-                    </ResourceDictionary>
-                </Expander.Resources>
+                </Expander.Header>                
                 <ItemsPresenter />
             </Expander>
         </ControlTemplate>

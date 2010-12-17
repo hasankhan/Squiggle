@@ -5,6 +5,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/PresentationFramework.Aero;V3.0.0.0;31bf3856ad364e35;component\themes/aero.normalcolor.xaml" />
                 <ResourceDictionary Source="Resources\ComboBoxResource.xaml"/>
                 <ResourceDictionary Source="Resources\GlassButton.xaml"/>
                 <ResourceDictionary>
