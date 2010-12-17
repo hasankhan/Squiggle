@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using Squiggle.UI.Settings;
+using System.Linq;
 
 namespace Squiggle.UI.Controls
 {   
@@ -12,6 +13,18 @@ namespace Squiggle.UI.Controls
     {
         public event EventHandler<LogInEventArgs> LoginInitiated = delegate { };
 
+        string GroupName
+        {
+            get { return txtGroupName.Text.Trim(); }
+            set { txtGroupName.SelectedValue = value.Trim();  }
+        }
+
+        string DisplayName
+        {
+            get { return txtdisplayName.Text.Trim(); }
+            set { txtdisplayName.Text = value.Trim(); }
+        }
+
         public SignInControl()
         {
             InitializeComponent();
@@ -19,18 +32,18 @@ namespace Squiggle.UI.Controls
 
         public void SetDisplayName(string name)
         {
-            txtdisplayName.Text = name;
+            DisplayName = name;
             txtdisplayName.SelectAll();
         }
 
         public void SetGroupName(string name)
         {
-            txtGroupName.Text = name;
+            GroupName = name;
         }
 
-        public void LoadGroups(System.Collections.Generic.IEnumerable<string> groupNames)
+        public void LoadGroups(ContactGroups groups)
         {
-            txtGroupName.ItemsSource = groupNames;
+            txtGroupName.ItemsSource = groups;
         }
 
         private void SignIn(object sender, RoutedEventArgs e)
@@ -39,19 +52,16 @@ namespace Squiggle.UI.Controls
                 return;
 
             var settings = SettingsProvider.Current.Settings;
-            
-            string displayName = txtdisplayName.Text.Trim();
-            string groupName = txtGroupName.Text.Trim();
 
             if (chkRememberName.IsChecked.GetValueOrDefault())
             {
                 // reset the display message if display name changes for saved user
                 if (settings.PersonalSettings.RememberMe &&
-                    settings.PersonalSettings.DisplayName != displayName)
+                    settings.PersonalSettings.DisplayName != DisplayName)
                     settings.PersonalSettings.DisplayMessage = String.Empty;
 
-                settings.PersonalSettings.DisplayName = displayName;
-                settings.PersonalSettings.GroupName = groupName;
+                settings.PersonalSettings.DisplayName = DisplayName;
+                settings.PersonalSettings.GroupName = GroupName;
             }
             else
             {
@@ -61,21 +71,32 @@ namespace Squiggle.UI.Controls
 
             settings.PersonalSettings.RememberMe = chkRememberName.IsChecked.GetValueOrDefault();
             settings.PersonalSettings.AutoSignMeIn = chkAutoSignIn.IsChecked.GetValueOrDefault();
-            if (!String.IsNullOrEmpty(groupName))
-                settings.GeneralSettings.Groups.Add(groupName);
+            if (!String.IsNullOrEmpty(GroupName))
+                settings.GeneralSettings.Groups.Add(GroupName);
+            txtGroupName.SelectedValue = GroupName;
 
             SettingsProvider.Current.Save();
 
             LoginInitiated(this, new LogInEventArgs()
             {
-                UserName = displayName,
-                GroupName = groupName
+                UserName = DisplayName,
+                GroupName = GroupName
             });
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             txtdisplayName.Focus();
+        }
+
+        private void txtGroupName_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Delete && 
+                txtGroupName.SelectedItem != null) // if it exists in combo list items
+            {
+                SettingsProvider.Current.Settings.GeneralSettings.Groups.Remove((ContactGroup)txtGroupName.SelectedItem);
+                SettingsProvider.Current.Save();
+            }
         }        
     }
 

@@ -69,7 +69,7 @@ namespace Squiggle.UI
             chatControl.SignIn.chkRememberName.IsChecked = settings.PersonalSettings.RememberMe;
             chatControl.SignIn.SetDisplayName(name);
             chatControl.SignIn.SetGroupName(groupName);
-            chatControl.SignIn.LoadGroups(settings.GeneralSettings.Groups.Select(g => g.GroupName));
+            chatControl.SignIn.LoadGroups(settings.GeneralSettings.Groups);
 
             if (!String.IsNullOrEmpty(name) && settings.PersonalSettings.AutoSignMeIn)
                 Async.Invoke(() => SignIn(name, groupName, true, () => { }),
