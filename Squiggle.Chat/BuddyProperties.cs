@@ -8,6 +8,7 @@ namespace Squiggle.Chat
     {
         Dictionary<string, string> dictionary;
 
+        public const string DefaultGroupName = "Others";
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
         public BuddyProperties(Dictionary<string, string> properties)
@@ -40,7 +41,7 @@ namespace Squiggle.Chat
             get 
             { 
                 string groupName = this["GroupName"];
-                return String.IsNullOrEmpty(groupName) ? "Others" : groupName;
+                return String.IsNullOrEmpty(groupName) ? DefaultGroupName : groupName;
             }
             set { this["GroupName"] = value; }
         }
