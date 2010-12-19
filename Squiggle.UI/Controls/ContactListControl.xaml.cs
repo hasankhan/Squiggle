@@ -178,7 +178,7 @@ namespace Squiggle.UI.Controls
         private void Group_ExpandChanged(object sender, RoutedEventArgs e)
         {
             var expander = (Expander)sender;
-            ContactGroup group = SettingsProvider.Current.Settings.GeneralSettings.ContactGroups.FirstOrDefault(g => g.GroupName.Equals(expander.Tag));
+            ContactGroup group = SettingsProvider.Current.Settings.GeneralSettings.ContactGroups.Find(expander.Tag as string);
             if (group != null)
             {
                 group.Expanded = expander.IsExpanded;
@@ -189,7 +189,7 @@ namespace Squiggle.UI.Controls
         private void Group_Loaded(object sender, RoutedEventArgs e)
         {
             var expander = (Expander)sender;
-            ContactGroup group = SettingsProvider.Current.Settings.GeneralSettings.ContactGroups.FirstOrDefault(g => g.GroupName.Equals(expander.Tag));
+            ContactGroup group = SettingsProvider.Current.Settings.GeneralSettings.ContactGroups.Find(expander.Tag as string);
             expander.IsExpanded = group != null ? group.Expanded : true;
         }
     }

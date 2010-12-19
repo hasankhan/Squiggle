@@ -17,10 +17,16 @@ namespace Squiggle.UI.Settings
             });
         }
 
+        public ContactGroup Find(string groupName)
+        {
+            var group = this.FirstOrDefault(g => g.GroupName.Equals(groupName, StringComparison.InvariantCultureIgnoreCase));
+            return group;
+        }
+
         protected override void InsertItem(int index, ContactGroup item)
         {
             item.GroupName = item.GroupName.Trim();
-            ContactGroup existing = this.FirstOrDefault(x => x.GroupName.Equals(item.GroupName, StringComparison.InvariantCultureIgnoreCase));
+            ContactGroup existing = this.Find(item.GroupName);
             if (existing == null)
                 base.InsertItem(index, item);
             else
