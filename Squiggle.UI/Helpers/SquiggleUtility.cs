@@ -75,8 +75,11 @@ namespace Squiggle.UI.Helpers
             settings.Owner = owner;
             if (settings.ShowDialog() == true)
             {
-                if (MainWindow.Instance.chatControl.SignIn.Visibility == Visibility.Visible)
-                    MainWindow.Instance.chatControl.SignIn.txtdisplayName.Text = SettingsProvider.Current.Settings.PersonalSettings.DisplayName;
+                if (String.IsNullOrEmpty(MainWindow.Instance.chatControl.SignIn.DisplayName) &&
+                    MainWindow.Instance.chatControl.SignIn.Visibility == Visibility.Visible)
+                {
+                    MainWindow.Instance.chatControl.SignIn.DisplayName = SettingsProvider.Current.Settings.PersonalSettings.DisplayName;
+                }
             }
         }
 

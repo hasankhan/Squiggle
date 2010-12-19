@@ -13,13 +13,13 @@ namespace Squiggle.UI.Controls
     {
         public event EventHandler<LogInEventArgs> LoginInitiated = delegate { };
 
-        string GroupName
+        public string GroupName
         {
             get { return txtGroupName.Text.Trim(); }
             set { txtGroupName.SelectedValue = value.Trim();  }
         }
 
-        string DisplayName
+        public string DisplayName
         {
             get { return txtdisplayName.Text.Trim(); }
             set { txtdisplayName.Text = value.Trim(); }

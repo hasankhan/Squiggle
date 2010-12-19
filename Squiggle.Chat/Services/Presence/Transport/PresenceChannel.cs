@@ -34,7 +34,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
 
         public PresenceChannel(IPEndPoint multicastEndPoint, IPEndPoint serviceEndPoint)
         {
-            udpReceiveEndPoint = new IPEndPoint(IPAddress.Any, multicastEndPoint.Port);
+            udpReceiveEndPoint = new IPEndPoint(serviceEndPoint.Address, multicastEndPoint.Port);
             this.multicastEndPoint = multicastEndPoint;
             this.serviceEndPoint = serviceEndPoint;
             this.host = new PresenceHost();
