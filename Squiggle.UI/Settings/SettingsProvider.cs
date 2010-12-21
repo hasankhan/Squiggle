@@ -56,18 +56,14 @@ namespace Squiggle.UI.Settings
         {
             Settings.ConnectionSettings.PresenceAddress = Properties.Settings.Default.PresenceAddress;
             Settings.ConnectionSettings.BindToIP = Properties.Settings.Default.BindToIP;
-            bool requiresBindIP = String.IsNullOrEmpty(Settings.ConnectionSettings.BindToIP);
-            if (!requiresBindIP)
-            {
-                var ip = IPAddress.Parse(Settings.ConnectionSettings.BindToIP);
-                requiresBindIP = !NetworkUtility.IsValidIP(ip);
-            }
-            if (requiresBindIP)
+
+            bool requiresNewBindToIP = !NetworkUtility.IsValidIP(Settings.ConnectionSettings.BindToIP);
+            if (requiresNewBindToIP)
             {
                 var ip = NetworkUtility.GetLocalIPAddress();
-                if (ip != null)
-                    Settings.ConnectionSettings.BindToIP = ip.ToString();
+                Settings.ConnectionSettings.BindToIP = ip == null ? String.Empty : ip.ToString();
             }
+
             Settings.ConnectionSettings.ChatPort = Properties.Settings.Default.ChatPort;
             Settings.ConnectionSettings.KeepAliveTime = Properties.Settings.Default.KeepAliveTime;
             Settings.ConnectionSettings.PresencePort = Properties.Settings.Default.PresencePort;

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System;
 
 namespace Squiggle.Chat
 {
@@ -29,6 +30,14 @@ namespace Squiggle.Chat
                 return false;
             }
             return true;
+        }
+
+        public static bool IsValidIP(string address)
+        {
+            IPAddress ip;
+            bool isValid = !String.IsNullOrEmpty(address) &&
+                          (IPAddress.TryParse(address, out ip) && IsValidIP(ip));
+            return isValid;
         }
 
         public static bool IsValidIP(IPAddress ip)

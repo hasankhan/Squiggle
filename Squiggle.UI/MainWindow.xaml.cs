@@ -72,7 +72,7 @@ namespace Squiggle.UI
             chatControl.SignIn.LoadGroups(settings.GeneralSettings.ContactGroups);
 
             if (!String.IsNullOrEmpty(name) && settings.PersonalSettings.AutoSignMeIn)
-                Async.Invoke(() => SignIn(name, groupName, true, () => { }),
+                Async.Invoke(() => SignIn(name, groupName, false, () => { }),
                              TimeSpan.FromSeconds(5));
             else if (!String.IsNullOrEmpty(name))
                     chatControl.SignIn.chkRememberName.IsChecked = true;
@@ -180,7 +180,8 @@ namespace Squiggle.UI
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    if (byUser)
+                        MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
@@ -190,8 +191,7 @@ namespace Squiggle.UI
                 chatControl.ChatContext = clientViewModel;
 
                 VisualStateManager.GoToState(chatControl, "OnlineState", true);
-                if (byUser)
-                    autoSignout.OnSignIn(displayName, groupName);
+                autoSignout.OnSignIn(displayName, groupName);
 
                 onSignIn();
             }));
@@ -278,6 +278,9 @@ namespace Squiggle.UI
             IPAddress localIP = IPAddress.Parse(settings.ConnectionSettings.BindToIP);
             if (!NetworkUtility.IsValidIP(localIP))
                 localIP = NetworkUtility.GetLocalIPAddress();
+
+            if (localIP == null)
+                throw new OperationCanceledException("You are not on a network. Please make sure your network card is enabled.");
 
             TimeSpan keepAliveTimeout = settings.ConnectionSettings.KeepAliveTime.Seconds();
             IPAddress presenceAddress = IPAddress.Parse(settings.ConnectionSettings.PresenceAddress);
