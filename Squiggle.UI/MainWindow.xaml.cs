@@ -11,6 +11,7 @@ using Squiggle.UI.Settings;
 using Squiggle.UI.Helpers;
 using Squiggle.UI.ViewModel;
 using System.Windows.Controls;
+using System.Diagnostics;
 
 namespace Squiggle.UI
 {
@@ -236,7 +237,10 @@ namespace Squiggle.UI
             {
                 ChatClient.Logout();
             }
-            catch { } // eating exceptions is bad I know but this is open source and I dont have time to do it right.
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
+            }
 
             clientAvailable.Set();
         }
