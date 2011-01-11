@@ -216,7 +216,7 @@ namespace Squiggle.UI
         private void txtMessageEditBox_FileDropped(object sender, FileDroppedEventArgs e)
         {
             foreach (string file in e.Files)
-                SendFile(file);
+                SendFiles(file);
         }
 
         private void OpenReceivedFilesMenu_Click(object sender, RoutedEventArgs e)
@@ -490,8 +490,14 @@ namespace Squiggle.UI
             {
                 dialog.CheckFileExists = true;
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    SendFile(dialog.FileName);
+                    SendFiles(dialog.FileName);
             }
+        }
+
+        public void SendFiles(params string[] filePaths)
+        {
+            foreach (var filePath in filePaths)
+                SendFile(filePath);
         }
 
         public void SendFile(string filePath)
@@ -512,7 +518,7 @@ namespace Squiggle.UI
                     chatTextBox.AddError(String.Format("Could not read file '{0}'. Please make sure its not in use.", fileName), null);
                     return;
                 }
-                                
+
                 IFileTransfer fileTransfer = chatSession.SendFile(fileName, fileStream);
                 fileTransfers.Add(fileTransfer);
                 if (fileTransfer != null)

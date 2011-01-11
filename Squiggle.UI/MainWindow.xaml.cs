@@ -48,8 +48,8 @@ namespace Squiggle.UI
 
             chatWindows = new ChatWindowCollection();
 
-            chatControl.SignIn.LoginInitiated += new EventHandler<Squiggle.UI.Controls.LogInEventArgs>(OnLoginInitiated);
-            chatControl.ContactList.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(OnStartChat);
+            chatControl.SignIn.LoginInitiated += new EventHandler<Squiggle.UI.Controls.LogInEventArgs>(ContactList_LoginInitiated);
+            chatControl.ContactList.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(ContactList_StartChat);
             chatControl.ContactList.SignOut += new EventHandler(ContactList_SignOut);
             dummyViewModel = new ClientViewModel(new DummyChatClient());
             autoSignout = new NetworkSignout(u=>SignIn(u.DisplayName, u.GroupName, false, ()=>{}), ()=>SignOut(false));
@@ -87,7 +87,7 @@ namespace Squiggle.UI
                 this.Hide();
         }
 
-        void OnLoginInitiated(object sender, Squiggle.UI.Controls.LogInEventArgs e)
+        void ContactList_LoginInitiated(object sender, Squiggle.UI.Controls.LogInEventArgs e)
         {
             SignIn(e.UserName, e.GroupName, true, () => { });
         }
@@ -95,21 +95,21 @@ namespace Squiggle.UI
         void client_ChatStarted(object sender, ChatStartedEventArgs e)
         {
             Dispatcher.Invoke(()=>CreateChatWindow(e.Buddy, e.Chat, false));
-        }                     
-
-        void OnStartChat(object sender, Squiggle.UI.Controls.ChatStartEventArgs e)
-        {
-            StartChat(e.User, e.SendFile, e.File);
         }
 
-        ChatWindow StartChat(Buddy buddy, bool sendFile, string filePath)
+        void ContactList_StartChat(object sender, Squiggle.UI.Controls.ChatStartEventArgs e)
+        {
+            StartChat(e.User, e.SendFile, e.Files);
+        }
+
+        ChatWindow StartChat(Buddy buddy, bool sendFile, params string[] filePaths)
         {
             ChatWindow window = StartChat(buddy);
             if (sendFile)
-                if (String.IsNullOrEmpty(filePath))
+                if (filePaths == null)
                     window.SendFile();
                 else
-                    window.SendFile(filePath);
+                    window.SendFiles(filePaths);
 
             return window;
         }
