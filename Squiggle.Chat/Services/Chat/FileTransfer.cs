@@ -28,6 +28,7 @@ namespace Squiggle.Chat.Services.Chat
         bool selfCancelled;
         string saveToFile;
         Guid sessionId;
+        const int bufferSize = 32768; // 32KB
 
         public long Size { get; private set; }
         public string Name { get; private set; }
@@ -148,7 +149,7 @@ namespace Squiggle.Chat.Services.Chat
         {
             OnTransferStarted();
 
-            byte[] buffer = new byte[61440];
+            byte[] buffer = new byte[bufferSize];
             long bytesRemaining = Size;
             while (bytesRemaining > 0 && !worker.CancellationPending)
             {
