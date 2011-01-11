@@ -95,7 +95,8 @@
         <TextBlock Cursor="Hand" HorizontalAlignment="Center" 
                    VerticalAlignment="Center" Margin="10,5,0,0" 
                    Foreground="#FF151561" TextWrapping="Wrap" 
-                   Text="{Binding}" TextTrimming="CharacterEllipsis" MouseDown="TextBlock_MouseDown"  />
+                   Text="{Binding}" TextTrimming="CharacterEllipsis" 
+                   MouseDown="TextBlock_MouseDown"  />
         </Border>
         <Image HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="16" Height="16" Source="/Images/Close.png" Stretch="Fill" Opacity="0.4" ToolTip="Close Balloon" x:Name="imgClose" MouseDown="imgClose_MouseDown" Grid.Column="1" />
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,5" Grid.Column="1" Foreground="White">

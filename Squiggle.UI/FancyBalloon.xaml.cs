@@ -77,6 +77,11 @@ namespace StackOverflowClient
 
     private void Close()
     {
+        timer.Stop();
+
+        if (Application.Current == null)
+            return;
+
         if (Application.Current.Dispatcher.CheckAccess())
         {
             //the tray icon assigned this attached property to simplify access

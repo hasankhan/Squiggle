@@ -34,23 +34,25 @@ namespace Squiggle.UI
 
         public MainWindow()
         {
-           Instance = this;
-           InitializeComponent();
+            Instance = this;
+            InitializeComponent();
            
-           this.Height = Properties.Settings.Default.MainWindowHeight;
-           this.Width = Properties.Settings.Default.MainWindowWidth;
+            this.Height = Properties.Settings.Default.MainWindowHeight;
+            this.Width = Properties.Settings.Default.MainWindowWidth;
 
-           this.Top = Properties.Settings.Default.MainWindowTop > 0 ? Properties.Settings.Default.MainWindowTop : System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height / 2 - this.Height / 2;
-           this.Left = Properties.Settings.Default.MainWindowLeft > 0 ? Properties.Settings.Default.MainWindowLeft : System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width /2 - this.Width / 2;
+            this.Top = Properties.Settings.Default.MainWindowTop > 0 ? Properties.Settings.Default.MainWindowTop : System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height / 2 - this.Height / 2;
+            this.Left = Properties.Settings.Default.MainWindowLeft > 0 ? Properties.Settings.Default.MainWindowLeft : System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width /2 - this.Width / 2;
 
-           chatWindows = new ChatWindowCollection();
+            TrayPopup.Enabled = SettingsProvider.Current.Settings.GeneralSettings.ShowPopups;
 
-           chatControl.SignIn.LoginInitiated += new EventHandler<Squiggle.UI.Controls.LogInEventArgs>(OnLoginInitiated);
-           chatControl.ContactList.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(OnStartChat);
-           chatControl.ContactList.SignOut += new EventHandler(ContactList_SignOut);
-           dummyViewModel = new ClientViewModel(new DummyChatClient());
-           autoSignout = new NetworkSignout(u=>SignIn(u.DisplayName, u.GroupName, false, ()=>{}), ()=>SignOut(false));
-           chatControl.ContactList.OpenAbout += (sender, e) => SquiggleUtility.ShowAboutDialog(this);
+            chatWindows = new ChatWindowCollection();
+
+            chatControl.SignIn.LoginInitiated += new EventHandler<Squiggle.UI.Controls.LogInEventArgs>(OnLoginInitiated);
+            chatControl.ContactList.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(OnStartChat);
+            chatControl.ContactList.SignOut += new EventHandler(ContactList_SignOut);
+            dummyViewModel = new ClientViewModel(new DummyChatClient());
+            autoSignout = new NetworkSignout(u=>SignIn(u.DisplayName, u.GroupName, false, ()=>{}), ()=>SignOut(false));
+            chatControl.ContactList.OpenAbout += (sender, e) => SquiggleUtility.ShowAboutDialog(this);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -214,16 +216,9 @@ namespace Squiggle.UI
                 DestroyMonitor();
 
                 if (immediate)
-                {
-                    ChatClient.Logout();
-                    clientAvailable.Set();
-                }
+                    Signout();
                 else
-                    ThreadPool.QueueUserWorkItem(_=>
-                    {
-                        ChatClient.Logout();
-                        clientAvailable.Set();
-                    });
+                    ThreadPool.QueueUserWorkItem(_=> Signout());
 
                 chatControl.ContactList.ChatContext = null;
                 clientViewModel = null;
@@ -233,6 +228,17 @@ namespace Squiggle.UI
                 if (byUser)
                     autoSignout.OnSignOut();
             }));
+        }
+
+        void Signout()
+        {
+            try
+            {
+                ChatClient.Logout();
+            }
+            catch { } // eating exceptions is bad I know but this is open source and I dont have time to do it right.
+
+            clientAvailable.Set();
         }
 
         static void AddGroupName(string groupName)
@@ -308,7 +314,7 @@ namespace Squiggle.UI
 
         void client_BuddyOnline(object sender, BuddyOnlineEventArgs e)
         {
-            if (!e.Discovered && SettingsProvider.Current.Settings.GeneralSettings.ShowPopups)
+            if (!e.Discovered)
                 TrayPopup.Show("Buddy Online", e.Buddy.DisplayName + " is online", _ => StartChat(e.Buddy));
             OnBuddyChanged(e);
         }
@@ -339,7 +345,7 @@ namespace Squiggle.UI
             this.WindowState = lastState;
         }
 
-        ChatWindow CreateChatWindow(Buddy buddy, IChat chatSession, bool focused)
+        ChatWindow CreateChatWindow(Buddy buddy, IChat chatSession, bool initiatedByUser)
         {
             ChatWindow window = null;
             
@@ -352,18 +358,15 @@ namespace Squiggle.UI
                 window.Closed += (sender, e) => chatWindows.Remove(window);
                 window.SetChatSession(chatSession ?? buddy.StartChat());
                 chatWindows.Add(window);
-                if (!focused)
+                if (!initiatedByUser)
                     window.WindowState = WindowState.Minimized;
                 window.Show();
             }
             else if (chatSession != null)
                 window.SetChatSession(chatSession);
 
-            if (focused)
-            {
+            if (initiatedByUser)
                 window.Restore();
-                window.Activate();
-            }
 
             return window;
         }      

@@ -34,6 +34,7 @@ namespace Squiggle.UI
         bool buzzPending;
         WindowState lastState;
         FileTransferCollection fileTransfers = new FileTransferCollection();
+        bool chatStarted;
 
         public ChatWindow()
         {
@@ -414,7 +415,10 @@ namespace Squiggle.UI
                 chatTextBox.AddMessage(buddy.DisplayName, message, fontName, fontSize, fontStyle, color);
                 ResetStatus();
                 FlashWindow();
+                if (this.WindowState == System.Windows.WindowState.Minimized && !chatStarted)
+                    TrayPopup.Show("New Message", String.Format("{0} says: {1}", buddy.DisplayName, message), args=>this.Restore());
             });
+            chatStarted = true;
         }
 
         void OnGroupChatStarted()
@@ -440,6 +444,7 @@ namespace Squiggle.UI
 
         public void SendMessage(string message)
         {
+            chatStarted = true;
             if (chatSession == null)
             {
                 var temp = MainWindow.Instance.ChatClient.Buddies.FirstOrDefault(b => b.Equals(buddy));
@@ -558,6 +563,7 @@ namespace Squiggle.UI
         {
             if (WindowState == System.Windows.WindowState.Minimized)
                 WindowState = lastState;
+            this.Activate();
         }
 
         public void DestroySession()

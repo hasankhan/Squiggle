@@ -8,6 +8,8 @@ namespace Squiggle.UI.Helpers
 {
     class TrayPopup
     {
+        public static bool Enabled { get; set; }
+
         public static void Show(string title, string message)
         {
             Show(title, message, _ => { });
@@ -15,6 +17,9 @@ namespace Squiggle.UI.Helpers
 
         public static void Show(string title, string message, Action<MouseEventArgs> onClick)
         {
+            if (!Enabled)
+                return;
+
             Application.Current.Dispatcher.Invoke(() =>
             {
                 int timeout = 5000;

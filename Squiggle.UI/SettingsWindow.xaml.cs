@@ -76,6 +76,8 @@ namespace Squiggle.UI
                 user.Properties.DisplayMessage = settingsVm.PersonalSettings.DisplayMessage;
             }
 
+            TrayPopup.Enabled = settingsVm.GeneralSettings.ShowPopups;
+
             SetRunAtStartup(settingsVm.GeneralSettings.RunAtStartup);
             SettingsProvider.Current.Save();
         }
