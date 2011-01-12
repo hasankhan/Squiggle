@@ -53,7 +53,7 @@ namespace Squiggle.UI
             chatControl.ContactList.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(ContactList_StartChat);
             chatControl.ContactList.SignOut += new EventHandler(ContactList_SignOut);
             dummyViewModel = new ClientViewModel(new DummyChatClient());
-            autoSignout = new NetworkSignout(u=>SignIn(u.DisplayName, u.GroupName, false, ()=>{}), ()=>SignOut(false));
+            autoSignout = new NetworkSignout(u => SignIn(u.DisplayName, u.GroupName, false, () => { }), () => SignOut(false));
             chatControl.ContactList.OpenAbout += (sender, e) => SquiggleUtility.ShowAboutDialog(this);
         }
 
@@ -376,6 +376,8 @@ namespace Squiggle.UI
             }
             else
             {
+                autoSignout.Dispose();
+
                 foreach (var window in chatWindows.ToList())
                     window.Close();
 

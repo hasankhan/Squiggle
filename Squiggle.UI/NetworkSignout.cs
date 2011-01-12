@@ -10,7 +10,7 @@ namespace Squiggle.UI
         public string GroupName { get; set; }
     }
 
-    class NetworkSignout
+    class NetworkSignout: IDisposable
     {
         bool autoSignout;
         
@@ -60,6 +60,11 @@ namespace Squiggle.UI
                     loggedIn = false;
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            System.Net.NetworkInformation.NetworkChange.NetworkAvailabilityChanged -= new System.Net.NetworkInformation.NetworkAvailabilityChangedEventHandler(NetworkChange_NetworkAvailabilityChanged);
         }
     }
 }
