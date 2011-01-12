@@ -197,7 +197,7 @@ namespace Squiggle.UI
         
         void SignOut(bool byUser)
         {
-            Dispatcher.Invoke((Action)(() =>
+            Dispatcher.BeginInvoke((Action)(() =>
             {
                 foreach (var window in chatWindows)
                     window.DestroySession();
@@ -209,17 +209,19 @@ namespace Squiggle.UI
 
                 chatControl.SignIn.SetDisplayName(ChatClient.CurrentUser.DisplayName);
 
-                clientAvailable.Reset();                
-
-                try
+                clientAvailable.Reset();
+                ThreadPool.QueueUserWorkItem(_ =>
                 {
-                    ChatClient.Logout();
-                }
-                catch (Exception ex)
-                {
-                    Trace.WriteLine(ex.Message);
-                }
-                clientAvailable.Set();
+                    try
+                    {
+                        ChatClient.Logout();
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.WriteLine(ex.Message);
+                    }
+                    clientAvailable.Set();
+                });
 
                 chatControl.ContactList.ChatContext = null;
                 clientViewModel = null;
