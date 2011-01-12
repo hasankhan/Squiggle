@@ -410,13 +410,14 @@ namespace Squiggle.UI
         void OnMessageReceived(Buddy buddy, string message, string fontName, System.Drawing.Color color, int fontSize, System.Drawing.FontStyle fontStyle)
         {
             Dispatcher.Invoke(() =>
-            {
+            {                
                 lastMessageReceived = DateTime.Now;
                 chatTextBox.AddMessage(buddy.DisplayName, message, fontName, fontSize, fontStyle, color);
                 ResetStatus();
                 FlashWindow();
                 if (this.WindowState == System.Windows.WindowState.Minimized && !chatStarted)
-                    TrayPopup.Show("New Message", String.Format("{0} says: {1}", buddy.DisplayName, message), args=>this.Restore());
+                    TrayPopup.Instance.Show("New Message", String.Format("{0} says: {1}", buddy.DisplayName, message), args=>this.Restore());
+                AudioAlert.Instance.Play(AudioAlertType.MessageReceived);
             });
             chatStarted = true;
         }

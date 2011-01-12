@@ -86,5 +86,8 @@
     <Setting Name="Groups" Type="Squiggle.UI.Settings.ContactGroups" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="AudioAlerts" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

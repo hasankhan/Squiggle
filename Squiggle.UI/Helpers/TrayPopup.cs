@@ -8,14 +8,16 @@ namespace Squiggle.UI.Helpers
 {
     class TrayPopup
     {
-        public static bool Enabled { get; set; }
+        public static TrayPopup Instance = new TrayPopup();
 
-        public static void Show(string title, string message)
+        public bool Enabled { get; set; }
+
+        public void Show(string title, string message)
         {
             Show(title, message, _ => { });
         }
 
-        public static void Show(string title, string message, Action<MouseEventArgs> onClick)
+        public void Show(string title, string message, Action<MouseEventArgs> onClick)
         {
             if (!Enabled)
                 return;

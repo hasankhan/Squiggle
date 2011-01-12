@@ -29,27 +29,27 @@
                                 <RowDefinition />
                                 <RowDefinition />
                                 <RowDefinition />
-                                <RowDefinition />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="110" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>                            
-                            <CheckBox  Content="Run on Windows startup" IsChecked="{Binding Path=GeneralSettings.RunAtStartup}" Margin="0,0,0,5" Grid.Column="0" Grid.ColumnSpan="2" />
-                            <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="Close to tray" IsChecked="{Binding Path=GeneralSettings.HideToSystemTray}" Margin="0,0,0,5" />
-                            <CheckBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="Show emoticons" IsChecked="{Binding Path=GeneralSettings.ShowEmoticons}" Margin="0,0,0,5" />
-                            <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="Show popups" IsChecked="{Binding Path=GeneralSettings.ShowPopups}" Margin="0,0,0,5" />
-                            <CheckBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Content="Enable spell-check in chat window." IsChecked="{Binding Path=GeneralSettings.SpellCheck}" Margin="0,0,0,5" />
-                            <TextBlock Grid.Row="5" Grid.Column="0" Text="Sort contacts by:" />
-                            <ComboBox Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" x:Name="cmbSortField">
+                                <ColumnDefinition Width="146" />
+                                <ColumnDefinition Width="211*" />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Grid.Column="0" Content="Run on Windows startup" IsChecked="{Binding Path=GeneralSettings.RunAtStartup}" />
+                            <CheckBox Grid.Column="1" Content="Close to tray" IsChecked="{Binding Path=GeneralSettings.HideToSystemTray}" />
+                            <CheckBox Grid.Row="1" Grid.ColumnSpan="2" Content="Show emoticons" IsChecked="{Binding Path=GeneralSettings.ShowEmoticons}" />
+                            <CheckBox Grid.Row="1" Grid.Column="1" Content="Show popups" IsChecked="{Binding Path=GeneralSettings.ShowPopups}" />
+                            <CheckBox Grid.Row="2" Grid.ColumnSpan="2" Content="Enable spell-check" IsChecked="{Binding Path=GeneralSettings.SpellCheck}" />
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="Sort contacts by:" />
+                            <ComboBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" x:Name="cmbSortField">
                                 <ComboBoxItem IsSelected="True">DisplayName</ComboBoxItem>
                                 <ComboBoxItem >Status</ComboBoxItem>
                             </ComboBox>
-                            <TextBlock Grid.Row="6" Grid.Column="0" Text="Downloads folder: " />
-                            <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
+                            <TextBlock Grid.Row="5" Grid.Column="0" Text="Downloads folder: " />
+                            <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
                                 <TextBox x:Name="txtDownloadsFolder" IsReadOnly="True" Text="{Binding Path=GeneralSettings.DownloadsFolder}" Width="200" />
                                 <Button Content="Browse" Click="btnBrowseDownloadsFolder_Click" Margin="5,0,0,0" />
-                            </StackPanel>                            
+                            </StackPanel>
+                            <CheckBox Content="Audio Alerts" IsChecked="{Binding Path=GeneralSettings.AudioAlerts}" Grid.Row="2" Grid.Column="1" />
                         </Grid>
                     </Border>
                     <Grid Grid.Row="2">

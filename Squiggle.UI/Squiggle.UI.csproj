@@ -199,6 +199,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AppInfo.cs" />
+    <Compile Include="AudioAlert.cs" />
     <Compile Include="ChatWindowCollection.cs" />
     <Compile Include="ContactsSelectWindow.xaml.cs">
       <DependentUpon>ContactsSelectWindow.xaml</DependentUpon>
@@ -341,6 +343,12 @@
     <Resource Include="Images\Close.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Sounds\BuddyOnline.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\MessageReceived.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Images\chat.ico" />
     <Resource Include="Images\away.png" />
     <Resource Include="Images\busy.png" />

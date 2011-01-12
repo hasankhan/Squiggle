@@ -44,7 +44,8 @@ namespace Squiggle.UI
             this.Top = Properties.Settings.Default.MainWindowTop > 0 ? Properties.Settings.Default.MainWindowTop : System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height / 2 - this.Height / 2;
             this.Left = Properties.Settings.Default.MainWindowLeft > 0 ? Properties.Settings.Default.MainWindowLeft : System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width /2 - this.Width / 2;
 
-            TrayPopup.Enabled = SettingsProvider.Current.Settings.GeneralSettings.ShowPopups;
+            TrayPopup.Instance.Enabled = SettingsProvider.Current.Settings.GeneralSettings.ShowPopups;
+            AudioAlert.Instance.Enabled = SettingsProvider.Current.Settings.GeneralSettings.AudioAlerts;
 
             chatWindows = new ChatWindowCollection();
 
@@ -131,12 +132,6 @@ namespace Squiggle.UI
                 lastState = this.WindowState;
         }
 
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            foreach (var window in chatWindows.ToList())
-                window.Close();
-        }
-
         private void StatusMenu_Click(object sender, RoutedEventArgs e)
         {
             var status = (UserStatus)((System.Windows.Controls.MenuItem)e.OriginalSource).DataContext;
@@ -150,7 +145,7 @@ namespace Squiggle.UI
 
         private void QuiteMenu_Click(object sender, RoutedEventArgs e)
         {
-            SignOut(true, true);
+            SignOut(true);
             exiting = true;
             Close();
         }
@@ -200,26 +195,31 @@ namespace Squiggle.UI
             }));
         }
         
-        void SignOut(bool byUser, bool immediate = false)
+        void SignOut(bool byUser)
         {
-            Dispatcher.BeginInvoke((Action)(() =>
+            Dispatcher.Invoke((Action)(() =>
             {
-                if (ChatClient == null || !ChatClient.LoggedIn)
-                    return;
-
-                chatControl.SignIn.SetDisplayName(ChatClient.CurrentUser.DisplayName);
-
                 foreach (var window in chatWindows)
                     window.DestroySession();
 
-                clientAvailable.Reset();                
+                if (ChatClient == null || !ChatClient.LoggedIn)
+                    return;
 
                 DestroyMonitor();
 
-                if (immediate)
-                    Signout();
-                else
-                    ThreadPool.QueueUserWorkItem(_=> Signout());
+                chatControl.SignIn.SetDisplayName(ChatClient.CurrentUser.DisplayName);
+
+                clientAvailable.Reset();                
+
+                try
+                {
+                    ChatClient.Logout();
+                }
+                catch (Exception ex)
+                {
+                    Trace.WriteLine(ex.Message);
+                }
+                clientAvailable.Set();
 
                 chatControl.ContactList.ChatContext = null;
                 clientViewModel = null;
@@ -229,20 +229,6 @@ namespace Squiggle.UI
                 if (byUser)
                     autoSignout.OnSignOut();
             }));
-        }
-
-        void Signout()
-        {
-            try
-            {
-                ChatClient.Logout();
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex.Message);
-            }
-
-            clientAvailable.Set();
         }
 
         static void AddGroupName(string groupName)
@@ -319,12 +305,16 @@ namespace Squiggle.UI
         void client_BuddyOnline(object sender, BuddyOnlineEventArgs e)
         {
             if (!e.Discovered)
-                TrayPopup.Show("Buddy Online", e.Buddy.DisplayName + " is online", _ => StartChat(e.Buddy));
+            {
+                TrayPopup.Instance.Show("Buddy Online", e.Buddy.DisplayName + " is online", _ => StartChat(e.Buddy));
+                AudioAlert.Instance.Play(AudioAlertType.BuddyOnline);
+            }
             OnBuddyChanged(e);
         }
 
         void client_BuddyOffline(object sender, BuddyEventArgs e)
         {
+            AudioAlert.Instance.Play(AudioAlertType.BuddyOffline);
             OnBuddyChanged(e);
         }
 
@@ -384,6 +374,9 @@ namespace Squiggle.UI
             }
             else
             {
+                foreach (var window in chatWindows.ToList())
+                    window.Close();
+
                 Properties.Settings.Default.MainWindowTop = Top;
                 Properties.Settings.Default.MainWindowLeft = Left;
             }

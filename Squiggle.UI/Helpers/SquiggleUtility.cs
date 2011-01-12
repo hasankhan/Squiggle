@@ -14,13 +14,6 @@ namespace Squiggle.UI.Helpers
 {
     class SquiggleUtility
     {
-        public static string GetInstallDirectory()
-        {
-            string location = Assembly.GetExecutingAssembly().Location;
-            location = Path.GetDirectoryName(location);
-            return location;
-        }
-
         public static IEnumerable<UserStatus> GetChangableStatuses()
         {
             var statuses = from status in Enum.GetValues(typeof(UserStatus)).Cast<UserStatus>()

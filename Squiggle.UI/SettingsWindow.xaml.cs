@@ -76,7 +76,8 @@ namespace Squiggle.UI
                 user.Properties.DisplayMessage = settingsVm.PersonalSettings.DisplayMessage;
             }
 
-            TrayPopup.Enabled = settingsVm.GeneralSettings.ShowPopups;
+            TrayPopup.Instance.Enabled = settingsVm.GeneralSettings.ShowPopups;
+            AudioAlert.Instance.Enabled = settingsVm.GeneralSettings.AudioAlerts;
 
             SetRunAtStartup(settingsVm.GeneralSettings.RunAtStartup);
             SettingsProvider.Current.Save();
@@ -133,7 +134,7 @@ namespace Squiggle.UI
 
         static string GetStartupPath()
         {
-            return Assembly.GetExecutingAssembly().Location + " /background";
+            return AppInfo.FilePath + " /background";
         }
     }
 }

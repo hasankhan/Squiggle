@@ -6,6 +6,7 @@ namespace Squiggle.UI.Settings
     {
         public bool HideToSystemTray { get; set; }
         public bool ShowPopups { get; set; }
+        public bool AudioAlerts { get; set; }
         public string ContactListSortField { get; set; }
         public bool SpellCheck { get; set; }
         public string DownloadsFolder { get; set; }
@@ -18,6 +19,7 @@ namespace Squiggle.UI.Settings
             ShowEmoticons = true;
             HideToSystemTray = true;
             ShowPopups = true;
+            AudioAlerts = false;
             ContactListSortField = "DisplayName";
             GroupContacts = true;
             SpellCheck = true;

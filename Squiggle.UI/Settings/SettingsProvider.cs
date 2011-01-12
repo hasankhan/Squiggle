@@ -74,15 +74,13 @@ namespace Squiggle.UI.Settings
             Settings.GeneralSettings.ShowEmoticons = Properties.Settings.Default.ShowEmoticons;
             Settings.GeneralSettings.HideToSystemTray = Properties.Settings.Default.HideToTray;
             Settings.GeneralSettings.ShowPopups = Properties.Settings.Default.ShowPopups;
+            Settings.GeneralSettings.AudioAlerts = Properties.Settings.Default.AudioAlerts;
             Settings.GeneralSettings.SpellCheck = Properties.Settings.Default.SpellCheck;
             Settings.GeneralSettings.ContactListSortField = Properties.Settings.Default.ContactListSortField;
             Settings.GeneralSettings.GroupContacts = Properties.Settings.Default.GroupContacts;
             Settings.GeneralSettings.ContactGroups = Properties.Settings.Default.Groups ?? new ContactGroups();
             if (String.IsNullOrEmpty(Properties.Settings.Default.DownloadsFolder) || !Shell.CreateDirectoryIfNotExists(Properties.Settings.Default.DownloadsFolder))
-            {
-                string location = SquiggleUtility.GetInstallDirectory();
-                Settings.GeneralSettings.DownloadsFolder = Path.Combine(location, "Downloads");
-            }
+                Settings.GeneralSettings.DownloadsFolder = Path.Combine(AppInfo.Location, "Downloads");
             else
                 Settings.GeneralSettings.DownloadsFolder = Properties.Settings.Default.DownloadsFolder;
         }
@@ -131,6 +129,7 @@ namespace Squiggle.UI.Settings
             Properties.Settings.Default.DownloadsFolder = Settings.GeneralSettings.DownloadsFolder;
             Properties.Settings.Default.HideToTray = Settings.GeneralSettings.HideToSystemTray;
             Properties.Settings.Default.ShowPopups = Settings.GeneralSettings.ShowPopups;
+            Properties.Settings.Default.AudioAlerts = Settings.GeneralSettings.AudioAlerts;
             Properties.Settings.Default.ContactListSortField = Settings.GeneralSettings.ContactListSortField;
             Properties.Settings.Default.SpellCheck = Settings.GeneralSettings.SpellCheck;
             Properties.Settings.Default.DownloadsFolder = Settings.GeneralSettings.DownloadsFolder;

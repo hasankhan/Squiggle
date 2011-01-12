@@ -40,7 +40,7 @@ namespace Squiggle.UI.Controls
 
         public FileTarnsferControl()
         {
-            DownloadFolder = System.IO.Path.Combine(Assembly.GetExecutingAssembly().Location, "Downloads");
+            DownloadFolder = System.IO.Path.Combine(AppInfo.Location, "Downloads");
             InitializeComponent();
         }
 

@@ -13,7 +13,7 @@ namespace Squiggle.UI
         {
             InitializeComponent();
 
-            txtVersion.Text = "Version " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            txtVersion.Text = "Version " + AppInfo.Version.ToString();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

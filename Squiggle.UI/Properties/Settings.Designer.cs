@@ -357,5 +357,17 @@ namespace Squiggle.UI.Properties {
                 this["Groups"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AudioAlerts {
+            get {
+                return ((bool)(this["AudioAlerts"]));
+            }
+            set {
+                this["AudioAlerts"] = value;
+            }
+        }
     }
 }
