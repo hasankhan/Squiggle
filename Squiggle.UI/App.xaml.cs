@@ -71,6 +71,7 @@ namespace Messenger
         private void Application_Exit(object sender, ExitEventArgs e)
         {
             Squiggle.UI.Properties.Settings.Default.Save();
+            Environment.Exit(0);
         }
     }
 }

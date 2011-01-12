@@ -376,6 +376,7 @@ namespace Squiggle.UI
             }
             else
             {
+                trayIcon.Dispose();
                 autoSignout.Dispose();
 
                 foreach (var window in chatWindows.ToList())
