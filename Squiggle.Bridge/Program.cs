@@ -18,16 +18,16 @@ namespace Squiggle.Bridge
 			{
 				try
 				{
-					string option = args[0].ToLower();
+                    string option = args[0].ToUpperInvariant();
 					switch (option)
 					{
-						case "-i":
-						case "/i":
+						case "-I":
+						case "/I":
 							ManagedInstallerClass.InstallHelper(new string[] { Assembly.GetExecutingAssembly().Location });
 							break;
-						case "-u":
-						case "/u":
-							ManagedInstallerClass.InstallHelper(new string[] { "/u", Assembly.GetExecutingAssembly().Location });
+						case "-U":
+						case "/U":
+							ManagedInstallerClass.InstallHelper(new string[] { "/U", Assembly.GetExecutingAssembly().Location });
 							break;
 						default:
 							new SquiggleBridgeService().RunConsole(args);

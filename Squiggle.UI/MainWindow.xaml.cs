@@ -267,6 +267,7 @@ namespace Squiggle.UI
 
         IChatClient CreateClient(string displayName, string groupName)
         {
+            SettingsProvider.Current.Load(); // reload settings
             var settings = SettingsProvider.Current.Settings;
 
             int chatPort = settings.ConnectionSettings.ChatPort;
@@ -274,12 +275,6 @@ namespace Squiggle.UI
                 throw new OperationCanceledException("You are not on a network. Please make sure your network card is enabled.");
 
             IPAddress localIP = IPAddress.Parse(settings.ConnectionSettings.BindToIP);
-            if (!NetworkUtility.IsValidIP(localIP))
-                localIP = NetworkUtility.GetLocalIPAddress();
-
-            if (localIP == null)
-                throw new OperationCanceledException("You are not on a network. Please make sure your network card is enabled.");
-
             TimeSpan keepAliveTimeout = settings.ConnectionSettings.KeepAliveTime.Seconds();
             IPAddress presenceAddress = IPAddress.Parse(settings.ConnectionSettings.PresenceAddress);
             int presencePort = settings.ConnectionSettings.PresencePort;

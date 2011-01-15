@@ -6,11 +6,14 @@ using System.Text.RegularExpressions;
 using System.Windows.Documents;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using Squiggle.UI.Helpers;
 
 namespace Squiggle.UI.MessageParsers
 {
-    class EmoticonParser: IMessageParser
+    class EmoticonParser: RegexParser
     {
+        public static EmoticonParser Instance = new EmoticonParser();
+
         class EmoticonEntry
         {
             public BitmapImage Image { get; set; }
@@ -20,38 +23,37 @@ namespace Squiggle.UI.MessageParsers
         Dictionary<string, EmoticonEntry> emoticons = new Dictionary<string, EmoticonEntry>();
         Regex pattern;
 
-        public Regex Pattern
-        {
-            get { return pattern; }
-        }
-
         public EmoticonParser()
         {
             foreach (var emoticon in Emoticons.All)
                 AddEmoticon(emoticon);
         }
 
-        public void AddEmoticon(Squiggle.UI.Emoticon emoticon)
+        protected override Regex Pattern
         {
-            var entry = new EmoticonEntry() { Image = new BitmapImage(emoticon.ImageUri),
+            get { return pattern; }
+        }
+
+        public void AddEmoticon(Emoticon emoticon)
+        {
+            var image = ImageFactory.Instance.Load(emoticon.ImageUri);
+
+            var entry = new EmoticonEntry() { Image = image,
                                               Title = emoticon.Title };
 
             foreach (var code in emoticon.Codes)
-                emoticons[code.ToLower()] = entry;
+                emoticons[code.ToUpperInvariant()] = entry;
 
             string regex = String.Join(")|(", emoticons.Keys.Select(c => Regex.Escape(c)).ToArray());
             pattern = new Regex("(" + regex + ")", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         }
 
-        public IEnumerable<Inline> ParseText(string text)
+        protected override Inline Convert(string text)
         {
-            EmoticonEntry emoticon;
-            if (emoticons.TryGetValue(text.ToLower(), out emoticon))
-            {
-                var image = new Image() { Source = emoticon.Image };
-                image.Stretch = System.Windows.Media.Stretch.None;
-                yield return new InlineUIContainer(image);
-            }
+            EmoticonEntry emoticon = emoticons[text.ToUpperInvariant()];
+            var image = new Image() { Source = emoticon.Image };
+            image.Stretch = System.Windows.Media.Stretch.None;
+            return new InlineUIContainer(image);
         }
     }
 }

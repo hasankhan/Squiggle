@@ -98,7 +98,7 @@ namespace Squiggle.UI
             else if (filter == String.Empty)
                 e.Accepted = true;
             else
-                e.Accepted = buddy.DisplayName.ToLower().Contains(filter.ToLower());
+                e.Accepted = buddy.DisplayName.ToUpperInvariant().Contains(filter.ToUpperInvariant());
 
             if (ExcludeCriterea != null)
                 e.Accepted &= !ExcludeCriterea(buddy);

@@ -116,7 +116,7 @@ namespace Squiggle.UI.Controls
             if (filter == String.Empty)
                 e.Accepted = true;
             else
-                e.Accepted = buddy.DisplayName.ToLower().Contains(filter.ToLower());
+                e.Accepted = buddy.DisplayName.ToUpperInvariant().Contains(filter.ToUpperInvariant());
         }
 
         void FilterTextBox_FilterChanged(object sender, BuddyFilterEventArs e)

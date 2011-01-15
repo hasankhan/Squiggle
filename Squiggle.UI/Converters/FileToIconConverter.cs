@@ -272,7 +272,7 @@ namespace Squiggle.UI.Converters
 
         private static bool isImage(string fileName)
         {
-            string ext = Path.GetExtension(fileName).ToLower();
+            string ext = Path.GetExtension(fileName).ToUpperInvariant();
             if (ext == "")
                 return false;
             return (imageFilter.IndexOf(ext) != -1 && File.Exists(fileName));
@@ -280,7 +280,7 @@ namespace Squiggle.UI.Converters
 
         private static bool isExecutable(string fileName)
         {
-            string ext = Path.GetExtension(fileName).ToLower();
+            string ext = Path.GetExtension(fileName).ToUpperInvariant();
             if (ext == "")
                 return false;
             return (exeFilter.IndexOf(ext) != -1 && File.Exists(fileName));
@@ -295,14 +295,14 @@ namespace Squiggle.UI.Converters
 
         private static string returnKey(string fileName, IconSize size)
         {
-            string key = Path.GetExtension(fileName).ToLower();
+            string key = Path.GetExtension(fileName).ToUpperInvariant();
 
             if (isExecutable(fileName))
-                key = fileName.ToLower();
+                key = fileName.ToUpperInvariant();
             if (isImage(fileName) && size == IconSize.thumbnail)
-                key = fileName.ToLower();
+                key = fileName.ToUpperInvariant();
             if (isFolder(fileName))
-                key = fileName.ToLower();
+                key = fileName.ToUpperInvariant();
 
             switch (size)
             {
@@ -445,7 +445,7 @@ namespace Squiggle.UI.Converters
         {
             Icon icon;
             string key = returnKey(fileName, size);
-            string lookup = "aaa" + Path.GetExtension(fileName).ToLower();
+            string lookup = "aaa" + Path.GetExtension(fileName).ToUpperInvariant();
             if (!key.StartsWith("."))
                 lookup = fileName;
 

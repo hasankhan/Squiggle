@@ -31,6 +31,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Resources;
 using Hardcodet.Wpf.TaskbarNotification.Interop;
+using System.Windows.Media.Imaging;
 
 namespace Hardcodet.Wpf.TaskbarNotification
 {
@@ -169,21 +170,22 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// an icon file (*.ico).</param>
     /// <returns>An icon object that can be used with the
     /// taskbar area.</returns>
-    public static Icon ToIcon(this ImageSource imageSource)
+    public static Icon ToIcon(this BitmapImage imageSource)
     {
-      if (imageSource == null) return null;
+      if (imageSource == null) 
+          return null;
 
-      Uri uri = new Uri(imageSource.ToString(), UriKind.RelativeOrAbsolute);
-      StreamResourceInfo streamInfo = Application.GetResourceStream(uri);
+      //Uri uri = new Uri(imageSource.ToString(), UriKind.RelativeOrAbsolute);
+      //StreamResourceInfo streamInfo = Application.GetResourceStream(uri);
 
-      if (streamInfo == null)
-      {
-        string msg = "The supplied image source '{0}' could not be resolved.";
-        msg = String.Format(msg, imageSource);
-        throw new ArgumentException(msg);
-      }
+      //if (streamInfo == null)
+      //{
+      //  string msg = "The supplied image source '{0}' could not be resolved.";
+      //  msg = String.Format(msg, imageSource);
+      //  throw new ArgumentException(msg);
+      //}
 
-      return new Icon(streamInfo.Stream);
+      return new Icon(imageSource.StreamSource);
     }
 
     #endregion

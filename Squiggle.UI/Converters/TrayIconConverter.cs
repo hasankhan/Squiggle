@@ -2,15 +2,23 @@
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using Squiggle.Chat;
+using Squiggle.UI.Helpers;
+using System.Drawing;
+using System.Windows;
 
 namespace Squiggle.UI.Converters
 {
     public class TrayIconConverter: IValueConverter
     {
-        static BitmapImage onlineIcon = new BitmapImage(new Uri("/Images/Chat.ico", UriKind.Relative));
-        static BitmapImage offlineIcon = new BitmapImage(new Uri("/Images/Chat-Offline.ico", UriKind.Relative));
-        static BitmapImage awayIcon = new BitmapImage(new Uri("/Images/Chat-Away.ico", UriKind.Relative));
-        static BitmapImage busyIcon = new BitmapImage(new Uri("/Images/Chat-Busy.ico", UriKind.Relative));
+        static Icon onlineIcon, offlineIcon, awayIcon, busyIcon;
+
+        static TrayIconConverter()
+        {
+            onlineIcon = new Icon(Application.GetResourceStream(new Uri("/Images/Chat.ico", UriKind.Relative)).Stream);
+            offlineIcon = new Icon(Application.GetResourceStream(new Uri("/Images/Chat-Offline.ico", UriKind.Relative)).Stream);
+            awayIcon = new Icon(Application.GetResourceStream(new Uri("/Images/Chat-Away.ico", UriKind.Relative)).Stream);
+            busyIcon = new Icon(Application.GetResourceStream(new Uri("/Images/Chat-Busy.ico", UriKind.Relative)).Stream);
+        }
 
         #region IValueConverter Members
 

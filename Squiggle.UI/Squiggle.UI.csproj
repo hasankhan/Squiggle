@@ -216,7 +216,10 @@
       <DependentUpon>EmoticonSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Async.cs" />
+    <Compile Include="Helpers\ImageFactory.cs" />
     <Compile Include="IdleStatusChanger.cs" />
+    <Compile Include="MessageFilters\AliasFilter.cs" />
+    <Compile Include="MessageFilters\IMessageFilter.cs" />
     <Compile Include="MessageParsers\EmoticonParser.cs" />
     <Compile Include="Controls\FilterTextBox.xaml.cs">
       <DependentUpon>FilterTextBox.xaml</DependentUpon>
@@ -231,6 +234,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MessageParsers\MultiParser.cs" />
+    <Compile Include="MessageParsers\RegexParser.cs" />
     <Compile Include="Settings\ContactGroup.cs" />
     <Compile Include="Settings\ContactGroups.cs" />
     <Compile Include="ViewModel\ClientViewModel.cs" />

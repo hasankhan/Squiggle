@@ -40,9 +40,9 @@ namespace Squiggle.Chat
             return isValid;
         }
 
-        public static bool IsValidIP(IPAddress ip)
+        public static bool IsValidIP(IPAddress address)
         {
-            bool isValid = GetLocalIPAddresses().Contains(ip);
+            bool isValid = GetLocalIPAddresses().Contains(address);
             return isValid;
         }
 

@@ -9,19 +9,21 @@ using Squiggle.UI.Helpers;
 
 namespace Squiggle.UI.MessageParsers
 {
-    class HyperlinkParser: IMessageParser
+    class HyperlinkParser: RegexParser
     {
+        public static HyperlinkParser Instance = new HyperlinkParser();
+
         static Regex urlRegex = new Regex(@"(((ht|f)tp(s?)\:\/\/)|([w|W]{3}\.))[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9=:\-\.\?\,\'\/\\\+&%\$#_]*)?", RegexOptions.Compiled);
 
-        public Regex Pattern
+        protected override Regex Pattern
         {
             get { return urlRegex; }
         }
-
-        public IEnumerable<Inline> ParseText(string text)
+    
+        protected override Inline Convert(string text)
         {
             var link = new Hyperlink(new Run(text));
-            if (text.ToLower().StartsWith("www"))
+            if (text.ToUpperInvariant().StartsWith("WWW"))
                 text = "http://" + text;
             link.NavigateUri = new Uri(text, UriKind.Absolute);
             link.Cursor = Cursors.Hand;
@@ -30,7 +32,7 @@ namespace Squiggle.UI.MessageParsers
                 Shell.OpenUrl(link.NavigateUri.AbsoluteUri);
                 e.Handled = true;
             };
-            yield return link;
+            return link;
         }
     }
 }

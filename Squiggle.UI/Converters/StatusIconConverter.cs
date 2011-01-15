@@ -2,15 +2,21 @@
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using Squiggle.Chat;
+using Squiggle.UI.Helpers;
 
 namespace Squiggle.UI.Converters
 {
     public class StatusIconConverter: IValueConverter
     {
-        static BitmapImage onlineIcon = new BitmapImage(new Uri("/Images/online.png", UriKind.Relative));
-        static BitmapImage busyIcon = new BitmapImage(new Uri("/Images/busy.png", UriKind.Relative));
-        static BitmapImage awayIcon = new BitmapImage(new Uri("/Images/away.png", UriKind.Relative));
-        static BitmapImage offlineIcon = new BitmapImage(new Uri("/Images/offline.png", UriKind.Relative));
+        static BitmapImage onlineIcon, busyIcon, awayIcon, offlineIcon;
+
+        static StatusIconConverter()
+        {
+            onlineIcon = ImageFactory.Instance.Load(new Uri("/Images/online.png", UriKind.Relative));
+            busyIcon = ImageFactory.Instance.Load(new Uri("/Images/busy.png", UriKind.Relative));
+            awayIcon = ImageFactory.Instance.Load(new Uri("/Images/away.png", UriKind.Relative));
+            offlineIcon = ImageFactory.Instance.Load(new Uri("/Images/offline.png", UriKind.Relative));
+        }
 
         #region IValueConverter Members
 

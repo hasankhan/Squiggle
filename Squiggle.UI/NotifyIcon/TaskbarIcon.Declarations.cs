@@ -32,6 +32,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using Hardcodet.Wpf.TaskbarNotification.Interop;
+using System.Windows.Media.Imaging;
 
 namespace Hardcodet.Wpf.TaskbarNotification
 {
@@ -199,7 +200,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     public static readonly DependencyProperty IconSourceProperty =
         DependencyProperty.Register("IconSource",
-                                    typeof(ImageSource),
+                                    typeof(Icon),
                                     typeof(TaskbarIcon),
                                     new FrameworkPropertyMetadata(null, IconSourcePropertyChanged));
 
@@ -241,10 +242,10 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// <param name="e">Provides information about the updated property.</param>
     private void OnIconSourcePropertyChanged(DependencyPropertyChangedEventArgs e)
     {
-      ImageSource newValue = (ImageSource)e.NewValue;
+        var newValue = (Icon)e.NewValue;
 
       //resolving the ImageSource at design time is unlikely to work
-      if (!Util.IsDesignMode) Icon = newValue.ToIcon();
+      if (!Util.IsDesignMode) Icon = newValue;
     }
 
     #endregion

@@ -18,13 +18,18 @@ namespace Squiggle.UI.Controls
     /// </summary>
     public partial class ChatTextBox : UserControl
     {
-        public IList<IMessageParser> MessageParsers { get; private set; }
+
+        MultiParser parsers;
+        public IList<IMessageParser> MessageParsers
+        {
+            get { return parsers; }
+        }
 
         public ChatTextBox()
         {
             InitializeComponent();
-            MessageParsers = new List<IMessageParser>();
-            MessageParsers.Add(new HyperlinkParser());
+            parsers = new MultiParser();
+            MessageParsers.Add(HyperlinkParser.Instance);
         }        
 
         public void AddInfo(string info)
@@ -63,14 +68,14 @@ namespace Squiggle.UI.Controls
             var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
 
             string text = String.Format("{0} said ({1}): ", user, DateTime.Now.ToShortTimeString());
-            var items = ParseText(text);
+            var items = parsers.ParseText(text);
             foreach (var item in items)
             {
                 item.Foreground = Brushes.Gray;
                 para.Inlines.Add(item);
             }
             para.Inlines.Add(new LineBreak());
-            items = ParseText(message);
+            items = parsers.ParseText(message);
             var fontsettings = new FontSetting(color, fontName, fontSize, fontStyle);
             foreach (var item in items)
             {
@@ -109,36 +114,6 @@ namespace Squiggle.UI.Controls
             var range = new TextRange(sentMessages.Document.ContentStart, sentMessages.Document.ContentEnd);
             using (var stream = new FileStream(fileName, FileMode.OpenOrCreate))
                 range.Save(stream, DataFormats.Rtf);
-        }
-
-        List<Inline> ParseText(string message)
-        {
-            var items = new List<Inline>();
-
-            lock (MessageParsers)
-                foreach (IMessageParser parser in MessageParsers)
-                {
-                    var match = parser.Pattern.Match(message);
-                    if (match.Success)
-                    {
-                        string text = message.Substring(0, match.Index);
-                        items.AddRange(ParseText(text));
-                        items.AddRange(parser.ParseText(match.Value));
-                        int lastIndex = match.Index + match.Length;
-                        items.AddRange(ParseText(message.Substring(lastIndex)));
-                        return items;
-                    }
-                }
-
-            AddText(items, message);
-            return items;
-        }
-
-        static void AddText(List<Inline> items, string text)
-        {
-            if (!String.IsNullOrEmpty(text))
-                items.Add(new Run(text));
-        }
+        }        
     }
-    
 }
