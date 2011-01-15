@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Linq;
 using Squiggle.Chat;
 using Squiggle.UI.MessageParsers;
+using Squiggle.UI.MessageFilters;
 
 namespace Squiggle.UI.Controls
 {
@@ -18,7 +19,6 @@ namespace Squiggle.UI.Controls
     /// </summary>
     public partial class ChatTextBox : UserControl
     {
-
         MultiParser parsers;
         public IList<IMessageParser> MessageParsers
         {
@@ -28,6 +28,7 @@ namespace Squiggle.UI.Controls
         public ChatTextBox()
         {
             InitializeComponent();
+            
             parsers = new MultiParser();
             MessageParsers.Add(HyperlinkParser.Instance);
         }        

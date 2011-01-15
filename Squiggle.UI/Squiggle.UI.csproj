@@ -220,6 +220,7 @@
     <Compile Include="IdleStatusChanger.cs" />
     <Compile Include="MessageFilters\AliasFilter.cs" />
     <Compile Include="MessageFilters\IMessageFilter.cs" />
+    <Compile Include="MessageFilters\MultiFilter.cs" />
     <Compile Include="MessageParsers\EmoticonParser.cs" />
     <Compile Include="Controls\FilterTextBox.xaml.cs">
       <DependentUpon>FilterTextBox.xaml</DependentUpon>

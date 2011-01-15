@@ -7,6 +7,6 @@ namespace Squiggle.UI.MessageFilters
 {
     public interface IMessageFilter
     {
-        bool Filter(StringBuilder message);
+        bool Filter(StringBuilder message, ChatWindow window);
     }
 }

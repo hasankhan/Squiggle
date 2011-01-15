@@ -9,32 +9,26 @@ namespace Squiggle.UI.MessageParsers
 {
     class MultiParser: List<IMessageParser>
     {
-        public MultiParser() { }
-        public MultiParser(IEnumerable<IMessageParser> parsers): base(parsers)
-        {
-
-        }
-
         public IEnumerable<Inline> ParseText(string message)
         {
             var items = new List<Inline>();
 
-                foreach (IMessageParser parser in this)
+            foreach (IMessageParser parser in this)
+            {
+                MessageParseResult result;
+                if (parser.TryParseText(message, out result))
                 {
-                    MessageParseResult result;
-                    if (parser.TryParseText(message, out result))
-                    {
-                        if (!String.IsNullOrEmpty(result.Prefix))
-                            items.AddRange(ParseText(result.Prefix));
+                    if (!String.IsNullOrEmpty(result.Prefix))
+                        items.AddRange(ParseText(result.Prefix));
 
-                        items.Add(result.Converted);
+                    items.Add(result.Converted);
 
-                        if (!String.IsNullOrEmpty(result.Suffix))
-                            items.AddRange(ParseText(result.Suffix));
+                    if (!String.IsNullOrEmpty(result.Suffix))
+                        items.AddRange(ParseText(result.Suffix));
 
-                        return items;
-                    }
+                    return items;
                 }
+            }
 
             AddText(items, message);
             return items;

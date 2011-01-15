@@ -11,6 +11,8 @@ using Squiggle.UI.Settings;
 using System.Collections.Generic;
 using Squiggle.UI.MessageParsers;
 using Squiggle.UI.Helpers;
+using Squiggle.UI.MessageFilters;
+using System.Text;
 
 namespace Squiggle.UI
 {
@@ -20,7 +22,6 @@ namespace Squiggle.UI
     public partial class ChatWindow : Window
     {
         IChat chatSession;
-        Buddy buddy;
         FlashWindow flash;
         DateTime? lastMessageReceived;
         DispatcherTimer statusResetTimer;
@@ -33,7 +34,11 @@ namespace Squiggle.UI
         bool buzzPending;
         WindowState lastState;
         FileTransferCollection fileTransfers = new FileTransferCollection();
+
+        MultiFilter filters = new MultiFilter();
         bool chatStarted;
+
+        public Buddy PrimaryBuddy { get; private set; }
 
         public ChatWindow()
         {
@@ -51,14 +56,16 @@ namespace Squiggle.UI
             this.StateChanged += new EventHandler(ChatWindow_StateChanged);
 
             SettingsProvider.Current.SettingsUpdated += (sender, e) => LoadSettings();
-            LoadSettings();            
+            LoadSettings();
+
+            filters.Add(AliasFilter.Instance);
         }
 
         public ChatWindow(Buddy buddy) : this()
         {
-            this.buddy = buddy;
-            this.buddy.Online += new EventHandler(buddy_Online);
-            this.buddy.Offline += new EventHandler(buddy_Offline);
+            this.PrimaryBuddy = buddy;
+            this.PrimaryBuddy.Online += new EventHandler(buddy_Online);
+            this.PrimaryBuddy.Offline += new EventHandler(buddy_Offline);
         }        
 
         public IEnumerable<Buddy> Buddies
@@ -302,7 +309,7 @@ namespace Squiggle.UI
         {
             Dispatcher.Invoke(() => 
             {
-                if (!IsGroupChat && Buddies.Contains(buddy))
+                if (!IsGroupChat && Buddies.Contains(PrimaryBuddy))
                     buddyOfflineMessage.Visibility = Visibility.Collapsed;
             });
         }
@@ -311,9 +318,9 @@ namespace Squiggle.UI
         {
             Dispatcher.Invoke(() =>
             {
-                if (!IsGroupChat && Buddies.Contains(buddy))
+                if (!IsGroupChat && Buddies.Contains(PrimaryBuddy))
                 {
-                    buddyOfflineMessage.DataContext = buddy.DisplayName;
+                    buddyOfflineMessage.DataContext = PrimaryBuddy.DisplayName;
                     buddyOfflineMessage.Visibility = Visibility.Visible;
                 }
             });
@@ -447,22 +454,29 @@ namespace Squiggle.UI
             chatStarted = true;
             if (chatSession == null)
             {
-                var temp = MainWindow.Instance.ChatClient.Buddies.FirstOrDefault(b => b.Equals(buddy));
-                if (temp == null)
+                var buddyInList = MainWindow.Instance.ChatClient.Buddies.FirstOrDefault(b => b.Equals(PrimaryBuddy));
+                if (buddyInList == null)
                 {
                     OnMessageFailed(new MessageFailedEventArgs() { Message = message, Exception = null });
                     return;
                 }
                 else
                 {
-                    buddy = temp;
-                    SetChatSession(temp.StartChat());
+                    PrimaryBuddy = buddyInList;
+                    SetChatSession(buddyInList.StartChat());
                 }
-            }            
+            }          
+  
             string displayName = MainWindow.Instance.ChatClient == null ? "You" : MainWindow.Instance.ChatClient.CurrentUser.DisplayName;
             var settings = SettingsProvider.Current.Settings.PersonalSettings;
-            chatSession.SendMessage(settings.FontName, settings.FontSize, settings.FontColor, settings.FontStyle, message);
-            chatTextBox.AddMessage(displayName, message, settings.FontName, settings.FontSize, settings.FontStyle, settings.FontColor);
+
+            var temp = new StringBuilder(message);
+            if (filters.Filter(temp, this))
+            {
+                message = temp.ToString();
+                chatSession.SendMessage(settings.FontName, settings.FontSize, settings.FontColor, settings.FontStyle, message);
+                chatTextBox.AddMessage(displayName, message, settings.FontName, settings.FontSize, settings.FontStyle, settings.FontColor);
+            }            
         }      
 
         public void SendBuzz()
@@ -604,7 +618,7 @@ namespace Squiggle.UI
             else
             {
                 string title = String.Join(", ", Buddies.Select(b => b.DisplayName).ToArray());
-                this.Title = String.IsNullOrEmpty(title) ? buddy.DisplayName : title;
+                this.Title = String.IsNullOrEmpty(title) ? PrimaryBuddy.DisplayName : title;
             }
         }   
 
