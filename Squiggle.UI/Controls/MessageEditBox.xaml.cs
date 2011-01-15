@@ -91,9 +91,11 @@ namespace Squiggle.UI.Controls
                 messages.RemoveAt(0);
             messageIndex = messages.Count - 1;
 
-            MessageSend(this, new MessageSendEventArgs() { Message = txtMessage.Text });
+            string message = txtMessage.Text;
             txtMessage.Text = String.Empty;
             txtMessage.Focus();
+
+            MessageSend(this, new MessageSendEventArgs() { Message =  message});
         }
 
         private void txtMessage_TextChanged(object sender, TextChangedEventArgs e)

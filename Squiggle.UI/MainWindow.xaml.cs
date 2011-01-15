@@ -145,6 +145,11 @@ namespace Squiggle.UI
 
         private void QuiteMenu_Click(object sender, RoutedEventArgs e)
         {
+            Quit();
+        }
+
+        public void Quit()
+        {
             SignOut(true);
             exiting = true;
             Close();
@@ -332,8 +337,8 @@ namespace Squiggle.UI
         public void RestoreWindow()
         {
             this.Show();
-            this.Activate();
             this.WindowState = lastState;
+            this.Activate();
         }
 
         ChatWindow CreateChatWindow(Buddy buddy, IChat chatSession, bool initiatedByUser)

@@ -115,6 +115,11 @@ namespace Squiggle.UI.Controls
             var range = new TextRange(sentMessages.Document.ContentStart, sentMessages.Document.ContentEnd);
             using (var stream = new FileStream(fileName, FileMode.OpenOrCreate))
                 range.Save(stream, DataFormats.Rtf);
-        }        
+        }
+
+        public void Clear()
+        {
+            sentMessages.Document.Blocks.Clear();
+        }
     }
 }

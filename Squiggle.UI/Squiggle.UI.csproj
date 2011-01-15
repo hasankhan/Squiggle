@@ -219,6 +219,7 @@
     <Compile Include="Helpers\ImageFactory.cs" />
     <Compile Include="IdleStatusChanger.cs" />
     <Compile Include="MessageFilters\AliasFilter.cs" />
+    <Compile Include="MessageFilters\CommandsFilter.cs" />
     <Compile Include="MessageFilters\IMessageFilter.cs" />
     <Compile Include="MessageFilters\MultiFilter.cs" />
     <Compile Include="MessageParsers\EmoticonParser.cs" />
