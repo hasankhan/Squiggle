@@ -32,6 +32,11 @@
                       Loaded="Group_Loaded"
                       Collapsed="Group_ExpandChanged" 
                       Expanded="Group_ExpandChanged">
+                <Expander.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Send an instant _broadcast message" Tag="{Binding Items}" Click="SendBroadcastMessageMenu_Click" />
+                    </ContextMenu>
+                </Expander.ContextMenu>
                 <Expander.Header>
                     <TextBlock>
                         <TextBlock.Text>
@@ -118,7 +123,6 @@
                     </Setter>
                 </Trigger>
             </DataTemplate.Triggers>
-
         </DataTemplate>
     </UserControl.Resources>
     <Grid >
@@ -187,7 +191,9 @@
             </StackPanel>
             <ScrollViewer Grid.Row="1" Focusable="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
                 <StackPanel>
-                    <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}" ItemsSource="{Binding Source={StaticResource buddiesCollection}}" AlternationCount="2">
+                    <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}" 
+                                  ItemsSource="{Binding Source={StaticResource buddiesCollection}}" 
+                                  AlternationCount="2">
                         <ItemsControl.GroupStyle>
                             <GroupStyle>
                                 <GroupStyle.ContainerStyle>

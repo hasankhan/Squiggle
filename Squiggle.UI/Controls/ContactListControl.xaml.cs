@@ -8,6 +8,8 @@ using System.Windows.Input;
 using Squiggle.Chat;
 using Squiggle.UI.Settings;
 using Squiggle.UI.ViewModel;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Squiggle.UI.Controls
 {
@@ -17,6 +19,7 @@ namespace Squiggle.UI.Controls
     public partial class ContactListControl : UserControl
     {
         public event EventHandler<ChatStartEventArgs> ChatStart = delegate { };
+        public event EventHandler<BroadcastChatStartEventArgs> BroadcastChatStart = delegate { };
         public event EventHandler SignOut = delegate { };
         public event EventHandler OpenAbout = delegate { };
 
@@ -75,7 +78,7 @@ namespace Squiggle.UI.Controls
         void StartChat(Buddy buddy, bool sendFile, params string[] filePaths)
         {
             if (buddy.Status != UserStatus.Offline)
-                ChatStart(this, new ChatStartEventArgs() { User = buddy,
+                ChatStart(this, new ChatStartEventArgs() { Buddy = buddy,
                                                            SendFile = sendFile,
                                                            Files = filePaths });
         }
@@ -192,12 +195,24 @@ namespace Squiggle.UI.Controls
             ContactGroup group = SettingsProvider.Current.Settings.GeneralSettings.ContactGroups.Find(expander.Tag as string);
             expander.IsExpanded = group != null ? group.Expanded : true;
         }
+
+        private void SendBroadcastMessageMenu_Click(object sender, RoutedEventArgs e)
+        {
+            var menuItem = (MenuItem)sender;
+            var buddies = ((IEnumerable<object>)menuItem.Tag).Cast<Buddy>();
+            BroadcastChatStart(this, new BroadcastChatStartEventArgs() { Buddies = buddies.ToList() });
+        }
     }
 
     public class ChatStartEventArgs : EventArgs
     {
-        public Buddy User { get; set; }
+        public Buddy Buddy { get; set; }
         public bool SendFile { get; set; }
         public string[] Files { get; set; }
+    }
+
+    public class BroadcastChatStartEventArgs: EventArgs
+    {
+        public IEnumerable<Buddy> Buddies {get; set;}
     }
 }

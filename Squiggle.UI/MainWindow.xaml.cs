@@ -50,12 +50,13 @@ namespace Squiggle.UI
             chatWindows = new ChatWindowCollection();
 
             chatControl.SignIn.LoginInitiated += new EventHandler<Squiggle.UI.Controls.LogInEventArgs>(ContactList_LoginInitiated);
+            chatControl.ContactList.BroadcastChatStart += new EventHandler<Controls.BroadcastChatStartEventArgs>(ContactList_BroadcastChatStart);
             chatControl.ContactList.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(ContactList_StartChat);
             chatControl.ContactList.SignOut += new EventHandler(ContactList_SignOut);
             dummyViewModel = new ClientViewModel(new DummyChatClient());
             autoSignout = new NetworkSignout(u => SignIn(u.DisplayName, u.GroupName, false, () => { }), () => SignOut(false));
             chatControl.ContactList.OpenAbout += (sender, e) => SquiggleUtility.ShowAboutDialog(this);
-        }
+        }        
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -100,7 +101,12 @@ namespace Squiggle.UI
 
         void ContactList_StartChat(object sender, Squiggle.UI.Controls.ChatStartEventArgs e)
         {
-            StartChat(e.User, e.SendFile, e.Files);
+            StartChat(e.Buddy, e.SendFile, e.Files);
+        }
+
+        void ContactList_BroadcastChatStart(object sender, Controls.BroadcastChatStartEventArgs e)
+        {
+            StartBroadcastChat(e.Buddies);
         }
 
         ChatWindow StartChat(Buddy buddy, bool sendFile, params string[] filePaths)
@@ -436,21 +442,24 @@ namespace Squiggle.UI
             StartBroadcastChat();
         }
 
-        private void StartBroadcastChat()
+        void StartBroadcastChat()
         {
             var onlineBuddies = ChatClient.Buddies.Where(b => b.Status != UserStatus.Offline);
             if (onlineBuddies.Any())
+                StartBroadcastChat(onlineBuddies);
+        }
+
+        void StartBroadcastChat(IEnumerable<Buddy> buddies)
+        {
+            var chatSessions = buddies.Select(b => b.StartChat()).ToList();
+            var groupChat = new BroadcastChat(chatSessions);
+            CreateChatWindow(groupChat.Buddies.First(), groupChat, true);
+            ChatClient.BuddyOnline += (s, b) => groupChat.AddSession(b.Buddy.StartChat());
+            ChatClient.BuddyOffline += (s, b) =>
             {
-                var chatSessions = onlineBuddies.Select(b => b.StartChat()).ToList();
-                var groupChat = new BroadcastChat(chatSessions);
-                CreateChatWindow(groupChat.Buddies.First(), groupChat, true);
-                ChatClient.BuddyOnline += (s, b) => groupChat.AddSession(b.Buddy.StartChat());
-                ChatClient.BuddyOffline += (s, b) =>
-                {
-                    var session = groupChat.ChatSessions.FirstOrDefault(c => c.Buddies.Contains(b.Buddy) && !c.IsGroupChat);
-                    groupChat.RemoveSession(session);
-                };
-            }
+                var session = groupChat.ChatSessions.FirstOrDefault(c => c.Buddies.Contains(b.Buddy) && !c.IsGroupChat);
+                groupChat.RemoveSession(session);
+            };
         }
 
         private void SortMenu_Click(object sender, RoutedEventArgs e)
