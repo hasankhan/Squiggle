@@ -9,28 +9,28 @@ namespace Squiggle.Chat.Services.Chat.Host
     public interface IChatHost
     {
         [OperationContract]
-        SessionInfo GetSessionInfo(Guid sessionId, IPEndPoint user);
+        SessionInfo GetSessionInfo(Guid sessionId, ChatEndPoint user);
 
         [OperationContract]
-        void Buzz(Guid sessionId, IPEndPoint user);
+        void Buzz(Guid sessionId, ChatEndPoint user);
 
         [OperationContract]
-        void UserIsTyping(Guid sessionId, IPEndPoint user);
+        void UserIsTyping(Guid sessionId, ChatEndPoint user);
 
         [OperationContract]
-        void ReceiveMessage(Guid sessionId, IPEndPoint user, string fontName, int fontSize, Color color, FontStyle fontStyle, string message);
+        void ReceiveMessage(Guid sessionId, ChatEndPoint user, string fontName, int fontSize, Color color, FontStyle fontStyle, string message);
 
         [OperationContract]
-        void ReceiveChatInvite(Guid sessionId, IPEndPoint user, IPEndPoint[] participants);
+        void ReceiveChatInvite(Guid sessionId, ChatEndPoint user, ChatEndPoint[] participants);
 
         [OperationContract]
-        void JoinChat(Guid sessionId, IPEndPoint user);
+        void JoinChat(Guid sessionId, ChatEndPoint user);
 
         [OperationContract]
-        void LeaveChat(Guid sessionId, IPEndPoint user);
+        void LeaveChat(Guid sessionId, ChatEndPoint user);
 
         [OperationContract]
-        void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, long size);
+        void ReceiveFileInvite(Guid sessionId, ChatEndPoint user, Guid id, string name, long size);
 
         [OperationContract]
         void ReceiveFileContent(Guid id, byte[] chunk);

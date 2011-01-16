@@ -12,10 +12,10 @@ namespace Squiggle.Chat.Services.Chat
 {
     class ChatSession: IChatSession
     {
-        IPEndPoint localUser;
+        ChatEndPoint localUser;
         ChatHost localHost;
-        HashSet<IPEndPoint> remoteUsers;
-        Dictionary<IPEndPoint, IChatHost> remoteHosts;
+        HashSet<ChatEndPoint> remoteUsers;
+        Dictionary<string, IChatHost> remoteHosts;
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
         public event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived = delegate { };
@@ -27,7 +27,7 @@ namespace Squiggle.Chat.Services.Chat
         public event EventHandler GroupChatStarted = delegate { };
 
         public Guid ID { get; private set; }
-        public IEnumerable<IPEndPoint> RemoteUsers
+        public IEnumerable<ChatEndPoint> RemoteUsers
         {
             get { return remoteUsers; }
         }
@@ -36,14 +36,14 @@ namespace Squiggle.Chat.Services.Chat
             get { return remoteUsers.Count > 1; }
         }
 
-        public ChatSession(Guid sessionID, ChatHost localHost, IPEndPoint localUser, IPEndPoint remoteUser): this(sessionID, localHost, localUser, Enumerable.Repeat(remoteUser, 1)) { }
+        public ChatSession(Guid sessionID, ChatHost localHost, ChatEndPoint localUser, ChatEndPoint remoteUser): this(sessionID, localHost, localUser, Enumerable.Repeat(remoteUser, 1)) { }
 
-        public ChatSession(Guid sessionID, ChatHost localHost, IPEndPoint localUser, IEnumerable<IPEndPoint> remoteUsers)
+        public ChatSession(Guid sessionID, ChatHost localHost, ChatEndPoint localUser, IEnumerable<ChatEndPoint> remoteUsers)
         {
             this.ID = sessionID;
             this.localHost = localHost;
             this.localUser = localUser;
-            this.remoteUsers = new HashSet<IPEndPoint>(remoteUsers);
+            this.remoteUsers = new HashSet<ChatEndPoint>(remoteUsers);
             localHost.ChatInviteReceived += new EventHandler<ChatInviteReceivedEventArgs>(localHost_ChatInviteReceived);
             localHost.TransferInvitationReceived += new EventHandler<TransferInvitationReceivedEventArgs>(localHost_TransferInvitationReceived);
             localHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(host_MessageReceived);
@@ -52,7 +52,7 @@ namespace Squiggle.Chat.Services.Chat
             localHost.UserJoined += new EventHandler<SessionEventArgs>(localHost_UserJoined);
             localHost.UserLeft += new EventHandler<SessionEventArgs>(localHost_UserLeft);
             localHost.SessionInfoRequested += new EventHandler<SessionInfoRequestedEventArgs>(localHost_SessionInfoRequested);
-            remoteHosts = new Dictionary<IPEndPoint, IChatHost>();
+            remoteHosts = new Dictionary<string, IChatHost>();
             CreateRemoteHosts();
         }
 
@@ -97,7 +97,7 @@ namespace Squiggle.Chat.Services.Chat
             if (e.SessionID == ID && IsGroupSession)
                 if (remoteUsers.Remove(e.User))
                 {
-                    remoteHosts.Remove(e.User);
+                    remoteHosts.Remove(e.User.ClientID);
                     UserLeft(this, e);
                 }
         }
@@ -106,7 +106,7 @@ namespace Squiggle.Chat.Services.Chat
         {
             if (e.SessionID == ID && remoteUsers.Add(e.User))
             {
-                remoteHosts[e.User] = ChatHostProxyFactory.Get(e.User);
+                remoteHosts[e.User.ClientID] = ChatHostProxyFactory.Get(e.User.Address);
                 UserJoined(this, e);
             }
         }        
@@ -138,7 +138,7 @@ namespace Squiggle.Chat.Services.Chat
                     IFileTransfer invitation = new FileTransfer(ID, remoteHost, localHost, localUser, e.Name, e.Size, e.ID);
                     TransferInvitationReceived(this, new FileTransferInviteEventArgs()
                     {
-                        User = e.User,
+                        User = localUser,
                         Invitation = invitation
                     });
                 }
@@ -216,7 +216,7 @@ namespace Squiggle.Chat.Services.Chat
             proxy.ReceiveChatInvite(ID, localUser, remoteUsers.ToArray());
         }
 
-        bool IsRemoteUser(IPEndPoint iPEndPoint)
+        bool IsRemoteUser(ChatEndPoint iPEndPoint)
         {
             return remoteUsers.Contains(iPEndPoint);
         }
@@ -224,8 +224,8 @@ namespace Squiggle.Chat.Services.Chat
         void CreateRemoteHosts()
         {
             lock (remoteHosts)
-                foreach (IPEndPoint user in RemoteUsers)
-                    remoteHosts[user] = ChatHostProxyFactory.Get(user);
+                foreach (ChatEndPoint user in RemoteUsers)
+                    remoteHosts[user.ClientID] = ChatHostProxyFactory.Get(user.Address);
         }
 
         void BroadCast(Action<IChatHost> hostAction)
@@ -258,9 +258,9 @@ namespace Squiggle.Chat.Services.Chat
                 throw new OperationFailedException();
         }
 
-        void AddParticipants(IPEndPoint[] participants)
+        void AddParticipants(ChatEndPoint[] participants)
         {
-            foreach (IPEndPoint user in participants)
+            foreach (ChatEndPoint user in participants)
                 remoteUsers.Add(user);
 
             CreateRemoteHosts();

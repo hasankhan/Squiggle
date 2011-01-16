@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Squiggle.Chat;
+using System.Net;
 
 namespace Squiggle.UI.ViewModel
 {
@@ -11,7 +12,7 @@ namespace Squiggle.UI.ViewModel
 
         public DummyChatClient()
         {
-            self = new Buddy(this, new object(), new BuddyProperties());
+            self = new Buddy(this, new object(), null, new BuddyProperties());
             self.Status = UserStatus.Offline;
         }
 

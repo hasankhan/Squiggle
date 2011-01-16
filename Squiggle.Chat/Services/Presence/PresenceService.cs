@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Linq;
 using Squiggle.Chat.Services.Presence.Transport;
+using Squiggle.Chat.Services.Chat;
 
 namespace Squiggle.Chat.Services.Presence
 {
@@ -23,11 +24,12 @@ namespace Squiggle.Chat.Services.Presence
             get { return discovery.Users; }
         }
 
-        public PresenceService(IPEndPoint chatEndPoint, IPEndPoint presenceEndPoint, IPEndPoint presenceServiceEndPoint, TimeSpan keepAliveTime)
+        public PresenceService(ChatEndPoint chatEndPoint, IPEndPoint presenceEndPoint, IPEndPoint presenceServiceEndPoint, TimeSpan keepAliveTime)
         {
             thisUser = new UserInfo()
             {
-                ChatEndPoint = chatEndPoint,
+                ID = chatEndPoint.ClientID,
+                ChatEndPoint = chatEndPoint.Address,
                 KeepAliveSyncTime = keepAliveTime,
                 PresenceEndPoint = presenceServiceEndPoint
             };

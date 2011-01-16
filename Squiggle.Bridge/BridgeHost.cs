@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ServiceModel;
 using Squiggle.Chat.Services.Presence.Transport;
+using Squiggle.Chat.Services.Chat;
 
 namespace Squiggle.Bridge
 {
@@ -25,47 +26,47 @@ namespace Squiggle.Bridge
             throw new NotImplementedException();
         }
 
-        public void ReceiveMessage(System.Net.IPEndPoint sender, byte[] message)
+        public void ReceiveMessage(ChatEndPoint sender, byte[] message)
         {
             throw new NotImplementedException();
         }
 
-        public Chat.Services.Chat.Host.SessionInfo GetSessionInfo(Guid sessionId, System.Net.IPEndPoint user)
+        public Chat.Services.Chat.Host.SessionInfo GetSessionInfo(Guid sessionId, ChatEndPoint user)
         {
             throw new NotImplementedException();
         }
 
-        public void Buzz(Guid sessionId, System.Net.IPEndPoint user)
+        public void Buzz(Guid sessionId, ChatEndPoint user)
         {
             throw new NotImplementedException();
         }
 
-        public void UserIsTyping(Guid sessionId, System.Net.IPEndPoint user)
+        public void UserIsTyping(Guid sessionId, ChatEndPoint user)
         {
             throw new NotImplementedException();
         }
 
-        public void ReceiveMessage(Guid sessionId, System.Net.IPEndPoint user, string fontName, int fontSize, System.Drawing.Color color, System.Drawing.FontStyle fontStyle, string message)
+        public void ReceiveMessage(Guid sessionId, ChatEndPoint user, string fontName, int fontSize, System.Drawing.Color color, System.Drawing.FontStyle fontStyle, string message)
         {
             throw new NotImplementedException();
         }
 
-        public void ReceiveChatInvite(Guid sessionId, System.Net.IPEndPoint user, System.Net.IPEndPoint[] participants)
+        public void ReceiveChatInvite(Guid sessionId, ChatEndPoint user, ChatEndPoint[] participants)
         {
             throw new NotImplementedException();
         }
 
-        public void JoinChat(Guid sessionId, System.Net.IPEndPoint user)
+        public void JoinChat(Guid sessionId, ChatEndPoint user)
         {
             throw new NotImplementedException();
         }
 
-        public void LeaveChat(Guid sessionId, System.Net.IPEndPoint user)
+        public void LeaveChat(Guid sessionId, ChatEndPoint user)
         {
             throw new NotImplementedException();
         }
 
-        public void ReceiveFileInvite(Guid sessionId, System.Net.IPEndPoint user, Guid id, string name, long size)
+        public void ReceiveFileInvite(Guid sessionId, ChatEndPoint user, Guid id, string name, long size)
         {
             throw new NotImplementedException();
         }

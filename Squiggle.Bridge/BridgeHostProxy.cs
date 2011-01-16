@@ -8,6 +8,7 @@ using Squiggle.Chat.Services.Presence;
 using System.Net;
 using System.Drawing;
 using Squiggle.Chat.Services.Chat.Host;
+using Squiggle.Chat.Services.Chat;
 
 namespace Squiggle.Bridge
 {
@@ -105,12 +106,12 @@ namespace Squiggle.Bridge
             return EnsureProxy<UserInfo>(p => p.GetUserInfo());
         }
 
-        public void ReceiveMessage(IPEndPoint sender, byte[] message)
+        public void ReceiveMessage(ChatEndPoint sender, byte[] message)
         {
             EnsureProxy(p => p.ReceiveMessage(sender, message));
         }
 
-        public SessionInfo GetSessionInfo(Guid sessionId, IPEndPoint user)
+        public SessionInfo GetSessionInfo(Guid sessionId, ChatEndPoint user)
         {
             return EnsureProxy<SessionInfo>(p => p.GetSessionInfo(sessionId, user));
         }
@@ -119,37 +120,37 @@ namespace Squiggle.Bridge
 
         #region IChatHost
 
-        public void Buzz(Guid sessionId, IPEndPoint user)
+        public void Buzz(Guid sessionId, ChatEndPoint user)
         {
             EnsureProxy(p => p.Buzz(sessionId, user));
         }
 
-        public void UserIsTyping(Guid sessionId, IPEndPoint user)
+        public void UserIsTyping(Guid sessionId, ChatEndPoint user)
         {
             EnsureProxy(p => p.UserIsTyping(sessionId, user));
         }
 
-        public void ReceiveMessage(Guid sessionId, IPEndPoint user, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
+        public void ReceiveMessage(Guid sessionId, ChatEndPoint user, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
         {
             EnsureProxy(p => p.ReceiveMessage(sessionId, user, fontName, fontSize, color, fontStyle, message));
         }
 
-        public void ReceiveChatInvite(Guid sessionId, IPEndPoint user, IPEndPoint[] participants)
+        public void ReceiveChatInvite(Guid sessionId, ChatEndPoint user, ChatEndPoint[] participants)
         {
             EnsureProxy(p => p.ReceiveChatInvite(sessionId, user, participants));
         }
 
-        public void JoinChat(Guid sessionId, IPEndPoint user)
+        public void JoinChat(Guid sessionId, ChatEndPoint user)
         {
             EnsureProxy(p => p.JoinChat(sessionId, user));
         }
 
-        public void LeaveChat(Guid sessionId, IPEndPoint user)
+        public void LeaveChat(Guid sessionId, ChatEndPoint user)
         {
             EnsureProxy(p => p.LeaveChat(sessionId, user));
         }
 
-        public void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, long size)
+        public void ReceiveFileInvite(Guid sessionId, ChatEndPoint user, Guid id, string name, long size)
         {
             EnsureProxy(p => p.ReceiveFileInvite(sessionId, user, id, name, size));
         }
@@ -215,12 +216,12 @@ namespace Squiggle.Bridge
                 return this.Channel.GetUserInfo();
             }
 
-            public void ReceiveMessage(IPEndPoint sender, byte[] message)
+            public void ReceiveMessage(ChatEndPoint sender, byte[] message)
             {
                 this.Channel.ReceiveMessage(sender, message);
             }
 
-            public Chat.Services.Chat.Host.SessionInfo GetSessionInfo(Guid sessionId, IPEndPoint user)
+            public Chat.Services.Chat.Host.SessionInfo GetSessionInfo(Guid sessionId, ChatEndPoint user)
             {
                 return this.Channel.GetSessionInfo(sessionId, user);
             } 
@@ -228,38 +229,38 @@ namespace Squiggle.Bridge
             #endregion
 
             #region IChatHost
-            
-            public void Buzz(Guid sessionId, IPEndPoint user)
+
+            public void Buzz(Guid sessionId, ChatEndPoint user)
             {
                 this.Channel.Buzz(sessionId, user);
             }
 
-            public void UserIsTyping(Guid sessionId, IPEndPoint user)
+            public void UserIsTyping(Guid sessionId, ChatEndPoint user)
             {
                 this.Channel.UserIsTyping(sessionId, user);
             }
 
-            public void ReceiveMessage(Guid sessionId, IPEndPoint user, string fontName, int fontSize, System.Drawing.Color color, System.Drawing.FontStyle fontStyle, string message)
+            public void ReceiveMessage(Guid sessionId, ChatEndPoint user, string fontName, int fontSize, Color color, System.Drawing.FontStyle fontStyle, string message)
             {
                 this.Channel.ReceiveMessage(sessionId, user, fontName, fontSize, color, fontStyle, message);
             }
 
-            public void ReceiveChatInvite(Guid sessionId, IPEndPoint user, IPEndPoint[] participants)
+            public void ReceiveChatInvite(Guid sessionId, ChatEndPoint user, ChatEndPoint[] participants)
             {
                 this.Channel.ReceiveChatInvite(sessionId, user, participants);
             }
 
-            public void JoinChat(Guid sessionId, IPEndPoint user)
+            public void JoinChat(Guid sessionId, ChatEndPoint user)
             {
                 this.Channel.JoinChat(sessionId, user);
             }
 
-            public void LeaveChat(Guid sessionId, IPEndPoint user)
+            public void LeaveChat(Guid sessionId, ChatEndPoint user)
             {
                 this.Channel.LeaveChat(sessionId, user);
             }
 
-            public void ReceiveFileInvite(Guid sessionId, IPEndPoint user, Guid id, string name, long size)
+            public void ReceiveFileInvite(Guid sessionId, ChatEndPoint user, Guid id, string name, long size)
             {
                 this.Channel.ReceiveFileInvite(sessionId, user, id, name, size);
             }

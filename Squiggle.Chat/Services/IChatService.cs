@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using Squiggle.Chat.Services.Chat;
 
 namespace Squiggle.Chat.Services
 {
@@ -10,10 +11,9 @@ namespace Squiggle.Chat.Services
 
     public interface IChatService
     {
-        string Username { get; set; }
-        void Start(IPEndPoint endpoint);
+        void Start(ChatEndPoint endpoint);
         void Stop();
-        IChatSession CreateSession(IPEndPoint endpoint);
+        IChatSession CreateSession(ChatEndPoint endpoint);
         event EventHandler<ChatStartedEventArgs> ChatStarted;
     }
 }

@@ -14,19 +14,17 @@ namespace Squiggle.Chat.Services.Chat
         ChatHost chatHost;
         ServiceHost serviceHost;
         ChatSessionCollection chatSessions;
-        IPEndPoint localEndPoint;
+        ChatEndPoint localEndPoint;
 
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
 
-        public string Username { get; set; }
-        
         public ChatService()
         {
         }        
        
         #region IChatService Members
 
-        public void Start(IPEndPoint endpoint)
+        public void Start(ChatEndPoint endpoint)
         {
             chatHost = new ChatHost();
             chatHost.UserActivity += new EventHandler<UserActivityEventArgs>(chatHost_UserActivity);
@@ -37,7 +35,7 @@ namespace Squiggle.Chat.Services.Chat
 
             localEndPoint = endpoint;
             serviceHost = new ServiceHost(chatHost);
-            var address = CreateServiceUri(endpoint.ToString());
+            var address = CreateServiceUri(endpoint.Address.ToString());
             var binding = BindingHelper.CreateBinding();
             serviceHost.AddServiceEndpoint(typeof(IChatHost), binding, address);
             serviceHost.Open();
@@ -56,9 +54,9 @@ namespace Squiggle.Chat.Services.Chat
             }
         }
 
-        public IChatSession CreateSession(IPEndPoint endPoint)
+        public IChatSession CreateSession(ChatEndPoint endPoint)
         {
-            IChatSession session = chatSessions.Find(s=>!s.IsGroupSession && s.RemoteUsers.Contains(endPoint));
+            IChatSession session = chatSessions.Find(s => !s.IsGroupSession && s.RemoteUsers.Contains(endPoint));
             if (session == null)
                 session = CreateSession(Guid.NewGuid(), endPoint);
             return session;
@@ -79,9 +77,9 @@ namespace Squiggle.Chat.Services.Chat
             return uri;
         }
 
-        ChatSession CreateSession(Guid sessionId, IPEndPoint endPoint)
+        ChatSession CreateSession(Guid sessionId, ChatEndPoint endpoint)
         {
-            ChatSession session = new ChatSession(sessionId, chatHost, localEndPoint, endPoint);
+            ChatSession session = new ChatSession(sessionId, chatHost, localEndPoint, endpoint);
             RegisterSession(session);
             return session;
         }
@@ -92,7 +90,7 @@ namespace Squiggle.Chat.Services.Chat
             this.chatSessions.Add(session);
         } 
 
-        void EnsureChatSession(Guid sessionId, IPEndPoint user)
+        void EnsureChatSession(Guid sessionId, ChatEndPoint user)
         {
             if (!chatSessions.Contains(sessionId))
             {

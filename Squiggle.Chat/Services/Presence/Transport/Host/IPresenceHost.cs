@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.ServiceModel;
+using Squiggle.Chat.Services.Chat;
 
 namespace Squiggle.Chat.Services.Presence.Transport.Host
 {
@@ -10,6 +11,6 @@ namespace Squiggle.Chat.Services.Presence.Transport.Host
         UserInfo GetUserInfo();
 
         [OperationContract]
-        void ReceiveMessage(IPEndPoint sender, byte[] message);
+        void ReceiveMessage(ChatEndPoint sender, byte[] message);
     }
 }

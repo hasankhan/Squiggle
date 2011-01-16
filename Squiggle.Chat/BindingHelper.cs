@@ -12,6 +12,7 @@ namespace Squiggle.Chat
         public static Binding CreateBinding()
         {
             var binding = new NetTcpBinding(SecurityMode.None);
+
             binding.MaxReceivedMessageSize = 65535;
             binding.ReaderQuotas.MaxArrayLength = 65535;
             return binding;

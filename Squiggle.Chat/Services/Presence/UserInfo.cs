@@ -9,6 +9,8 @@ namespace Squiggle.Chat.Services.Presence
     public class UserInfo
     {
         [DataMember]
+        public string ID { get; set; }
+        [DataMember]
         public string DisplayName { get; set; }
         [DataMember]
         public IPEndPoint ChatEndPoint { get; set; }
@@ -20,12 +22,6 @@ namespace Squiggle.Chat.Services.Presence
         public UserStatus Status { get; set; }
         [DataMember]
         public Dictionary<string, string> Properties { get; set;  }
-
-        public static UserInfo FromEndPoint(IPEndPoint endPoint)
-        {
-            var user = new UserInfo() { ChatEndPoint = endPoint };
-            return user;
-        }
 
         public void Update(UserInfo user)
         {
@@ -41,16 +37,17 @@ namespace Squiggle.Chat.Services.Presence
 
             if (obj is UserInfo)
             {
-                IPEndPoint endPoint = ((UserInfo)obj).PresenceEndPoint;
-                return endPoint.Equals(PresenceEndPoint);
+                string id = ((UserInfo)obj).ID;
+                return ID.Equals(id);
             }
+
             return base.Equals(obj);
         }
 
         public override int GetHashCode()
         {
-            if (this.PresenceEndPoint != null)
-                return PresenceEndPoint.GetHashCode();
+            if (this.ID != null)
+                return ID.GetHashCode();
             return base.GetHashCode();
         }
     }

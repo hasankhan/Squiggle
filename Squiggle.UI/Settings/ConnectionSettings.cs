@@ -8,6 +8,7 @@ namespace Squiggle.UI.Settings
         public int KeepAliveTime { get; set; }
         public string BindToIP { get; set; }
         public string PresenceAddress { get; set; }
+        public string ClientID { get; set; }
 
         public ConnectionSettings()
         {

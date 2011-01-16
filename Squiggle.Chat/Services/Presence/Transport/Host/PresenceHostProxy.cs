@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using Squiggle.Chat.Services.Chat;
 
 namespace Squiggle.Chat.Services.Presence.Transport.Host
 {
@@ -69,7 +70,7 @@ namespace Squiggle.Chat.Services.Presence.Transport.Host
             return EnsureProxy<UserInfo>(p=>p.GetUserInfo()); 
         }
 
-        public void ReceiveMessage(IPEndPoint sender, byte[] message)
+        public void ReceiveMessage(ChatEndPoint sender, byte[] message)
         {
             EnsureProxy<object>(p=>{
                 p.ReceiveMessage(sender, message);
@@ -112,7 +113,7 @@ namespace Squiggle.Chat.Services.Presence.Transport.Host
                 return base.Channel.GetUserInfo(); 
             }
 
-            public void ReceiveMessage(IPEndPoint sender, byte[] message)
+            public void ReceiveMessage(ChatEndPoint sender, byte[] message)
             {
                 base.Channel.ReceiveMessage(sender, message);
             }

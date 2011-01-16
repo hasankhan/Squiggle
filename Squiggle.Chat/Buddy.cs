@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Net;
+using System.Diagnostics;
 
 namespace Squiggle.Chat
 {
@@ -8,22 +10,24 @@ namespace Squiggle.Chat
     {
         string displayName;
         UserStatus status;
-        string displayMessage;
         BuddyProperties properties;
         bool initialized;
-        DateTime lastUpdated;
 
         protected IChatClient ChatClient { get; private set; }
         public object ID { get; private set; }
+        public IPEndPoint ChatEndPoint { get; private set; }
         public DateTime LastUpdated { get; set; }
 
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
         public event EventHandler Offline = delegate { };
         public event EventHandler Online = delegate { };
 
-        public Buddy(IChatClient chatClient, object id, BuddyProperties properties)
+        public Buddy(IChatClient chatClient, object id, IPEndPoint chatEndPoint, BuddyProperties properties)
         {
+            if (id == null)
+                Debugger.Break();
             this.ID = id;
+            this.ChatEndPoint = chatEndPoint;
             this.ChatClient = chatClient;
             this.ChatClient.BuddyOffline += new EventHandler<BuddyEventArgs>(chatClient_BuddyOffline);
             this.ChatClient.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);

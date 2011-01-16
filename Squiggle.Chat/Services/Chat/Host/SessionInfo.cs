@@ -11,6 +11,6 @@ namespace Squiggle.Chat.Services.Chat.Host
     public class SessionInfo
     {
         [DataMember]
-        public IPEndPoint[] Participants { get; set; }
+        public ChatEndPoint[] Participants { get; set; }
     }
 }

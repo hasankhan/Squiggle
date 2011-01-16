@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using Squiggle.Chat.Services.Chat.Host;
 using System.Collections.Generic;
+using Squiggle.Chat.Services.Chat;
 
 namespace Squiggle.Chat.Services
 {
@@ -22,7 +23,7 @@ namespace Squiggle.Chat.Services
         event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived;
         event EventHandler GroupChatStarted;
 
-        IEnumerable<IPEndPoint> RemoteUsers { get; }
+        IEnumerable<ChatEndPoint> RemoteUsers { get; }
         Guid ID { get; }
         bool IsGroupSession { get; }
 

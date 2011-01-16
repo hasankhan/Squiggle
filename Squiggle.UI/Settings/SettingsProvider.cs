@@ -64,6 +64,10 @@ namespace Squiggle.UI.Settings
                 Settings.ConnectionSettings.BindToIP = ip == null ? String.Empty : ip.ToString();
             }
 
+            Settings.ConnectionSettings.ClientID = Properties.Settings.Default.ClientID;
+            if (String.IsNullOrEmpty(Settings.ConnectionSettings.ClientID))
+                Settings.ConnectionSettings.ClientID = Guid.NewGuid().ToString();
+
             Settings.ConnectionSettings.ChatPort = Properties.Settings.Default.ChatPort;
             Settings.ConnectionSettings.KeepAliveTime = Properties.Settings.Default.KeepAliveTime;
             Settings.ConnectionSettings.PresencePort = Properties.Settings.Default.PresencePort;
@@ -121,6 +125,7 @@ namespace Squiggle.UI.Settings
             Properties.Settings.Default.ChatPort = Settings.ConnectionSettings.ChatPort;
             Properties.Settings.Default.KeepAliveTime = Settings.ConnectionSettings.KeepAliveTime;
             Properties.Settings.Default.PresencePort = Settings.ConnectionSettings.PresencePort;
+            Properties.Settings.Default.ClientID = Settings.ConnectionSettings.ClientID;
         }
 
         private void SaveGeneralSettings()

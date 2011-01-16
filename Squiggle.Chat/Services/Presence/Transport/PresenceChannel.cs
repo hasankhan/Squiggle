@@ -6,12 +6,13 @@ using System.Net.Sockets;
 using System.ServiceModel;
 using System.Threading;
 using Squiggle.Chat.Services.Presence.Transport.Host;
+using Squiggle.Chat.Services.Chat;
 
 namespace Squiggle.Chat.Services.Presence.Transport
 {
     public class MessageReceivedEventArgs : EventArgs
     {
-        public IPEndPoint Sender { get; set; }
+        public ChatEndPoint Sender { get; set; }
         public Message Message { get; set; }
     }
 
@@ -97,7 +98,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
             IPresenceHost host = GetPresenceHost(presenceEndPoint);
             try
             {
-                host.ReceiveMessage(serviceEndPoint, message.Serialize());
+                host.ReceiveMessage(new ChatEndPoint(UserInfo.ID, serviceEndPoint), message.Serialize());
             }
             catch (Exception ex)
             {
@@ -145,13 +146,13 @@ namespace Squiggle.Chat.Services.Presence.Transport
                 ThreadPool.QueueUserWorkItem(_ =>
                 {
                     var message = Message.Deserialize(data);
-                    OnMessageReceived(remoteEndPoint, message);
+                    OnMessageReceived(new ChatEndPoint(message.SenderID, message.PresenceEndPoint), message);
                 });
 
             BeginReceive();
         }
 
-        private void OnMessageReceived(IPEndPoint remoteEndPoint, Message message)
+        private void OnMessageReceived(ChatEndPoint remoteEndPoint, Message message)
         {
             if (!message.ChannelID.Equals(channelID) && message.PresenceEndPoint != null)
             {

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using Squiggle.Chat.Services.Chat;
 
 namespace Squiggle.Chat
 {
@@ -27,8 +28,12 @@ namespace Squiggle.Chat
         static IChat chat;
         private static void TestPresence()
         {
-            ChatClient client1 = new ChatClient(new IPEndPoint(IPAddress.Loopback, 1234), new IPEndPoint(IPAddress.Parse("224.10.11.12"), 12345), 2.Seconds());
-            ChatClient client2 = new ChatClient(new IPEndPoint(IPAddress.Loopback, 1236), new IPEndPoint(IPAddress.Parse("224.10.11.12"), 12345), 2.Seconds());
+            ChatClient client1 = new ChatClient(new ChatEndPoint(Guid.NewGuid().ToString(), new IPEndPoint(IPAddress.Loopback, 1234)),
+                                                new IPEndPoint(IPAddress.Parse("224.10.11.12"), 12345), 
+                                                2.Seconds());
+            ChatClient client2 = new ChatClient(new ChatEndPoint(Guid.NewGuid().ToString(), new IPEndPoint(IPAddress.Loopback, 1236)),
+                                                new IPEndPoint(IPAddress.Parse("224.10.11.12"), 12345), 
+                                                2.Seconds());
             client1.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(client_BuddyOnline);
             //client2.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(client_BuddyOnline);
             client2.BuddyOffline += new EventHandler<BuddyEventArgs>(client2_BuddyOffline);

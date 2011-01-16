@@ -12,6 +12,7 @@ using Squiggle.UI.Helpers;
 using Squiggle.UI.ViewModel;
 using System.Windows.Controls;
 using System.Diagnostics;
+using Squiggle.Chat.Services.Chat;
 
 namespace Squiggle.UI
 {
@@ -285,9 +286,9 @@ namespace Squiggle.UI
             if (String.IsNullOrEmpty(settings.ConnectionSettings.BindToIP))
                 throw new OperationCanceledException("You are not on a network. Please make sure your network card is enabled.");
 
-            IPAddress localIP = IPAddress.Parse(settings.ConnectionSettings.BindToIP);
+            var localIP = IPAddress.Parse(settings.ConnectionSettings.BindToIP);
             TimeSpan keepAliveTimeout = settings.ConnectionSettings.KeepAliveTime.Seconds();
-            IPAddress presenceAddress = IPAddress.Parse(settings.ConnectionSettings.PresenceAddress);
+            var presenceAddress = IPAddress.Parse(settings.ConnectionSettings.PresenceAddress);
             int presencePort = settings.ConnectionSettings.PresencePort;
 
             var chatEndPoint = new IPEndPoint(localIP, chatPort);
@@ -295,8 +296,9 @@ namespace Squiggle.UI
                 chatEndPoint.Port = NetworkUtility.GetFreePort();
 
             var presenceEndPoint = new IPEndPoint(presenceAddress, presencePort);
+            string clientID = settings.ConnectionSettings.ClientID;
 
-            ChatClient client = new ChatClient(chatEndPoint, presenceEndPoint, keepAliveTimeout);
+            var client = new ChatClient(new ChatEndPoint(clientID, chatEndPoint), presenceEndPoint, keepAliveTimeout);
 
             var properties = new BuddyProperties();
             properties.GroupName = groupName;
