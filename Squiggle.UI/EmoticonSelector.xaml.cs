@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Globalization;
 
 namespace Squiggle.UI
 {
@@ -27,6 +28,9 @@ namespace Squiggle.UI
         public EmoticonSelector()
         {
             InitializeComponent();
+
+            if (CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft)
+                root.FlowDirection = System.Windows.FlowDirection.RightToLeft;
 
             foreach (Emoticon emoticon in Emoticons.All)
             {

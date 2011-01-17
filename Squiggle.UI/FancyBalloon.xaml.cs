@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Hardcodet.Wpf.TaskbarNotification;
+using System.Globalization;
 
 namespace StackOverflowClient
 {
@@ -43,6 +44,10 @@ namespace StackOverflowClient
     public FancyBalloon()
     {
       InitializeComponent();
+
+      if (CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft)
+          grid.FlowDirection = System.Windows.FlowDirection.RightToLeft;
+
       TaskbarIcon.AddBalloonClosingHandler(this, OnBalloonClosing);
     }
 

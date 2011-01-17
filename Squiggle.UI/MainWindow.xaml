@@ -44,7 +44,7 @@
             </Style.Setters>
         </Style>
     </Window.Resources>
-    <Grid>
+    <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />

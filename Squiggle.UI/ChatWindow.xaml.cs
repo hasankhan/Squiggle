@@ -13,6 +13,7 @@ using Squiggle.UI.MessageParsers;
 using Squiggle.UI.Helpers;
 using Squiggle.UI.MessageFilters;
 using System.Text;
+using System.Globalization;
 
 namespace Squiggle.UI
 {
@@ -43,6 +44,9 @@ namespace Squiggle.UI
         public ChatWindow()
         {
             InitializeComponent();
+
+            if (CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft)
+                LayoutRoot.FlowDirection = System.Windows.FlowDirection.RightToLeft;
 
             this.Height = Properties.Settings.Default.ChatWindowHeight;
             this.Width = Properties.Settings.Default.ChatWindowWidth;

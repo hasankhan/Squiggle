@@ -8,6 +8,7 @@ using Squiggle.Chat;
 using Squiggle.UI.Settings;
 using Squiggle.UI.Helpers;
 using Squiggle.UI.ViewModel;
+using System.Globalization;
 
 namespace Squiggle.UI
 {
@@ -22,6 +23,9 @@ namespace Squiggle.UI
         public SettingsWindow()
         {
             InitializeComponent();
+
+            if (CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft)
+                LayoutRoot.FlowDirection = System.Windows.FlowDirection.RightToLeft;
         }
 
         public SettingsWindow(Buddy user) : this()

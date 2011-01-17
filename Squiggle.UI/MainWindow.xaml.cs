@@ -13,6 +13,7 @@ using Squiggle.UI.ViewModel;
 using System.Windows.Controls;
 using System.Diagnostics;
 using Squiggle.Chat.Services.Chat;
+using System.Globalization;
 
 namespace Squiggle.UI
 {
@@ -35,9 +36,12 @@ namespace Squiggle.UI
         bool exiting;
 
         public MainWindow()
-        {
+        {            
             Instance = this;
             InitializeComponent();
+
+            if (CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft)
+                LayoutRoot.FlowDirection = System.Windows.FlowDirection.RightToLeft;
            
             this.Height = Properties.Settings.Default.MainWindowHeight;
             this.Width = Properties.Settings.Default.MainWindowWidth;

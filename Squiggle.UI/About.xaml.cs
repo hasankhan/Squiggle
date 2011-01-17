@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Windows;
 using Squiggle.UI.Helpers;
+using System.Globalization;
 
 namespace Squiggle.UI
 {
@@ -12,6 +13,9 @@ namespace Squiggle.UI
         public About()
         {
             InitializeComponent();
+
+            if (CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft)
+                LayoutRoot.FlowDirection = System.Windows.FlowDirection.RightToLeft;
 
             txtVersion.Text = "Version " + AppInfo.Version.ToString();
         }
