@@ -157,11 +157,8 @@ namespace Squiggle.UI
 
         public void Quit()
         {
-            this.Visibility = System.Windows.Visibility.Hidden;
-            SignOut(true);
-            clientAvailable.WaitOne();
             exiting = true;
-            Close();
+            Close();            
         }
 
         void ContactList_SignOut(object sender, EventArgs e)
@@ -387,6 +384,8 @@ namespace Squiggle.UI
             }
             else
             {
+                this.Visibility = System.Windows.Visibility.Hidden;
+
                 trayIcon.Dispose();
                 autoSignout.Dispose();
 
@@ -395,6 +394,9 @@ namespace Squiggle.UI
 
                 Properties.Settings.Default.MainWindowTop = Top;
                 Properties.Settings.Default.MainWindowLeft = Left;
+
+                SignOut(true);
+                clientAvailable.WaitOne();
             }
         }
 
