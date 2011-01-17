@@ -12,7 +12,7 @@ namespace Squiggle.Chat.Services.Presence.Transport.Host
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
 
-        public void ReceiveMessage(ChatEndPoint sender, byte[] message)
+        public void ReceivePresenceMessage(ChatEndPoint sender, byte[] message)
         {
             var msg = Message.Deserialize(message);
             MessageReceived(this, new MessageReceivedEventArgs() { Message = msg, Sender = sender });

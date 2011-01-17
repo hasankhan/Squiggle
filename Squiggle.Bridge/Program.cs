@@ -18,7 +18,7 @@ namespace Squiggle.Bridge
 			{
 				try
 				{
-                    string option = args[0].ToUpperInvariant();
+                    string option = args.Length > 0 ? args[0].ToUpperInvariant() : String.Empty;
 					switch (option)
 					{
 						case "-I":
@@ -41,12 +41,8 @@ namespace Squiggle.Bridge
 			}
 			else
 			{
-				ServiceBase[] ServicesToRun;
-				ServicesToRun = new ServiceBase[] 
-				{ 
-					new SquiggleBridgeService() 
-				};
-				ServiceBase.Run(ServicesToRun);
+				ServiceBase[] servicesToRun = new ServiceBase[]{ new SquiggleBridgeService() };
+				ServiceBase.Run(servicesToRun);
 			}
 		}
 

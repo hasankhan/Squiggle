@@ -11,6 +11,6 @@ namespace Squiggle.Chat.Services.Presence.Transport.Host
         UserInfo GetUserInfo();
 
         [OperationContract]
-        void ReceiveMessage(ChatEndPoint sender, byte[] message);
+        void ReceivePresenceMessage(ChatEndPoint sender, byte[] message);
     }
 }

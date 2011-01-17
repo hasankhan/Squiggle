@@ -98,7 +98,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
             IPresenceHost host = GetPresenceHost(presenceEndPoint);
             try
             {
-                host.ReceiveMessage(new ChatEndPoint(UserInfo.ID, serviceEndPoint), message.Serialize());
+                host.ReceivePresenceMessage(new ChatEndPoint(UserInfo.ID, serviceEndPoint), message.Serialize());
             }
             catch (Exception ex)
             {

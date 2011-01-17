@@ -8,14 +8,14 @@ namespace Squiggle.Bridge
 {
     class SquiggleBridge
     {
-        BridgeHost service = new BridgeHost();
+        BridgeHost bridgeHost = new BridgeHost();
         ServiceHost host;
-        PresenceChannel channel;
+        PresenceChannel presenceChannel;
         List<BridgeHostProxy> targets = new List<BridgeHostProxy>();               
 
         public SquiggleBridge()
         {
-            service.MessageReceived += new EventHandler<MessageReceivedEventArgs>(service_MessageReceived);
+            bridgeHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(bridgeHost_MessageReceived);
         }
 
         public void AddTarget(IPEndPoint target)
@@ -30,36 +30,36 @@ namespace Squiggle.Bridge
         {
             var address = new Uri("net.tcp://" + bridgeEndPoint + "/squigglebridge");
             var binding = new NetTcpBinding(SecurityMode.None);
-            host = new ServiceHost(service);
+            host = new ServiceHost(bridgeHost);
             host.AddServiceEndpoint(typeof(IBridgeHost), binding, address);
             host.Open();
-            channel = new PresenceChannel(presenceEndPoint, new IPEndPoint(bridgeEndPoint.Address, presenceEndPoint.Port));
-            channel.Start();
-            channel.MessageReceived += new EventHandler<Chat.Services.Presence.Transport.MessageReceivedEventArgs>(channel_MessageReceived);
+            presenceChannel = new PresenceChannel(presenceEndPoint, new IPEndPoint(bridgeEndPoint.Address, presenceEndPoint.Port));
+            presenceChannel.Start();
+            presenceChannel.MessageReceived += new EventHandler<Chat.Services.Presence.Transport.MessageReceivedEventArgs>(presenceChannel_MessageReceived);
         }
 
         public void Stop()
         {
-            channel.Stop();
+            presenceChannel.Stop();
             host.Close();
             foreach (BridgeHostProxy target in targets)
                 target.Dispose();
         }
 
-        void service_MessageReceived(object sender, MessageReceivedEventArgs e)
+        void bridgeHost_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            if (e.Message.ChannelID != channel.ChannelID)
-            {
-                channel.SendMessage(e.Message);
+            if (e.Message.ChannelID != presenceChannel.ChannelID)
+            {                
+                presenceChannel.SendMessage(e.Message);
                 Console.WriteLine(e.Message.ToString());
             }
         }
 
-        void channel_MessageReceived(object sender, Chat.Services.Presence.Transport.MessageReceivedEventArgs e)
+        void presenceChannel_MessageReceived(object sender, Chat.Services.Presence.Transport.MessageReceivedEventArgs e)
         {
             byte[] message = e.Message.Serialize();
             foreach (BridgeHostProxy target in targets)
-                target.ReceiveMessage(message);
+                target.ForwardPresenceMessage(message);
         }
     }
 }

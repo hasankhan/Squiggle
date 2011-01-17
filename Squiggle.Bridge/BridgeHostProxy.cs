@@ -92,9 +92,9 @@ namespace Squiggle.Bridge
 
         #region IBridgeHost
 
-        public void ReceiveMessage(byte[] message)
+        public void ForwardPresenceMessage(byte[] message)
         {
-            EnsureProxy(p => p.ReceiveMessage(message));
+            EnsureProxy(p => p.ForwardPresenceMessage(message));
         }
         
         #endregion        
@@ -106,9 +106,9 @@ namespace Squiggle.Bridge
             return EnsureProxy<UserInfo>(p => p.GetUserInfo());
         }
 
-        public void ReceiveMessage(ChatEndPoint sender, byte[] message)
+        public void ReceivePresenceMessage(ChatEndPoint sender, byte[] message)
         {
-            EnsureProxy(p => p.ReceiveMessage(sender, message));
+            EnsureProxy(p => p.ReceivePresenceMessage(sender, message));
         }
 
         public SessionInfo GetSessionInfo(Guid sessionId, ChatEndPoint user)
@@ -202,9 +202,9 @@ namespace Squiggle.Bridge
 
             #region IBridgeHost
             
-            public void ReceiveMessage(byte[] message)
+            public void ForwardPresenceMessage(byte[] message)
             {
-                this.Channel.ReceiveMessage(message);
+                this.Channel.ForwardPresenceMessage(message);
             } 
 
             #endregion
@@ -216,9 +216,9 @@ namespace Squiggle.Bridge
                 return this.Channel.GetUserInfo();
             }
 
-            public void ReceiveMessage(ChatEndPoint sender, byte[] message)
+            public void ReceivePresenceMessage(ChatEndPoint sender, byte[] message)
             {
-                this.Channel.ReceiveMessage(sender, message);
+                this.Channel.ReceivePresenceMessage(sender, message);
             }
 
             public Chat.Services.Chat.Host.SessionInfo GetSessionInfo(Guid sessionId, ChatEndPoint user)
