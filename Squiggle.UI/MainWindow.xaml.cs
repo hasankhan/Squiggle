@@ -157,7 +157,9 @@ namespace Squiggle.UI
 
         public void Quit()
         {
+            this.Visibility = System.Windows.Visibility.Hidden;
             SignOut(true);
+            clientAvailable.WaitOne();
             exiting = true;
             Close();
         }
@@ -174,15 +176,15 @@ namespace Squiggle.UI
 
         void SignIn(string displayName, string groupName, bool byUser, Action onSignIn)
         {
-            Dispatcher.BeginInvoke((Action)(() =>
+            Dispatcher.Invoke((Action)(() =>
             {
+                if (ChatClient != null && ChatClient.LoggedIn)
+                    return;
+
                 clientAvailable.WaitOne(TimeSpan.FromSeconds(20));
 
                 foreach (var window in chatWindows)
-                    window.Enabled = true;
-
-                if (ChatClient != null && ChatClient.LoggedIn)
-                    return;
+                    window.Enabled = true;                
 
                 try
                 {
@@ -209,19 +211,20 @@ namespace Squiggle.UI
         
         void SignOut(bool byUser)
         {
-            Dispatcher.BeginInvoke((Action)(() =>
+            if (ChatClient == null || !ChatClient.LoggedIn)
+                return;
+
+            clientAvailable.Reset();
+
+            Dispatcher.Invoke((Action)(() =>
             {
                 foreach (var window in chatWindows)
                     window.DestroySession();
-
-                if (ChatClient == null || !ChatClient.LoggedIn)
-                    return;
 
                 DestroyMonitor();
 
                 chatControl.SignIn.SetDisplayName(ChatClient.CurrentUser.DisplayName);
 
-                clientAvailable.Reset();
                 ThreadPool.QueueUserWorkItem(_ =>
                 {
                     try
@@ -239,7 +242,7 @@ namespace Squiggle.UI
                 clientViewModel = null;
                 this.DataContext = dummyViewModel;
                 VisualStateManager.GoToState(chatControl, "OfflineState", true);
-                
+
                 if (byUser)
                     autoSignout.OnSignOut();
             }));
