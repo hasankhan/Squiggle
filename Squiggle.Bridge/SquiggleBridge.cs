@@ -5,6 +5,7 @@ using System.ServiceModel;
 using System.Linq;
 using Squiggle.Chat.Services.Presence.Transport;
 using System.ServiceModel.Channels;
+using Squiggle.Chat.Services.Presence.Transport.Host;
 
 namespace Squiggle.Bridge
 {
@@ -16,9 +17,8 @@ namespace Squiggle.Bridge
 
     class SquiggleBridge
     {
-        BridgeHost bridgeHost = new BridgeHost();
+        BridgeHost bridgeHost;
         ServiceHost serviceHost;
-        PresenceChannel presenceChannel;
         IPEndPoint bridgeEndPoint;
         IPEndPoint presenceServiceEndPoint;
 
@@ -26,8 +26,11 @@ namespace Squiggle.Bridge
         Dictionary<string, TargetBridge> clientBridgeMap = new Dictionary<string, TargetBridge>();
         Dictionary<string, IPEndPoint> localClientEndPoints = new Dictionary<string, IPEndPoint>();
 
+        public PresenceChannel PresenceChannel { get; private set; }
+
         public SquiggleBridge()
         {
+            bridgeHost = new BridgeHost(this);
             bridgeHost.PresenceMessageForwarded += new EventHandler<PresenceMessageForwardedEventArgs>(bridgeHost_PresenceMessageForwarded);
         }
 
@@ -56,15 +59,15 @@ namespace Squiggle.Bridge
             serviceHost.Open();
 
             this.presenceServiceEndPoint = new IPEndPoint(bridgeEndPoint.Address, presenceEndPoint.Port);
-            presenceChannel = new PresenceChannel(presenceEndPoint, presenceServiceEndPoint);
-            presenceChannel.Start();
-            presenceChannel.MessageReceived += new EventHandler<Chat.Services.Presence.Transport.MessageReceivedEventArgs>(presenceChannel_MessageReceived);
-            presenceChannel.UserInfoRequested += new EventHandler<Chat.Services.Presence.Transport.Host.UserInfoRequestedEventArgs>(presenceChannel_UserInfoRequested);
+            PresenceChannel = new PresenceChannel(presenceEndPoint, presenceServiceEndPoint);
+            PresenceChannel.Start();
+            PresenceChannel.MessageReceived += new EventHandler<Chat.Services.Presence.Transport.MessageReceivedEventArgs>(presenceChannel_MessageReceived);
+            PresenceChannel.UserInfoRequested += new EventHandler<Chat.Services.Presence.Transport.Host.UserInfoRequestedEventArgs>(presenceChannel_UserInfoRequested);
         }
 
         public void Stop()
         {
-            presenceChannel.Stop();
+            PresenceChannel.Stop();
             serviceHost.Close();
             foreach (TargetBridge target in targets)
                 target.Proxy.Dispose();
@@ -72,27 +75,27 @@ namespace Squiggle.Bridge
 
         void bridgeHost_PresenceMessageForwarded(object sender, PresenceMessageForwardedEventArgs e)
         {
-            if (e.Message.ChannelID != presenceChannel.ChannelID)
+            if (e.Message.ChannelID != PresenceChannel.ChannelID)
             {
                 TargetBridge bridge = FindBridge(e.BridgeEndPoint);
                 if (bridge != null)
                 {
                     clientBridgeMap[e.Message.ClientID] = bridge;
                     e.Message.PresenceEndPoint = presenceServiceEndPoint;
-                    presenceChannel.SendMessage(e.Message);
+                    PresenceChannel.SendMessage(e.Message);
                 }
                 Console.WriteLine(e.Message.ToString());
             }
         }
 
-        void presenceChannel_UserInfoRequested(object sender, Chat.Services.Presence.Transport.Host.UserInfoRequestedEventArgs e)
+        void presenceChannel_UserInfoRequested(object sender, UserInfoRequestedEventArgs e)
         {
             TargetBridge bridge = FindBridge(e.User.Address);
             if (bridge != null)
                 e.UserInfo = bridge.Proxy.GetUserInfo(e.User);
         }
 
-        void presenceChannel_MessageReceived(object sender, Chat.Services.Presence.Transport.MessageReceivedEventArgs e)
+        void presenceChannel_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
             localClientEndPoints[e.Sender.ClientID] = e.Sender.Address;
             e.Sender.Address = bridgeEndPoint;
@@ -102,10 +105,17 @@ namespace Squiggle.Bridge
                 target.Proxy.ForwardPresenceMessage(message, bridgeEndPoint);
         }
 
-        TargetBridge FindBridge(IPEndPoint endPoint)
+        public TargetBridge FindBridge(IPEndPoint endPoint)
         {
             TargetBridge bridge = targets.FirstOrDefault(t => t.EndPoint.Equals(endPoint));
             return bridge;
+        }
+
+        public IPEndPoint GetLocalClientPresenceEndPoint(string clientID)
+        {
+            IPEndPoint endPoint;
+            localClientEndPoints.TryGetValue(clientID, out endPoint);
+            return endPoint;
         }
 
         void GetBridgeConnectionParams(IPEndPoint endPoint, out Uri address, out Binding binding)

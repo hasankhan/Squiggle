@@ -27,6 +27,7 @@ namespace Squiggle.Chat.Services.Presence.Transport.Host
             var msg = Message.Deserialize(message);
             MessageReceived(this, new MessageReceivedEventArgs() 
             { 
+                Recipient = recepient,
                 Message = msg, 
                 Sender = sender 
             });

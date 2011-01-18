@@ -12,8 +12,14 @@ namespace Squiggle.Chat.Services.Presence.Transport
 {
     public class MessageReceivedEventArgs : EventArgs
     {
+        public ChatEndPoint Recipient { get; set; }
         public ChatEndPoint Sender { get; set; }
         public Message Message { get; set; }
+
+        public bool IsMulticast
+        {
+            get { return Recipient == null; }
+        }
     }
 
     public class PresenceChannel
@@ -121,7 +127,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
         {
             ThreadPool.QueueUserWorkItem(_ =>
             {
-                OnMessageReceived(e.Sender, e.Message);
+                OnMessageReceived(e.Sender, e.Recipient, e.Message);
             });
         }
 
@@ -147,20 +153,21 @@ namespace Squiggle.Chat.Services.Presence.Transport
                 ThreadPool.QueueUserWorkItem(_ =>
                 {
                     var message = Message.Deserialize(data);
-                    OnMessageReceived(new ChatEndPoint(message.ClientID, message.PresenceEndPoint), message);
+                    OnMessageReceived(new ChatEndPoint(message.ClientID, message.PresenceEndPoint), null, message);
                 });
 
             BeginReceive();
         }
 
-        void OnMessageReceived(ChatEndPoint remoteEndPoint, Message message)
+        void OnMessageReceived(ChatEndPoint sender, ChatEndPoint recipient, Message message)
         {
             if (!message.ChannelID.Equals(channelID) && message.PresenceEndPoint != null)
             {
                 var args = new MessageReceivedEventArgs()
                 {
+                    Recipient = recipient,
                     Message = message,
-                    Sender = remoteEndPoint
+                    Sender = sender
                 };
                 MessageReceived(this, args);
             }

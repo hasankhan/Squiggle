@@ -15,7 +15,14 @@ namespace Squiggle.Bridge
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)] 
     public class BridgeHost: IBridgeHost
     {
+        SquiggleBridge bridge;
+
         public event EventHandler<PresenceMessageForwardedEventArgs> PresenceMessageForwarded = delegate { };
+
+        public BridgeHost(SquiggleBridge bridge)
+        {
+            this.bridge = bridge;
+        }
 
         public void ForwardPresenceMessage(byte[] message, IPEndPoint bridgeEndPoint)
         {
@@ -30,7 +37,13 @@ namespace Squiggle.Bridge
 
         public Chat.Services.Presence.UserInfo GetUserInfo(ChatEndPoint user)
         {
-            throw new NotImplementedException();
+            IPEndPoint endPoint = bridge.GetLocalClientPresenceEndPoint(user.ClientID);
+            if (endPoint != null)
+            {
+                user.Address = endPoint;
+                return bridge.PresenceChannel.GetUserInfo(user);
+            }
+            return null;
         }
 
         public void ReceivePresenceMessage(ChatEndPoint sender, ChatEndPoint recepient, byte[] message)
