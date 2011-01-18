@@ -22,6 +22,9 @@ namespace Squiggle.Chat.Services.Chat
 
         public ChatEndPoint(string id, IPEndPoint address)
         {
+            if (String.IsNullOrEmpty(id))
+                throw new ArgumentNullException("id");
+
             this.ClientID = id;
             this.Address = address;
         }

@@ -37,7 +37,7 @@ namespace Squiggle.Chat.Services.Presence
             this.timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
             this.timer.Start();
             channel.MessageReceived += new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
-            keepAliveMessage = new KeepAliveMessage() { PresenceEndPoint = User.PresenceEndPoint };
+            keepAliveMessage = Message.FromUserInfo<KeepAliveMessage>(User);
         }
 
         void channel_MessageReceived(object sender, MessageReceivedEventArgs e)

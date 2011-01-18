@@ -20,6 +20,7 @@ namespace Squiggle.Bridge
         ServiceHost serviceHost;
         PresenceChannel presenceChannel;
         IPEndPoint bridgeEndPoint;
+        IPEndPoint presenceServiceEndPoint;
 
         List<TargetBridge> targets = new List<TargetBridge>();
         Dictionary<string, TargetBridge> clientBridgeMap = new Dictionary<string, TargetBridge>();
@@ -54,7 +55,8 @@ namespace Squiggle.Bridge
             serviceHost.AddServiceEndpoint(typeof(IBridgeHost), binding, address);
             serviceHost.Open();
 
-            presenceChannel = new PresenceChannel(presenceEndPoint, new IPEndPoint(bridgeEndPoint.Address, presenceEndPoint.Port));
+            this.presenceServiceEndPoint = new IPEndPoint(bridgeEndPoint.Address, presenceEndPoint.Port);
+            presenceChannel = new PresenceChannel(presenceEndPoint, presenceServiceEndPoint);
             presenceChannel.Start();
             presenceChannel.MessageReceived += new EventHandler<Chat.Services.Presence.Transport.MessageReceivedEventArgs>(presenceChannel_MessageReceived);
             presenceChannel.UserInfoRequested += new EventHandler<Chat.Services.Presence.Transport.Host.UserInfoRequestedEventArgs>(presenceChannel_UserInfoRequested);
@@ -76,7 +78,7 @@ namespace Squiggle.Bridge
                 if (bridge != null)
                 {
                     clientBridgeMap[e.Message.ClientID] = bridge;
-                    e.Message.PresenceEndPoint = bridgeEndPoint;
+                    e.Message.PresenceEndPoint = presenceServiceEndPoint;
                     presenceChannel.SendMessage(e.Message);
                 }
                 Console.WriteLine(e.Message.ToString());
