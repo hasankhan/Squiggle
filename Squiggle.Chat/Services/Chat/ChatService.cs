@@ -68,7 +68,7 @@ namespace Squiggle.Chat.Services.Chat
         {
             Trace.WriteLine("Ensuring chat session=" + e.SessionID);
             if (e.Type.In(ActivityType.Message, ActivityType.TransferInvite, ActivityType.Buzz, ActivityType.ChatInvite))
-                EnsureChatSession(e.SessionID, e.User);
+                EnsureChatSession(e.SessionID, e.Sender);
         }
 
         static Uri CreateServiceUri(string address)

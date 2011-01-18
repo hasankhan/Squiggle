@@ -32,6 +32,6 @@ namespace Squiggle.Chat.Services
         void NotifyTyping();
         IFileTransfer SendFile(string name, Stream content);
         void End();
-        void Invite(IPEndPoint iPEndPoint);
+        void Invite(ChatEndPoint user);
     }
 }

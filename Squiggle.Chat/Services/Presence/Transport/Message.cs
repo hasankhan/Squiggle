@@ -9,14 +9,14 @@ namespace Squiggle.Chat.Services.Presence.Transport
     public class Message
     {
         public Guid ChannelID { get; set; }
-        public string SenderID { get; set; }
+        public string ClientID { get; set; }
         public IPEndPoint PresenceEndPoint { get; set; }
 
         public static TMessage FromUserInfo<TMessage>(UserInfo user) where TMessage:Message, new()
         {
             var message = new TMessage()
             {
-                SenderID = user.ID,
+                ClientID = user.ID,
                 PresenceEndPoint = user.PresenceEndPoint,
             };
             return message;

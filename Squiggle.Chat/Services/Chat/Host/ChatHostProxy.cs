@@ -77,61 +77,61 @@ namespace Squiggle.Chat.Services.Chat.Host
 
         #region IChatHost Members
 
-        public void UserIsTyping(Guid sessionId, ChatEndPoint user)
+        public void UserIsTyping(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient)
         {
-            EnsureProxy(p => p.UserIsTyping(sessionId, user));
+            EnsureProxy(p => p.UserIsTyping(sessionId, sender, recepient));
         }
 
-        public SessionInfo GetSessionInfo(Guid sessionId, ChatEndPoint user)
+        public SessionInfo GetSessionInfo(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient)
         {
             SessionInfo info = null;
-            EnsureProxy(p => info = p.GetSessionInfo(sessionId, user));
+            EnsureProxy(p => info = p.GetSessionInfo(sessionId, sender, recepient));
             return info;
         }
 
-        public void Buzz(Guid sessionId, ChatEndPoint user)
+        public void Buzz(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient)
         {
-            EnsureProxy(p => p.Buzz(sessionId, user));
+            EnsureProxy(p => p.Buzz(sessionId, sender, recepient));
         }
 
-        public void ReceiveMessage(Guid sessionId, ChatEndPoint user, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
+        public void ReceiveMessage(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
         {
-            EnsureProxy(p => p.ReceiveMessage(sessionId, user, fontName, fontSize, color, fontStyle, message));
+            EnsureProxy(p => p.ReceiveMessage(sessionId, sender, recepient, fontName, fontSize, color, fontStyle, message));
         }
 
-        public void ReceiveChatInvite(Guid sessionId, ChatEndPoint user, ChatEndPoint[] participants)
+        public void ReceiveChatInvite(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient, ChatEndPoint[] participants)
         {
-            EnsureProxy(p => p.ReceiveChatInvite(sessionId, user, participants));
+            EnsureProxy(p => p.ReceiveChatInvite(sessionId, sender, recepient, participants));
         }
 
-        public void JoinChat(Guid sessionId, ChatEndPoint user)
+        public void JoinChat(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient)
         {
-            EnsureProxy(p => p.JoinChat(sessionId, user));
+            EnsureProxy(p => p.JoinChat(sessionId, sender, recepient));
         }
 
-        public void LeaveChat(Guid sessionId, ChatEndPoint user)
+        public void LeaveChat(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient)
         {
-            EnsureProxy(p => p.LeaveChat(sessionId, user));
+            EnsureProxy(p => p.LeaveChat(sessionId, sender, recepient));
         }
 
-        public void ReceiveFileInvite(Guid sessionId, ChatEndPoint user, Guid id, string name, long size)
+        public void ReceiveFileInvite(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient, Guid id, string name, long size)
         {
-            EnsureProxy(p => p.ReceiveFileInvite(sessionId, user, id, name, size));
+            EnsureProxy(p => p.ReceiveFileInvite(sessionId, sender, recepient, id, name, size));
         }
 
-        public void ReceiveFileContent(Guid id, byte[] chunk)
+        public void ReceiveFileContent(Guid id, ChatEndPoint sender, ChatEndPoint recepient, byte[] chunk)
         {
-            EnsureProxy(p => p.ReceiveFileContent(id, chunk));
-        }        
-
-        public void AcceptFileInvite(Guid id)
-        {
-            EnsureProxy(p => p.AcceptFileInvite(id));
+            EnsureProxy(p => p.ReceiveFileContent(id, sender, recepient, chunk));
         }
 
-        public void CancelFileTransfer(Guid id)
+        public void AcceptFileInvite(Guid id, ChatEndPoint sender, ChatEndPoint recepient)
         {
-            EnsureProxy(p => p.CancelFileTransfer(id));
+            EnsureProxy(p => p.AcceptFileInvite(id, sender, recepient));
+        }
+
+        public void CancelFileTransfer(Guid id, ChatEndPoint sender, ChatEndPoint recepient)
+        {
+            EnsureProxy(p => p.CancelFileTransfer(id, sender, recepient));
         }
 
         #endregion
@@ -168,70 +168,70 @@ namespace Squiggle.Chat.Services.Chat.Host
 
             #region IChatHost Members
 
-            public void UserIsTyping(Guid sessionId, ChatEndPoint user)
+            public void UserIsTyping(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient)
             {
-                Trace.WriteLine("Sending typing notification from: " + user);
-                base.Channel.UserIsTyping(sessionId, user);
+                Trace.WriteLine("Sending typing notification from: " + sender);
+                base.Channel.UserIsTyping(sessionId, sender, recepient);
             }
 
-            public SessionInfo GetSessionInfo(Guid sessionId, ChatEndPoint user)
+            public SessionInfo GetSessionInfo(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient)
             {
-                Trace.WriteLine("Getting session information from: " + user);
-                return base.Channel.GetSessionInfo(sessionId, user);
+                Trace.WriteLine("Getting session information from: " + sender);
+                return base.Channel.GetSessionInfo(sessionId, sender, recepient);
             }
 
-            public void Buzz(Guid sessionId, ChatEndPoint user)
+            public void Buzz(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient)
             {
-                Trace.WriteLine("Sending buzz from: " + user);
-                base.Channel.Buzz(sessionId, user);
+                Trace.WriteLine("Sending buzz from: " + sender);
+                base.Channel.Buzz(sessionId, sender, recepient);
             }
 
-            public void ReceiveMessage(Guid sessionId, ChatEndPoint user, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
+            public void ReceiveMessage(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
             {
-                Trace.WriteLine("Sending message from: " + user + ", message = " + message);
-                base.Channel.ReceiveMessage(sessionId, user, fontName, fontSize, color, fontStyle, message);
+                Trace.WriteLine("Sending message from: " + sender + ", message = " + message);
+                base.Channel.ReceiveMessage(sessionId, sender, recepient, fontName, fontSize, color, fontStyle, message);
             }
 
-            public void ReceiveChatInvite(Guid sessionId, ChatEndPoint user, ChatEndPoint[] participants)
+            public void ReceiveChatInvite(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient, ChatEndPoint[] participants)
             {
-                Trace.WriteLine("Sending chat invite from: " + user);
-                base.Channel.ReceiveChatInvite(sessionId, user, participants);
+                Trace.WriteLine("Sending chat invite from: " + sender);
+                base.Channel.ReceiveChatInvite(sessionId, sender, recepient, participants);
             }
 
-            public void JoinChat(Guid sessionId, ChatEndPoint user)
+            public void JoinChat(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient)
             {
-                Trace.WriteLine(user + " has joined chat: " + sessionId);
-                base.Channel.JoinChat(sessionId, user);
+                Trace.WriteLine(sender + " has joined chat: " + sessionId);
+                base.Channel.JoinChat(sessionId, sender, recepient);
             }
 
-            public void LeaveChat(Guid sessionId, ChatEndPoint user)
+            public void LeaveChat(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient)
             {
-                Trace.WriteLine(user + " has left chat: " + sessionId);
-                base.Channel.LeaveChat(sessionId, user);
+                Trace.WriteLine(sender + " has left chat: " + sessionId);
+                base.Channel.LeaveChat(sessionId, sender, recepient);
             }
 
-            public void ReceiveFileInvite(Guid sessionId, ChatEndPoint user, Guid id, string name, long size)
+            public void ReceiveFileInvite(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient, Guid id, string name, long size)
             {
-                Trace.WriteLine("Sending file invite from: " + user + ", name = " + name);
-                base.Channel.ReceiveFileInvite(sessionId, user, id, name, size);
+                Trace.WriteLine("Sending file invite from: " + sender + ", name = " + name);
+                base.Channel.ReceiveFileInvite(sessionId, sender, recepient, id, name, size);
             }
 
-            public void ReceiveFileContent(Guid id, byte[] chunk)
+            public void ReceiveFileContent(Guid id, ChatEndPoint sender, ChatEndPoint recepient, byte[] chunk)
             {
                 Trace.WriteLine("Sending file content: " + id.ToString());
-                base.Channel.ReceiveFileContent(id, chunk);
+                base.Channel.ReceiveFileContent(id, sender, recepient, chunk);
             }
 
-            public void AcceptFileInvite(Guid id)
+            public void AcceptFileInvite(Guid id, ChatEndPoint sender, ChatEndPoint recepient)
             {
                 Trace.WriteLine("Accepting file invite: " + id.ToString());
-                base.Channel.AcceptFileInvite(id);
+                base.Channel.AcceptFileInvite(id, sender, recepient);
             }
 
-            public void CancelFileTransfer(Guid id)
+            public void CancelFileTransfer(Guid id, ChatEndPoint sender, ChatEndPoint recepient)
             {
                 Trace.WriteLine("Cancel file transfer: " + id.ToString());
-                base.Channel.CancelFileTransfer(id);
+                base.Channel.CancelFileTransfer(id, sender, recepient);
             }
 
             #endregion

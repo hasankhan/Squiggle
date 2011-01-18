@@ -107,7 +107,7 @@ namespace Squiggle.Chat.Services.Presence
 
         void OnKeepAliveMessage(KeepAliveMessage message)
         {
-            var user = new UserInfo() { ID = message.SenderID,
+            var user = new UserInfo() { ID = message.ClientID,
                                         PresenceEndPoint = message.PresenceEndPoint };
             if (aliveUsers.ContainsKey(user))
                 HeIsAlive(user);

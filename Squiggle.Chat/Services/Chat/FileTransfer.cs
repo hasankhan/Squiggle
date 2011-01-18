@@ -17,8 +17,9 @@ namespace Squiggle.Chat.Services.Chat
         public event EventHandler<System.ComponentModel.ProgressChangedEventArgs> ProgressChanged = delegate { };
         public event EventHandler<ErrorEventArgs> Error = delegate { };        
 
-        IChatHost remoteUser;
+        IChatHost remoteHost;
         ChatEndPoint localUser;
+        ChatEndPoint remoteUser;
         Stream content;
         Guid id;
         ChatHost localHost;
@@ -33,11 +34,12 @@ namespace Squiggle.Chat.Services.Chat
         public long Size { get; private set; }
         public string Name { get; private set; }
 
-        public FileTransfer(Guid sessionId, IChatHost remoteHost, ChatHost localHost, ChatEndPoint localUser, string name, long size, Stream content)
+        public FileTransfer(Guid sessionId, IChatHost remoteHost, ChatHost localHost, ChatEndPoint localUser, ChatEndPoint remoteUser, string name, long size, Stream content)
         {
             this.sessionId = sessionId;
             this.localHost = localHost;
-            this.remoteUser = remoteHost;
+            this.remoteUser = remoteUser;
+            this.remoteHost = remoteHost;
             this.localUser = localUser;
             this.Name = name;
             this.Size = size;
@@ -46,11 +48,11 @@ namespace Squiggle.Chat.Services.Chat
             sending = true;
         }
 
-        public FileTransfer(Guid sessionId, IChatHost remoteHost, ChatHost localHost, ChatEndPoint localUser, string name, long size, Guid id)
+        public FileTransfer(Guid sessionId, IChatHost remoteHost, ChatHost localHost, ChatEndPoint localUser, ChatEndPoint remoteUser, string name, long size, Guid id)
         {
             this.sessionId = sessionId;
             this.localHost = localHost;
-            this.remoteUser = remoteHost;
+            this.remoteHost = remoteHost;
             this.localUser = localUser;
             this.Name = name;
             this.Size = size;
@@ -65,7 +67,7 @@ namespace Squiggle.Chat.Services.Chat
             localHost.TransferCancelled += new EventHandler<FileTransferEventArgs>(localHost_TransferCancelled);
             ThreadPool.QueueUserWorkItem(_ =>
             {
-                bool success = L(() => this.remoteUser.ReceiveFileInvite(sessionId, localUser, id, Name, Size));
+                bool success = L(() => this.remoteHost.ReceiveFileInvite(sessionId, localUser, remoteUser, id, Name, Size));
                 if (!success)
                 {
                     OnTransferFinished();
@@ -83,7 +85,7 @@ namespace Squiggle.Chat.Services.Chat
                             {
                                 saveToFile = filePath;
                                 content = File.OpenWrite(filePath);
-                                remoteUser.AcceptFileInvite(id);
+                                remoteHost.AcceptFileInvite(id, localUser, remoteUser);
                             });
             if (success)
                 OnTransferStarted();
@@ -104,7 +106,7 @@ namespace Squiggle.Chat.Services.Chat
             selfCancelled = selfCancel;
 
             if (selfCancel)
-                L(() => this.remoteUser.CancelFileTransfer(id));
+                L(() => this.remoteHost.CancelFileTransfer(id, localUser, remoteUser));
 
             if (sending && worker!=null)            
                  worker.CancelAsync();
@@ -156,7 +158,7 @@ namespace Squiggle.Chat.Services.Chat
                 int bytesRead = content.Read(buffer, 0, buffer.Length);
                 byte[] temp = new byte[bytesRead];
                 Buffer.BlockCopy(buffer, 0, temp, 0, temp.Length);
-                remoteUser.ReceiveFileContent(id, temp);
+                remoteHost.ReceiveFileContent(id, localUser, remoteUser, temp);
                 bytesRemaining -= bytesRead;
                 float progress = (Size - bytesRemaining) / (float)Size * 100;
                 worker.ReportProgress((int)progress);

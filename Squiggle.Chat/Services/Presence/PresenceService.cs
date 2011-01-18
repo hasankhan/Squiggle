@@ -35,7 +35,7 @@ namespace Squiggle.Chat.Services.Presence
             };
 
             channel = new PresenceChannel(presenceEndPoint, presenceServiceEndPoint);
-            channel.UserInfo = thisUser;
+            channel.UserInfoRequested += new EventHandler<Transport.Host.UserInfoRequestedEventArgs>(channel_UserInfoRequested);
 
             this.discovery = new UserDiscovery(channel);
             discovery.UserOnline += new EventHandler<UserEventArgs>(discovery_UserOnline);
@@ -46,7 +46,7 @@ namespace Squiggle.Chat.Services.Presence
             this.keepAlive = new KeepAliveService(channel, thisUser, keepAliveTime);
             this.keepAlive.UserLost += new EventHandler<UserEventArgs>(keepAlive_UserLost);
             this.keepAlive.UserDiscovered += new EventHandler<UserEventArgs>(keepAlive_UserDiscovered);
-        }             
+        }        
 
         public void Login(string name, BuddyProperties properties)
         {
@@ -74,6 +74,11 @@ namespace Squiggle.Chat.Services.Presence
             channel.Stop();
         }
 
+        void channel_UserInfoRequested(object sender, Transport.Host.UserInfoRequestedEventArgs e)
+        {
+            e.UserInfo = thisUser;
+        }             
+
         void keepAlive_UserDiscovered(object sender, UserEventArgs e)
         {
             if (ResolveUser(e))
@@ -82,7 +87,7 @@ namespace Squiggle.Chat.Services.Presence
                 OnUserOnline(e, true);
             }
             else
-                discovery.DiscoverUser(e.User.PresenceEndPoint);
+                discovery.DiscoverUser(new ChatEndPoint(e.User.ID, e.User.PresenceEndPoint));
         }
 
         void keepAlive_UserLost(object sender, UserEventArgs e)

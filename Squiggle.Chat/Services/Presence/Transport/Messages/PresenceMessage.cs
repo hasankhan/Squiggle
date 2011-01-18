@@ -17,7 +17,7 @@ namespace Squiggle.Chat.Services.Presence.Transport.Messages
         {
             var message = new TMessage()            
             {   
-                SenderID = user.ID,
+                ClientID = user.ID,
                 ChatEndPoint = user.ChatEndPoint,
                 PresenceEndPoint = user.PresenceEndPoint,
                 Status = user.Status,                
@@ -32,7 +32,7 @@ namespace Squiggle.Chat.Services.Presence.Transport.Messages
         {
             var user = new UserInfo()
             {
-                ID = this.SenderID,
+                ID = this.ClientID,
                 ChatEndPoint = this.ChatEndPoint,
                 PresenceEndPoint = this.PresenceEndPoint,
                 Status = this.Status,

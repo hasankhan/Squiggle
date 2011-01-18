@@ -116,7 +116,7 @@ namespace Squiggle.Chat
         {
             ThreadPool.QueueUserWorkItem(_ =>
             {
-                L(() => session.Invite(buddy.ChatEndPoint));
+                L(() => session.Invite(new ChatEndPoint(buddy.ID.ToString(), buddy.ChatEndPoint)));
             });
         }
 
@@ -136,28 +136,28 @@ namespace Squiggle.Chat
         void session_TransferInvitationReceived(object sender, Squiggle.Chat.Services.FileTransferInviteEventArgs e)
         {
             Buddy buddy;
-            if (buddies.TryGetValue(e.User.ClientID, out buddy))
+            if (buddies.TryGetValue(e.Sender.ClientID, out buddy))
                 TransferInvitationReceived(this, new FileTransferInviteEventArgs() { Sender = buddy, Invitation = e.Invitation });
         }
 
         void session_BuzzReceived(object sender, Squiggle.Chat.Services.Chat.Host.SessionEventArgs e)
         {
             Buddy buddy;
-            if (buddies.TryGetValue(e.User.ClientID, out buddy))
+            if (buddies.TryGetValue(e.Sender.ClientID, out buddy))
                 BuzzReceived(this, new BuddyEventArgs( buddy ));
         } 
 
         void session_UserTyping(object sender, Squiggle.Chat.Services.Chat.Host.SessionEventArgs e)
         {
             Buddy buddy;
-            if (buddies.TryGetValue(e.User.ClientID, out buddy))
+            if (buddies.TryGetValue(e.Sender.ClientID, out buddy))
                 BuddyTyping(this, new BuddyEventArgs( buddy ));
         }
 
         void session_UserLeft(object sender, Services.Chat.Host.SessionEventArgs e)
         {
             Buddy buddy;
-            if (buddies.TryGetValue(e.User.ClientID, out buddy))
+            if (buddies.TryGetValue(e.Sender.ClientID, out buddy))
             {
                 buddies.Remove(buddy.ID);
                 BuddyLeft(this, new BuddyEventArgs(buddy));
@@ -166,7 +166,7 @@ namespace Squiggle.Chat
 
         void session_UserJoined(object sender, Services.Chat.Host.SessionEventArgs e)
         {
-            Buddy buddy = buddyResolver(e.User.ClientID);
+            Buddy buddy = buddyResolver(e.Sender.ClientID);
             if (buddy != null)
             {
                 buddies[buddy.ID] = buddy;
@@ -177,7 +177,7 @@ namespace Squiggle.Chat
         void session_MessageReceived(object sender, Squiggle.Chat.Services.Chat.Host.MessageReceivedEventArgs e)
         {
             Buddy buddy;
-            if (buddies.TryGetValue(e.User.ClientID, out buddy))
+            if (buddies.TryGetValue(e.Sender.ClientID, out buddy))
                 MessageReceived(this, new ChatMessageReceivedEventArgs() { Sender = buddy, 
                                                                            FontName = e.FontName,
                                                                            FontSize = e.FontSize,

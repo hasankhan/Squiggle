@@ -26,9 +26,10 @@ namespace Squiggle.Chat.Services.Presence.Transport
 
         Guid channelID = Guid.NewGuid();
         bool started;
-        PresenceHost host;
+        PresenceHost presenceHost;
         ServiceHost serviceHost;
 
+        public event EventHandler<UserInfoRequestedEventArgs> UserInfoRequested = delegate { };
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
 
         public Guid ChannelID { get { return channelID; } }
@@ -38,16 +39,11 @@ namespace Squiggle.Chat.Services.Presence.Transport
             udpReceiveEndPoint = new IPEndPoint(serviceEndPoint.Address, multicastEndPoint.Port);
             this.multicastEndPoint = multicastEndPoint;
             this.serviceEndPoint = serviceEndPoint;
-            this.host = new PresenceHost();
-            host.MessageReceived += new EventHandler<MessageReceivedEventArgs>(host_MessageReceived);
+            this.presenceHost = new PresenceHost();
+            this.presenceHost.UserInfoRequested += new EventHandler<UserInfoRequestedEventArgs>(presenceHost_UserInfoRequested);
+            presenceHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(presenceHost_MessageReceived);
             this.presenceHosts = new Dictionary<IPEndPoint, IPresenceHost>();
-        }
-
-        public UserInfo UserInfo
-        {
-            get { return host.UserInfo; }
-            set { host.UserInfo = value; }
-        }
+        }      
 
         public void Start()
         {
@@ -58,7 +54,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
             client.Client.Bind(udpReceiveEndPoint);
             client.JoinMulticastGroup(multicastEndPoint.Address);
            
-            serviceHost = new ServiceHost(host);
+            serviceHost = new ServiceHost(presenceHost);
             var address = CreateServiceUri(serviceEndPoint.ToString());
             var binding = BindingHelper.CreateBinding();
             serviceHost.AddServiceEndpoint(typeof(IPresenceHost), binding, address);
@@ -93,12 +89,12 @@ namespace Squiggle.Chat.Services.Presence.Transport
             }
         }
 
-        public void SendMessage(Message message, IPEndPoint presenceEndPoint)
+        public void SendMessage(Message message, ChatEndPoint localEndPoint, ChatEndPoint presenceEndPoint)
         {
-            IPresenceHost host = GetPresenceHost(presenceEndPoint);
+            IPresenceHost host = GetPresenceHost(presenceEndPoint.Address);
             try
             {
-                host.ReceivePresenceMessage(new ChatEndPoint(UserInfo.ID, serviceEndPoint), message.Serialize());
+                host.ReceivePresenceMessage(localEndPoint, presenceEndPoint, message.Serialize());
             }
             catch (Exception ex)
             {
@@ -106,27 +102,32 @@ namespace Squiggle.Chat.Services.Presence.Transport
             }
         }
 
-        public UserInfo GetUserInfo(IPEndPoint endPoint)
+        public UserInfo GetUserInfo(ChatEndPoint user)
         {
-            IPresenceHost host = GetPresenceHost(endPoint);
+            IPresenceHost host = GetPresenceHost(user.Address);
             UserInfo info = null;
             try
             {
-                info = host.GetUserInfo();
+                info = host.GetUserInfo(user);
             }
             catch (Exception ex)
             {
-                Trace.WriteLine("Could not get user info of " + endPoint + " due to exception: " + ex.Message);
+                Trace.WriteLine("Could not get user info of " + user + " due to exception: " + ex.Message);
             }
             return info;
         }
 
-        void host_MessageReceived(object sender, MessageReceivedEventArgs e)
+        void presenceHost_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
             ThreadPool.QueueUserWorkItem(_ =>
             {
                 OnMessageReceived(e.Sender, e.Message);
             });
+        }
+
+        void presenceHost_UserInfoRequested(object sender, UserInfoRequestedEventArgs e)
+        {
+            UserInfoRequested(this, e);
         }
 
         void OnReceive(IAsyncResult ar)
@@ -146,13 +147,13 @@ namespace Squiggle.Chat.Services.Presence.Transport
                 ThreadPool.QueueUserWorkItem(_ =>
                 {
                     var message = Message.Deserialize(data);
-                    OnMessageReceived(new ChatEndPoint(message.SenderID, message.PresenceEndPoint), message);
+                    OnMessageReceived(new ChatEndPoint(message.ClientID, message.PresenceEndPoint), message);
                 });
 
             BeginReceive();
         }
 
-        private void OnMessageReceived(ChatEndPoint remoteEndPoint, Message message)
+        void OnMessageReceived(ChatEndPoint remoteEndPoint, Message message)
         {
             if (!message.ChannelID.Equals(channelID) && message.PresenceEndPoint != null)
             {

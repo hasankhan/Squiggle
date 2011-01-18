@@ -8,9 +8,9 @@ namespace Squiggle.Chat.Services.Presence.Transport.Host
     public interface IPresenceHost
     {
         [OperationContract]
-        UserInfo GetUserInfo();
+        UserInfo GetUserInfo(ChatEndPoint user);
 
         [OperationContract]
-        void ReceivePresenceMessage(ChatEndPoint sender, byte[] message);
+        void ReceivePresenceMessage(ChatEndPoint sender, ChatEndPoint recepient, byte[] message);
     }
 }

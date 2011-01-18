@@ -25,7 +25,7 @@ namespace Squiggle.Chat
             monitor.Start();
         }
 
-        static IChat chat;
+        static IChat chat = null;
         private static void TestPresence()
         {
             ChatClient client1 = new ChatClient(new ChatEndPoint(Guid.NewGuid().ToString(), new IPEndPoint(IPAddress.Loopback, 1234)),
