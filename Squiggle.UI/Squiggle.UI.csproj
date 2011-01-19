@@ -353,6 +353,9 @@
     <Content Include="Sounds\BuddyOnline.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Sounds\Buzz.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Sounds\MessageReceived.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -103,7 +103,7 @@ namespace Squiggle.UI.Helpers
             about.ShowDialog();
         }
 
-        public static void ShakeWindow(ChatWindow window)
+        public static void ShakeWindow(Window window)
         {            
             if (window.WindowState != System.Windows.WindowState.Minimized)
             {

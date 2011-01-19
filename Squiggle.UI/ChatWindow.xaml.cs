@@ -169,7 +169,7 @@ namespace Squiggle.UI
                     {
                         Async.Invoke(()=>
                         {
-                            Dispatcher.Invoke(() => SquiggleUtility.ShakeWindow(this));
+                            Dispatcher.Invoke(DoBuzzAction);
                         }, TimeSpan.FromSeconds(.5));
                         buzzPending = false;
                     }
@@ -409,13 +409,19 @@ namespace Squiggle.UI
                 {
                     chatTextBox.AddInfo(String.Format("{0} sent you a buzz.", buddy.DisplayName));
                     if (this.WindowState != System.Windows.WindowState.Minimized)
-                        SquiggleUtility.ShakeWindow(this);
+                        DoBuzzAction();                   
                     else
                         buzzPending = true;
                     FlashWindow();
                     lastBuzzReceived = DateTime.Now;
                 }
             });
+        }
+
+        void DoBuzzAction()
+        {
+            AudioAlert.Instance.Play(AudioAlertType.Buzz);
+            SquiggleUtility.ShakeWindow(this);
         }
 
         void OnMessageReceived(Buddy buddy, string message, string fontName, System.Drawing.Color color, int fontSize, System.Drawing.FontStyle fontStyle)
@@ -494,7 +500,7 @@ namespace Squiggle.UI
                 chatTextBox.AddInfo("You have sent a buzz.");
                 chatSession.SendBuzz();
                 lastBuzzSent = DateTime.Now;
-                SquiggleUtility.ShakeWindow(this);
+                DoBuzzAction();
             }
             else
                 chatTextBox.AddError("Buzz can not be sent too frequently.", String.Empty);

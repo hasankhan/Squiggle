@@ -11,6 +11,7 @@ namespace Squiggle.UI
 
     enum AudioAlertType
     {
+        Buzz,
         BuddyOnline,
         BuddyOffline,
         MessageReceived,
