@@ -19,7 +19,7 @@ namespace Squiggle.Bridge
 
         public event EventHandler<PresenceMessageForwardedEventArgs> PresenceMessageForwarded = delegate { };
 
-        public BridgeHost(SquiggleBridge bridge)
+        internal BridgeHost(SquiggleBridge bridge)
         {
             this.bridge = bridge;
         }
