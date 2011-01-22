@@ -93,7 +93,7 @@ namespace Squiggle.Bridge
 
         void presenceChannel_UserInfoRequested(object sender, UserInfoRequestedEventArgs e)
         {
-            TargetBridge bridge = FindBridge(e.User.Address);
+            TargetBridge bridge = FindBridge(e.User.ClientID);
             if (bridge != null)
                 e.UserInfo = bridge.Proxy.GetUserInfo(e.User);
         }
