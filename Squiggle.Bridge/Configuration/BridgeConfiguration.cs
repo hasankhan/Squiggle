@@ -9,10 +9,16 @@ namespace Squiggle.Bridge.Configuration
             return (BridgeConfiguration)ConfigurationManager.GetSection("BridgeConfiguration") ?? new BridgeConfiguration();
         }
 
-        [ConfigurationProperty("servicebinding")]
-        public Target ServiceBinding
+        [ConfigurationProperty("remoteservicebinding")]
+        public Target RemoteServiceBinding
         {
-            get { return (Target)this["servicebinding"] ?? new Target(); }
+            get { return (Target)this["remoteservicebinding"] ?? new Target(); }
+        }
+
+        [ConfigurationProperty("localservicebinding")]
+        public Target LocalServiceBinding
+        {
+            get { return (Target)this["localservicebinding"] ?? new Target(); }
         }
 
         [ConfigurationProperty("channelbinding")]

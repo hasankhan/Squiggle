@@ -29,7 +29,8 @@ namespace Squiggle.Bridge
         Dictionary<string, SquiggleEndPoint> localChatEndPoints = new Dictionary<string, SquiggleEndPoint>();
 
         public PresenceChannel PresenceChannel { get; private set; }
-        public IPEndPoint BridgeEndPoint { get; private set; }
+        public IPEndPoint BridgeEndPointLocal { get; private set; }
+        public IPEndPoint BridgeEndPointRemote { get; private set; }
 
         public SquiggleBridge()
         {
@@ -50,18 +51,22 @@ namespace Squiggle.Bridge
             });
         }        
 
-        public void Start(IPEndPoint bridgeEndPoint, IPEndPoint presenceEndPoint)
+        public void Start(IPEndPoint bridgeEndPointLocal, IPEndPoint bridgeEndPointRemote, IPEndPoint presenceEndPoint)
         {
-            this.BridgeEndPoint = bridgeEndPoint;
+            this.BridgeEndPointLocal = bridgeEndPointLocal;
+            this.BridgeEndPointRemote = bridgeEndPointRemote;
 
-            Uri address;
-            Binding binding;
-            GetBridgeConnectionParams(bridgeEndPoint, out address, out binding);
+            Uri address;            
             serviceHost = new ServiceHost(bridgeHost);
+            Binding binding;
+            GetBridgeConnectionParams(bridgeEndPointLocal, out address, out binding);            
             serviceHost.AddServiceEndpoint(typeof(IBridgeHost), binding, address);
+            GetBridgeConnectionParams(bridgeEndPointRemote, out address, out binding);
+            serviceHost.AddServiceEndpoint(typeof(IBridgeHost), binding, address);
+            
             serviceHost.Open();
 
-            this.presenceServiceEndPoint = new IPEndPoint(bridgeEndPoint.Address, presenceEndPoint.Port);
+            this.presenceServiceEndPoint = new IPEndPoint(bridgeEndPointLocal.Address, presenceEndPoint.Port);
             PresenceChannel = new PresenceChannel(presenceEndPoint, presenceServiceEndPoint);
             PresenceChannel.Start();
             PresenceChannel.MessageReceived += new EventHandler<Chat.Services.Presence.Transport.MessageReceivedEventArgs>(presenceChannel_MessageReceived);
@@ -101,13 +106,13 @@ namespace Squiggle.Bridge
         void presenceChannel_MessageReceived(object sender, Squiggle.Chat.Services.Presence.Transport.MessageReceivedEventArgs e)
         {
             localPresenceEndPoints[e.Sender.ClientID] = e.Sender;
-            e.Sender.Address = BridgeEndPoint;
+            e.Sender.Address = BridgeEndPointRemote;
             byte[] message = e.Message.Serialize();
 
             if (e.IsBroadcast)
             {
                 foreach (TargetBridge target in targetBridges)
-                    target.Proxy.ForwardPresenceMessage(message, BridgeEndPoint);
+                    target.Proxy.ForwardPresenceMessage(message, BridgeEndPointRemote);
             }
             else
             {
@@ -155,7 +160,6 @@ namespace Squiggle.Bridge
 
         public T RouteChatMessageToLocalOrRemoteUser<T>(Func<IChatHost, SquiggleEndPoint, SquiggleEndPoint, T> action, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
-            sender = new SquiggleEndPoint(sender.ClientID, BridgeEndPoint);
             if (RecipientIsLocal(recepient))
                 return RouteChatMessageToLocalUser(action, sender, recepient);
             else
@@ -169,6 +173,7 @@ namespace Squiggle.Bridge
 
         T RouteChatMessageToRemoteUser<T>(Func<IChatHost, SquiggleEndPoint, SquiggleEndPoint, T> action, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
+            sender = new SquiggleEndPoint(sender.ClientID, BridgeEndPointRemote);
             TargetBridge bridge = FindBridge(recepient.ClientID);
             if (bridge != null)
                 return action(bridge.Proxy, sender, recepient);
@@ -177,6 +182,7 @@ namespace Squiggle.Bridge
 
         T RouteChatMessageToLocalUser<T>(Func<IChatHost, SquiggleEndPoint, SquiggleEndPoint, T> action, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
+            sender = new SquiggleEndPoint(sender.ClientID, BridgeEndPointLocal);
             SquiggleEndPoint endPoint;
             localChatEndPoints.TryGetValue(recepient.ClientID, out endPoint);
             var proxy = ChatHostProxyFactory.Get(recepient.Address);

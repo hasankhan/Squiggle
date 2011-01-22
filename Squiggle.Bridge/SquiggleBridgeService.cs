@@ -19,7 +19,7 @@ namespace Squiggle.Bridge
             bridge = new SquiggleBridge();
             foreach (Target target in config.Targets)
                 bridge.AddTarget(target.EndPoint);
-            bridge.Start(config.ServiceBinding.EndPoint, config.ChannelBinding.EndPoint);
+            bridge.Start(config.LocalServiceBinding.EndPoint, config.RemoteServiceBinding.EndPoint, config.ChannelBinding.EndPoint);
         }
 
         protected override void OnStop()

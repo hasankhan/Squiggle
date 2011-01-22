@@ -41,7 +41,8 @@ namespace Squiggle.Bridge
         public Chat.Services.Presence.UserInfo GetUserInfo(SquiggleEndPoint user)
         {
             UserInfo userInfo = bridge.RoutePresenceMessageToLocalUser((channel, localEndPoint, presenceEndPoint) => channel.GetUserInfo(presenceEndPoint), sender: null, recepient: user);
-            bridge.AddLocalChatEndPoint(userInfo.ID, userInfo.ChatEndPoint);
+            if (userInfo != null)
+                bridge.AddLocalChatEndPoint(userInfo.ID, userInfo.ChatEndPoint);
             return userInfo;
         }        
 
@@ -73,7 +74,7 @@ namespace Squiggle.Bridge
 
         public void ReceiveChatInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, SquiggleEndPoint[] participants)
         {
-            var bridgeParticipants = participants.Select(p => new SquiggleEndPoint(p.ClientID, bridge.BridgeEndPoint)).ToArray();
+            var bridgeParticipants = participants.Select(p => new SquiggleEndPoint(p.ClientID, bridge.BridgeEndPointRemote)).ToArray();
             bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.ReceiveChatInvite(sessionId, s, r, bridgeParticipants), sender, recepient);
         }
 
