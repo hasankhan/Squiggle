@@ -14,6 +14,7 @@ using System.Windows.Controls;
 using System.Diagnostics;
 using Squiggle.Chat.Services.Chat;
 using System.Globalization;
+using Squiggle.Chat.Services;
 
 namespace Squiggle.UI
 {
@@ -99,7 +100,7 @@ namespace Squiggle.UI
             SignIn(e.UserName, e.GroupName, true, () => { });
         }
 
-        void client_ChatStarted(object sender, ChatStartedEventArgs e)
+        void client_ChatStarted(object sender, Squiggle.Chat.ChatStartedEventArgs e)
         {
             Dispatcher.Invoke(()=>CreateChatWindow(e.Buddy, e.Chat, false));
         }
@@ -302,14 +303,14 @@ namespace Squiggle.UI
             var presenceEndPoint = new IPEndPoint(presenceAddress, presencePort);
             string clientID = settings.ConnectionSettings.ClientID;
 
-            var client = new ChatClient(new ChatEndPoint(clientID, chatEndPoint), presenceEndPoint, keepAliveTimeout);
+            var client = new ChatClient(new SquiggleEndPoint(clientID, chatEndPoint), presenceEndPoint, keepAliveTimeout);
 
             var properties = new BuddyProperties();
             properties.GroupName = groupName;
             properties.MachineName = Environment.MachineName;
             properties.DisplayMessage = settings.PersonalSettings.DisplayMessage;
             client.Login(displayName, properties);
-            client.ChatStarted += new EventHandler<ChatStartedEventArgs>(client_ChatStarted);
+            client.ChatStarted += new EventHandler<Squiggle.Chat.ChatStartedEventArgs>(client_ChatStarted);
             client.BuddyUpdated += new EventHandler<BuddyEventArgs>(client_BuddyUpdated);
             client.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(client_BuddyOnline);
             client.BuddyOffline += new EventHandler<BuddyEventArgs>(client_BuddyOffline);

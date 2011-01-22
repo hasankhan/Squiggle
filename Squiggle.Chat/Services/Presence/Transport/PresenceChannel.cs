@@ -12,11 +12,11 @@ namespace Squiggle.Chat.Services.Presence.Transport
 {
     public class MessageReceivedEventArgs : EventArgs
     {
-        public ChatEndPoint Recipient { get; set; }
-        public ChatEndPoint Sender { get; set; }
+        public SquiggleEndPoint Recipient { get; set; }
+        public SquiggleEndPoint Sender { get; set; }
         public Message Message { get; set; }
 
-        public bool IsMulticast
+        public bool IsBroadcast
         {
             get { return Recipient == null; }
         }
@@ -95,7 +95,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
             }
         }
 
-        public void SendMessage(Message message, ChatEndPoint localEndPoint, ChatEndPoint presenceEndPoint)
+        public void SendMessage(Message message, SquiggleEndPoint localEndPoint, SquiggleEndPoint presenceEndPoint)
         {
             IPresenceHost host = GetPresenceHost(presenceEndPoint.Address);
             try
@@ -108,7 +108,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
             }
         }
 
-        public UserInfo GetUserInfo(ChatEndPoint user)
+        public UserInfo GetUserInfo(SquiggleEndPoint user)
         {
             IPresenceHost host = GetPresenceHost(user.Address);
             UserInfo info = null;
@@ -153,13 +153,13 @@ namespace Squiggle.Chat.Services.Presence.Transport
                 ThreadPool.QueueUserWorkItem(_ =>
                 {
                     var message = Message.Deserialize(data);
-                    OnMessageReceived(new ChatEndPoint(message.ClientID, message.PresenceEndPoint), null, message);
+                    OnMessageReceived(new SquiggleEndPoint(message.ClientID, message.PresenceEndPoint), null, message);
                 });
 
             BeginReceive();
         }
 
-        void OnMessageReceived(ChatEndPoint sender, ChatEndPoint recipient, Message message)
+        void OnMessageReceived(SquiggleEndPoint sender, SquiggleEndPoint recipient, Message message)
         {
             if (!message.ChannelID.Equals(channelID) && message.PresenceEndPoint != null)
             {

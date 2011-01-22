@@ -43,7 +43,7 @@ namespace Squiggle.Chat.Services.Chat.Host
 
         #region IChatHost Members
 
-        public SessionInfo GetSessionInfo(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient)
+        public SessionInfo GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
             var args = new SessionInfoRequestedEventArgs() 
             { 
@@ -55,21 +55,21 @@ namespace Squiggle.Chat.Services.Chat.Host
             return args.Info;
         }
 
-        public void Buzz(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient)
+        public void Buzz(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
             OnUserActivity(sessionId, sender, recepient, ActivityType.Buzz);
             eventQueue.Enqueue(()=>BuzzReceived(this, new SessionEventArgs(sessionId, sender )));
             Trace.WriteLine(sender + " is buzzing.");
         }
 
-        public void UserIsTyping(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient)
+        public void UserIsTyping(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
             OnUserActivity(sessionId, sender, recepient, ActivityType.Typing);
             eventQueue.Enqueue(()=>UserTyping(this, new SessionEventArgs(sessionId, sender )));
             Trace.WriteLine(sender + " is typing.");
         }
 
-        public void ReceiveMessage(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
+        public void ReceiveMessage(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
         {
             OnUserActivity(sessionId, sender, recepient, ActivityType.Message);
             eventQueue.Enqueue(() => MessageReceived(this, new MessageReceivedEventArgs(){SessionID = sessionId, 
@@ -82,7 +82,7 @@ namespace Squiggle.Chat.Services.Chat.Host
             Trace.WriteLine("Message received from: " + sender + ", sessionId= " + sessionId + ", message = " + message);
         }
 
-        public void ReceiveChatInvite(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient, ChatEndPoint[] participants)
+        public void ReceiveChatInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, SquiggleEndPoint[] participants)
         {
             OnUserActivity(sessionId, sender, recepient, ActivityType.ChatInvite);
             Trace.WriteLine(sender + " invited you to group chat.");
@@ -94,19 +94,19 @@ namespace Squiggle.Chat.Services.Chat.Host
             }));
         }
 
-        public void JoinChat(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient)
+        public void JoinChat(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
             Trace.WriteLine(sender + " has joined the chat.");
             eventQueue.Enqueue(() => UserJoined(this, new UserActivityEventArgs() { SessionID = sessionId, Sender = sender}));
         }
 
-        public void LeaveChat(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient)
+        public void LeaveChat(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
             Trace.WriteLine(sender + " has left the chat.");
             eventQueue.Enqueue(() => UserLeft(this, new UserActivityEventArgs() { SessionID = sessionId, Sender = sender}));
         }
 
-        public void ReceiveFileInvite(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient, Guid id, string name, long size)
+        public void ReceiveFileInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, Guid id, string name, long size)
         {
             OnUserActivity(sessionId, sender, recepient, ActivityType.TransferInvite);
             Trace.WriteLine(sender + " wants to send a file " + name);
@@ -120,24 +120,24 @@ namespace Squiggle.Chat.Services.Chat.Host
             }));
         }
 
-        public void ReceiveFileContent(Guid id, ChatEndPoint sender, ChatEndPoint recepient, byte[] chunk)
+        public void ReceiveFileContent(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] chunk)
         {
             eventQueue.Enqueue(() => TransferDataReceived(this, new FileTransferDataReceivedEventArgs() { ID = id, Chunk = chunk }));
         }
 
-        public void AcceptFileInvite(Guid id, ChatEndPoint sender, ChatEndPoint recepient)
+        public void AcceptFileInvite(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
             eventQueue.Enqueue(() => InvitationAccepted(this, new FileTransferEventArgs() { ID = id }));
         }
 
-        public void CancelFileTransfer(Guid id, ChatEndPoint sender, ChatEndPoint recepient)
+        public void CancelFileTransfer(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
             eventQueue.Enqueue(() => TransferCancelled(this, new FileTransferEventArgs() { ID = id }));
         }       
 
         #endregion
 
-        void OnUserActivity(Guid sessionId, ChatEndPoint sender, ChatEndPoint recepient, ActivityType type)
+        void OnUserActivity(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, ActivityType type)
         {
             eventQueue.Enqueue(() => UserActivity(this, new UserActivityEventArgs(){Sender = sender, 
                                                                                     SessionID = sessionId,
@@ -155,11 +155,11 @@ namespace Squiggle.Chat.Services.Chat.Host
     public class SessionEventArgs : EventArgs
     {
         public Guid SessionID { get; set; }
-        public ChatEndPoint Sender { get; set; }
+        public SquiggleEndPoint Sender { get; set; }
 
         public SessionEventArgs(){}
 
-        public SessionEventArgs(Guid sessionId, ChatEndPoint user)
+        public SessionEventArgs(Guid sessionId, SquiggleEndPoint user)
         {
             this.SessionID = sessionId;
             this.Sender = user;
@@ -168,7 +168,7 @@ namespace Squiggle.Chat.Services.Chat.Host
 
     public class ChatInviteReceivedEventArgs : SessionEventArgs
     {
-        public ChatEndPoint[] Participants { get; set; }
+        public SquiggleEndPoint[] Participants { get; set; }
     }
 
     public class MessageReceivedEventArgs : SessionEventArgs

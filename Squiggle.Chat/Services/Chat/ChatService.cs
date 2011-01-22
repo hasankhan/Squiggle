@@ -14,7 +14,7 @@ namespace Squiggle.Chat.Services.Chat
         ChatHost chatHost;
         ServiceHost serviceHost;
         ChatSessionCollection chatSessions;
-        ChatEndPoint localEndPoint;
+        SquiggleEndPoint localEndPoint;
 
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
 
@@ -24,7 +24,7 @@ namespace Squiggle.Chat.Services.Chat
        
         #region IChatService Members
 
-        public void Start(ChatEndPoint endpoint)
+        public void Start(SquiggleEndPoint endpoint)
         {
             chatHost = new ChatHost();
             chatHost.UserActivity += new EventHandler<UserActivityEventArgs>(chatHost_UserActivity);
@@ -54,7 +54,7 @@ namespace Squiggle.Chat.Services.Chat
             }
         }
 
-        public IChatSession CreateSession(ChatEndPoint endPoint)
+        public IChatSession CreateSession(SquiggleEndPoint endPoint)
         {
             IChatSession session = chatSessions.Find(s => !s.IsGroupSession && s.RemoteUsers.Contains(endPoint));
             if (session == null)
@@ -77,7 +77,7 @@ namespace Squiggle.Chat.Services.Chat
             return uri;
         }
 
-        ChatSession CreateSession(Guid sessionId, ChatEndPoint endpoint)
+        ChatSession CreateSession(Guid sessionId, SquiggleEndPoint endpoint)
         {
             ChatSession session = new ChatSession(sessionId, chatHost, localEndPoint, endpoint);
             RegisterSession(session);
@@ -90,7 +90,7 @@ namespace Squiggle.Chat.Services.Chat
             this.chatSessions.Add(session);
         } 
 
-        void EnsureChatSession(Guid sessionId, ChatEndPoint user)
+        void EnsureChatSession(Guid sessionId, SquiggleEndPoint user)
         {
             if (!chatSessions.Contains(sessionId))
             {

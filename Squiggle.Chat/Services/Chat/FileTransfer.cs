@@ -18,8 +18,8 @@ namespace Squiggle.Chat.Services.Chat
         public event EventHandler<ErrorEventArgs> Error = delegate { };        
 
         IChatHost remoteHost;
-        ChatEndPoint localUser;
-        ChatEndPoint remoteUser;
+        SquiggleEndPoint localUser;
+        SquiggleEndPoint remoteUser;
         Stream content;
         Guid id;
         ChatHost localHost;
@@ -34,7 +34,7 @@ namespace Squiggle.Chat.Services.Chat
         public long Size { get; private set; }
         public string Name { get; private set; }
 
-        public FileTransfer(Guid sessionId, IChatHost remoteHost, ChatHost localHost, ChatEndPoint localUser, ChatEndPoint remoteUser, string name, long size, Stream content)
+        public FileTransfer(Guid sessionId, IChatHost remoteHost, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, string name, long size, Stream content)
         {
             this.sessionId = sessionId;
             this.localHost = localHost;
@@ -48,7 +48,7 @@ namespace Squiggle.Chat.Services.Chat
             sending = true;
         }
 
-        public FileTransfer(Guid sessionId, IChatHost remoteHost, ChatHost localHost, ChatEndPoint localUser, ChatEndPoint remoteUser, string name, long size, Guid id)
+        public FileTransfer(Guid sessionId, IChatHost remoteHost, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, string name, long size, Guid id)
         {
             this.sessionId = sessionId;
             this.localHost = localHost;

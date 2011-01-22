@@ -15,12 +15,12 @@ namespace Squiggle.Chat.Services.Chat
         class RemoteHost
         {
             public IChatHost Host { get; set; }
-            public ChatEndPoint EndPoint { get; set; }
+            public SquiggleEndPoint EndPoint { get; set; }
         }
 
-        ChatEndPoint localUser;
+        SquiggleEndPoint localUser;
         ChatHost localHost;
-        HashSet<ChatEndPoint> remoteUsers;
+        HashSet<SquiggleEndPoint> remoteUsers;
         Dictionary<string, RemoteHost> remoteHosts;
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
@@ -33,7 +33,7 @@ namespace Squiggle.Chat.Services.Chat
         public event EventHandler GroupChatStarted = delegate { };
 
         public Guid ID { get; private set; }
-        public IEnumerable<ChatEndPoint> RemoteUsers
+        public IEnumerable<SquiggleEndPoint> RemoteUsers
         {
             get { return remoteUsers; }
         }
@@ -42,14 +42,14 @@ namespace Squiggle.Chat.Services.Chat
             get { return remoteUsers.Count > 1; }
         }
 
-        public ChatSession(Guid sessionID, ChatHost localHost, ChatEndPoint localUser, ChatEndPoint remoteUser): this(sessionID, localHost, localUser, Enumerable.Repeat(remoteUser, 1)) { }
+        public ChatSession(Guid sessionID, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser): this(sessionID, localHost, localUser, Enumerable.Repeat(remoteUser, 1)) { }
 
-        public ChatSession(Guid sessionID, ChatHost localHost, ChatEndPoint localUser, IEnumerable<ChatEndPoint> remoteUsers)
+        public ChatSession(Guid sessionID, ChatHost localHost, SquiggleEndPoint localUser, IEnumerable<SquiggleEndPoint> remoteUsers)
         {
             this.ID = sessionID;
             this.localHost = localHost;
             this.localUser = localUser;
-            this.remoteUsers = new HashSet<ChatEndPoint>(remoteUsers);
+            this.remoteUsers = new HashSet<SquiggleEndPoint>(remoteUsers);
             localHost.ChatInviteReceived += new EventHandler<ChatInviteReceivedEventArgs>(localHost_ChatInviteReceived);
             localHost.TransferInvitationReceived += new EventHandler<TransferInvitationReceivedEventArgs>(localHost_TransferInvitationReceived);
             localHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(host_MessageReceived);
@@ -221,13 +221,13 @@ namespace Squiggle.Chat.Services.Chat
             SessionEnded(this, EventArgs.Empty);
         }
 
-        public void Invite(ChatEndPoint user)
+        public void Invite(SquiggleEndPoint user)
         {
             var proxy = ChatHostProxyFactory.Get(user.Address);
             proxy.ReceiveChatInvite(ID, localUser, user, remoteUsers.ToArray());
         }
 
-        bool IsRemoteUser(ChatEndPoint user)
+        bool IsRemoteUser(SquiggleEndPoint user)
         {
             return remoteUsers.Contains(user);
         }
@@ -235,7 +235,7 @@ namespace Squiggle.Chat.Services.Chat
         void CreateRemoteHosts()
         {
             lock (remoteHosts)
-                foreach (ChatEndPoint user in RemoteUsers)
+                foreach (SquiggleEndPoint user in RemoteUsers)
                     remoteHosts[user.ClientID] = new RemoteHost()
                     {
                         Host = ChatHostProxyFactory.Get(user.Address),
@@ -243,12 +243,12 @@ namespace Squiggle.Chat.Services.Chat
                     };
         }
 
-        void BroadCast(Action<IChatHost, ChatEndPoint> hostAction)
+        void BroadCast(Action<IChatHost, SquiggleEndPoint> hostAction)
         {
             BroadCast(hostAction, true);
         }
 
-        void BroadCast(Action<IChatHost, ChatEndPoint> hostAction, bool continueOnError)
+        void BroadCast(Action<IChatHost, SquiggleEndPoint> hostAction, bool continueOnError)
         {
             bool allSuccess = true;
 
@@ -273,9 +273,9 @@ namespace Squiggle.Chat.Services.Chat
                 throw new OperationFailedException();
         }
 
-        void AddParticipants(ChatEndPoint[] participants)
+        void AddParticipants(SquiggleEndPoint[] participants)
         {
-            foreach (ChatEndPoint user in participants)
+            foreach (SquiggleEndPoint user in participants)
                 remoteUsers.Add(user);
 
             CreateRemoteHosts();

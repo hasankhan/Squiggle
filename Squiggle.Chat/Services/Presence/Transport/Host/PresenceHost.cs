@@ -7,10 +7,10 @@ namespace Squiggle.Chat.Services.Presence.Transport.Host
 {
     public class UserInfoRequestedEventArgs: EventArgs
     {
-        public ChatEndPoint User { get; private set; }
+        public SquiggleEndPoint User { get; private set; }
         public UserInfo UserInfo { get; set; }
 
-        public UserInfoRequestedEventArgs(ChatEndPoint user)
+        public UserInfoRequestedEventArgs(SquiggleEndPoint user)
         {
             this.User = user;
         }
@@ -22,7 +22,7 @@ namespace Squiggle.Chat.Services.Presence.Transport.Host
         public event EventHandler<UserInfoRequestedEventArgs> UserInfoRequested = delegate { };
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
 
-        public void ReceivePresenceMessage(ChatEndPoint sender, ChatEndPoint recepient, byte[] message)
+        public void ReceivePresenceMessage(SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] message)
         {
             var msg = Message.Deserialize(message);
             MessageReceived(this, new MessageReceivedEventArgs() 
@@ -33,7 +33,7 @@ namespace Squiggle.Chat.Services.Presence.Transport.Host
             });
         }
 
-        public UserInfo GetUserInfo(ChatEndPoint user)
+        public UserInfo GetUserInfo(SquiggleEndPoint user)
         {
             var args = new UserInfoRequestedEventArgs(user);
             UserInfoRequested(this, args);

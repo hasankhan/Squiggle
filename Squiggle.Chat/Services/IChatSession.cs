@@ -23,7 +23,7 @@ namespace Squiggle.Chat.Services
         event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived;
         event EventHandler GroupChatStarted;
 
-        IEnumerable<ChatEndPoint> RemoteUsers { get; }
+        IEnumerable<SquiggleEndPoint> RemoteUsers { get; }
         Guid ID { get; }
         bool IsGroupSession { get; }
 
@@ -32,6 +32,6 @@ namespace Squiggle.Chat.Services
         void NotifyTyping();
         IFileTransfer SendFile(string name, Stream content);
         void End();
-        void Invite(ChatEndPoint user);
+        void Invite(SquiggleEndPoint user);
     }
 }

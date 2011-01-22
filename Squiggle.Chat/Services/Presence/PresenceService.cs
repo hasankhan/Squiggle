@@ -24,7 +24,7 @@ namespace Squiggle.Chat.Services.Presence
             get { return discovery.Users; }
         }
 
-        public PresenceService(ChatEndPoint chatEndPoint, IPEndPoint presenceEndPoint, IPEndPoint presenceServiceEndPoint, TimeSpan keepAliveTime)
+        public PresenceService(SquiggleEndPoint chatEndPoint, IPEndPoint presenceEndPoint, IPEndPoint presenceServiceEndPoint, TimeSpan keepAliveTime)
         {
             thisUser = new UserInfo()
             {
@@ -87,7 +87,7 @@ namespace Squiggle.Chat.Services.Presence
                 OnUserOnline(e, true);
             }
             else
-                discovery.DiscoverUser(new ChatEndPoint(e.User.ID, e.User.PresenceEndPoint));
+                discovery.DiscoverUser(new SquiggleEndPoint(e.User.ID, e.User.PresenceEndPoint));
         }
 
         void keepAlive_UserLost(object sender, UserEventArgs e)

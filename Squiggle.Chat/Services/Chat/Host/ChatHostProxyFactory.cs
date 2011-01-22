@@ -6,7 +6,7 @@ using System.Net;
 
 namespace Squiggle.Chat.Services.Chat.Host
 {
-    class ChatHostProxyFactory
+    public class ChatHostProxyFactory
     {
         static Dictionary<IPEndPoint, ChatHostProxy> proxies = new Dictionary<IPEndPoint, ChatHostProxy>();
 

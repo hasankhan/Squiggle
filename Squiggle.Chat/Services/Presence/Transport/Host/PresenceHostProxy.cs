@@ -65,12 +65,12 @@ namespace Squiggle.Chat.Services.Presence.Transport.Host
             }
         }
 
-        public UserInfo GetUserInfo(ChatEndPoint user)
+        public UserInfo GetUserInfo(SquiggleEndPoint user)
         {
             return EnsureProxy<UserInfo>(p=>p.GetUserInfo(user)); 
         }
 
-        public void ReceivePresenceMessage(ChatEndPoint sender, ChatEndPoint recepient, byte[] message)
+        public void ReceivePresenceMessage(SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] message)
         {
             EnsureProxy<object>(p=>{
                 p.ReceivePresenceMessage(sender, recepient, message);
@@ -108,12 +108,12 @@ namespace Squiggle.Chat.Services.Presence.Transport.Host
             {
             }
 
-            public UserInfo GetUserInfo(ChatEndPoint user)
+            public UserInfo GetUserInfo(SquiggleEndPoint user)
             {
                 return base.Channel.GetUserInfo(user); 
             }
 
-            public void ReceivePresenceMessage(ChatEndPoint sender, ChatEndPoint recepient, byte[] message)
+            public void ReceivePresenceMessage(SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] message)
             {
                 base.Channel.ReceivePresenceMessage(sender, recepient, message);
             }

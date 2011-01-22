@@ -12,7 +12,7 @@ namespace Squiggle.Chat.Services.Presence
     class UserDiscovery
     {
         UserInfo thisUser;
-        ChatEndPoint localEndPoint;
+        SquiggleEndPoint localEndPoint;
         PresenceChannel channel;
         HashSet<UserInfo> onlineUsers;
 
@@ -39,7 +39,7 @@ namespace Squiggle.Chat.Services.Presence
             channel.MessageReceived += new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
             var message = Message.FromUserInfo<LoginMessage>(thisUser);
             channel.SendMessage(message);
-            localEndPoint = new ChatEndPoint(me.ID, me.ChatEndPoint);
+            localEndPoint = new SquiggleEndPoint(me.ID, me.ChatEndPoint);
         }        
 
         public void Update(UserInfo me)
@@ -57,7 +57,7 @@ namespace Squiggle.Chat.Services.Presence
             channel.SendMessage(message);
         }
 
-        public void DiscoverUser(ChatEndPoint user)
+        public void DiscoverUser(SquiggleEndPoint user)
         {
             UserInfo userInfo = channel.GetUserInfo(user);
             if (userInfo != null)
@@ -71,7 +71,7 @@ namespace Squiggle.Chat.Services.Presence
                 if (e.Message is LoginMessage)
                 {
                     OnLoginMessage(e.Message);
-                    SayHi(new ChatEndPoint(e.Message.ClientID, e.Message.PresenceEndPoint));
+                    SayHi(new SquiggleEndPoint(e.Message.ClientID, e.Message.PresenceEndPoint));
                 }
                 else if (e.Message is LogoutMessage)
                     OnLogoutMessage((LogoutMessage)e.Message);
@@ -86,7 +86,7 @@ namespace Squiggle.Chat.Services.Presence
             }            
         }        
 
-        void SayHi(ChatEndPoint presenceEndPoint)
+        void SayHi(SquiggleEndPoint presenceEndPoint)
         {
             var message = PresenceMessage.FromUserInfo<HiMessage>(thisUser);
             channel.SendMessage(message, localEndPoint, presenceEndPoint);            
@@ -110,7 +110,7 @@ namespace Squiggle.Chat.Services.Presence
 
         void OnLoginMessage(Message message)
         {
-            UserInfo newUser = channel.GetUserInfo(new ChatEndPoint(message.ClientID, message.PresenceEndPoint));
+            UserInfo newUser = channel.GetUserInfo(new SquiggleEndPoint(message.ClientID, message.PresenceEndPoint));
             if (newUser != null)
                 OnPresenceMessage(newUser, false);
         }
@@ -151,7 +151,7 @@ namespace Squiggle.Chat.Services.Presence
 
         void OnUpdateMessage(UserUpdateMessage message)
         {
-            UserInfo newUser = channel.GetUserInfo(new ChatEndPoint(message.ClientID, message.PresenceEndPoint));
+            UserInfo newUser = channel.GetUserInfo(new SquiggleEndPoint(message.ClientID, message.PresenceEndPoint));
             if (newUser != null)
                 OnUserUpdated(newUser);
         }        

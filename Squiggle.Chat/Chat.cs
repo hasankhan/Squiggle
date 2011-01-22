@@ -116,7 +116,7 @@ namespace Squiggle.Chat
         {
             ThreadPool.QueueUserWorkItem(_ =>
             {
-                L(() => session.Invite(new ChatEndPoint(buddy.ID.ToString(), buddy.ChatEndPoint)));
+                L(() => session.Invite(new SquiggleEndPoint(buddy.ID.ToString(), buddy.ChatEndPoint)));
             });
         }
 
@@ -124,7 +124,7 @@ namespace Squiggle.Chat
 
         void session_GroupChatStarted(object sender, EventArgs e)
         {
-            foreach (ChatEndPoint user in session.RemoteUsers)
+            foreach (SquiggleEndPoint user in session.RemoteUsers)
             {
                 Buddy buddy = buddyResolver(user.ClientID);
                 if (buddy != null)

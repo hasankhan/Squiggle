@@ -5,22 +5,17 @@ using System.Text;
 using System.Net;
 using System.Runtime.Serialization;
 
-namespace Squiggle.Chat.Services.Chat
+namespace Squiggle.Chat.Services
 {
     [DataContract]
-    public class ChatEndPoint
+    public class SquiggleEndPoint
     {
         [DataMember]
         public string ClientID { get; set; }
         [DataMember]
         public IPEndPoint Address { get; set; }
 
-        public ChatEndPoint()
-        {
-
-        }
-
-        public ChatEndPoint(string id, IPEndPoint address)
+        public SquiggleEndPoint(string id, IPEndPoint address)
         {
             if (String.IsNullOrEmpty(id))
                 throw new ArgumentNullException("id");
@@ -42,9 +37,9 @@ namespace Squiggle.Chat.Services.Chat
 
         public override bool Equals(object obj)
         {
-            if (obj is ChatEndPoint)
+            if (obj is SquiggleEndPoint)
             {
-                var other = (ChatEndPoint)obj;
+                var other = (SquiggleEndPoint)obj;
                 return this.ClientID.Equals(other.ClientID) &&
                         this.Address.Equals(other.Address);
             }

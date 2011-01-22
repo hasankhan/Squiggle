@@ -11,7 +11,7 @@ namespace Squiggle.Chat
     {
         IChatService chatService;
         IPresenceService presenceService;
-        ChatEndPoint localEndPoint;
+        SquiggleEndPoint localEndPoint;
         BuddyList buddies;
 
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
@@ -28,7 +28,7 @@ namespace Squiggle.Chat
 
         public bool LoggedIn { get; private set; }
 
-        public ChatClient(ChatEndPoint localEndPoint, IPEndPoint presenceEndPoint, TimeSpan keepAliveTime)
+        public ChatClient(SquiggleEndPoint localEndPoint, IPEndPoint presenceEndPoint, TimeSpan keepAliveTime)
         {
             chatService = new ChatService();
             buddies = new BuddyList();
@@ -42,7 +42,7 @@ namespace Squiggle.Chat
 
         public IChat StartChat(Buddy buddy)
         {
-            IChatSession session = chatService.CreateSession(new ChatEndPoint(buddy.ID.ToString(), buddy.ChatEndPoint));
+            IChatSession session = chatService.CreateSession(new SquiggleEndPoint(buddy.ID.ToString(), buddy.ChatEndPoint));
             var chat = new Chat(session, buddy, id=>buddies[id]);
             return chat;
         }        
@@ -81,7 +81,7 @@ namespace Squiggle.Chat
         void chatService_ChatStarted(object sender, Squiggle.Chat.Services.ChatStartedEventArgs e)
         {
             var buddyList = new List<Buddy>();
-            foreach (ChatEndPoint user in e.Session.RemoteUsers)
+            foreach (SquiggleEndPoint user in e.Session.RemoteUsers)
             {
                 Buddy buddy = buddies[user.ClientID];
                 if (buddy != null)
