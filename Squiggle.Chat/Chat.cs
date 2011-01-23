@@ -96,15 +96,11 @@ namespace Squiggle.Chat
             if (IsGroupChat)
                 throw new InvalidOperationException("Can not send a file in a group chat session.");
 
-            try
+            return ExceptionMonster.EatTheException(() =>
             {
                 return session.SendFile(name, content);            
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex.Message);
-                return null;
-            }
+
+            }, "sending file request");
         }
 
         public void Leave()

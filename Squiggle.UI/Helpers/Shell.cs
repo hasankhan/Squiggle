@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using Squiggle.Chat;
 
 namespace Squiggle.UI.Helpers
 {
@@ -8,9 +9,10 @@ namespace Squiggle.UI.Helpers
     {
         public static bool CreateDirectoryIfNotExists(string path)
         {
-            bool success = true;
-            try
+
+            return ExceptionMonster.EatTheException(() =>
             {
+                bool success = true;
                 if (!Directory.Exists(path))
                 {
                     DirectoryInfo dirInfo = Directory.GetParent(path);
@@ -19,13 +21,8 @@ namespace Squiggle.UI.Helpers
                     if (success)
                         Directory.CreateDirectory(path);
                 }
-            }
-            catch (Exception ex)
-            {
-                success = false;
-                Trace.WriteLine(ex.Message);
-            }
-            return success;
+                return success;
+            }, "creating directory if it doesn't exist");            
         }
 
         public static void ShowInFolder(string filePath)

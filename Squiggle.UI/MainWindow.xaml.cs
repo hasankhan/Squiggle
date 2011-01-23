@@ -229,14 +229,7 @@ namespace Squiggle.UI
 
                 ThreadPool.QueueUserWorkItem(_ =>
                 {
-                    try
-                    {
-                        ChatClient.Logout();
-                    }
-                    catch (Exception ex)
-                    {
-                        Trace.WriteLine(ex.Message);
-                    }
+                    ExceptionMonster.EatTheException(() => ChatClient.Logout(), "loging out client");
                     clientAvailable.Set();
                 });
 

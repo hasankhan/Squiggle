@@ -25,15 +25,8 @@ namespace Squiggle.UI.Helpers
         public static void OpenDownloadsFolder()
         {
             string downloadsFolder = SettingsProvider.Current.Settings.GeneralSettings.DownloadsFolder;
-            try
-            {
-                if (Shell.CreateDirectoryIfNotExists(downloadsFolder))
-                    Process.Start(downloadsFolder);
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex.Message);
-            }
+            if (Shell.CreateDirectoryIfNotExists(downloadsFolder))
+                ExceptionMonster.EatTheException(() => Process.Start(downloadsFolder), "opening downloads folder");
         }
 
         public static void ShowFontDialog()

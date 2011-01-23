@@ -6,6 +6,7 @@ using System.Net;
 using System.Linq;
 using Squiggle.Chat.Services;
 using Squiggle.Chat.Services.Presence;
+using System.ServiceModel.Dispatcher;
 
 namespace Squiggle.Bridge
 {
@@ -106,6 +107,6 @@ namespace Squiggle.Bridge
         public void CancelFileTransfer(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
             bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.CancelFileTransfer(id, s, r), sender, recepient);
-        }        
+        }
     }
 }
