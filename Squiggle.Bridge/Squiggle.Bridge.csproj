@@ -55,6 +55,7 @@
     <Compile Include="BridgeHost.cs" />
     <Compile Include="BridgeHostProxy.cs" />
     <Compile Include="Configuration\BridgeConfiguration.cs" />
+    <Compile Include="Configuration\ChannelBinding.cs" />
     <Compile Include="Configuration\Target.cs" />
     <Compile Include="Configuration\TargetCollection.cs" />
     <Compile Include="IBridgeHost.cs" />

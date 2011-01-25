@@ -22,9 +22,9 @@ namespace Squiggle.Bridge.Configuration
         }
 
         [ConfigurationProperty("channelbinding")]
-        public Target ChannelBinding
+        public ChannelBinding ChannelBinding
         {
-            get { return (Target)this["channelbinding"] ?? new Target(); }
+            get { return (ChannelBinding)this["channelbinding"] ?? new ChannelBinding(); }
         }
 
         [ConfigurationProperty("targets")]
