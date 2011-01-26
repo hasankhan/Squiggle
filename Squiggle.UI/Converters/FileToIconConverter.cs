@@ -125,6 +125,7 @@ namespace Squiggle.UI.Converters
                     var newWidth = width > target.Width ? (int)target.Width : width;
                     var newHeight = height > target.Height ? (int)target.Height : height;
                     Int32Rect outRect = new Int32Rect(0, (int)(delta >= 0 ? delta : 0) / 2, newWidth, newWidth);
+
                     try
                     {
                         target.WritePixels(outRect, bits, stride, 0);

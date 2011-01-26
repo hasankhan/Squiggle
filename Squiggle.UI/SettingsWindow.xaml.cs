@@ -89,28 +89,24 @@ namespace Squiggle.UI
 
         private bool GetRunAtStartup()
         {
-            try
-            {
-                bool run = WinStartup.IsAdded("squiggle", GetStartupPath());                
-                return run;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            bool run = ExceptionMonster.EatTheException(()=>
+                {
+                    return WinStartup.IsAdded("squiggle", GetStartupPath());
+                }, "reading startup info from registry");
+            return run;
         }
 
         private void SetRunAtStartup(bool run)
         {
-            try
-            {
-                var runKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
-                if (run)
-                    WinStartup.Add("squiggle", GetStartupPath());
-                else
-                    WinStartup.Remove("squiggle");
-            }
-            catch (Exception ex)
+            Exception ex;
+            if (!ExceptionMonster.EatTheException(() =>
+                {
+                    var runKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
+                    if (run)
+                        WinStartup.Add("squiggle", GetStartupPath());
+                    else
+                        WinStartup.Remove("squiggle");
+                }, "setting squiggle startup option in registry", out ex))
             {
                 MessageBox.Show("Could not set Squiggle to run at startup due to exception: " + ex.Message, "Squiggle", MessageBoxButton.OK, MessageBoxImage.Error);
             }

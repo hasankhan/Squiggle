@@ -186,18 +186,15 @@ namespace Squiggle.UI
                 clientAvailable.WaitOne(TimeSpan.FromSeconds(20));
 
                 foreach (var window in chatWindows)
-                    window.Enabled = true;                
+                    window.Enabled = true;
 
-                try
-                {
-                    ChatClient = CreateClient(displayName, groupName);
-                }
-                catch (Exception ex)
-                {
+                Exception ex;
+                if (!ExceptionMonster.EatTheException(() =>
+                                                      {
+                                                          ChatClient = CreateClient(displayName, groupName);
+                                                      }, "creating chat client", out ex))
                     if (byUser)
                         MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
 
                 CreateMonitor();
                 clientViewModel = new ClientViewModel(ChatClient);

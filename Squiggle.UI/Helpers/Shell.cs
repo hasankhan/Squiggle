@@ -42,11 +42,7 @@ namespace Squiggle.UI.Helpers
 
         public static void OpenUrl(string url)
         {
-            try
-            {
-                Process.Start(url);
-            }
-            catch { }
+            ExceptionMonster.EatTheException(() => Process.Start(url), "opening the url:" + url);
         }
 
         public static string GetUniqueFilePath(string folderPath, string originalFileName)

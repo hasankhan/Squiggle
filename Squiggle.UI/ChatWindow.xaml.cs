@@ -533,12 +533,12 @@ namespace Squiggle.UI
             if (File.Exists(filePath))
             {
                 string fileName = Path.GetFileName(filePath);
-                FileStream fileStream;
-                try
-                {
-                    fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete);
-                }
-                catch (Exception)
+                FileStream fileStream = null;
+
+                if (!ExceptionMonster.EatTheException(() =>
+                                                        {
+                                                            fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete);
+                                                        }, "opening the file for transfer"))
                 {
                     chatTextBox.AddError(String.Format("Could not read file '{0}'. Please make sure its not in use.", fileName), null);
                     return;
