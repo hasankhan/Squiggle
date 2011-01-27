@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <FlowDirection x:Key="flowDirection">LeftToRight</FlowDirection>
+    <sys:String x:Key="MainWindow_TrayMenu_Open">Open</sys:String>
+    <sys:String x:Key="MainWindow_TrayMenu_ChangeStatus">Change Status</sys:String>
+    <sys:String x:Key="MainWindow_TrayMenu_SignOut">Sign Out</sys:String>
+    <sys:String x:Key="MainWindow_TrayMenu_Quit">Quit</sys:String>
+    <sys:String x:Key="MainWindow_MainMenu_File">_File</sys:String>
+    <sys:String x:Key="MainWindow_MainMenu_SignOut">Sig_n Out</sys:String>
+    <sys:String x:Key="MainWindow_MainMenu_Status">S_tatus</sys:String>
+    <sys:String x:Key="MainWindow_MainMenu_OpenFiles">_Open received files folder</sys:String>
+    <sys:String x:Key="MainWindow_MainMenu_Close">_Close</sys:String>
+    <sys:String x:Key="MainWindow_MainMenu_Actions">_Actions</sys:String>
+    <sys:String x:Key="MainWindow_MainMenu_SendMessage">_Send an instant message</sys:String>
+    <sys:String x:Key="MainWindow_MainMenu_SendBroadcastMessage">Send an instant _broadcast message</sys:String>
+    <sys:String x:Key="MainWindow_MainMenu_SendFile">Send a _file</sys:String>
+    <sys:String x:Key="MainWindow_MainMenu_Tools">_Tools</sys:String>
+    <sys:String x:Key="MainWindow_MainMenu_GroupBuddies">Group Buddies</sys:String>
+    <sys:String x:Key="MainWindow_MainMenu_SortBuddies">S_ort Buddies</sys:String>
+    <sys:String x:Key="MainWindow_MainMenu_SortByName">By _name</sys:String>
+    <sys:String x:Key="MainWindow_MainMenu_SortByStatus">By _status</sys:String>
+    <sys:String x:Key="MainWindow_MainMenu_Settings">_Settings...</sys:String>
+    <sys:String x:Key="MainWindow_MainMenu_Help">_Help</sys:String>
+    <sys:String x:Key="MainWindow_MainMenu_About">_About Squiggle</sys:String>
+    <sys:String x:Key="MainWindow_SignIn_SignIn">Sign In</sys:String>
+    <sys:String x:Key="MainWindow_SignIn_DisplayName">Display name:</sys:String>
+    <sys:String x:Key="MainWindow_SignIn_GroupName">Group name:</sys:String>
+    <sys:String x:Key="MainWindow_SignIn_RememberMe">Remember me</sys:String>
+    <sys:String x:Key="MainWindow_SignIn_AutoSignIn">Sign me in automatically</sys:String>
+    <sys:String x:Key="MainWindow_SignIn_SignInButton">Sign In</sys:String>
+</ResourceDictionary>

@@ -44,7 +44,7 @@
             </Style.Setters>
         </Style>
     </Window.Resources>
-    <Grid x:Name="LayoutRoot">
+    <Grid x:Name="LayoutRoot" FlowDirection="{DynamicResource flowDirection}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -53,14 +53,14 @@
                           TrayLeftMouseDown="trayIcon_TrayLeftMouseDown" x:Name="trayIcon" ToolTipText="{Binding LoggedInUser.Status, FallbackValue=Offline}" >
             <tray:TaskbarIcon.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Open" Click="OpenMenu_Click" />
-                    <MenuItem Header="Change Status"
+                    <MenuItem Header="{DynamicResource MainWindow_TrayMenu_Open}" Click="OpenMenu_Click" />
+                    <MenuItem Header="{DynamicResource MainWindow_TrayMenu_ChangeStatus}"
                               MenuItem.Click="StatusMenu_Click"
                               Style="{StaticResource statusMenu}" />
-                    <MenuItem Header="Sign Out" 
+                    <MenuItem Header="{DynamicResource MainWindow_TrayMenu_SignOut}" 
                               Click="SignOutMenu_Click" 
                               Style="{StaticResource signedInMenu}" />
-                    <MenuItem Header="Quit" Click="QuiteMenu_Click" />
+                    <MenuItem Header="{DynamicResource MainWindow_TrayMenu_Quit}" Click="QuiteMenu_Click" />
                 </ContextMenu>
             </tray:TaskbarIcon.ContextMenu>
         </tray:TaskbarIcon>
@@ -72,34 +72,34 @@
                     <GradientStop Color="#FFECECEC" Offset="0.875"/>
                 </LinearGradientBrush>
             </Menu.Background>
-            <MenuItem Header="_File">
-                <MenuItem Header="Sig_n Out" 
+            <MenuItem Header="{DynamicResource MainWindow_MainMenu_File}">
+                <MenuItem Header="{DynamicResource MainWindow_MainMenu_SignOut}" 
                           Click="SignOutMenu_Click" 
                           Style="{StaticResource signedInMenu}" />
                 <Separator />
-                <MenuItem Header="S_tatus" 
+                <MenuItem Header="{DynamicResource MainWindow_MainMenu_Status}" 
                           Style="{StaticResource statusMenu}"
                           MenuItem.Click="StatusMenu_Click" />
                 <Separator />
-                <MenuItem Header="_Open received files folder" MenuItem.Click="OpenReceivedFilesMenu_Click" />
+                <MenuItem Header="{DynamicResource MainWindow_MainMenu_OpenFiles}" MenuItem.Click="OpenReceivedFilesMenu_Click" />
                 <Separator />
-                <MenuItem Header="_Close" MenuItem.Click="CloseMenu_Click" />
+                <MenuItem Header="{DynamicResource MainWindow_MainMenu_Close}" MenuItem.Click="CloseMenu_Click" />
             </MenuItem>
-            <MenuItem Header="_Actions">
-                <MenuItem Header="_Send an instant message" Style="{StaticResource signedInMenu}" Click="SendMessageMenu_Click" />
-                <MenuItem Header="Send an instant _broadcast message" Style="{StaticResource signedInMenu}" Click="SendBroadcastMessageMenu_Click" />
-                <MenuItem Header="Send a _file" Style="{StaticResource signedInMenu}" Click="SendFileMenu_Click" />
+            <MenuItem Header="{DynamicResource MainWindow_MainMenu_Actions}">
+                <MenuItem Header="{DynamicResource MainWindow_MainMenu_SendMessage}" Style="{StaticResource signedInMenu}" Click="SendMessageMenu_Click" />
+                <MenuItem Header="{DynamicResource MainWindow_MainMenu_SendBroadcastMessage}" Style="{StaticResource signedInMenu}" Click="SendBroadcastMessageMenu_Click" />
+                <MenuItem Header="{DynamicResource MainWindow_MainMenu_SendFile}" Style="{StaticResource signedInMenu}" Click="SendFileMenu_Click" />
             </MenuItem>
-            <MenuItem Header="_Tools">
-                <MenuItem x:Name="mnuGroupBuddies" Header="Group Buddies" MenuItem.Click="GroupMenu_Click" Style="{StaticResource signedInMenu}" />
-                <MenuItem Header="S_ort Buddies" Style="{StaticResource signedInMenu}">
-                    <MenuItem x:Name="mnuSortByName" Header="By _name" MenuItem.Click="SortMenu_Click" Tag="DisplayName" />
-                    <MenuItem x:Name="mnuSortByStatus" Header="By _status"  MenuItem.Click="SortMenu_Click" Tag="Status" />
+            <MenuItem Header="{DynamicResource MainWindow_MainMenu_Tools}">
+                <MenuItem x:Name="mnuGroupBuddies" Header="{DynamicResource MainWindow_MainMenu_GroupBuddies}" MenuItem.Click="GroupMenu_Click" Style="{StaticResource signedInMenu}" />
+                <MenuItem Header="{DynamicResource MainWindow_MainMenu_SortBuddies}" Style="{StaticResource signedInMenu}">
+                    <MenuItem x:Name="mnuSortByName" Header="{DynamicResource MainWindow_MainMenu_SortByName}" MenuItem.Click="SortMenu_Click" Tag="DisplayName" />
+                    <MenuItem x:Name="mnuSortByStatus" Header="{DynamicResource MainWindow_MainMenu_SortByStatus}"  MenuItem.Click="SortMenu_Click" Tag="Status" />
                 </MenuItem>
-                <MenuItem Header="_Settings..." MenuItem.Click="SettingsMenu_Click" />
+                <MenuItem Header="{DynamicResource MainWindow_MainMenu_Settings}" MenuItem.Click="SettingsMenu_Click" />
             </MenuItem>
-            <MenuItem Header="_Help">
-                <MenuItem Header="_About Squiggle" MenuItem.Click="AboutMenu_Click" />
+            <MenuItem Header="{DynamicResource MainWindow_MainMenu_Help}">
+                <MenuItem Header="{DynamicResource MainWindow_MainMenu_About}" MenuItem.Click="AboutMenu_Click" />
             </MenuItem>
         </Menu>        
         <controls:ChatClientControl Grid.Row="1" Width="Auto" Height="Auto" x:Name="chatControl" />

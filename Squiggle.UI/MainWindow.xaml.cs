@@ -39,10 +39,7 @@ namespace Squiggle.UI
         public MainWindow()
         {            
             Instance = this;
-            InitializeComponent();
-
-            if (CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft)
-                LayoutRoot.FlowDirection = System.Windows.FlowDirection.RightToLeft;
+            InitializeComponent();          
            
             this.Height = Properties.Settings.Default.MainWindowHeight;
             this.Width = Properties.Settings.Default.MainWindowWidth;

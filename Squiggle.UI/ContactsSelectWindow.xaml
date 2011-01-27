@@ -63,7 +63,7 @@
             </DataTemplate.Triggers>
         </DataTemplate>
     </Window.Resources>
-    <Grid Margin="10" x:Name="LayoutRoot">
+    <Grid Margin="10" x:Name="LayoutRoot" FlowDirection="{DynamicResource flowDirection}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>

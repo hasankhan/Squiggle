@@ -39,9 +39,6 @@ namespace Squiggle.UI
         public ContactsSelectWindow()
         {
             InitializeComponent();
-
-            if (CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft)
-                LayoutRoot.FlowDirection = System.Windows.FlowDirection.RightToLeft;
         }
 
         public ContactsSelectWindow(ClientViewModel clientViewModel, bool allowMultiSelect) : this()

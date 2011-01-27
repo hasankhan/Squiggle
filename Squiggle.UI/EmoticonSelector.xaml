@@ -5,7 +5,7 @@
         WindowStyle="None" ResizeMode="NoResize" Deactivated="Window_Deactivated" 
         BorderBrush="LightGray" BorderThickness="1"
         ShowInTaskbar="False" ShowActivated="True" KeyDown="Window_KeyDown" Closing="Window_Closing">
-    <WrapPanel x:Name="root">
+    <WrapPanel x:Name="root" FlowDirection="{DynamicResource flowDirection}">
 
     </WrapPanel>
 </Window>

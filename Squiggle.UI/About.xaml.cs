@@ -12,10 +12,7 @@ namespace Squiggle.UI
     {
         public About()
         {
-            InitializeComponent();
-
-            if (CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft)
-                LayoutRoot.FlowDirection = System.Windows.FlowDirection.RightToLeft;
+            InitializeComponent();            
 
             txtVersion.Text = "Version " + AppInfo.Version.ToString();
         }

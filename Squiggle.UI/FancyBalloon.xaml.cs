@@ -44,10 +44,7 @@ namespace StackOverflowClient
     public FancyBalloon()
     {
       InitializeComponent();
-
-      if (CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft)
-          grid.FlowDirection = System.Windows.FlowDirection.RightToLeft;
-
+      
       TaskbarIcon.AddBalloonClosingHandler(this, OnBalloonClosing);
     }
 

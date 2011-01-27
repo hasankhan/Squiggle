@@ -29,9 +29,6 @@ namespace Squiggle.UI
         {
             InitializeComponent();
 
-            if (CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft)
-                root.FlowDirection = System.Windows.FlowDirection.RightToLeft;
-
             foreach (Emoticon emoticon in Emoticons.All)
             {
                 var emoUi = new Controls.Emoticon();

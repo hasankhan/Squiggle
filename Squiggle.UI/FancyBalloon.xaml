@@ -68,7 +68,7 @@
 			<BeginStoryboard Storyboard="{StaticResource FadeOut}" x:Name="FadeOut_BeginStoryboard"/>
 		</EventTrigger>
 	</UserControl.Triggers>
-  <Grid x:Name="grid" MouseEnter="grid_MouseEnter">
+    <Grid x:Name="grid" MouseEnter="grid_MouseEnter" FlowDirection="{DynamicResource flowDirection}">
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="#FFF9F9F9" Offset="0.111"/>

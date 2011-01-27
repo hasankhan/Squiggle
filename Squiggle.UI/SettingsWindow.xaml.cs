@@ -23,9 +23,6 @@ namespace Squiggle.UI
         public SettingsWindow()
         {
             InitializeComponent();
-
-            if (CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft)
-                LayoutRoot.FlowDirection = System.Windows.FlowDirection.RightToLeft;
         }
 
         public SettingsWindow(Buddy user) : this()

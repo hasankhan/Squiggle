@@ -45,9 +45,6 @@ namespace Squiggle.UI
         {
             InitializeComponent();
 
-            if (CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft)
-                LayoutRoot.FlowDirection = System.Windows.FlowDirection.RightToLeft;
-
             this.Height = Properties.Settings.Default.ChatWindowHeight;
             this.Width = Properties.Settings.Default.ChatWindowWidth;
 

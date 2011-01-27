@@ -8,7 +8,7 @@
         <SolidColorBrush x:Key="DialogBackground" Color="#FFF0F0F0"/>
         <SolidColorBrush x:Key="WorkAreaBackgroud" Color="#FFD2D8DE"/>
     </Window.Resources>
-    <Grid x:Name="LayoutRoot">
+    <Grid x:Name="LayoutRoot" FlowDirection="{DynamicResource flowDirection}">
         <TabControl>
             <TabItem Header="General">
                 <Grid >
