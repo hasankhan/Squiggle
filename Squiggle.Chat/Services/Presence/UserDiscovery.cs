@@ -66,24 +66,20 @@ namespace Squiggle.Chat.Services.Presence
 
         void channel_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            try
-            {
-                if (e.Message is LoginMessage)
+            ExceptionMonster.EatTheException(() =>
                 {
-                    OnLoginMessage(e.Message);
-                    SayHi(new SquiggleEndPoint(e.Message.ClientID, e.Message.PresenceEndPoint));
-                }
-                else if (e.Message is LogoutMessage)
-                    OnLogoutMessage((LogoutMessage)e.Message);
-                else if (e.Message is HiMessage)
-                    OnHiMessage((HiMessage)e.Message);
-                else if (e.Message is UserUpdateMessage)
-                    OnUpdateMessage((UserUpdateMessage)e.Message);
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex.Message);
-            }            
+                    if (e.Message is LoginMessage)
+                    {
+                        OnLoginMessage(e.Message);
+                        SayHi(new SquiggleEndPoint(e.Message.ClientID, e.Message.PresenceEndPoint));
+                    }
+                    else if (e.Message is LogoutMessage)
+                        OnLogoutMessage((LogoutMessage)e.Message);
+                    else if (e.Message is HiMessage)
+                        OnHiMessage((HiMessage)e.Message);
+                    else if (e.Message is UserUpdateMessage)
+                        OnUpdateMessage((UserUpdateMessage)e.Message);
+                }, "handling presence message in userdiscovery class");
         }        
 
         void SayHi(SquiggleEndPoint presenceEndPoint)

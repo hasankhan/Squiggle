@@ -234,17 +234,7 @@ namespace Squiggle.Chat.Services.Chat
 
         bool L(Action action)
         {
-            bool success = true;
-            try
-            {
-                action();
-            }
-            catch (Exception ex)
-            {
-                success = false;
-                Trace.WriteLine(ex.Message);
-            }
-            return success;
+            return ExceptionMonster.EatTheException(action, null);
         }
     }
 }

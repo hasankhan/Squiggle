@@ -60,18 +60,16 @@ namespace Squiggle.Chat
         {
             ThreadPool.QueueUserWorkItem(_ =>
             {
-                try
-                {
-                    session.SendMessage(fontName, fontSize, color, fontStyle, message);
-                }
-                catch (Exception ex)
-                {
+                Exception ex;
+                if (!ExceptionMonster.EatTheException(()=>
+                                    {
+                                        session.SendMessage(fontName, fontSize, color, fontStyle, message);                    
+                                    }, "sending chat message", out ex))
                     MessageFailed(this, new MessageFailedEventArgs()
                     {
                         Message = message,
                         Exception = ex
                     });
-                }
             });
         }
 
@@ -184,17 +182,12 @@ namespace Squiggle.Chat
 
         bool L(Action action)
         {
-            bool success = true;
-            try
-            {
-                action();
-            }
-            catch (Exception ex)
-            {
-                success = false;
-                Trace.WriteLine(ex.Message);
-            }
-            return success;
+            return L(action, null);
+        }
+
+        bool L(Action action, string description)
+        {
+            return ExceptionMonster.EatTheException(action, description);
         }        
     }
 }

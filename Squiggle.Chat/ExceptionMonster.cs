@@ -32,7 +32,6 @@ namespace Squiggle.Chat
             return EatTheException(action, actionDescription, out success, out ex);
         }
 
-        // Oh well I know this is ugly but bridge has got to stay alive right?
         public static T EatTheException<T>(Func<T> action, string actionDescription, out bool success, out Exception ex)
         {
             ex = null;

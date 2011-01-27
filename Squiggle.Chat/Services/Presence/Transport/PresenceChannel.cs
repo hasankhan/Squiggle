@@ -85,41 +85,33 @@ namespace Squiggle.Chat.Services.Presence.Transport
         {
             message.ChannelID = channelID;
             byte[] data = message.Serialize();
-            try
+
+            ExceptionMonster.EatTheException(() =>
             {
                 client.Send(data, data.Length, multicastEndPoint);
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine("Could not send broadcast message due to exception: " + ex.Message);
-            }
+            }, "sending presence mcast message");
         }
 
         public void SendMessage(Message message, SquiggleEndPoint localEndPoint, SquiggleEndPoint presenceEndPoint)
         {
             IPresenceHost host = GetPresenceHost(presenceEndPoint.Address);
-            try
+
+            ExceptionMonster.EatTheException(() =>
             {
                 host.ReceivePresenceMessage(localEndPoint, presenceEndPoint, message.Serialize());
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine("Could send message to " + presenceEndPoint + " due to exception: " + ex.Message);
-            }
+            }, "sending presence message to " + presenceEndPoint);
         }
 
         public UserInfo GetUserInfo(SquiggleEndPoint user)
         {
             IPresenceHost host = GetPresenceHost(user.Address);
             UserInfo info = null;
-            try
-            {
-                info = host.GetUserInfo(user);
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine("Could not get user info of " + user + " due to exception: " + ex.Message);
-            }
+
+            ExceptionMonster.EatTheException(() =>
+                {
+                    info = host.GetUserInfo(user);
+                }, "getting user info for " + user);
+            
             return info;
         }
 
@@ -140,14 +132,11 @@ namespace Squiggle.Chat.Services.Presence.Transport
         {
             byte[] data = null;
             IPEndPoint remoteEndPoint = null;
-            try
+
+            ExceptionMonster.EatTheException(() =>
             {
                 data = client.EndReceive(ar, ref remoteEndPoint);
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex.Message);
-            }
+            }, "receiving mcast presence message");
 
             if (data != null)
                 ThreadPool.QueueUserWorkItem(_ =>
@@ -176,14 +165,11 @@ namespace Squiggle.Chat.Services.Presence.Transport
         void BeginReceive()
         {
             if (started)
-                try
-                {
-                    client.BeginReceive(OnReceive, null);
-                }
-                catch (Exception ex)
-                {
-                    Trace.WriteLine("Could not receive data on presence channel due to exception: " + ex.Message);
-                }
+                ExceptionMonster.EatTheException(() =>
+                    {
+                        client.BeginReceive(OnReceive, null);
+
+                    }, "receiving mcast data on presence channel");
         }        
 
         IPresenceHost GetPresenceHost(IPEndPoint endPoint)

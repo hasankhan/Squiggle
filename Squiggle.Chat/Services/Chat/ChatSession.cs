@@ -75,7 +75,7 @@ namespace Squiggle.Chat.Services.Chat
 
         public void UpdateSessionInfo()
         {
-            try
+            ExceptionMonster.EatTheException(()=>
             {
                 SessionInfo info = PrimaryHost.Host.GetSessionInfo(ID, localUser, PrimaryHost.EndPoint);
                 if (info != null && info.Participants != null)
@@ -85,11 +85,7 @@ namespace Squiggle.Chat.Services.Chat
                     if (!wasGroupSession && IsGroupSession)
                         GroupChatStarted(this, EventArgs.Empty);
                 }
-            }
-            catch (Exception ex) 
-            {
-                Trace.WriteLine("Could not get session info due to exception: " + ex.Message);
-            }
+            },"getting session info");
         }
 
         void localHost_SessionInfoRequested(object sender, SessionInfoRequestedEventArgs e)
@@ -126,15 +122,11 @@ namespace Squiggle.Chat.Services.Chat
         {
             if (e.SessionID == ID)
             {
-                try
-                {
-                    AddParticipants(e.Participants);
-                    BroadCast((host, endpoint) => host.JoinChat(ID, localUser, endpoint));
-                }
-                catch (Exception ex)
-                {
-                    Trace.WriteLine("Could not respond to chat invite due to exception: " + ex.Message);
-                }
+                ExceptionMonster.EatTheException(() =>
+                    {
+                        AddParticipants(e.Participants);
+                        BroadCast((host, endpoint) => host.JoinChat(ID, localUser, endpoint));
+                    }, "responding to chat invite");
                 GroupChatStarted(this, EventArgs.Empty);
             }
         }       
@@ -210,14 +202,11 @@ namespace Squiggle.Chat.Services.Chat
             localHost.UserJoined -= new EventHandler<SessionEventArgs>(localHost_UserJoined);
             localHost.UserLeft -= new EventHandler<SessionEventArgs>(localHost_UserLeft);
             localHost.SessionInfoRequested -= new EventHandler<SessionInfoRequestedEventArgs>(localHost_SessionInfoRequested);
-            try
+
+            ExceptionMonster.EatTheException(() =>
             {
                 BroadCast((host, endpoint) => host.LeaveChat(ID, localUser, endpoint));
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine("Could not send leave message due to exception: " + ex.Message);
-            }
+            }, "sending leave message");
             SessionEnded(this, EventArgs.Empty);
         }
 
@@ -254,20 +243,22 @@ namespace Squiggle.Chat.Services.Chat
 
             IEnumerable<RemoteHost> hosts;
             lock (remoteHosts)
-                hosts = remoteHosts.Values.ToList(); 
+                hosts = remoteHosts.Values.ToList();
             foreach (RemoteHost host in hosts)
-                try
-                {
-                    hostAction(host.Host, host.EndPoint);
-                }
-                catch (Exception ex)
+            {
+                Exception ex;
+                if (!ExceptionMonster.EatTheException(()=>
+                    {
+                        hostAction(host.Host, host.EndPoint);
+                    },"doing a broadcast operation in chat", out ex))
                 {
                     allSuccess = false;
                     if (continueOnError)
                         Trace.WriteLine(ex.Message);
                     else
-                        throw;
+                        throw ex;
                 }
+            }
 
             if (continueOnError && !allSuccess)
                 throw new OperationFailedException();
