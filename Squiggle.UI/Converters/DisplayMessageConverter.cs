@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Data;
+using Squiggle.UI.Resources;
 
 namespace Squiggle.UI.Converters
 {
@@ -11,7 +12,7 @@ namespace Squiggle.UI.Converters
         {
             string message = value as string;
             if (String.IsNullOrEmpty(message))
-                return "Share a quick message here.";
+                return Translation.MainWindow_ShareAMessage;
 
             return message;
         }

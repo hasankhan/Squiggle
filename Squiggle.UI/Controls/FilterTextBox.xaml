@@ -32,8 +32,8 @@
     </UserControl.Resources>
     <Border Style="{StaticResource BorderStyle}">
         <DockPanel >
-            <Button TabIndex="1" x:Name="btnCancel" Visibility="{Binding Path=IsFocusedOrNotEmpty, Converter={StaticResource booltoVisibility}}" DockPanel.Dock="Right" Content="X" VerticalContentAlignment="Top" ToolTip="Send Message" 
-                Style="{StaticResource ButtonStyle}" Click="btnCancel_Click" />
+            <Button TabIndex="1" x:Name="btnCancel" Visibility="{Binding Path=IsFocusedOrNotEmpty, Converter={StaticResource booltoVisibility}}" DockPanel.Dock="Right" Content="X" 
+                    VerticalContentAlignment="Top" Style="{StaticResource ButtonStyle}" Click="btnCancel_Click" />
             <TextBox x:Name="txtFilter"
                          DockPanel.Dock="Left" Style="{StaticResource TextStyle}" 
                          TextChanged="txtFilter_TextChanged" GotFocus="txtFilter_GotFocus" LostFocus="txtFilter_LostFocus" />

@@ -34,6 +34,7 @@
     <sys:String x:Key="MainWindow_SignIn_RememberMe">تذكرني</sys:String>
     <sys:String x:Key="MainWindow_SignIn_AutoSignIn">تسجيل دخولي تلقائيا</sys:String>
     <sys:String x:Key="MainWindow_SignIn_SignInButton">تسجيل الدخول</sys:String>
+    <sys:String x:Key="MainWindow_ShareAMessage">حصة رسالة سريعة هنا</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_Heading">العام</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_SubHeading">الإعدادات العامة</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_RunOnStartup">بدء تشغيل ويندوز</sys:String>
@@ -82,4 +83,5 @@
     <sys:String x:Key="ChatWindow_SendButtonToolTip">إرسال رسالة</sys:String>
     <sys:String x:Key="ChatWindow_ShowInFolder">تظهر في مجلد</sys:String>
     <sys:String x:Key="Popup_NewMessage">رسالة جديدة</sys:String>
+    <sys:String x:Key="ContactList_SearchContacts">البحث الاتصالات...</sys:String>
 </ResourceDictionary>

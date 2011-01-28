@@ -13,6 +13,8 @@ namespace Squiggle.UI.Resources
         public static string Global_You { get; private set; }
         public static string Global_ContactSaid { get; private set; }
         public static string Popup_NewMessage { get; private set; }
+        public static string ContactList_SearchContacts { get; private set; }
+        public static string MainWindow_ShareAMessage { get; private set; }
 
         static Translation()
         {

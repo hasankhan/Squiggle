@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Squiggle.UI.Resources;
 
 namespace Squiggle.UI.Controls
 {
@@ -70,7 +71,7 @@ namespace Squiggle.UI.Controls
         private void ShowWaterMarked()
         {
             waterMarked = true;
-            txtFilter.Text = "Search contacts...";
+            txtFilter.Text = Translation.ContactList_SearchContacts;
             txtFilter.Foreground = new SolidColorBrush(Colors.LightGray);
         }
 

@@ -34,6 +34,7 @@
     <sys:String x:Key="MainWindow_SignIn_RememberMe">Remember me</sys:String>
     <sys:String x:Key="MainWindow_SignIn_AutoSignIn">Sign me in automatically</sys:String>
     <sys:String x:Key="MainWindow_SignIn_SignInButton">Sign In</sys:String>
+    <sys:String x:Key="MainWindow_ShareAMessage">Share a quick message here.</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_Heading">General</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_SubHeading">General settings</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_RunOnStartup">Run on Windows startup</sys:String>
@@ -82,4 +83,5 @@
     <sys:String x:Key="ChatWindow_SendButtonToolTip">Send Message</sys:String>
     <sys:String x:Key="ChatWindow_ShowInFolder">Show In Folder</sys:String>
     <sys:String x:Key="Popup_NewMessage">New Message</sys:String>
+    <sys:String x:Key="ContactList_SearchContacts">Search contacts...</sys:String>
 </ResourceDictionary>
