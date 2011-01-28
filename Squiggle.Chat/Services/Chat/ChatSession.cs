@@ -141,7 +141,7 @@ namespace Squiggle.Chat.Services.Chat
                     IFileTransfer invitation = new FileTransfer(ID, remoteHost.Host, localHost, localUser, remoteHost.EndPoint, e.Name, e.Size, e.ID);
                     TransferInvitationReceived(this, new FileTransferInviteEventArgs()
                     {
-                        Sender = localUser,
+                        Sender = e.Sender,
                         Invitation = invitation
                     });
                 }

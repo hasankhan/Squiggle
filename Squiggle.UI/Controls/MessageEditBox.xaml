@@ -31,8 +31,8 @@
         </UserControl.Resources>
 
         <Border Style="{StaticResource BorderStyle}">
-            <DockPanel Focusable="True">                
-                <Button TabIndex="1" x:Name="btnSend" IsEnabled="False" DockPanel.Dock="Right" Content="Send" ToolTip="Send Message" 
+            <DockPanel Focusable="True">
+            <Button TabIndex="1" x:Name="btnSend" IsEnabled="False" DockPanel.Dock="Right" Content="{DynamicResource ChatWindow_SendButton}" ToolTip="{DynamicResource ChatWindow_SendButtonToolTip}" 
         Style="{StaticResource ButtonStyle}" Click="btnSend_Click" />
                 <TextBox AllowDrop="True" x:Name="txtMessage"
                          PreviewDrop="txtMessage_PreviewDrop" PreviewDragOver="txtMessage_PreviewDrag" PreviewDragEnter="txtMessage_PreviewDrag"
