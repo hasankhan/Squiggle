@@ -11,6 +11,7 @@ using System.Linq;
 using Squiggle.Chat;
 using Squiggle.UI.MessageParsers;
 using Squiggle.UI.MessageFilters;
+using Squiggle.UI.Resources;
 
 namespace Squiggle.UI.Controls
 {
@@ -68,7 +69,7 @@ namespace Squiggle.UI.Controls
         {
             var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
 
-            string text = String.Format("{0} said ({1}): ", user, DateTime.Now.ToShortTimeString());
+            string text = String.Format("{0} " + Translation.Global_ContactSaid + " ({1}): ", user, DateTime.Now.ToShortTimeString());
             var items = parsers.ParseText(text);
             foreach (var item in items)
             {

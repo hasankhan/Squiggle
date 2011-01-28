@@ -14,6 +14,7 @@ using Squiggle.UI.Helpers;
 using Squiggle.UI.MessageFilters;
 using System.Text;
 using System.Globalization;
+using Squiggle.UI.Resources;
 
 namespace Squiggle.UI
 {
@@ -430,7 +431,7 @@ namespace Squiggle.UI
                 ResetStatus();
                 FlashWindow();
                 if (this.WindowState == System.Windows.WindowState.Minimized && !chatStarted)
-                    TrayPopup.Instance.Show("New Message", String.Format("{0} says: {1}", buddy.DisplayName, message), args=>this.Restore());
+                    TrayPopup.Instance.Show(Translation.Popup_NewMessage, String.Format("{0} " + Translation.Global_ContactSays + ": {1}", buddy.DisplayName, message), args=>this.Restore());
                 AudioAlert.Instance.Play(AudioAlertType.MessageReceived);
             });
             chatStarted = true;
@@ -475,7 +476,7 @@ namespace Squiggle.UI
                 }
             }          
   
-            string displayName = MainWindow.Instance.ChatClient == null ? "You" : MainWindow.Instance.ChatClient.CurrentUser.DisplayName;
+            string displayName = MainWindow.Instance.ChatClient == null ? Translation.Global_You : MainWindow.Instance.ChatClient.CurrentUser.DisplayName;
             var settings = SettingsProvider.Current.Settings.PersonalSettings;
 
             var temp = new StringBuilder(message);

@@ -164,7 +164,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Content Include="Resources\Localization.xaml">
+    <Content Include="Resources\Translation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -243,7 +243,7 @@
   <ItemGroup>
     <Compile Include="MessageParsers\MultiParser.cs" />
     <Compile Include="MessageParsers\RegexParser.cs" />
-    <Compile Include="Resources\Localization.cs" />
+    <Compile Include="Resources\Translation.cs" />
     <Compile Include="Settings\ContactGroup.cs" />
     <Compile Include="Settings\ContactGroups.cs" />
     <Compile Include="ViewModel\ClientViewModel.cs" />

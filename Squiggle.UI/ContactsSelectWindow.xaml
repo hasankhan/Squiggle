@@ -77,8 +77,8 @@
         </ScrollViewer>
         <Grid Grid.Row="3">
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                <Button Content="{DynamicResource Global_OK}" IsDefault="True" Width="70" Click="OnOK" Visibility="{Binding ElementName=contactSelectControl, Path=AllowMultiSelect, Converter={StaticResource visibilityConverter}}" />
-                <Button IsCancel="True" Content="{DynamicResource Global_Cancel}" Width="70" Margin="5,0,0,0" Click="OnCancel" />
+                <Button Content="{DynamicResource Global_OKButton}" IsDefault="True" Width="70" Click="OnOK" Visibility="{Binding ElementName=contactSelectControl, Path=AllowMultiSelect, Converter={StaticResource visibilityConverter}}" />
+                <Button IsCancel="True" Content="{DynamicResource Global_CancelButton}" Width="70" Margin="5,0,0,0" Click="OnCancel" />
             </StackPanel>
         </Grid>
     </Grid>

@@ -2,8 +2,12 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <FlowDirection x:Key="flowDirection">RightToLeft</FlowDirection>
-    <sys:String x:Key="Global_OK">موافق</sys:String>
-    <sys:String x:Key="Global_Cancel">موافق</sys:String>
+    <sys:String x:Key="Global_OKButton">موافق</sys:String>
+    <sys:String x:Key="Global_CancelButton">موافق</sys:String>
+    <sys:String x:Key="Global_Menu_About">Squiggle حول</sys:String>
+    <sys:String x:Key="Global_ContactSays">يقول</sys:String>
+    <sys:String x:Key="Global_ContactSaid">وقال</sys:String>
+    <sys:String x:Key="Global_You">لك</sys:String>
     <sys:String x:Key="MainWindow_TrayMenu_Open">موافق</sys:String>
     <sys:String x:Key="MainWindow_TrayMenu_ChangeStatus">تغيير أوضاع</sys:String>
     <sys:String x:Key="MainWindow_TrayMenu_SignOut">تسجيل الخروج</sys:String>
@@ -24,7 +28,6 @@
     <sys:String x:Key="MainWindow_MainMenu_SortByStatus">حسب الحالة</sys:String>
     <sys:String x:Key="MainWindow_MainMenu_Settings">إعدادات...</sys:String>
     <sys:String x:Key="MainWindow_MainMenu_Help">مساعدة</sys:String>
-    <sys:String x:Key="MainWindow_MainMenu_About">Squiggle حول</sys:String>
     <sys:String x:Key="MainWindow_SignIn_SignIn">تسجيل الدخول</sys:String>
     <sys:String x:Key="MainWindow_SignIn_DisplayName">اسم العرض :</sys:String>
     <sys:String x:Key="MainWindow_SignIn_GroupName">اسم المجموعة :</sys:String>
@@ -75,8 +78,8 @@
     <sys:String x:Key="ChatWindow_MainMenu_Tools">أدوات</sys:String>
     <sys:String x:Key="ChatWindow_MainMenu_Settings">إعدادات...</sys:String>
     <sys:String x:Key="ChatWindow_MainMenu_Help">مساعدة</sys:String>
-    <sys:String x:Key="ChatWindow_MainMenu_AboutSquiggle">Squiggle حول</sys:String>
     <sys:String x:Key="ChatWindow_SendButton">إرسال</sys:String>
     <sys:String x:Key="ChatWindow_SendButtonToolTip">إرسال رسالة</sys:String>
     <sys:String x:Key="ChatWindow_ShowInFolder">تظهر في مجلد</sys:String>
+    <sys:String x:Key="Popup_NewMessage">رسالة جديدة</sys:String>
 </ResourceDictionary>

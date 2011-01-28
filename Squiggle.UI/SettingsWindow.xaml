@@ -52,8 +52,8 @@
                     </Border>
                     <Grid Grid.Row="2">
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                            <Button IsDefault="True" Content="{DynamicResource Global_OK}" Width="70" Click="btnOK_Click" />
-                            <Button IsCancel="True" Content="{DynamicResource Global_Cancel}" Width="70" Margin="5,0,0,0" Click="btnCancel_Click" />
+                            <Button IsDefault="True" Content="{DynamicResource Global_OKButton}" Width="70" Click="btnOK_Click" />
+                            <Button IsCancel="True" Content="{DynamicResource Global_CancelButton}" Width="70" Margin="5,0,0,0" Click="btnCancel_Click" />
                         </StackPanel>
                     </Grid>
                 </Grid>
@@ -104,8 +104,8 @@
                     </Border>
                     <Grid Grid.Row="2">
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                            <Button Content="{DynamicResource Global_OK}" Width="70" Click="btnOK_Click" />
-                            <Button Content="{DynamicResource Global_Cancel}" Width="70" Margin="5,0,0,0" Click="btnCancel_Click" />
+                            <Button Content="{DynamicResource Global_OKButton}" Width="70" Click="btnOK_Click" />
+                            <Button Content="{DynamicResource Global_CancelButton}" Width="70" Margin="5,0,0,0" Click="btnCancel_Click" />
                         </StackPanel>
                     </Grid>
                 </Grid>
@@ -149,8 +149,8 @@
                     </Border>
                     <Grid Grid.Row="2">
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                            <Button Content="{DynamicResource Global_OK}" Width="70" Click="btnOK_Click" />
-                            <Button Content="{DynamicResource Global_Cancel}" Width="70" Margin="5,0,0,0" Click="btnCancel_Click" />
+                            <Button Content="{DynamicResource Global_OKButton}" Width="70" Click="btnOK_Click" />
+                            <Button Content="{DynamicResource Global_CancelButton}" Width="70" Margin="5,0,0,0" Click="btnCancel_Click" />
                         </StackPanel>
                     </Grid>
                 </Grid>
