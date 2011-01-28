@@ -71,7 +71,7 @@ namespace Squiggle.UI.Controls
         private void ShowWaterMarked()
         {
             waterMarked = true;
-            txtFilter.Text = Translation.ContactList_SearchContacts;
+            txtFilter.Text = Translation.Instance.ContactList_SearchContacts;
             txtFilter.Foreground = new SolidColorBrush(Colors.LightGray);
         }
 

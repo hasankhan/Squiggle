@@ -333,7 +333,7 @@ namespace Squiggle.UI
         {
             Dispatcher.Invoke(() =>
             {
-                ChangeStatus(String.Format("{0} is typing...", e.Buddy.DisplayName));
+                ChangeStatus(String.Format("{0} " + Translation.Instance.ChatWindow_IsTyping, e.Buddy.DisplayName));
                 statusResetTimer.Stop();
                 statusResetTimer.Start();
             });
@@ -346,7 +346,7 @@ namespace Squiggle.UI
 #if DEBUG
                 string message = "Following message could not be delivered due to error: " + e.Exception.Message;
 #else
-                string message = "Following message could not be delivered to some of the recepients: ";
+                string message = Translation.Instance.ChatWindow_MessageCouldNotBeDelivered;
 #endif
                 string detail = e.Message;
                 chatTextBox.AddError(message, detail);
@@ -360,7 +360,7 @@ namespace Squiggle.UI
             Dispatcher.Invoke(() =>
             {
                 UpdateGroupChatControls();
-                chatTextBox.AddInfo(String.Format("{0} has joined the conversation.", buddy.DisplayName));
+                chatTextBox.AddInfo(String.Format("{0} " + Translation.Instance.ChatWindow_HasJoinedConversation, buddy.DisplayName));
                 UpdateTitle();
             });
         }        
@@ -371,7 +371,7 @@ namespace Squiggle.UI
             Dispatcher.Invoke(() =>
             {
                 UpdateGroupChatControls();
-                chatTextBox.AddInfo(String.Format("{0} has left the conversation.", buddy.DisplayName));
+                chatTextBox.AddInfo(String.Format("{0} " + Translation.Instance.ChatWindow_HasLeftConversation, buddy.DisplayName));
                 UpdateTitle();
             });
         }
@@ -405,7 +405,7 @@ namespace Squiggle.UI
             {
                 if (lastBuzzReceived == null || DateTime.Now.Subtract(lastBuzzReceived.Value).TotalSeconds > 5)
                 {
-                    chatTextBox.AddInfo(String.Format("{0} sent you a buzz.", buddy.DisplayName));
+                    chatTextBox.AddInfo(String.Format("{0} " + Translation.Instance.ChatWindow_HasSentYouBuzz, buddy.DisplayName));
                     if (this.WindowState != System.Windows.WindowState.Minimized)
                         DoBuzzAction();                   
                     else
@@ -431,7 +431,7 @@ namespace Squiggle.UI
                 ResetStatus();
                 FlashWindow();
                 if (this.WindowState == System.Windows.WindowState.Minimized && !chatStarted)
-                    TrayPopup.Instance.Show(Translation.Popup_NewMessage, String.Format("{0} " + Translation.Global_ContactSays + ": {1}", buddy.DisplayName, message), args=>this.Restore());
+                    TrayPopup.Instance.Show(Translation.Instance.Popup_NewMessage, String.Format("{0} " + Translation.Instance.Global_ContactSays + ": {1}", buddy.DisplayName, message), args=>this.Restore());
                 AudioAlert.Instance.Play(AudioAlertType.MessageReceived);
             });
             chatStarted = true;
@@ -474,9 +474,9 @@ namespace Squiggle.UI
                     PrimaryBuddy = buddyInList;
                     SetChatSession(buddyInList.StartChat());
                 }
-            }          
-  
-            string displayName = MainWindow.Instance.ChatClient == null ? Translation.Global_You : MainWindow.Instance.ChatClient.CurrentUser.DisplayName;
+            }
+
+            string displayName = MainWindow.Instance.ChatClient == null ? Translation.Instance.Global_You : MainWindow.Instance.ChatClient.CurrentUser.DisplayName;
             var settings = SettingsProvider.Current.Settings.PersonalSettings;
 
             var temp = new StringBuilder(message);
@@ -495,13 +495,13 @@ namespace Squiggle.UI
 
             if (lastBuzzSent == null || DateTime.Now.Subtract(lastBuzzSent.Value).TotalSeconds > 5)
             {
-                chatTextBox.AddInfo("You have sent a buzz.");
+                chatTextBox.AddInfo(Translation.Instance.ChatWindow_YouSentBuzz);
                 chatSession.SendBuzz();
                 lastBuzzSent = DateTime.Now;
                 DoBuzzAction();
             }
             else
-                chatTextBox.AddError("Buzz can not be sent too frequently.", String.Empty);
+                chatTextBox.AddError(Translation.Instance.ChatWindow_BuzzTooEarly, String.Empty);
         }        
 
         public void SendFile()
@@ -538,7 +538,7 @@ namespace Squiggle.UI
                                                             fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete);
                                                         }, "opening the file for transfer"))
                 {
-                    chatTextBox.AddError(String.Format("Could not read file '{0}'. Please make sure its not in use.", fileName), null);
+                    chatTextBox.AddError(String.Format(Translation.Instance.ChatWindow_CouldNotReadFile + "'{0}'" + Translation.Instance.ChatWindow_MakeSureFileNotInUse, fileName), null);
                     return;
                 }
 
@@ -623,7 +623,7 @@ namespace Squiggle.UI
         void UpdateTitle()
         {
             if (IsBroadcastChat)
-                this.Title = "Broadcast chat";
+                this.Title = Translation.Instance.ChatWindow_BroadCastChatTitle;
             else
             {
                 string title = String.Join(", ", Buddies.Select(b => b.DisplayName).ToArray());
@@ -642,7 +642,7 @@ namespace Squiggle.UI
             if (!lastMessageReceived.HasValue)
                 ChangeStatus(String.Empty);
             else
-                ChangeStatus("Last message received at " + String.Format("{0:T} on {0:d}", lastMessageReceived));
+                ChangeStatus(Translation.Instance.ChatWindow_LastMessageAt + String.Format("{0:T} on {0:d}", lastMessageReceived));
         }
 
         void FlashWindow()
@@ -713,7 +713,7 @@ namespace Squiggle.UI
 
         private void InviteContactMenu_Click(object sender, RoutedEventArgs e)
         {
-            IEnumerable<Buddy> buddies = SquiggleUtility.SelectContacts("Invite someone to this conversation.", this, b=>Buddies.Contains(b));
+            IEnumerable<Buddy> buddies = SquiggleUtility.SelectContacts(Translation.Instance.ChatWindow_InviteContact, this, b=>Buddies.Contains(b));
             foreach (Buddy buddy in buddies)
                 Invite(buddy);
         }

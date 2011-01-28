@@ -7,22 +7,51 @@ using System.Reflection;
 
 namespace Squiggle.UI.Resources
 {
-    static class Translation
+    class Translation
     {
-        public static string Global_ContactSays { get; private set; }
-        public static string Global_You { get; private set; }
-        public static string Global_ContactSaid { get; private set; }
-        public static string Popup_NewMessage { get; private set; }
-        public static string ContactList_SearchContacts { get; private set; }
-        public static string MainWindow_ShareAMessage { get; private set; }
+        public string Global_ContactSays { get; set; }
+        public string Global_You { get; set; }
+        public string Global_ContactSaid { get; set; }
+        public string Popup_NewMessage { get; set; }
+        public string ContactList_SearchContacts { get; set; }
+        public string MainWindow_ShareAMessage { get; set; }
+        public string ChatWindow_IsTyping { get; set; }
+        public string ChatWindow_MessageCouldNotBeDelivered { get; set; }
+        public string ChatWindow_HasJoinedConversation { get; set; }
+        public string ChatWindow_HasLeftConversation { get; set; }
+        public string ChatWindow_HasSentYouBuzz { get; set; }
+        public string ChatWindow_YouSentBuzz { get; set; }
+        public string ChatWindow_BuzzTooEarly { get; set; }
+        public string ChatWindow_CouldNotReadFile { get; set; }
+        public string ChatWindow_MakeSureFileNotInUse { get; set; }
+        public string ChatWindow_BroadCastChatTitle { get; set; }
+        public string ChatWindow_LastMessageAt { get; set; }
+        public string ChatWindow_InviteContact { get; set; }
+        public string FileTransfer_Waiting { get; set; }
+        public string FileTransfer_Cancel { get; set; }
+        public string FileTransfer_Reject { get; set; }
+        public string FileTransfer_FileSent { get; set; }
+        public string FileTransfer_FileReceived { get; set; }
+        public string FileTransfer_SendingCancelled { get; set; }
+        public string FileTransfer_Cancelled { get; set; }
+        public string FileTransfer_Sending { get; set; }
+        public string FileTransfer_Receiving { get; set; }
+
+        public static Translation Instance { get; set; }
 
         static Translation()
         {
-            foreach (PropertyInfo property in typeof(Translation).GetProperties(BindingFlags.Static | BindingFlags.Public))
+            Instance = new Translation();
+        }
+
+        public static void Initialize()
+        {
+            Instance = Instance ?? new Translation();
+            foreach (PropertyInfo property in typeof(Translation).GetProperties(BindingFlags.Instance | BindingFlags.Public))
             {
                 var translation = Application.Current.TryFindResource(property.Name) as String;
-                property.SetValue(null, translation, null);
+                property.SetValue(Instance, translation, null);
             }
-        }
+        }        
     }
 }

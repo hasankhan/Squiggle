@@ -43,7 +43,7 @@
   <sys:String x:Key="SettingsWindow_GeneralTab_ShowPopups">Afficher les popups</sys:String>
   <sys:String x:Key="SettingsWindow_GeneralTab_AudioAlerts">Alertes Audio</sys:String>
   <sys:String x:Key="SettingsWindow_GeneralTab_SortBy">Trier les contacts par:</sys:String>
-  <sys:String x:Key="SettingsWindow_GeneralTab_DownloadsFolder">Dossier Downloads:</sys:String>
+  <sys:String x:Key="SettingsWindow_GeneralTab_DownloadsFolder">dossier Downloads:</sys:String>
   <sys:String x:Key="SettingsWindow_GeneralTab_Browse">Parcourir</sys:String>
   <sys:String x:Key="SettingsWindow_SettingsTab_Heading">Personnels</sys:String>
   <sys:String x:Key="SettingsWindow_SettingsTab_SubHeading">Paramètres personnels</sys:String>
@@ -81,6 +81,27 @@
   <sys:String x:Key="ChatWindow_SendButton">Envoyer</sys:String>
   <sys:String x:Key="ChatWindow_SendButtonToolTip">Envoyer un message</sys:String>
   <sys:String x:Key="ChatWindow_ShowInFolder">Afficher dans le dossier</sys:String>
+  <sys:String x:Key="ChatWindow_IsTyping">est saisissant ...</sys:String>
+  <sys:String x:Key="ChatWindow_MessageCouldNotBeDelivered">Le message suivant n'a pas pu être remis à certains des destinataires:</sys:String>
+  <sys:String x:Key="ChatWindow_HasJoinedConversation">a rejoint la conversation.</sys:String>
+  <sys:String x:Key="ChatWindow_HasLeftConversation">a quitté la conversation.</sys:String>
+  <sys:String x:Key="ChatWindow_HasSentYouBuzz">vous a envoyé un buzz.</sys:String>
+  <sys:String x:Key="ChatWindow_YouSentBuzz">Vous avez envoyé un buzz.</sys:String>
+  <sys:String x:Key="ChatWindow_BuzzTooEarly">Buzz ne peut pas être envoyé trop souvent.</sys:String>
+  <sys:String x:Key="ChatWindow_CouldNotReadFile">Impossible de lire le fichier</sys:String>
+  <sys:String x:Key="ChatWindow_MakeSureFileNotInUse">. S'il vous plaît assurez-vous qu'il n'est pas utilisé.</sys:String>
+  <sys:String x:Key="ChatWindow_BroadCastChatTitle">Broadcast chat</sys:String>
+  <sys:String x:Key="ChatWindow_LastMessageAt">Dernier message reçu à</sys:String>
+  <sys:String x:Key="ChatWindow_InviteContact">Inviter quelqu'un à cette conversation.</sys:String>
   <sys:String x:Key="Popup_NewMessage">Nouveau message</sys:String>
   <sys:String x:Key="ContactList_SearchContacts">Recherche contacts ...</sys:String>
+  <sys:String x:Key="FileTransfer_Waiting">Attente</sys:String>
+  <sys:String x:Key="FileTransfer_Cancel">Annuler</sys:String>
+  <sys:String x:Key="FileTransfer_Reject">Rejeter</sys:String>
+  <sys:String x:Key="FileTransfer_FileSent">Fichier envoyé</sys:String>
+  <sys:String x:Key="FileTransfer_FileReceived">Fichier reçu</sys:String>
+  <sys:String x:Key="FileTransfer_SendingCancelled">Envoi Annulé</sys:String>
+  <sys:String x:Key="FileTransfer_Cancelled">Annulé</sys:String>
+  <sys:String x:Key="FileTransfer_Sending">Envoi</sys:String>
+  <sys:String x:Key="FileTransfer_Receiving">Réception</sys:String>
 </ResourceDictionary>

@@ -12,7 +12,7 @@ namespace Squiggle.UI.Converters
         {
             string message = value as string;
             if (String.IsNullOrEmpty(message))
-                return Translation.MainWindow_ShareAMessage;
+                return Translation.Instance.MainWindow_ShareAMessage;
 
             return message;
         }

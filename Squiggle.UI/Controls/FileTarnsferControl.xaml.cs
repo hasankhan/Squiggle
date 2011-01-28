@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using Squiggle.Chat;
 using System.Diagnostics;
 using Squiggle.UI.Helpers;
+using Squiggle.UI.Resources;
 
 namespace Squiggle.UI.Controls
 {
@@ -32,7 +33,7 @@ namespace Squiggle.UI.Controls
             set
             {
                 if (String.IsNullOrEmpty(value))
-                    throw new ArgumentException("Download folder can not be empty string");
+                    throw new ArgumentException("Download folder can not be empty string.");
                 else
                     downloadFolder = value;
             }
@@ -51,8 +52,8 @@ namespace Squiggle.UI.Controls
 
             FileName = fileTransfer.Name;
             FileSize = fileTransfer.Size;
-            Status = sending ? "Waiting" : ToReadableFileSize(FileSize);
-            btnCancelTransfer.Content = sending ? "Cancel" : "Reject";
+            Status = sending ? Translation.Instance.FileTransfer_Waiting : ToReadableFileSize(FileSize);
+            btnCancelTransfer.Content = sending ? Translation.Instance.FileTransfer_Cancel : Translation.Instance.FileTransfer_Reject;
 
             NotifyPropertyChanged();
 
@@ -68,7 +69,7 @@ namespace Squiggle.UI.Controls
         {
             Dispatcher.Invoke(() =>
             {
-                Status = sending ? "File Sent" : "File Received";
+                Status = sending ? Translation.Instance.FileTransfer_FileSent : Translation.Instance.FileTransfer_FileReceived;
                 NotifyPropertyChanged();
 
                 ShowCompleted();
@@ -131,7 +132,7 @@ namespace Squiggle.UI.Controls
         {
             ShowCancelled();
 
-            Status = sending ? "Sending Cancelled" : "Cancelled";
+            Status = sending ? Translation.Instance.FileTransfer_SendingCancelled : Translation.Instance.FileTransfer_Cancelled;
             NotifyPropertyChanged();
 
             if (selfCancel)
@@ -179,7 +180,7 @@ namespace Squiggle.UI.Controls
             stkWaitingAcceptance.Visibility = Visibility.Hidden;
             stkCompleted.Visibility = Visibility.Hidden;
 
-            Status = sending ? "Sending" : "Receiving";
+            Status = sending ? Translation.Instance.FileTransfer_Sending : Translation.Instance.FileTransfer_Receiving;
             NotifyPropertyChanged();
         }
 

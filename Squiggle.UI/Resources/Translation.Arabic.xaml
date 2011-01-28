@@ -81,6 +81,27 @@
   <sys:String x:Key="ChatWindow_SendButton">إرسال</sys:String>
   <sys:String x:Key="ChatWindow_SendButtonToolTip">إرسال رسالة</sys:String>
   <sys:String x:Key="ChatWindow_ShowInFolder">تظهر في مجلد</sys:String>
+  <sys:String x:Key="ChatWindow_IsTyping">هو كتابة...</sys:String>
+  <sys:String x:Key="ChatWindow_MessageCouldNotBeDelivered">لا يمكن أن يتم تسليم الرسالة التالية لبعض المستفيدين :</sys:String>
+  <sys:String x:Key="ChatWindow_HasJoinedConversation">وقد انضم إلى المحادثة.</sys:String>
+  <sys:String x:Key="ChatWindow_HasLeftConversation">وقد غادر المحادثة.</sys:String>
+  <sys:String x:Key="ChatWindow_HasSentYouBuzz">أرسلت الطنانة.</sys:String>
+  <sys:String x:Key="ChatWindow_YouSentBuzz">لقد أرسلت الطنانة.</sys:String>
+  <sys:String x:Key="ChatWindow_BuzzTooEarly">لا يمكن أن ترسل نبضات كثيرا جدا.</sys:String>
+  <sys:String x:Key="ChatWindow_CouldNotReadFile">لا يمكن قراءة الملف</sys:String>
+  <sys:String x:Key="ChatWindow_MakeSureFileNotInUse">. يرجى التأكد من عدم استخدامها.</sys:String>
+  <sys:String x:Key="ChatWindow_BroadCastChatTitle">بث دردشة</sys:String>
+  <sys:String x:Key="ChatWindow_LastMessageAt">تلقى آخر رسالة في</sys:String>
+  <sys:String x:Key="ChatWindow_InviteContact">دعوة شخص إلى هذه المحادثة.</sys:String>
   <sys:String x:Key="Popup_NewMessage">رسالة جديدة</sys:String>
   <sys:String x:Key="ContactList_SearchContacts">البحث الاتصالات...</sys:String>
+  <sys:String x:Key="FileTransfer_Waiting">انتظار</sys:String>
+  <sys:String x:Key="FileTransfer_Cancel">إلغاء</sys:String>
+  <sys:String x:Key="FileTransfer_Reject">رفض</sys:String>
+  <sys:String x:Key="FileTransfer_FileSent">ملف المرسلة</sys:String>
+  <sys:String x:Key="FileTransfer_FileReceived">الملف المتلقاة</sys:String>
+  <sys:String x:Key="FileTransfer_SendingCancelled">ارسال إلغاء</sys:String>
+  <sys:String x:Key="FileTransfer_Cancelled">ألغي</sys:String>
+  <sys:String x:Key="FileTransfer_Sending">إرسال</sys:String>
+  <sys:String x:Key="FileTransfer_Receiving">استقبال</sys:String>
 </ResourceDictionary>

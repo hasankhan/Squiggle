@@ -69,7 +69,7 @@ namespace Squiggle.UI.Controls
         {
             var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
 
-            string text = String.Format("{0} " + Translation.Global_ContactSaid + " ({1}): ", user, DateTime.Now.ToShortTimeString());
+            string text = String.Format("{0} " + Translation.Instance.Global_ContactSaid + " ({1}): ", user, DateTime.Now.ToShortTimeString());
             var items = parsers.ParseText(text);
             foreach (var item in items)
             {

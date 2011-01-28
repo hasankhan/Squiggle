@@ -81,6 +81,27 @@
   <sys:String x:Key="ChatWindow_SendButton">发送</sys:String>
   <sys:String x:Key="ChatWindow_SendButtonToolTip">发送消息</sys:String>
   <sys:String x:Key="ChatWindow_ShowInFolder">显示在文件夹</sys:String>
+  <sys:String x:Key="ChatWindow_IsTyping">正在输入...</sys:String>
+  <sys:String x:Key="ChatWindow_MessageCouldNotBeDelivered">以下信息可能不会传递给某些收件人：</sys:String>
+  <sys:String x:Key="ChatWindow_HasJoinedConversation">加入了谈话。</sys:String>
+  <sys:String x:Key="ChatWindow_HasLeftConversation">已经离开会谈。</sys:String>
+  <sys:String x:Key="ChatWindow_HasSentYouBuzz">送你一个时髦。</sys:String>
+  <sys:String x:Key="ChatWindow_YouSentBuzz">您发送的嗡嗡声。</sys:String>
+  <sys:String x:Key="ChatWindow_BuzzTooEarly">巴兹无法发送过于频繁。</sys:String>
+  <sys:String x:Key="ChatWindow_CouldNotReadFile">无法读取文件</sys:String>
+  <sys:String x:Key="ChatWindow_MakeSureFileNotInUse">。请确保它不是在使用中。</sys:String>
+  <sys:String x:Key="ChatWindow_BroadCastChatTitle">广播聊天</sys:String>
+  <sys:String x:Key="ChatWindow_LastMessageAt">最后收到的消息</sys:String>
+  <sys:String x:Key="ChatWindow_InviteContact">邀请某人在这段对话。</sys:String>
   <sys:String x:Key="Popup_NewMessage">新的消息</sys:String>
   <sys:String x:Key="ContactList_SearchContacts">搜索联系人...</sys:String>
+  <sys:String x:Key="FileTransfer_Waiting">等待</sys:String>
+  <sys:String x:Key="FileTransfer_Cancel">取消</sys:String>
+  <sys:String x:Key="FileTransfer_Reject">拒绝</sys:String>
+  <sys:String x:Key="FileTransfer_FileSent">文件发送</sys:String>
+  <sys:String x:Key="FileTransfer_FileReceived">收到文件</sys:String>
+  <sys:String x:Key="FileTransfer_SendingCancelled">发送取消</sys:String>
+  <sys:String x:Key="FileTransfer_Cancelled">取消</sys:String>
+  <sys:String x:Key="FileTransfer_Sending">发送</sys:String>
+  <sys:String x:Key="FileTransfer_Receiving">接收</sys:String>
 </ResourceDictionary>

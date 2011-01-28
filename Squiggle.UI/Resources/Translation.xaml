@@ -82,6 +82,27 @@
     <sys:String x:Key="ChatWindow_SendButton">Send</sys:String>
     <sys:String x:Key="ChatWindow_SendButtonToolTip">Send Message</sys:String>
     <sys:String x:Key="ChatWindow_ShowInFolder">Show In Folder</sys:String>
+    <sys:String x:Key="ChatWindow_IsTyping">is typing...</sys:String>
+    <sys:String x:Key="ChatWindow_MessageCouldNotBeDelivered">Following message could not be delivered to some of the recepients:</sys:String>
+    <sys:String x:Key="ChatWindow_HasJoinedConversation">has joined the conversation.</sys:String>
+    <sys:String x:Key="ChatWindow_HasLeftConversation">has left the conversation.</sys:String>
+    <sys:String x:Key="ChatWindow_HasSentYouBuzz">sent you a buzz.</sys:String>
+    <sys:String x:Key="ChatWindow_YouSentBuzz">You have sent a buzz.</sys:String>
+    <sys:String x:Key="ChatWindow_BuzzTooEarly">Buzz can not be sent too frequently.</sys:String>
+    <sys:String x:Key="ChatWindow_CouldNotReadFile">Could not read file</sys:String>
+    <sys:String x:Key="ChatWindow_MakeSureFileNotInUse">. Please make sure its not in use.</sys:String>
+    <sys:String x:Key="ChatWindow_BroadCastChatTitle">Broadcast chat</sys:String>
+    <sys:String x:Key="ChatWindow_LastMessageAt">Last message received at</sys:String>
+    <sys:String x:Key="ChatWindow_InviteContact">Invite someone to this conversation.</sys:String>
     <sys:String x:Key="Popup_NewMessage">New Message</sys:String>
     <sys:String x:Key="ContactList_SearchContacts">Search contacts...</sys:String>
+    <sys:String x:Key="FileTransfer_Waiting">Waiting</sys:String>
+    <sys:String x:Key="FileTransfer_Cancel">Cancel</sys:String>
+    <sys:String x:Key="FileTransfer_Reject">Reject</sys:String>
+    <sys:String x:Key="FileTransfer_FileSent">File Sent</sys:String>
+    <sys:String x:Key="FileTransfer_FileReceived">File Received</sys:String>
+    <sys:String x:Key="FileTransfer_SendingCancelled">Sending Cancelled</sys:String>
+    <sys:String x:Key="FileTransfer_Cancelled">Cancelled</sys:String>
+    <sys:String x:Key="FileTransfer_Sending">Sending</sys:String>
+    <sys:String x:Key="FileTransfer_Receiving">Receiving</sys:String>
 </ResourceDictionary>

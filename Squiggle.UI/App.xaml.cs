@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Microsoft.VisualBasic.ApplicationServices;
+using Squiggle.UI.Resources;
 
 namespace Messenger
 {
@@ -66,6 +67,8 @@ namespace Messenger
         {
             if (e.Args.Length > 0)
                 RunInBackground = e.Args[0].Trim() == "/background";
+
+            Translation.Initialize();
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)

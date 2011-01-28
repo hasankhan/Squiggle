@@ -81,6 +81,27 @@
   <sys:String x:Key="ChatWindow_SendButton">Senden</sys:String>
   <sys:String x:Key="ChatWindow_SendButtonToolTip">Nachricht senden</sys:String>
   <sys:String x:Key="ChatWindow_ShowInFolder">In Ordner anzeigen</sys:String>
+  <sys:String x:Key="ChatWindow_IsTyping">ist die Eingabe ...</sys:String>
+  <sys:String x:Key="ChatWindow_MessageCouldNotBeDelivered">Nach Nachricht konnte nicht an einige Empfänger geliefert werden:</sys:String>
+  <sys:String x:Key="ChatWindow_HasJoinedConversation">beigetreten ist das Gespräch.</sys:String>
+  <sys:String x:Key="ChatWindow_HasLeftConversation">verlassen hat, das Gespräch.</sys:String>
+  <sys:String x:Key="ChatWindow_HasSentYouBuzz">schickte man ein Summen.</sys:String>
+  <sys:String x:Key="ChatWindow_YouSentBuzz">Sie haben ein Summen geschickt.</sys:String>
+  <sys:String x:Key="ChatWindow_BuzzTooEarly">Buzz kann nicht zu häufig gesendet werden.</sys:String>
+  <sys:String x:Key="ChatWindow_CouldNotReadFile">Datei konnte nicht gelesen</sys:String>
+  <sys:String x:Key="ChatWindow_MakeSureFileNotInUse">. Bitte stellen Sie sicher sein nicht in Gebrauch ist.</sys:String>
+  <sys:String x:Key="ChatWindow_BroadCastChatTitle">Broadcast-Chat</sys:String>
+  <sys:String x:Key="ChatWindow_LastMessageAt">Letzte Nachricht empfangen zu</sys:String>
+  <sys:String x:Key="ChatWindow_InviteContact">Jemanden einladen, dieses Gespräch.</sys:String>
   <sys:String x:Key="Popup_NewMessage">Neue Nachricht</sys:String>
   <sys:String x:Key="ContactList_SearchContacts">Suche Kontakte ...</sys:String>
+  <sys:String x:Key="FileTransfer_Waiting">Warten</sys:String>
+  <sys:String x:Key="FileTransfer_Cancel">Abbrechen</sys:String>
+  <sys:String x:Key="FileTransfer_Reject">Ablehnen</sys:String>
+  <sys:String x:Key="FileTransfer_FileSent">Datei gesendet</sys:String>
+  <sys:String x:Key="FileTransfer_FileReceived">Datei empfangen</sys:String>
+  <sys:String x:Key="FileTransfer_SendingCancelled">Senden Abgesagt</sys:String>
+  <sys:String x:Key="FileTransfer_Cancelled">Abgesagt</sys:String>
+  <sys:String x:Key="FileTransfer_Sending">Senden</sys:String>
+  <sys:String x:Key="FileTransfer_Receiving">Empfang</sys:String>
 </ResourceDictionary>
