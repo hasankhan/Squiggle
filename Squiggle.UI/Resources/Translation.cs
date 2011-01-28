@@ -20,7 +20,7 @@ namespace Squiggle.UI.Resources
         {
             foreach (PropertyInfo property in typeof(Translation).GetProperties(BindingFlags.Static | BindingFlags.Public))
             {
-                var translation = Application.Current.FindResource(property.Name) as String;
+                var translation = Application.Current.TryFindResource(property.Name) as String;
                 property.SetValue(null, translation, null);
             }
         }
