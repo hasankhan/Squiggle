@@ -1,0 +1,48 @@
+﻿<Window x:Class="Squiggle.Translate.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        Title="MainWindow" Height="350" Width="525" Loaded="Window_Loaded">
+    <Window.Resources>
+        <ObjectDataProvider MethodName="GetValues"
+                        ObjectType="{x:Type sys:Enum}"
+                        x:Key="DirectionValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="FlowDirection" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5">
+            <Label>Language:</Label>
+            <TextBox x:Name="language" Width="100" />
+            <Label>Direction:</Label>
+            <ComboBox x:Name="Direction" ItemsSource="{Binding Source={StaticResource DirectionValues}}" SelectedIndex="0" Width="100" />
+            <Button Content="Translate" Click="Button_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text,ElementName=language}" Value="">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Text,ElementName=outputText}" Value="">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </StackPanel>
+        <TextBox Grid.Row="1" x:Name="inputText" VerticalScrollBarVisibility="Visible" AcceptsReturn="True"  />
+        <TextBox Grid.Row="1" Grid.Column="1" x:Name="outputText" VerticalScrollBarVisibility="Visible" AcceptsReturn="True"   />
+    </Grid>
+</Window>
