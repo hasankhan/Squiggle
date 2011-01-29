@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("Squiggle.Translate")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("Squiggle.Translate")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2011")]
+[assembly: AssemblyCompany("Overroot")]
+[assembly: AssemblyProduct("Squiggle Messenger")]
+[assembly: AssemblyCopyright("Copyright © Overroot 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
