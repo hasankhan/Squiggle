@@ -5,9 +5,9 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib" 
     xmlns:coll="clr-namespace:System.Collections;assembly=mscorlib"
     xmlns:converters="clr-namespace:Squiggle.UI.Converters"
-    xmlns:local="clr-namespace:Squiggle.UI.Helpers"             
+    xmlns:helpers="clr-namespace:Squiggle.UI.Helpers"             
     xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat"
-    xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+    xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"             
     Width="200" Height="400" Loaded="UserControl_Loaded" >
     <UserControl.Resources>
         <CollectionViewSource Source="{Binding Buddies}" x:Key="buddiesCollection" Filter="CollectionViewSource_Filter" />
@@ -39,13 +39,13 @@
                 </Expander.ContextMenu>
                 <Expander.Header>
                     <TextBlock>
-                        <TextBlock.Text>
+                        <controls:TextBlockBugFix.Text2>
                             <MultiBinding StringFormat="{}{0} ({1}/{2})">
                                 <Binding Path="Name" Converter="{x:Static converters:TitleCaseConverter.Instance}" />
                                 <Binding Path="Items" Converter="{x:Static converters:ContactListGroupConverter.Instance}" />
                                 <Binding Path="ItemCount" />
                             </MultiBinding>
-                        </TextBlock.Text>
+                        </controls:TextBlockBugFix.Text2>
                     </TextBlock>
                 </Expander.Header>                
                 <ItemsPresenter />
@@ -65,7 +65,7 @@
             <GradientStop Color="#FFE4F1F6" Offset="1"/>
         </LinearGradientBrush>
         <ObjectDataProvider MethodName="GetChangableStatuses" 
-            ObjectType="{x:Type local:SquiggleUtility}" 
+            ObjectType="{x:Type helpers:SquiggleUtility}" 
             x:Key="AvailableUserStatus">
         </ObjectDataProvider>
         <DataTemplate DataType="{x:Type chat:Buddy}">

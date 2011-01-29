@@ -213,6 +213,7 @@
     <Compile Include="Controls\Emoticon.xaml.cs">
       <DependentUpon>Emoticon.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TextBlockBugFix.cs" />
     <Compile Include="Converters\ContactListGroupConverter.cs" />
     <Compile Include="Converters\TitleCaseConverter.cs" />
     <Compile Include="Emoticon.cs" />
