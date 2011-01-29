@@ -36,19 +36,20 @@ namespace Squiggle.UI.Helpers
         public const UInt32 FLASHW_TIMERNOFG = 12; 
 
         private Window target;
+        IntPtr handle;
 
         public FlashWindow(Window sender)
         {
             target = (Window)sender;
+            handle = new WindowInteropHelper(target).Handle;
         }
 
         public bool Start()
         {
-            IntPtr hWnd = new WindowInteropHelper(target).Handle;
             FLASHWINFO fInfo = new FLASHWINFO();
 
             fInfo.cbSize = Convert.ToUInt32(Marshal.SizeOf(fInfo));
-            fInfo.hwnd = hWnd;
+            fInfo.hwnd = handle;
             fInfo.dwFlags = FLASHW_ALL | FLASHW_TIMERNOFG;
             fInfo.uCount = 3;
             fInfo.dwTimeout = 0;

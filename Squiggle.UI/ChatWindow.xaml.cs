@@ -49,8 +49,6 @@ namespace Squiggle.UI
             this.Height = Properties.Settings.Default.ChatWindowHeight;
             this.Width = Properties.Settings.Default.ChatWindowWidth;
 
-            flash = new FlashWindow(this);
-
             statusResetTimer = new DispatcherTimer();
             statusResetTimer.Interval = TimeSpan.FromSeconds(5);
             statusResetTimer.Tick += (sender, e) => ResetStatus();
@@ -136,6 +134,8 @@ namespace Squiggle.UI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            flash = new FlashWindow(this);
+
             UpdateGroupChatControls();
             this.KeyDown += new KeyEventHandler(ChatWindow_KeyDown);
             lock (eventQueue)
@@ -422,6 +422,12 @@ namespace Squiggle.UI
             SquiggleUtility.ShakeWindow(this);
         }
 
+        void PlayAlert(AudioAlertType alertType)
+        {
+            if (!IsActive)
+                AudioAlert.Instance.Play(alertType);
+        }
+
         void OnMessageReceived(Buddy buddy, string message, string fontName, System.Drawing.Color color, int fontSize, System.Drawing.FontStyle fontStyle)
         {
             Dispatcher.Invoke(() =>
@@ -432,7 +438,7 @@ namespace Squiggle.UI
                 FlashWindow();
                 if (this.WindowState == System.Windows.WindowState.Minimized && !chatStarted)
                     TrayPopup.Instance.Show(Translation.Instance.Popup_NewMessage, String.Format("{0} " + Translation.Instance.Global_ContactSays + ": {1}", buddy.DisplayName, message), args=>this.Restore());
-                AudioAlert.Instance.Play(AudioAlertType.MessageReceived);
+                PlayAlert(AudioAlertType.MessageReceived);
             });
             chatStarted = true;
         }
