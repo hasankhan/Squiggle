@@ -12,13 +12,16 @@
     Loaded="Window_Loaded" 
     Closing="Window_Closing">
     <Window.Resources>
-        <converters:ConditionAndConverter x:Key="andConverter" />
+        <converters:AllEqualConverter x:Key="equalConverter" />
         <converters:StatusConverter x:Key="statusConverter" />
         <converters:TrayIconConverter x:Key="trayIconConverter" />
         <ObjectDataProvider MethodName="GetChangableStatuses" 
             ObjectType="{x:Type local:SquiggleUtility}" 
             x:Key="AvailableUserStatus">
         </ObjectDataProvider>
+        <Style x:Key="onlineBuddiesMenu" TargetType="{x:Type MenuItem}">
+            <Setter Property="IsEnabled" Value="{Binding AnyoneOnline}" />
+        </Style>
         <Style x:Key="signedInMenu" TargetType="{x:Type MenuItem}">
             <Style.Setters>
                 <Setter Property="IsEnabled" Value="{Binding IsLoggedIn}" />
@@ -29,7 +32,7 @@
                 <Setter Property="Header" Value="{Binding Converter={StaticResource statusConverter}}" />
                 <Setter Property="IsChecked">
                     <Setter.Value>
-                        <MultiBinding Converter="{StaticResource ResourceKey=andConverter}">
+                        <MultiBinding Converter="{StaticResource ResourceKey=equalConverter}">
                             <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type MenuItem}}" Path="DataContext.LoggedInUser.Status" />
                             <Binding Path="." />
                         </MultiBinding>
@@ -86,9 +89,9 @@
                 <MenuItem Header="{DynamicResource MainWindow_MainMenu_Close}" MenuItem.Click="CloseMenu_Click" />
             </MenuItem>
             <MenuItem Header="{DynamicResource MainWindow_MainMenu_Actions}">
-                <MenuItem Header="{DynamicResource MainWindow_MainMenu_SendMessage}" Style="{StaticResource signedInMenu}" Click="SendMessageMenu_Click" />
-                <MenuItem Header="{DynamicResource MainWindow_MainMenu_SendBroadcastMessage}" Style="{StaticResource signedInMenu}" Click="SendBroadcastMessageMenu_Click" />
-                <MenuItem Header="{DynamicResource MainWindow_MainMenu_SendFile}" Style="{StaticResource signedInMenu}" Click="SendFileMenu_Click" />
+                <MenuItem Header="{DynamicResource MainWindow_MainMenu_SendMessage}" Style="{StaticResource onlineBuddiesMenu}" Click="SendMessageMenu_Click" />
+                <MenuItem Header="{DynamicResource MainWindow_MainMenu_SendBroadcastMessage}" Style="{StaticResource onlineBuddiesMenu}" Click="SendBroadcastMessageMenu_Click" />
+                <MenuItem Header="{DynamicResource MainWindow_MainMenu_SendFile}" Style="{StaticResource onlineBuddiesMenu}" Click="SendFileMenu_Click" />
             </MenuItem>
             <MenuItem Header="{DynamicResource MainWindow_MainMenu_Tools}">
                 <MenuItem x:Name="mnuGroupBuddies" Header="{DynamicResource MainWindow_MainMenu_GroupBuddies}" MenuItem.Click="GroupMenu_Click" Style="{StaticResource signedInMenu}" />

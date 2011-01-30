@@ -3,7 +3,7 @@ using System.Windows.Data;
 
 namespace Squiggle.UI.Converters
 {
-    class ConditionAndConverter: IMultiValueConverter
+    class AllEqualConverter: IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

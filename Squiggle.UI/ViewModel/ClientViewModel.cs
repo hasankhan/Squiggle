@@ -1,24 +1,32 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
+using System.Linq;
 using Squiggle.Chat;
+using System.ComponentModel;
 
 namespace Squiggle.UI.ViewModel
 {
-    public class ClientViewModel
+    public class ClientViewModel: INotifyPropertyChanged
     {
         public event EventHandler ContactListUpdated = delegate { };
 
         IChatClient chatClient;
         Dispatcher currentDispatcher;
 
-        public ObservableCollection<Buddy> Buddies { get; private set; }
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
         public Buddy LoggedInUser { get; set; }
+        public ObservableCollection<Buddy> Buddies { get; private set; }
 
         public bool IsLoggedIn
         {
             get { return chatClient.LoggedIn; }
+        }
+
+        public bool AnyoneOnline
+        {
+            get { return Buddies.Any(b => b.IsOnline); }
         }
 
         public ClientViewModel(IChatClient chatClient)
@@ -30,6 +38,7 @@ namespace Squiggle.UI.ViewModel
             this.chatClient.BuddyOffline += new EventHandler<BuddyEventArgs>(chatClient_BuddyOffline);
             this.chatClient.BuddyUpdated += new EventHandler<BuddyEventArgs>(chatClient_BuddyUpdated);
             Buddies = new ObservableCollection<Buddy>(chatClient.Buddies);
+            Buddies.CollectionChanged += (sender, e)=>OnPropertyChanged("AnyoneOnline");
         }
 
         void chatClient_BuddyOffline(object sender, BuddyEventArgs e)
@@ -47,6 +56,11 @@ namespace Squiggle.UI.ViewModel
             if (!Buddies.Contains(e.Buddy))
                 currentDispatcher.Invoke(new Action(delegate() { Buddies.Add(e.Buddy); }));
             ContactListUpdated(this, EventArgs.Empty);
+        }
+
+        void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

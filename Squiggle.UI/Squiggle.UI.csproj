@@ -234,7 +234,7 @@
     </Compile>
     <Compile Include="MessageParsers\HyperlinkParser.cs" />
     <Compile Include="MessageParsers\IMessageParser.cs" />
-    <Compile Include="Converters\ConditionAndConverter.cs" />
+    <Compile Include="Converters\AllEqualConverter.cs" />
     <Compile Include="FontSetting.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

@@ -57,9 +57,15 @@ namespace Squiggle.Chat
             {
                 status = value;
                 OnPropertyChanged("Status");
+                OnPropertyChanged("IsOnline");
             }
         }
 
+        public bool IsOnline
+        {
+            get { return Status != UserStatus.Offline; }
+        }
+        
         public BuddyProperties Properties
         {
             get { return properties; }
