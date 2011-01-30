@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Data;
 using Squiggle.Chat;
+using Squiggle.UI.Resources;
 
 namespace Squiggle.UI.Converters
 {
@@ -17,17 +18,17 @@ namespace Squiggle.UI.Converters
                 switch (status)
                 {
                     case UserStatus.Online:
-                        return "Online";
+                        return Translation.Instance.BuddyStatus_Online;
                     case UserStatus.Busy:
-                        return "Busy";                  
+                        return Translation.Instance.BuddyStatus_Busy;
                     case UserStatus.BeRightBack:
-                        return "Be Right Back";
+                        return Translation.Instance.BuddyStatus_BeRightBack;
                     case UserStatus.Away:
-                        return "Away";
+                        return Translation.Instance.BuddyStatus_Away;
                     case UserStatus.Idle:
-                        return "Idle";
+                        return Translation.Instance.BuddyStatus_Idle;
                     case UserStatus.Offline:
-                        return "Offline";
+                        return Translation.Instance.BuddyStatus_Offline;
                     default:
                         return status.ToString();
                 }

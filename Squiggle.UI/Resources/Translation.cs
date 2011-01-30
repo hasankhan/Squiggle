@@ -36,6 +36,12 @@ namespace Squiggle.UI.Resources
         public string FileTransfer_Cancelled { get; set; }
         public string FileTransfer_Sending { get; set; }
         public string FileTransfer_Receiving { get; set; }
+        public string BuddyStatus_Online { get; set; }
+        public string BuddyStatus_Busy { get; set; }
+        public string BuddyStatus_BeRightBack { get; set; }
+        public string BuddyStatus_Away { get; set; }
+        public string BuddyStatus_Idle { get; set; }
+        public string BuddyStatus_Offline { get; set; }
 
         public static Translation Instance { get; set; }
 

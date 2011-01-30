@@ -26,7 +26,7 @@ namespace Squiggle.Translate
             InitializeComponent();
         }
 
-        string[] stopWords = new[] { "Squiggle", "Idle", "IP", "Port" };
+        string[] stopWords = new[] { "Squiggle", "IP", "Port" };
         const string stopWordSymbol = "|";
         
         class LineMap

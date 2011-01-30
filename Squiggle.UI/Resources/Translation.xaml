@@ -8,6 +8,9 @@
     <sys:String x:Key="Global_ContactSays">says</sys:String>
     <sys:String x:Key="Global_ContactSaid">said</sys:String>
     <sys:String x:Key="Global_You">You</sys:String>
+    <sys:String x:Key="Buddy_StartChat">Start Chat</sys:String>
+    <sys:String x:Key="Buddy_SendFile">Send File</sys:String>
+    <sys:String x:Key="MainWindow_SendBroadcastMessage">Send an instant _broadcast message</sys:String>
     <sys:String x:Key="MainWindow_TrayMenu_Open">Open</sys:String>
     <sys:String x:Key="MainWindow_TrayMenu_ChangeStatus">Change Status</sys:String>
     <sys:String x:Key="MainWindow_TrayMenu_SignOut">Sign Out</sys:String>
@@ -19,7 +22,6 @@
     <sys:String x:Key="MainWindow_MainMenu_Close">_Close</sys:String>
     <sys:String x:Key="MainWindow_MainMenu_Actions">_Actions</sys:String>
     <sys:String x:Key="MainWindow_MainMenu_SendMessage">_Send an instant message</sys:String>
-    <sys:String x:Key="MainWindow_MainMenu_SendBroadcastMessage">Send an instant _broadcast message</sys:String>
     <sys:String x:Key="MainWindow_MainMenu_SendFile">Send a _file</sys:String>
     <sys:String x:Key="MainWindow_MainMenu_Tools">_Tools</sys:String>
     <sys:String x:Key="MainWindow_MainMenu_GroupBuddies">Group Buddies</sys:String>
@@ -105,4 +107,10 @@
     <sys:String x:Key="FileTransfer_Cancelled">Cancelled</sys:String>
     <sys:String x:Key="FileTransfer_Sending">Sending</sys:String>
     <sys:String x:Key="FileTransfer_Receiving">Receiving</sys:String>
+    <sys:String x:Key="BuddyStatus_Online">Online</sys:String>
+    <sys:String x:Key="BuddyStatus_Busy">Busy</sys:String>
+    <sys:String x:Key="BuddyStatus_BeRightBack">Be Right Back</sys:String>
+    <sys:String x:Key="BuddyStatus_Away">Away</sys:String>
+    <sys:String x:Key="BuddyStatus_Idle">Idle</sys:String>
+    <sys:String x:Key="BuddyStatus_Offline">Offline</sys:String>
 </ResourceDictionary>

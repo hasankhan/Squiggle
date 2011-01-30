@@ -34,7 +34,7 @@
                       Expanded="Group_ExpandChanged">
                 <Expander.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Send an instant _broadcast message" Tag="{Binding Items}" Click="SendBroadcastMessageMenu_Click" />
+                        <MenuItem Header="{DynamicResource MainWindow_SendBroadcastMessage}" Tag="{Binding Items}" Click="SendBroadcastMessageMenu_Click" />
                     </ContextMenu>
                 </Expander.ContextMenu>
                 <Expander.Header>
@@ -73,8 +73,8 @@
                     Tag="{Binding}" MouseLeftButtonUp="Buddy_Click" AllowDrop="True" Drop="Buddy_Drop" DragOver="Buddy_DragOver">
                 <Border.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Start Chat" Tag="{Binding}" Click="StartChat_Click" />
-                        <MenuItem Header="Send File" Tag="{Binding}" Click="SendFile_Click" />
+                        <MenuItem Header="{DynamicResource Buddy_StartChat}" Tag="{Binding}" Click="StartChat_Click" />
+                        <MenuItem Header="{DynamicResource Buddy_SendFile}" Tag="{Binding}" Click="SendFile_Click" />
                     </ContextMenu>
                 </Border.ContextMenu>
                 <Grid Margin="5">
@@ -86,7 +86,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="0.01*"/>
                     </Grid.RowDefinitions>
-                    <Image Width="20" Height="20" ToolTip="{Binding Path=Status}" Source="{Binding Path=Status, Converter={StaticResource statusIconConverter}}" VerticalAlignment="Top"/>
+                    <Image Width="20" Height="20" ToolTip="{Binding Path=Status, Converter={StaticResource statusConverter}}" Source="{Binding Path=Status, Converter={StaticResource statusIconConverter}}" VerticalAlignment="Top"/>
                     <StackPanel Orientation="Vertical" Grid.Column="1">
                         <StackPanel HorizontalAlignment="Left" Grid.Column="1"
                                             Orientation="Horizontal" Margin="5,0,0,0" Cursor="Hand" >
@@ -152,8 +152,7 @@
                                 <CollectionContainer Collection="{Binding Source={StaticResource AvailableUserStatus}}"/>
                                 <Separator IsEnabled="False"/>
                                 <ComboBoxItem PreviewMouseLeftButtonDown="ComboBoxItem_PreviewMouseLeftButtonDown"
-                                              PreviewKeyDown="ComboBoxItem_PreviewKeyDown"
-                                              >Sign Out</ComboBoxItem>
+                                              PreviewKeyDown="ComboBoxItem_PreviewKeyDown" Content="{DynamicResource MainWindow_TrayMenu_SignOut}" />
                             </CompositeCollection>
                         </ComboBox.ItemsSource>
                         <ComboBox.ItemsPanel>

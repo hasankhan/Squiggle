@@ -25,7 +25,7 @@
                         <RowDefinition Height="0.01*"/>
                     </Grid.RowDefinitions>
                     <CheckBox Grid.Column="0" x:Name="chkSelection" Tag="{Binding}" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Margin="0,0,10,0" Visibility="{Binding ElementName=contactSelectControl, Path=AllowMultiSelect, Converter={StaticResource visibilityConverter}}" />
-                    <Image Grid.Column="1" Width="20" Height="20" ToolTip="{Binding Path=Status}" Source="{Binding Path=Status, Converter={StaticResource statusIconConverter}}" VerticalAlignment="Top"/>
+                    <Image Grid.Column="1" Width="20" Height="20" ToolTip="{Binding Path=Status, Converter={StaticResource statusConverter}}" Source="{Binding Path=Status, Converter={StaticResource statusIconConverter}}" VerticalAlignment="Top"/>
                     <StackPanel Orientation="Vertical" Grid.Column="2">
                         <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="5,0,0,0" Cursor="Hand" >                            
                             <TextBlock Text="{Binding Path=DisplayName}" />

@@ -90,7 +90,7 @@
             </MenuItem>
             <MenuItem Header="{DynamicResource MainWindow_MainMenu_Actions}">
                 <MenuItem Header="{DynamicResource MainWindow_MainMenu_SendMessage}" Style="{StaticResource onlineBuddiesMenu}" Click="SendMessageMenu_Click" />
-                <MenuItem Header="{DynamicResource MainWindow_MainMenu_SendBroadcastMessage}" Style="{StaticResource onlineBuddiesMenu}" Click="SendBroadcastMessageMenu_Click" />
+                <MenuItem Header="{DynamicResource MainWindow_SendBroadcastMessage}" Style="{StaticResource onlineBuddiesMenu}" Click="SendBroadcastMessageMenu_Click" />
                 <MenuItem Header="{DynamicResource MainWindow_MainMenu_SendFile}" Style="{StaticResource onlineBuddiesMenu}" Click="SendFileMenu_Click" />
             </MenuItem>
             <MenuItem Header="{DynamicResource MainWindow_MainMenu_Tools}">
