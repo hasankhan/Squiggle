@@ -190,8 +190,12 @@ namespace Squiggle.UI
                                                       {
                                                           ChatClient = CreateClient(displayName, groupName);
                                                       }, "creating chat client", out ex))
+                {
                     if (byUser)
                         MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                    
 
                 CreateMonitor();
                 clientViewModel = new ClientViewModel(ChatClient);
