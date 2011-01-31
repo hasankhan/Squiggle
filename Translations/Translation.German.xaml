@@ -7,6 +7,9 @@
   <sys:String x:Key="Global_ContactSays">sagt</sys:String>
   <sys:String x:Key="Global_ContactSaid">sagte</sys:String>
   <sys:String x:Key="Global_You">Sie</sys:String>
+  <sys:String x:Key="Buddy_StartChat">Chat starten</sys:String>
+  <sys:String x:Key="Buddy_SendFile">Datei senden</sys:String>
+  <sys:String x:Key="MainWindow_SendBroadcastMessage">Schicken Sie eine Instant-Nachricht</sys:String>
   <sys:String x:Key="MainWindow_TrayMenu_Open">Open</sys:String>
   <sys:String x:Key="MainWindow_TrayMenu_ChangeStatus">Status ändern</sys:String>
   <sys:String x:Key="MainWindow_TrayMenu_SignOut">Registriere Out</sys:String>
@@ -18,7 +21,6 @@
   <sys:String x:Key="MainWindow_MainMenu_Close">Schließen</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_Actions">Aktionen</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_SendMessage">Senden einer Instant Message</sys:String>
-  <sys:String x:Key="MainWindow_MainMenu_SendBroadcastMessage">Schicken Sie eine Instant-Nachricht</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_SendFile">Senden einer Datei</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_Tools">Werkzeuge</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_GroupBuddies">Gruppe Freundeskreis</sys:String>
@@ -49,7 +51,7 @@
   <sys:String x:Key="SettingsWindow_SettingsTab_SubHeading">Persönliche Einstellungen</sys:String>
   <sys:String x:Key="SettingsWindow_SettingsTab_DisplayName">Geben Sie Ihren Namen, den Sie möchten, dass andere es sehen:</sys:String>
   <sys:String x:Key="SettingsWindow_SettingsTab_DisplayMessage">Geben Sie eine persönliche Nachricht für Ihre Kontakte zu sehen:</sys:String>
-  <sys:String x:Key="SettingsWindow_SettingsTab_IdleTimeout">Zeigen Sie mir "Idle" wenn ich inaktiv bin</sys:String>
+  <sys:String x:Key="SettingsWindow_SettingsTab_IdleTimeout">Zeigen Sie mir "Idle", wenn ich inaktiv bin</sys:String>
   <sys:String x:Key="SettingsWindow_SettingsTab_RememberDisplayName">Meine Anzeige Name und Nachricht</sys:String>
   <sys:String x:Key="SettingsWindow_SettingsTab_AutoSignIn">Automatisch anmelden bei</sys:String>
   <sys:String x:Key="SettingsWindow_ConnectionTab_Heading">Anschluss</sys:String>
@@ -104,4 +106,10 @@
   <sys:String x:Key="FileTransfer_Cancelled">Abgesagt</sys:String>
   <sys:String x:Key="FileTransfer_Sending">Senden</sys:String>
   <sys:String x:Key="FileTransfer_Receiving">Empfang</sys:String>
+  <sys:String x:Key="BuddyStatus_Online">Online</sys:String>
+  <sys:String x:Key="BuddyStatus_Busy">Besetzt</sys:String>
+  <sys:String x:Key="BuddyStatus_BeRightBack">Be Right Back</sys:String>
+  <sys:String x:Key="BuddyStatus_Away">Auswärts</sys:String>
+  <sys:String x:Key="BuddyStatus_Idle">Leerlauf</sys:String>
+  <sys:String x:Key="BuddyStatus_Offline">Offline</sys:String>
 </ResourceDictionary>

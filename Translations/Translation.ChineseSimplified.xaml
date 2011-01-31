@@ -7,6 +7,9 @@
   <sys:String x:Key="Global_ContactSays">说：</sys:String>
   <sys:String x:Key="Global_ContactSaid">说：</sys:String>
   <sys:String x:Key="Global_You">你</sys:String>
+  <sys:String x:Key="Buddy_StartChat">开始聊天</sys:String>
+  <sys:String x:Key="Buddy_SendFile">发送文件</sys:String>
+  <sys:String x:Key="MainWindow_SendBroadcastMessage">即时发送广播消息</sys:String>
   <sys:String x:Key="MainWindow_TrayMenu_Open">打开</sys:String>
   <sys:String x:Key="MainWindow_TrayMenu_ChangeStatus">更改状态</sys:String>
   <sys:String x:Key="MainWindow_TrayMenu_SignOut">登出</sys:String>
@@ -18,7 +21,6 @@
   <sys:String x:Key="MainWindow_MainMenu_Close">关闭</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_Actions">行动</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_SendMessage">发送即时消息</sys:String>
-  <sys:String x:Key="MainWindow_MainMenu_SendBroadcastMessage">即时发送广播消息</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_SendFile">发送文件</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_Tools">工具</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_GroupBuddies">组个朋友</sys:String>
@@ -49,7 +51,7 @@
   <sys:String x:Key="SettingsWindow_SettingsTab_SubHeading">个人设置</sys:String>
   <sys:String x:Key="SettingsWindow_SettingsTab_DisplayName">键入你的名字你希望别人看到它：</sys:String>
   <sys:String x:Key="SettingsWindow_SettingsTab_DisplayMessage">键入个人信息为您的联系人看：</sys:String>
-  <sys:String x:Key="SettingsWindow_SettingsTab_IdleTimeout">告诉我“Idle”当我处于非活动状态</sys:String>
+  <sys:String x:Key="SettingsWindow_SettingsTab_IdleTimeout">让我看看“闲置”当我处于非活动状态</sys:String>
   <sys:String x:Key="SettingsWindow_SettingsTab_RememberDisplayName">记住我的显示名称和消息</sys:String>
   <sys:String x:Key="SettingsWindow_SettingsTab_AutoSignIn">自动为我登录</sys:String>
   <sys:String x:Key="SettingsWindow_ConnectionTab_Heading">连接</sys:String>
@@ -104,4 +106,10 @@
   <sys:String x:Key="FileTransfer_Cancelled">取消</sys:String>
   <sys:String x:Key="FileTransfer_Sending">发送</sys:String>
   <sys:String x:Key="FileTransfer_Receiving">接收</sys:String>
+  <sys:String x:Key="BuddyStatus_Online">在线</sys:String>
+  <sys:String x:Key="BuddyStatus_Busy">忙</sys:String>
+  <sys:String x:Key="BuddyStatus_BeRightBack">马上回来</sys:String>
+  <sys:String x:Key="BuddyStatus_Away">离</sys:String>
+  <sys:String x:Key="BuddyStatus_Idle">空闲</sys:String>
+  <sys:String x:Key="BuddyStatus_Offline">离线</sys:String>
 </ResourceDictionary>
