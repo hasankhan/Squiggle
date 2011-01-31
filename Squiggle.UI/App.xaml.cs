@@ -2,6 +2,7 @@
 using System.Windows;
 using Microsoft.VisualBasic.ApplicationServices;
 using Squiggle.UI.Resources;
+using System.Diagnostics;
 
 namespace Messenger
 {
@@ -61,6 +62,15 @@ namespace Messenger
 
         public App()
         {
+            this.DispatcherUnhandledException += new System.Windows.Threading.DispatcherUnhandledExceptionEventHandler(App_DispatcherUnhandledException);
+        }
+
+        void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            Trace.WriteLine("Dispatcher unhandled exception: " + e.Exception.ToString());
+#if DEBUG
+            Debugger.Launch();
+#endif
         }
 
         private void Application_Startup(object sender, System.Windows.StartupEventArgs e)

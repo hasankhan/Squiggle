@@ -86,16 +86,19 @@ namespace Squiggle.UI.Controls
 
         private void RaiseMessageSendEvent()
         {
-            messages.Add(txtMessage.Text);
-            if (messages.Count > maxMessages)
-                messages.RemoveAt(0);
-            messageIndex = messages.Count - 1;
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                messages.Add(txtMessage.Text);
+                if (messages.Count > maxMessages)
+                    messages.RemoveAt(0);
+                messageIndex = messages.Count - 1;
 
-            string message = txtMessage.Text;
-            txtMessage.Text = String.Empty;
-            txtMessage.Focus();
+                string message = txtMessage.Text;
+                txtMessage.Text = String.Empty;
+                txtMessage.Focus();
 
-            MessageSend(this, new MessageSendEventArgs() { Message =  message});
+                MessageSend(this, new MessageSendEventArgs() { Message = message });
+            }));            
         }
 
         private void txtMessage_TextChanged(object sender, TextChangedEventArgs e)

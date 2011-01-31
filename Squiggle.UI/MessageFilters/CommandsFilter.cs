@@ -21,6 +21,7 @@ namespace Squiggle.UI.MessageFilters
             simpleCommands["/AWAY"] = window => MainWindow.Instance.ChatClient.CurrentUser.Status = UserStatus.Away;
             simpleCommands["/BRB"] = window => MainWindow.Instance.ChatClient.CurrentUser.Status = UserStatus.BeRightBack;
             simpleCommands["/BUSY"] = window => MainWindow.Instance.ChatClient.CurrentUser.Status = UserStatus.Busy;
+            simpleCommands["/BUZZ"] = window => window.SendBuzz();
             simpleCommands["/MAIN"] = window => MainWindow.Instance.RestoreWindow();
         }
 
