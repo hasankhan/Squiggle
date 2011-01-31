@@ -102,9 +102,9 @@ namespace Squiggle.Chat
                 UserStatus lastStatus = buddy.Status;
                 UpdateBuddy(buddy, e.User);
 
-                if (lastStatus != UserStatus.Offline && buddy.Status == UserStatus.Offline)
+                if (lastStatus != UserStatus.Offline && !buddy.IsOnline)
                     OnBuddyOffline(buddy);
-                else if (lastStatus == UserStatus.Offline && buddy.Status != UserStatus.Offline)
+                else if (lastStatus == UserStatus.Offline && buddy.IsOnline)
                     OnBuddyOnline(buddy, false);
                 else
                     OnBuddyUpdated(buddy);

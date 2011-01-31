@@ -447,7 +447,7 @@ namespace Squiggle.UI
 
         void StartBroadcastChat()
         {
-            var onlineBuddies = ChatClient.Buddies.Where(b => b.Status != UserStatus.Offline);
+            var onlineBuddies = ChatClient.Buddies.Where(b => b.IsOnline);
             if (onlineBuddies.Any())
                 StartBroadcastChat(onlineBuddies);
         }

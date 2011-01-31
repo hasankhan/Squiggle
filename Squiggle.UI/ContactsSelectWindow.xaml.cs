@@ -93,7 +93,7 @@ namespace Squiggle.UI
         private void CollectionViewSource_Filter(object sender, FilterEventArgs e)
         {
             Buddy buddy = (Buddy)e.Item;
-            if (buddy.Status == UserStatus.Offline)
+            if (!buddy.IsOnline)
                 e.Accepted = false;
 
             else if (filter == String.Empty)

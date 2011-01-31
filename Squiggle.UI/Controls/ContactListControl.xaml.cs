@@ -77,7 +77,7 @@ namespace Squiggle.UI.Controls
 
         void StartChat(Buddy buddy, bool sendFile, params string[] filePaths)
         {
-            if (buddy.Status != UserStatus.Offline)
+            if (buddy.IsOnline)
                 ChatStart(this, new ChatStartEventArgs() { Buddy = buddy,
                                                            SendFile = sendFile,
                                                            Files = filePaths });
