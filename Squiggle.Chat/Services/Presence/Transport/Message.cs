@@ -22,6 +22,15 @@ namespace Squiggle.Chat.Services.Presence.Transport
             return message;
         }
 
+        public bool IsValid
+        {
+            get
+            {
+                bool isValid = !String.IsNullOrEmpty(ClientID);
+                return isValid;
+            }
+        }
+
         public byte[] Serialize()
         {
             var stream = new MemoryStream();

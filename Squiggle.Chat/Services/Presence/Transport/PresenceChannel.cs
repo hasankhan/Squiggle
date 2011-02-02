@@ -142,7 +142,8 @@ namespace Squiggle.Chat.Services.Presence.Transport
                 ThreadPool.QueueUserWorkItem(_ =>
                 {
                     var message = Message.Deserialize(data);
-                    OnMessageReceived(new SquiggleEndPoint(message.ClientID, message.PresenceEndPoint), null, message);
+                    if (message.IsValid)
+                        OnMessageReceived(new SquiggleEndPoint(message.ClientID, message.PresenceEndPoint), null, message);
                 });
 
             BeginReceive();
