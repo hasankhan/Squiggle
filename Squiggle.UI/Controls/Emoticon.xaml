@@ -17,7 +17,7 @@
     </UserControl.Resources>
     <Grid>
         <Border Margin="4" BorderBrush="LightGray" BorderThickness="0.5">
-            <Image Source="{Binding ImageUri}" Stretch="None" Margin="3" ToolTip="{Binding Description}" />
+            <Image Source="{Binding ImageUri}" Stretch="UniformToFill" Margin="3" ToolTip="{Binding Description}" Height="24" Width="24" />
         </Border>
         <Border Style="{StaticResource MouseOverStyle}" Margin="1" BorderThickness="1" />
     </Grid>

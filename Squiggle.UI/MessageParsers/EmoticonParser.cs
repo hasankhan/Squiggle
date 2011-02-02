@@ -52,7 +52,9 @@ namespace Squiggle.UI.MessageParsers
         {
             EmoticonEntry emoticon = emoticons[text.ToUpperInvariant()];
             var image = new Image() { Source = emoticon.Image };
-            image.Stretch = System.Windows.Media.Stretch.None;
+            image.Stretch = System.Windows.Media.Stretch.UniformToFill;
+            image.Width = 24;
+            image.Height = 24;
             return new InlineUIContainer(image);
         }
     }

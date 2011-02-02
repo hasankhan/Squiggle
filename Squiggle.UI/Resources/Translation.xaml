@@ -113,4 +113,16 @@
     <sys:String x:Key="BuddyStatus_Away">Away</sys:String>
     <sys:String x:Key="BuddyStatus_Idle">Idle</sys:String>
     <sys:String x:Key="BuddyStatus_Offline">Offline</sys:String>
+    <sys:String x:Key="Emoticon_Angry">Angry</sys:String>
+    <sys:String x:Key="Emoticon_Crying">Crying</sys:String>
+    <sys:String x:Key="Emoticon_Disappointed">Disappointed</sys:String>
+    <sys:String x:Key="Emoticon_Hot">Hot</sys:String>
+    <sys:String x:Key="Emoticon_Laughing">Laughing</sys:String>
+    <sys:String x:Key="Emoticon_Sad">Sad</sys:String>
+    <sys:String x:Key="Emoticon_Sarcastic">Sarcastic</sys:String>
+    <sys:String x:Key="Emoticon_Silence">Silence</sys:String>
+    <sys:String x:Key="Emoticon_Smile">Smile</sys:String>
+    <sys:String x:Key="Emoticon_Surprised">Surprised</sys:String>
+    <sys:String x:Key="Emoticon_ToungeOut">Tongue out</sys:String>
+    <sys:String x:Key="Emoticon_Wink">Wink</sys:String>
 </ResourceDictionary>

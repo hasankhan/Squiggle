@@ -42,6 +42,18 @@ namespace Squiggle.UI.Resources
         public string BuddyStatus_Away { get; set; }
         public string BuddyStatus_Idle { get; set; }
         public string BuddyStatus_Offline { get; set; }
+        public string Emoticon_Angry { get; set; }
+        public string Emoticon_Crying { get; set; }
+        public string Emoticon_Disappointed { get; set; }
+        public string Emoticon_Hot { get; set; }
+        public string Emoticon_Laughing { get; set; }
+        public string Emoticon_Sad { get; set; }
+        public string Emoticon_Sarcastic { get; set; }
+        public string Emoticon_Silence { get; set; }
+        public string Emoticon_Smile { get; set; }
+        public string Emoticon_Surprised { get; set; }
+        public string Emoticon_ToungeOut { get; set; }
+        public string Emoticon_Wink { get; set; }
 
         public static Translation Instance { get; set; }
 

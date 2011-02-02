@@ -164,6 +164,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Resource Include="Images\Emoticons\disappointed.png" />
+    <Resource Include="Images\Emoticons\sarcasm.png" />
+    <Resource Include="Images\Emoticons\silence.png" />
     <Content Include="Resources\Translation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -381,10 +384,8 @@
     <Resource Include="Images\chat.png" />
     <Resource Include="Images\Emoticons\angry.png" />
     <Resource Include="Images\Emoticons\crying.png" />
-    <Resource Include="Images\Emoticons\embarrassed.png" />
     <Resource Include="Images\Emoticons\hot.png" />
     <Resource Include="Images\Emoticons\laughing.png" />
-    <Resource Include="Images\Emoticons\nerd.png" />
     <Resource Include="Images\Emoticons\sad.png" />
     <Resource Include="Images\Emoticons\smile.png" />
     <Resource Include="Images\Emoticons\surprize.png" />
