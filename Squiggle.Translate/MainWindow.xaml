@@ -13,7 +13,7 @@
         </ObjectDataProvider>
     </Window.Resources>
 
-    <Grid>
+    <Grid x:Name="layoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -23,10 +23,23 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5">
+            <Label>Key</Label>
+            <TextBox Width="100" x:Name="key" />
             <Label>Language:</Label>
-            <TextBox x:Name="language" Width="100" />
+            <ComboBox x:Name="language" Width="100" DisplayMemberPath="EnglishName" />
             <Label>Direction:</Label>
-            <ComboBox x:Name="Direction" ItemsSource="{Binding Source={StaticResource DirectionValues}}" SelectedIndex="0" Width="100" />
+            <Label x:Name="Direction" Width="100">
+                <Label.Style>
+                    <Style TargetType="Label">
+                        <Setter Property="Content" Value="LeftToRight" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=language, Path=SelectedItem.TextInfo.IsRightToLeft}" Value="True">
+                                <Setter Property="Content" Value="RightToLeft" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
             <Button Content="Translate" Click="Button_Click">
                 <Button.Style>
                     <Style TargetType="Button">
@@ -34,7 +47,7 @@
                             <DataTrigger Binding="{Binding Text,ElementName=language}" Value="">
                                 <Setter Property="IsEnabled" Value="False" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Text,ElementName=outputText}" Value="">
+                            <DataTrigger Binding="{Binding Text,ElementName=key}" Value="">
                                 <Setter Property="IsEnabled" Value="False" />
                             </DataTrigger>
                         </Style.Triggers>
@@ -42,7 +55,7 @@
                 </Button.Style>
             </Button>
         </StackPanel>
-        <TextBox Grid.Row="1" x:Name="inputText" VerticalScrollBarVisibility="Visible" AcceptsReturn="True"  />
-        <TextBox Grid.Row="1" Grid.Column="1" x:Name="outputText" VerticalScrollBarVisibility="Visible" AcceptsReturn="True"   />
+        <TextBox Grid.Row="1" x:Name="inputText" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" IsReadOnly="True"  />
+        <TextBox Grid.Row="1" Grid.Column="1" x:Name="outputText" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" IsReadOnly="True"   />
     </Grid>
 </Window>

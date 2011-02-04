@@ -9,7 +9,6 @@ namespace Squiggle.UI.Helpers
     {
         public static bool CreateDirectoryIfNotExists(string path)
         {
-
             return ExceptionMonster.EatTheException(() =>
             {
                 bool success = true;
