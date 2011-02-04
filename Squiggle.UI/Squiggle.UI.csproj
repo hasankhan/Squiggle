@@ -164,9 +164,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Resource Include="Images\Emoticons\disappointed.png" />
-    <Resource Include="Images\Emoticons\sarcasm.png" />
-    <Resource Include="Images\Emoticons\silence.png" />
+    <None Include="Images\Emoticons\Icons-Author.txt" />
+    <Resource Include="Images\Emoticons\surprised.png" />
+    <Resource Include="Images\Emoticons\tongue.png" />
+    <Resource Include="Images\Emoticons\winking.png" />
     <Content Include="Resources\Translation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -388,9 +389,6 @@
     <Resource Include="Images\Emoticons\laughing.png" />
     <Resource Include="Images\Emoticons\sad.png" />
     <Resource Include="Images\Emoticons\smile.png" />
-    <Resource Include="Images\Emoticons\surprize.png" />
-    <Resource Include="Images\Emoticons\tounge.png" />
-    <Resource Include="Images\Emoticons\wink.png" />
     <Content Include="Lib\WPFToolkit.dll" />
   </ItemGroup>
   <ItemGroup>

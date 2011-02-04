@@ -16,9 +16,9 @@ namespace Squiggle.UI
                                                               Translation.Instance.Emoticon_Crying, 
                                                               ":'(");
 
-        public static readonly Emoticon Disappointed = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/disappointed.png"), 
-                                                                    Translation.Instance.Emoticon_Disappointed, 
-                                                                    ":-|", ":|");
+        //public static readonly Emoticon Disappointed = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/disappointed.png"), 
+        //                                                            Translation.Instance.Emoticon_Disappointed, 
+        //                                                            ":-|", ":|");
 
         public static readonly Emoticon Hot = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/hot.png"),
                                                             Translation.Instance.Emoticon_Hot, 
@@ -32,27 +32,27 @@ namespace Squiggle.UI
                                                             Translation.Instance.Emoticon_Sad, 
                                                             ":-(", ":(");
 
-        public static readonly Emoticon Sarcastic = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/sarcasm.png"), 
-                                                                Translation.Instance.Emoticon_Sarcastic, 
-                                                                "^o)");
+        //public static readonly Emoticon Sarcastic = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/sarcastic.png"), 
+        //                                                        Translation.Instance.Emoticon_Sarcastic, 
+        //                                                        "^o)");
 
-        public static readonly Emoticon Silence = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/silence.png"), 
-                                                                Translation.Instance.Emoticon_Silence, 
-                                                                ":-#");
+        //public static readonly Emoticon Silence = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/silent.png"), 
+        //                                                        Translation.Instance.Emoticon_Silence, 
+        //                                                        ":-#");
 
         public static readonly Emoticon Smile = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/smile.png"), 
                                                              Translation.Instance.Emoticon_Smile, 
                                                              ":-)", ":)");
 
-        public static readonly Emoticon Surprised = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/surprize.png"), 
+        public static readonly Emoticon Surprised = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/surprised.png"), 
                                                                 Translation.Instance.Emoticon_Surprised, 
                                                                 ":-O", ":o");
 
-        public static readonly Emoticon TongueOut = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/tounge.png"), 
+        public static readonly Emoticon TongueOut = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/tongue.png"), 
                                                                 Translation.Instance.Emoticon_ToungeOut, 
                                                                 ":-p", ":p");
 
-        public static readonly Emoticon Wink = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/wink.png"), 
+        public static readonly Emoticon Wink = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/winking.png"), 
                                                             Translation.Instance.Emoticon_Wink, 
                                                             ";-)", ";)");
 
