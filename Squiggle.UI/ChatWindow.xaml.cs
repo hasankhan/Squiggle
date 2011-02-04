@@ -432,13 +432,18 @@ namespace Squiggle.UI
         {
             Dispatcher.Invoke(() =>
             {                
-                lastMessageReceived = DateTime.Now;
-                chatTextBox.AddMessage(buddy.DisplayName, message, fontName, fontSize, fontStyle, color);
-                ResetStatus();
-                FlashWindow();
-                if (this.WindowState == System.Windows.WindowState.Minimized && !chatStarted)
-                    TrayPopup.Instance.Show(Translation.Instance.Popup_NewMessage, String.Format("{0} " + Translation.Instance.Global_ContactSays + ": {1}", buddy.DisplayName, message), args=>this.Restore());
-                PlayAlert(AudioAlertType.MessageReceived);
+                var temp = new StringBuilder(message);
+                if (filters.Filter(temp, this, FilterDirection.In))
+                {
+                    message = temp.ToString();
+                    lastMessageReceived = DateTime.Now;
+                    chatTextBox.AddMessage(buddy.DisplayName, message, fontName, fontSize, fontStyle, color);
+                    ResetStatus();
+                    FlashWindow();
+                    if (this.WindowState == System.Windows.WindowState.Minimized && !chatStarted)
+                        TrayPopup.Instance.Show(Translation.Instance.Popup_NewMessage, String.Format("{0} " + Translation.Instance.Global_ContactSays + ": {1}", buddy.DisplayName, message), args => this.Restore());
+                    PlayAlert(AudioAlertType.MessageReceived);
+                }
             });
             chatStarted = true;
         }
@@ -486,7 +491,7 @@ namespace Squiggle.UI
             var settings = SettingsProvider.Current.Settings.PersonalSettings;
 
             var temp = new StringBuilder(message);
-            if (filters.Filter(temp, this))
+            if (filters.Filter(temp, this, FilterDirection.Out))
             {
                 message = temp.ToString();
                 chatSession.SendMessage(settings.FontName, settings.FontSize, settings.FontColor, settings.FontStyle, message);

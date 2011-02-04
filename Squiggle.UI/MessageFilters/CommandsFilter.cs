@@ -10,6 +10,11 @@ namespace Squiggle.UI.MessageFilters
     {
         public static CommandsFilter Instance = new CommandsFilter();
 
+        public FilterDirection Direction
+        {
+            get { return FilterDirection.Out; }
+        }
+
         static Dictionary<string, Action<ChatWindow>> simpleCommands = new Dictionary<string, Action<ChatWindow>>();
 
         static CommandsFilter()

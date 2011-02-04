@@ -11,6 +11,11 @@ namespace Squiggle.UI.MessageFilters
     {
         public static AliasFilter Instance = new AliasFilter();
 
+        public FilterDirection Direction
+        {
+            get { return FilterDirection.Out; }
+        }
+
         public bool Filter(StringBuilder message, ChatWindow window)
         {
             message.Replace("(you)", window.PrimaryBuddy.DisplayName)

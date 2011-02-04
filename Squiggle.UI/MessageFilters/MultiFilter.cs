@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Squiggle.UI.MessageFilters
 {
-    class MultiFilter: List<IMessageFilter>, IMessageFilter
+    class MultiFilter: List<IMessageFilter>
     {
-        public bool Filter(StringBuilder message, ChatWindow window)
+        public bool Filter(StringBuilder message, ChatWindow window, FilterDirection direction)
         {
-            foreach (IMessageFilter filter in this)
+            foreach (IMessageFilter filter in this.Where(f=>(f.Direction & direction) == direction))
                 if (!filter.Filter(message, window))
                     return false;
 
