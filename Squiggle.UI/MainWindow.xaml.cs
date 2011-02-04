@@ -180,10 +180,7 @@ namespace Squiggle.UI
                 if (ChatClient != null && ChatClient.LoggedIn)
                     return;
 
-                clientAvailable.WaitOne(TimeSpan.FromSeconds(20));
-
-                foreach (var window in chatWindows)
-                    window.Enabled = true;
+                clientAvailable.WaitOne(TimeSpan.FromSeconds(20));                
 
                 Exception ex;
                 if (!ExceptionMonster.EatTheException(() =>
@@ -204,6 +201,9 @@ namespace Squiggle.UI
 
                 VisualStateManager.GoToState(chatControl, "OnlineState", true);
                 autoSignout.OnSignIn(displayName, groupName);
+
+                foreach (var window in chatWindows)
+                    window.Enabled = true;
 
                 onSignIn();
             }));
