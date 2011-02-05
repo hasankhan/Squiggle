@@ -51,7 +51,7 @@
   <sys:String x:Key="SettingsWindow_SettingsTab_SubHeading">الإعدادات الشخصية</sys:String>
   <sys:String x:Key="SettingsWindow_SettingsTab_DisplayName">اكتب اسمك تريد أن يرى الآخرون ما يلي :</sys:String>
   <sys:String x:Key="SettingsWindow_SettingsTab_DisplayMessage">اكتب رسالة شخصية للاتصالات لمعرفة :</sys:String>
-  <sys:String x:Key="SettingsWindow_SettingsTab_IdleTimeout">تبين لي "الخمول" عندما أكون خاملة</sys:String>
+  <sys:String x:Key="SettingsWindow_SettingsTab_IdleTimeout">تبين لي &amp;quot;الخمول&amp;quot; عندما أكون خاملة</sys:String>
   <sys:String x:Key="SettingsWindow_SettingsTab_RememberDisplayName">تذكر اسمي وعرض رسالة</sys:String>
   <sys:String x:Key="SettingsWindow_SettingsTab_AutoSignIn">قم تلقائيا لي في</sys:String>
   <sys:String x:Key="SettingsWindow_ConnectionTab_Heading">اتصال</sys:String>
@@ -112,4 +112,16 @@
   <sys:String x:Key="BuddyStatus_Away">بعيدا</sys:String>
   <sys:String x:Key="BuddyStatus_Idle">خامل</sys:String>
   <sys:String x:Key="BuddyStatus_Offline">حاليا</sys:String>
+  <sys:String x:Key="Emoticon_Angry">غاضب</sys:String>
+  <sys:String x:Key="Emoticon_Crying">بكاء</sys:String>
+  <sys:String x:Key="Emoticon_Disappointed">خيبة أمل</sys:String>
+  <sys:String x:Key="Emoticon_Hot">حار</sys:String>
+  <sys:String x:Key="Emoticon_Laughing">يضحك</sys:String>
+  <sys:String x:Key="Emoticon_Sad">حزين</sys:String>
+  <sys:String x:Key="Emoticon_Sarcastic">ساخر</sys:String>
+  <sys:String x:Key="Emoticon_Silence">الصمت</sys:String>
+  <sys:String x:Key="Emoticon_Smile">ابتسامة</sys:String>
+  <sys:String x:Key="Emoticon_Surprised">مندهش</sys:String>
+  <sys:String x:Key="Emoticon_ToungeOut">خارج اللسان</sys:String>
+  <sys:String x:Key="Emoticon_Wink">غمزة</sys:String>
 </ResourceDictionary>

@@ -45,13 +45,13 @@
   <sys:String x:Key="SettingsWindow_GeneralTab_ShowPopups">Zeige Popups</sys:String>
   <sys:String x:Key="SettingsWindow_GeneralTab_AudioAlerts">Audio Alerts</sys:String>
   <sys:String x:Key="SettingsWindow_GeneralTab_SortBy">Sortieren von Kontakten nach:</sys:String>
-  <sys:String x:Key="SettingsWindow_GeneralTab_DownloadsFolder">Ordner "Downloads":</sys:String>
+  <sys:String x:Key="SettingsWindow_GeneralTab_DownloadsFolder">Ordner &amp;quot;Downloads&amp;quot;:</sys:String>
   <sys:String x:Key="SettingsWindow_GeneralTab_Browse">Stöbern</sys:String>
   <sys:String x:Key="SettingsWindow_SettingsTab_Heading">Persönliche</sys:String>
   <sys:String x:Key="SettingsWindow_SettingsTab_SubHeading">Persönliche Einstellungen</sys:String>
   <sys:String x:Key="SettingsWindow_SettingsTab_DisplayName">Geben Sie Ihren Namen, den Sie möchten, dass andere es sehen:</sys:String>
   <sys:String x:Key="SettingsWindow_SettingsTab_DisplayMessage">Geben Sie eine persönliche Nachricht für Ihre Kontakte zu sehen:</sys:String>
-  <sys:String x:Key="SettingsWindow_SettingsTab_IdleTimeout">Zeigen Sie mir "Idle", wenn ich inaktiv bin</sys:String>
+  <sys:String x:Key="SettingsWindow_SettingsTab_IdleTimeout">Zeigen Sie mir &amp;quot;Idle&amp;quot;, wenn ich inaktiv bin</sys:String>
   <sys:String x:Key="SettingsWindow_SettingsTab_RememberDisplayName">Meine Anzeige Name und Nachricht</sys:String>
   <sys:String x:Key="SettingsWindow_SettingsTab_AutoSignIn">Automatisch anmelden bei</sys:String>
   <sys:String x:Key="SettingsWindow_ConnectionTab_Heading">Anschluss</sys:String>
@@ -112,4 +112,16 @@
   <sys:String x:Key="BuddyStatus_Away">Auswärts</sys:String>
   <sys:String x:Key="BuddyStatus_Idle">Leerlauf</sys:String>
   <sys:String x:Key="BuddyStatus_Offline">Offline</sys:String>
+  <sys:String x:Key="Emoticon_Angry">Wütend</sys:String>
+  <sys:String x:Key="Emoticon_Crying">Schreien</sys:String>
+  <sys:String x:Key="Emoticon_Disappointed">Enttäuscht</sys:String>
+  <sys:String x:Key="Emoticon_Hot">Hot</sys:String>
+  <sys:String x:Key="Emoticon_Laughing">Lachen</sys:String>
+  <sys:String x:Key="Emoticon_Sad">Traurig</sys:String>
+  <sys:String x:Key="Emoticon_Sarcastic">Sarkastisch</sys:String>
+  <sys:String x:Key="Emoticon_Silence">Silence</sys:String>
+  <sys:String x:Key="Emoticon_Smile">Smile</sys:String>
+  <sys:String x:Key="Emoticon_Surprised">Überrascht</sys:String>
+  <sys:String x:Key="Emoticon_ToungeOut">Zunge raus</sys:String>
+  <sys:String x:Key="Emoticon_Wink">Zwinkern</sys:String>
 </ResourceDictionary>

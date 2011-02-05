@@ -112,4 +112,16 @@
   <sys:String x:Key="BuddyStatus_Away">离</sys:String>
   <sys:String x:Key="BuddyStatus_Idle">空闲</sys:String>
   <sys:String x:Key="BuddyStatus_Offline">离线</sys:String>
+  <sys:String x:Key="Emoticon_Angry">愤怒</sys:String>
+  <sys:String x:Key="Emoticon_Crying">哭泣</sys:String>
+  <sys:String x:Key="Emoticon_Disappointed">失望</sys:String>
+  <sys:String x:Key="Emoticon_Hot">热</sys:String>
+  <sys:String x:Key="Emoticon_Laughing">笑</sys:String>
+  <sys:String x:Key="Emoticon_Sad">伤心</sys:String>
+  <sys:String x:Key="Emoticon_Sarcastic">讽刺</sys:String>
+  <sys:String x:Key="Emoticon_Silence">沉默</sys:String>
+  <sys:String x:Key="Emoticon_Smile">微笑</sys:String>
+  <sys:String x:Key="Emoticon_Surprised">惊讶</sys:String>
+  <sys:String x:Key="Emoticon_ToungeOut">舌头伸出来</sys:String>
+  <sys:String x:Key="Emoticon_Wink">眨眼</sys:String>
 </ResourceDictionary>
