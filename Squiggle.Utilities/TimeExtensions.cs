@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Squiggle.Chat
+namespace Squiggle.Utilities
 {
     public static class TimeExtensions
     {

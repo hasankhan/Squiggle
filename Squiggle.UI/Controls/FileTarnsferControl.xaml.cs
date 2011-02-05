@@ -8,6 +8,7 @@ using Squiggle.Chat;
 using System.Diagnostics;
 using Squiggle.UI.Helpers;
 using Squiggle.UI.Resources;
+using Squiggle.Utilities;
 
 namespace Squiggle.UI.Controls
 {

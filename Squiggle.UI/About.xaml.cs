@@ -2,6 +2,7 @@
 using System.Windows;
 using Squiggle.UI.Helpers;
 using System.Globalization;
+using Squiggle.Utilities;
 
 namespace Squiggle.UI
 {

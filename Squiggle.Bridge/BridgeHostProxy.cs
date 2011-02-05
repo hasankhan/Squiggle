@@ -7,6 +7,7 @@ using Squiggle.Chat;
 using Squiggle.Chat.Services.Presence;
 using System.Net;
 using System.Drawing;
+using Squiggle.Utilities;
 using Squiggle.Chat.Services.Chat.Host;
 using Squiggle.Chat.Services.Chat;
 using Squiggle.Chat.Services;

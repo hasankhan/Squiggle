@@ -225,7 +225,6 @@
     <Compile Include="EmoticonSelector.xaml.cs">
       <DependentUpon>EmoticonSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\Async.cs" />
     <Compile Include="Helpers\ImageFactory.cs" />
     <Compile Include="IdleStatusChanger.cs" />
     <Compile Include="MessageFilters\AliasFilter.cs" />
@@ -281,14 +280,12 @@
     <Compile Include="Converters\FileToIconConverter.cs" />
     <Compile Include="NetworkSignout.cs" />
     <Compile Include="Converters\PathToNameConverter.cs" />
-    <Compile Include="Helpers\Shell.cs" />
     <Compile Include="Helpers\SquiggleUtility.cs" />
     <Compile Include="Converters\SysImageList.cs" />
     <Compile Include="WPFExtensions.cs" />
     <Compile Include="FancyBalloon.xaml.cs">
       <DependentUpon>FancyBalloon.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\FlashWindow.cs" />
     <Compile Include="NotifyIcon\BalloonIcon.cs" />
     <Compile Include="NotifyIcon\Interop\BalloonFlags.cs" />
     <Compile Include="NotifyIcon\Interop\IconDataMembers.cs" />
@@ -333,7 +330,6 @@
     <Compile Include="Converters\StatusIconConverter.cs" />
     <Compile Include="Converters\TrayIconConverter.cs" />
     <Compile Include="Helpers\TrayPopup.cs" />
-    <Compile Include="Helpers\WinStartup.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -355,6 +351,10 @@
     <ProjectReference Include="..\Squiggle.Chat\Squiggle.Chat.csproj">
       <Project>{CF28694A-887E-4118-874F-76F028DAB56E}</Project>
       <Name>Squiggle.Chat</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Squiggle.Utilities\Squiggle.Utilities.csproj">
+      <Project>{8B57850B-FA7F-4F96-A4A0-BF81BF24E710}</Project>
+      <Name>Squiggle.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

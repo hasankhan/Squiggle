@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Timers;
 
-namespace Squiggle.Chat
+namespace Squiggle.Utilities
 {
     public class IdleEventArgs : EventArgs
     {

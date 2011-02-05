@@ -5,6 +5,7 @@ using System.Net;
 using System.Reflection;
 using Squiggle.Chat;
 using Squiggle.UI.Helpers;
+using Squiggle.Utilities;
 
 namespace Squiggle.UI.Settings
 {

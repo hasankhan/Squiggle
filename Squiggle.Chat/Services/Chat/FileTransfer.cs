@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using Squiggle.Chat.Services.Chat.Host;
+using Squiggle.Utilities;
 
 namespace Squiggle.Chat.Services.Chat
 {

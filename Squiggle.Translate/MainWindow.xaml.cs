@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
+using Squiggle.Utilities;
 
 namespace Squiggle.Translate
 {
@@ -126,7 +127,7 @@ namespace Squiggle.Translate
                 {
                     outputText.Text = task.Result.Output;
                     MessageBox.Show("Translation file generated.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    Squiggle.UI.Helpers.Shell.ShowInFolder(task.Result.File);
+                    Shell.ShowInFolder(task.Result.File);
                 }
                 catch (Exception ex)
                 {

@@ -67,8 +67,6 @@ namespace Squiggle.UI.Controls
 
         public void AddMessage(string user, string message, string fontName, int fontSize, System.Drawing.FontStyle fontStyle, System.Drawing.Color color)
         {
-            var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
-
             string text = String.Format("{0} " + Translation.Instance.Global_ContactSaid + " ({1}): ", user, DateTime.Now.ToShortTimeString());
             var items = parsers.ParseText(text);
             foreach (var item in items)
@@ -96,7 +94,6 @@ namespace Squiggle.UI.Controls
 
         public void AddFileReceiveRequest(string user, IFileTransfer fileTransfer, string downloadsFolder)
         {
-            var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
             var transferUI = new FileTarnsferControl(fileTransfer, false);
             transferUI.DownloadFolder = downloadsFolder;
             para.Inlines.Add(new InlineUIContainer(transferUI));
@@ -105,7 +102,6 @@ namespace Squiggle.UI.Controls
 
         public void AddFileSentRequest(IFileTransfer fileTransfer)
         {
-            var para = sentMessages.Document.Blocks.FirstBlock as Paragraph;
             var transferUI = new FileTarnsferControl(fileTransfer, true);
             para.Inlines.Add(new InlineUIContainer(transferUI));
             para.Inlines.Add(new LineBreak());
@@ -120,7 +116,7 @@ namespace Squiggle.UI.Controls
 
         public void Clear()
         {
-            sentMessages.Document.Blocks.Clear();
+            para.Inlines.Clear();
         }
     }
 }

@@ -15,6 +15,7 @@ using System.Diagnostics;
 using Squiggle.Chat.Services.Chat;
 using System.Globalization;
 using Squiggle.Chat.Services;
+using Squiggle.Utilities;
 
 namespace Squiggle.UI
 {

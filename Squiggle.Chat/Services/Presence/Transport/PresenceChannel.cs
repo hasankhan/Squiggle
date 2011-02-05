@@ -7,6 +7,7 @@ using System.ServiceModel;
 using System.Threading;
 using Squiggle.Chat.Services.Presence.Transport.Host;
 using Squiggle.Chat.Services.Chat;
+using Squiggle.Utilities;
 
 namespace Squiggle.Chat.Services.Presence.Transport
 {

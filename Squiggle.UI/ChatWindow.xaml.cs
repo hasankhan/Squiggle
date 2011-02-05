@@ -15,6 +15,7 @@ using Squiggle.UI.MessageFilters;
 using System.Text;
 using System.Globalization;
 using Squiggle.UI.Resources;
+using Squiggle.Utilities;
 
 namespace Squiggle.UI
 {

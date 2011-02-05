@@ -1,8 +1,8 @@
 ﻿using Microsoft.Win32;
 
-namespace Squiggle.UI.Helpers
+namespace Squiggle.Utilities
 {
-    class WinStartup
+    public class WinStartup
     {
         public static bool IsAdded(string key, string path)
         {

@@ -8,6 +8,7 @@ using System.Threading;
 using Squiggle.Chat.Services;
 using System.Net;
 using Squiggle.Chat.Services.Chat;
+using Squiggle.Utilities;
 
 namespace Squiggle.Chat
 {    

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Timers;
 using Squiggle.Chat.Services.Presence.Transport;
 using Squiggle.Chat.Services.Presence.Transport.Messages;
+using Squiggle.Utilities;
 using System.Diagnostics;
 
 namespace Squiggle.Chat.Services.Presence

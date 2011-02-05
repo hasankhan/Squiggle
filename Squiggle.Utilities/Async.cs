@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace Squiggle.UI.Helpers
+namespace Squiggle.Utilities
 {
     public static class Async
     {

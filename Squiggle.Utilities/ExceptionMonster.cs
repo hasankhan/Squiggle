@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 
-namespace Squiggle.Chat
+namespace Squiggle.Utilities
 {
     public static class ExceptionMonster
     {

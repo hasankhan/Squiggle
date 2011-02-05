@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Squiggle.Chat
+namespace Squiggle.Utilities
 {
     public static class LinqExtensions
     {

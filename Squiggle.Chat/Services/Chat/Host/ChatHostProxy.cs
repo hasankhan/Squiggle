@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Net;
 using System.Net.Sockets;
+using Squiggle.Utilities;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 

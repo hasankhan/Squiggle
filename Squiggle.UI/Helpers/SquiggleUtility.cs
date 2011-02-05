@@ -9,6 +9,7 @@ using Squiggle.Chat;
 using Squiggle.UI.Settings;
 using System.Reflection;
 using Squiggle.UI.ViewModel;
+using Squiggle.Utilities;
 
 namespace Squiggle.UI.Helpers
 {

@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System;
 
-namespace Squiggle.Chat
+namespace Squiggle.Utilities
 {
     public class NetworkUtility
     {

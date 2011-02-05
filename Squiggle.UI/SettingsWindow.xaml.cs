@@ -9,6 +9,7 @@ using Squiggle.UI.Settings;
 using Squiggle.UI.Helpers;
 using Squiggle.UI.ViewModel;
 using System.Globalization;
+using Squiggle.Utilities;
 
 namespace Squiggle.UI
 {

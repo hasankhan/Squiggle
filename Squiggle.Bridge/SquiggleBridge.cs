@@ -10,6 +10,7 @@ using Squiggle.Chat.Services;
 using Squiggle.Chat.Services.Chat.Host;
 using System.Diagnostics;
 using Squiggle.Chat;
+using Squiggle.Utilities;
 
 namespace Squiggle.Bridge
 {

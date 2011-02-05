@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using Squiggle.Chat;
 
-namespace Squiggle.UI.Helpers
+namespace Squiggle.Utilities
 {
-    class Shell
+    public class Shell
     {
         public static bool CreateDirectoryIfNotExists(string path)
         {
