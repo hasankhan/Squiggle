@@ -8,11 +8,11 @@ namespace Squiggle.UI
 {
     static class Emoticons
     {
-        public static readonly Emoticon Angry = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/angry.png"), 
+        public static readonly Emoticon Angry = new Emoticon(new Uri("/Images/Emoticons/angry.png", UriKind.Relative), 
                                                              Translation.Instance.Emoticon_Angry, 
                                                              ":@", ":-@");
 
-        public static readonly Emoticon Crying = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/crying.png"), 
+        public static readonly Emoticon Crying = new Emoticon(new Uri("/Images/Emoticons/crying.png", UriKind.Relative), 
                                                               Translation.Instance.Emoticon_Crying, 
                                                               ":'(");
 
@@ -20,15 +20,15 @@ namespace Squiggle.UI
         //                                                            Translation.Instance.Emoticon_Disappointed, 
         //                                                            ":-|", ":|");
 
-        public static readonly Emoticon Hot = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/hot.png"),
+        public static readonly Emoticon Hot = new Emoticon(new Uri("/Images/Emoticons/hot.png", UriKind.Relative),
                                                             Translation.Instance.Emoticon_Hot, 
                                                             "(h)");
 
-        public static readonly Emoticon OpenMouthed = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/laughing.png"), 
+        public static readonly Emoticon OpenMouthed = new Emoticon(new Uri("/Images/Emoticons/laughing.png", UriKind.Relative), 
                                                                     Translation.Instance.Emoticon_Laughing, 
                                                                     ":-D", ":d");
 
-        public static readonly Emoticon Sad = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/sad.png"), 
+        public static readonly Emoticon Sad = new Emoticon(new Uri("/Images/Emoticons/sad.png", UriKind.Relative), 
                                                             Translation.Instance.Emoticon_Sad, 
                                                             ":-(", ":(");
 
@@ -40,19 +40,19 @@ namespace Squiggle.UI
         //                                                        Translation.Instance.Emoticon_Silence, 
         //                                                        ":-#");
 
-        public static readonly Emoticon Smile = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/smile.png"), 
+        public static readonly Emoticon Smile = new Emoticon(new Uri("/Images/Emoticons/smile.png", UriKind.Relative), 
                                                              Translation.Instance.Emoticon_Smile, 
                                                              ":-)", ":)");
 
-        public static readonly Emoticon Surprised = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/surprised.png"), 
+        public static readonly Emoticon Surprised = new Emoticon(new Uri("/Images/Emoticons/surprised.png", UriKind.Relative), 
                                                                 Translation.Instance.Emoticon_Surprised, 
                                                                 ":-O", ":o");
 
-        public static readonly Emoticon TongueOut = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/tongue.png"), 
+        public static readonly Emoticon TongueOut = new Emoticon(new Uri("/Images/Emoticons/tongue.png", UriKind.Relative), 
                                                                 Translation.Instance.Emoticon_ToungeOut, 
                                                                 ":-p", ":p");
 
-        public static readonly Emoticon Wink = new Emoticon(new Uri("pack://application:,,,/Images/Emoticons/winking.png"), 
+        public static readonly Emoticon Wink = new Emoticon(new Uri("/Images/Emoticons/winking.png", UriKind.Relative), 
                                                             Translation.Instance.Emoticon_Wink, 
                                                             ";-)", ";)");
 

@@ -21,7 +21,7 @@ namespace Squiggle.UI.Helpers
             {
                 image = new BitmapImage();
                 image.BeginInit();
-                image.StreamSource = Application.GetResourceStream(source).Stream;
+                image.StreamSource = Application.GetContentStream(source).Stream;
                 image.EndInit();
                 image.Freeze();
 

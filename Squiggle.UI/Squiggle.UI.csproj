@@ -164,10 +164,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <None Include="Images\Emoticons\Icons-Author.txt" />
-    <Resource Include="Images\Emoticons\surprised.png" />
-    <Resource Include="Images\Emoticons\tongue.png" />
-    <Resource Include="Images\Emoticons\winking.png" />
+    <Content Include="Images\Emoticons\Icons-Author.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Emoticons\surprised.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Emoticons\tongue.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Emoticons\winking.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Translation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -371,10 +379,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="Images\chat.ico" />
-    <Resource Include="Images\away.png" />
-    <Resource Include="Images\busy.png" />
-    <Resource Include="Images\offline.png" />
-    <Resource Include="Images\online.png" />
+    <Content Include="Images\Status\away.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Status\busy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Status\offline.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Status\online.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Images\chat-away.ico" />
     <Resource Include="Images\chat-busy.ico" />
     <Resource Include="Images\chat-offline.ico" />
@@ -383,12 +399,24 @@
     <Resource Include="Images\font.png" />
     <Resource Include="Images\Buzz.png" />
     <Resource Include="Images\chat.png" />
-    <Resource Include="Images\Emoticons\angry.png" />
-    <Resource Include="Images\Emoticons\crying.png" />
-    <Resource Include="Images\Emoticons\hot.png" />
-    <Resource Include="Images\Emoticons\laughing.png" />
-    <Resource Include="Images\Emoticons\sad.png" />
-    <Resource Include="Images\Emoticons\smile.png" />
+    <Content Include="Images\Emoticons\angry.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Emoticons\crying.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Emoticons\hot.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Emoticons\laughing.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Emoticons\sad.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Emoticons\smile.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Lib\WPFToolkit.dll" />
   </ItemGroup>
   <ItemGroup>
