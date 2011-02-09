@@ -360,8 +360,15 @@ namespace Squiggle.UI
                 window.SetChatSession(chatSession ?? buddy.StartChat());
                 chatWindows.Add(window);
                 if (!initiatedByUser)
-                    window.WindowState = WindowState.Minimized;
+                {
+                    if (SettingsProvider.Current.Settings.GeneralSettings.MinimizeChatWindows)
+                        window.WindowState = WindowState.Minimized;
+                    else
+                        window.ShowActivated = false;
+                }
                 window.Show();
+                if (!initiatedByUser && !SettingsProvider.Current.Settings.GeneralSettings.MinimizeChatWindows)
+                    window.MoveToBottom();
             }
             else if (chatSession != null)
                 window.SetChatSession(chatSession);

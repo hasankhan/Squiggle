@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:Squiggle.UI"
     Title="ChatWindow"  
-    Loaded="Window_Loaded" Closed="Window_Closed" FocusManager.FocusedElement="{Binding ElementName=txtMessageEditBox}"
+    Loaded="Window_Loaded" Closed="Window_Closed" Activated="Window_Activated"
     SizeChanged="Window_SizeChanged" Icon="/Squiggle;component/Images/chat.ico">
     <Window.Resources>
         <ResourceDictionary>
@@ -115,7 +115,7 @@
                             </Button>                            
                         </StackPanel>                        
                     </Border>                    
-                    <controls:MessageEditBox FileDropped="txtMessageEditBox_FileDropped" Focusable="True" TabIndex="0"
+                    <controls:MessageEditBox FileDropped="txtMessageEditBox_FileDropped" 
                                              Margin="2,5,5,0" x:Name="txtMessageEditBox" 
                                              MessageTyping="txtMessageEditBox_MessageTyping" 
                                              MessageSend="txtMessageEditBox_MessageSend" Grid.Row="1" />

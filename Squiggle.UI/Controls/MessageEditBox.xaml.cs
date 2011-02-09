@@ -79,11 +79,6 @@ namespace Squiggle.UI.Controls
             RaiseMessageSendEvent();            
         }
 
-        public void GetFocus()
-        {
-            txtMessage.Focus();
-        }
-
         private void RaiseMessageSendEvent()
         {
             Dispatcher.BeginInvoke(new Action(() =>
@@ -178,6 +173,11 @@ namespace Squiggle.UI.Controls
                     FileDropped(this, new FileDroppedEventArgs() { Files = files });
                 e.Handled = true;
             }
+        }
+
+        public void GetFocus()
+        {
+            txtMessage.Focus();
         }
     }
 

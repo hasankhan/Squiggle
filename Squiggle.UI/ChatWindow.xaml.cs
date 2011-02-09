@@ -53,7 +53,6 @@ namespace Squiggle.UI
             statusResetTimer = new DispatcherTimer();
             statusResetTimer.Interval = TimeSpan.FromSeconds(5);
             statusResetTimer.Tick += (sender, e) => ResetStatus();
-            this.Activated += new EventHandler(ChatWindow_Activated);
             this.StateChanged += new EventHandler(ChatWindow_StateChanged);
 
             SettingsProvider.Current.SettingsUpdated += (sender, e) => LoadSettings();
@@ -146,14 +145,6 @@ namespace Squiggle.UI
             }
         }
 
-        void ChatWindow_Activated(object sender, EventArgs e)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                txtMessageEditBox.GetFocus();
-            });
-        }
-
         void ChatWindow_StateChanged(object sender, EventArgs e)
         {
             if (this.WindowState != System.Windows.WindowState.Minimized)
@@ -163,7 +154,6 @@ namespace Squiggle.UI
             {
                 if (this.WindowState != System.Windows.WindowState.Minimized)
                 {
-                    txtMessageEditBox.GetFocus();
                     if (buzzPending)
                     {
                         Async.Invoke(()=>
@@ -441,7 +431,7 @@ namespace Squiggle.UI
                     chatTextBox.AddMessage(buddy.DisplayName, message, fontName, fontSize, fontStyle, color);
                     ResetStatus();
                     FlashWindow();
-                    if (this.WindowState == System.Windows.WindowState.Minimized && !chatStarted)
+                    if (!chatStarted && !IsActive)
                         TrayPopup.Instance.Show(Translation.Instance.Popup_NewMessage, String.Format("{0} " + Translation.Instance.Global_ContactSays + ": {1}", buddy.DisplayName, message), args => this.Restore());
                     PlayAlert(AudioAlertType.MessageReceived);
                 }
@@ -759,6 +749,11 @@ namespace Squiggle.UI
         void UpdateGroupChatControls()
         {
             btnSendFile.IsEnabled = mnuSendFile.IsEnabled = chatSession == null || !chatSession.IsGroupChat;
+        }
+
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            txtMessageEditBox.GetFocus();
         }        
     }
 }

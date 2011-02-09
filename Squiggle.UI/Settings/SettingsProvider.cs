@@ -6,6 +6,7 @@ using System.Reflection;
 using Squiggle.Chat;
 using Squiggle.UI.Helpers;
 using Squiggle.Utilities;
+using System.Configuration;
 
 namespace Squiggle.UI.Settings
 {
@@ -76,6 +77,7 @@ namespace Squiggle.UI.Settings
 
         private void LoadGeneralSettings()
         {
+            Settings.GeneralSettings.MinimizeChatWindows = Convert.ToBoolean(ConfigurationManager.AppSettings["MinimizeChatWindows"]);
             Settings.GeneralSettings.ShowEmoticons = Properties.Settings.Default.ShowEmoticons;
             Settings.GeneralSettings.HideToSystemTray = Properties.Settings.Default.HideToTray;
             Settings.GeneralSettings.ShowPopups = Properties.Settings.Default.ShowPopups;

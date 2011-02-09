@@ -13,6 +13,7 @@ namespace Squiggle.UI.Settings
         public bool ShowEmoticons { get; set; }
         public bool GroupContacts { get; set; }
         public ContactGroups ContactGroups { get; set; }
+        public bool MinimizeChatWindows { get; set; }
 
         public GeneralSettings()
         {

@@ -1,7 +1,6 @@
 ﻿<UserControl x:Class="Squiggle.UI.Controls.MessageEditBox"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    FocusManager.FocusedElement="{Binding ElementName=txtMessage}">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <UserControl.Resources>
         <Style x:Key="BorderStyle" TargetType="{x:Type Border}">
             <Setter Property="BorderBrush" Value="#FFBFCBD8" />
