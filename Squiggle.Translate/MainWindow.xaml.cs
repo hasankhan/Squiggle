@@ -17,6 +17,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using Squiggle.Utilities;
+using Squiggle.Translate.Properties;
 
 namespace Squiggle.Translate
 {
@@ -182,6 +183,11 @@ namespace Squiggle.Translate
             {
                 return ((CultureInfo)language.SelectedItem);
             }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Settings.Default.Save();
         }
     }
 }
