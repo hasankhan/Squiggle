@@ -15,7 +15,7 @@ namespace Squiggle.Utilities
             {
                 Thread.Sleep((int)delay.TotalMilliseconds);
                 action();
-            }, delay);
+            });
         }
 
         public static void Invoke(Action action)
