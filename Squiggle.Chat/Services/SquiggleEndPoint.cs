@@ -45,5 +45,11 @@ namespace Squiggle.Chat.Services
             }
             return false;
         }
+
+        public override string ToString()
+        {
+            string output = ClientID + "@" + Address;
+            return output;
+        }
     }
 }

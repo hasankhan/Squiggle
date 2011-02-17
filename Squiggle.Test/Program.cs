@@ -76,7 +76,7 @@ namespace Squiggle.Chat
 
         static void client_BuddyOnline(object sender, BuddyEventArgs e)
         {
-            ThreadPool.QueueUserWorkItem(_ =>
+            Async.Invoke(() =>
             {
                 ((IChatClient)sender).CurrentUser.Properties["Machine"] = "Test2";
             });

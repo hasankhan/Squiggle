@@ -66,9 +66,9 @@ namespace Squiggle.Chat.Services.Chat
         {
             localHost.InvitationAccepted += new EventHandler<FileTransferEventArgs>(localHost_InvitationAccepted);
             localHost.TransferCancelled += new EventHandler<FileTransferEventArgs>(localHost_TransferCancelled);
-            ThreadPool.QueueUserWorkItem(_ =>
+            Async.Invoke(() =>
             {
-                bool success = L(() => this.remoteHost.ReceiveFileInvite(sessionId, localUser, remoteUser, id, Name, Size));
+                bool success = ExceptionMonster.EatTheException(() => this.remoteHost.ReceiveFileInvite(sessionId, localUser, remoteUser, id, Name, Size), "Sending file invite to " + remoteUser.ToString());
                 if (!success)
                 {
                     OnTransferFinished();
@@ -82,12 +82,12 @@ namespace Squiggle.Chat.Services.Chat
             if (sending)
                 throw new InvalidOperationException("This operation is only valid in context of an invitation.");
             localHost.TransferDataReceived += new EventHandler<FileTransferDataReceivedEventArgs>(localHost_TransferDataReceived);
-            bool success = L(()=>
+            bool success = ExceptionMonster.EatTheException(()=>
                             {
                                 saveToFile = filePath;
                                 content = File.OpenWrite(filePath);
                                 remoteHost.AcceptFileInvite(id, localUser, remoteUser);
-                            });
+                            }, "accepting file transfer invite from " + remoteUser);
             if (success)
                 OnTransferStarted();
             else
@@ -107,7 +107,7 @@ namespace Squiggle.Chat.Services.Chat
             selfCancelled = selfCancel;
 
             if (selfCancel)
-                L(() => this.remoteHost.CancelFileTransfer(id, localUser, remoteUser));
+                ExceptionMonster.EatTheException(() => this.remoteHost.CancelFileTransfer(id, localUser, remoteUser), "cancelling file transfer with user" + remoteUser);
 
             if (sending && worker!=null)            
                  worker.CancelAsync();
@@ -231,11 +231,6 @@ namespace Squiggle.Chat.Services.Chat
         void UpdateProgress(int percentage)
         {
             ProgressChanged(this, new ProgressChangedEventArgs(percentage, null));
-        }
-
-        bool L(Action action)
-        {
-            return ExceptionMonster.EatTheException(action, null);
         }
     }
 }

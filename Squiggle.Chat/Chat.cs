@@ -59,7 +59,7 @@ namespace Squiggle.Chat
 
         public void SendMessage(string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
         {
-            ThreadPool.QueueUserWorkItem(_ =>
+            Async.Invoke(() =>
             {
                 Exception ex;
                 if (!ExceptionMonster.EatTheException(()=>
@@ -76,17 +76,17 @@ namespace Squiggle.Chat
 
         public void NotifyTyping()
         {
-            ThreadPool.QueueUserWorkItem(_ => 
+            Async.Invoke(() => 
             {
-                L(() => session.NotifyTyping());
+                L(() => session.NotifyTyping(), "sending typing message");
             });
         }
 
         public void SendBuzz()
         {
-            ThreadPool.QueueUserWorkItem(_ =>
+            Async.Invoke(() =>
             {
-                L(() => session.SendBuzz());
+                L(() => session.SendBuzz(), "sending buzz");
             });
         }
 
@@ -104,14 +104,15 @@ namespace Squiggle.Chat
 
         public void Leave()
         {
-            L(()=>session.End());
+            L(()=>session.End(), "leaving chat");
         }
 
         public void Invite(Buddy buddy)
         {
-            ThreadPool.QueueUserWorkItem(_ =>
+            Async.Invoke(() =>
             {
-                L(() => session.Invite(new SquiggleEndPoint(buddy.ID.ToString(), buddy.ChatEndPoint)));
+                var endpoint = new SquiggleEndPoint(buddy.ID.ToString(), buddy.ChatEndPoint);
+                L(() => session.Invite(endpoint), "sending chat invite to " + endpoint);
             });
         }
 
@@ -179,11 +180,6 @@ namespace Squiggle.Chat
                                                                            Color = e.Color,
                                                                            FontStyle = e.FontStyle,                                                                       
                                                                            Message = e.Message});
-        }
-
-        bool L(Action action)
-        {
-            return L(action, null);
         }
 
         bool L(Action action, string description)

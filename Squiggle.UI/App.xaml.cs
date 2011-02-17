@@ -62,11 +62,18 @@ namespace Messenger
 
         public App()
         {
+            AppDomain.CurrentDomain.UnhandledException += new System.UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             this.DispatcherUnhandledException += new System.Windows.Threading.DispatcherUnhandledExceptionEventHandler(App_DispatcherUnhandledException);
+        }
+
+        void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
+        {
+            Trace.WriteLine("App domain unhandled exception: " + e.ExceptionObject.ToString());
         }
 
         void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
+            e.Handled = true;
             Trace.WriteLine("Dispatcher unhandled exception: " + e.Exception.ToString());
 #if DEBUG
             Debugger.Launch();

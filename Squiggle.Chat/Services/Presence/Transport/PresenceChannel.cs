@@ -118,7 +118,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
 
         void presenceHost_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            ThreadPool.QueueUserWorkItem(_ =>
+            Async.Invoke(() =>
             {
                 OnMessageReceived(e.Sender, e.Recipient, e.Message);
             });
@@ -140,11 +140,14 @@ namespace Squiggle.Chat.Services.Presence.Transport
             }, "receiving mcast presence message");
 
             if (data != null)
-                ThreadPool.QueueUserWorkItem(_ =>
+                Async.Invoke(()=>
                 {
-                    var message = Message.Deserialize(data);
-                    if (message.IsValid)
-                        OnMessageReceived(new SquiggleEndPoint(message.ClientID, message.PresenceEndPoint), null, message);
+                    ExceptionMonster.EatTheException(() =>
+                    {
+                        var message = Message.Deserialize(data);
+                        if (message.IsValid)
+                            OnMessageReceived(new SquiggleEndPoint(message.ClientID, message.PresenceEndPoint), null, message);
+                    }, "deserializing a presence message");
                 });
 
             BeginReceive();

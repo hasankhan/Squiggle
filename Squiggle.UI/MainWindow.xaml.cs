@@ -226,7 +226,7 @@ namespace Squiggle.UI
 
                 chatControl.SignIn.SetDisplayName(ChatClient.CurrentUser.DisplayName);
 
-                ThreadPool.QueueUserWorkItem(_ =>
+                Async.Invoke(() =>
                 {
                     ExceptionMonster.EatTheException(() => ChatClient.Logout(), "loging out client");
                     clientAvailable.Set();
