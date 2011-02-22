@@ -25,12 +25,13 @@ namespace Squiggle.UI.Controls
 
         static void OnTextPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            var label = (TextBlock)sender;
+            var textBlock = (TextBlock)sender;
+            textBlock.Inlines.Clear();
             //http://stackoverflow.com/questions/4835920/round-brackets-not-showing-up-correctly-in-rightoleft-flow-direction-in-wpf/4837069#4837069
             var bugFixRun = new Run("i") { FontSize = .01 };
             var textRun = new Run(e.NewValue as string);
-            label.Inlines.Add(textRun);
-            label.Inlines.Add(bugFixRun);
+            textBlock.Inlines.Add(textRun);
+            textBlock.Inlines.Add(bugFixRun);
         }
     }
 }
