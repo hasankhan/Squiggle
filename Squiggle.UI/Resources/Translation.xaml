@@ -28,6 +28,7 @@
     <sys:String x:Key="MainWindow_MainMenu_SortBuddies">S_ort Buddies</sys:String>
     <sys:String x:Key="MainWindow_MainMenu_SortByName">By _name</sys:String>
     <sys:String x:Key="MainWindow_MainMenu_SortByStatus">By _status</sys:String>
+    <sys:String x:Key="MainWindow_MainMenu_HistoryViewer">_History...</sys:String>
     <sys:String x:Key="MainWindow_MainMenu_Settings">_Settings...</sys:String>
     <sys:String x:Key="MainWindow_MainMenu_Help">_Help</sys:String>
     <sys:String x:Key="MainWindow_SignIn_SignIn">Sign In</sys:String>
@@ -125,4 +126,5 @@
     <sys:String x:Key="Emoticon_Surprised">Surprised</sys:String>
     <sys:String x:Key="Emoticon_ToungeOut">Tongue out</sys:String>
     <sys:String x:Key="Emoticon_Wink">Wink</sys:String>
+    <sys:String x:Key="SettingsWindow_GeneralTab_EnableLogging">Enable Logging</sys:String>
 </ResourceDictionary>

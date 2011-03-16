@@ -153,6 +153,13 @@ namespace Squiggle.UI
             RestoreWindow();
         }
 
+        private void HistoryViewerMenu_Click(object sender, RoutedEventArgs e)
+        {
+            var viewer = new HistoryViewer();
+            viewer.Owner = this;
+            viewer.Show();
+        }
+
         private void QuiteMenu_Click(object sender, RoutedEventArgs e)
         {
             Quit();
@@ -497,6 +504,6 @@ namespace Squiggle.UI
         void UpdateGroupMenu()
         {
             mnuGroupBuddies.IsChecked = SettingsProvider.Current.Settings.GeneralSettings.GroupContacts;
-        }
+        }        
     }
 }

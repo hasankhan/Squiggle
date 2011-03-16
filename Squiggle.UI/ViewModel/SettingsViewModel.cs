@@ -27,6 +27,7 @@ namespace Squiggle.UI.ViewModel
             GeneralSettings.ShowPopups = settings.GeneralSettings.ShowPopups;
             GeneralSettings.AudioAlerts = settings.GeneralSettings.AudioAlerts;
             GeneralSettings.SpellCheck = settings.GeneralSettings.SpellCheck;
+            GeneralSettings.EnableLogging = settings.GeneralSettings.EnableLogging;
             GeneralSettings.ContactListSortField = settings.GeneralSettings.ContactListSortField;
             GeneralSettings.GroupContacts = settings.GeneralSettings.GroupContacts;
             GeneralSettings.DownloadsFolder = settings.GeneralSettings.DownloadsFolder;
@@ -54,6 +55,7 @@ namespace Squiggle.UI.ViewModel
             settings.GeneralSettings.ShowPopups = GeneralSettings.ShowPopups;
             settings.GeneralSettings.AudioAlerts = GeneralSettings.AudioAlerts;
             settings.GeneralSettings.SpellCheck = GeneralSettings.SpellCheck;
+            settings.GeneralSettings.EnableLogging = GeneralSettings.EnableLogging;
             settings.GeneralSettings.GroupContacts = GeneralSettings.GroupContacts;
             settings.GeneralSettings.ContactListSortField = GeneralSettings.ContactListSortField;
             settings.GeneralSettings.DownloadsFolder = GeneralSettings.DownloadsFolder;
@@ -93,6 +95,7 @@ namespace Squiggle.UI.ViewModel
         public bool SpellCheck { get; set; }
         public string DownloadsFolder { get; set; }
         public bool AudioAlerts { get; set; }
+        public bool EnableLogging { get; set; }
     }
 
     class ConnectionSettingsViewModel

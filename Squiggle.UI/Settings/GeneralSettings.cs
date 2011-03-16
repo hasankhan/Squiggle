@@ -14,6 +14,7 @@ namespace Squiggle.UI.Settings
         public bool GroupContacts { get; set; }
         public ContactGroups ContactGroups { get; set; }
         public bool MinimizeChatWindows { get; set; }
+        public bool EnableLogging { get; set; }
 
         public GeneralSettings()
         {
@@ -24,6 +25,7 @@ namespace Squiggle.UI.Settings
             ContactListSortField = "DisplayName";
             GroupContacts = true;
             SpellCheck = true;
+            EnableLogging = true;
             ContactGroups = new ContactGroups();
         }
     }

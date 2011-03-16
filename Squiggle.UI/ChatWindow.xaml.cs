@@ -109,6 +109,9 @@ namespace Squiggle.UI
                 chatTextBox.MessageParsers.Add(EmoticonParser.Instance);
 
             txtMessageEditBox.txtMessage.SpellCheck.IsEnabled = SettingsProvider.Current.Settings.GeneralSettings.SpellCheck;
+
+            if (chatSession != null)
+                chatSession.EnableLogging = SettingsProvider.Current.Settings.GeneralSettings.EnableLogging;
         }
 
         public void SetChatSession(IChat chat)
@@ -128,6 +131,7 @@ namespace Squiggle.UI
             chatSession.GroupChatStarted += new EventHandler(chatSession_GroupChatStarted);
             txtMessageEditBox.Enabled = true;
             mnuInviteContact.IsEnabled = !IsBroadcastChat;
+            chatSession.EnableLogging = SettingsProvider.Current.Settings.GeneralSettings.EnableLogging;
             UpdateTitle();
             MonitorAll(); 
         }        

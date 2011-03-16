@@ -43,7 +43,7 @@ namespace Squiggle.Chat
         public IChat StartChat(Buddy buddy)
         {
             IChatSession session = chatService.CreateSession(new SquiggleEndPoint(buddy.ID.ToString(), buddy.ChatEndPoint));
-            var chat = new Chat(session, buddy, id=>buddies[id]);
+            var chat = new Chat(session, CurrentUser, buddy, id=>buddies[id]);
             return chat;
         }        
 
@@ -89,7 +89,7 @@ namespace Squiggle.Chat
             }
             if (buddyList.Count > 0)
             {
-                var chat = new Chat(e.Session, buddyList, id=>buddies[id]);
+                var chat = new Chat(e.Session, CurrentUser, buddyList, id=>buddies[id]);
                 ChatStarted(this, new ChatStartedEventArgs() { Chat = chat, Buddies = buddyList });
             }
         }

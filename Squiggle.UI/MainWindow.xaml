@@ -99,6 +99,7 @@
                     <MenuItem x:Name="mnuSortByName" Header="{DynamicResource MainWindow_MainMenu_SortByName}" MenuItem.Click="SortMenu_Click" Tag="DisplayName" />
                     <MenuItem x:Name="mnuSortByStatus" Header="{DynamicResource MainWindow_MainMenu_SortByStatus}"  MenuItem.Click="SortMenu_Click" Tag="Status" />
                 </MenuItem>
+                <MenuItem Header="{DynamicResource MainWindow_MainMenu_HistoryViewer}" MenuItem.Click="HistoryViewerMenu_Click" />
                 <MenuItem Header="{DynamicResource MainWindow_MainMenu_Settings}" MenuItem.Click="SettingsMenu_Click" />
             </MenuItem>
             <MenuItem Header="{DynamicResource MainWindow_MainMenu_Help}">

@@ -140,6 +140,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Squiggle.History\Squiggle.History.csproj">
+      <Project>{7C28D795-0C3A-4154-9693-8F94C68CE540}</Project>
+      <Name>Squiggle.History</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Squiggle.Utilities\Squiggle.Utilities.csproj">
       <Project>{8B57850B-FA7F-4F96-A4A0-BF81BF24E710}</Project>
       <Name>Squiggle.Utilities</Name>

@@ -39,6 +39,21 @@ namespace Squiggle.Chat
             get { return true; }
         }
 
+        public bool EnableLogging
+        {
+            get
+            {
+                lock (chatSessions)
+                    return chatSessions.All(cs => cs.EnableLogging);
+            }
+            set
+            {
+                lock (chatSessions)
+                    foreach (IChat session in chatSessions)
+                        session.EnableLogging = value;
+            }
+        }
+
         public event EventHandler<ChatMessageReceivedEventArgs> MessageReceived = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyJoined = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyLeft = delegate { };

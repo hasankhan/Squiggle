@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="HistoryModel.Store" Alias="Self" Provider="System.Data.SqlServerCe.3.5" ProviderManifestToken="3.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+        <EntityContainer Name="HistoryModelStoreContainer">
+          <EntitySet Name="Events" EntityType="HistoryModel.Store.Events" store:Type="Tables" />
+        </EntityContainer>
+        <EntityType Name="Events">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="SessionId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EventTypeCode" Type="int" Nullable="false" />
+          <Property Name="Sender" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Data" Type="nvarchar" />
+          <Property Name="Stamp" Type="datetime" Nullable="false" />
+          <Property Name="SenderName" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="Recepients" Type="nvarchar" Nullable="false" />
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HistoryModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+        <EntityContainer Name="HistoryEntities">
+          <EntitySet Name="Events" EntityType="HistoryModel.Event" />
+        </EntityContainer>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="SessionId" Type="Guid" Nullable="false" />
+          <Property Name="EventTypeCode" Type="Int32" Nullable="false" />
+          <Property Name="Sender" Type="Guid" Nullable="false" />
+          <Property Name="Data" Type="String" MaxLength="4000" Unicode="true" FixedLength="false" />
+          <Property Name="Stamp" Type="DateTime" Nullable="false" />
+          <Property Name="SenderName" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="Recepients" Type="String" Nullable="false" MaxLength="4000" Unicode="true" FixedLength="false" />
+          <Property Name="Id" Type="Guid" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+        <EntityContainerMapping StorageEntityContainer="HistoryModelStoreContainer" CdmEntityContainer="HistoryEntities">
+          <EntitySetMapping Name="Events"><EntityTypeMapping TypeName="HistoryModel.Event"><MappingFragment StoreEntitySet="Events">
+            <ScalarProperty Name="SessionId" ColumnName="SessionId" />
+            <ScalarProperty Name="EventTypeCode" ColumnName="EventTypeCode" />
+            <ScalarProperty Name="Sender" ColumnName="Sender" />
+            <ScalarProperty Name="Data" ColumnName="Data" />
+            <ScalarProperty Name="Stamp" ColumnName="Stamp" />
+            <ScalarProperty Name="SenderName" ColumnName="SenderName" />
+            <ScalarProperty Name="Recepients" ColumnName="Recepients" />
+            <ScalarProperty Name="Id" ColumnName="Id" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="HistoryEntities">
+        <EntityTypeShape EntityType="HistoryModel.Event" Width="1.5" PointX="0.75" PointY="0.75" Height="2.2496956380208331" IsExpanded="true" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

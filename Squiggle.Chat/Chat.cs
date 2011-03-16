@@ -9,6 +9,8 @@ using Squiggle.Chat.Services;
 using System.Net;
 using Squiggle.Chat.Services.Chat;
 using Squiggle.Utilities;
+using Squiggle.History;
+using Squiggle.History.DAL;
 
 namespace Squiggle.Chat
 {    
@@ -17,11 +19,13 @@ namespace Squiggle.Chat
         Dictionary<object, Buddy> buddies;
         IChatSession session;
         Func<object, Buddy> buddyResolver;
+        Buddy self;
 
-        public Chat(IChatSession session, Buddy buddy, Func<object, Buddy> buddyResolver) : this(session, Enumerable.Repeat(buddy, 1), buddyResolver) { }
+        public Chat(IChatSession session, Buddy self, Buddy buddy, Func<object, Buddy> buddyResolver) : this(session, self, Enumerable.Repeat(buddy, 1), buddyResolver) { }
 
-        public Chat(IChatSession session, IEnumerable<Buddy> buddies, Func<object, Buddy> buddyResolver)
+        public Chat(IChatSession session, Buddy self, IEnumerable<Buddy> buddies, Func<object, Buddy> buddyResolver)
         {
+            this.self = self;
             this.buddyResolver = buddyResolver;
             this.buddies = new Dictionary<object, Buddy>();
             foreach (Buddy buddy in buddies)
@@ -48,6 +52,8 @@ namespace Squiggle.Chat
             get { return session.IsGroupSession; }
         }
 
+        public bool EnableLogging { get; set; }
+
         public event EventHandler<ChatMessageReceivedEventArgs> MessageReceived = delegate { };
         public event EventHandler<MessageFailedEventArgs> MessageFailed = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyJoined = delegate { };
@@ -71,6 +77,7 @@ namespace Squiggle.Chat
                         Message = message,
                         Exception = ex
                     });
+                LogHistory(EventType.Message, self, message);
             });
         }
 
@@ -87,6 +94,7 @@ namespace Squiggle.Chat
             Async.Invoke(() =>
             {
                 L(() => session.SendBuzz(), "sending buzz");
+                LogHistory(EventType.Buzz, self);
             });
         }
 
@@ -97,14 +105,16 @@ namespace Squiggle.Chat
 
             return ExceptionMonster.EatTheException(() =>
             {
-                return session.SendFile(name, content);            
-
+                var transfer = session.SendFile(name, content);
+                LogHistory(EventType.Transfer, self, name);
+                return transfer;
             }, "sending file request");
         }
 
         public void Leave()
         {
             L(()=>session.End(), "leaving chat");
+            LogHistory(EventType.Left, self);
         }
 
         public void Invite(Buddy buddy)
@@ -133,14 +143,20 @@ namespace Squiggle.Chat
         {
             Buddy buddy;
             if (buddies.TryGetValue(e.Sender.ClientID, out buddy))
+            {
                 TransferInvitationReceived(this, new FileTransferInviteEventArgs() { Sender = buddy, Invitation = e.Invitation });
+                LogHistory(EventType.Transfer, buddy);
+            }
         }
 
         void session_BuzzReceived(object sender, Squiggle.Chat.Services.Chat.Host.SessionEventArgs e)
         {
             Buddy buddy;
             if (buddies.TryGetValue(e.Sender.ClientID, out buddy))
-                BuzzReceived(this, new BuddyEventArgs( buddy ));
+            {
+                BuzzReceived(this, new BuddyEventArgs(buddy));
+                LogHistory(EventType.Buzz, buddy);
+            }
         } 
 
         void session_UserTyping(object sender, Squiggle.Chat.Services.Chat.Host.SessionEventArgs e)
@@ -157,6 +173,7 @@ namespace Squiggle.Chat
             {
                 buddies.Remove(buddy.ID);
                 BuddyLeft(this, new BuddyEventArgs(buddy));
+                LogHistory(EventType.Left, buddy);
             }
         }
 
@@ -167,6 +184,7 @@ namespace Squiggle.Chat
             {
                 buddies[buddy.ID] = buddy;
                 BuddyJoined(this, new BuddyEventArgs( buddy ));
+                LogHistory(EventType.Joined, buddy);
             }
         }   
 
@@ -174,12 +192,24 @@ namespace Squiggle.Chat
         {
             Buddy buddy;
             if (buddies.TryGetValue(e.Sender.ClientID, out buddy))
-                MessageReceived(this, new ChatMessageReceivedEventArgs() { Sender = buddy, 
-                                                                           FontName = e.FontName,
-                                                                           FontSize = e.FontSize,
-                                                                           Color = e.Color,
-                                                                           FontStyle = e.FontStyle,                                                                       
-                                                                           Message = e.Message});
+            {
+                MessageReceived(this, new ChatMessageReceivedEventArgs()
+                {
+                    Sender = buddy,
+                    FontName = e.FontName,
+                    FontSize = e.FontSize,
+                    Color = e.Color,
+                    FontStyle = e.FontStyle,
+                    Message = e.Message
+                });
+                LogHistory(EventType.Message, buddy, e.Message);
+            }
+        }
+
+        void LogHistory(EventType eventType, Buddy sender, string data = null)
+        {
+            if (EnableLogging)
+                L(() => new HistoryManager().AddSessionEvent(session.ID, DateTime.Now, eventType, new Guid(sender.ID.ToString()), sender.DisplayName, buddies.Values.Select(b => new Guid(b.ID.ToString())), data), "logging event in history.");
         }
 
         bool L(Action action, string description)

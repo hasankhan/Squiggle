@@ -31,6 +31,7 @@ namespace Squiggle.Chat
     {
         IEnumerable<Buddy> Buddies { get; }
         bool IsGroupChat { get; }
+        bool EnableLogging { get; set; }
 
         event EventHandler<ChatMessageReceivedEventArgs> MessageReceived;
         event EventHandler<BuddyEventArgs> BuddyJoined;        
