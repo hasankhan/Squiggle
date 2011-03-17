@@ -19,6 +19,8 @@ namespace Squiggle.UI
     /// </summary>
     public partial class ConversationViewer : Window
     {
+        public Guid SessionId { get; private set; }
+
         public ConversationViewer()
         {
             InitializeComponent();
@@ -26,10 +28,10 @@ namespace Squiggle.UI
 
         public ConversationViewer(Guid sessionId): this()
         {
+            this.SessionId = sessionId;
             var historyManager = new HistoryManager();
             var events = historyManager.GetEvents(sessionId);
             messages.ItemsSource = events;
-
         }
     }
 }

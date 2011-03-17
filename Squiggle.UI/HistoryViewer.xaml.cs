@@ -84,11 +84,16 @@ namespace Squiggle.UI
             var result = source.DataContext as Result;
             if (result != null)
             {
-                var viewer = new ConversationViewer(result.Id);
-                viewer.Owner = this;
-                viewer.ShowDialog();
+                var viewer = this.OwnedWindows.OfType<ConversationViewer>().FirstOrDefault(cv => cv.SessionId == result.Id);
+                if (viewer == null)
+                {
+                    viewer = new ConversationViewer(result.Id);
+                    viewer.Owner = this;
+                    viewer.Show();
+                }
+                else
+                    viewer.Activate();
             }
-
         }
     }
 }
