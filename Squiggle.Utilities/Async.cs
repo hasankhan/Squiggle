@@ -20,15 +20,17 @@ namespace Squiggle.Utilities
 
         public static void Invoke(Action action)
         {
-            try
+            ThreadPool.QueueUserWorkItem(_ =>
             {
-                action();
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine("Exception occured in async operation: " + ex.ToString());
-                throw;
-            }
+                try
+                {
+                    action();
+                }
+                catch (Exception ex)
+                {
+                    Trace.WriteLine("Exception occured in async operation: " + ex.ToString());
+                }
+            });
         }
     }
 }
