@@ -1,4 +1,5 @@
-﻿<Window x:Class="Squiggle.UI.ConversationViewer"
+﻿<sticky:StickyWindow xmlns:sticky="clr-namespace:Squiggle.UI.StickyWindows" 
+                     x:Class="Squiggle.UI.ConversationViewer"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Conversation" Height="300" Width="420">
@@ -14,4 +15,4 @@
             </ListView.View>
         </ListView>
     </Grid>
-</Window>
+</sticky:StickyWindow>

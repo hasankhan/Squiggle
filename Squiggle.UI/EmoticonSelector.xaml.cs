@@ -11,13 +11,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Globalization;
+using Squiggle.UI.StickyWindows;
 
 namespace Squiggle.UI
 {
     /// <summary>
     /// Interaction logic for EmoticonSelector.xaml
     /// </summary>
-    public partial class EmoticonSelector : Window
+    public partial class EmoticonSelector : StickyWindow
     {
         public string Code { get; set; }
 

@@ -16,13 +16,14 @@ using System.Text;
 using System.Globalization;
 using Squiggle.UI.Resources;
 using Squiggle.Utilities;
+using Squiggle.UI.StickyWindows;
 
 namespace Squiggle.UI
 {
     /// <summary>
     /// Interaction logic for ChatWindow.xaml
     /// </summary>
-    public partial class ChatWindow : Window
+    public partial class ChatWindow : StickyWindow
     {
         IChat chatSession;
         FlashWindow flash;

@@ -9,13 +9,14 @@ using Squiggle.Chat;
 using Squiggle.UI.Controls;
 using Squiggle.UI.ViewModel;
 using System.Globalization;
+using Squiggle.UI.StickyWindows;
 
 namespace Squiggle.UI
 {
     /// <summary>
     /// Interaction logic for ContactsWindow.xaml
     /// </summary>
-    public partial class ContactsSelectWindow : Window
+    public partial class ContactsSelectWindow : StickyWindow
     {
         private ClientViewModel clientViewModel;
         private List<Buddy> selectedContacts;

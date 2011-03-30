@@ -3,13 +3,14 @@ using System.Windows;
 using Squiggle.UI.Helpers;
 using System.Globalization;
 using Squiggle.Utilities;
+using Squiggle.UI.StickyWindows;
 
 namespace Squiggle.UI
 {
     /// <summary>
     /// Interaction logic for About.xaml
     /// </summary>
-    public partial class About : Window
+    public partial class About : StickyWindow
     {
         public About()
         {

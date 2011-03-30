@@ -1,4 +1,5 @@
-﻿<Window x:Class="Squiggle.UI.MainWindow"
+﻿<sticky:StickyWindow xmlns:sticky="clr-namespace:Squiggle.UI.StickyWindows"
+    x:Class="Squiggle.UI.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat"
     xmlns:controls="clr-namespace:Squiggle.UI.Controls"
@@ -108,4 +109,4 @@
         </Menu>        
         <controls:ChatClientControl Grid.Row="1" Width="Auto" Height="Auto" x:Name="chatControl" />
     </Grid>
-</Window>
+</sticky:StickyWindow>

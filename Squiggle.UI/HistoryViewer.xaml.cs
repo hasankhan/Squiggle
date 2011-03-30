@@ -13,13 +13,14 @@ using System.Windows.Shapes;
 using Squiggle.History;
 using Squiggle.History.DAL;
 using System.Diagnostics;
+using Squiggle.UI.StickyWindows;
 
 namespace Squiggle.UI
 {
     /// <summary>
     /// Interaction logic for HistoryViewer.xaml
     /// </summary>
-    public partial class HistoryViewer : Window
+    public partial class HistoryViewer : StickyWindow
     {
         public HistoryViewer()
         {

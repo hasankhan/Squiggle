@@ -16,13 +16,14 @@ using Squiggle.Chat.Services.Chat;
 using System.Globalization;
 using Squiggle.Chat.Services;
 using Squiggle.Utilities;
+using Squiggle.UI.StickyWindows;
 
 namespace Squiggle.UI
 {
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : StickyWindow
     {
         WindowState lastState;
         ClientViewModel clientViewModel;

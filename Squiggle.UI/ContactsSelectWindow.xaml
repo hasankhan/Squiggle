@@ -1,4 +1,5 @@
-﻿<Window x:Class="Squiggle.UI.ContactsSelectWindow"
+﻿<sticky:StickyWindow xmlns:sticky="clr-namespace:Squiggle.UI.StickyWindows"
+                     x:Class="Squiggle.UI.ContactsSelectWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:converters="clr-namespace:Squiggle.UI.Converters"
@@ -82,4 +83,4 @@
             </StackPanel>
         </Grid>
     </Grid>
-</Window>
+</sticky:StickyWindow>

@@ -1,4 +1,5 @@
-﻿<Window x:Class="Squiggle.UI.EmoticonSelector"
+﻿<sticky:StickyWindow xmlns:sticky="clr-namespace:Squiggle.UI.StickyWindows"
+                     x:Class="Squiggle.UI.EmoticonSelector"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="EmoticonSelector" Width="200" Height="140"
@@ -6,4 +7,4 @@
         BorderBrush="LightGray" BorderThickness="1"
         ShowInTaskbar="False" ShowActivated="True" KeyDown="Window_KeyDown" Closing="Window_Closing">
     <UniformGrid x:Name="root" FlowDirection="{DynamicResource flowDirection}" Columns="4" />
-</Window>
+</sticky:StickyWindow>

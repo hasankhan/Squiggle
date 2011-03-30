@@ -274,6 +274,13 @@
     <Compile Include="Resources\Translation.cs" />
     <Compile Include="Settings\ContactGroup.cs" />
     <Compile Include="Settings\ContactGroups.cs" />
+    <Compile Include="StickyWindows\DpiHelper.cs" />
+    <Compile Include="StickyWindows\NativeBehaviors.cs" />
+    <Compile Include="StickyWindows\NativeBehaviour.cs" />
+    <Compile Include="StickyWindows\NativeMethods.cs" />
+    <Compile Include="StickyWindows\SnapToBehavior.cs" />
+    <Compile Include="StickyWindows\StickyWindow.cs" />
+    <Compile Include="StickyWindows\WindowManager.cs" />
     <Compile Include="ViewModel\ClientViewModel.cs" />
     <Compile Include="ChatWindow.xaml.cs">
       <DependentUpon>ChatWindow.xaml</DependentUpon>
