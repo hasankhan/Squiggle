@@ -10,13 +10,13 @@ namespace Squiggle.Bridge.Configuration
         }
 
         [ConfigurationProperty("externalservicebinding")]
-        public Target RemoteServiceBinding
+        public Target ExternalServiceBinding
         {
             get { return (Target)this["externalservicebinding"] ?? new Target(); }
         }
 
         [ConfigurationProperty("internalservicebinding")]
-        public Target LocalServiceBinding
+        public Target InternalServiceBinding
         {
             get { return (Target)this["internalservicebinding"] ?? new Target(); }
         }

@@ -75,7 +75,7 @@ namespace Squiggle.Bridge
 
         public void ReceiveChatInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, SquiggleEndPoint[] participants)
         {
-            var bridgeParticipants = participants.Select(p => new SquiggleEndPoint(p.ClientID, bridge.BridgeEndPointRemote)).ToArray();
+            var bridgeParticipants = participants.Select(p => new SquiggleEndPoint(p.ClientID, bridge.BridgeEndPointExternal)).ToArray();
             bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.ReceiveChatInvite(sessionId, s, r, bridgeParticipants), sender, recepient);
         }
 

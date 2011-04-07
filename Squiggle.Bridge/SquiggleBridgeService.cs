@@ -19,7 +19,7 @@ namespace Squiggle.Bridge
         {
             var config = BridgeConfiguration.GetConfig();
 
-            var channelServiceEndPoint = new IPEndPoint(config.LocalServiceBinding.EndPoint.Address, config.ChannelBinding.ServicePort);
+            var channelServiceEndPoint = new IPEndPoint(config.InternalServiceBinding.EndPoint.Address, config.ChannelBinding.ServicePort);
 
             DumpConfig(config, channelServiceEndPoint);
 
@@ -27,8 +27,8 @@ namespace Squiggle.Bridge
             foreach (Target target in config.Targets)
                 bridge.AddTarget(target.EndPoint);
 
-            bridge.Start(config.LocalServiceBinding.EndPoint, 
-                         config.RemoteServiceBinding.EndPoint, 
+            bridge.Start(config.InternalServiceBinding.EndPoint, 
+                         config.ExternalServiceBinding.EndPoint, 
                          config.ChannelBinding.MulticastEndPoint, 
                          channelServiceEndPoint);
         }
@@ -37,8 +37,8 @@ namespace Squiggle.Bridge
         {
             Trace.WriteLine(":: Settings ::");
             Trace.WriteLine("");
-            Trace.WriteLine("Local Chat Service: " + config.LocalServiceBinding.EndPoint);
-            Trace.WriteLine("Remote Chat Service: " + config.RemoteServiceBinding.EndPoint);
+            Trace.WriteLine("Internal Service: " + config.InternalServiceBinding.EndPoint);
+            Trace.WriteLine("External Service: " + config.ExternalServiceBinding.EndPoint);
             Trace.WriteLine("Channel MCast: " + config.ChannelBinding.MulticastEndPoint);
             Trace.WriteLine("Channel Service: " + channelServiceEndPoint);
             Trace.WriteLine("");

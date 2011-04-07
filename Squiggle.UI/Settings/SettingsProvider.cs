@@ -67,7 +67,9 @@ namespace Squiggle.UI.Settings
             }
 
             Settings.ConnectionSettings.ClientID = Properties.Settings.Default.ClientID;
+#if !DEBUG
             if (String.IsNullOrEmpty(Settings.ConnectionSettings.ClientID))
+#endif
                 Settings.ConnectionSettings.ClientID = Guid.NewGuid().ToString();
 
             Settings.ConnectionSettings.ChatPort = Properties.Settings.Default.ChatPort;
