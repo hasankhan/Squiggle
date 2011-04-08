@@ -16,7 +16,7 @@ namespace Squiggle.Bridge
         public Message Message {get; set; }
     }
 
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)] 
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)] 
     public class BridgeHost: IBridgeHost
     {
         SquiggleBridge bridge;

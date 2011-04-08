@@ -16,7 +16,7 @@ namespace Squiggle.Chat.Services.Presence.Transport.Host
         }
     }
 
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)] 
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)] 
     class PresenceHost: IPresenceHost
     {
         public event EventHandler<UserInfoRequestedEventArgs> UserInfoRequested = delegate { };

@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace Squiggle.Chat.Services.Chat.Host
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)] 
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode=ConcurrencyMode.Multiple, UseSynchronizationContext=false)] 
     public class ChatHost: IChatHost, IDisposable
     {
         public event EventHandler<SessionEventArgs> BuzzReceived = delegate { };
