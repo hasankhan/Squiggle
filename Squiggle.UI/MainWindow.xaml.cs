@@ -17,6 +17,7 @@ using System.Globalization;
 using Squiggle.Chat.Services;
 using Squiggle.Utilities;
 using Squiggle.UI.StickyWindows;
+using Squiggle.UI.Resources;
 
 namespace Squiggle.UI
 {
@@ -289,7 +290,7 @@ namespace Squiggle.UI
 
             int chatPort = settings.ConnectionSettings.ChatPort;
             if (String.IsNullOrEmpty(settings.ConnectionSettings.BindToIP))
-                throw new OperationCanceledException("You are not on a network. Please make sure your network card is enabled.");
+                throw new OperationCanceledException(Translation.Instance.Error_NoNetwork);
 
             var localIP = IPAddress.Parse(settings.ConnectionSettings.BindToIP);
             TimeSpan keepAliveTimeout = settings.ConnectionSettings.KeepAliveTime.Seconds();
