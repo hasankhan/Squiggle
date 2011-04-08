@@ -401,7 +401,7 @@ namespace Squiggle.UI
                 trayIcon.Dispose();
                 autoSignout.Dispose();
 
-                foreach (var window in chatWindows.ToList())
+                foreach (Window window in this.OwnedWindows)
                     window.Close();
 
                 Properties.Settings.Default.MainWindowTop = Top;

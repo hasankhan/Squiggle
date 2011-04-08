@@ -127,4 +127,15 @@
     <sys:String x:Key="Emoticon_ToungeOut">Tongue out</sys:String>
     <sys:String x:Key="Emoticon_Wink">Wink</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_EnableLogging">Enable Logging</sys:String>
+    <sys:String x:Key="HistoryViewer_FromDate">From date:</sys:String>
+    <sys:String x:Key="HistoryViewer_ToDate">To date:</sys:String>
+    <sys:String x:Key="HistoryViewer_Message">Message:</sys:String>
+    <sys:String x:Key="HistoryViewer_Search">Search</sys:String>
+    <sys:String x:Key="HistoryViewer_Results_Start">Start</sys:String>
+    <sys:String x:Key="HistoryViewer_Results_End">End</sys:String>
+    <sys:String x:Key="HistoryViewer_Results_Participants">Participants</sys:String>
+    <sys:String x:Key="ConversationViewer_Stamp">Stamp</sys:String>
+    <sys:String x:Key="ConversationViewer_Sender">Sender</sys:String>
+    <sys:String x:Key="ConversationViewer_Type">Type</sys:String>
+    <sys:String x:Key="Error_NoNetwork">You are not on a network. Please make sure your network card is enabled.</sys:String>
 </ResourceDictionary>

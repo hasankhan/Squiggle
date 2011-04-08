@@ -12,23 +12,23 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="60" />
-            <ColumnDefinition />
+            <ColumnDefinition Width="75" />
+            <ColumnDefinition Width="489*" />
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" >From date:</Label>
+        <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource HistoryViewer_FromDate}" />
         <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtFrom" />
-        <Label Grid.Row="1" Grid.Column="0" >To date:</Label>
+        <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource HistoryViewer_ToDate}" />
         <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtTo" />
-        <Label Grid.Row="2" Grid.Column="0" >Message:</Label>
+        <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource HistoryViewer_Message}" />
         <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtMessage" />
         <Button Grid.Row="3" Grid.Column="1" Width="50" 
-                HorizontalAlignment="Right" Click="Search_Click">Search</Button>
+                HorizontalAlignment="Right" Click="Search_Click" Content="{DynamicResource HistoryViewer_Search}"></Button>
         <ListView Grid.Row="4" Grid.ColumnSpan="2" x:Name="results" MouseDoubleClick="results_MouseDoubleClick">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Start" DisplayMemberBinding="{Binding Start}" Width="140" />
-                    <GridViewColumn Header="End" DisplayMemberBinding="{Binding End}" Width="140" />
-                    <GridViewColumn Header="Participants" DisplayMemberBinding="{Binding Participants}" Width="280"  />
+                    <GridViewColumn Header="{DynamicResource HistoryViewer_Results_Start}" DisplayMemberBinding="{Binding Start}" Width="140" />
+                    <GridViewColumn Header="{DynamicResource HistoryViewer_Results_End}" DisplayMemberBinding="{Binding End}" Width="140" />
+                    <GridViewColumn Header="{DynamicResource HistoryViewer_Results_Participants}" DisplayMemberBinding="{Binding Participants}" Width="280"  />
                 </GridView>
             </ListView.View>
         </ListView>

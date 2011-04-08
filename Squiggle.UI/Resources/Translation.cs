@@ -54,6 +54,7 @@ namespace Squiggle.UI.Resources
         public string Emoticon_Surprised { get; set; }
         public string Emoticon_ToungeOut { get; set; }
         public string Emoticon_Wink { get; set; }
+        public string Error_NoNetwork { get; set; }
 
         public static Translation Instance { get; set; }
 
