@@ -14,22 +14,28 @@ namespace Squiggle.History
                 repository.AddSessionEvent(sessionId, stamp, type, sender, senderName, recepients, data);
         }
 
-        public IEnumerable<Conversation> GetConversations(ConversationCriteria criteria)
+        public IEnumerable<Session> GetSessions(SessionCriteria criteria)
         {
             using (var repository = new HistoryRepository())
-                return repository.GetConversations(criteria);
+                return repository.GetSessions(criteria);
         }
 
-        public IEnumerable<Event> GetEvents(Guid sessionId)
+        public Session GetSession(Guid sessionId)
         {
             using (var repository = new HistoryRepository())
-                return repository.GetEvents(sessionId);
+                return repository.GetSession(sessionId);
         }
 
         public void Clear()
         {
             using (var repository = new HistoryRepository())
                 repository.ClearHistory();
+        }
+
+        public void AddSession(Session newSession, IEnumerable<Participant> participants)
+        {
+            using (var repository = new HistoryRepository())
+                repository.AddSession(newSession, participants);
         }
     }
 }

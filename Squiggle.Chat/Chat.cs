@@ -206,10 +206,32 @@ namespace Squiggle.Chat
             }
         }
 
+        bool sessionLogged;
         void LogHistory(EventType eventType, Buddy sender, string data = null)
         {
+            DoHistoryAction(manager=>
+            {
+                if (!sessionLogged)
+                    LogSessionStart();
+                manager.AddSessionEvent(session.ID, DateTime.Now, eventType, new Guid(sender.ID.ToString()), sender.DisplayName, buddies.Values.Select(b => new Guid(b.ID.ToString())), data);
+            });
+        }
+
+        void LogSessionStart()
+        {
+            DoHistoryAction(manager =>
+            {
+                sessionLogged = true;
+                Buddy primaryBuddy = Buddies.FirstOrDefault();
+                var newSession = Session.CreateSession(session.ID, new Guid(primaryBuddy.ID.ToString()), primaryBuddy.DisplayName, DateTime.Now);
+                manager.AddSession(newSession, Buddies.Select(b => Participant.CreateParticipant(Guid.NewGuid(), new Guid(b.ID.ToString()), b.DisplayName)));
+            });
+        }
+
+        void DoHistoryAction(Action<HistoryManager> action)
+        {
             if (EnableLogging)
-                L(() => new HistoryManager().AddSessionEvent(session.ID, DateTime.Now, eventType, new Guid(sender.ID.ToString()), sender.DisplayName, buddies.Values.Select(b => new Guid(b.ID.ToString())), data), "logging event in history.");
+                L(() => action(new HistoryManager()), "logging history.");
         }
 
         bool L(Action action, string description)

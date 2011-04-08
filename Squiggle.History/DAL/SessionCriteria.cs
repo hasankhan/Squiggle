@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Squiggle.History.DAL
 {
-    public class ConversationCriteria
+    public class SessionCriteria
     {
         public Guid? SessionId { get; set; }
         public Guid? Participant { get; set; }

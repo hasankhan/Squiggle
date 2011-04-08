@@ -234,7 +234,7 @@ namespace Squiggle.Bridge
         void GetBridgeConnectionParams(IPEndPoint endPoint, string addressSuffix, out Uri address, out Binding binding)
         {
             address = new Uri("net.tcp://" + endPoint.ToString() + "/" + addressSuffix);
-            binding = new NetTcpBinding(SecurityMode.None);
+            binding = BindingHelper.CreateBinding();
         }
     }
 }

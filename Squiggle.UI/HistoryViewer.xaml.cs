@@ -38,19 +38,19 @@ namespace Squiggle.UI
                 return;
             string message = txtMessage.Text;
 
-            var conversations = historyManager.GetConversations(new ConversationCriteria()
+            var sessions = historyManager.GetSessions(new SessionCriteria()
             {
                 From = from,
                 To = to,
                 Text = message.Length == 0 ? null : message,
             });
 
-            results.ItemsSource = conversations.Select(c => new Result()
+            results.ItemsSource = sessions.Select(session => new Result()
             {
-                Id = c.Id,
-                Start = c.Start,
-                End = c.End,
-                Participants = String.Join(", ", c.Participants.Select(p=>p.Name).ToArray())
+                Id = session.Id,
+                Start = session.Start,
+                End = session.End,
+                Participants = String.Join(", ", session.Participants.Select(p=>p.ParticpantName).ToArray())
             }).ToList();
         }
 
@@ -75,7 +75,7 @@ namespace Squiggle.UI
         {
             public Guid Id { get; set; }
             public DateTime Start { get; set; }
-            public DateTime End { get; set; }
+            public DateTime? End { get; set; }
             public string Participants { get; set; }
         }
 
@@ -95,6 +95,12 @@ namespace Squiggle.UI
                 else
                     viewer.Activate();
             }
+        }
+
+        private void StickyWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+                Close();
         }
     }
 }

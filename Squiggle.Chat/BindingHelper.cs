@@ -15,6 +15,8 @@ namespace Squiggle.Chat
 
             binding.MaxReceivedMessageSize = 65535;
             binding.ReaderQuotas.MaxArrayLength = 65535;
+            binding.MaxConnections = 100;
+
             return binding;
         }
     }

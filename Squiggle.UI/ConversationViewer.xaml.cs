@@ -31,8 +31,14 @@ namespace Squiggle.UI
         {
             this.SessionId = sessionId;
             var historyManager = new HistoryManager();
-            var events = historyManager.GetEvents(sessionId);
-            messages.ItemsSource = events;
+            var session = historyManager.GetSession(sessionId);
+            messages.ItemsSource = session.Events;
+        }
+
+        private void StickyWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+                Close();
         }
     }
 }

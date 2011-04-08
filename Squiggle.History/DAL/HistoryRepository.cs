@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data.Objects;
+using System.Linq.Expressions;
 
 namespace Squiggle.History.DAL
 {
@@ -11,54 +13,63 @@ namespace Squiggle.History.DAL
 
         public void AddSessionEvent(Guid sessionId, DateTime stamp, EventType type, Guid sender, string senderName, IEnumerable<Guid> recepients, string data)
         {
-            string temp = String.Join(",", recepients.Select(r => r.ToString("N")).ToArray());
-            var evnt = Event.CreateEvent(sessionId, (int)type, sender, stamp, senderName, temp, Guid.NewGuid());
+            var session = context.Sessions.FirstOrDefault(s => s.Id == sessionId);
+            session.End = DateTime.Now;
+            var evnt = Event.CreateEvent((int)type, sender, stamp, senderName, Guid.NewGuid());
             evnt.Data = data;
+            evnt.Session = session;
             context.AddToEvents(evnt);
             context.SaveChanges();
         }
 
-        public IEnumerable<Conversation> GetConversations(ConversationCriteria criteria)
+        public IEnumerable<Session> GetSessions(SessionCriteria criteria)
         {
             string text = criteria.Text ?? String.Empty;
             string participant = criteria.Participant.HasValue ? criteria.Participant.Value.ToString("N") : String.Empty;
 
-            var result = (from evnt in context.Events
-                         group evnt by evnt.SessionId into g
-                         where g.Any
-                         (e => (criteria.SessionId == null || e.SessionId == criteria.SessionId.Value) &&
-                             (criteria.From == null || e.Stamp >= criteria.From.Value) &&
-                             (criteria.To == null || e.Stamp <= criteria.To.Value) &&
-                             (text.Length == 0 || e.Data.Contains(text)) &&
-                             (criteria.Participant == null || e.Sender == criteria.Participant.Value || e.Recepients.Contains(participant))
-                         )
-                         select new Conversation
-                         {
-                             Id = g.Key,
-                             Start = g.Min(e => e.Stamp),
-                             End = g.Max(e => e.Stamp),
-                             Participants = g.Select(e => new Participant()
-                             {
-                                 Id = e.Sender,
-                                 Name = e.SenderName
-                             }).Distinct()
-                         }).OrderBy(c=>c.Start);
+            var result = (from session in context.Sessions.Include("Participants")
+                         where (criteria.SessionId == null || session.Id == criteria.SessionId.Value) &&
+                             (criteria.From == null || session.Start >= criteria.From.Value) &&
+                             (criteria.To == null || session.Start <= criteria.To.Value) &&
+                             (text.Length == 0 || session.Events.Any(e=>e.Data.Contains(text))) && 
+                             (criteria.Participant == null || session.Participants.Any(p=>p.ParticipantId == criteria.Participant.Value))
+                         orderby session.Start
+                         select session);
 
             return result.ToList();
 
         }
 
-        public IEnumerable<Event> GetEvents(Guid sessionId)
+        public Session GetSession(Guid sessionId)
         {
-            var events = context.Events.Where(e => e.SessionId == sessionId).OrderBy(e=>e.Stamp);
-            return events.ToList();
+            var session = context.Sessions.Include("Participants")
+                                          .Include("Events")
+                                          .FirstOrDefault(s => s.Id == sessionId);
+            return session;
         }
 
         public void ClearHistory(Guid? sessionId = null)
         {
-            var query = context.Events.Where(e=>sessionId == null || e.SessionId == sessionId.Value);
-            foreach (var item in query)
-                context.DeleteObject(item);
+            DeleteAll(context.Events, e=>sessionId == null || e.Session.Id == sessionId.Value);
+            DeleteAll(context.Participants, p => sessionId == null || p.Session.Id == sessionId.Value);
+            DeleteAll(context.Sessions, s => sessionId == null || s.Id == sessionId.Value);
+
+            context.SaveChanges();
+        }
+
+        public void AddSession(Session newSession, IEnumerable<Participant> participants)
+        {
+            var session = context.Sessions.FirstOrDefault(s => s.Id == newSession.Id);
+            if (session == null)
+            {
+                foreach (var participant in participants)
+                    newSession.Participants.Add(participant);
+                context.AddToSessions(newSession);
+            }            
+            else
+                foreach (var participant in participants)
+                    if (!session.Participants.Any(p=>p.ParticipantId == participant.Id))
+                        session.Participants.Add(participant);
 
             context.SaveChanges();
         }
@@ -66,6 +77,12 @@ namespace Squiggle.History.DAL
         public void Dispose()
         {
             context.Dispose();
+        }
+
+        void DeleteAll<TEntity>(ObjectQuery<TEntity> items, Expression<Func<TEntity, bool>> condition)
+        {
+            foreach (var item in items.Where(condition))
+                context.DeleteObject(item);
         }        
     }
 }

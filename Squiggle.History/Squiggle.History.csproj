@@ -59,9 +59,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DAL\Conversation.cs" />
     <Compile Include="DAL\Event.cs" />
-    <Compile Include="DAL\ConversationCriteria.cs" />
+    <Compile Include="DAL\SessionCriteria.cs" />
     <Compile Include="DAL\EventType.cs" />
     <Compile Include="DAL\HistoryEntities.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -69,7 +68,6 @@
       <DependentUpon>HistoryEntities.edmx</DependentUpon>
     </Compile>
     <Compile Include="DAL\HistoryRepository.cs" />
-    <Compile Include="DAL\Participant.cs" />
     <Compile Include="HistoryManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

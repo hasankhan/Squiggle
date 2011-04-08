@@ -365,6 +365,7 @@ namespace Squiggle.UI
             if (window == null)
             {
                 window = new ChatWindow(buddy);
+                window.Owner = this;
                 window.Closed += (sender, e) => chatWindows.Remove(window);
                 window.SetChatSession(chatSession ?? buddy.StartChat());
                 chatWindows.Add(window);
@@ -402,7 +403,7 @@ namespace Squiggle.UI
                 trayIcon.Dispose();
                 autoSignout.Dispose();
 
-                foreach (Window window in this.OwnedWindows)
+                foreach (Window window in Application.Current.Windows)
                     window.Close();
 
                 Properties.Settings.Default.MainWindowTop = Top;

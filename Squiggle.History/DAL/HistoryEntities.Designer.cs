@@ -9,9 +9,11 @@
 //------------------------------------------------------------------------------
 
 [assembly: global::System.Data.Objects.DataClasses.EdmSchemaAttribute()]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("HistoryModel", "SessionEvent", "Session", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Squiggle.History.DAL.Session), "Event", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Squiggle.History.DAL.Event))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("HistoryModel", "SessionParticipant", "Session", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Squiggle.History.DAL.Session), "Participant", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Squiggle.History.DAL.Participant))]
 
 // Original file name:
-// Generation date: 3/15/2011 8:00:51 PM
+// Generation date: 4/8/2011 7:54:13 PM
 namespace Squiggle.History.DAL
 {
     
@@ -63,12 +65,62 @@ namespace Squiggle.History.DAL
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         private global::System.Data.Objects.ObjectQuery<Event> _Events;
         /// <summary>
+        /// There are no comments for Participants in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public global::System.Data.Objects.ObjectQuery<Participant> Participants
+        {
+            get
+            {
+                if ((this._Participants == null))
+                {
+                    this._Participants = base.CreateQuery<Participant>("[Participants]");
+                }
+                return this._Participants;
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private global::System.Data.Objects.ObjectQuery<Participant> _Participants;
+        /// <summary>
+        /// There are no comments for Sessions in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public global::System.Data.Objects.ObjectQuery<Session> Sessions
+        {
+            get
+            {
+                if ((this._Sessions == null))
+                {
+                    this._Sessions = base.CreateQuery<Session>("[Sessions]");
+                }
+                return this._Sessions;
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private global::System.Data.Objects.ObjectQuery<Session> _Sessions;
+        /// <summary>
         /// There are no comments for Events in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         public void AddToEvents(Event @event)
         {
             base.AddObject("Events", @event);
+        }
+        /// <summary>
+        /// There are no comments for Participants in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public void AddToParticipants(Participant participant)
+        {
+            base.AddObject("Participants", participant);
+        }
+        /// <summary>
+        /// There are no comments for Sessions in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public void AddToSessions(Session session)
+        {
+            base.AddObject("Sessions", session);
         }
     }
     /// <summary>
@@ -85,53 +137,22 @@ namespace Squiggle.History.DAL
         /// <summary>
         /// Create a new Event object.
         /// </summary>
-        /// <param name="sessionId">Initial value of SessionId.</param>
         /// <param name="eventTypeCode">Initial value of EventTypeCode.</param>
         /// <param name="sender">Initial value of Sender.</param>
         /// <param name="stamp">Initial value of Stamp.</param>
         /// <param name="senderName">Initial value of SenderName.</param>
-        /// <param name="recepients">Initial value of Recepients.</param>
         /// <param name="id">Initial value of Id.</param>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public static Event CreateEvent(global::System.Guid sessionId, int eventTypeCode, global::System.Guid sender, global::System.DateTime stamp, string senderName, string recepients, global::System.Guid id)
+        public static Event CreateEvent(int eventTypeCode, global::System.Guid sender, global::System.DateTime stamp, string senderName, global::System.Guid id)
         {
             Event @event = new Event();
-            @event.SessionId = sessionId;
             @event.EventTypeCode = eventTypeCode;
             @event.Sender = sender;
             @event.Stamp = stamp;
             @event.SenderName = senderName;
-            @event.Recepients = recepients;
             @event.Id = id;
             return @event;
         }
-        /// <summary>
-        /// There are no comments for property SessionId in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public global::System.Guid SessionId
-        {
-            get
-            {
-                return this._SessionId;
-            }
-            set
-            {
-                this.OnSessionIdChanging(value);
-                this.ReportPropertyChanging("SessionId");
-                this._SessionId = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("SessionId");
-                this.OnSessionIdChanged();
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        private global::System.Guid _SessionId;
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnSessionIdChanging(global::System.Guid value);
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnSessionIdChanged();
         /// <summary>
         /// There are no comments for property EventTypeCode in the schema.
         /// </summary>
@@ -268,32 +289,98 @@ namespace Squiggle.History.DAL
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         partial void OnSenderNameChanged();
         /// <summary>
-        /// There are no comments for property Recepients in the schema.
+        /// There are no comments for property Id in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public string Recepients
+        public global::System.Guid Id
         {
             get
             {
-                return this._Recepients;
+                return this._Id;
             }
             set
             {
-                this.OnRecepientsChanging(value);
-                this.ReportPropertyChanging("Recepients");
-                this._Recepients = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
-                this.ReportPropertyChanged("Recepients");
-                this.OnRecepientsChanged();
+                this.OnIdChanging(value);
+                this.ReportPropertyChanging("Id");
+                this._Id = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Id");
+                this.OnIdChanged();
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        private string _Recepients;
+        private global::System.Guid _Id;
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnRecepientsChanging(string value);
+        partial void OnIdChanging(global::System.Guid value);
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnRecepientsChanged();
+        partial void OnIdChanged();
+        /// <summary>
+        /// There are no comments for Session in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("HistoryModel", "SessionEvent", "Session")]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Session Session
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Session>("HistoryModel.SessionEvent", "Session").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Session>("HistoryModel.SessionEvent", "Session").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for Session in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Session> SessionReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Session>("HistoryModel.SessionEvent", "Session");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Session>("HistoryModel.SessionEvent", "Session", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for HistoryModel.Participant in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// Id
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="HistoryModel", Name="Participant")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class Participant : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new Participant object.
+        /// </summary>
+        /// <param name="id">Initial value of Id.</param>
+        /// <param name="participantId">Initial value of ParticipantId.</param>
+        /// <param name="particpantName">Initial value of ParticpantName.</param>
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public static Participant CreateParticipant(global::System.Guid id, global::System.Guid participantId, string particpantName)
+        {
+            Participant participant = new Participant();
+            participant.Id = id;
+            participant.ParticipantId = participantId;
+            participant.ParticpantName = particpantName;
+            return participant;
+        }
         /// <summary>
         /// There are no comments for property Id in the schema.
         /// </summary>
@@ -321,5 +408,306 @@ namespace Squiggle.History.DAL
         partial void OnIdChanging(global::System.Guid value);
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         partial void OnIdChanged();
+        /// <summary>
+        /// There are no comments for property ParticipantId in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public global::System.Guid ParticipantId
+        {
+            get
+            {
+                return this._ParticipantId;
+            }
+            set
+            {
+                this.OnParticipantIdChanging(value);
+                this.ReportPropertyChanging("ParticipantId");
+                this._ParticipantId = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ParticipantId");
+                this.OnParticipantIdChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private global::System.Guid _ParticipantId;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnParticipantIdChanging(global::System.Guid value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnParticipantIdChanged();
+        /// <summary>
+        /// There are no comments for property ParticpantName in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public string ParticpantName
+        {
+            get
+            {
+                return this._ParticpantName;
+            }
+            set
+            {
+                this.OnParticpantNameChanging(value);
+                this.ReportPropertyChanging("ParticpantName");
+                this._ParticpantName = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("ParticpantName");
+                this.OnParticpantNameChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private string _ParticpantName;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnParticpantNameChanging(string value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnParticpantNameChanged();
+        /// <summary>
+        /// There are no comments for Session in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("HistoryModel", "SessionParticipant", "Session")]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Session Session
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Session>("HistoryModel.SessionParticipant", "Session").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Session>("HistoryModel.SessionParticipant", "Session").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for Session in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Session> SessionReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Session>("HistoryModel.SessionParticipant", "Session");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Session>("HistoryModel.SessionParticipant", "Session", value);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for HistoryModel.Session in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// Id
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="HistoryModel", Name="Session")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class Session : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new Session object.
+        /// </summary>
+        /// <param name="id">Initial value of Id.</param>
+        /// <param name="contact">Initial value of Contact.</param>
+        /// <param name="contactName">Initial value of ContactName.</param>
+        /// <param name="start">Initial value of Start.</param>
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public static Session CreateSession(global::System.Guid id, global::System.Guid contact, string contactName, global::System.DateTime start)
+        {
+            Session session = new Session();
+            session.Id = id;
+            session.Contact = contact;
+            session.ContactName = contactName;
+            session.Start = start;
+            return session;
+        }
+        /// <summary>
+        /// There are no comments for property Id in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public global::System.Guid Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                this.OnIdChanging(value);
+                this.ReportPropertyChanging("Id");
+                this._Id = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Id");
+                this.OnIdChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private global::System.Guid _Id;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnIdChanging(global::System.Guid value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnIdChanged();
+        /// <summary>
+        /// There are no comments for property Contact in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public global::System.Guid Contact
+        {
+            get
+            {
+                return this._Contact;
+            }
+            set
+            {
+                this.OnContactChanging(value);
+                this.ReportPropertyChanging("Contact");
+                this._Contact = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Contact");
+                this.OnContactChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private global::System.Guid _Contact;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnContactChanging(global::System.Guid value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnContactChanged();
+        /// <summary>
+        /// There are no comments for property ContactName in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public string ContactName
+        {
+            get
+            {
+                return this._ContactName;
+            }
+            set
+            {
+                this.OnContactNameChanging(value);
+                this.ReportPropertyChanging("ContactName");
+                this._ContactName = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("ContactName");
+                this.OnContactNameChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private string _ContactName;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnContactNameChanging(string value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnContactNameChanged();
+        /// <summary>
+        /// There are no comments for property Start in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public global::System.DateTime Start
+        {
+            get
+            {
+                return this._Start;
+            }
+            set
+            {
+                this.OnStartChanging(value);
+                this.ReportPropertyChanging("Start");
+                this._Start = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Start");
+                this.OnStartChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private global::System.DateTime _Start;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnStartChanging(global::System.DateTime value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnStartChanged();
+        /// <summary>
+        /// There are no comments for property End in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public global::System.Nullable<global::System.DateTime> End
+        {
+            get
+            {
+                return this._End;
+            }
+            set
+            {
+                this.OnEndChanging(value);
+                this.ReportPropertyChanging("End");
+                this._End = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("End");
+                this.OnEndChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private global::System.Nullable<global::System.DateTime> _End;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnEndChanging(global::System.Nullable<global::System.DateTime> value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnEndChanged();
+        /// <summary>
+        /// There are no comments for Events in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("HistoryModel", "SessionEvent", "Event")]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Event> Events
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Event>("HistoryModel.SessionEvent", "Event");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Event>("HistoryModel.SessionEvent", "Event", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Participants in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("HistoryModel", "SessionParticipant", "Participant")]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Participant> Participants
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Participant>("HistoryModel.SessionParticipant", "Participant");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Participant>("HistoryModel.SessionParticipant", "Participant", value);
+                }
+            }
+        }
     }
 }
