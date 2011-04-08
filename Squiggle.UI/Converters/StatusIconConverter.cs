@@ -12,10 +12,14 @@ namespace Squiggle.UI.Converters
 
         static StatusIconConverter()
         {
-            onlineIcon = ImageFactory.Instance.Load(new Uri("pack://siteoforigin:,,,/Images/Status/online.png", UriKind.Absolute));
-            busyIcon = ImageFactory.Instance.Load(new Uri("pack://siteoforigin:,,,/Images/Status/busy.png", UriKind.Absolute));
-            awayIcon = ImageFactory.Instance.Load(new Uri("pack://siteoforigin:,,,/Images/Status/away.png", UriKind.Absolute));
-            offlineIcon = ImageFactory.Instance.Load(new Uri("pack://siteoforigin:,,,/Images/Status/offline.png", UriKind.Absolute));
+            try
+            {
+                onlineIcon = ImageFactory.Instance.Load(new Uri("pack://siteoforigin:,,,/Images/Status/online.png", UriKind.Absolute));
+                busyIcon = ImageFactory.Instance.Load(new Uri("pack://siteoforigin:,,,/Images/Status/busy.png", UriKind.Absolute));
+                awayIcon = ImageFactory.Instance.Load(new Uri("pack://siteoforigin:,,,/Images/Status/away.png", UriKind.Absolute));
+                offlineIcon = ImageFactory.Instance.Load(new Uri("pack://siteoforigin:,,,/Images/Status/offline.png", UriKind.Absolute));
+            }
+            catch { }
         }
 
         #region IValueConverter Members

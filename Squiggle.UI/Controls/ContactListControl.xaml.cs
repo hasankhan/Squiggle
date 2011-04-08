@@ -10,6 +10,7 @@ using Squiggle.UI.Settings;
 using Squiggle.UI.ViewModel;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Squiggle.Utilities;
 
 namespace Squiggle.UI.Controls
 {
@@ -201,6 +202,11 @@ namespace Squiggle.UI.Controls
             var menuItem = (MenuItem)sender;
             var buddies = ((IEnumerable<object>)menuItem.Tag).Cast<Buddy>();
             BroadcastChatStart(this, new BroadcastChatStartEventArgs() { Buddies = buddies.ToList() });
+        }
+
+        private void UpdateLink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+        {
+            Shell.OpenUrl(e.Uri.ToString());
         }
     }
 

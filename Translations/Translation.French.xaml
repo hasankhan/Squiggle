@@ -9,6 +9,7 @@
   <sys:String x:Key="Global_You">Vous</sys:String>
   <sys:String x:Key="Buddy_StartChat">Commencer la discussion</sys:String>
   <sys:String x:Key="Buddy_SendFile">Envoyer un fichier</sys:String>
+  <sys:String x:Key="MainWindow_UpdateNotice">Nouvelle version de Squiggle est disponible.</sys:String>
   <sys:String x:Key="MainWindow_SendBroadcastMessage">Envoyer un message diffusé instant</sys:String>
   <sys:String x:Key="MainWindow_TrayMenu_Open">Open</sys:String>
   <sys:String x:Key="MainWindow_TrayMenu_ChangeStatus">Changement d&amp;#39;état</sys:String>
@@ -27,6 +28,7 @@
   <sys:String x:Key="MainWindow_MainMenu_SortBuddies">Copains Trier</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_SortByName">Par nom</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_SortByStatus">En l&amp;#39;état</sys:String>
+  <sys:String x:Key="MainWindow_MainMenu_HistoryViewer">Histoire ...</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_Settings">Paramètres ...</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_Help">Aide</sys:String>
   <sys:String x:Key="MainWindow_SignIn_SignIn">Identifiez-vous</sys:String>
@@ -89,7 +91,7 @@
   <sys:String x:Key="ChatWindow_HasLeftConversation">a quitté la conversation.</sys:String>
   <sys:String x:Key="ChatWindow_HasSentYouBuzz">vous a envoyé un buzz.</sys:String>
   <sys:String x:Key="ChatWindow_YouSentBuzz">Vous avez envoyé un buzz.</sys:String>
-  <sys:String x:Key="ChatWindow_BuzzTooEarly">Buzz peut pas être envoyé trop souvent.</sys:String>
+  <sys:String x:Key="ChatWindow_BuzzTooEarly">Buzz ne peut pas être envoyé trop souvent.</sys:String>
   <sys:String x:Key="ChatWindow_CouldNotReadFile">Impossible de lire le fichier</sys:String>
   <sys:String x:Key="ChatWindow_MakeSureFileNotInUse">. S&amp;#39;il vous plaît assurez-vous qu&amp;#39;il n&amp;#39;est pas utilisé.</sys:String>
   <sys:String x:Key="ChatWindow_BroadCastChatTitle">Broadcast chat</sys:String>
@@ -124,4 +126,16 @@
   <sys:String x:Key="Emoticon_Surprised">Surpris</sys:String>
   <sys:String x:Key="Emoticon_ToungeOut">Une langue</sys:String>
   <sys:String x:Key="Emoticon_Wink">Clin d&amp;#39;œil</sys:String>
+  <sys:String x:Key="SettingsWindow_GeneralTab_EnableLogging">Activer la journalisation</sys:String>
+  <sys:String x:Key="HistoryViewer_FromDate">Depuis la date:</sys:String>
+  <sys:String x:Key="HistoryViewer_ToDate">À ce jour:</sys:String>
+  <sys:String x:Key="HistoryViewer_Message">Message:</sys:String>
+  <sys:String x:Key="HistoryViewer_Search">Rechercher</sys:String>
+  <sys:String x:Key="HistoryViewer_Results_Start">Démarrer</sys:String>
+  <sys:String x:Key="HistoryViewer_Results_End">Fin</sys:String>
+  <sys:String x:Key="HistoryViewer_Results_Participants">Les participants</sys:String>
+  <sys:String x:Key="ConversationViewer_Stamp">Timbre</sys:String>
+  <sys:String x:Key="ConversationViewer_Sender">Expéditeur</sys:String>
+  <sys:String x:Key="ConversationViewer_Type">Type</sys:String>
+  <sys:String x:Key="Error_NoNetwork">Vous n&amp;#39;êtes pas sur un réseau. S&amp;#39;il vous plaît vous assurer que votre carte réseau est activée.</sys:String>
 </ResourceDictionary>

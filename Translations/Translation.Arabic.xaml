@@ -9,6 +9,7 @@
   <sys:String x:Key="Global_You">لك</sys:String>
   <sys:String x:Key="Buddy_StartChat">ابدأ المحادثة</sys:String>
   <sys:String x:Key="Buddy_SendFile">إرسال ملف</sys:String>
+  <sys:String x:Key="MainWindow_UpdateNotice">الإصدار الأحدث من Squiggle متوفرا.</sys:String>
   <sys:String x:Key="MainWindow_SendBroadcastMessage">ارسال رسالة فورية البث</sys:String>
   <sys:String x:Key="MainWindow_TrayMenu_Open">فتح</sys:String>
   <sys:String x:Key="MainWindow_TrayMenu_ChangeStatus">تغيير أوضاع</sys:String>
@@ -27,6 +28,7 @@
   <sys:String x:Key="MainWindow_MainMenu_SortBuddies">ترتيب الأصدقاء</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_SortByName">حسب الاسم</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_SortByStatus">حسب الحالة</sys:String>
+  <sys:String x:Key="MainWindow_MainMenu_HistoryViewer">التاريخ...</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_Settings">إعدادات...</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_Help">مساعدة</sys:String>
   <sys:String x:Key="MainWindow_SignIn_SignIn">تسجيل الدخول</sys:String>
@@ -124,4 +126,16 @@
   <sys:String x:Key="Emoticon_Surprised">مندهش</sys:String>
   <sys:String x:Key="Emoticon_ToungeOut">خارج اللسان</sys:String>
   <sys:String x:Key="Emoticon_Wink">غمزة</sys:String>
+  <sys:String x:Key="SettingsWindow_GeneralTab_EnableLogging">تمكين تسجيل</sys:String>
+  <sys:String x:Key="HistoryViewer_FromDate">من التاريخ :</sys:String>
+  <sys:String x:Key="HistoryViewer_ToDate">حتى الآن :</sys:String>
+  <sys:String x:Key="HistoryViewer_Message">الرسالة :</sys:String>
+  <sys:String x:Key="HistoryViewer_Search">البحث</sys:String>
+  <sys:String x:Key="HistoryViewer_Results_Start">بدء</sys:String>
+  <sys:String x:Key="HistoryViewer_Results_End">نهاية</sys:String>
+  <sys:String x:Key="HistoryViewer_Results_Participants">المشاركون</sys:String>
+  <sys:String x:Key="ConversationViewer_Stamp">ختم</sys:String>
+  <sys:String x:Key="ConversationViewer_Sender">مرسل</sys:String>
+  <sys:String x:Key="ConversationViewer_Type">نوع</sys:String>
+  <sys:String x:Key="Error_NoNetwork">أنت لست على الشبكة. الرجاء التأكد من تمكين بطاقة الشبكة.</sys:String>
 </ResourceDictionary>

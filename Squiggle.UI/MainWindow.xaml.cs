@@ -215,6 +215,8 @@ namespace Squiggle.UI
                 foreach (var window in chatWindows)
                     window.Enabled = true;
 
+                UpdateNotifier.CheckForUpdate(OnUpdateCheckComplete);
+
                 onSignIn();
             }));
         }
@@ -508,5 +510,11 @@ namespace Squiggle.UI
         {
             mnuGroupBuddies.IsChecked = SettingsProvider.Current.Settings.GeneralSettings.GroupContacts;
         }        
+
+        void OnUpdateCheckComplete(UpdateCheckResult result)
+        {
+            if (result.IsUpdated)
+                clientViewModel.UpdateLink = result.UpdateLink;
+        }
     }
 }

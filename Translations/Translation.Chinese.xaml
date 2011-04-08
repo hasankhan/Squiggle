@@ -9,6 +9,7 @@
   <sys:String x:Key="Global_You">你</sys:String>
   <sys:String x:Key="Buddy_StartChat">开始聊天</sys:String>
   <sys:String x:Key="Buddy_SendFile">发送文件</sys:String>
+  <sys:String x:Key="MainWindow_UpdateNotice">较新的版本Squiggle可用。</sys:String>
   <sys:String x:Key="MainWindow_SendBroadcastMessage">即时发送广播消息</sys:String>
   <sys:String x:Key="MainWindow_TrayMenu_Open">打开</sys:String>
   <sys:String x:Key="MainWindow_TrayMenu_ChangeStatus">更改状态</sys:String>
@@ -27,6 +28,7 @@
   <sys:String x:Key="MainWindow_MainMenu_SortBuddies">排序好友</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_SortByName">按名称</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_SortByStatus">按状态</sys:String>
+  <sys:String x:Key="MainWindow_MainMenu_HistoryViewer">历史记录...</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_Settings">设置...</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_Help">帮助</sys:String>
   <sys:String x:Key="MainWindow_SignIn_SignIn">登录</sys:String>
@@ -124,4 +126,16 @@
   <sys:String x:Key="Emoticon_Surprised">惊讶</sys:String>
   <sys:String x:Key="Emoticon_ToungeOut">舌头伸出来</sys:String>
   <sys:String x:Key="Emoticon_Wink">眨眼</sys:String>
+  <sys:String x:Key="SettingsWindow_GeneralTab_EnableLogging">启用日志记录</sys:String>
+  <sys:String x:Key="HistoryViewer_FromDate">从日期：</sys:String>
+  <sys:String x:Key="HistoryViewer_ToDate">最新：</sys:String>
+  <sys:String x:Key="HistoryViewer_Message">消息：</sys:String>
+  <sys:String x:Key="HistoryViewer_Search">搜索</sys:String>
+  <sys:String x:Key="HistoryViewer_Results_Start">开始</sys:String>
+  <sys:String x:Key="HistoryViewer_Results_End">完</sys:String>
+  <sys:String x:Key="HistoryViewer_Results_Participants">与会者</sys:String>
+  <sys:String x:Key="ConversationViewer_Stamp">邮票</sys:String>
+  <sys:String x:Key="ConversationViewer_Sender">寄件人</sys:String>
+  <sys:String x:Key="ConversationViewer_Type">类型</sys:String>
+  <sys:String x:Key="Error_NoNetwork">你是不是在网络上。请确保您的网路卡已启用。</sys:String>
 </ResourceDictionary>

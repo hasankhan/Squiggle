@@ -78,9 +78,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DAL\History.sdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Include="DAL\History.sdf" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="DAL\HistoryEntities.edmx">

@@ -29,6 +29,17 @@ namespace Squiggle.UI.ViewModel
             get { return Buddies.Any(b => b.IsOnline); }
         }
 
+        string updateLink;
+        public string UpdateLink
+        {
+            get { return updateLink; }
+            set
+            {
+                updateLink = value;
+                OnPropertyChanged("UpdateLink");
+            }
+        }
+
         public ClientViewModel(IChatClient chatClient)
         {
             currentDispatcher = Dispatcher.CurrentDispatcher;
