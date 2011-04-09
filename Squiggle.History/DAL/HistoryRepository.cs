@@ -59,7 +59,7 @@ namespace Squiggle.History.DAL
 
         public void AddSession(Session newSession, IEnumerable<Participant> participants)
         {
-            var session = context.Sessions.FirstOrDefault(s => s.Id == newSession.Id);
+            var session = GetSession(newSession.Id);
             if (session == null)
             {
                 foreach (var participant in participants)
@@ -68,8 +68,16 @@ namespace Squiggle.History.DAL
             }            
             else
                 foreach (var participant in participants)
-                    if (!session.Participants.Any(p=>p.ParticipantId == participant.Id))
-                        session.Participants.Add(participant);
+                    AddParticipant(session, participant);
+
+            context.SaveChanges();
+        }
+
+        public void AddParticipant(Guid sessionId, Participant participant)
+        {
+            var session = GetSession(sessionId);
+            if (session != null)
+                AddParticipant(session, participant);
 
             context.SaveChanges();
         }
@@ -77,6 +85,12 @@ namespace Squiggle.History.DAL
         public void Dispose()
         {
             context.Dispose();
+        }
+
+        void AddParticipant(Session session, Participant participant)
+        {
+            if (!session.Participants.Any(p => p.ParticipantId == participant.Id))
+                session.Participants.Add(participant);
         }
 
         void DeleteAll<TEntity>(ObjectQuery<TEntity> items, Expression<Func<TEntity, bool>> condition)

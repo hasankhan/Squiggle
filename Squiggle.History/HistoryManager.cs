@@ -11,7 +11,14 @@ namespace Squiggle.History
         public void AddSessionEvent(Guid sessionId, DateTime stamp, EventType type, Guid sender, string senderName, IEnumerable<Guid> recepients, string data)
         {
             using (var repository = new HistoryRepository())
+            {
                 repository.AddSessionEvent(sessionId, stamp, type, sender, senderName, recepients, data);
+                if (type == EventType.Joined)
+                {
+                    var participant = Participant.CreateParticipant(Guid.NewGuid(), sender, senderName);
+                    repository.AddParticipant(sessionId, participant);
+                }
+            }
         }
 
         public IEnumerable<Session> GetSessions(SessionCriteria criteria)

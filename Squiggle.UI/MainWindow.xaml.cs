@@ -406,7 +406,8 @@ namespace Squiggle.UI
                 autoSignout.Dispose();
 
                 foreach (Window window in Application.Current.Windows)
-                    window.Close();
+                    if (window != this)
+                        window.Close();
 
                 Properties.Settings.Default.MainWindowTop = Top;
                 Properties.Settings.Default.MainWindowLeft = Left;

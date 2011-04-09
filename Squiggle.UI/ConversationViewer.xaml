@@ -2,6 +2,7 @@
                      x:Class="Squiggle.UI.ConversationViewer"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Icon="/Squiggle;component/Images/Chat.ico"                      
         Title="Conversation" Height="405" Width="613" KeyDown="StickyWindow_KeyDown">
     <Grid>
         <ListView x:Name="messages">

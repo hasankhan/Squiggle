@@ -29,7 +29,7 @@ namespace Squiggle.UI
                 var fileInfo = new FileInfo(Assembly.GetExecutingAssembly().Location);
                 if (fileInfo.Exists)
                 {
-                    DateTime fileTime = fileInfo.CreationTimeUtc;
+                    DateTime fileTime = fileInfo.LastWriteTimeUtc;
                     SyndicationItem lastUpdate = GetLastUpdate();
                     if (lastUpdate != null && lastUpdate.PublishDate.UtcDateTime>fileTime)
                     {
