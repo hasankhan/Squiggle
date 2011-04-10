@@ -20,24 +20,19 @@ namespace Squiggle.UI
 
     class UpdateNotifier
     {
-        public static void CheckForUpdate(Action<UpdateCheckResult> onUpdateCheckComplete)
+        public static void CheckForUpdate(DateTimeOffset clientLastUpdate, Action<UpdateCheckResult> onUpdateCheckComplete)
         {
             Async.Invoke(() =>
             {
                 var result = new UpdateCheckResult();
 
-                var fileInfo = new FileInfo(Assembly.GetExecutingAssembly().Location);
-                if (fileInfo.Exists)
+                SyndicationItem lastUpdate = GetLastUpdate();
+                if (lastUpdate != null && lastUpdate.PublishDate > clientLastUpdate)
                 {
-                    DateTime fileTime = fileInfo.CreationTimeUtc;
-                    SyndicationItem lastUpdate = GetLastUpdate();
-                    if (lastUpdate != null && lastUpdate.PublishDate.UtcDateTime>fileTime)
-                    {
-                        result.LastUpdate = lastUpdate.PublishDate.LocalDateTime;
-                        result.IsUpdated = true;
-                        result.Title = lastUpdate.Title.Text;
-                        result.UpdateLink = lastUpdate.Links.FirstOrDefault().Uri.ToString();
-                    }
+                    result.LastUpdate = lastUpdate.PublishDate.LocalDateTime;
+                    result.IsUpdated = true;
+                    result.Title = lastUpdate.Title.Text;
+                    result.UpdateLink = lastUpdate.Links.FirstOrDefault().Uri.ToString();
                 }
 
                 onUpdateCheckComplete(result);

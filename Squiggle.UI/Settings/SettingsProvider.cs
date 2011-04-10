@@ -79,6 +79,11 @@ namespace Squiggle.UI.Settings
 
         private void LoadGeneralSettings()
         {
+            DateTimeOffset firstRun;
+            if (!DateTimeOffset.TryParse(Properties.Settings.Default.FirstRun, out firstRun))
+                firstRun = DateTimeOffset.Now;
+
+            Settings.GeneralSettings.FirstRun = firstRun;
             Settings.GeneralSettings.MinimizeChatWindows = Convert.ToBoolean(ConfigurationManager.AppSettings["MinimizeChatWindows"]);
             Settings.GeneralSettings.ShowEmoticons = Properties.Settings.Default.ShowEmoticons;
             Settings.GeneralSettings.HideToSystemTray = Properties.Settings.Default.HideToTray;
@@ -136,6 +141,7 @@ namespace Squiggle.UI.Settings
 
         private void SaveGeneralSettings()
         {
+            Properties.Settings.Default.FirstRun = Settings.GeneralSettings.FirstRun.ToString();
             Properties.Settings.Default.ShowEmoticons = Settings.GeneralSettings.ShowEmoticons;
             Properties.Settings.Default.DownloadsFolder = Settings.GeneralSettings.DownloadsFolder;
             Properties.Settings.Default.HideToTray = Settings.GeneralSettings.HideToSystemTray;

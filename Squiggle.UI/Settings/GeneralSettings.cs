@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Specialized;
+using System;
 namespace Squiggle.UI.Settings
 {
     class GeneralSettings
@@ -15,6 +16,7 @@ namespace Squiggle.UI.Settings
         public ContactGroups ContactGroups { get; set; }
         public bool MinimizeChatWindows { get; set; }
         public bool EnableLogging { get; set; }
+        public DateTimeOffset FirstRun { get; set; }
 
         public GeneralSettings()
         {

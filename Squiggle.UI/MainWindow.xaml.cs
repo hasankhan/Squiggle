@@ -215,7 +215,7 @@ namespace Squiggle.UI
                 foreach (var window in chatWindows)
                     window.Enabled = true;
 
-                UpdateNotifier.CheckForUpdate(OnUpdateCheckComplete);
+                UpdateNotifier.CheckForUpdate(SettingsProvider.Current.Settings.GeneralSettings.FirstRun, OnUpdateCheckComplete);
 
                 onSignIn();
             }));
