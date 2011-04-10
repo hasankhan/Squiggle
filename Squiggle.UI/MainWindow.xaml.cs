@@ -185,12 +185,17 @@ namespace Squiggle.UI
 
         void SignIn(string displayName, string groupName, bool byUser, Action onSignIn)
         {
-            Dispatcher.Invoke((Action)(() =>
+            if (ChatClient != null && ChatClient.LoggedIn)
+                return;
+            
+            busyIndicator.IsBusy = true;
+            
+            Async.Invoke(() =>
             {
-                if (ChatClient != null && ChatClient.LoggedIn)
-                    return;
-
-                clientAvailable.WaitOne(TimeSpan.FromSeconds(20));                
+                clientAvailable.WaitOne(TimeSpan.FromSeconds(20));
+            }, () =>
+            {
+                busyIndicator.IsBusy = false;
 
                 Exception ex;
                 if (!ExceptionMonster.EatTheException(() =>
@@ -218,7 +223,7 @@ namespace Squiggle.UI
                 UpdateNotifier.CheckForUpdate(SettingsProvider.Current.Settings.GeneralSettings.FirstRun, OnUpdateCheckComplete);
 
                 onSignIn();
-            }));
+            });
         }
         
         void SignOut(bool byUser)

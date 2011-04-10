@@ -107,6 +107,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\BusyIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ChatClientControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -232,6 +236,9 @@
     <Compile Include="ChatWindowCollection.cs" />
     <Compile Include="ContactsSelectWindow.xaml.cs">
       <DependentUpon>ContactsSelectWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BusyIndicator.xaml.cs">
+      <DependentUpon>BusyIndicator.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Emoticon.xaml.cs">
       <DependentUpon>Emoticon.xaml</DependentUpon>

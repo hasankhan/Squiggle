@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Diagnostics;
+using System.Windows;
 
 namespace Squiggle.Utilities
 {
@@ -20,6 +21,11 @@ namespace Squiggle.Utilities
 
         public static void Invoke(Action action)
         {
+            Invoke(action, () => { });
+        }
+
+        public static void Invoke(Action action, Action onComplete)
+        {
             ThreadPool.QueueUserWorkItem(_ =>
             {
                 try
@@ -30,6 +36,7 @@ namespace Squiggle.Utilities
                 {
                     Trace.WriteLine("Exception occured in async operation: " + ex.ToString());
                 }
+                Application.Current.Dispatcher.Invoke(onComplete, null);
             });
         }
     }

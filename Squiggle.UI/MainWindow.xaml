@@ -108,5 +108,6 @@
             </MenuItem>
         </Menu>        
         <controls:ChatClientControl Grid.Row="1" Width="Auto" Height="Auto" x:Name="chatControl" />
+        <controls:BusyIndicator x:Name="busyIndicator" Grid.Row="1" Message="{DynamicResource MainWindow_PleaseWait}" />
     </Grid>
 </sticky:StickyWindow>
