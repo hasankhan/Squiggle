@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Overroot")]
 [assembly: AssemblyProduct("Squiggle Messenger")]
-[assembly: AssemblyCopyright("Copyright © Overroot 2010")]
+[assembly: AssemblyCopyright("Copyright © Overroot 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

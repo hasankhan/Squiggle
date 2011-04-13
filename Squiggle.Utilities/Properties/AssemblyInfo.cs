@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Overroot")]
 [assembly: AssemblyProduct("Squiggle Messenger")]
-[assembly: AssemblyCopyright("Copyright © Overroot 2010")]
+[assembly: AssemblyCopyright("Copyright © Overroot 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.6.2.0")]
-[assembly: AssemblyFileVersion("2.6.2.0")]
+[assembly: AssemblyVersion("2.6.3.0")]
+[assembly: AssemblyFileVersion("2.6.3.0")]

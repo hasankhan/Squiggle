@@ -9,6 +9,7 @@
   <sys:String x:Key="Global_You">Vous</sys:String>
   <sys:String x:Key="Buddy_StartChat">Commencer la discussion</sys:String>
   <sys:String x:Key="Buddy_SendFile">Envoyer un fichier</sys:String>
+  <sys:String x:Key="MainWindow_PleaseWait">S&amp;#39;il vous plaît patienter ...</sys:String>
   <sys:String x:Key="MainWindow_UpdateNotice">Nouvelle version de Squiggle est disponible.</sys:String>
   <sys:String x:Key="MainWindow_SendBroadcastMessage">Envoyer un message diffusé instant</sys:String>
   <sys:String x:Key="MainWindow_TrayMenu_Open">Open</sys:String>
@@ -134,6 +135,7 @@
   <sys:String x:Key="HistoryViewer_Results_Start">Démarrer</sys:String>
   <sys:String x:Key="HistoryViewer_Results_End">Fin</sys:String>
   <sys:String x:Key="HistoryViewer_Results_Participants">Les participants</sys:String>
+  <sys:String x:Key="HistoryViewer_Searching">Recherche ...</sys:String>
   <sys:String x:Key="ConversationViewer_Stamp">Timbre</sys:String>
   <sys:String x:Key="ConversationViewer_Sender">Expéditeur</sys:String>
   <sys:String x:Key="ConversationViewer_Type">Type</sys:String>

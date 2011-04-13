@@ -9,6 +9,7 @@
   <sys:String x:Key="Global_You">لك</sys:String>
   <sys:String x:Key="Buddy_StartChat">ابدأ المحادثة</sys:String>
   <sys:String x:Key="Buddy_SendFile">إرسال ملف</sys:String>
+  <sys:String x:Key="MainWindow_PleaseWait">الرجاء الانتظار...</sys:String>
   <sys:String x:Key="MainWindow_UpdateNotice">الإصدار الأحدث من Squiggle متوفرا.</sys:String>
   <sys:String x:Key="MainWindow_SendBroadcastMessage">ارسال رسالة فورية البث</sys:String>
   <sys:String x:Key="MainWindow_TrayMenu_Open">فتح</sys:String>
@@ -134,6 +135,7 @@
   <sys:String x:Key="HistoryViewer_Results_Start">بدء</sys:String>
   <sys:String x:Key="HistoryViewer_Results_End">نهاية</sys:String>
   <sys:String x:Key="HistoryViewer_Results_Participants">المشاركون</sys:String>
+  <sys:String x:Key="HistoryViewer_Searching">البحث...</sys:String>
   <sys:String x:Key="ConversationViewer_Stamp">ختم</sys:String>
   <sys:String x:Key="ConversationViewer_Sender">مرسل</sys:String>
   <sys:String x:Key="ConversationViewer_Type">نوع</sys:String>
