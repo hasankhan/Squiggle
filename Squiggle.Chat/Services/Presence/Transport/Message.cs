@@ -26,7 +26,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
         {
             get
             {
-                bool isValid = !String.IsNullOrEmpty(ClientID);
+                bool isValid = !String.IsNullOrEmpty(ClientID) && PresenceEndPoint != null;
                 return isValid;
             }
         }

@@ -25,26 +25,23 @@ namespace Squiggle.Chat.Services.Presence.Transport
 
     public class PresenceChannel
     {
-        UdpClient client;
-        IPEndPoint udpReceiveEndPoint;
-        IPEndPoint multicastEndPoint;
+        IBroadcastService broadcastService;
         IPEndPoint serviceEndPoint;
         Dictionary<IPEndPoint, IPresenceHost> presenceHosts;
 
-        Guid channelID = Guid.NewGuid();
-        bool started;
         PresenceHost presenceHost;
         ServiceHost serviceHost;
 
         public event EventHandler<UserInfoRequestedEventArgs> UserInfoRequested = delegate { };
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
 
-        public Guid ChannelID { get { return channelID; } }
+        public Guid ChannelID { get; private set; }
 
         public PresenceChannel(IPEndPoint multicastEndPoint, IPEndPoint serviceEndPoint)
         {
-            udpReceiveEndPoint = new IPEndPoint(serviceEndPoint.Address, multicastEndPoint.Port);
-            this.multicastEndPoint = multicastEndPoint;
+            this.ChannelID = Guid.NewGuid();
+            var udpReceiveEndPoint = new IPEndPoint(serviceEndPoint.Address, multicastEndPoint.Port);
+            this.broadcastService = new UdpBroadcastService(udpReceiveEndPoint, multicastEndPoint);
             this.serviceEndPoint = serviceEndPoint;
             this.presenceHost = new PresenceHost();
             this.presenceHost.UserInfoRequested += new EventHandler<UserInfoRequestedEventArgs>(presenceHost_UserInfoRequested);
@@ -54,21 +51,15 @@ namespace Squiggle.Chat.Services.Presence.Transport
 
         public void Start()
         {
-            started = true;
-            client = new UdpClient();
-            client.DontFragment = true;
-            client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-            client.Client.Bind(udpReceiveEndPoint);
-            client.JoinMulticastGroup(multicastEndPoint.Address);
-           
+            broadcastService.MessageReceived += new EventHandler<MessageReceivedEventArgs>(broadcastService_MessageReceived);
+            broadcastService.Start();
+
             serviceHost = new ServiceHost(presenceHost);
             var address = CreateServiceUri(serviceEndPoint.ToString());
             var binding = BindingHelper.CreateBinding();
             serviceHost.AddServiceEndpoint(typeof(IPresenceHost), binding, address);
             serviceHost.Open();
-
-            BeginReceive();
-        }        
+        }     
 
         public void Stop()
         {
@@ -78,23 +69,19 @@ namespace Squiggle.Chat.Services.Presence.Transport
                 serviceHost = null;
             }
 
-            started = false;
-            client.Close();
+            broadcastService.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(broadcastService_MessageReceived);
+            broadcastService.Stop();
         }
 
         public void SendMessage(Message message)
         {
-            message.ChannelID = channelID;
-            byte[] data = message.Serialize();
-
-            ExceptionMonster.EatTheException(() =>
-            {
-                client.Send(data, data.Length, multicastEndPoint);
-            }, "sending presence mcast message");
+            message.ChannelID = ChannelID;
+            broadcastService.SendMessage(message);
         }
 
         public void SendMessage(Message message, SquiggleEndPoint localEndPoint, SquiggleEndPoint presenceEndPoint)
         {
+            message.ChannelID = ChannelID;
             IPresenceHost host = GetPresenceHost(presenceEndPoint.Address);
 
             ExceptionMonster.EatTheException(() =>
@@ -109,12 +96,20 @@ namespace Squiggle.Chat.Services.Presence.Transport
             UserInfo info = null;
 
             ExceptionMonster.EatTheException(() =>
-                {
-                    info = host.GetUserInfo(user);
-                }, "getting user info for " + user);
+            {
+                info = host.GetUserInfo(user);
+            }, "getting user info for " + user);
             
             return info;
         }
+
+        void broadcastService_MessageReceived(object sender, MessageReceivedEventArgs e)
+        {
+            Async.Invoke(() =>
+            {
+                OnMessageReceived(e.Sender, e.Recipient, e.Message);
+            });
+        }   
 
         void presenceHost_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
@@ -129,33 +124,9 @@ namespace Squiggle.Chat.Services.Presence.Transport
             UserInfoRequested(this, e);
         }
 
-        void OnReceive(IAsyncResult ar)
-        {
-            byte[] data = null;
-            IPEndPoint remoteEndPoint = null;
-
-            ExceptionMonster.EatTheException(() =>
-            {
-                data = client.EndReceive(ar, ref remoteEndPoint);
-            }, "receiving mcast presence message");
-
-            if (data != null)
-                Async.Invoke(()=>
-                {
-                    ExceptionMonster.EatTheException(() =>
-                    {
-                        var message = Message.Deserialize(data);
-                        if (message.IsValid)
-                            OnMessageReceived(new SquiggleEndPoint(message.ClientID, message.PresenceEndPoint), null, message);
-                    }, "deserializing a presence message");
-                });
-
-            BeginReceive();
-        }
-
         void OnMessageReceived(SquiggleEndPoint sender, SquiggleEndPoint recipient, Message message)
         {
-            if (!message.ChannelID.Equals(channelID) && message.PresenceEndPoint != null)
+            if (message.IsValid && !message.ChannelID.Equals(ChannelID))
             {
                 var args = new MessageReceivedEventArgs()
                 {
@@ -165,17 +136,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
                 };
                 MessageReceived(this, args);
             }
-        }
-
-        void BeginReceive()
-        {
-            if (started)
-                ExceptionMonster.EatTheException(() =>
-                    {
-                        client.BeginReceive(OnReceive, null);
-
-                    }, "receiving mcast data on presence channel");
-        }        
+        }      
 
         IPresenceHost GetPresenceHost(IPEndPoint endPoint)
         {

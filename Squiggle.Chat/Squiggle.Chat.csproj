@@ -90,6 +90,8 @@
     <Compile Include="IChat.cs" />
     <Compile Include="IChatClient.cs" />
     <Compile Include="IFileTransfer.cs" />
+    <Compile Include="Services\Presence\Transport\IBroadcastService.cs" />
+    <Compile Include="Services\Presence\Transport\UdpBroadcastService.cs" />
     <Compile Include="Services\SquiggleEndPoint.cs" />
     <Compile Include="Services\Chat\ChatSessionCollection.cs" />
     <Compile Include="Services\Chat\FileTransfer.cs" />
