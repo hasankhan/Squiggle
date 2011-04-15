@@ -9,9 +9,8 @@ using System.ServiceModel.Channels;
 
 namespace Squiggle.Chat.Services.Chat.Host
 {
-    public class ChatHostProxy: IChatHost
+    public class ChatHostProxy: ProxyBase<IChatHost>, IChatHost
     {
-        InnerProxy proxy;
         Binding binding;
         EndpointAddress address;
 
@@ -23,57 +22,17 @@ namespace Squiggle.Chat.Services.Chat.Host
             this.binding.SendTimeout = TimeSpan.FromSeconds(5);
 #endif
             this.address = new EndpointAddress(uri);
-            EnsureProxy();
+        }
+
+        protected override ClientBase<IChatHost> CreateProxy()
+        {
+            return new InnerProxy(binding, address);
         }
 
         static Uri CreateServiceUri(string address)
         {
             var uri = new Uri("net.tcp://" + address + "/squigglechat");
             return uri;
-        }
-
-        void EnsureProxy(Action<IChatHost> action)
-        {
-            EnsureProxy();
-            try
-            {
-                action(proxy);
-            }
-            catch (CommunicationException ex)
-            {
-                if (ex.InnerException is SocketException)
-                {
-                    EnsureProxy();
-                    action(proxy);
-                }
-                else
-                    throw;
-            }
-        }
-
-        void EnsureProxy()
-        {
-            if (proxy == null || proxy.State.In(CommunicationState.Faulted, CommunicationState.Closed, CommunicationState.Closing))
-            {
-                if (proxy == null)
-                    proxy = new InnerProxy(binding, address);
-                else
-                {
-                    try
-                    {
-                        proxy.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        Trace.WriteLine(ex.Message);
-                        proxy.Abort();
-                    }
-                    finally
-                    {
-                        proxy = new InnerProxy(binding, address);
-                    }
-                }
-            }
         }
 
         #region IChatHost Members
@@ -139,31 +98,8 @@ namespace Squiggle.Chat.Services.Chat.Host
 
         class InnerProxy : ClientBase<IChatHost>, IChatHost
         {
-            public InnerProxy()
-            {
-            }
-
-            public InnerProxy(string endpointConfigurationName)
-                :
-                    base(endpointConfigurationName)
-            {
-            }
-
-            public InnerProxy(string endpointConfigurationName, string remoteAddress)
-                :
-                    base(endpointConfigurationName, remoteAddress)
-            {
-            }
-
-            public InnerProxy(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress)
-                :
-                    base(endpointConfigurationName, remoteAddress)
-            {
-            }
-
             public InnerProxy(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress)
-                :
-                    base(binding, remoteAddress)
+                : base(binding, remoteAddress)
             {
             }
 

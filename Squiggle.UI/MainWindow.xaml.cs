@@ -60,7 +60,7 @@ namespace Squiggle.UI
             chatControl.ContactList.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(ContactList_StartChat);
             chatControl.ContactList.SignOut += new EventHandler(ContactList_SignOut);
             dummyViewModel = new ClientViewModel(new DummyChatClient());
-            autoSignout = new NetworkSignout(u => SignIn(u.DisplayName, u.GroupName, false, () => { }), () => SignOut(false));
+            autoSignout = new NetworkSignout(this.Dispatcher, u => SignIn(u.DisplayName, u.GroupName, false, () => { }), () => SignOut(false));
             chatControl.ContactList.OpenAbout += (sender, e) => SquiggleUtility.ShowAboutDialog(this);
         }        
 
@@ -83,7 +83,7 @@ namespace Squiggle.UI
             chatControl.SignIn.LoadGroups(settings.GeneralSettings.ContactGroups);
 
             if (!String.IsNullOrEmpty(name) && settings.PersonalSettings.AutoSignMeIn)
-                Async.Invoke(() => SignIn(name, groupName, false, () => { }),
+                Dispatcher.Invoke(() => SignIn(name, groupName, false, () => { }),
                              TimeSpan.FromSeconds(5));
             else if (!String.IsNullOrEmpty(name))
                     chatControl.SignIn.chkRememberName.IsChecked = true;

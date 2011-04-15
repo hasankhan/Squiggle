@@ -2,6 +2,7 @@
 using System.Threading;
 using Squiggle.UI.Helpers;
 using Squiggle.Utilities;
+using System.Windows.Threading;
 
 namespace Squiggle.UI
 {
@@ -21,9 +22,11 @@ namespace Squiggle.UI
         Action<NetworkSinginInfo> signinFunction;
         Action signoutFunction;
         bool loggedIn;
+        Dispatcher dispatcher;
 
-        public NetworkSignout(Action<NetworkSinginInfo> signinFunction, Action signoutFunction)
+        public NetworkSignout(Dispatcher dispatcher, Action<NetworkSinginInfo> signinFunction, Action signoutFunction)
         {
+            this.dispatcher = dispatcher;
             this.signinFunction = signinFunction;
             this.signoutFunction = signoutFunction;
             System.Net.NetworkInformation.NetworkChange.NetworkAvailabilityChanged += new System.Net.NetworkInformation.NetworkAvailabilityChangedEventHandler(NetworkChange_NetworkAvailabilityChanged);
@@ -46,7 +49,7 @@ namespace Squiggle.UI
         {
             if (e.IsAvailable)
             {
-                Async.Invoke(()=>
+                dispatcher.Invoke(()=>
                 {
                     if (autoSignout && !String.IsNullOrEmpty(userName) && !loggedIn)
                         signinFunction(new NetworkSinginInfo() { DisplayName = userName, GroupName = groupName });

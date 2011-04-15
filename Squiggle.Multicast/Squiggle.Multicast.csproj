@@ -5,14 +5,12 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D832B3DB-16CF-463A-8C80-1DBD581183A2}</ProjectGuid>
+    <ProjectGuid>{B5640D95-713B-4A4D-808F-C1B2511AC95B}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Squiggle.Bridge</RootNamespace>
-    <AssemblyName>Squiggle.Bridge</AssemblyName>
+    <RootNamespace>Squiggle.Multicast</RootNamespace>
+    <AssemblyName>Squiggle.Multicast</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup>
@@ -28,10 +26,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
@@ -41,39 +37,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BridgeHost.cs" />
-    <Compile Include="BridgeHostProxy.cs" />
-    <Compile Include="Configuration\BridgeConfiguration.cs" />
-    <Compile Include="Configuration\ChannelBinding.cs" />
-    <Compile Include="Configuration\Target.cs" />
-    <Compile Include="Configuration\TargetCollection.cs" />
-    <Compile Include="IBridgeHost.cs" />
+    <Compile Include="MulticastHost.cs" />
+    <Compile Include="MulticastService.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ProjectInstaller.Designer.cs">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </Compile>
-    <Compile Include="SquiggleBridge.cs" />
-    <Compile Include="SquiggleBridgeService.cs">
+    <Compile Include="SquiggleMulticastService.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SquiggleBridgeService.Designer.cs">
-      <DependentUpon>SquiggleBridgeService.cs</DependentUpon>
+    <Compile Include="SquiggleMulticastService.Designer.cs">
+      <DependentUpon>SquiggleMulticastService.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="ProjectInstaller.resx">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SquiggleBridgeService.resx">
-      <DependentUpon>SquiggleBridgeService.cs</DependentUpon>
-    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Squiggle.Chat\Squiggle.Chat.csproj">

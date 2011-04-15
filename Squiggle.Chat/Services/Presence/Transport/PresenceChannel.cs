@@ -8,6 +8,7 @@ using System.Threading;
 using Squiggle.Chat.Services.Presence.Transport.Host;
 using Squiggle.Chat.Services.Chat;
 using Squiggle.Utilities;
+using Squiggle.Chat.Services.Presence.Transport.Broadcast;
 
 namespace Squiggle.Chat.Services.Presence.Transport
 {

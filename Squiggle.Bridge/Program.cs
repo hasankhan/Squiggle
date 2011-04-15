@@ -3,6 +3,7 @@ using System.Configuration.Install;
 using System.Diagnostics;
 using System.Reflection;
 using System.ServiceProcess;
+using Squiggle.Utilities;
 
 namespace Squiggle.Bridge
 {
@@ -13,43 +14,7 @@ namespace Squiggle.Bridge
 		/// </summary>
 		static void Main(string[] args)
 		{
-			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
-			if (Environment.UserInteractive)
-			{
-				try
-				{
-                    string option = args.Length > 0 ? args[0].ToUpperInvariant() : String.Empty;
-					switch (option)
-					{
-						case "-I":
-						case "/I":
-							ManagedInstallerClass.InstallHelper(new string[] { Assembly.GetExecutingAssembly().Location });
-							break;
-						case "-U":
-						case "/U":
-							ManagedInstallerClass.InstallHelper(new string[] { "/U", Assembly.GetExecutingAssembly().Location });
-							break;
-						default:
-							new SquiggleBridgeService().RunConsole(args);
-							break;
-					}
-				}
-				catch (Exception ex)
-				{
-					Console.Error.WriteLine(ex.Message);
-				}
-			}
-			else
-			{
-				ServiceBase[] servicesToRun = new ServiceBase[]{ new SquiggleBridgeService() };
-				ServiceBase.Run(servicesToRun);
-			}
-		}
-
-		static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-		{
-			if (e.ExceptionObject is Exception)
-				Trace.WriteLine(((Exception)e.ExceptionObject).Message);
+            ServiceHelper.Run<SquiggleBridgeService>(args);			
 		}
 	}
 }

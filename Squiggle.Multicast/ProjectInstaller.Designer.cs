@@ -1,4 +1,4 @@
-﻿namespace Squiggle.Bridge
+﻿namespace Squiggle.Multicast
 {
     partial class ProjectInstaller
     {
@@ -39,9 +39,10 @@
             // 
             // serviceInstaller1
             // 
-            this.serviceInstaller1.Description = "Bridges two squiggle nets across WAN and subnets";
-            this.serviceInstaller1.DisplayName = "Squiggle Bridge";
-            this.serviceInstaller1.ServiceName = "SquiggleBridge";
+            this.serviceInstaller1.Description = "Helps provide multicast service where multicast packet forwarding is disabled in " +
+                "router";
+            this.serviceInstaller1.DisplayName = "Squiggle Multicast";
+            this.serviceInstaller1.ServiceName = "SquiggleMulticast";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller

@@ -3,10 +3,11 @@ using System.ServiceProcess;
 using Squiggle.Bridge.Configuration;
 using System.Net;
 using System.Diagnostics;
+using Squiggle.Utilities;
 
 namespace Squiggle.Bridge
 {
-    public partial class SquiggleBridgeService : ServiceBase
+    public partial class SquiggleBridgeService : ConsoleService
     {
         SquiggleBridge bridge;
 
@@ -53,16 +54,6 @@ namespace Squiggle.Bridge
         {
             bridge.Stop();
             bridge = null;
-        }
-
-        public void RunConsole(string[] args)
-        {
-            Trace.Listeners.Add(new ConsoleTraceListener());
-            OnStart(args);
-            Trace.WriteLine("Bridge running... Press any key to stop");
-            Trace.WriteLine("");
-            Console.ReadKey();
-            OnStop();
         }
     }
 }

@@ -5,6 +5,8 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+using Squiggle.Utilities;
+using System.Threading;
 
 namespace Squiggle.UI
 {
@@ -54,6 +56,15 @@ namespace Squiggle.UI
                 action();
             else
                 dispatcher.Invoke(action);
+        }
+
+        public static void Invoke(this Dispatcher dispatcher, Action action, TimeSpan delay)
+        {
+            Async.Invoke(() =>
+            {
+                Thread.Sleep((int)delay.TotalMilliseconds);
+                Invoke(dispatcher, action);
+            });
         }
     }
 }

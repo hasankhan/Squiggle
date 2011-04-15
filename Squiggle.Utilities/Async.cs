@@ -10,15 +10,6 @@ namespace Squiggle.Utilities
 {
     public static class Async
     {
-        public static void Invoke(Action action, TimeSpan delay)
-        {
-            Invoke(() =>
-            {
-                Thread.Sleep((int)delay.TotalMilliseconds);
-                action();
-            });
-        }
-
         public static void Invoke(Action action)
         {
             Invoke(action, () => { });

@@ -6,7 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using Squiggle.Utilities;
 
-namespace Squiggle.Chat.Services.Presence.Transport
+namespace Squiggle.Chat.Services.Presence.Transport.Broadcast
 {
     class UdpBroadcastService: IBroadcastService
     {

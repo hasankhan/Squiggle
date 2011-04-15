@@ -14,82 +14,20 @@ using Squiggle.Chat.Services;
 
 namespace Squiggle.Bridge
 {
-    class BridgeHostProxy: IBridgeHost, IDisposable
+    class BridgeHostProxy: ProxyBase<IBridgeHost>, IBridgeHost
     {
-        InnerProxy proxy;
         Binding binding;
         EndpointAddress address;
 
-        public BridgeHostProxy(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress)
+        public BridgeHostProxy(Binding binding, EndpointAddress remoteAddress)
         {
             this.binding = binding;
             this.address = remoteAddress;
-            EnsureProxy();
         }
 
-        void EnsureProxy(Action<IBridgeHost> action)
+        protected override ClientBase<IBridgeHost> CreateProxy()
         {
-            EnsureProxy();
-            try
-            {
-                action(proxy);
-            }
-            catch (CommunicationException ex)
-            {
-                if (ex.InnerException is SocketException)
-                {
-                    EnsureProxy();
-                    action(proxy);
-                }
-                else
-                    throw;
-            }
-        }
-
-        T EnsureProxy<T>(Func<IBridgeHost, T> action)
-        {
-            EnsureProxy();
-            try
-            {
-                return action(proxy);
-            }
-            catch (CommunicationException ex)
-            {
-                if (ex.InnerException is SocketException)
-                {
-                    EnsureProxy();
-                    return action(proxy);
-                }
-                else
-                    throw;
-            }
-        }
-
-        void EnsureProxy()
-        {
-            if (proxy == null || proxy.State.In(CommunicationState.Faulted, CommunicationState.Closed, CommunicationState.Closing))
-            {
-                if (proxy == null)
-                    proxy = new InnerProxy(binding, address);
-                else
-                {
-                    Close();
-                    proxy = new InnerProxy(binding, address);
-                }
-            }
-        }
-
-        void Close()
-        {
-            try
-            {
-                proxy.Close();
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex.Message);
-                proxy.Abort();
-            }
+            return new InnerProxy(binding, address);
         }
 
         #region IBridgeHost
@@ -174,31 +112,10 @@ namespace Squiggle.Bridge
 
         #endregion        
 
-        public void Dispose()
-        {
-            Close();
-        }
-
         class InnerProxy : ClientBase<IBridgeHost>, IBridgeHost
-        {
-            public InnerProxy()
-            {
-            }
-            public InnerProxy(string endpointConfigurationName)
-                :
-                    base(endpointConfigurationName)
-            {
-            }
-
-            public InnerProxy(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress)
-                :
-                    base(endpointConfigurationName, remoteAddress)
-            {
-            }
-
+        {          
             public InnerProxy(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress)
-                :
-                    base(binding, remoteAddress)
+                : base(binding, remoteAddress)
             {
             }
 
