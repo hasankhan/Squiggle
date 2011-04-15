@@ -9,7 +9,8 @@ using Squiggle.Utilities;
 
 namespace Squiggle.Multicast
 {
-    class MulticastHost : IMulticastService
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)] 
+    public class MulticastHost : IMulticastService
     {
         class Client
         {
