@@ -14,7 +14,7 @@ namespace Squiggle.Multicast
         /// </summary>
         static void Main(string[] args)
         {
-            ServiceHelper.Run<SquiggleMulticastService>(args);
+            ConsoleService.Run<SquiggleMulticastService>(args);
         }
     }
 }

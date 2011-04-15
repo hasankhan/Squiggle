@@ -14,7 +14,7 @@ namespace Squiggle.Bridge
 		/// </summary>
 		static void Main(string[] args)
 		{
-            ServiceHelper.Run<SquiggleBridgeService>(args);			
+            ConsoleService.Run<SquiggleBridgeService>(args);			
 		}
 	}
 }

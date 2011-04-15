@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace Squiggle.Utilities
 {
-    public abstract class ConsoleService: ServiceBase
+    public class ConsoleService : ServiceBase
     {
         public void RunConsole(string[] args)
         {
@@ -20,11 +20,8 @@ namespace Squiggle.Utilities
             Console.ReadKey();
             OnStop();
         }
-    }
 
-    public class ServiceHelper
-    {
-        public static void Run<TService>(string[] args) where TService:ConsoleService, new()
+        public static void Run<TService>(string[] args) where TService : ConsoleService, new()
         {
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             if (Environment.UserInteractive)
