@@ -6,6 +6,7 @@ using System.Net;
 using System.ServiceModel;
 using Squiggle.Chat;
 using Squiggle.Chat.Services.Presence.Transport.Broadcast.MultcastService;
+using Squiggle.Chat.Services;
 
 namespace Squiggle.Multicast
 {
@@ -22,7 +23,7 @@ namespace Squiggle.Multicast
         public void Start(IPEndPoint endPoint)
         {
             serviceHost = new ServiceHost(mcastHost);
-            var address = new Uri("net.tcp://" + endPoint.ToString() + "/squigglemulticast");
+            var address = new Uri("net.tcp://" + endPoint.ToString() + "/" + ServiceNames.MulticastService);
             var binding = BindingHelper.CreateBinding();
             serviceHost.AddServiceEndpoint(typeof(IMulticastService), binding, address);
 

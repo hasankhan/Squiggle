@@ -13,6 +13,7 @@ using Squiggle.Utilities;
 using Squiggle.UI.StickyWindows;
 using System.Net;
 using Squiggle.UI.Resources;
+using Squiggle.Chat.Services;
 
 namespace Squiggle.UI
 {
@@ -144,9 +145,14 @@ namespace Squiggle.UI
                 txtDownloadsFolder.Text = settingsVm.GeneralSettings.DownloadsFolder = dialog.SelectedPath;
         }
 
+        private void btnPresenceAddressReset_Click(object sender, RoutedEventArgs e)
+        {
+            settingsVm.ConnectionSettings.PresenceAddress = DefaultValues.PresenceAddress;
+        }
+
         static string GetStartupPath()
         {
             return AppInfo.FilePath + " /background";
-        }
+        }        
     }
 }

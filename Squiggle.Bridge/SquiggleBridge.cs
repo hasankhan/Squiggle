@@ -45,7 +45,7 @@ namespace Squiggle.Bridge
         {
             Uri address;
             Binding binding;
-            GetBridgeConnectionParams(target, "squigglebridge", out address, out binding);
+            GetBridgeConnectionParams(target, ServiceNames.BridgeService, out address, out binding);
             var proxy = new BridgeHostProxy(binding, new EndpointAddress(address));
             targetBridges.Add(new TargetBridge()
             {
@@ -65,9 +65,9 @@ namespace Squiggle.Bridge
             Uri address;            
             serviceHost = new ServiceHost(bridgeHost);
             Binding binding;
-            GetBridgeConnectionParams(bridgeEndPointInternal, "squigglechat", out address, out binding);            
+            GetBridgeConnectionParams(bridgeEndPointInternal, ServiceNames.ChatService, out address, out binding);            
             serviceHost.AddServiceEndpoint(typeof(IBridgeHost), binding, address);
-            GetBridgeConnectionParams(bridgeEndPointExternal, "squigglebridge", out address, out binding);
+            GetBridgeConnectionParams(bridgeEndPointExternal, ServiceNames.BridgeService, out address, out binding);
             serviceHost.AddServiceEndpoint(typeof(IBridgeHost), binding, address);
 
             serviceHost.Open();

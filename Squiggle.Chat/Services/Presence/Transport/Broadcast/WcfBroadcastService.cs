@@ -19,7 +19,7 @@ namespace Squiggle.Chat.Services.Presence.Transport.Broadcast
 
         public WcfBroadcastService(IPEndPoint server)
         {
-            this.address = new Uri("net.tcp://" + server.ToString() + "/squigglemulticast");
+            this.address = new Uri("net.tcp://" + server.ToString() + "/" + ServiceNames.MulticastService);
             this.binding = BindingHelper.CreateBinding();
         }
 

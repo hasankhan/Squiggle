@@ -7,14 +7,12 @@ using System.ComponentModel;
 
 namespace Squiggle.UI.ViewModel
 {
-    public class ClientViewModel: INotifyPropertyChanged
+    public class ClientViewModel: ViewModelBase
     {
         public event EventHandler ContactListUpdated = delegate { };
 
         IChatClient chatClient;
         Dispatcher currentDispatcher;
-
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
         public Buddy LoggedInUser { get; set; }
         public ObservableCollection<Buddy> Buddies { get; private set; }
@@ -33,11 +31,7 @@ namespace Squiggle.UI.ViewModel
         public string UpdateLink
         {
             get { return updateLink; }
-            set
-            {
-                updateLink = value;
-                OnPropertyChanged("UpdateLink");
-            }
+            set { Set(()=>UpdateLink, ref updateLink, value); }
         }
 
         public ClientViewModel(IChatClient chatClient)
@@ -67,11 +61,6 @@ namespace Squiggle.UI.ViewModel
             if (!Buddies.Contains(e.Buddy))
                 currentDispatcher.Invoke(new Action(delegate() { Buddies.Add(e.Buddy); }));
             ContactListUpdated(this, EventArgs.Empty);
-        }
-
-        void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

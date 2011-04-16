@@ -142,6 +142,7 @@
     <sys:String x:Key="ConversationViewer_Sender">Sender</sys:String>
     <sys:String x:Key="ConversationViewer_Type">Type</sys:String>
     <sys:String x:Key="Error_NoNetwork">You are not on a network. Please make sure your network card is enabled.</sys:String>
-    <sys:String x:Key="SettingsWindow_Error_InvalidPresenceIP">Please enter a valid presence IP.</sys:String>
+    <sys:String x:Key="SettingsWindow_Error_InvalidPresenceIP">Please enter a valid presence address.</sys:String>
     <sys:String x:Key="Error">Error</sys:String>
+    <sys:String x:Key="SettingsWindow_ConnectionTab_Reset">Reset</sys:String>
 </ResourceDictionary>

@@ -101,9 +101,14 @@ namespace Squiggle.UI.ViewModel
         public bool EnableLogging { get; set; }
     }
 
-    class ConnectionSettingsViewModel
+    class ConnectionSettingsViewModel: ViewModelBase
     {
-        public string PresenceAddress { get; set; }
+        string presenceAddress;
+        public string PresenceAddress
+        {
+            get { return presenceAddress; }
+            set { Set(()=>PresenceAddress, ref presenceAddress, value); }
+        }
         public int PresencePort { get; set; }
         public int ChatPort { get; set; }
         public int KeepAliveTime { get; set; }

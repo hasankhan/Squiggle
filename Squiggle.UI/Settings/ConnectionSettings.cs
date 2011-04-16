@@ -1,4 +1,5 @@
 ﻿
+using Squiggle.Chat.Services;
 namespace Squiggle.UI.Settings
 {
     class ConnectionSettings
@@ -12,10 +13,10 @@ namespace Squiggle.UI.Settings
 
         public ConnectionSettings()
         {
-            PresencePort = 9998;
-            ChatPort = 9999;
-            KeepAliveTime = 10;
-            PresenceAddress = "224.10.11.12";
+            PresencePort = DefaultValues.PresencePort;
+            ChatPort = DefaultValues.ChatPort;
+            KeepAliveTime = DefaultValues.KeepAliveTime;
+            PresenceAddress = DefaultValues.PresenceAddress;
         }
     }
 }

@@ -322,6 +322,7 @@
     <Compile Include="Converters\PathToNameConverter.cs" />
     <Compile Include="Helpers\SquiggleUtility.cs" />
     <Compile Include="Converters\SysImageList.cs" />
+    <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="WPFExtensions.cs" />
     <Compile Include="FancyBalloon.xaml.cs">
       <DependentUpon>FancyBalloon.xaml</DependentUpon>

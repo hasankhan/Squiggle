@@ -10,6 +10,7 @@ using Squiggle.Utilities;
 using System.Configuration;
 using System.Net;
 using System.Text.RegularExpressions;
+using Squiggle.Chat.Services;
 
 namespace Squiggle.Multicast
 {
@@ -50,7 +51,7 @@ namespace Squiggle.Multicast
             temp = ConfigurationManager.AppSettings["port"];
             int port;
             if (String.IsNullOrEmpty(temp) || !Int32.TryParse(temp, out port))
-                port = 9998;
+                port = DefaultValues.PresencePort;
 
             var endPoint = new IPEndPoint(ip, port);
             return endPoint;

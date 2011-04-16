@@ -205,7 +205,7 @@ namespace Squiggle.UI
                                                       }, "creating chat client", out ex))
                 {
                     if (byUser)
-                        MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(ex.Message, Translation.Instance.Error, MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
                     

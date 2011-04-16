@@ -8,6 +8,17 @@ namespace Squiggle.Utilities
 {
     public class NetworkUtility
     {
+        public static bool IsMulticast(IPAddress ip)
+        {
+            if (ip.AddressFamily == AddressFamily.InterNetwork)
+            {
+                byte first = ip.GetAddressBytes()[0];
+                return (first >= 224 && first <= 239);
+            }
+            else
+                return ip.IsIPv6Multicast;
+        }  
+
         public static int GetFreePort()
         {
             var listener = new TcpListener(new IPEndPoint(IPAddress.Loopback, 0));
