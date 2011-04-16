@@ -21,13 +21,28 @@ namespace Squiggle.Multicast
             {
                 Callback = callback;
             }
+
+            public override bool Equals(object obj)
+            {
+                if (obj is Client)
+                {
+                    var other = (Client)obj;
+                    return Callback.Equals(other.Callback);
+                }
+                return false;
+            }
+
+            public override int GetHashCode()
+            {
+                return Callback == null ? 0 : Callback.GetHashCode();
+            }
         }
 
-        List<Client> clients;
+        HashSet<Client> clients;
 
         public MulticastHost()
         {
-            this.clients = new List<Client>();
+            this.clients = new HashSet<Client>();
         }
 
         public void Reset()
@@ -51,15 +66,16 @@ namespace Squiggle.Multicast
             {
                 var client = GetCurrentClient();
                 lock (clients)
-                    clients.Remove(clients.FirstOrDefault(c => c.Callback == client));
+                    clients.Remove(new Client(client));
             }, "unregistering client");
         }
-
 
         public void ForwardMessage(Message message)
         {
             ExceptionMonster.EatTheException(() =>
             {
+                RegisterClient();
+
                 IMulticastServiceCallback currentClient = GetCurrentClient();
                 IEnumerable<Client> clientsClone;
 
