@@ -59,6 +59,7 @@
   <sys:String x:Key="SettingsWindow_SettingsTab_AutoSignIn">自动为我登录</sys:String>
   <sys:String x:Key="SettingsWindow_ConnectionTab_Heading">连接</sys:String>
   <sys:String x:Key="SettingsWindow_ConnectionTab_SubHeading">配置连接设置</sys:String>
+  <sys:String x:Key="SettingsWindow_ConnectionTab_PresenceAddress">在场地址：</sys:String>
   <sys:String x:Key="SettingsWindow_ConnectionTab_PresencePort">在场Port：</sys:String>
   <sys:String x:Key="SettingsWindow_ConnectionTab_ChatPort">聊天Port：</sys:String>
   <sys:String x:Key="SettingsWindow_ConnectionTab_KeepAliveTime">保持活动时间：</sys:String>
@@ -140,4 +141,7 @@
   <sys:String x:Key="ConversationViewer_Sender">寄件人</sys:String>
   <sys:String x:Key="ConversationViewer_Type">类型</sys:String>
   <sys:String x:Key="Error_NoNetwork">你是不是在网络上。请确保您的网路卡已启用。</sys:String>
+  <sys:String x:Key="SettingsWindow_Error_InvalidPresenceIP">请输入一个有效存在的地址。</sys:String>
+  <sys:String x:Key="Error">错误</sys:String>
+  <sys:String x:Key="SettingsWindow_ConnectionTab_Reset">复位</sys:String>
 </ResourceDictionary>

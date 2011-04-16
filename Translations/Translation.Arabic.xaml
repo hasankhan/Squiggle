@@ -59,6 +59,7 @@
   <sys:String x:Key="SettingsWindow_SettingsTab_AutoSignIn">قم تلقائيا لي في</sys:String>
   <sys:String x:Key="SettingsWindow_ConnectionTab_Heading">اتصال</sys:String>
   <sys:String x:Key="SettingsWindow_ConnectionTab_SubHeading">إعدادات تكوين اتصال</sys:String>
+  <sys:String x:Key="SettingsWindow_ConnectionTab_PresenceAddress">وجود العنوان :</sys:String>
   <sys:String x:Key="SettingsWindow_ConnectionTab_PresencePort">وجود Port :</sys:String>
   <sys:String x:Key="SettingsWindow_ConnectionTab_ChatPort">دردشة Port :</sys:String>
   <sys:String x:Key="SettingsWindow_ConnectionTab_KeepAliveTime">تبقي على قيد الحياة من الزمن :</sys:String>
@@ -140,4 +141,7 @@
   <sys:String x:Key="ConversationViewer_Sender">مرسل</sys:String>
   <sys:String x:Key="ConversationViewer_Type">نوع</sys:String>
   <sys:String x:Key="Error_NoNetwork">أنت لست على الشبكة. الرجاء التأكد من تمكين بطاقة الشبكة.</sys:String>
+  <sys:String x:Key="SettingsWindow_Error_InvalidPresenceIP">الرجاء إدخال عنوان وجود صالح.</sys:String>
+  <sys:String x:Key="Error">خطأ</sys:String>
+  <sys:String x:Key="SettingsWindow_ConnectionTab_Reset">إعادة تعيين</sys:String>
 </ResourceDictionary>

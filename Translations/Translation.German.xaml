@@ -59,6 +59,7 @@
   <sys:String x:Key="SettingsWindow_SettingsTab_AutoSignIn">Automatisch anmelden bei</sys:String>
   <sys:String x:Key="SettingsWindow_ConnectionTab_Heading">Anschluss</sys:String>
   <sys:String x:Key="SettingsWindow_ConnectionTab_SubHeading">Konfigurieren der Verbindungseinstellungen</sys:String>
+  <sys:String x:Key="SettingsWindow_ConnectionTab_PresenceAddress">Presence-Adresse:</sys:String>
   <sys:String x:Key="SettingsWindow_ConnectionTab_PresencePort">Präsenz Port:</sys:String>
   <sys:String x:Key="SettingsWindow_ConnectionTab_ChatPort">Chat Port:</sys:String>
   <sys:String x:Key="SettingsWindow_ConnectionTab_KeepAliveTime">Keep Alive Time:</sys:String>
@@ -140,4 +141,7 @@
   <sys:String x:Key="ConversationViewer_Sender">Absender</sys:String>
   <sys:String x:Key="ConversationViewer_Type">Typ</sys:String>
   <sys:String x:Key="Error_NoNetwork">Sie sind nicht in einem Netzwerk. Bitte stellen Sie sicher Ihre Netzwerkkarte aktiviert ist.</sys:String>
+  <sys:String x:Key="SettingsWindow_Error_InvalidPresenceIP">Bitte geben Sie eine gültige Adresse Gegenwart.</sys:String>
+  <sys:String x:Key="Error">Fehler</sys:String>
+  <sys:String x:Key="SettingsWindow_ConnectionTab_Reset">Reset</sys:String>
 </ResourceDictionary>
