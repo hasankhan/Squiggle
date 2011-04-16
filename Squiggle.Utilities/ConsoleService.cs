@@ -33,11 +33,11 @@ namespace Squiggle.Utilities
                     {
                         case "-I":
                         case "/I":
-                            ManagedInstallerClass.InstallHelper(new string[] { Assembly.GetExecutingAssembly().Location });
+                            ManagedInstallerClass.InstallHelper(new string[] { Assembly.GetCallingAssembly().Location });
                             break;
                         case "-U":
                         case "/U":
-                            ManagedInstallerClass.InstallHelper(new string[] { "/U", Assembly.GetExecutingAssembly().Location });
+                            ManagedInstallerClass.InstallHelper(new string[] { "/U", Assembly.GetCallingAssembly().Location });
                             break;
                         default:
                             new TService().RunConsole(args);
