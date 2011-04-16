@@ -156,7 +156,7 @@
                                 <ColumnDefinition Width="58*" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Row="4" Grid.Column="0" Text="{DynamicResource SettingsWindow_ConnectionTab_PresenceAddress}" />
-                            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=ConnectionSettings.PresenceAddress}" />
+                            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=ConnectionSettings.PresenceAddress}" Margin="0,0,0,5" />
                             <Button Grid.Row="4" Grid.Column="2" Content="{DynamicResource SettingsWindow_ConnectionTab_Reset}" HorizontalAlignment="Left" Click="btnPresenceAddressReset_Click" />
                             <TextBlock Grid.Row="5" Grid.Column="0" Text="{DynamicResource SettingsWindow_ConnectionTab_PresencePort}" />
                             <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Path=ConnectionSettings.PresencePort}" Margin="0,0,0,5"/>

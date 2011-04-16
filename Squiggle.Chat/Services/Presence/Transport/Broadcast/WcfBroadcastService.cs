@@ -9,6 +9,7 @@ using System.ServiceModel.Channels;
 
 namespace Squiggle.Chat.Services.Presence.Transport.Broadcast
 {
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)]
     class WcfBroadcastService: IBroadcastService, IMulticastServiceCallback
     {
         Binding binding;
