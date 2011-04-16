@@ -11,6 +11,8 @@ using Squiggle.UI.ViewModel;
 using System.Globalization;
 using Squiggle.Utilities;
 using Squiggle.UI.StickyWindows;
+using System.Net;
+using Squiggle.UI.Resources;
 
 namespace Squiggle.UI
 {
@@ -42,9 +44,11 @@ namespace Squiggle.UI
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            SaveSettings();
-            this.DialogResult = true;
-            Close();
+            if (SaveSettings())
+            {
+                this.DialogResult = true;
+                Close();
+            }           
         }
 
         void LoadSettings()
@@ -68,8 +72,15 @@ namespace Squiggle.UI
             }
         }
 
-        void SaveSettings()
+        bool SaveSettings()
         {
+            IPAddress presenceAddress;
+            if (!IPAddress.TryParse(settingsVm.ConnectionSettings.PresenceAddress, out presenceAddress))
+            {
+                MessageBox.Show(Translation.Instance.SettingsWindow_Error_InvalidPresenceIP, Translation.Instance.Error, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return false;
+            }
+
             settingsVm.GeneralSettings.ContactListSortField = cmbSortField.Text;
             settingsVm.Update();
 
@@ -84,6 +95,8 @@ namespace Squiggle.UI
 
             SetRunAtStartup(settingsVm.GeneralSettings.RunAtStartup);
             SettingsProvider.Current.Save();
+
+            return true;
         }
 
         private bool GetRunAtStartup()

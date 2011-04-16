@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Squiggle.UI.Settings;
+using System.Net;
 
 namespace Squiggle.UI.ViewModel
 {
@@ -35,6 +36,7 @@ namespace Squiggle.UI.ViewModel
             ConnectionSettings.BindToIP = settings.ConnectionSettings.BindToIP;
             ConnectionSettings.ChatPort = settings.ConnectionSettings.ChatPort;
             ConnectionSettings.KeepAliveTime = settings.ConnectionSettings.KeepAliveTime;
+            ConnectionSettings.PresenceAddress = settings.ConnectionSettings.PresenceAddress;
             ConnectionSettings.PresencePort = settings.ConnectionSettings.PresencePort;
 
             PersonalSettings.DisplayMessage = settings.PersonalSettings.DisplayMessage;
@@ -63,6 +65,7 @@ namespace Squiggle.UI.ViewModel
             settings.ConnectionSettings.BindToIP = ConnectionSettings.BindToIP;
             settings.ConnectionSettings.ChatPort = ConnectionSettings.ChatPort;
             settings.ConnectionSettings.KeepAliveTime = ConnectionSettings.KeepAliveTime;
+            settings.ConnectionSettings.PresenceAddress = ConnectionSettings.PresenceAddress;
             settings.ConnectionSettings.PresencePort = ConnectionSettings.PresencePort;
 
             settings.PersonalSettings.DisplayMessage = PersonalSettings.DisplayMessage;
@@ -100,6 +103,7 @@ namespace Squiggle.UI.ViewModel
 
     class ConnectionSettingsViewModel
     {
+        public string PresenceAddress { get; set; }
         public int PresencePort { get; set; }
         public int ChatPort { get; set; }
         public int KeepAliveTime { get; set; }

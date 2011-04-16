@@ -143,26 +143,32 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="29" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="64*" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="138" />
                                 <ColumnDefinition Width="200" />
+                                <ColumnDefinition Width="58*" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Row="4" Grid.Column="0" Text="{DynamicResource SettingsWindow_ConnectionTab_PresencePort}" />
-                            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=ConnectionSettings.PresencePort}" Margin="0,0,0,5"/>
-                            <TextBlock Grid.Row="5" Grid.Column="0" Text="{DynamicResource SettingsWindow_ConnectionTab_ChatPort}" />
-                            <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Path=ConnectionSettings.ChatPort}" Margin="0,0,0,5"/>
-                            <TextBlock Grid.Row="6" Grid.Column="0" Text="{DynamicResource SettingsWindow_ConnectionTab_KeepAliveTime}" />
-                            <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="{DynamicResource SettingsWindow_ConnectionTab_PresenceAddress}" />
+                            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=ConnectionSettings.PresenceAddress}" />
+                            <TextBlock Grid.Row="5" Grid.Column="0" Text="{DynamicResource SettingsWindow_ConnectionTab_PresencePort}" />
+                            <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Path=ConnectionSettings.PresencePort}" Margin="0,0,0,5"/>
+                            <TextBlock Grid.Row="6" Grid.Column="0" Text="{DynamicResource SettingsWindow_ConnectionTab_ChatPort}" />
+                            <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Path=ConnectionSettings.ChatPort}" Margin="0,0,0,5"/>
+                            <TextBlock Grid.Row="7" Grid.Column="0" Text="{DynamicResource SettingsWindow_ConnectionTab_KeepAliveTime}" />
+                            <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal">
                                 <TextBox Text="{Binding Path=ConnectionSettings.KeepAliveTime}" Width="80" Margin="0,0,5,5" HorizontalAlignment="Left" />
                                 <TextBlock>secs</TextBlock>
                             </StackPanel>
-                            <TextBlock Grid.Row="7" Grid.Column="0" Text="{Binding SettingsWindow_ConnectionTab_BindToIP}" />
-                            <ComboBox Grid.Row="7" Grid.Column="1" ItemsSource="{Binding Path=ConnectionSettings.AllIPs}" SelectedValue="{Binding Path=ConnectionSettings.BindToIP}" Width="150" HorizontalAlignment="Left" Margin="0,0,0,5"/>
+                            <TextBlock Grid.Row="8" Grid.Column="0" Text="{Binding SettingsWindow_ConnectionTab_BindToIP}" />
+                            <ComboBox Grid.Row="8" Grid.Column="1" ItemsSource="{Binding Path=ConnectionSettings.AllIPs}" SelectedValue="{Binding Path=ConnectionSettings.BindToIP}" Width="150" HorizontalAlignment="Left" Margin="0,0,0,5"/>
+                            
                         </Grid>
                     </Border>
                     <Grid Grid.Row="2">
