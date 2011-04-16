@@ -41,14 +41,20 @@ namespace Squiggle.Chat.Services.Presence.Transport
         public PresenceChannel(IPEndPoint multicastEndPoint, IPEndPoint serviceEndPoint)
         {
             this.ChannelID = Guid.NewGuid();
-            var udpReceiveEndPoint = new IPEndPoint(serviceEndPoint.Address, multicastEndPoint.Port);
-            this.broadcastService = new UdpBroadcastService(udpReceiveEndPoint, multicastEndPoint);
+            if (IsMulticast(multicastEndPoint.Address))
+            {
+                var udpReceiveEndPoint = new IPEndPoint(serviceEndPoint.Address, multicastEndPoint.Port);
+                this.broadcastService = new UdpBroadcastService(udpReceiveEndPoint, multicastEndPoint);
+            }
+            else
+                this.broadcastService = new WcfBroadcastService(multicastEndPoint);
+            
             this.serviceEndPoint = serviceEndPoint;
             this.presenceHost = new PresenceHost();
             this.presenceHost.UserInfoRequested += new EventHandler<UserInfoRequestedEventArgs>(presenceHost_UserInfoRequested);
             presenceHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(presenceHost_MessageReceived);
             this.presenceHosts = new Dictionary<IPEndPoint, IPresenceHost>();
-        }      
+        }        
 
         public void Start()
         {
@@ -157,5 +163,16 @@ namespace Squiggle.Chat.Services.Presence.Transport
             var uri = new Uri("net.tcp://" + address + "/squigglepresence");
             return uri;
         }
+
+        bool IsMulticast(IPAddress ip)
+        {
+            if (ip.AddressFamily == AddressFamily.InterNetwork)
+            {
+                byte first = ip.GetAddressBytes()[0];
+                return (first >= 224 && first <= 239);
+            }
+            else
+                return ip.IsIPv6Multicast;
+        }      
     }
 }

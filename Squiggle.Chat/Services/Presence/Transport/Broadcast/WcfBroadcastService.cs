@@ -39,6 +39,7 @@ namespace Squiggle.Chat.Services.Presence.Transport.Broadcast
         {
             if (proxy != null)
             {
+                proxy.UnRegisterClient();
                 proxy.Dispose();
                 proxy = null;
             }

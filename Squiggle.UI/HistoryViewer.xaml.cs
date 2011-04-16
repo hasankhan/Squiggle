@@ -49,7 +49,9 @@ namespace Squiggle.UI
                 {
                     MessageBox.Show(ex.Message);
                 }
-            }, () => busyIndicator.IsBusy = false);
+            }, 
+            () => busyIndicator.IsBusy = false
+            , Dispatcher);
         }        
 
         private void results_MouseDoubleClick(object sender, MouseButtonEventArgs e)

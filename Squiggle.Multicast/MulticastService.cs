@@ -22,7 +22,7 @@ namespace Squiggle.Multicast
         public void Start(IPEndPoint endPoint)
         {
             serviceHost = new ServiceHost(mcastHost);
-            var address = new Uri("net.tcp://" + endPoint.ToString() + "/squigglemcast");
+            var address = new Uri("net.tcp://" + endPoint.ToString() + "/squigglemulticast");
             var binding = BindingHelper.CreateBinding();
             serviceHost.AddServiceEndpoint(typeof(IMulticastService), binding, address);
 

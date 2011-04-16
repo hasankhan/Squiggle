@@ -193,7 +193,8 @@ namespace Squiggle.UI
             Async.Invoke(() =>
             {
                 clientAvailable.WaitOne(TimeSpan.FromSeconds(20));
-            }, () =>
+            }, 
+            () =>
             {
                 busyIndicator.IsBusy = false;
 
@@ -223,7 +224,8 @@ namespace Squiggle.UI
                 UpdateNotifier.CheckForUpdate(SettingsProvider.Current.Settings.GeneralSettings.FirstRun, OnUpdateCheckComplete);
 
                 onSignIn();
-            });
+            },
+            Dispatcher);
         }
         
         void SignOut(bool byUser)

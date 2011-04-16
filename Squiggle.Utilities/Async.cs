@@ -5,17 +5,13 @@ using System.Text;
 using System.Threading;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace Squiggle.Utilities
 {
     public static class Async
     {
         public static void Invoke(Action action)
-        {
-            Invoke(action, () => { });
-        }
-
-        public static void Invoke(Action action, Action onComplete)
         {
             ThreadPool.QueueUserWorkItem(_ =>
             {
@@ -27,7 +23,15 @@ namespace Squiggle.Utilities
                 {
                     Trace.WriteLine("Exception occured in async operation: " + ex.ToString());
                 }
-                Application.Current.Dispatcher.Invoke(onComplete, null);
+            });
+        }
+
+        public static void Invoke(Action action, Action onComplete, Dispatcher dispatcher)
+        {
+            Invoke(() =>
+            {
+                action();
+                dispatcher.Invoke(onComplete);
             });
         }
     }
