@@ -82,22 +82,26 @@ namespace Squiggle.Multicast
                 lock (clients)
                     clientsClone = clients.ToList();
 
-                Async.Invoke(() =>
-                {
-                    foreach (var client in clientsClone)
-                        if (client.Callback != currentClient)
+                foreach (var client in clientsClone)
+                    if (client.Callback != currentClient)
+                    {
+                        Client current = client; // to make it part of closure
+                        Async.Invoke(() =>
+                        {
                             try
                             {
-                                client.Callback.MessageForwarded(message);
-                                client.ErrorCount = 0;
+                                current.Callback.MessageForwarded(message);
+                                current.ErrorCount = 0;
                             }
                             catch (Exception)
                             {
-                                client.ErrorCount++;
-                                if (client.ErrorCount >= 3)
-                                    clients.Remove(client);
+                                current.ErrorCount++;
+                                if (current.ErrorCount >= 3)
+                                    lock (clients)
+                                        clients.Remove(client);
                             }
-                });
+                        });
+                    }
 
             }, "forwarding message");
         }

@@ -10,13 +10,13 @@ namespace Squiggle.Chat.Services.Presence.Transport.Broadcast.MultcastService
     [ServiceContract(CallbackContract=typeof(IMulticastServiceCallback))]
     public interface IMulticastService
     {
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         void RegisterClient();
 
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         void UnRegisterClient();
 
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         [ServiceKnownType(typeof(UserUpdateMessage))]
         [ServiceKnownType(typeof(LogoutMessage))]
         [ServiceKnownType(typeof(LoginMessage))]
