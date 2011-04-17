@@ -167,7 +167,7 @@
                                 <TextBox Text="{Binding Path=ConnectionSettings.KeepAliveTime}" Width="80" Margin="0,0,5,5" HorizontalAlignment="Left" />
                                 <TextBlock>secs</TextBlock>
                             </StackPanel>
-                            <TextBlock Grid.Row="8" Grid.Column="0" Text="{Binding SettingsWindow_ConnectionTab_BindToIP}" />
+                            <TextBlock Grid.Row="8" Grid.Column="0" Text="{DynamicResource SettingsWindow_ConnectionTab_BindToIP}" />
                             <ComboBox Grid.Row="8" Grid.Column="1" ItemsSource="{Binding Path=ConnectionSettings.AllIPs}" SelectedValue="{Binding Path=ConnectionSettings.BindToIP}" Width="150" HorizontalAlignment="Left" Margin="0,0,0,5"/>
                             
                         </Grid>
