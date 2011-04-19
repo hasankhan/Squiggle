@@ -29,8 +29,8 @@ namespace Squiggle.Multicast
 
             DumpConfig(endPoint);
 
-            service = new MulticastService();
-            service.Start(endPoint);
+            service = new MulticastService(endPoint);
+            service.Start();
         }
 
         void DumpConfig(IPEndPoint endPoint)

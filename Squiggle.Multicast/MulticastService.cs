@@ -7,33 +7,37 @@ using System.ServiceModel;
 using Squiggle.Chat;
 using Squiggle.Chat.Services.Presence.Transport.Broadcast.MultcastService;
 using Squiggle.Chat.Services;
+using Squiggle.Utilities;
 
 namespace Squiggle.Multicast
 {
-    class MulticastService
+    class MulticastService: WcfHost
     {
         MulticastHost mcastHost;
-        ServiceHost serviceHost;
+        IPEndPoint endPoint;
 
-        public MulticastService()
+        public MulticastService(IPEndPoint endPoint)
         {
+            this.endPoint = endPoint;
             mcastHost = new MulticastHost();
         }
 
-        public void Start(IPEndPoint endPoint)
+        protected override void OnStop()
         {
-            serviceHost = new ServiceHost(mcastHost);
+            base.OnStop();
+
+            mcastHost.Reset();
+        }
+
+        protected override ServiceHost CreateHost()
+        {
+            var serviceHost = new ServiceHost(mcastHost);
+
             var address = new Uri("net.tcp://" + endPoint.ToString() + "/" + ServiceNames.MulticastService);
             var binding = BindingHelper.CreateBinding();
             serviceHost.AddServiceEndpoint(typeof(IMulticastService), binding, address);
 
-            serviceHost.Open();
-        }
-
-        public void Stop()
-        {
-            serviceHost.Close();
-            mcastHost.Reset();
+            return serviceHost;
         }
     }
 }

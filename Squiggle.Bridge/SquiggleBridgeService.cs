@@ -24,14 +24,15 @@ namespace Squiggle.Bridge
 
             DumpConfig(config, channelServiceEndPoint);
 
-            bridge = new SquiggleBridge();
+            bridge = new SquiggleBridge(config.InternalServiceBinding.EndPoint,
+                                        config.ExternalServiceBinding.EndPoint,
+                                        config.ChannelBinding.MulticastEndPoint,
+                                        channelServiceEndPoint);
+
             foreach (Target target in config.Targets)
                 bridge.AddTarget(target.EndPoint);
 
-            bridge.Start(config.InternalServiceBinding.EndPoint, 
-                         config.ExternalServiceBinding.EndPoint, 
-                         config.ChannelBinding.MulticastEndPoint, 
-                         channelServiceEndPoint);
+            bridge.Start();
         }
 
         static void DumpConfig(BridgeConfiguration config, IPEndPoint channelServiceEndPoint)

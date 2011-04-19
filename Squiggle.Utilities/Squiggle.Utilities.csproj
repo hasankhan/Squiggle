@@ -60,6 +60,7 @@
     <Compile Include="Shell.cs" />
     <Compile Include="TimeExtensions.cs" />
     <Compile Include="UserActivityMonitor.cs" />
+    <Compile Include="WcfHost.cs" />
     <Compile Include="WinStartup.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

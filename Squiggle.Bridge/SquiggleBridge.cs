@@ -20,12 +20,12 @@ namespace Squiggle.Bridge
         public BridgeHostProxy Proxy { get; set; }
     }
 
-    class SquiggleBridge
+    class SquiggleBridge: WcfHost
     {
         BridgeHost bridgeHost;
-        ServiceHost serviceHost;
         IPEndPoint presenceServiceEndPoint;
         IPEndPoint bridgeEndPointInternal;
+        IPEndPoint presenceEndPoint;
         PresenceChannel presenceChannel;
 
         List<TargetBridge> targetBridges = new List<TargetBridge>();
@@ -35,8 +35,16 @@ namespace Squiggle.Bridge
 
         public IPEndPoint BridgeEndPointExternal { get; private set; }
 
-        public SquiggleBridge()
+        public SquiggleBridge(IPEndPoint bridgeEndPointInternal,
+                              IPEndPoint bridgeEndPointExternal,
+                              IPEndPoint presenceEndPoint,
+                              IPEndPoint presenceServiceEndPoint)
         {
+            this.bridgeEndPointInternal = bridgeEndPointInternal;
+            this.BridgeEndPointExternal = bridgeEndPointExternal;
+            this.presenceServiceEndPoint = presenceServiceEndPoint;
+            this.presenceEndPoint = presenceEndPoint;
+
             bridgeHost = new BridgeHost(this);
             bridgeHost.PresenceMessageForwarded += new EventHandler<PresenceMessageForwardedEventArgs>(bridgeHost_PresenceMessageForwarded);
         }
@@ -54,35 +62,21 @@ namespace Squiggle.Bridge
             });
         }
 
-        public void Start(IPEndPoint bridgeEndPointInternal, 
-                          IPEndPoint bridgeEndPointExternal, 
-                          IPEndPoint presenceEndPoint, 
-                          IPEndPoint presenceServiceEndPoint)
+        protected override void OnStart()
         {
-            this.bridgeEndPointInternal = bridgeEndPointInternal;
-            this.BridgeEndPointExternal = bridgeEndPointExternal;
+            base.OnStart();
 
-            Uri address;            
-            serviceHost = new ServiceHost(bridgeHost);
-            Binding binding;
-            GetBridgeConnectionParams(bridgeEndPointInternal, ServiceNames.ChatService, out address, out binding);            
-            serviceHost.AddServiceEndpoint(typeof(IBridgeHost), binding, address);
-            GetBridgeConnectionParams(bridgeEndPointExternal, ServiceNames.BridgeService, out address, out binding);
-            serviceHost.AddServiceEndpoint(typeof(IBridgeHost), binding, address);
-
-            serviceHost.Open();
-
-            this.presenceServiceEndPoint = presenceServiceEndPoint;
             presenceChannel = new PresenceChannel(presenceEndPoint, presenceServiceEndPoint);
             presenceChannel.Start();
             presenceChannel.MessageReceived += new EventHandler<Chat.Services.Presence.Transport.MessageReceivedEventArgs>(presenceChannel_MessageReceived);
             presenceChannel.UserInfoRequested += new EventHandler<Chat.Services.Presence.Transport.Host.UserInfoRequestedEventArgs>(presenceChannel_UserInfoRequested);
         }
 
-        public void Stop()
+        protected override void OnStop()
         {
+            base.OnStop();
+
             presenceChannel.Stop();
-            serviceHost.Close();
             foreach (TargetBridge target in targetBridges)
                 target.Proxy.Dispose();
         }
@@ -229,6 +223,20 @@ namespace Squiggle.Bridge
         {
             TargetBridge bridge = targetBridges.FirstOrDefault(t => t.EndPoint.Equals(bridgeEndPoint));
             return bridge;
+        }        
+
+        protected override ServiceHost CreateHost()
+        {
+            var serviceHost = new ServiceHost(bridgeHost);
+
+            Binding binding;
+            Uri address;
+            GetBridgeConnectionParams(bridgeEndPointInternal, ServiceNames.ChatService, out address, out binding);
+            serviceHost.AddServiceEndpoint(typeof(IBridgeHost), binding, address);
+            GetBridgeConnectionParams(BridgeEndPointExternal, ServiceNames.BridgeService, out address, out binding);
+            serviceHost.AddServiceEndpoint(typeof(IBridgeHost), binding, address);
+
+            return serviceHost;
         }
 
         void GetBridgeConnectionParams(IPEndPoint endPoint, string addressSuffix, out Uri address, out Binding binding)
