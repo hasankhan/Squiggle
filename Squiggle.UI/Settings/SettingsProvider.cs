@@ -84,7 +84,7 @@ namespace Squiggle.UI.Settings
                 firstRun = DateTimeOffset.Now;
 
             Settings.GeneralSettings.FirstRun = firstRun;
-            Settings.GeneralSettings.MinimizeChatWindows = Convert.ToBoolean(ConfigurationManager.AppSettings["MinimizeChatWindows"]);
+            Settings.GeneralSettings.MinimizeChatWindows = ConfigReader.GetSetting<bool>("MinimizeChatWindows");
             Settings.GeneralSettings.ShowEmoticons = Properties.Settings.Default.ShowEmoticons;
             Settings.GeneralSettings.HideToSystemTray = Properties.Settings.Default.HideToTray;
             Settings.GeneralSettings.ShowPopups = Properties.Settings.Default.ShowPopups;

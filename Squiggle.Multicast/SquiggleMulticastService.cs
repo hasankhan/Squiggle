@@ -48,10 +48,7 @@ namespace Squiggle.Multicast
             if (String.IsNullOrEmpty(temp) || !IPAddress.TryParse(temp, out ip) || !NetworkUtility.IsValidIP(ip))
                 ip = NetworkUtility.GetLocalIPAddress();
 
-            temp = ConfigurationManager.AppSettings["port"];
-            int port;
-            if (String.IsNullOrEmpty(temp) || !Int32.TryParse(temp, out port))
-                port = DefaultValues.PresencePort;
+            int port = ConfigReader.GetSetting<int>("port", DefaultValues.PresencePort);
 
             var endPoint = new IPEndPoint(ip, port);
             return endPoint;

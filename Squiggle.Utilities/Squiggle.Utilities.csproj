@@ -35,8 +35,10 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Web" />
@@ -48,6 +50,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Async.cs" />
+    <Compile Include="ConfigReader.cs" />
+    <Compile Include="WcfConfig.cs" />
     <Compile Include="ConsoleService.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -15,7 +15,6 @@ namespace Squiggle.Utilities
             if (serviceHost != null)
                 throw new InvalidOperationException();
 
-            InitServiceHost();
             OnStart();
         }        
 
@@ -24,7 +23,6 @@ namespace Squiggle.Utilities
             if (serviceHost == null)
                 return;
 
-            DestroyServiceHost();
             OnStop();
 
             serviceHost = null;
@@ -32,12 +30,20 @@ namespace Squiggle.Utilities
 
         protected abstract ServiceHost CreateHost();
 
-        protected virtual void OnStart() { }
-        protected virtual void OnStop() { }
+        protected virtual void OnStart() 
+        {
+            InitServiceHost();
+        }
+
+        protected virtual void OnStop()
+        {
+            DestroyServiceHost();
+        }
 
         void InitServiceHost()
         {
             serviceHost = CreateHost();
+            WcfConfig.ConfigureHost(serviceHost);
             serviceHost.Faulted += new EventHandler(serviceHost_Faulted);
             serviceHost.Open();
         }

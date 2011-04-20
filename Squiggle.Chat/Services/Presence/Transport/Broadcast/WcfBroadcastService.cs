@@ -6,6 +6,7 @@ using System.Net;
 using Squiggle.Chat.Services.Presence.Transport.Broadcast.MultcastService;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using Squiggle.Utilities;
 
 namespace Squiggle.Chat.Services.Presence.Transport.Broadcast
 {
@@ -21,7 +22,7 @@ namespace Squiggle.Chat.Services.Presence.Transport.Broadcast
         public WcfBroadcastService(IPEndPoint server)
         {
             this.address = new Uri("net.tcp://" + server.ToString() + "/" + ServiceNames.MulticastService);
-            this.binding = BindingHelper.CreateBinding();
+            this.binding = WcfConfig.CreateBinding();
         }
 
         public void SendMessage(Message message)

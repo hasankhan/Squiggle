@@ -11,7 +11,7 @@ namespace Squiggle.Chat.Services
 
     public interface IChatService
     {
-        void Start(SquiggleEndPoint endpoint);
+        void Start();
         void Stop();
         IChatSession CreateSession(SquiggleEndPoint endpoint);
         event EventHandler<ChatStartedEventArgs> ChatStarted;

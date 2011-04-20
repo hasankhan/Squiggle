@@ -24,14 +24,13 @@ namespace Squiggle.Chat.Services.Presence.Transport
         }
     }
 
-    public class PresenceChannel
+    public class PresenceChannel: WcfHost
     {
         IBroadcastService broadcastService;
         IPEndPoint serviceEndPoint;
         Dictionary<IPEndPoint, IPresenceHost> presenceHosts;
 
         PresenceHost presenceHost;
-        ServiceHost serviceHost;
 
         public event EventHandler<UserInfoRequestedEventArgs> UserInfoRequested = delegate { };
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
@@ -54,27 +53,19 @@ namespace Squiggle.Chat.Services.Presence.Transport
             this.presenceHost.UserInfoRequested += new EventHandler<UserInfoRequestedEventArgs>(presenceHost_UserInfoRequested);
             presenceHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(presenceHost_MessageReceived);
             this.presenceHosts = new Dictionary<IPEndPoint, IPresenceHost>();
-        }        
+        }
 
-        public void Start()
+        protected override void OnStart()
         {
+            base.OnStart();
+
             broadcastService.MessageReceived += new EventHandler<MessageReceivedEventArgs>(broadcastService_MessageReceived);
             broadcastService.Start();
+        }
 
-            serviceHost = new ServiceHost(presenceHost);
-            var address = CreateServiceUri(serviceEndPoint.ToString());
-            var binding = BindingHelper.CreateBinding();
-            serviceHost.AddServiceEndpoint(typeof(IPresenceHost), binding, address);
-            serviceHost.Open();
-        }     
-
-        public void Stop()
+        protected override void OnStop()
         {
-            if (serviceHost != null)
-            {
-                serviceHost.Close();
-                serviceHost = null;
-            }
+            base.OnStop();
 
             broadcastService.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(broadcastService_MessageReceived);
             broadcastService.Stop();
@@ -108,6 +99,17 @@ namespace Squiggle.Chat.Services.Presence.Transport
             }, "getting user info for " + user);
             
             return info;
+        }
+
+        protected override ServiceHost CreateHost()
+        {
+            var serviceHost = new ServiceHost(presenceHost);
+
+            var address = CreateServiceUri(serviceEndPoint.ToString());
+            var binding = WcfConfig.CreateBinding();
+            serviceHost.AddServiceEndpoint(typeof(IPresenceHost), binding, address);
+
+            return serviceHost;
         }
 
         void broadcastService_MessageReceived(object sender, MessageReceivedEventArgs e)
@@ -151,7 +153,7 @@ namespace Squiggle.Chat.Services.Presence.Transport
             if (!presenceHosts.TryGetValue(endPoint, out host))
             {
                 Uri uri = CreateServiceUri(endPoint.ToString());
-                var binding = BindingHelper.CreateBinding();
+                var binding = WcfConfig.CreateBinding();
                 host = new PresenceHostProxy(binding, new EndpointAddress(uri));
                 presenceHosts[endPoint] = host;
             }
@@ -162,6 +164,6 @@ namespace Squiggle.Chat.Services.Presence.Transport
         {
             var uri = new Uri("net.tcp://" + address + "/" + ServiceNames.PresenceService);
             return uri;
-        }            
+        }
     }
 }

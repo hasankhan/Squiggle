@@ -17,7 +17,7 @@ namespace Squiggle.Chat.Services.Chat.Host
         public ChatHostProxy(IPEndPoint remoteEndPoint)
         {
             Uri uri = CreateServiceUri(remoteEndPoint.ToString());
-            this.binding = BindingHelper.CreateBinding(); ;
+            this.binding = WcfConfig.CreateBinding(); ;
 #if !DEBUG
             this.binding.SendTimeout = TimeSpan.FromSeconds(5);
 #endif

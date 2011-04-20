@@ -30,7 +30,7 @@ namespace Squiggle.Chat
 
         public ChatClient(SquiggleEndPoint localEndPoint, IPEndPoint presenceEndPoint, TimeSpan keepAliveTime)
         {
-            chatService = new ChatService();
+            chatService = new ChatService(localEndPoint);
             buddies = new BuddyList();
             chatService.ChatStarted += new EventHandler<Squiggle.Chat.Services.ChatStartedEventArgs>(chatService_ChatStarted);
             presenceService = new PresenceService(localEndPoint, presenceEndPoint, localEndPoint.Address, keepAliveTime);
@@ -49,7 +49,7 @@ namespace Squiggle.Chat
 
         public void Login(string username, BuddyProperties properties)
         {
-            chatService.Start(localEndPoint);
+            chatService.Start();
             presenceService.Login(username, properties);
 
             var self = new SelfBuddy(this, localEndPoint.ClientID, properties) 

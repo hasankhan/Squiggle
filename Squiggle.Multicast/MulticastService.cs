@@ -34,7 +34,7 @@ namespace Squiggle.Multicast
             var serviceHost = new ServiceHost(mcastHost);
 
             var address = new Uri("net.tcp://" + endPoint.ToString() + "/" + ServiceNames.MulticastService);
-            var binding = BindingHelper.CreateBinding();
+            var binding = WcfConfig.CreateBinding();
             serviceHost.AddServiceEndpoint(typeof(IMulticastService), binding, address);
 
             return serviceHost;

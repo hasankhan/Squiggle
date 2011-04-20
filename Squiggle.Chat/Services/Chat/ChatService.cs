@@ -10,50 +10,20 @@ using Squiggle.Utilities;
 
 namespace Squiggle.Chat.Services.Chat
 {
-    public class ChatService : IChatService
+    public class ChatService : WcfHost, IChatService
     {
         ChatHost chatHost;
-        ServiceHost serviceHost;
         ChatSessionCollection chatSessions;
         SquiggleEndPoint localEndPoint;
 
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
 
-        public ChatService()
+        public ChatService(SquiggleEndPoint endpoint)
         {
-        }        
-       
-        #region IChatService Members
-
-        public void Start(SquiggleEndPoint endpoint)
-        {
-            chatHost = new ChatHost();
-            chatHost.UserActivity += new EventHandler<UserActivityEventArgs>(chatHost_UserActivity);
-            chatSessions = new ChatSessionCollection();
-
-            if (serviceHost != null)
-                throw new InvalidOperationException("Service already started.");
-
             localEndPoint = endpoint;
-            serviceHost = new ServiceHost(chatHost);
-            var address = CreateServiceUri(endpoint.Address.ToString());
-            var binding = BindingHelper.CreateBinding();
-            serviceHost.AddServiceEndpoint(typeof(IChatHost), binding, address);
-            serviceHost.Open();
-        }        
+        }                      
 
-        public void Stop()
-        {
-            if (serviceHost != null)
-            {                
-                serviceHost.Close();
-                serviceHost = null;
-
-                chatHost.Dispose();
-                chatHost = null;
-                chatSessions.Clear();
-            }
-        }
+        #region IChatService Members
 
         public IChatSession CreateSession(SquiggleEndPoint endPoint)
         {
@@ -64,6 +34,39 @@ namespace Squiggle.Chat.Services.Chat
         }       
 
         #endregion
+
+        protected override void OnStart()
+        {
+            chatHost = new ChatHost();
+            chatHost.UserActivity += new EventHandler<UserActivityEventArgs>(chatHost_UserActivity);
+            chatSessions = new ChatSessionCollection();
+
+            base.OnStart();
+        }
+
+        protected override void OnStop()
+        {
+            base.OnStop();
+
+            if (chatHost != null)
+            {
+                chatHost.UserActivity -= new EventHandler<UserActivityEventArgs>(chatHost_UserActivity);
+                chatHost.Dispose();
+                chatHost = null;
+                chatSessions.Clear();
+            }
+        }
+
+        protected override ServiceHost CreateHost()
+        {
+            var serviceHost = new ServiceHost(chatHost);
+
+            var address = CreateServiceUri(localEndPoint.Address.ToString());
+            var binding = WcfConfig.CreateBinding();
+            serviceHost.AddServiceEndpoint(typeof(IChatHost), binding, address);
+
+            return serviceHost;
+        }
 
         void chatHost_UserActivity(object sender, UserActivityEventArgs e)
         {
