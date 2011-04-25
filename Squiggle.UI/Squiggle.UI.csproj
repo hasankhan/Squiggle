@@ -280,6 +280,7 @@
     <Compile Include="MessageParsers\MultiParser.cs" />
     <Compile Include="MessageParsers\RegexParser.cs" />
     <Compile Include="Resources\Translation.cs" />
+    <Compile Include="Settings\ChatSettings.cs" />
     <Compile Include="Settings\ContactGroup.cs" />
     <Compile Include="Settings\ContactGroups.cs" />
     <Compile Include="StickyWindows\DpiHelper.cs" />

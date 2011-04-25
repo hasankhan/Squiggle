@@ -106,13 +106,13 @@ namespace Squiggle.UI
         void LoadSettings()
         {
             chatTextBox.MessageParsers.Remove(EmoticonParser.Instance);
-            if (SettingsProvider.Current.Settings.GeneralSettings.ShowEmoticons)
+            if (SettingsProvider.Current.Settings.ChatSettings.ShowEmoticons)
                 chatTextBox.MessageParsers.Add(EmoticonParser.Instance);
 
-            txtMessageEditBox.txtMessage.SpellCheck.IsEnabled = SettingsProvider.Current.Settings.GeneralSettings.SpellCheck;
+            txtMessageEditBox.txtMessage.SpellCheck.IsEnabled = SettingsProvider.Current.Settings.ChatSettings.SpellCheck;
 
             if (chatSession != null)
-                chatSession.EnableLogging = SettingsProvider.Current.Settings.GeneralSettings.EnableLogging;
+                chatSession.EnableLogging = SettingsProvider.Current.Settings.ChatSettings.EnableLogging;
         }
 
         public void SetChatSession(IChat chat)
@@ -132,7 +132,7 @@ namespace Squiggle.UI
             chatSession.GroupChatStarted += new EventHandler(chatSession_GroupChatStarted);
             txtMessageEditBox.Enabled = true;
             mnuInviteContact.IsEnabled = !IsBroadcastChat;
-            chatSession.EnableLogging = SettingsProvider.Current.Settings.GeneralSettings.EnableLogging;
+            chatSession.EnableLogging = SettingsProvider.Current.Settings.ChatSettings.EnableLogging;
             UpdateTitle();
             MonitorAll(); 
         }        

@@ -43,8 +43,6 @@
     <sys:String x:Key="SettingsWindow_GeneralTab_Heading">General</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_SubHeading">General settings</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_RunOnStartup">Run on Windows startup</sys:String>
-    <sys:String x:Key="SettingsWindow_GeneralTab_ShowEmoticons">Show emoticons</sys:String>
-    <sys:String x:Key="SettingsWindow_GeneralTab_SpellCheck">Enable spell-check</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_CloseToTray">Close to tray</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_ShowPopups">Show popups</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_AudioAlerts">Audio Alerts</sys:String>
@@ -58,6 +56,11 @@
     <sys:String x:Key="SettingsWindow_SettingsTab_IdleTimeout">Show me "Idle" when I am inactive for</sys:String>
     <sys:String x:Key="SettingsWindow_SettingsTab_RememberDisplayName">Remember my display name and message</sys:String>
     <sys:String x:Key="SettingsWindow_SettingsTab_AutoSignIn">Automatically sign me in</sys:String>
+    <sys:String x:Key="SettingsWindow_ChatTab_Heading">Chat</sys:String>
+    <sys:String x:Key="SettingsWindow_ChatTab_SubHeading">Chat settings</sys:String>
+    <sys:String x:Key="SettingsWindow_ChatTab_EnableLogging">Enable Logging</sys:String>
+    <sys:String x:Key="SettingsWindow_ChatTab_ShowEmoticons">Show emoticons</sys:String>
+    <sys:String x:Key="SettingsWindow_ChatTab_SpellCheck">Enable spell-check</sys:String>
     <sys:String x:Key="SettingsWindow_ConnectionTab_Heading">Connection</sys:String>
     <sys:String x:Key="SettingsWindow_ConnectionTab_SubHeading">Configure connection settings</sys:String>
     <sys:String x:Key="SettingsWindow_ConnectionTab_PresenceAddress">Presence Address:</sys:String>
@@ -129,7 +132,6 @@
     <sys:String x:Key="Emoticon_Surprised">Surprised</sys:String>
     <sys:String x:Key="Emoticon_ToungeOut">Tongue out</sys:String>
     <sys:String x:Key="Emoticon_Wink">Wink</sys:String>
-    <sys:String x:Key="SettingsWindow_GeneralTab_EnableLogging">Enable Logging</sys:String>
     <sys:String x:Key="HistoryViewer_FromDate">From date:</sys:String>
     <sys:String x:Key="HistoryViewer_ToDate">To date:</sys:String>
     <sys:String x:Key="HistoryViewer_Message">Message:</sys:String>

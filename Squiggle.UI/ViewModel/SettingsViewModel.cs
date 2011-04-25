@@ -11,24 +11,26 @@ namespace Squiggle.UI.ViewModel
         public GeneralSettingsViewModel GeneralSettings { get; set; }
         public ConnectionSettingsViewModel ConnectionSettings { get; set; }
         public PersonalSettingsViewModel PersonalSettings { get; set; }
+        public ChatSettingsViewModel ChatSettings { get; set; }
 
         public SettingsViewModel()
         {
             GeneralSettings = new GeneralSettingsViewModel();
             ConnectionSettings = new ConnectionSettingsViewModel();
             PersonalSettings = new PersonalSettingsViewModel();
+            ChatSettings = new ChatSettingsViewModel();
         }
 
         public SettingsViewModel(SquiggleSettings settings): this()
         {
             this.settings = settings;
 
-            GeneralSettings.ShowEmoticons = settings.GeneralSettings.ShowEmoticons;
+            ChatSettings.ShowEmoticons = settings.ChatSettings.ShowEmoticons;
             GeneralSettings.HideToSystemTray = settings.GeneralSettings.HideToSystemTray;
             GeneralSettings.ShowPopups = settings.GeneralSettings.ShowPopups;
             GeneralSettings.AudioAlerts = settings.GeneralSettings.AudioAlerts;
-            GeneralSettings.SpellCheck = settings.GeneralSettings.SpellCheck;
-            GeneralSettings.EnableLogging = settings.GeneralSettings.EnableLogging;
+            ChatSettings.SpellCheck = settings.ChatSettings.SpellCheck;
+            ChatSettings.EnableLogging = settings.ChatSettings.EnableLogging;
             GeneralSettings.ContactListSortField = settings.GeneralSettings.ContactListSortField;
             GeneralSettings.GroupContacts = settings.GeneralSettings.GroupContacts;
             GeneralSettings.DownloadsFolder = settings.GeneralSettings.DownloadsFolder;
@@ -52,12 +54,12 @@ namespace Squiggle.UI.ViewModel
             if (settings == null)
                 return;
 
-            settings.GeneralSettings.ShowEmoticons = GeneralSettings.ShowEmoticons;
+            settings.ChatSettings.ShowEmoticons = ChatSettings.ShowEmoticons;
             settings.GeneralSettings.HideToSystemTray = GeneralSettings.HideToSystemTray;
             settings.GeneralSettings.ShowPopups = GeneralSettings.ShowPopups;
             settings.GeneralSettings.AudioAlerts = GeneralSettings.AudioAlerts;
-            settings.GeneralSettings.SpellCheck = GeneralSettings.SpellCheck;
-            settings.GeneralSettings.EnableLogging = GeneralSettings.EnableLogging;
+            settings.ChatSettings.SpellCheck = ChatSettings.SpellCheck;
+            settings.ChatSettings.EnableLogging = ChatSettings.EnableLogging;
             settings.GeneralSettings.GroupContacts = GeneralSettings.GroupContacts;
             settings.GeneralSettings.ContactListSortField = GeneralSettings.ContactListSortField;
             settings.GeneralSettings.DownloadsFolder = GeneralSettings.DownloadsFolder;
@@ -89,16 +91,20 @@ namespace Squiggle.UI.ViewModel
 
     class GeneralSettingsViewModel
     {
-        public bool ShowEmoticons { get; set; }
         public bool RunAtStartup { get; set; }
         public bool HideToSystemTray { get; set; }
         public bool ShowPopups { get; set; }
         public string ContactListSortField { get; set; }
         public bool GroupContacts { get; set; }
-        public bool SpellCheck { get; set; }
         public string DownloadsFolder { get; set; }
         public bool AudioAlerts { get; set; }
+    }
+
+    class ChatSettingsViewModel
+    {
         public bool EnableLogging { get; set; }
+        public bool SpellCheck { get; set; }
+        public bool ShowEmoticons { get; set; }
     }
 
     class ConnectionSettingsViewModel: ViewModelBase

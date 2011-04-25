@@ -85,12 +85,12 @@ namespace Squiggle.UI.Settings
 
             Settings.GeneralSettings.FirstRun = firstRun;
             Settings.GeneralSettings.MinimizeChatWindows = ConfigReader.GetSetting<bool>("MinimizeChatWindows");
-            Settings.GeneralSettings.ShowEmoticons = Properties.Settings.Default.ShowEmoticons;
+            Settings.ChatSettings.ShowEmoticons = Properties.Settings.Default.ShowEmoticons;
             Settings.GeneralSettings.HideToSystemTray = Properties.Settings.Default.HideToTray;
             Settings.GeneralSettings.ShowPopups = Properties.Settings.Default.ShowPopups;
             Settings.GeneralSettings.AudioAlerts = Properties.Settings.Default.AudioAlerts;
-            Settings.GeneralSettings.SpellCheck = Properties.Settings.Default.SpellCheck;
-            Settings.GeneralSettings.EnableLogging = Properties.Settings.Default.EnableLogging;
+            Settings.ChatSettings.SpellCheck = Properties.Settings.Default.SpellCheck;
+            Settings.ChatSettings.EnableLogging = Properties.Settings.Default.EnableLogging;
             Settings.GeneralSettings.ContactListSortField = Properties.Settings.Default.ContactListSortField;
             Settings.GeneralSettings.GroupContacts = Properties.Settings.Default.GroupContacts;
             Settings.GeneralSettings.ContactGroups = Properties.Settings.Default.Groups ?? new ContactGroups();
@@ -142,14 +142,14 @@ namespace Squiggle.UI.Settings
         private void SaveGeneralSettings()
         {
             Properties.Settings.Default.FirstRun = Settings.GeneralSettings.FirstRun.ToString();
-            Properties.Settings.Default.ShowEmoticons = Settings.GeneralSettings.ShowEmoticons;
+            Properties.Settings.Default.ShowEmoticons = Settings.ChatSettings.ShowEmoticons;
             Properties.Settings.Default.DownloadsFolder = Settings.GeneralSettings.DownloadsFolder;
             Properties.Settings.Default.HideToTray = Settings.GeneralSettings.HideToSystemTray;
             Properties.Settings.Default.ShowPopups = Settings.GeneralSettings.ShowPopups;
             Properties.Settings.Default.AudioAlerts = Settings.GeneralSettings.AudioAlerts;
             Properties.Settings.Default.ContactListSortField = Settings.GeneralSettings.ContactListSortField;
-            Properties.Settings.Default.SpellCheck = Settings.GeneralSettings.SpellCheck;
-            Properties.Settings.Default.EnableLogging = Settings.GeneralSettings.EnableLogging;
+            Properties.Settings.Default.SpellCheck = Settings.ChatSettings.SpellCheck;
+            Properties.Settings.Default.EnableLogging = Settings.ChatSettings.EnableLogging;
             Properties.Settings.Default.DownloadsFolder = Settings.GeneralSettings.DownloadsFolder;
             Properties.Settings.Default.GroupContacts = Settings.GeneralSettings.GroupContacts;
             Properties.Settings.Default.Groups = Settings.GeneralSettings.ContactGroups;
