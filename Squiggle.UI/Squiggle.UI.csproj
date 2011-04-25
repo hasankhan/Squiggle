@@ -283,6 +283,7 @@
     <Compile Include="Settings\ChatSettings.cs" />
     <Compile Include="Settings\ContactGroup.cs" />
     <Compile Include="Settings\ContactGroups.cs" />
+    <Compile Include="Settings\ContactSettings.cs" />
     <Compile Include="StickyWindows\DpiHelper.cs" />
     <Compile Include="StickyWindows\NativeBehaviors.cs" />
     <Compile Include="StickyWindows\NativeBehaviour.cs" />

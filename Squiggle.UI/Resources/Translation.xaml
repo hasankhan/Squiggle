@@ -46,7 +46,6 @@
     <sys:String x:Key="SettingsWindow_GeneralTab_CloseToTray">Close to tray</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_ShowPopups">Show popups</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_AudioAlerts">Audio Alerts</sys:String>
-    <sys:String x:Key="SettingsWindow_GeneralTab_SortBy">Sort contacts by:</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_DownloadsFolder">Downloads folder:</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_Browse">Browse</sys:String>    
     <sys:String x:Key="SettingsWindow_SettingsTab_Heading">Personal</sys:String>
@@ -61,6 +60,11 @@
     <sys:String x:Key="SettingsWindow_ChatTab_EnableLogging">Enable Logging</sys:String>
     <sys:String x:Key="SettingsWindow_ChatTab_ShowEmoticons">Show emoticons</sys:String>
     <sys:String x:Key="SettingsWindow_ChatTab_SpellCheck">Enable spell-check</sys:String>
+    <sys:String x:Key="SettingsWindow_ContactsTab_Heading">Contacts</sys:String>
+    <sys:String x:Key="SettingsWindow_ContactsTab_SubHeading">Contacts settings</sys:String>
+    <sys:String x:Key="SettingsWindow_ContactsTab_SortBy">Sort contacts by:</sys:String>
+    <sys:String x:Key="SettingsWindow_ContactsTab_ShowGroupedContacts">Show grouped contacs</sys:String>
+    <sys:String x:Key="SettingsWindow_ContactsTab_ShowOfflineContacts">Show offline contacs</sys:String>
     <sys:String x:Key="SettingsWindow_ConnectionTab_Heading">Connection</sys:String>
     <sys:String x:Key="SettingsWindow_ConnectionTab_SubHeading">Configure connection settings</sys:String>
     <sys:String x:Key="SettingsWindow_ConnectionTab_PresenceAddress">Presence Address:</sys:String>

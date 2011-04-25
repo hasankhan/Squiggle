@@ -72,7 +72,7 @@ namespace Squiggle.UI.Controls
             settings.PersonalSettings.RememberMe = chkRememberName.IsChecked.GetValueOrDefault();
             settings.PersonalSettings.AutoSignMeIn = chkAutoSignIn.IsChecked.GetValueOrDefault();
             if (!String.IsNullOrEmpty(GroupName))
-                settings.GeneralSettings.ContactGroups.Add(GroupName);
+                settings.ContactSettings.ContactGroups.Add(GroupName);
             txtGroupName.SelectedValue = GroupName;
 
             SettingsProvider.Current.Save();
@@ -94,7 +94,7 @@ namespace Squiggle.UI.Controls
             if (e.Key == System.Windows.Input.Key.Delete && 
                 txtGroupName.SelectedItem != null) // if it exists in combo list items
             {
-                SettingsProvider.Current.Settings.GeneralSettings.ContactGroups.Remove((ContactGroup)txtGroupName.SelectedItem);
+                SettingsProvider.Current.Settings.ContactSettings.ContactGroups.Remove((ContactGroup)txtGroupName.SelectedItem);
                 SettingsProvider.Current.Save();
             }
         }        

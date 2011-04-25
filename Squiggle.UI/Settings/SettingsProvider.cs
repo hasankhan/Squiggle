@@ -85,15 +85,10 @@ namespace Squiggle.UI.Settings
 
             Settings.GeneralSettings.FirstRun = firstRun;
             Settings.GeneralSettings.MinimizeChatWindows = ConfigReader.GetSetting<bool>("MinimizeChatWindows");
-            Settings.ChatSettings.ShowEmoticons = Properties.Settings.Default.ShowEmoticons;
             Settings.GeneralSettings.HideToSystemTray = Properties.Settings.Default.HideToTray;
             Settings.GeneralSettings.ShowPopups = Properties.Settings.Default.ShowPopups;
             Settings.GeneralSettings.AudioAlerts = Properties.Settings.Default.AudioAlerts;
-            Settings.ChatSettings.SpellCheck = Properties.Settings.Default.SpellCheck;
-            Settings.ChatSettings.EnableLogging = Properties.Settings.Default.EnableLogging;
-            Settings.GeneralSettings.ContactListSortField = Properties.Settings.Default.ContactListSortField;
-            Settings.GeneralSettings.GroupContacts = Properties.Settings.Default.GroupContacts;
-            Settings.GeneralSettings.ContactGroups = Properties.Settings.Default.Groups ?? new ContactGroups();
+            
             if (String.IsNullOrEmpty(Properties.Settings.Default.DownloadsFolder) || !Shell.CreateDirectoryIfNotExists(Properties.Settings.Default.DownloadsFolder))
                 Settings.GeneralSettings.DownloadsFolder = Path.Combine(AppInfo.Location, "Downloads");
             else
@@ -113,6 +108,21 @@ namespace Squiggle.UI.Settings
             Settings.PersonalSettings.FontSize = Properties.Settings.Default.FontSize;
             Settings.PersonalSettings.FontName = Properties.Settings.Default.FontName;
 
+        }
+
+        void LoadChatSettings()
+        {
+            Settings.ChatSettings.ShowEmoticons = Properties.Settings.Default.ShowEmoticons;
+            Settings.ChatSettings.SpellCheck = Properties.Settings.Default.SpellCheck;
+            Settings.ChatSettings.EnableLogging = Properties.Settings.Default.EnableLogging;
+        }
+
+        void LoadContactSettings()
+        {
+            Settings.ContactSettings.ContactListSortField = Properties.Settings.Default.ContactListSortField;
+            Settings.ContactSettings.GroupContacts = Properties.Settings.Default.GroupContacts;
+            Settings.ContactSettings.ContactGroups = Properties.Settings.Default.Groups ?? new ContactGroups();
+            Settings.ContactSettings.ShowOfflineContatcs = Properties.Settings.Default.ShowOfflineContatcs;
         }
 
         private void SavePersonalSettings()
@@ -142,17 +152,27 @@ namespace Squiggle.UI.Settings
         private void SaveGeneralSettings()
         {
             Properties.Settings.Default.FirstRun = Settings.GeneralSettings.FirstRun.ToString();
-            Properties.Settings.Default.ShowEmoticons = Settings.ChatSettings.ShowEmoticons;
             Properties.Settings.Default.DownloadsFolder = Settings.GeneralSettings.DownloadsFolder;
             Properties.Settings.Default.HideToTray = Settings.GeneralSettings.HideToSystemTray;
             Properties.Settings.Default.ShowPopups = Settings.GeneralSettings.ShowPopups;
             Properties.Settings.Default.AudioAlerts = Settings.GeneralSettings.AudioAlerts;
-            Properties.Settings.Default.ContactListSortField = Settings.GeneralSettings.ContactListSortField;
+            Properties.Settings.Default.DownloadsFolder = Settings.GeneralSettings.DownloadsFolder;
+        }
+
+        void SaveChatSettings()
+        {
+            Properties.Settings.Default.ShowEmoticons = Settings.ChatSettings.ShowEmoticons;
             Properties.Settings.Default.SpellCheck = Settings.ChatSettings.SpellCheck;
             Properties.Settings.Default.EnableLogging = Settings.ChatSettings.EnableLogging;
-            Properties.Settings.Default.DownloadsFolder = Settings.GeneralSettings.DownloadsFolder;
-            Properties.Settings.Default.GroupContacts = Settings.GeneralSettings.GroupContacts;
-            Properties.Settings.Default.Groups = Settings.GeneralSettings.ContactGroups;
+            
+        }
+
+        void SaveContactSettings()
+        {
+            Properties.Settings.Default.ContactListSortField = Settings.ContactSettings.ContactListSortField;
+            Properties.Settings.Default.GroupContacts = Settings.ContactSettings.GroupContacts;
+            Properties.Settings.Default.Groups = Settings.ContactSettings.ContactGroups;
+            Properties.Settings.Default.ShowOfflineContatcs = Settings.ContactSettings.ShowOfflineContatcs;
         }
     }
 }

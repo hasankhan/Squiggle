@@ -145,7 +145,7 @@ namespace Squiggle.UI.Controls
         void AddSortDescription(CollectionViewSource cvs)
         {
             var sort = new SortDescription();
-            sort.PropertyName = SettingsProvider.Current.Settings.GeneralSettings.ContactListSortField;
+            sort.PropertyName = SettingsProvider.Current.Settings.ContactSettings.ContactListSortField;
             cvs.SortDescriptions.Add(sort);         
         }
 
@@ -163,16 +163,16 @@ namespace Squiggle.UI.Controls
         {
             bool refresh = false;
             if (!cvs.SortDescriptions.Any() ||
-                (cvs.SortDescriptions[0].PropertyName != SettingsProvider.Current.Settings.GeneralSettings.ContactListSortField))
+                (cvs.SortDescriptions[0].PropertyName != SettingsProvider.Current.Settings.ContactSettings.ContactListSortField))
             {
                 cvs.SortDescriptions.Clear();
                 AddSortDescription(cvs);
                 refresh = true;
             }
-            if (cvs.GroupDescriptions.Any() ^ SettingsProvider.Current.Settings.GeneralSettings.GroupContacts)
+            if (cvs.GroupDescriptions.Any() ^ SettingsProvider.Current.Settings.ContactSettings.GroupContacts)
             {
                 cvs.GroupDescriptions.Clear();
-                if (SettingsProvider.Current.Settings.GeneralSettings.GroupContacts)
+                if (SettingsProvider.Current.Settings.ContactSettings.GroupContacts)
                     AddGroupDescription(cvs);
                 refresh = true;
             }
@@ -182,7 +182,7 @@ namespace Squiggle.UI.Controls
         void Group_ExpandChanged(object sender, RoutedEventArgs e)
         {
             var expander = (Expander)sender;
-            ContactGroup group = SettingsProvider.Current.Settings.GeneralSettings.ContactGroups.Find(expander.Tag as string);
+            ContactGroup group = SettingsProvider.Current.Settings.ContactSettings.ContactGroups.Find(expander.Tag as string);
             if (group != null)
             {
                 group.Expanded = expander.IsExpanded;
@@ -193,7 +193,7 @@ namespace Squiggle.UI.Controls
         void Group_Loaded(object sender, RoutedEventArgs e)
         {
             var expander = (Expander)sender;
-            ContactGroup group = SettingsProvider.Current.Settings.GeneralSettings.ContactGroups.Find(expander.Tag as string);
+            ContactGroup group = SettingsProvider.Current.Settings.ContactSettings.ContactGroups.Find(expander.Tag as string);
             expander.IsExpanded = group != null ? group.Expanded : true;
         }
 

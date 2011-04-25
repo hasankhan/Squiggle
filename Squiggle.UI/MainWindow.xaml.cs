@@ -70,7 +70,7 @@ namespace Squiggle.UI
             this.StateChanged += new EventHandler(Window_StateChanged);
 
             var settings = SettingsProvider.Current.Settings;
-            settings.GeneralSettings.ContactGroups.FlushItems();
+            settings.ContactSettings.ContactGroups.FlushItems();
             SettingsProvider.Current.Save();
 
             string name = settings.PersonalSettings.DisplayName;
@@ -80,7 +80,7 @@ namespace Squiggle.UI
             chatControl.SignIn.chkRememberName.IsChecked = settings.PersonalSettings.RememberMe;
             chatControl.SignIn.SetDisplayName(name);
             chatControl.SignIn.SetGroupName(groupName);
-            chatControl.SignIn.LoadGroups(settings.GeneralSettings.ContactGroups);
+            chatControl.SignIn.LoadGroups(settings.ContactSettings.ContactGroups);
 
             if (!String.IsNullOrEmpty(name) && settings.PersonalSettings.AutoSignMeIn)
                 Dispatcher.Invoke(() => SignIn(name, groupName, false, () => { }),
@@ -264,7 +264,7 @@ namespace Squiggle.UI
         {
             if (!groupName.Equals(BuddyProperties.DefaultGroupName))
             {
-                SettingsProvider.Current.Settings.GeneralSettings.ContactGroups.Add(groupName);
+                SettingsProvider.Current.Settings.ContactSettings.ContactGroups.Add(groupName);
                 SettingsProvider.Current.Save();
             }
         }
@@ -496,27 +496,27 @@ namespace Squiggle.UI
         private void SortMenu_Click(object sender, RoutedEventArgs e)
         {
             string sortBy = ((MenuItem)sender).Tag.ToString();
-            SettingsProvider.Current.Settings.GeneralSettings.ContactListSortField = sortBy;
+            SettingsProvider.Current.Settings.ContactSettings.ContactListSortField = sortBy;
             SettingsProvider.Current.Save();
             UpdateSortMenu();
         }
 
         void UpdateSortMenu()
         {
-            mnuSortByStatus.IsChecked = (SettingsProvider.Current.Settings.GeneralSettings.ContactListSortField == "Status");
+            mnuSortByStatus.IsChecked = (SettingsProvider.Current.Settings.ContactSettings.ContactListSortField == "Status");
             mnuSortByName.IsChecked = !mnuSortByStatus.IsChecked;
         }
 
         private void GroupMenu_Click(object sender, RoutedEventArgs e)
         {
-            SettingsProvider.Current.Settings.GeneralSettings.GroupContacts = !SettingsProvider.Current.Settings.GeneralSettings.GroupContacts;
+            SettingsProvider.Current.Settings.ContactSettings.GroupContacts = !SettingsProvider.Current.Settings.ContactSettings.GroupContacts;
             SettingsProvider.Current.Save();
             UpdateGroupMenu();
         }
 
         void UpdateGroupMenu()
         {
-            mnuGroupBuddies.IsChecked = SettingsProvider.Current.Settings.GeneralSettings.GroupContacts;
+            mnuGroupBuddies.IsChecked = SettingsProvider.Current.Settings.ContactSettings.GroupContacts;
         }        
 
         void OnUpdateCheckComplete(UpdateCheckResult result)

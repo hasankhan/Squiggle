@@ -7,6 +7,7 @@ namespace Squiggle.UI.Settings
         public ConnectionSettings ConnectionSettings { get; set; }
         public PersonalSettings PersonalSettings { get; set; }
         public ChatSettings ChatSettings { get; set; }
+        public ContactSettings ContactSettings { get; set; }
 
         public SquiggleSettings()
         {
@@ -14,6 +15,7 @@ namespace Squiggle.UI.Settings
             ConnectionSettings = new ConnectionSettings();
             PersonalSettings = new PersonalSettings();
             ChatSettings = new ChatSettings();
+            ContactSettings = new ContactSettings();
         }
     }    
 }

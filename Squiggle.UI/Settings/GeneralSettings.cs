@@ -8,10 +8,7 @@ namespace Squiggle.UI.Settings
         public bool HideToSystemTray { get; set; }
         public bool ShowPopups { get; set; }
         public bool AudioAlerts { get; set; }
-        public string ContactListSortField { get; set; }
         public string DownloadsFolder { get; set; }
-        public bool GroupContacts { get; set; }
-        public ContactGroups ContactGroups { get; set; }
         public bool MinimizeChatWindows { get; set; }
         public DateTimeOffset FirstRun { get; set; }
 
@@ -20,9 +17,6 @@ namespace Squiggle.UI.Settings
             HideToSystemTray = true;
             ShowPopups = true;
             AudioAlerts = false;
-            ContactListSortField = "DisplayName";
-            GroupContacts = true;
-            ContactGroups = new ContactGroups();
         }
     }
 }

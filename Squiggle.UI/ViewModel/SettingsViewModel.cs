@@ -12,6 +12,7 @@ namespace Squiggle.UI.ViewModel
         public ConnectionSettingsViewModel ConnectionSettings { get; set; }
         public PersonalSettingsViewModel PersonalSettings { get; set; }
         public ChatSettingsViewModel ChatSettings { get; set; }
+        public ContactSettingsViewModel ContactSettings { get; set; }
 
         public SettingsViewModel()
         {
@@ -19,6 +20,7 @@ namespace Squiggle.UI.ViewModel
             ConnectionSettings = new ConnectionSettingsViewModel();
             PersonalSettings = new PersonalSettingsViewModel();
             ChatSettings = new ChatSettingsViewModel();
+            ContactSettings = new ContactSettingsViewModel();
         }
 
         public SettingsViewModel(SquiggleSettings settings): this()
@@ -29,11 +31,14 @@ namespace Squiggle.UI.ViewModel
             GeneralSettings.HideToSystemTray = settings.GeneralSettings.HideToSystemTray;
             GeneralSettings.ShowPopups = settings.GeneralSettings.ShowPopups;
             GeneralSettings.AudioAlerts = settings.GeneralSettings.AudioAlerts;
+            GeneralSettings.DownloadsFolder = settings.GeneralSettings.DownloadsFolder;
+
             ChatSettings.SpellCheck = settings.ChatSettings.SpellCheck;
             ChatSettings.EnableLogging = settings.ChatSettings.EnableLogging;
-            GeneralSettings.ContactListSortField = settings.GeneralSettings.ContactListSortField;
-            GeneralSettings.GroupContacts = settings.GeneralSettings.GroupContacts;
-            GeneralSettings.DownloadsFolder = settings.GeneralSettings.DownloadsFolder;
+            
+            ContactSettings.ContactListSortField = settings.ContactSettings.ContactListSortField;
+            ContactSettings.GroupContacts = settings.ContactSettings.GroupContacts;
+            ContactSettings.ShowOfflineContatcs = settings.ContactSettings.ShowOfflineContatcs;
 
             ConnectionSettings.BindToIP = settings.ConnectionSettings.BindToIP;
             ConnectionSettings.ChatPort = settings.ConnectionSettings.ChatPort;
@@ -60,8 +65,9 @@ namespace Squiggle.UI.ViewModel
             settings.GeneralSettings.AudioAlerts = GeneralSettings.AudioAlerts;
             settings.ChatSettings.SpellCheck = ChatSettings.SpellCheck;
             settings.ChatSettings.EnableLogging = ChatSettings.EnableLogging;
-            settings.GeneralSettings.GroupContacts = GeneralSettings.GroupContacts;
-            settings.GeneralSettings.ContactListSortField = GeneralSettings.ContactListSortField;
+            settings.ContactSettings.GroupContacts = ContactSettings.GroupContacts;
+            settings.ContactSettings.ContactListSortField = ContactSettings.ContactListSortField;
+            settings.ContactSettings.ShowOfflineContatcs = ContactSettings.ShowOfflineContatcs;
             settings.GeneralSettings.DownloadsFolder = GeneralSettings.DownloadsFolder;
 
             settings.ConnectionSettings.BindToIP = ConnectionSettings.BindToIP;
@@ -94,8 +100,6 @@ namespace Squiggle.UI.ViewModel
         public bool RunAtStartup { get; set; }
         public bool HideToSystemTray { get; set; }
         public bool ShowPopups { get; set; }
-        public string ContactListSortField { get; set; }
-        public bool GroupContacts { get; set; }
         public string DownloadsFolder { get; set; }
         public bool AudioAlerts { get; set; }
     }
@@ -105,6 +109,13 @@ namespace Squiggle.UI.ViewModel
         public bool EnableLogging { get; set; }
         public bool SpellCheck { get; set; }
         public bool ShowEmoticons { get; set; }
+    }
+
+    class ContactSettingsViewModel
+    {
+        public string ContactListSortField { get; set; }
+        public bool GroupContacts { get; set; }
+        public bool ShowOfflineContatcs { get; set; }
     }
 
     class ConnectionSettingsViewModel: ViewModelBase
