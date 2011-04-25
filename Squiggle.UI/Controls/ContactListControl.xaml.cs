@@ -117,7 +117,9 @@ namespace Squiggle.UI.Controls
         void CollectionViewSource_Filter(object sender, FilterEventArgs e)
         {
             Buddy buddy = (Buddy)e.Item;
-            if (filter == String.Empty)
+            if (!SettingsProvider.Current.Settings.ContactSettings.ShowOfflineContatcs && buddy.Status == UserStatus.Offline)
+                e.Accepted = false;
+            else if (filter == String.Empty)
                 e.Accepted = true;
             else
                 e.Accepted = buddy.DisplayName.ToUpperInvariant().Contains(filter.ToUpperInvariant());
