@@ -25,7 +25,7 @@ namespace Squiggle.UI.Controls
         public event EventHandler OpenAbout = delegate { };
 
         string filter = String.Empty;
-
+        bool showOfflineContacts;
         public static DependencyProperty ChatContextProperty = DependencyProperty.Register("ChatContext", typeof(ClientViewModel), typeof(ContactListControl), new PropertyMetadata(null));
         public ClientViewModel ChatContext
         {
@@ -40,6 +40,7 @@ namespace Squiggle.UI.Controls
         {
             InitializeComponent();
 
+            showOfflineContacts = SettingsProvider.Current.Settings.ContactSettings.ShowOfflineContatcs;
             SettingsProvider.Current.SettingsUpdated += new EventHandler(Current_SettingsUpdated);
         }
 
@@ -117,7 +118,7 @@ namespace Squiggle.UI.Controls
         void CollectionViewSource_Filter(object sender, FilterEventArgs e)
         {
             Buddy buddy = (Buddy)e.Item;
-            if (!SettingsProvider.Current.Settings.ContactSettings.ShowOfflineContatcs && buddy.Status == UserStatus.Offline)
+            if (!showOfflineContacts && buddy.Status == UserStatus.Offline)
                 e.Accepted = false;
             else if (filter == String.Empty)
                 e.Accepted = true;
@@ -178,6 +179,13 @@ namespace Squiggle.UI.Controls
                     AddGroupDescription(cvs);
                 refresh = true;
             }
+
+            if (showOfflineContacts != SettingsProvider.Current.Settings.ContactSettings.ShowOfflineContatcs)
+            {
+                showOfflineContacts = SettingsProvider.Current.Settings.ContactSettings.ShowOfflineContatcs;
+                refresh = true;
+            }
+
             return refresh;
         }
 
