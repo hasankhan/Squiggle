@@ -63,8 +63,8 @@
     <sys:String x:Key="SettingsWindow_ContactsTab_Heading">Contacts</sys:String>
     <sys:String x:Key="SettingsWindow_ContactsTab_SubHeading">Contacts settings</sys:String>
     <sys:String x:Key="SettingsWindow_ContactsTab_SortBy">Sort contacts by:</sys:String>
-    <sys:String x:Key="SettingsWindow_ContactsTab_ShowGroupedContacts">Show grouped contacs</sys:String>
-    <sys:String x:Key="SettingsWindow_ContactsTab_ShowOfflineContacts">Show offline contacs</sys:String>
+    <sys:String x:Key="SettingsWindow_ContactsTab_ShowGroupedContacts">Show grouped contacts</sys:String>
+    <sys:String x:Key="SettingsWindow_ContactsTab_ShowOfflineContacts">Show offline contacts</sys:String>
     <sys:String x:Key="SettingsWindow_ConnectionTab_Heading">Connection</sys:String>
     <sys:String x:Key="SettingsWindow_ConnectionTab_SubHeading">Configure connection settings</sys:String>
     <sys:String x:Key="SettingsWindow_ConnectionTab_PresenceAddress">Presence Address:</sys:String>
@@ -72,6 +72,8 @@
     <sys:String x:Key="SettingsWindow_ConnectionTab_ChatPort">Chat Port:</sys:String>
     <sys:String x:Key="SettingsWindow_ConnectionTab_KeepAliveTime">Keep Alive Time:</sys:String>
     <sys:String x:Key="SettingsWindow_ConnectionTab_BindToIP">Bind To IP:</sys:String>
+    <sys:String x:Key="SettingsWindow_ConnectionTab_Reset">Reset</sys:String>
+    <sys:String x:Key="SettingsWindow_Error_InvalidPresenceIP">Please enter a valid presence address.</sys:String>
     <sys:String x:Key="ContactSelectWindow_Heading">Send an instant message</sys:String>
     <sys:String x:Key="ContactSelectWindow_SubHeading">Select a contact</sys:String>
     <sys:String x:Key="ChatWindow_MainMenu_File">_File</sys:String>
@@ -148,7 +150,5 @@
     <sys:String x:Key="ConversationViewer_Sender">Sender</sys:String>
     <sys:String x:Key="ConversationViewer_Type">Type</sys:String>
     <sys:String x:Key="Error_NoNetwork">You are not on a network. Please make sure your network card is enabled.</sys:String>
-    <sys:String x:Key="SettingsWindow_Error_InvalidPresenceIP">Please enter a valid presence address.</sys:String>
-    <sys:String x:Key="Error">Error</sys:String>
-    <sys:String x:Key="SettingsWindow_ConnectionTab_Reset">Reset</sys:String>
+    <sys:String x:Key="Error">Error</sys:String>    
 </ResourceDictionary>
