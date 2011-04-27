@@ -51,7 +51,6 @@ namespace Squiggle.Chat.Services.Chat
             if (chatHost != null)
             {
                 chatHost.UserActivity -= new EventHandler<UserActivityEventArgs>(chatHost_UserActivity);
-                chatHost.Dispose();
                 chatHost = null;
                 chatSessions.Clear();
             }

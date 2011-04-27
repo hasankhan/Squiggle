@@ -8,7 +8,7 @@ using System.Threading;
 namespace Squiggle.Chat.Services.Chat.Host
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode=ConcurrencyMode.Multiple, UseSynchronizationContext=false)] 
-    public class ChatHost: IChatHost, IDisposable
+    public class ChatHost: IChatHost
     {
         public event EventHandler<SessionEventArgs> BuzzReceived = delegate { };
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
@@ -22,24 +22,6 @@ namespace Squiggle.Chat.Services.Chat.Host
         public event EventHandler<FileTransferDataReceivedEventArgs> TransferDataReceived = delegate { };
         public event EventHandler<UserActivityEventArgs> UserActivity = delegate { };
         public event EventHandler<SessionInfoRequestedEventArgs> SessionInfoRequested = delegate { };
-
-        ActionQueue eventQueue = new ActionQueue();
-        Thread eventProcessor;
-        volatile bool disposed = false;
-
-        public ChatHost()
-        {
-            eventProcessor = new Thread(() =>
-            {
-                while (!disposed)
-                {
-                    eventQueue.Dequeue();
-                    Thread.Sleep(1);
-                }
-            });
-            eventProcessor.IsBackground = true;
-            eventProcessor.Start();
-        }
 
         #region IChatHost Members
 
@@ -58,27 +40,27 @@ namespace Squiggle.Chat.Services.Chat.Host
         public void Buzz(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
             OnUserActivity(sessionId, sender, recepient, ActivityType.Buzz);
-            eventQueue.Enqueue(()=>BuzzReceived(this, new SessionEventArgs(sessionId, sender )));
+            BuzzReceived(this, new SessionEventArgs(sessionId, sender ));
             Trace.WriteLine(sender + " is buzzing.");
         }
 
         public void UserIsTyping(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
             OnUserActivity(sessionId, sender, recepient, ActivityType.Typing);
-            eventQueue.Enqueue(()=>UserTyping(this, new SessionEventArgs(sessionId, sender )));
+            UserTyping(this, new SessionEventArgs(sessionId, sender ));
             Trace.WriteLine(sender + " is typing.");
         }
 
         public void ReceiveMessage(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
         {
             OnUserActivity(sessionId, sender, recepient, ActivityType.Message);
-            eventQueue.Enqueue(() => MessageReceived(this, new MessageReceivedEventArgs(){SessionID = sessionId, 
+            MessageReceived(this, new MessageReceivedEventArgs(){SessionID = sessionId, 
                                                                                           Sender = sender,
                                                                                           FontName = fontName,
                                                                                           FontSize = fontSize,
                                                                                           Color = color,
                                                                                           FontStyle = fontStyle,
-                                                                                          Message = message }));
+                                                                                          Message = message });
             Trace.WriteLine("Message received from: " + sender + ", sessionId= " + sessionId + ", message = " + message);
         }
 
@@ -86,68 +68,62 @@ namespace Squiggle.Chat.Services.Chat.Host
         {
             OnUserActivity(sessionId, sender, recepient, ActivityType.ChatInvite);
             Trace.WriteLine(sender + " invited you to group chat.");
-            eventQueue.Enqueue(() => ChatInviteReceived(this, new ChatInviteReceivedEventArgs() 
+            ChatInviteReceived(this, new ChatInviteReceivedEventArgs() 
             { 
                 SessionID = sessionId, 
                 Sender = sender, 
                 Participants = participants 
-            }));
+            });
         }
 
         public void JoinChat(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
             Trace.WriteLine(sender + " has joined the chat.");
-            eventQueue.Enqueue(() => UserJoined(this, new UserActivityEventArgs() { SessionID = sessionId, Sender = sender}));
+            UserJoined(this, new UserActivityEventArgs() { SessionID = sessionId, Sender = sender});
         }
 
         public void LeaveChat(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
             Trace.WriteLine(sender + " has left the chat.");
-            eventQueue.Enqueue(() => UserLeft(this, new UserActivityEventArgs() { SessionID = sessionId, Sender = sender}));
+            UserLeft(this, new UserActivityEventArgs() { SessionID = sessionId, Sender = sender});
         }
 
         public void ReceiveFileInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, Guid id, string name, long size)
         {
             OnUserActivity(sessionId, sender, recepient, ActivityType.TransferInvite);
             Trace.WriteLine(sender + " wants to send a file " + name);
-            eventQueue.Enqueue(() => TransferInvitationReceived(this, new TransferInvitationReceivedEventArgs()
+            TransferInvitationReceived(this, new TransferInvitationReceivedEventArgs()
             {
                 SessionID = sessionId,
                 Sender = sender,
                 Name = name,
                 ID = id,
                 Size = size
-            }));
+            });
         }
 
         public void ReceiveFileContent(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] chunk)
         {
-            eventQueue.Enqueue(() => TransferDataReceived(this, new FileTransferDataReceivedEventArgs() { ID = id, Chunk = chunk }));
+            TransferDataReceived(this, new FileTransferDataReceivedEventArgs() { ID = id, Chunk = chunk });
         }
 
         public void AcceptFileInvite(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
-            eventQueue.Enqueue(() => InvitationAccepted(this, new FileTransferEventArgs() { ID = id }));
+            InvitationAccepted(this, new FileTransferEventArgs() { ID = id });
         }
 
         public void CancelFileTransfer(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
-            eventQueue.Enqueue(() => TransferCancelled(this, new FileTransferEventArgs() { ID = id }));
+            TransferCancelled(this, new FileTransferEventArgs() { ID = id });
         }       
 
         #endregion
 
         void OnUserActivity(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, ActivityType type)
         {
-            eventQueue.Enqueue(() => UserActivity(this, new UserActivityEventArgs(){Sender = sender, 
+            UserActivity(this, new UserActivityEventArgs(){Sender = sender, 
                                                                                     SessionID = sessionId,
-                                                                                    Type = type}));
-        }
-
-        public void Dispose()
-        {
-            disposed = true;
-            eventProcessor.Join();
+                                                                                    Type = type});
         }
     }
 
