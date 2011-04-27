@@ -97,6 +97,12 @@ namespace Squiggle.UI.Controls
             StartChat(buddy, true);
         }
 
+        void SendEmail_Click(object sender, RoutedEventArgs e)
+        {
+            Buddy buddy = ((MenuItem)sender).Tag as Buddy;
+            System.Diagnostics.Process.Start("mailto:" + buddy.Properties.EmailAddress);
+        }
+
         void Buddy_DragOver(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))

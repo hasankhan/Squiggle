@@ -100,6 +100,11 @@
                                 <Image Width="16" Height="16" Source="Images/Upload.png" Stretch="Fill"/>                                
                             </Button>
                             <Button Style="{StaticResource toolbarButton}" 
+                                    Margin="5,0,0,0" ToolTip="Email"
+                                    Click="SendEmail_Click" Foreground="Black">
+                                <Image Width="16" Height="16" Source="Images/email.png" Stretch="Fill"/>
+                            </Button>
+                            <Button Style="{StaticResource toolbarButton}" 
                                     Margin="5,0,0,0" ToolTip="Change Font"
                                     Click="ChangeFont_Click" Foreground="Black">
                                 <Image Width="16" Height="16" Source="Images/Font.png" Stretch="Fill"/>
@@ -113,7 +118,7 @@
                                     Margin="5,0,0,0" ToolTip="Select an emoticon"
                                     Click="SendEmoticon_Click" Foreground="Black">
                                 <Image Width="16" Height="16" Source="Images/Emoticons/Smile.png" Stretch="Fill"/>                                                                
-                            </Button>                            
+                            </Button>
                         </StackPanel>                        
                     </Border>                    
                     <controls:MessageEditBox FileDropped="txtMessageEditBox_FileDropped" 

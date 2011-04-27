@@ -181,6 +181,7 @@
       <Link>History.sdf</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\email.png" />
     <Content Include="Images\Emoticons\Icons-Author.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

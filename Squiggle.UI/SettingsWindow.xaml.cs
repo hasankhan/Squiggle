@@ -64,12 +64,14 @@ namespace Squiggle.UI
                 settingsVm.PersonalSettings.DisplayName = SettingsProvider.Current.Settings.PersonalSettings.DisplayName;
                 settingsVm.PersonalSettings.GroupName = SettingsProvider.Current.Settings.PersonalSettings.GroupName;
                 settingsVm.PersonalSettings.DisplayMessage = SettingsProvider.Current.Settings.PersonalSettings.DisplayMessage;
+                settingsVm.PersonalSettings.EmailAddress = SettingsProvider.Current.Settings.PersonalSettings.EmailAddress;
             }
             else
             {
                 settingsVm.PersonalSettings.DisplayName = user.DisplayName;
                 settingsVm.PersonalSettings.GroupName = user.Properties.GroupName;
                 settingsVm.PersonalSettings.DisplayMessage = user.Properties.DisplayMessage;
+                settingsVm.PersonalSettings.EmailAddress = user.Properties.EmailAddress;
             }
         }
 
@@ -89,6 +91,7 @@ namespace Squiggle.UI
             {
                 user.DisplayName = settingsVm.PersonalSettings.DisplayName;
                 user.Properties.DisplayMessage = settingsVm.PersonalSettings.DisplayMessage;
+                user.Properties.EmailAddress = settingsVm.PersonalSettings.EmailAddress;
             }
 
             TrayPopup.Instance.Enabled = settingsVm.GeneralSettings.ShowPopups;

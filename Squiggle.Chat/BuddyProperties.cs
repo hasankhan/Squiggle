@@ -58,6 +58,12 @@ namespace Squiggle.Chat
             set { this["DisplayMessage"] = value; }
         }
 
+        public string EmailAddress
+        {
+            get { return this["EmailAddress"]; }
+            set { this["EmailAddress"] = value; }
+        }
+
         public Dictionary<string,string>.KeyCollection Keys
         {
             get { return dictionary.Keys; }

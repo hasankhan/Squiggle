@@ -93,20 +93,22 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="210*" />
-                                    <ColumnDefinition Width="186*" />                                    
+                                    <ColumnDefinition Width="0.5*" />
+                                    <ColumnDefinition Width="0.5*" />                                    
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.ColumnSpan="2" Text="{DynamicResource SettingsWindow_SettingsTab_DisplayName}"/>
                                 <TextBox Margin="10,0,166,0" Grid.Row="1" Text="{Binding Path=PersonalSettings.DisplayName}" Grid.ColumnSpan="2" Height="22" VerticalAlignment="Top" />
                                 <TextBlock Margin="0,5,0,0" Grid.Row="2" Grid.ColumnSpan="2" Text="{DynamicResource SettingsWindow_SettingsTab_DisplayMessage}"/>
                                 <TextBox Margin="10,0,49,0" Grid.Row="3"  Text="{Binding Path=PersonalSettings.DisplayMessage}" Grid.ColumnSpan="2" Height="22" VerticalAlignment="Top" />
+                                <TextBlock Margin="0,5,0,0" Grid.Row="4" Grid.ColumnSpan="2" Text="{DynamicResource SettingsWindow_SettingsTab_EmailAddress}"/>
+                                <TextBox Margin="10,0,49,0" Grid.Row="5"  Text="{Binding Path=PersonalSettings.EmailAddress}" Grid.ColumnSpan="2" Height="22" VerticalAlignment="Top" />
                                 <TextBlock Margin="0,5,0,0" Grid.Row="6" Grid.ColumnSpan="2" Text="{DynamicResource SettingsWindow_SettingsTab_IdleTimeout}" />
                                 <StackPanel Margin="0,5,0,0" Orientation="Horizontal" Grid.Row="6" Grid.Column="3">
                                     <TextBox  Width="80" HorizontalAlignment="Left" Text="{Binding Path=PersonalSettings.IdleTimeout}" Margin="0,0,0,5" />
                                     <TextBlock Margin="5,0,0,0">mins</TextBlock>
                                 </StackPanel>
-                                <CheckBox Content="{DynamicResource SettingsWindow_SettingsTab_RememberDisplayName}" IsChecked="{Binding Path=PersonalSettings.RememberMe}" Grid.Row="7" Grid.ColumnSpan="2" Margin="5,5,0,0"/>
-                                <CheckBox Content="{DynamicResource SettingsWindow_SettingsTab_AutoSignIn}" Grid.Row="8" IsChecked="{Binding Path=PersonalSettings.AutoSignMeIn}" Grid.ColumnSpan="2" Margin="5,5,0,0"/>
+                                <CheckBox Content="{DynamicResource SettingsWindow_SettingsTab_AutoSignIn}" Grid.Row="7" IsChecked="{Binding Path=PersonalSettings.AutoSignMeIn}"   Margin="5,5,0,0"/>
+                                <CheckBox Content="{DynamicResource SettingsWindow_SettingsTab_RememberMe}" IsChecked="{Binding Path=PersonalSettings.RememberMe}" Grid.Row="7" Grid.Column="1" Margin="5,5,0,0"/>
                             </Grid>
                         </Grid>
                     </Border>

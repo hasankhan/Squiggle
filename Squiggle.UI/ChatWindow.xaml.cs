@@ -735,6 +735,12 @@ namespace Squiggle.UI
             selector.Show();
         }
 
+        private void SendEmail_Click(object sender, RoutedEventArgs e)
+        {
+            string to = String.Join(";", Buddies.Select(buddy => buddy.Properties.EmailAddress).ToArray());
+            System.Diagnostics.Process.Start("mailto:" + to);
+        }
+
         void OnEmoticonSelected(string code)
         {
             txtMessageEditBox.txtMessage.SelectedText = code;

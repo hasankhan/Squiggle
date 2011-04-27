@@ -75,6 +75,7 @@
                     <ContextMenu>
                         <MenuItem Header="{DynamicResource Buddy_StartChat}" Tag="{Binding}" Click="StartChat_Click" />
                         <MenuItem Header="{DynamicResource Buddy_SendFile}" Tag="{Binding}" Click="SendFile_Click" />
+                        <MenuItem Header="{DynamicResource Buddy_SendEmail}" Tag="{Binding}" Click="SendEmail_Click" />
                     </ContextMenu>
                 </Border.ContextMenu>
                 <Grid Margin="5">
