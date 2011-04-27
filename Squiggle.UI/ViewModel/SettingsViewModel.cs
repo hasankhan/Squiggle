@@ -39,6 +39,7 @@ namespace Squiggle.UI.ViewModel
             ContactSettings.ContactListSortField = settings.ContactSettings.ContactListSortField;
             ContactSettings.GroupContacts = settings.ContactSettings.GroupContacts;
             ContactSettings.ShowOfflineContatcs = settings.ContactSettings.ShowOfflineContatcs;
+            ContactSettings.ContactListView = settings.ContactSettings.ContactListView;
 
             ConnectionSettings.BindToIP = settings.ConnectionSettings.BindToIP;
             ConnectionSettings.ChatPort = settings.ConnectionSettings.ChatPort;
@@ -69,6 +70,7 @@ namespace Squiggle.UI.ViewModel
             settings.ContactSettings.GroupContacts = ContactSettings.GroupContacts;
             settings.ContactSettings.ContactListSortField = ContactSettings.ContactListSortField;
             settings.ContactSettings.ShowOfflineContatcs = ContactSettings.ShowOfflineContatcs;
+            settings.ContactSettings.ContactListView = ContactSettings.ContactListView;
             settings.GeneralSettings.DownloadsFolder = GeneralSettings.DownloadsFolder;
 
             settings.ConnectionSettings.BindToIP = ConnectionSettings.BindToIP;
@@ -119,6 +121,7 @@ namespace Squiggle.UI.ViewModel
         public string ContactListSortField { get; set; }
         public bool GroupContacts { get; set; }
         public bool ShowOfflineContatcs { get; set; }
+        public string ContactListView { get; set; }
     }
 
     class ConnectionSettingsViewModel: ViewModelBase

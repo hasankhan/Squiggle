@@ -104,5 +104,8 @@
     <Setting Name="EmailAddress" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="ContactListView" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Standard</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

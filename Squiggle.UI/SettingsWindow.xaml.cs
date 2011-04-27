@@ -41,6 +41,7 @@ namespace Squiggle.UI
 
             this.DataContext = settingsVm;
             cmbSortField.Text = settingsVm.ContactSettings.ContactListSortField;
+            cmbContactsView.Text = settingsVm.ContactSettings.ContactListView;
         }        
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
@@ -85,6 +86,7 @@ namespace Squiggle.UI
             }
 
             settingsVm.ContactSettings.ContactListSortField = cmbSortField.Text;
+            settingsVm.ContactSettings.ContactListView = cmbContactsView.Text;
             settingsVm.Update();
 
             if (user != null)

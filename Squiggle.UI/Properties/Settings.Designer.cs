@@ -429,5 +429,17 @@ namespace Squiggle.UI.Properties {
                 this["EmailAddress"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Standard")]
+        public string ContactListView {
+            get {
+                return ((string)(this["ContactListView"]));
+            }
+            set {
+                this["ContactListView"] = value;
+            }
+        }
     }
 }

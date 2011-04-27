@@ -65,6 +65,7 @@
     <sys:String x:Key="SettingsWindow_ContactsTab_Heading">Contacts</sys:String>
     <sys:String x:Key="SettingsWindow_ContactsTab_SubHeading">Contacts settings</sys:String>
     <sys:String x:Key="SettingsWindow_ContactsTab_SortBy">Sort contacts by:</sys:String>
+    <sys:String x:Key="SettingsWindow_ContactsTab_View">Contact list view:</sys:String>
     <sys:String x:Key="SettingsWindow_ContactsTab_ShowGroupedContacts">Show grouped contacts</sys:String>
     <sys:String x:Key="SettingsWindow_ContactsTab_ShowOfflineContacts">Show offline contacts</sys:String>
     <sys:String x:Key="SettingsWindow_ConnectionTab_Heading">Connection</sys:String>

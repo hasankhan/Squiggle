@@ -34,6 +34,8 @@ namespace Squiggle.UI.Settings
                 Settings = new SquiggleSettings();
             LoadGeneralSettings();
             LoadPersonalSettings();
+            LoadChatSettings();
+            LoadContactSettings();
             LoadConnectionSettings();
         }
 
@@ -41,6 +43,8 @@ namespace Squiggle.UI.Settings
         {
             SaveGeneralSettings();
             SavePersonalSettings();
+            SaveChatSettings();
+            SaveContactSettings();
             SaveConnectionSettings();
 
             Properties.Settings.Default.Save();
@@ -124,6 +128,7 @@ namespace Squiggle.UI.Settings
             Settings.ContactSettings.GroupContacts = Properties.Settings.Default.GroupContacts;
             Settings.ContactSettings.ContactGroups = Properties.Settings.Default.Groups ?? new ContactGroups();
             Settings.ContactSettings.ShowOfflineContatcs = Properties.Settings.Default.ShowOfflineContatcs;
+            Settings.ContactSettings.ContactListView = Properties.Settings.Default.ContactListView;
         }
 
         private void SavePersonalSettings()
@@ -175,6 +180,7 @@ namespace Squiggle.UI.Settings
             Properties.Settings.Default.GroupContacts = Settings.ContactSettings.GroupContacts;
             Properties.Settings.Default.Groups = Settings.ContactSettings.ContactGroups;
             Properties.Settings.Default.ShowOfflineContatcs = Settings.ContactSettings.ShowOfflineContatcs;
+            Properties.Settings.Default.ContactListView = Settings.ContactSettings.ContactListView;
         }
     }
 }

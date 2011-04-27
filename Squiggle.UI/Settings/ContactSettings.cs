@@ -8,6 +8,7 @@ namespace Squiggle.UI.Settings
     class ContactSettings
     {
         public string ContactListSortField { get; set; }
+        public string ContactListView { get; set; }
         public ContactGroups ContactGroups { get; set; }
         public bool GroupContacts { get; set; }
         public bool ShowOfflineContatcs { get; set; }
@@ -15,6 +16,7 @@ namespace Squiggle.UI.Settings
         public ContactSettings()
         {
             ContactListSortField = "DisplayName";
+            ContactListView = "Standard";
             GroupContacts = true;
             ContactGroups = new ContactGroups();
         }

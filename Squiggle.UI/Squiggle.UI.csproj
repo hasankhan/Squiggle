@@ -247,6 +247,7 @@
     <Compile Include="Controls\BusyIndicator.xaml.cs">
       <DependentUpon>BusyIndicator.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ContactsViewSelector.cs" />
     <Compile Include="Controls\Emoticon.xaml.cs">
       <DependentUpon>Emoticon.xaml</DependentUpon>
     </Compile>
