@@ -29,7 +29,12 @@
             </Setter>
         </Style>
 
-        <SolidColorBrush x:Key="GlyphBrush" Color="#444"/>
+        <SolidColorBrush x:Key="GlyphExpandedBrush" Color="#444"/>
+        <LinearGradientBrush x:Key="GlyphCollapsedBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFEEE3E3" Offset="0"/>
+            <GradientStop Color="#FF555151" Offset="1"/>
+            <GradientStop Color="#FFC2B6B6" Offset="0.781"/>
+        </LinearGradientBrush>
         <LinearGradientBrush x:Key="MouseOverBrush" EndPoint="0,1" StartPoint="0,0">
 					<GradientStop Color="#FF5B7EEE" Offset="0.0"/>
             		<GradientStop Color="#FF848FB2" Offset="1.0"/>		
@@ -41,17 +46,33 @@
                     x:Name="Up_Arrow"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Fill="{DynamicResource GlyphBrush}"
-                    Data="M 0 0 L 4 4 L 8 0 Z"
-                />
+                    Fill="{DynamicResource GlyphCollapsedBrush}"
+                    Data="M 0 4 L 4 0 L 8 4 Z" RenderTransformOrigin="0.5,0.5" Stroke="#FF3D3D3D">
+                    <Path.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                        <SkewTransform AngleX="0" AngleY="0"/>
+                        <RotateTransform Angle="90.013"/>
+                        <TranslateTransform X="0" Y="0"/>
+                    </TransformGroup>
+                    </Path.RenderTransform>
+                </Path>
                 <Path
                     x:Name="Down_Arrow"
                     Visibility="Collapsed"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Fill="{DynamicResource GlyphBrush}"
-                    Data="M 0 4 L 4 0 L 8 4 Z"
-                />
+                    Fill="{DynamicResource GlyphExpandedBrush}" RenderTransformOrigin="0.5,0.5" Stroke="#FF000000"
+                    Data="M 0 4 L 4 0 L 8 4 Z">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                            <SkewTransform AngleX="0" AngleY="0"/>
+                            <RotateTransform Angle="140.825"/>
+                            <TranslateTransform X="0" Y="0"/>
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                </Path>
             </Grid>
             <ControlTemplate.Triggers>
                 <Trigger Property="IsMouseOver" Value="true">
