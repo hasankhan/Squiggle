@@ -28,18 +28,113 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <SolidColorBrush x:Key="GlyphBrush" Color="#444"/>
+        <LinearGradientBrush x:Key="MouseOverBrush" EndPoint="0,1" StartPoint="0,0">
+					<GradientStop Color="#FF5B7EEE" Offset="0.0"/>
+            		<GradientStop Color="#FF848FB2" Offset="1.0"/>		
+        </LinearGradientBrush>
+
+        <ControlTemplate x:Key="newToggleButtonControlTemplate" TargetType="{x:Type ToggleButton}">
+            <Grid Background="{TemplateBinding Background}">
+                <Path
+                    x:Name="Up_Arrow"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Fill="{DynamicResource GlyphBrush}"
+                    Data="M 0 0 L 4 4 L 8 0 Z"
+                />
+                <Path
+                    x:Name="Down_Arrow"
+                    Visibility="Collapsed"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Fill="{DynamicResource GlyphBrush}"
+                    Data="M 0 4 L 4 0 L 8 4 Z"
+                />
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Fill" Value="{DynamicResource MouseOverBrush}" TargetName="Up_Arrow"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Fill" Value="{DynamicResource MouseOverBrush}" TargetName="Down_Arrow"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="true">
+                    <Setter Property="Visibility" Value="Visible" TargetName="Down_Arrow"/>
+                    <Setter Property="Visibility" Value="Collapsed" TargetName="Up_Arrow"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        
+        <Style x:Key="newExpanderStyle" TargetType="{x:Type Expander}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Expander}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*" x:Name="ContentRow"/>
+                            </Grid.RowDefinitions>
+                            <Border
+                                x:Name="Border"
+                                Grid.Row="0"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="2,2,0,0" 
+                            >
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ToggleButton
+                                        Template="{DynamicResource newToggleButtonControlTemplate}"
+                                        Background="{TemplateBinding Background}"
+                                        IsChecked="{Binding Path=IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                        OverridesDefaultStyle="True"
+                                    />
+                                    <ContentPresenter Grid.Column="1" Margin="4" RecognizesAccessKey="True" ContentSource="Header"/>
+                                </Grid>
+                            </Border>
+                            <Border
+                                x:Name="ExpandSite"
+                                Grid.Row="1"
+                                Visibility="Collapsed"
+                                BorderThickness="1,0,1,1"
+                                CornerRadius="0,0,2,2"
+                            >
+                                <ContentPresenter
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Margin="{TemplateBinding Padding}"
+                                    Focusable="false"
+                                />
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded" Value="True">
+                                <Setter Property="Visibility" Value="Visible" TargetName="ExpandSite"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <ControlTemplate x:Key="groupTemplate">
-            <Expander Tag="{Binding Name}" 
-                      Loaded="Group_Loaded"
-                      Collapsed="Group_ExpandChanged" 
-                      Expanded="Group_ExpandChanged">
+            <Expander 
+                        Style="{DynamicResource newExpanderStyle}"
+                        Tag="{Binding Name}" 
+                        Loaded="Group_Loaded"
+                        Collapsed="Group_ExpandChanged" 
+                        Expanded="Group_ExpandChanged">
                 <Expander.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="{DynamicResource MainWindow_SendBroadcastMessage}" Tag="{Binding Items}" Click="SendBroadcastMessageMenu_Click" />
                     </ContextMenu>
                 </Expander.ContextMenu>
                 <Expander.Header>
-                    <TextBlock>
+                    <TextBlock FontSize="11" FontWeight="Bold">
                         <controls:TextBlockBugFix.Text2>
                             <MultiBinding StringFormat="{}{0} ({1}/{2})">
                                 <Binding Path="Name" Converter="{x:Static converters:TitleCaseConverter.Instance}" />
