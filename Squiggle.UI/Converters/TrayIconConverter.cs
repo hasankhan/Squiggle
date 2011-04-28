@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace Squiggle.UI.Converters
 {
-    public class TrayIconConverter: IValueConverter
+    public class TrayIconConverter: IMultiValueConverter
     {
         static Icon onlineIcon, offlineIcon, awayIcon, busyIcon;
 
@@ -20,15 +20,21 @@ namespace Squiggle.UI.Converters
             busyIcon = new Icon(Application.GetResourceStream(new Uri("/Images/Chat-Busy.ico", UriKind.Relative)).Stream);
         }
 
-        #region IValueConverter Members
-
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (value != null && value is UserStatus)
+            if (values.Length < 2)
+                return null;
+
+            var visibility = values[1] as Visibility?;
+            if (values[0] is UserStatus)
             {
-                var status = (UserStatus)value;
+                var status = (UserStatus)values[0];
+
+                if (IsBlinking(visibility, status))
+                    return null;
+
                 switch (status)
-                {                    
+                {
                     case UserStatus.Online:
                         return onlineIcon;
                     case UserStatus.Busy:
@@ -43,15 +49,18 @@ namespace Squiggle.UI.Converters
                         return onlineIcon;
                 }
             }
-            else
-                return value;
-        }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+            return null;
+        }        
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();
         }
 
-        #endregion
+        static bool IsBlinking(Visibility? visibility, UserStatus status)
+        {
+            return status != UserStatus.Offline && visibility == Visibility.Collapsed;
+        }
     }
 }

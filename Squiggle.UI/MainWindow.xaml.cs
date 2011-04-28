@@ -18,6 +18,7 @@ using Squiggle.Chat.Services;
 using Squiggle.Utilities;
 using Squiggle.UI.StickyWindows;
 using Squiggle.UI.Resources;
+using System.Windows.Media.Animation;
 
 namespace Squiggle.UI
 {
@@ -40,15 +41,15 @@ namespace Squiggle.UI
         bool exiting;
 
         public MainWindow()
-        {            
+        {
             Instance = this;
-            InitializeComponent();          
-           
+            InitializeComponent();
+
             this.Height = Properties.Settings.Default.MainWindowHeight;
             this.Width = Properties.Settings.Default.MainWindowWidth;
 
             this.Top = Properties.Settings.Default.MainWindowTop > 0 ? Properties.Settings.Default.MainWindowTop : System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height / 2 - this.Height / 2;
-            this.Left = Properties.Settings.Default.MainWindowLeft > 0 ? Properties.Settings.Default.MainWindowLeft : System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width /2 - this.Width / 2;
+            this.Left = Properties.Settings.Default.MainWindowLeft > 0 ? Properties.Settings.Default.MainWindowLeft : System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width / 2 - this.Width / 2;
 
             TrayPopup.Instance.Enabled = SettingsProvider.Current.Settings.GeneralSettings.ShowPopups;
             AudioAlert.Instance.Enabled = SettingsProvider.Current.Settings.GeneralSettings.AudioAlerts;
@@ -62,7 +63,7 @@ namespace Squiggle.UI
             dummyViewModel = new ClientViewModel(new DummyChatClient());
             autoSignout = new NetworkSignout(this.Dispatcher, u => SignIn(u.DisplayName, u.GroupName, false, () => { }), () => SignOut(false));
             chatControl.ContactList.OpenAbout += (sender, e) => SquiggleUtility.ShowAboutDialog(this);
-        }        
+        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -86,8 +87,8 @@ namespace Squiggle.UI
                 Dispatcher.Invoke(() => SignIn(name, groupName, false, () => { }),
                              TimeSpan.FromSeconds(5));
             else if (!String.IsNullOrEmpty(name))
-                    chatControl.SignIn.chkRememberName.IsChecked = true;
-            
+                chatControl.SignIn.chkRememberName.IsChecked = true;
+
             UpdateSortMenu();
             UpdateGroupMenu();
 
@@ -102,7 +103,7 @@ namespace Squiggle.UI
 
         void client_ChatStarted(object sender, Squiggle.Chat.ChatStartedEventArgs e)
         {
-            Dispatcher.Invoke(()=>CreateChatWindow(e.Buddy, e.Chat, false));
+            Dispatcher.Invoke(() => CreateChatWindow(e.Buddy, e.Chat, false));
         }
 
         void ContactList_StartChat(object sender, Squiggle.UI.Controls.ChatStartEventArgs e)
@@ -170,7 +171,7 @@ namespace Squiggle.UI
         public void Quit()
         {
             exiting = true;
-            Close();            
+            Close();
         }
 
         void ContactList_SignOut(object sender, EventArgs e)
@@ -181,19 +182,19 @@ namespace Squiggle.UI
         private void SignOutMenu_Click(object sender, RoutedEventArgs e)
         {
             SignOut(true);
-        }   
+        }
 
         void SignIn(string displayName, string groupName, bool byUser, Action onSignIn)
         {
             if (ChatClient != null && ChatClient.LoggedIn)
                 return;
-            
+
             busyIndicator.IsBusy = true;
-            
+
             Async.Invoke(() =>
             {
                 clientAvailable.WaitOne(TimeSpan.FromSeconds(20));
-            }, 
+            },
             () =>
             {
                 busyIndicator.IsBusy = false;
@@ -208,7 +209,7 @@ namespace Squiggle.UI
                         MessageBox.Show(ex.Message, Translation.Instance.Error, MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                    
+
 
                 CreateMonitor();
                 clientViewModel = new ClientViewModel(ChatClient);
@@ -227,7 +228,7 @@ namespace Squiggle.UI
             },
             Dispatcher);
         }
-        
+
         void SignOut(bool byUser)
         {
             if (ChatClient == null || !ChatClient.LoggedIn)
@@ -290,7 +291,7 @@ namespace Squiggle.UI
         {
             idleStatusChanger.Dispose();
             idleStatusChanger = null;
-        }        
+        }
 
         IChatClient CreateClient(string displayName, string groupName)
         {
@@ -329,13 +330,17 @@ namespace Squiggle.UI
 
         void client_BuddyOnline(object sender, BuddyOnlineEventArgs e)
         {
-            if (!e.Discovered)
+            Dispatcher.Invoke(() =>
             {
-                TrayPopup.Instance.Show("Buddy Online", e.Buddy.DisplayName + " is online", _ => StartChat(e.Buddy));
-                AudioAlert.Instance.Play(AudioAlertType.BuddyOnline);
-            }
-            OnBuddyChanged(e);
-        }
+                if (!e.Discovered)
+                {
+                    TrayPopup.Instance.Show("Buddy Online", e.Buddy.DisplayName + " is online", _ => StartChat(e.Buddy));
+                    AudioAlert.Instance.Play(AudioAlertType.BuddyOnline);
+                    BlinkTrayIcon();
+                }
+                OnBuddyChanged(e);
+            });
+        }        
 
         void client_BuddyOffline(object sender, BuddyEventArgs e)
         {
@@ -355,7 +360,7 @@ namespace Squiggle.UI
                 AddGroupName(e.Buddy.Properties.GroupName);
                 chatControl.ContactList.Refresh();
             });
-        }  
+        }
 
         public void RestoreWindow()
         {
@@ -367,7 +372,7 @@ namespace Squiggle.UI
         ChatWindow CreateChatWindow(Buddy buddy, IChat chatSession, bool initiatedByUser)
         {
             ChatWindow window = null;
-            
+
             if (chatSession == null || !chatSession.IsGroupChat)
                 window = chatWindows.Find(w => w.Buddies.Contains(buddy) && !w.IsGroupChat);
 
@@ -396,7 +401,7 @@ namespace Squiggle.UI
                 window.Restore();
 
             return window;
-        }      
+        }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -517,12 +522,17 @@ namespace Squiggle.UI
         void UpdateGroupMenu()
         {
             mnuGroupBuddies.IsChecked = SettingsProvider.Current.Settings.ContactSettings.GroupContacts;
-        }        
+        }
 
         void OnUpdateCheckComplete(UpdateCheckResult result)
         {
             if (result.IsUpdated)
                 clientViewModel.UpdateLink = result.UpdateLink;
+        }
+
+        void BlinkTrayIcon()
+        {
+            ((Storyboard)this.FindResource("blinkTrayIcon")).Begin();
         }
     }
 }

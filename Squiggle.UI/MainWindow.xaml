@@ -47,14 +47,35 @@
                 <Setter Property="ItemContainerStyle" Value="{StaticResource statusMenuItem}" />
             </Style.Setters>
         </Style>
+        <Storyboard x:Key="blinkTrayIcon">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="trayIcon" Storyboard.TargetProperty="Tag">
+                <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}" KeyTime="0:0:0.25" />
+                <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}" KeyTime="0:0:0.5" />
+                <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}" KeyTime="0:0:0.75" />
+                <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}" KeyTime="0:0:1" />
+                <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}" KeyTime="0:0:1.25" />
+                <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}" KeyTime="0:0:1.5" />
+                <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}" KeyTime="0:0:1.75" />
+                <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}" KeyTime="0:0:2" />
+                <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}" KeyTime="0:0:2.25" />
+                <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}" KeyTime="0:0:2.5" />
+                <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}" KeyTime="0:0:2.75" />
+                <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}" KeyTime="0:0:3" />
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
     </Window.Resources>
     <Grid x:Name="LayoutRoot" FlowDirection="{DynamicResource flowDirection}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <tray:TaskbarIcon IconSource="{Binding LoggedInUser.Status, Converter={StaticResource trayIconConverter}, FallbackValue=Offline}" 
-                          TrayLeftMouseDown="trayIcon_TrayLeftMouseDown" x:Name="trayIcon" ToolTipText="{Binding LoggedInUser.Status, FallbackValue=Offline}" >
+        <tray:TaskbarIcon TrayLeftMouseDown="trayIcon_TrayLeftMouseDown" x:Name="trayIcon" ToolTipText="{Binding LoggedInUser.Status, FallbackValue=Offline}" >
+            <tray:TaskbarIcon.IconSource>
+                <MultiBinding Converter="{StaticResource trayIconConverter}">
+                    <Binding Path="LoggedInUser.Status" FallbackValue="Offline" />
+                    <Binding RelativeSource="{RelativeSource Self}" Path="Tag" />
+                </MultiBinding>
+            </tray:TaskbarIcon.IconSource>
             <tray:TaskbarIcon.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="{DynamicResource MainWindow_TrayMenu_Open}" Click="OpenMenu_Click" />
