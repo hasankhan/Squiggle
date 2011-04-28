@@ -253,7 +253,7 @@
                     </ContextMenu>
                 </Border.ContextMenu>
                 <StackPanel Orientation="Horizontal" Cursor="Hand" VerticalAlignment="Center" Margin="10,0,0,0">
-                    <Ellipse x:Name="ellipseStatus" Width="10" Height="10" Margin="15, 0,10, 0"  Fill="#FF7DB96D" />
+                    <Ellipse x:Name="ellipseStatus" Width="9" Height="9" Margin="10,0,10, 0"  Fill="#FF7DB96D" />
                     <TextBlock Text="{Binding Path=DisplayName}" FontSize="11" />
                     <TextBlock Margin="5,0,0,0" Text="{Binding Path=Properties.DisplayMessage}" TextTrimming="WordEllipsis" ToolTip="{Binding Path=DisplayMessage}"  FontSize="10" Foreground="#FF9A9C9D" HorizontalAlignment="Left" />
                 </StackPanel>
@@ -363,19 +363,19 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <StackPanel Height="30" Orientation="Horizontal">
-                <StackPanel.ContextMenu>
+            <DockPanel Height="30" >
+                <DockPanel.ContextMenu>
                     <ContextMenu />
-                </StackPanel.ContextMenu>
-                <StackPanel.Background>
+                </DockPanel.ContextMenu>
+                    <DockPanel.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#FFF9F9F9" Offset="0.111"/>
                         <GradientStop Color="#FFE4E4E4" Offset="0.593"/>
                     </LinearGradientBrush>
-                </StackPanel.Background>
-                <Image Source="/Images/info.png" Cursor="Hand" Width="18" Height="18" Margin="5,0,0,0" MouseLeftButtonDown="About_MouseLeftButtonDown" />
-                <controls:FilterTextBox FilterChanged="FilterTextBox_FilterChanged" VerticalAlignment="Top" Width="200" Height="25" Margin="5,2,5,2"  />
-            </StackPanel>
+                </DockPanel.Background>
+                <Image Source="/Images/info.png" Cursor="Hand" Width="18" Height="18" Margin="5,0,0,0" DockPanel.Dock="Left" MouseLeftButtonDown="About_MouseLeftButtonDown" />
+                <controls:FilterTextBox FilterChanged="FilterTextBox_FilterChanged" VerticalAlignment="Top" Height="25" Margin="5,2,5,2" />
+            </DockPanel>
             <ScrollViewer Grid.Row="1" Focusable="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
                 <StackPanel>
                     <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}" 
