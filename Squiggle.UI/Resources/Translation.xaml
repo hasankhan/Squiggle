@@ -110,7 +110,7 @@
     <sys:String x:Key="ChatWindow_CouldNotReadFile">Could not read file</sys:String>
     <sys:String x:Key="ChatWindow_MakeSureFileNotInUse">. Please make sure its not in use.</sys:String>
     <sys:String x:Key="ChatWindow_BroadCastChatTitle">Broadcast chat</sys:String>
-    <sys:String x:Key="ChatWindow_LastMessageAt">Last message received at</sys:String>
+    <sys:String x:Key="ChatWindow_LastMessageAt">Last message received at </sys:String>
     <sys:String x:Key="ChatWindow_InviteContact">Invite someone to this conversation.</sys:String>
     <sys:String x:Key="Popup_NewMessage">New Message</sys:String>
     <sys:String x:Key="ContactList_SearchContacts">Search contacts...</sys:String>
