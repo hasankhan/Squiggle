@@ -43,7 +43,7 @@ namespace Squiggle.Chat
                 string groupName = this["GroupName"];
                 return String.IsNullOrEmpty(groupName) ? DefaultGroupName : groupName;
             }
-            set { this["GroupName"] = value; }
+            set { this["GroupName"] = value.Trim(); }
         }
 
         public string MachineName
@@ -55,7 +55,7 @@ namespace Squiggle.Chat
         public string DisplayMessage
         {
             get { return this["DisplayMessage"]; }
-            set { this["DisplayMessage"] = value; }
+            set { this["DisplayMessage"] = value.Trim(); }
         }
 
         public string EmailAddress

@@ -49,6 +49,8 @@ namespace Squiggle.Chat
 
         public void Login(string username, BuddyProperties properties)
         {
+            username = username.Trim();
+
             chatService.Start();
             presenceService.Login(username, properties);
 

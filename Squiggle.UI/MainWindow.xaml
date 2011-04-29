@@ -64,7 +64,7 @@
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
     </Window.Resources>
-    <Grid x:Name="LayoutRoot" FlowDirection="{DynamicResource flowDirection}">
+    <Grid x:Name="LayoutRoot" FlowDirection="{StaticResource flowDirection}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -78,14 +78,14 @@
             </tray:TaskbarIcon.IconSource>
             <tray:TaskbarIcon.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="{DynamicResource MainWindow_TrayMenu_Open}" Click="OpenMenu_Click" />
-                    <MenuItem Header="{DynamicResource MainWindow_TrayMenu_ChangeStatus}"
+                    <MenuItem Header="{StaticResource MainWindow_TrayMenu_Open}" Click="OpenMenu_Click" />
+                    <MenuItem Header="{StaticResource MainWindow_TrayMenu_ChangeStatus}"
                               MenuItem.Click="StatusMenu_Click"
                               Style="{StaticResource statusMenu}" />
-                    <MenuItem Header="{DynamicResource MainWindow_TrayMenu_SignOut}" 
+                    <MenuItem Header="{StaticResource MainWindow_TrayMenu_SignOut}" 
                               Click="SignOutMenu_Click" 
                               Style="{StaticResource signedInMenu}" />
-                    <MenuItem Header="{DynamicResource MainWindow_TrayMenu_Quit}" Click="QuiteMenu_Click" />
+                    <MenuItem Header="{StaticResource MainWindow_TrayMenu_Quit}" Click="QuiteMenu_Click" />
                 </ContextMenu>
             </tray:TaskbarIcon.ContextMenu>
         </tray:TaskbarIcon>
@@ -97,38 +97,38 @@
                     <GradientStop Color="#FFECECEC" Offset="0.875"/>
                 </LinearGradientBrush>
             </Menu.Background>
-            <MenuItem Header="{DynamicResource MainWindow_MainMenu_File}">
-                <MenuItem Header="{DynamicResource MainWindow_MainMenu_SignOut}" 
+            <MenuItem Header="{StaticResource MainWindow_MainMenu_File}">
+                <MenuItem Header="{StaticResource MainWindow_MainMenu_SignOut}" 
                           Click="SignOutMenu_Click" 
                           Style="{StaticResource signedInMenu}" />
                 <Separator />
-                <MenuItem Header="{DynamicResource MainWindow_MainMenu_Status}" 
+                <MenuItem Header="{StaticResource MainWindow_MainMenu_Status}" 
                           Style="{StaticResource statusMenu}"
                           MenuItem.Click="StatusMenu_Click" />
                 <Separator />
-                <MenuItem Header="{DynamicResource MainWindow_MainMenu_OpenFiles}" MenuItem.Click="OpenReceivedFilesMenu_Click" />
+                <MenuItem Header="{StaticResource MainWindow_MainMenu_OpenFiles}" MenuItem.Click="OpenReceivedFilesMenu_Click" />
                 <Separator />
-                <MenuItem Header="{DynamicResource MainWindow_MainMenu_Close}" MenuItem.Click="CloseMenu_Click" />
+                <MenuItem Header="{StaticResource MainWindow_MainMenu_Close}" MenuItem.Click="CloseMenu_Click" />
             </MenuItem>
-            <MenuItem Header="{DynamicResource MainWindow_MainMenu_Actions}">
-                <MenuItem Header="{DynamicResource MainWindow_MainMenu_SendMessage}" Style="{StaticResource onlineBuddiesMenu}" Click="SendMessageMenu_Click" />
-                <MenuItem Header="{DynamicResource MainWindow_SendBroadcastMessage}" Style="{StaticResource onlineBuddiesMenu}" Click="SendBroadcastMessageMenu_Click" />
-                <MenuItem Header="{DynamicResource MainWindow_MainMenu_SendFile}" Style="{StaticResource onlineBuddiesMenu}" Click="SendFileMenu_Click" />
+            <MenuItem Header="{StaticResource MainWindow_MainMenu_Actions}">
+                <MenuItem Header="{StaticResource MainWindow_MainMenu_SendMessage}" Style="{StaticResource onlineBuddiesMenu}" Click="SendMessageMenu_Click" />
+                <MenuItem Header="{StaticResource MainWindow_SendBroadcastMessage}" Style="{StaticResource onlineBuddiesMenu}" Click="SendBroadcastMessageMenu_Click" />
+                <MenuItem Header="{StaticResource MainWindow_MainMenu_SendFile}" Style="{StaticResource onlineBuddiesMenu}" Click="SendFileMenu_Click" />
             </MenuItem>
-            <MenuItem Header="{DynamicResource MainWindow_MainMenu_Tools}">
-                <MenuItem x:Name="mnuGroupBuddies" Header="{DynamicResource MainWindow_MainMenu_GroupBuddies}" MenuItem.Click="GroupMenu_Click" Style="{StaticResource signedInMenu}" />
-                <MenuItem Header="{DynamicResource MainWindow_MainMenu_SortBuddies}" Style="{StaticResource signedInMenu}">
-                    <MenuItem x:Name="mnuSortByName" Header="{DynamicResource MainWindow_MainMenu_SortByName}" MenuItem.Click="SortMenu_Click" Tag="DisplayName" />
-                    <MenuItem x:Name="mnuSortByStatus" Header="{DynamicResource MainWindow_MainMenu_SortByStatus}"  MenuItem.Click="SortMenu_Click" Tag="Status" />
+            <MenuItem Header="{StaticResource MainWindow_MainMenu_Tools}">
+                <MenuItem x:Name="mnuGroupBuddies" Header="{StaticResource MainWindow_MainMenu_GroupBuddies}" MenuItem.Click="GroupMenu_Click" Style="{StaticResource signedInMenu}" />
+                <MenuItem Header="{StaticResource MainWindow_MainMenu_SortBuddies}" Style="{StaticResource signedInMenu}">
+                    <MenuItem x:Name="mnuSortByName" Header="{StaticResource MainWindow_MainMenu_SortByName}" MenuItem.Click="SortMenu_Click" Tag="DisplayName" />
+                    <MenuItem x:Name="mnuSortByStatus" Header="{StaticResource MainWindow_MainMenu_SortByStatus}"  MenuItem.Click="SortMenu_Click" Tag="Status" />
                 </MenuItem>
-                <MenuItem Header="{DynamicResource MainWindow_MainMenu_HistoryViewer}" MenuItem.Click="HistoryViewerMenu_Click" />
-                <MenuItem Header="{DynamicResource MainWindow_MainMenu_Settings}" MenuItem.Click="SettingsMenu_Click" />
+                <MenuItem Header="{StaticResource MainWindow_MainMenu_HistoryViewer}" MenuItem.Click="HistoryViewerMenu_Click" />
+                <MenuItem Header="{StaticResource MainWindow_MainMenu_Settings}" MenuItem.Click="SettingsMenu_Click" />
             </MenuItem>
-            <MenuItem Header="{DynamicResource MainWindow_MainMenu_Help}">
-                <MenuItem Header="{DynamicResource Global_Menu_About}" MenuItem.Click="AboutMenu_Click" />
+            <MenuItem Header="{StaticResource MainWindow_MainMenu_Help}">
+                <MenuItem Header="{StaticResource Global_Menu_About}" MenuItem.Click="AboutMenu_Click" />
             </MenuItem>
         </Menu>        
         <controls:ChatClientControl Grid.Row="1" Width="Auto" Height="Auto" x:Name="chatControl" />
-        <controls:BusyIndicator x:Name="busyIndicator" Grid.Row="1" Message="{DynamicResource MainWindow_PleaseWait}" />
+        <controls:BusyIndicator x:Name="busyIndicator" Grid.Row="1" Message="{StaticResource MainWindow_PleaseWait}" />
     </Grid>
 </sticky:StickyWindow>

@@ -6,7 +6,7 @@
         xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat"
         xmlns:controls="clr-namespace:Squiggle.UI.Controls" KeyDown="Window_KeyDown"
         Icon="/Squiggle;component/Images/Chat.ico"                      
-        Title="{DynamicResource ContactSelectWindow_Heading}" Height="500" Width="360" x:Name="contactSelectControl" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+        Title="{StaticResource ContactSelectWindow_Heading}" Height="500" Width="360" x:Name="contactSelectControl" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
     <Window.Resources>
         <CollectionViewSource Source="{Binding Buddies}" x:Key="buddiesCollection" Filter="CollectionViewSource_Filter" />
         <converters:StatusIconConverter x:Key="statusIconConverter" />
@@ -27,7 +27,7 @@
                         <RowDefinition Height="0.01*"/>
                     </Grid.RowDefinitions>
                     <CheckBox Grid.Column="0" x:Name="chkSelection" Tag="{Binding}" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Margin="0,0,10,0" Visibility="{Binding ElementName=contactSelectControl, Path=AllowMultiSelect, Converter={StaticResource visibilityConverter}}" />
-                    <Image Grid.Column="1" Width="20" Height="20" ToolTip="{Binding Path=Status, Converter={StaticResource statusConverter}}" Source="{Binding Path=Status, Converter={StaticResource statusIconConverter}}" VerticalAlignment="Top"/>
+                    <Image Grid.Column="1" Width="20" Height="20" Source="{Binding Path=Status, Converter={StaticResource statusIconConverter}}" VerticalAlignment="Top"/>
                     <StackPanel Orientation="Vertical" Grid.Column="2">
                         <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="5,0,0,0" Cursor="Hand" >                            
                             <TextBlock Text="{Binding Path=DisplayName}" />
@@ -65,22 +65,22 @@
             </DataTemplate.Triggers>
         </DataTemplate>
     </Window.Resources>
-    <Grid Margin="10" x:Name="LayoutRoot" FlowDirection="{DynamicResource flowDirection}">
+    <Grid Margin="10" x:Name="LayoutRoot" FlowDirection="{StaticResource flowDirection}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="txtMessage" Text="{DynamicResource ContactSelectWindow_SubHeading}" Margin="10,0,0,0" />
+        <TextBlock x:Name="txtMessage" Text="{StaticResource ContactSelectWindow_SubHeading}" Margin="10,0,0,0" />
         <controls:FilterTextBox FilterChanged="FilterTextBox_FilterChanged" VerticalAlignment="Top" Grid.Row="1"  Width="Auto" HorizontalAlignment="Stretch" Margin="10" Height="25"/>
         <ScrollViewer Grid.Row="2" Focusable="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
             <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}" ItemsSource="{Binding Source={StaticResource buddiesCollection}}" AlternationCount="2"  />
         </ScrollViewer>
         <Grid Grid.Row="3">
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                <Button Content="{DynamicResource Global_OKButton}" IsDefault="True" Width="70" Click="OnOK" Visibility="{Binding ElementName=contactSelectControl, Path=AllowMultiSelect, Converter={StaticResource visibilityConverter}}" />
-                <Button IsCancel="True" Content="{DynamicResource Global_CancelButton}" Width="70" Margin="5,0,0,0" Click="OnCancel" />
+                <Button Content="{StaticResource Global_OKButton}" IsDefault="True" Width="70" Click="OnOK" Visibility="{Binding ElementName=contactSelectControl, Path=AllowMultiSelect, Converter={StaticResource visibilityConverter}}" />
+                <Button IsCancel="True" Content="{StaticResource Global_CancelButton}" Width="70" Margin="5,0,0,0" Click="OnCancel" />
             </StackPanel>
         </Grid>
     </Grid>

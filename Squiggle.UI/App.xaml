@@ -23,12 +23,12 @@
                             <TextBlock VerticalAlignment="Top" Text="Contact" Foreground="Black" FontWeight="Bold"/>
                             <Image Stretch="None" Source="Images\man.png" Grid.Row="1"/>
                             <StackPanel VerticalAlignment="Center" Orientation="Vertical" Grid.Column="1" Grid.Row="1">
-                                <TextBlock Foreground="Black" Text="{Binding DisplayName, StringFormat=Display: \{0\}}"/>
-                                <TextBlock Foreground="Black" Text="{Binding Status, StringFormat=Presence: \{0\}}"/>
-                                <TextBlock Foreground="Black" Text="{Binding Properties.EmailAddress, StringFormat=Email: \{0\}}"/>
-                                <TextBlock Foreground="Black" Text="{Binding Properties.MachineName, StringFormat='Machine name: \{0\}'}" />
-                                <TextBlock Foreground="Black" Text="{Binding Properties.GroupName, StringFormat='Group name: \{0\}'}" />
-                                <TextBlock Foreground="Black" Text="{Binding LastUpdated, StringFormat='Last updated: \{0:T\}'}" />
+                                <TextBlock Foreground="Black" Text="{Binding DisplayName, StringFormat={StaticResource BuddyProps_DisplayName}}"/>
+                                <TextBlock Foreground="Black" Text="{Binding Status, StringFormat={StaticResource BuddyProps_Status}}"/>
+                                <TextBlock Foreground="Black" Text="{Binding Properties.EmailAddress, StringFormat={StaticResource BuddyProps_EmailAddress}}"/>
+                                <TextBlock Foreground="Black" Text="{Binding Properties.MachineName, StringFormat={StaticResource BuddyProps_MachineName}}" />
+                                <TextBlock Foreground="Black" Text="{Binding Properties.GroupName, StringFormat={StaticResource BuddyProps_GroupName}}" />
+                                <TextBlock Foreground="Black" Text="{Binding LastUpdated, StringFormat={StaticResource BuddyProps_LastUpdated}}" />
                             </StackPanel>
                         </Grid>
                     </Border>

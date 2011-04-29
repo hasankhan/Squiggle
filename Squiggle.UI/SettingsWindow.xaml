@@ -10,16 +10,16 @@
         <SolidColorBrush x:Key="DialogBackground" Color="#FFF0F0F0"/>
         <SolidColorBrush x:Key="WorkAreaBackgroud" Color="#FFD2D8DE"/>
     </Window.Resources>
-    <Grid x:Name="LayoutRoot" FlowDirection="{DynamicResource flowDirection}">
+    <Grid x:Name="LayoutRoot" FlowDirection="{StaticResource flowDirection}">
         <TabControl>
-            <TabItem Header="{DynamicResource SettingsWindow_GeneralTab_Heading}">
+            <TabItem Header="{StaticResource SettingsWindow_GeneralTab_Heading}">
                 <Grid >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Margin="5" FontWeight="Bold" Text="{DynamicResource SettingsWindow_GeneralTab_SubHeading}" />
+                    <TextBlock Grid.Row="0" Margin="5" FontWeight="Bold" Text="{StaticResource SettingsWindow_GeneralTab_SubHeading}" />
                     <Border Grid.Row="1" Background="{StaticResource WorkAreaBackgroud}" BorderBrush="Black" BorderThickness="1" CornerRadius="3" Margin="5">
                         <Grid Margin="10">
                             <Grid.RowDefinitions>
@@ -35,10 +35,10 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 
-                                <CheckBox Content="{DynamicResource SettingsWindow_GeneralTab_RunOnStartup}" IsChecked="{Binding Path=GeneralSettings.RunAtStartup}" />
-                                <CheckBox Grid.Row="1" Content="{DynamicResource SettingsWindow_GeneralTab_CloseToTray}" IsChecked="{Binding Path=GeneralSettings.HideToSystemTray}" />
-                                <CheckBox Grid.Row="2" Content="{DynamicResource SettingsWindow_GeneralTab_ShowPopups}" IsChecked="{Binding Path=GeneralSettings.ShowPopups}" />
-                                <CheckBox Grid.Row="3" Content="{DynamicResource SettingsWindow_GeneralTab_AudioAlerts}" IsChecked="{Binding Path=GeneralSettings.AudioAlerts}" />
+                                <CheckBox Content="{StaticResource SettingsWindow_GeneralTab_RunOnStartup}" IsChecked="{Binding Path=GeneralSettings.RunAtStartup}" />
+                                <CheckBox Grid.Row="1" Content="{StaticResource SettingsWindow_GeneralTab_CloseToTray}" IsChecked="{Binding Path=GeneralSettings.HideToSystemTray}" />
+                                <CheckBox Grid.Row="2" Content="{StaticResource SettingsWindow_GeneralTab_ShowPopups}" IsChecked="{Binding Path=GeneralSettings.ShowPopups}" />
+                                <CheckBox Grid.Row="3" Content="{StaticResource SettingsWindow_GeneralTab_AudioAlerts}" IsChecked="{Binding Path=GeneralSettings.AudioAlerts}" />
                             </Grid>
                             <Grid Grid.Row="1">
                                 <Grid.RowDefinitions>
@@ -50,30 +50,30 @@
                                     <ColumnDefinition Width="283" />
                                 </Grid.ColumnDefinitions>
                                
-                                <TextBlock Grid.Row="1" Text="{DynamicResource SettingsWindow_GeneralTab_DownloadsFolder}" Grid.ColumnSpan="2" Margin="0" />
+                                <TextBlock Grid.Row="1" Text="{StaticResource SettingsWindow_GeneralTab_DownloadsFolder}" Grid.ColumnSpan="2" Margin="0" />
                                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top" Margin="0">
                                     <TextBox x:Name="txtDownloadsFolder" IsReadOnly="True" Text="{Binding Path=GeneralSettings.DownloadsFolder}" Width="200" />
-                                    <Button Content="{DynamicResource SettingsWindow_GeneralTab_Browse}" Click="btnBrowseDownloadsFolder_Click" Margin="5,0,0,0" />
+                                    <Button Content="{StaticResource SettingsWindow_GeneralTab_Browse}" Click="btnBrowseDownloadsFolder_Click" Margin="5,0,0,0" />
                                 </StackPanel>
                             </Grid>
                         </Grid>
                     </Border>
                     <Grid Grid.Row="2">
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                            <Button IsDefault="True" Content="{DynamicResource Global_OKButton}" Width="70" Click="btnOK_Click" />
-                            <Button IsCancel="True" Content="{DynamicResource Global_CancelButton}" Width="70" Margin="5,0,0,0" Click="btnCancel_Click" />
+                            <Button IsDefault="True" Content="{StaticResource Global_OKButton}" Width="70" Click="btnOK_Click" />
+                            <Button IsCancel="True" Content="{StaticResource Global_CancelButton}" Width="70" Margin="5,0,0,0" Click="btnCancel_Click" />
                         </StackPanel>
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="{DynamicResource SettingsWindow_SettingsTab_Heading}">
+            <TabItem Header="{StaticResource SettingsWindow_SettingsTab_Heading}">
                 <Grid >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Margin="5" FontWeight="Bold" Text="{DynamicResource SettingsWindow_SettingsTab_SubHeading}" />
+                    <TextBlock Grid.Row="0" Margin="5" FontWeight="Bold" Text="{StaticResource SettingsWindow_SettingsTab_SubHeading}" />
                     <Border Grid.Row="1" Background="{StaticResource WorkAreaBackgroud}" BorderBrush="Black" BorderThickness="1" CornerRadius="3" Margin="5">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -96,38 +96,38 @@
                                     <ColumnDefinition Width="0.5*" />
                                     <ColumnDefinition Width="0.5*" />                                    
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.ColumnSpan="2" Text="{DynamicResource SettingsWindow_SettingsTab_DisplayName}"/>
+                                <TextBlock Grid.ColumnSpan="2" Text="{StaticResource SettingsWindow_SettingsTab_DisplayName}"/>
                                 <TextBox Margin="10,0,166,0" Grid.Row="1" Text="{Binding Path=PersonalSettings.DisplayName}" Grid.ColumnSpan="2" Height="22" VerticalAlignment="Top" />
-                                <TextBlock Margin="0,5,0,0" Grid.Row="2" Grid.ColumnSpan="2" Text="{DynamicResource SettingsWindow_SettingsTab_DisplayMessage}"/>
+                                <TextBlock Margin="0,5,0,0" Grid.Row="2" Grid.ColumnSpan="2" Text="{StaticResource SettingsWindow_SettingsTab_DisplayMessage}"/>
                                 <TextBox Margin="10,0,49,0" Grid.Row="3"  Text="{Binding Path=PersonalSettings.DisplayMessage}" Grid.ColumnSpan="2" Height="22" VerticalAlignment="Top" />
-                                <TextBlock Margin="0,5,0,0" Grid.Row="4" Grid.ColumnSpan="2" Text="{DynamicResource SettingsWindow_SettingsTab_EmailAddress}"/>
+                                <TextBlock Margin="0,5,0,0" Grid.Row="4" Grid.ColumnSpan="2" Text="{StaticResource SettingsWindow_SettingsTab_EmailAddress}"/>
                                 <TextBox Margin="10,0,49,0" Grid.Row="5"  Text="{Binding Path=PersonalSettings.EmailAddress}" Grid.ColumnSpan="2" Height="22" VerticalAlignment="Top" />
-                                <TextBlock Margin="0,5,0,0" Grid.Row="6" Grid.ColumnSpan="2" Text="{DynamicResource SettingsWindow_SettingsTab_IdleTimeout}" />
+                                <TextBlock Margin="0,5,0,0" Grid.Row="6" Grid.ColumnSpan="2" Text="{StaticResource SettingsWindow_SettingsTab_IdleTimeout}" />
                                 <StackPanel Margin="0,5,0,0" Orientation="Horizontal" Grid.Row="6" Grid.Column="3">
                                     <TextBox  Width="80" HorizontalAlignment="Left" Text="{Binding Path=PersonalSettings.IdleTimeout}" Margin="0,0,0,5" />
                                     <TextBlock Margin="5,0,0,0">mins</TextBlock>
                                 </StackPanel>
-                                <CheckBox Content="{DynamicResource SettingsWindow_SettingsTab_AutoSignIn}" Grid.Row="7" IsChecked="{Binding Path=PersonalSettings.AutoSignMeIn}"   Margin="5,5,0,0"/>
-                                <CheckBox Content="{DynamicResource SettingsWindow_SettingsTab_RememberMe}" IsChecked="{Binding Path=PersonalSettings.RememberMe}" Grid.Row="7" Grid.Column="1" Margin="5,5,0,0"/>
+                                <CheckBox Content="{StaticResource SettingsWindow_SettingsTab_AutoSignIn}" Grid.Row="7" IsChecked="{Binding Path=PersonalSettings.AutoSignMeIn}"   Margin="5,5,0,0"/>
+                                <CheckBox Content="{StaticResource SettingsWindow_SettingsTab_RememberMe}" IsChecked="{Binding Path=PersonalSettings.RememberMe}" Grid.Row="7" Grid.Column="1" Margin="5,5,0,0"/>
                             </Grid>
                         </Grid>
                     </Border>
                     <Grid Grid.Row="2">
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                            <Button Content="{DynamicResource Global_OKButton}" Width="70" Click="btnOK_Click" />
-                            <Button Content="{DynamicResource Global_CancelButton}" Width="70" Margin="5,0,0,0" Click="btnCancel_Click" />
+                            <Button Content="{StaticResource Global_OKButton}" Width="70" Click="btnOK_Click" />
+                            <Button Content="{StaticResource Global_CancelButton}" Width="70" Margin="5,0,0,0" Click="btnCancel_Click" />
                         </StackPanel>
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="{DynamicResource SettingsWindow_ChatTab_Heading}">
+            <TabItem Header="{StaticResource SettingsWindow_ChatTab_Heading}">
                 <Grid >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Margin="5" FontWeight="Bold" Text="{DynamicResource SettingsWindow_ChatTab_SubHeading}" />
+                    <TextBlock Grid.Row="0" Margin="5" FontWeight="Bold" Text="{StaticResource SettingsWindow_ChatTab_SubHeading}" />
                     <Border Grid.Row="1" Background="{StaticResource WorkAreaBackgroud}" BorderBrush="Black" BorderThickness="1" CornerRadius="3" Margin="5">
                         <Grid Margin="10">
                             <Grid.RowDefinitions>
@@ -135,27 +135,27 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <CheckBox Grid.Row="0" Margin="5,0,0,5" Content="{DynamicResource SettingsWindow_ChatTab_ShowEmoticons}" IsChecked="{Binding Path=ChatSettings.ShowEmoticons}" />
-                            <CheckBox Grid.Row="1" Margin="5,0,0,5" Content="{DynamicResource SettingsWindow_ChatTab_EnableLogging}" IsChecked="{Binding Path=ChatSettings.EnableLogging}" />
-                            <CheckBox Grid.Row="2" Margin="5,0,0,5" Content="{DynamicResource SettingsWindow_ChatTab_SpellCheck}" IsChecked="{Binding Path=ChatSettings.SpellCheck}" />
+                            <CheckBox Grid.Row="0" Margin="5,0,0,5" Content="{StaticResource SettingsWindow_ChatTab_ShowEmoticons}" IsChecked="{Binding Path=ChatSettings.ShowEmoticons}" />
+                            <CheckBox Grid.Row="1" Margin="5,0,0,5" Content="{StaticResource SettingsWindow_ChatTab_EnableLogging}" IsChecked="{Binding Path=ChatSettings.EnableLogging}" />
+                            <CheckBox Grid.Row="2" Margin="5,0,0,5" Content="{StaticResource SettingsWindow_ChatTab_SpellCheck}" IsChecked="{Binding Path=ChatSettings.SpellCheck}" />
                         </Grid>
                     </Border>
                     <Grid Grid.Row="2">
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                            <Button Content="{DynamicResource Global_OKButton}" Width="70" Click="btnOK_Click" />
-                            <Button Content="{DynamicResource Global_CancelButton}" Width="70" Margin="5,0,0,0" Click="btnCancel_Click" />
+                            <Button Content="{StaticResource Global_OKButton}" Width="70" Click="btnOK_Click" />
+                            <Button Content="{StaticResource Global_CancelButton}" Width="70" Margin="5,0,0,0" Click="btnCancel_Click" />
                         </StackPanel>
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="{DynamicResource SettingsWindow_ContactsTab_Heading}">
+            <TabItem Header="{StaticResource SettingsWindow_ContactsTab_Heading}">
                 <Grid >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Margin="5" FontWeight="Bold" Text="{DynamicResource SettingsWindow_ChatTab_SubHeading}" />
+                    <TextBlock Grid.Row="0" Margin="5" FontWeight="Bold" Text="{StaticResource SettingsWindow_ChatTab_SubHeading}" />
                     <Border Grid.Row="1" Background="{StaticResource WorkAreaBackgroud}" BorderBrush="Black" BorderThickness="1" CornerRadius="3" Margin="5">
                         <Grid Margin="10">
                             <Grid.RowDefinitions>
@@ -168,14 +168,14 @@
                                 <ColumnDefinition Width="113" />
                                 <ColumnDefinition Width="283" />
                             </Grid.ColumnDefinitions>
-                            <CheckBox Grid.Row="0" Grid.ColumnSpan="2" Margin="5,0,0,5" Content="{DynamicResource SettingsWindow_ContactsTab_ShowGroupedContacts}" IsChecked="{Binding Path=ContactSettings.GroupContacts}" />
-                            <CheckBox Grid.Row="1" Grid.ColumnSpan="2" Margin="5,0,0,5" Content="{DynamicResource SettingsWindow_ContactsTab_ShowOfflineContacts}" IsChecked="{Binding Path=ContactSettings.ShowOfflineContatcs}" />
-                            <TextBlock Grid.Row="2" Text="{DynamicResource SettingsWindow_ContactsTab_SortBy}" Grid.ColumnSpan="2" Margin="10,10,226,0" />
+                            <CheckBox Grid.Row="0" Grid.ColumnSpan="2" Margin="5,0,0,5" Content="{StaticResource SettingsWindow_ContactsTab_ShowGroupedContacts}" IsChecked="{Binding Path=ContactSettings.GroupContacts}" />
+                            <CheckBox Grid.Row="1" Grid.ColumnSpan="2" Margin="5,0,0,5" Content="{StaticResource SettingsWindow_ContactsTab_ShowOfflineContacts}" IsChecked="{Binding Path=ContactSettings.ShowOfflineContatcs}" />
+                            <TextBlock Grid.Row="2" Text="{StaticResource SettingsWindow_ContactsTab_SortBy}" Grid.ColumnSpan="2" Margin="10,10,226,0" />
                             <ComboBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="0,10,0,0" x:Name="cmbSortField" >
                                 <ComboBoxItem IsSelected="True">DisplayName</ComboBoxItem>
                                 <ComboBoxItem >Status</ComboBoxItem>
                             </ComboBox>
-                            <TextBlock Grid.Row="3" Text="{DynamicResource SettingsWindow_ContactsTab_View}" Grid.ColumnSpan="2" Margin="10,10,226,0" />
+                            <TextBlock Grid.Row="3" Text="{StaticResource SettingsWindow_ContactsTab_View}" Grid.ColumnSpan="2" Margin="10,10,226,0" />
                             <ComboBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="0,10,0,0" x:Name="cmbContactsView" >
                                 <ComboBoxItem IsSelected="True">Standard</ComboBoxItem>
                                 <ComboBoxItem >Compact</ComboBoxItem>
@@ -184,20 +184,20 @@
                     </Border>
                     <Grid Grid.Row="2">
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                            <Button Content="{DynamicResource Global_OKButton}" Width="70" Click="btnOK_Click" />
-                            <Button Content="{DynamicResource Global_CancelButton}" Width="70" Margin="5,0,0,0" Click="btnCancel_Click" />
+                            <Button Content="{StaticResource Global_OKButton}" Width="70" Click="btnOK_Click" />
+                            <Button Content="{StaticResource Global_CancelButton}" Width="70" Margin="5,0,0,0" Click="btnCancel_Click" />
                         </StackPanel>
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="{DynamicResource SettingsWindow_ConnectionTab_Heading}">
+            <TabItem Header="{StaticResource SettingsWindow_ConnectionTab_Heading}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Margin="5" FontWeight="Bold" Text="{DynamicResource SettingsWindow_ConnectionTab_SubHeading}" />
+                    <TextBlock Grid.Row="0" Margin="5" FontWeight="Bold" Text="{StaticResource SettingsWindow_ConnectionTab_SubHeading}" />
                     <Border Grid.Row="1" Background="{StaticResource WorkAreaBackgroud}" BorderBrush="Black" BorderThickness="1" CornerRadius="3" Margin="5">
                         <Grid Margin="10">
                             <Grid.RowDefinitions>
@@ -217,27 +217,27 @@
                                 <ColumnDefinition Width="200" />
                                 <ColumnDefinition Width="58*" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Row="4" Grid.Column="0" Text="{DynamicResource SettingsWindow_ConnectionTab_PresenceAddress}" />
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="{StaticResource SettingsWindow_ConnectionTab_PresenceAddress}" />
                             <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=ConnectionSettings.PresenceAddress}" Margin="0,0,0,5" />
-                            <Button Grid.Row="4" Grid.Column="2" Content="{DynamicResource SettingsWindow_ConnectionTab_Reset}" HorizontalAlignment="Left" Click="btnPresenceAddressReset_Click" />
-                            <TextBlock Grid.Row="5" Grid.Column="0" Text="{DynamicResource SettingsWindow_ConnectionTab_PresencePort}" />
+                            <Button Grid.Row="4" Grid.Column="2" Content="{StaticResource SettingsWindow_ConnectionTab_Reset}" HorizontalAlignment="Left" Click="btnPresenceAddressReset_Click" />
+                            <TextBlock Grid.Row="5" Grid.Column="0" Text="{StaticResource SettingsWindow_ConnectionTab_PresencePort}" />
                             <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Path=ConnectionSettings.PresencePort}" Margin="0,0,0,5"/>
-                            <TextBlock Grid.Row="6" Grid.Column="0" Text="{DynamicResource SettingsWindow_ConnectionTab_ChatPort}" />
+                            <TextBlock Grid.Row="6" Grid.Column="0" Text="{StaticResource SettingsWindow_ConnectionTab_ChatPort}" />
                             <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Path=ConnectionSettings.ChatPort}" Margin="0,0,0,5"/>
-                            <TextBlock Grid.Row="7" Grid.Column="0" Text="{DynamicResource SettingsWindow_ConnectionTab_KeepAliveTime}" />
+                            <TextBlock Grid.Row="7" Grid.Column="0" Text="{StaticResource SettingsWindow_ConnectionTab_KeepAliveTime}" />
                             <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal">
                                 <TextBox Text="{Binding Path=ConnectionSettings.KeepAliveTime}" Width="80" Margin="0,0,5,5" HorizontalAlignment="Left" />
                                 <TextBlock>secs</TextBlock>
                             </StackPanel>
-                            <TextBlock Grid.Row="8" Grid.Column="0" Text="{DynamicResource SettingsWindow_ConnectionTab_BindToIP}" />
+                            <TextBlock Grid.Row="8" Grid.Column="0" Text="{StaticResource SettingsWindow_ConnectionTab_BindToIP}" />
                             <ComboBox Grid.Row="8" Grid.Column="1" ItemsSource="{Binding Path=ConnectionSettings.AllIPs}" SelectedValue="{Binding Path=ConnectionSettings.BindToIP}" Width="150" HorizontalAlignment="Left" Margin="0,0,0,5"/>
                             
                         </Grid>
                     </Border>
                     <Grid Grid.Row="2">
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                            <Button Content="{DynamicResource Global_OKButton}" Width="70" Click="btnOK_Click" />
-                            <Button Content="{DynamicResource Global_CancelButton}" Width="70" Margin="5,0,0,0" Click="btnCancel_Click" />
+                            <Button Content="{StaticResource Global_OKButton}" Width="70" Click="btnOK_Click" />
+                            <Button Content="{StaticResource Global_CancelButton}" Width="70" Margin="5,0,0,0" Click="btnCancel_Click" />
                         </StackPanel>
                     </Grid>
                 </Grid>

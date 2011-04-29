@@ -18,24 +18,24 @@
                 <ColumnDefinition Width="110" />
                 <ColumnDefinition Width="454*" />
             </Grid.ColumnDefinitions>
-            <Label Content="{DynamicResource HistoryViewer_FromDate}" Margin="0,0,35,0" />
+            <Label Content="{StaticResource HistoryViewer_FromDate}" Margin="0,0,35,0" />
             <TextBox x:Name="txtFrom" Grid.ColumnSpan="2" Margin="75,0,0,0" />
-            <Label Grid.Row="1" Content="{DynamicResource HistoryViewer_ToDate}" Margin="0,0,35,0" />
+            <Label Grid.Row="1" Content="{StaticResource HistoryViewer_ToDate}" Margin="0,0,35,0" />
             <TextBox Grid.Row="1" x:Name="txtTo" Grid.ColumnSpan="2" Margin="75,0,0,0" />
-            <Label Grid.Row="2" Content="{DynamicResource HistoryViewer_Message}" Margin="0,0,35,0" />
+            <Label Grid.Row="2" Content="{StaticResource HistoryViewer_Message}" Margin="0,0,35,0" />
             <TextBox Grid.Row="2" x:Name="txtMessage" Grid.ColumnSpan="2" Margin="75,0,0,0" />
             <Button Grid.Row="3" Grid.Column="1" Width="50" 
-                HorizontalAlignment="Right" Click="Search_Click" Content="{DynamicResource HistoryViewer_Search}" IsDefault="True"></Button>
+                HorizontalAlignment="Right" Click="Search_Click" Content="{StaticResource HistoryViewer_Search}" IsDefault="True"></Button>
             <ListView Grid.Row="4" Grid.ColumnSpan="2" x:Name="results" MouseDoubleClick="results_MouseDoubleClick">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="{DynamicResource HistoryViewer_Results_Start}" DisplayMemberBinding="{Binding Start}" Width="140" />
-                        <GridViewColumn Header="{DynamicResource HistoryViewer_Results_End}" DisplayMemberBinding="{Binding End}" Width="140" />
-                        <GridViewColumn Header="{DynamicResource HistoryViewer_Results_Participants}" DisplayMemberBinding="{Binding Participants}" Width="280"  />
+                        <GridViewColumn Header="{StaticResource HistoryViewer_Results_Start}" DisplayMemberBinding="{Binding Start}" Width="140" />
+                        <GridViewColumn Header="{StaticResource HistoryViewer_Results_End}" DisplayMemberBinding="{Binding End}" Width="140" />
+                        <GridViewColumn Header="{StaticResource HistoryViewer_Results_Participants}" DisplayMemberBinding="{Binding Participants}" Width="280"  />
                     </GridView>
                 </ListView.View>
             </ListView>
         </Grid>
-        <controls:BusyIndicator x:Name="busyIndicator" Message="{DynamicResource HistoryViewer_Searching}" />
+        <controls:BusyIndicator x:Name="busyIndicator" Message="{StaticResource HistoryViewer_Searching}" />
     </Grid>
 </sticky:StickyWindow>

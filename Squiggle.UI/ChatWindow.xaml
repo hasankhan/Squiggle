@@ -21,7 +21,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>        
     </Window.Resources>
-    <Grid Background="#FFF3F3F3" x:Name="LayoutRoot" FlowDirection="{DynamicResource flowDirection}">
+    <Grid Background="#FFF3F3F3" x:Name="LayoutRoot" FlowDirection="{StaticResource flowDirection}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -34,33 +34,33 @@
                     <GradientStop Color="#FFECECEC" Offset="0.875"/>
                 </LinearGradientBrush>
             </Menu.Background>
-            <MenuItem Header="{DynamicResource ChatWindow_MainMenu_File}">
-                <MenuItem Header="{DynamicResource ChatWindow_MainMenu_Save}" MenuItem.Click="SaveMenu_Click" />
-                <MenuItem Header="{DynamicResource ChatWindow_MainMenu_SaveAs}" MenuItem.Click="SaveAsMenu_Click" />
+            <MenuItem Header="{StaticResource ChatWindow_MainMenu_File}">
+                <MenuItem Header="{StaticResource ChatWindow_MainMenu_Save}" MenuItem.Click="SaveMenu_Click" />
+                <MenuItem Header="{StaticResource ChatWindow_MainMenu_SaveAs}" MenuItem.Click="SaveAsMenu_Click" />
                 <Separator />
-                <MenuItem x:Name="mnuSendFile" Header="{DynamicResource ChatWindow_MainMenu_SendAFile}" MenuItem.Click="SendFileMenu_Click" />
-                <MenuItem Header="{DynamicResource ChatWindow_MainMenu_OpenReceivedFiles}" MenuItem.Click="OpenReceivedFilesMenu_Click" />
+                <MenuItem x:Name="mnuSendFile" Header="{StaticResource ChatWindow_MainMenu_SendAFile}" MenuItem.Click="SendFileMenu_Click" />
+                <MenuItem Header="{StaticResource ChatWindow_MainMenu_OpenReceivedFiles}" MenuItem.Click="OpenReceivedFilesMenu_Click" />
                 <Separator />
-                <MenuItem Header="{DynamicResource ChatWindow_MainMenu_Close}" MenuItem.Click="CloseMenu_Click" />
+                <MenuItem Header="{StaticResource ChatWindow_MainMenu_Close}" MenuItem.Click="CloseMenu_Click" />
             </MenuItem>
-            <MenuItem Header="{DynamicResource ChatWindow_MainMenu_Edit}">
-                <MenuItem Header="{DynamicResource ChatWindow_MainMenu_Undo}" InputGestureText="Ctrl+Z" IsEnabled="{Binding ElementName=txtMessageEditBox, Path=CanUndo}" Click="UndoMenu_Click" />
+            <MenuItem Header="{StaticResource ChatWindow_MainMenu_Edit}">
+                <MenuItem Header="{StaticResource ChatWindow_MainMenu_Undo}" InputGestureText="Ctrl+Z" IsEnabled="{Binding ElementName=txtMessageEditBox, Path=CanUndo}" Click="UndoMenu_Click" />
                 <Separator />
-                <MenuItem Header="{DynamicResource ChatWindow_MainMenu_Cut}" InputGestureText="Ctrl+X" Click="CutMenu_Click" />
-                <MenuItem Header="{DynamicResource ChatWindow_MainMenu_Copy}" InputGestureText="Ctrl+C" Click="CopyMenu_Click" />
-                <MenuItem Header="{DynamicResource ChatWindow_MainMenu_Paste}" InputGestureText="Ctrl+V" Click="PasteMenu_Click" />
-                <MenuItem Header="{DynamicResource ChatWindow_MainMenu_Delete}" InputGestureText="Del" Click="DeleteMenu_Click" />
+                <MenuItem Header="{StaticResource ChatWindow_MainMenu_Cut}" InputGestureText="Ctrl+X" Click="CutMenu_Click" />
+                <MenuItem Header="{StaticResource ChatWindow_MainMenu_Copy}" InputGestureText="Ctrl+C" Click="CopyMenu_Click" />
+                <MenuItem Header="{StaticResource ChatWindow_MainMenu_Paste}" InputGestureText="Ctrl+V" Click="PasteMenu_Click" />
+                <MenuItem Header="{StaticResource ChatWindow_MainMenu_Delete}" InputGestureText="Del" Click="DeleteMenu_Click" />
                 <Separator />
-                <MenuItem Header="{DynamicResource ChatWindow_MainMenu_SelectAll}" InputGestureText="Ctrl+A" Click="SelectAllMenu_Click" />
+                <MenuItem Header="{StaticResource ChatWindow_MainMenu_SelectAll}" InputGestureText="Ctrl+A" Click="SelectAllMenu_Click" />
             </MenuItem>
-            <MenuItem Header="{DynamicResource ChatWindow_MainMenu_Actions}">
-                <MenuItem x:Name="mnuInviteContact" Header="{DynamicResource ChatWindow_MainMenu_InviteContact}" MenuItem.Click="InviteContactMenu_Click" />
+            <MenuItem Header="{StaticResource ChatWindow_MainMenu_Actions}">
+                <MenuItem x:Name="mnuInviteContact" Header="{StaticResource ChatWindow_MainMenu_InviteContact}" MenuItem.Click="InviteContactMenu_Click" />
             </MenuItem>
-            <MenuItem Header="{DynamicResource ChatWindow_MainMenu_Tools}">
-                <MenuItem Header="{DynamicResource ChatWindow_MainMenu_Settings}" MenuItem.Click="SettingsMenu_Click" />
+            <MenuItem Header="{StaticResource ChatWindow_MainMenu_Tools}">
+                <MenuItem Header="{StaticResource ChatWindow_MainMenu_Settings}" MenuItem.Click="SettingsMenu_Click" />
             </MenuItem>
-            <MenuItem Header="{DynamicResource ChatWindow_MainMenu_Help}">
-                <MenuItem Header="{DynamicResource Global_Menu_About}" MenuItem.Click="AboutMenu_Click" />
+            <MenuItem Header="{StaticResource ChatWindow_MainMenu_Help}">
+                <MenuItem Header="{StaticResource Global_Menu_About}" MenuItem.Click="AboutMenu_Click" />
             </MenuItem>
         </Menu>
         <Grid Margin="5" Grid.Row="1">

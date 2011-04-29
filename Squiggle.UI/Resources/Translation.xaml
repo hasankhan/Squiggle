@@ -153,5 +153,11 @@
     <sys:String x:Key="ConversationViewer_Sender">Sender</sys:String>
     <sys:String x:Key="ConversationViewer_Type">Type</sys:String>
     <sys:String x:Key="Error_NoNetwork">You are not on a network. Please make sure your network card is enabled.</sys:String>
-    <sys:String x:Key="Error">Error</sys:String>    
+    <sys:String x:Key="Error">Error</sys:String>
+    <sys:String x:Key="BuddyProps_DisplayName">Display name: {0}</sys:String>
+    <sys:String x:Key="BuddyProps_Status">Status: {0}</sys:String>
+    <sys:String x:Key="BuddyProps_EmailAddress">Email: {0}</sys:String>
+    <sys:String x:Key="BuddyProps_MachineName">Machine name: {0}</sys:String>
+    <sys:String x:Key="BuddyProps_GroupName">Group name: {0}</sys:String>
+    <sys:String x:Key="BuddyProps_LastUpdated">Last updated: {0:T}</sys:String>
 </ResourceDictionary>

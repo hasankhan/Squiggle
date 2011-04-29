@@ -51,7 +51,7 @@
                     <Button Content="Open" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="0,0,30,0" Click="Open_Click"
                             Template="{DynamicResource BlackGlassButton}" Foreground="White"/>
                     <TextBlock VerticalAlignment="Center" FontSize="10">
-                        <Hyperlink Click="ShowInFolder_Click"><TextBlock Text="{DynamicResource ChatWindow_ShowInFolder}" /></Hyperlink>
+                        <Hyperlink Click="ShowInFolder_Click"><TextBlock Text="{StaticResource ChatWindow_ShowInFolder}" /></Hyperlink>
                     </TextBlock>
                 </StackPanel>
             </Grid>

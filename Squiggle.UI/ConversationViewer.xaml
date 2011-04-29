@@ -8,9 +8,9 @@
         <ListView x:Name="messages">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding Stamp}" Header="{DynamicResource ConversationViewer_Stamp}" Width="140" />
-                    <GridViewColumn DisplayMemberBinding="{Binding SenderName}" Header="{DynamicResource ConversationViewer_Sender}" Width="80" />
-                    <GridViewColumn DisplayMemberBinding="{Binding Type}" Header="{DynamicResource ConversationViewer_Type}" Width="80" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Stamp}" Header="{StaticResource ConversationViewer_Stamp}" Width="140" />
+                    <GridViewColumn DisplayMemberBinding="{Binding SenderName}" Header="{StaticResource ConversationViewer_Sender}" Width="80" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Type}" Header="{StaticResource ConversationViewer_Type}" Width="80" />
                     <GridViewColumn DisplayMemberBinding="{Binding Data}" Width="280" />
                 </GridView>
             </ListView.View>

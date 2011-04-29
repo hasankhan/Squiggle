@@ -6,5 +6,5 @@
         WindowStyle="None" ResizeMode="NoResize" Deactivated="Window_Deactivated" 
         BorderBrush="LightGray" BorderThickness="1"
         ShowInTaskbar="False" ShowActivated="True" KeyDown="Window_KeyDown" Closing="Window_Closing">
-    <UniformGrid x:Name="root" FlowDirection="{DynamicResource flowDirection}" Columns="4" />
+    <UniformGrid x:Name="root" FlowDirection="{StaticResource flowDirection}" Columns="4" />
 </sticky:StickyWindow>
