@@ -41,7 +41,8 @@
           <Property Name="Start" Type="datetime" Nullable="false" />
           <Property Name="End" Type="datetime" />
         </EntityType>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="HistoryModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
