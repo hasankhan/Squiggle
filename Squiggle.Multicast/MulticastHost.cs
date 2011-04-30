@@ -12,6 +12,86 @@ namespace Squiggle.Multicast
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)] 
     public class MulticastHost : IMulticastService
     {
+        HashSet<Client> clients;
+
+        public MulticastHost()
+        {
+            this.clients = new HashSet<Client>();
+        }
+
+        public void Reset()
+        {
+            lock (clients)
+                clients.Clear();
+        }        
+
+        public void RegisterClient()
+        {
+            ExceptionMonster.EatTheException(() =>
+            {
+                var client = GetCurrentClient();
+                lock (clients)
+                    clients.Add(client);
+            }, "registering client");
+        }
+
+        public void UnRegisterClient()
+        {
+            ExceptionMonster.EatTheException(() =>
+            {
+                var client = GetCurrentClient();
+                lock (clients)
+                    clients.Remove(client);
+            }, "unregistering client");
+        }
+
+        public void ForwardMessage(Message message)
+        {
+            ExceptionMonster.EatTheException(() =>
+            {
+                RegisterClient();
+
+                Client currentClient = GetCurrentClient();
+                IEnumerable<Client> clientsClone;
+
+                lock (clients)
+                    clientsClone = clients.ToList();
+
+                foreach (var client in clientsClone)
+                    if (!client.Equals(currentClient))
+                    {
+                        Client current = client; // to make it part of closure
+                        Async.Invoke(() =>
+                        {
+                            if (!ForwardMessage(message, current))
+                            {
+                                current.ErrorCount++;
+                                if (current.ErrorCount >= 3)
+                                    lock (clients)
+                                        clients.Remove(client);
+                            }
+                        });
+                    }
+
+            }, "forwarding message");
+        }
+
+        static bool ForwardMessage(Message message, Client current)
+        {
+            return ExceptionMonster.EatTheException(() =>
+            {
+                current.Callback.MessageForwarded(message);
+                current.ErrorCount = 0;
+            }, "forwarding message");
+        }
+
+        Client GetCurrentClient()
+        {
+            var callback = OperationContext.Current.GetCallbackChannel<IMulticastServiceCallback>();
+            var client = new Client(callback);
+            return client;
+        }
+
         class Client
         {
             public IMulticastServiceCallback Callback { get; set; }
@@ -36,80 +116,6 @@ namespace Squiggle.Multicast
             {
                 return Callback == null ? 0 : Callback.GetHashCode();
             }
-        }
-
-        HashSet<Client> clients;
-
-        public MulticastHost()
-        {
-            this.clients = new HashSet<Client>();
-        }
-
-        public void Reset()
-        {
-            lock (clients)
-                clients.Clear();
-        }        
-
-        public void RegisterClient()
-        {
-            ExceptionMonster.EatTheException(() =>
-            {
-                lock (clients)
-                    clients.Add(new Client(GetCurrentClient()));
-            }, "registering client");
-        }
-
-        public void UnRegisterClient()
-        {
-            ExceptionMonster.EatTheException(() =>
-            {
-                var client = GetCurrentClient();
-                lock (clients)
-                    clients.Remove(new Client(client));
-            }, "unregistering client");
-        }
-
-        public void ForwardMessage(Message message)
-        {
-            ExceptionMonster.EatTheException(() =>
-            {
-                RegisterClient();
-
-                IMulticastServiceCallback currentClient = GetCurrentClient();
-                IEnumerable<Client> clientsClone;
-
-                lock (clients)
-                    clientsClone = clients.ToList();
-
-                foreach (var client in clientsClone)
-                    if (client.Callback != currentClient)
-                    {
-                        Client current = client; // to make it part of closure
-                        Async.Invoke(() =>
-                        {
-                            try
-                            {
-                                current.Callback.MessageForwarded(message);
-                                current.ErrorCount = 0;
-                            }
-                            catch (Exception)
-                            {
-                                current.ErrorCount++;
-                                if (current.ErrorCount >= 3)
-                                    lock (clients)
-                                        clients.Remove(client);
-                            }
-                        });
-                    }
-
-            }, "forwarding message");
-        }
-
-        IMulticastServiceCallback GetCurrentClient()
-        {
-            var client = OperationContext.Current.GetCallbackChannel<IMulticastServiceCallback>();
-            return client;
         }
     }
 }
