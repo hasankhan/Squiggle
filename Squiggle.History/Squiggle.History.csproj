@@ -64,13 +64,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAL\Event.cs" />
-    <Compile Include="DAL\SessionCriteria.cs" />
-    <Compile Include="DAL\EventType.cs" />
     <Compile Include="DAL\HistoryEntities.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>HistoryEntities.edmx</DependentUpon>
     </Compile>
+    <Compile Include="DAL\SessionCriteria.cs" />
+    <Compile Include="DAL\EventType.cs" />
     <Compile Include="DAL\HistoryRepository.cs" />
     <Compile Include="HistoryManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -83,8 +83,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="DAL\History.sdf" />
-  </ItemGroup>
-  <ItemGroup>
     <EntityDeploy Include="DAL\HistoryEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>HistoryEntities.Designer.cs</LastGenOutput>

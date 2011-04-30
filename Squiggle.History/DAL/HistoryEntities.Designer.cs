@@ -13,7 +13,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("HistoryModel", "SessionParticipant", "Session", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Squiggle.History.DAL.Session), "Participant", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Squiggle.History.DAL.Participant))]
 
 // Original file name:
-// Generation date: 4/29/2011 7:36:19 AM
+// Generation date: 5/1/2011 12:08:11 AM
 namespace Squiggle.History.DAL
 {
     
