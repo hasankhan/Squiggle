@@ -11,6 +11,7 @@ using Squiggle.UI.ViewModel;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Squiggle.Utilities;
+using System.Windows.Controls.Primitives;
 
 namespace Squiggle.UI.Controls
 {
@@ -85,24 +86,6 @@ namespace Squiggle.UI.Controls
                 ChatStart(this, new ChatStartEventArgs() { Buddy = buddy,
                                                            SendFile = sendFile,
                                                            Files = filePaths });
-        }
-
-        void StartChat_Click(object sender, RoutedEventArgs e)
-        {
-            Buddy buddy = ((MenuItem)sender).Tag as Buddy;
-            StartChat(buddy, false);
-        }
-
-        void SendFile_Click(object sender, RoutedEventArgs e)
-        {
-            Buddy buddy = ((MenuItem)sender).Tag as Buddy;
-            StartChat(buddy, true);
-        }
-
-        void SendEmail_Click(object sender, RoutedEventArgs e)
-        {
-            Buddy buddy = ((MenuItem)sender).Tag as Buddy;
-            System.Diagnostics.Process.Start("mailto:" + buddy.Properties.EmailAddress);
         }
 
         void Buddy_DragOver(object sender, DragEventArgs e)
@@ -231,6 +214,24 @@ namespace Squiggle.UI.Controls
         private void UpdateLink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
             Shell.OpenUrl(e.Uri.ToString());
+        }
+
+        void StartChat_Click(object sender, RoutedEventArgs e)
+        {
+            Buddy buddy = ((Control)sender).Tag as Buddy;
+            StartChat(buddy, false);
+        }
+
+        void SendFile_Click(object sender, RoutedEventArgs e)
+        {
+            Buddy buddy = ((Control)sender).Tag as Buddy;
+            StartChat(buddy, true);
+        }
+
+        void SendEmail_Click(object sender, RoutedEventArgs e)
+        {
+            Buddy buddy = ((Control)sender).Tag as Buddy;
+            System.Diagnostics.Process.Start("mailto:" + buddy.Properties.EmailAddress);
         }
     }
 

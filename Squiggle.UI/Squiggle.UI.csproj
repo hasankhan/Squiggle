@@ -266,6 +266,7 @@
       <DependentUpon>ConversationViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\ContactListGroupConverter.cs" />
+    <Compile Include="Converters\ORMultiConverter.cs" />
     <Compile Include="Converters\TitleCaseConverter.cs" />
     <Compile Include="Emoticon.cs" />
     <Compile Include="Emoticons.cs" />

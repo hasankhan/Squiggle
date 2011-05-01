@@ -120,7 +120,7 @@ namespace Squiggle.UI
         {
             ChatWindow window = StartChat(buddy);
             if (sendFile)
-                if (filePaths == null)
+                if (filePaths == null || filePaths.Length == 0)
                     window.SendFile();
                 else
                     window.SendFiles(filePaths);
