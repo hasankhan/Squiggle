@@ -421,9 +421,6 @@ namespace Squiggle.UI
                     if (window != this)
                         window.Close();
 
-                Properties.Settings.Default.MainWindowTop = Top;
-                Properties.Settings.Default.MainWindowLeft = Left;
-
                 SignOut(true);
                 clientAvailable.WaitOne();
             }
@@ -533,6 +530,14 @@ namespace Squiggle.UI
         void BlinkTrayIcon()
         {
             ((Storyboard)this.FindResource("blinkTrayIcon")).Begin();
+        }
+
+        private void StickyWindow_LocationChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.MainWindowTop = Top;
+            Properties.Settings.Default.MainWindowLeft = Left;
+
+            Properties.Settings.Default.Save();
         }
     }
 }
