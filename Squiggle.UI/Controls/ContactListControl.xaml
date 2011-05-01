@@ -12,36 +12,7 @@
     Width="200" Height="400" Loaded="UserControl_Loaded" >
     <UserControl.Resources>
         <CollectionViewSource Source="{Binding Buddies}" x:Key="buddiesCollection" Filter="CollectionViewSource_Filter" />
-        <converters:StatusIconConverter x:Key="statusIconConverter" />
-        <converters:ORMultiConverter x:Key="orConverter" />
         <converters:StatusConverter x:Key="statusConverter" />
-        <Style x:Key="StatusSymbol" TargetType="{x:Type Ellipse}">
-            <Setter Property="Width" Value="9"/>
-            <Setter Property="Height" Value="9"/>
-            <Setter Property="Margin" Value="10,0,10, 0"/>
-            <Setter Property="Fill" Value="#FF7DB96D"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Status}" Value="Online">
-                    <Setter  Property="Fill" Value="#FF7DB96D" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Status}" Value="Offline">
-                    <Setter Property="Fill" Value="#FFCFCFCF" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Status}" Value="Busy">
-                    <Setter Property="Fill" Value="#FFEB6D6E" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Status}" Value="Away">
-                    <Setter Property="Fill" Value="#FFFFB937" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Status}" Value="Idle">
-                    <Setter Property="Fill" Value="#FFFFB937" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Status}" Value="BeRightBack">
-                    <Setter Property="Fill" Value="#FFFFB937" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-        
         <Style x:Key="ContactInfoToolTipStyle" TargetType="{x:Type ToolTip}">
             <Setter Property="SnapsToDevicePixels" Value="True"/>
             <Setter Property="Template">
@@ -213,158 +184,6 @@
             ObjectType="{x:Type helpers:SquiggleUtility}" 
             x:Key="AvailableUserStatus">
         </ObjectDataProvider>
-        <DataTemplate x:Key="standardView">
-            <Border x:Name="contactBorder" Padding="1" Cursor="Hand" Style="{StaticResource ContactListItem}"
-                    Tag="{Binding}" MouseLeftButtonUp="Buddy_Click" AllowDrop="True" Drop="Buddy_Drop" DragOver="Buddy_DragOver">
-                <Border.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="{StaticResource Buddy_StartChat}" Tag="{Binding}" Click="StartChat_Click" />
-                        <MenuItem Header="{StaticResource Buddy_SendFile}" Tag="{Binding}" Click="SendFile_Click" />
-                        <MenuItem Header="{StaticResource Buddy_SendEmail}" Tag="{Binding}" Click="SendEmail_Click" />
-                    </ContextMenu>
-                </Border.ContextMenu>
-                <Grid Margin="5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="0.01*"/>
-                    </Grid.RowDefinitions>
-                    <Image Width="20" Height="20" Source="{Binding Path=Status, Converter={StaticResource statusIconConverter}}" VerticalAlignment="Top"/>
-                    <StackPanel Orientation="Vertical" Grid.Column="1">
-                        <StackPanel HorizontalAlignment="Left" Grid.Column="1"
-                                            Orientation="Horizontal" Margin="5,0,0,0" Cursor="Hand" >
-                            <TextBlock Text="{Binding Path=DisplayName}" />
-                            <TextBlock x:Name="buddyStatus" Margin="5,0,0,0" Text="{Binding Path=Status, Converter={StaticResource statusConverter}, StringFormat={}({0})}" />
-                        </StackPanel>
-                        <TextBlock Margin="5,0,0,0" Text="{Binding Path=Properties.DisplayMessage}" TextTrimming="WordEllipsis" ToolTip="{Binding Path=DisplayMessage}"  FontSize="10" Foreground="#FF9A9C9D" HorizontalAlignment="Left" />
-                    </StackPanel>
-                </Grid>
-            </Border>
-            <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding Status}" Value="Online">
-                    <Setter TargetName="buddyStatus" Property="Visibility" Value="Hidden" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Status}" Value="Offline">
-                    <Setter TargetName="buddyStatus" Property="Visibility" Value="Hidden" />
-                </DataTrigger>
-                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                    <Setter Property="Background" Value="White" 
-                                TargetName="contactBorder"></Setter>
-                </Trigger>
-                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                    <Setter Property="Background" Value="WhiteSmoke" 
-                                TargetName="contactBorder"></Setter>
-                </Trigger>
-                <Trigger SourceName="contactBorder" Property="IsMouseOver" Value="True">
-                    <Setter TargetName="contactBorder" Property="Background" >
-                        <Setter.Value>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="#FFF0F0F0" Offset="0.061"/>
-                                <GradientStop Color="#FFE3E4E4" Offset="0.939"/>
-                            </LinearGradientBrush>
-                        </Setter.Value>
-                    </Setter>
-                </Trigger>
-            </DataTemplate.Triggers>
-        </DataTemplate>
-        <DataTemplate x:Key="compactView">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Border x:Name="contactBorder" Cursor="Hand"  Height="20"
-                    Tag="{Binding}" MouseLeftButtonUp="Buddy_Click" AllowDrop="True" Drop="Buddy_Drop" DragOver="Buddy_DragOver">
-                    <Border.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="{StaticResource Buddy_StartChat}" Tag="{Binding}" Click="StartChat_Click" />
-                            <MenuItem Header="{StaticResource Buddy_SendFile}" Tag="{Binding}" Click="SendFile_Click" />
-                            <MenuItem Header="{StaticResource Buddy_SendEmail}" Tag="{Binding}" Click="SendEmail_Click" />
-                        </ContextMenu>
-                    </Border.ContextMenu>
-                    <Grid>
-
-                        <StackPanel Orientation="Horizontal" Cursor="Hand" VerticalAlignment="Center" Margin="10,0,0,0">
-                            <Ellipse x:Name="ellipseStatus" Style="{StaticResource StatusSymbol}" />
-                            <TextBlock Text="{Binding Path=DisplayName}" FontSize="11" />
-                            <TextBlock Margin="5,0,0,0" Text="{Binding Path=Properties.DisplayMessage}" TextTrimming="WordEllipsis" ToolTip="{Binding Path=DisplayMessage}"  FontSize="10" Foreground="#FF9A9C9D" HorizontalAlignment="Left" />
-                        </StackPanel>
-                    </Grid>
-                </Border>
-                <Popup x:Name="popup" PlacementTarget="{Binding ElementName=contactBorder}"
-                           VerticalOffset="0"  Placement="Left" Width="350" Height="170"
-                           AllowsTransparency="true" Focusable="true" StaysOpen="true">
-                    <Popup.IsOpen>
-                        <MultiBinding Converter="{StaticResource orConverter}">
-                            <Binding ElementName="contactBorder" Path="IsMouseOver" Mode="OneWay" />
-                            <Binding ElementName="popup" Path="IsMouseOver" Mode="OneWay" />
-                        </MultiBinding>
-                    </Popup.IsOpen>
-                    <Border Margin="5" BorderBrush="Black" BorderThickness="1">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0.3*"/>
-                                <ColumnDefinition Width="0.7*"/>
-                            </Grid.ColumnDefinitions>
-                            <DockPanel Background="#FFD6D9E5" Grid.ColumnSpan="2">
-                                <Button DockPanel.Dock="Left" Background="White" Content="Chat" MinWidth="75" Margin="5" Tag="{Binding}" Click="StartChat_Click"/>
-                                <Button DockPanel.Dock="Left" Background="White" Content="Email" MinWidth="75" Margin="5" Tag="{Binding}" Click="SendEmail_Click"/>
-                                <Button DockPanel.Dock="Right" Background="White" Content="Send File" Width="100" Margin="5" HorizontalAlignment="Right" Tag="{Binding}" Click="SendFile_Click"/>
-                            </DockPanel>
-                            <Border BorderBrush="Black" BorderThickness="0,1,0,1" Background="White" VerticalAlignment="Stretch"  Grid.ColumnSpan="2" Grid.Row="1">
-                                <StackPanel Orientation="Vertical" Margin="0,5,0,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Ellipse Style="{StaticResource StatusSymbol}"  Margin="5,0,5,0" VerticalAlignment="Center" />
-                                        <TextBlock Foreground="Black" FontWeight="Bold"  Text="{Binding DisplayName}"/>
-                                        <TextBlock Foreground="Black" VerticalAlignment="Center" Margin="5,0,0,0" FontSize="10" Text="{Binding Status, StringFormat=(\{0\})}"/>
-                                    </StackPanel>
-                                    <ScrollViewer Height="90" VerticalScrollBarVisibility="Auto" >
-                                        <TextBlock Margin="10,0,0,0" Foreground="#FF9A9C9D" Text="{Binding Properties.DisplayMessage}" TextWrapping="WrapWithOverflow"/>
-                                    </ScrollViewer>
-                                    <!--<TextBlock Foreground="Black" Text="{Binding Properties.EmailAddress, StringFormat=Email: \{0\}}"/>-->
-                                    <!--<TextBlock Foreground="Black" Text="{Binding Properties.MachineName, StringFormat='Machine name: \{0\}'}" />-->
-                                    <!--<TextBlock Foreground="Black" Text="{Binding Properties.GroupName, StringFormat='Group name: \{0\}'}" />-->
-                                </StackPanel>
-                            </Border>
-                            <DockPanel Background="White" Grid.Row="2" Grid.ColumnSpan="2" >
-                                <TextBlock Margin="5,0,0,0" FontSize="10" Foreground="Black" Text="{Binding Properties.MachineName, StringFormat='Machine name: \{0\}'}" />
-                                <TextBlock Margin="0,0,5,0" DockPanel.Dock="Right" HorizontalAlignment="Right" Foreground="Black" FontSize="10" Text="{Binding LastUpdated, StringFormat='Last updated: \{0:T\}'}" />
-                            </DockPanel>
-                        </Grid>
-                    </Border>
-                </Popup>
-            </Grid>
-
-            <DataTemplate.Triggers>
-               
-                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                    <Setter Property="Background" Value="White" 
-                                TargetName="contactBorder"></Setter>
-                </Trigger>
-                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                    <Setter Property="Background" Value="WhiteSmoke" 
-                                TargetName="contactBorder"></Setter>
-                </Trigger>
-                <Trigger SourceName="contactBorder" Property="IsMouseOver" Value="True">
-                    <Setter TargetName="contactBorder" Property="Background" >
-                        <Setter.Value>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="#FFF0F0F0" Offset="0.061"/>
-                                <GradientStop Color="#FFE3E4E4" Offset="0.939"/>
-                            </LinearGradientBrush>
-                        </Setter.Value>
-                    </Setter>
-                </Trigger>
-            </DataTemplate.Triggers>
-        </DataTemplate>
-        <local:ContactsViewSelector x:Key="contactViewSelector" StandardView="{StaticResource standardView}" CompactView="{StaticResource compactView}"/>
     </UserControl.Resources>
     <Grid >
         <Grid.RowDefinitions>
@@ -445,9 +264,22 @@
             </DockPanel>
             <ScrollViewer Grid.Row="1" Focusable="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
                 <StackPanel>
-                    <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}" 
+                    <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}"                                   
                                   ItemsSource="{Binding Source={StaticResource buddiesCollection}}" 
-                                  AlternationCount="2" ItemTemplateSelector="{StaticResource contactViewSelector}">
+                                  AlternationCount="2">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <controls:ContactListItem AllowDrop="True" Drop="Buddy_Drop" DragOver="Buddy_DragOver" MouseLeftButtonUp="Buddy_Click">
+                                    <controls:ContactListItem.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="{StaticResource Buddy_StartChat}" Tag="{Binding}" Click="StartChat_Click" />
+                                            <MenuItem Header="{StaticResource Buddy_SendFile}" Tag="{Binding}" Click="SendFile_Click" />
+                                            <MenuItem Header="{StaticResource Buddy_SendEmail}" Tag="{Binding}" Click="SendEmail_Click" />
+                                        </ContextMenu>
+                                    </controls:ContactListItem.ContextMenu>
+                                </controls:ContactListItem>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
                         <ItemsControl.GroupStyle>
                             <GroupStyle>
                                 <GroupStyle.ContainerStyle>

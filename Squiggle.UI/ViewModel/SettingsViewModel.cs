@@ -118,10 +118,10 @@ namespace Squiggle.UI.ViewModel
 
     class ContactSettingsViewModel
     {
-        public string ContactListSortField { get; set; }
+        public ContactListSortField ContactListSortField { get; set; }
         public bool GroupContacts { get; set; }
         public bool ShowOfflineContatcs { get; set; }
-        public string ContactListView { get; set; }
+        public ContactListView ContactListView { get; set; }
     }
 
     class ConnectionSettingsViewModel: ViewModelBase

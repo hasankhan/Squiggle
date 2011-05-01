@@ -70,9 +70,15 @@ namespace Squiggle.UI.Resources
             Instance = Instance ?? new Translation();
             foreach (PropertyInfo property in typeof(Translation).GetProperties(BindingFlags.Instance | BindingFlags.Public))
             {
-                var translation = Application.Current.TryFindResource(property.Name) as String;
+                var translation = GetTranslation(property.Name);
                 property.SetValue(Instance, translation, null);
             }
+        }
+
+        public static string GetTranslation(string key)
+        {
+            var translation = Application.Current.TryFindResource(key) as String;
+            return translation;
         }        
     }
 }

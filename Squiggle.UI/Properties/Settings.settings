@@ -50,7 +50,7 @@
     <Setting Name="SpellCheck" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ContactListSortField" Type="System.String" Scope="User">
+    <Setting Name="ContactListSortField" Type="Squiggle.UI.Settings.ContactListSortField" Scope="User">
       <Value Profile="(Default)">DisplayName</Value>
     </Setting>
     <Setting Name="DownloadsFolder" Type="System.String" Scope="User">
@@ -104,7 +104,7 @@
     <Setting Name="EmailAddress" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="ContactListView" Type="System.String" Scope="User">
+    <Setting Name="ContactListView" Type="Squiggle.UI.Settings.ContactListView" Scope="User">
       <Value Profile="(Default)">Standard</Value>
     </Setting>
   </Settings>

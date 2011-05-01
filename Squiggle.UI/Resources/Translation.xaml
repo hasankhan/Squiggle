@@ -160,4 +160,8 @@
     <sys:String x:Key="BuddyProps_MachineName">Machine name: {0}</sys:String>
     <sys:String x:Key="BuddyProps_GroupName">Group name: {0}</sys:String>
     <sys:String x:Key="BuddyProps_LastUpdated">Last updated: {0:T}</sys:String>
+    <sys:String x:Key="SortField_DisplayName">Display Name</sys:String>
+    <sys:String x:Key="SortField_Status">Status</sys:String>
+    <sys:String x:Key="ContactView_Standard">Standard</sys:String>
+    <sys:String x:Key="ContactView_Compact">Compact</sys:String>
 </ResourceDictionary>

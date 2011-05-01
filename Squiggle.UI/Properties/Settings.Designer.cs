@@ -218,9 +218,9 @@ namespace Squiggle.UI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("DisplayName")]
-        public string ContactListSortField {
+        public global::Squiggle.UI.Settings.ContactListSortField ContactListSortField {
             get {
-                return ((string)(this["ContactListSortField"]));
+                return ((global::Squiggle.UI.Settings.ContactListSortField)(this["ContactListSortField"]));
             }
             set {
                 this["ContactListSortField"] = value;
@@ -433,9 +433,9 @@ namespace Squiggle.UI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Standard")]
-        public string ContactListView {
+        public global::Squiggle.UI.Settings.ContactListView ContactListView {
             get {
-                return ((string)(this["ContactListView"]));
+                return ((global::Squiggle.UI.Settings.ContactListView)(this["ContactListView"]));
             }
             set {
                 this["ContactListView"] = value;

@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Async.cs" />
     <Compile Include="ConfigReader.cs" />
+    <Compile Include="StringValueAttribute.cs" />
     <Compile Include="WcfConfig.cs" />
     <Compile Include="ConsoleService.cs">
       <SubType>Component</SubType>

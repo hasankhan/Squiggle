@@ -40,11 +40,11 @@ namespace Squiggle.UI
             LoadSettings();
 
             AdjustLocation();
-
+<<<<<<< .mine=======
             this.DataContext = settingsVm;
             cmbSortField.Text = settingsVm.ContactSettings.ContactListSortField;
             cmbContactsView.Text = settingsVm.ContactSettings.ContactListView;
-        }
+>>>>>>> .theirs        }
 
         private void AdjustLocation()
         {
@@ -69,7 +69,9 @@ namespace Squiggle.UI
             SettingsProvider.Current.Load();
             settingsVm = new SettingsViewModel(SettingsProvider.Current.Settings);
             settingsVm.ConnectionSettings.AllIPs.AddRange(NetworkUtility.GetLocalIPAddresses().Select(ip => ip.ToString()));
-            settingsVm.GeneralSettings.RunAtStartup = GetRunAtStartup();            
+            settingsVm.GeneralSettings.RunAtStartup = GetRunAtStartup();
+            cmbSortField.SelectedItem = settingsVm.ContactSettings.ContactListSortField;
+            cmbContactsView.SelectedItem = settingsVm.ContactSettings.ContactListView;
 
             if (user == null)
             {
@@ -96,8 +98,8 @@ namespace Squiggle.UI
                 return false;
             }
 
-            settingsVm.ContactSettings.ContactListSortField = cmbSortField.Text;
-            settingsVm.ContactSettings.ContactListView = cmbContactsView.Text;
+            settingsVm.ContactSettings.ContactListSortField = (ContactListSortField)cmbSortField.SelectedItem;
+            settingsVm.ContactSettings.ContactListView = (ContactListView)cmbContactsView.SelectedItem;
             settingsVm.Update();
 
             if (user != null)

@@ -5,13 +5,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:Squiggle.UI"
     Title="ChatWindow"  
+    xmlns:dragdrop="clr-namespace:FluidKit.Helpers.DragDrop;assembly=FluidKit"     
     Loaded="Window_Loaded" Closed="Window_Closed" Activated="Window_Activated"
+    dragdrop:DragDropManager.DropTargetAdvisor="{DynamicResource contactDragDrop}"
     SizeChanged="Window_SizeChanged" Icon="/Squiggle;component/Images/chat.ico">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources\RoundButton.xaml" />
-                <ResourceDictionary>                  
+                <ResourceDictionary>
+                    <controls:ContactDragDropAdvisor x:Key="contactDragDrop" />
                     <Style x:Key="toolbarButton" BasedOn="{StaticResource RoundButton}" TargetType="{x:Type Button}">
                         <Setter Property="Height" Value="25" />
                         <Setter Property="Width" Value="25" />

@@ -73,10 +73,9 @@ namespace Messenger
 
         void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
+#if !DEBUG
             e.Handled = true;
             Trace.WriteLine("Dispatcher unhandled exception: " + e.Exception.ToString());
-#if DEBUG
-            Debugger.Launch();
 #endif
         }
 

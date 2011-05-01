@@ -497,7 +497,7 @@ namespace Squiggle.UI
 
         private void SortMenu_Click(object sender, RoutedEventArgs e)
         {
-            string sortBy = ((MenuItem)sender).Tag.ToString();
+            var sortBy = (ContactListSortField)((MenuItem)sender).Tag;
             SettingsProvider.Current.Settings.ContactSettings.ContactListSortField = sortBy;
             SettingsProvider.Current.Save();
             UpdateSortMenu();
@@ -505,7 +505,7 @@ namespace Squiggle.UI
 
         void UpdateSortMenu()
         {
-            mnuSortByStatus.IsChecked = (SettingsProvider.Current.Settings.ContactSettings.ContactListSortField == "Status");
+            mnuSortByStatus.IsChecked = (SettingsProvider.Current.Settings.ContactSettings.ContactListSortField == ContactListSortField.Status);
             mnuSortByName.IsChecked = !mnuSortByStatus.IsChecked;
         }
 

@@ -27,7 +27,7 @@ namespace Squiggle.UI.Controls
 
         string filter = String.Empty;
         bool showOfflineContacts;
-        string contactListView;
+        ContactListView contactListView;
         public static DependencyProperty ChatContextProperty = DependencyProperty.Register("ChatContext", typeof(ClientViewModel), typeof(ContactListControl), new PropertyMetadata(null));
         public ClientViewModel ChatContext
         {
@@ -76,7 +76,7 @@ namespace Squiggle.UI.Controls
 
         void Buddy_Click(object sender, MouseButtonEventArgs e)
         {
-            Buddy buddy = ((Border)sender).Tag as Buddy;
+            Buddy buddy = ((FrameworkElement)sender).DataContext as Buddy;
             StartChat(buddy, false);
         }        
 
@@ -101,7 +101,7 @@ namespace Squiggle.UI.Controls
             var files = e.Data.GetData(DataFormats.FileDrop) as string[];
             if (files != null)
             {
-                Buddy buddy = ((Border)sender).Tag as Buddy;
+                var buddy = ((FrameworkElement)sender).DataContext as Buddy;
                 StartChat(buddy, true, files);
             }
         }
@@ -139,7 +139,7 @@ namespace Squiggle.UI.Controls
         void AddSortDescription(CollectionViewSource cvs)
         {
             var sort = new SortDescription();
-            sort.PropertyName = SettingsProvider.Current.Settings.ContactSettings.ContactListSortField;
+            sort.PropertyName = SettingsProvider.Current.Settings.ContactSettings.ContactListSortField.ToString();
             cvs.SortDescriptions.Add(sort);         
         }
 
@@ -157,7 +157,7 @@ namespace Squiggle.UI.Controls
         {
             bool refresh = false;
             if (!cvs.SortDescriptions.Any() ||
-                (cvs.SortDescriptions[0].PropertyName != SettingsProvider.Current.Settings.ContactSettings.ContactListSortField))
+                (cvs.SortDescriptions[0].PropertyName != SettingsProvider.Current.Settings.ContactSettings.ContactListSortField.ToString()))
             {
                 cvs.SortDescriptions.Clear();
                 AddSortDescription(cvs);

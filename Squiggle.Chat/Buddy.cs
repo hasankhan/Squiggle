@@ -22,10 +22,12 @@ namespace Squiggle.Chat
         public event EventHandler Offline = delegate { };
         public event EventHandler Online = delegate { };
 
+        public Buddy()
+        {
+        }
+
         public Buddy(IChatClient chatClient, object id, IPEndPoint chatEndPoint, BuddyProperties properties)
         {
-            if (id == null)
-                Debugger.Break();
             this.ID = id;
             this.ChatEndPoint = chatEndPoint;
             this.ChatClient = chatClient;

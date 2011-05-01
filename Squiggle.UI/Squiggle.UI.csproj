@@ -134,6 +134,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\ContactListItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\DisplayMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -250,12 +254,15 @@
     <Compile Include="AppInfo.cs" />
     <Compile Include="AudioAlert.cs" />
     <Compile Include="ChatWindowCollection.cs" />
-    <Compile Include="ContactDragDropAdvisor.cs" />
+    <Compile Include="Controls\ContactDragDropAdvisor.cs" />
     <Compile Include="ContactsSelectWindow.xaml.cs">
       <DependentUpon>ContactsSelectWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\BusyIndicator.xaml.cs">
       <DependentUpon>BusyIndicator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ContactListItem.xaml.cs">
+      <DependentUpon>ContactListItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ContactsViewSelector.cs" />
     <Compile Include="Controls\Emoticon.xaml.cs">
@@ -266,6 +273,7 @@
       <DependentUpon>ConversationViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\ContactListGroupConverter.cs" />
+    <Compile Include="Converters\EnumValueConverter.cs" />
     <Compile Include="Converters\ORMultiConverter.cs" />
     <Compile Include="Converters\TitleCaseConverter.cs" />
     <Compile Include="Emoticon.cs" />
@@ -302,6 +310,8 @@
     <Compile Include="Settings\ChatSettings.cs" />
     <Compile Include="Settings\ContactGroup.cs" />
     <Compile Include="Settings\ContactGroups.cs" />
+    <Compile Include="Settings\ContactListSortField.cs" />
+    <Compile Include="Settings\ContactListView.cs" />
     <Compile Include="Settings\ContactSettings.cs" />
     <Compile Include="StickyWindows\DpiHelper.cs" />
     <Compile Include="StickyWindows\NativeBehaviors.cs" />
@@ -402,6 +412,7 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>

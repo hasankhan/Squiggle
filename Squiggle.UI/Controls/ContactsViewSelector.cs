@@ -15,7 +15,7 @@ namespace Squiggle.UI.Controls
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            if(SettingsProvider.Current.Settings.ContactSettings.ContactListView == "Compact")
+            if(SettingsProvider.Current.Settings.ContactSettings.ContactListView == ContactListView.Compact)
                 return CompactView;
 
             return StandardView;
