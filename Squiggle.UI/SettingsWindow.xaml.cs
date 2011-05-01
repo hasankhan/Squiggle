@@ -40,11 +40,8 @@ namespace Squiggle.UI
             LoadSettings();
 
             AdjustLocation();
-<<<<<<< .mine=======
             this.DataContext = settingsVm;
-            cmbSortField.Text = settingsVm.ContactSettings.ContactListSortField;
-            cmbContactsView.Text = settingsVm.ContactSettings.ContactListView;
->>>>>>> .theirs        }
+        }
 
         private void AdjustLocation()
         {
