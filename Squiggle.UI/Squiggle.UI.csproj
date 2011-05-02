@@ -95,6 +95,7 @@
     </Reference>
     <Reference Include="WPFToolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\Libraries\WPFToolkit.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -306,6 +307,7 @@
   <ItemGroup>
     <Compile Include="MessageParsers\MultiParser.cs" />
     <Compile Include="MessageParsers\RegexParser.cs" />
+    <Compile Include="RelayCommand.cs" />
     <Compile Include="Resources\Translation.cs" />
     <Compile Include="Settings\ChatSettings.cs" />
     <Compile Include="Settings\ContactGroup.cs" />
