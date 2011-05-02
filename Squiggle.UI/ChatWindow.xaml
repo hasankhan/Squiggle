@@ -4,10 +4,9 @@
     xmlns:controls="clr-namespace:Squiggle.UI.Controls"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:Squiggle.UI"
-    Title="ChatWindow"  
+    Title="ChatWindow" x:Name="chatWindow"
     xmlns:dragdrop="clr-namespace:FluidKit.Helpers.DragDrop;assembly=FluidKit"     
     Loaded="Window_Loaded" Closed="Window_Closed" Activated="Window_Activated"
-    dragdrop:DragDropManager.DropTargetAdvisor="{DynamicResource contactDragDrop}"
     SizeChanged="Window_SizeChanged" Icon="/Squiggle;component/Images/chat.ico">
     <Window.Resources>
         <ResourceDictionary>
@@ -24,7 +23,9 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>        
     </Window.Resources>
-    <Grid Background="#FFF3F3F3" x:Name="LayoutRoot" FlowDirection="{StaticResource flowDirection}">
+    <Grid Background="#FFF3F3F3" x:Name="LayoutRoot" 
+          dragdrop:DragDropManager.DropTargetAdvisor="{DynamicResource contactDragDrop}"          
+          FlowDirection="{StaticResource flowDirection}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />

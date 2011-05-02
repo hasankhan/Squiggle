@@ -26,6 +26,16 @@ namespace Squiggle.UI
             SetWindowPos(interopHelper.Handle, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
         }
 
+        public static TParent GetVisualParent<TParent>(this DependencyObject element) where TParent:DependencyObject
+        {
+            do
+            {
+                element = VisualTreeHelper.GetParent(element);
+            }
+            while (!(element is TParent) && element != null);
+            return (TParent)element;
+        }
+
         public static ScrollViewer FindScrollViewer(this FlowDocumentScrollViewer flowDocumentScrollViewer)
         {
             if (VisualTreeHelper.GetChildrenCount(flowDocumentScrollViewer) == 0)

@@ -591,7 +591,7 @@ namespace Squiggle.UI
 
         public void Invite(Buddy buddy)
         {
-            if (buddy != null && chatSession != null)
+            if (buddy != null && chatSession != null && !Buddies.Contains(buddy))
                 chatSession.Invite(buddy);
         }
 

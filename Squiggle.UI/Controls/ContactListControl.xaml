@@ -185,6 +185,11 @@
             x:Key="AvailableUserStatus">
         </ObjectDataProvider>
     </UserControl.Resources>
+    <UserControl.CommandBindings>
+        <CommandBinding Command="{x:Static local:ContactListItem.ChatCommand}" Executed="ChatCommand_Executed" />
+        <CommandBinding Command="{x:Static local:ContactListItem.EmailCommand}" Executed="EmailCommand_Executed" />
+        <CommandBinding Command="{x:Static local:ContactListItem.SendFileCommand}" Executed="SendFileCommand_Executed" />
+    </UserControl.CommandBindings>
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

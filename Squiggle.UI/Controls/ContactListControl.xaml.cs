@@ -233,6 +233,21 @@ namespace Squiggle.UI.Controls
             Buddy buddy = ((Control)sender).Tag as Buddy;
             System.Diagnostics.Process.Start("mailto:" + buddy.Properties.EmailAddress);
         }
+
+        private void ChatCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+
+        }
+
+        private void EmailCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+
+        }
+
+        private void SendFileCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+
+        }
     }
 
     public class ChatStartEventArgs : EventArgs

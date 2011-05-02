@@ -49,6 +49,7 @@ namespace Squiggle.UI.Controls
 {
     class ContactDragDropAdvisor : IDragSourceAdvisor, IDropTargetAdvisor
     {
+        const string dataObjectName = "DraggedContact";
         UIElement sourceElement;
         UIElement targetElement;
 
@@ -67,16 +68,12 @@ namespace Squiggle.UI.Controls
 
         public DataObject GetDataObject(UIElement draggedElt)
         {
-            //var obj = new DataObject("DraggedContact", ((ContactListItem)draggedElt).DataContext);
-            string serializedElt = XamlWriter.Save(((ContactListItem)draggedElt).Content);
-            DataObject obj = new DataObject("DraggedContact", serializedElt);
-
+            DataObject obj = new DataObject(dataObjectName, draggedElt);
             return obj;
         }
 
         public void FinishDrag(UIElement draggedElt, DragDropEffects finalEffects)
         {
-            
         }
 
         public bool IsDraggable(UIElement dragElt)
@@ -86,7 +83,18 @@ namespace Squiggle.UI.Controls
 
         public UIElement GetTopContainer()
         {
-            return Application.Current.MainWindow.Content as UIElement;
+            UIElement container = null;
+            if (TargetUI != null)
+            {
+                var window = TargetUI.GetVisualParent<Window>();
+                if (window != null)
+                    container = (UIElement)window.Content;
+            }
+
+            if (container == null)
+                container =  (UIElement)Application.Current.MainWindow.Content;
+
+            return container;
         }
 
         #endregion
@@ -106,48 +114,40 @@ namespace Squiggle.UI.Controls
 
         public bool IsValidDataObject(IDataObject obj)
         {
-            return (obj.GetDataPresent("DraggedContact"));
+            return obj.GetDataPresent(dataObjectName);
         }
 
         public UIElement GetVisualFeedback(IDataObject obj)
         {
-            UIElement elt = ExtractElement(obj);
-
-            Type elementType = elt.GetType();
+            var contact = GetContact(obj);
 
             Rectangle rect = new Rectangle();
-            rect.Width = (double)elementType.GetProperty("Width").GetValue(elt, null);
-            rect.Height = (double)elementType.GetProperty("Height").GetValue(elt, null);
-            rect.Fill = new VisualBrush(elt);
+            rect.Width = contact.ActualWidth;
+            rect.Height = contact.ActualHeight;
+            rect.Fill = new VisualBrush(contact);
             rect.Opacity = 0.5;
             rect.IsHitTestVisible = false;
 
             return rect;
-
-            return elt;
         }
 
         public void OnDropCompleted(IDataObject obj, Point dropPoint)
         {
-            var contactListItem = sourceElement as ContactListItem;
-
-            // Add to the conversation;
+            var chatWindow = TargetUI.GetVisualParent<ChatWindow>();
+            if (chatWindow != null)
+            {
+                ContactListItem item = GetContact(obj);
+                var buddy = item.DataContext as Buddy;
+                chatWindow.Invite(buddy);
+            }
         }
 
         #endregion
 
-        private UIElement ExtractElement(IDataObject obj)
+        static ContactListItem GetContact(IDataObject obj)
         {
-            //var buddy = obj.GetData("DraggedContact") as Buddy;
-            //var elt = new ContactListItem()
-            //{
-            //    DataContext = buddy
-            //};
-            string xamlString = obj.GetData("DraggedContact") as string;
-            XmlReader reader = XmlReader.Create(new StringReader(xamlString));
-            UIElement elt = XamlReader.Load(reader) as UIElement;
-
-            return elt;
+            var contact = obj.GetData(dataObjectName) as ContactListItem;
+            return contact;
         }
     }
 }
