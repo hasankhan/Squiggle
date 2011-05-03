@@ -20,14 +20,15 @@ namespace Squiggle.UI.Controls
     /// </summary>
     public partial class ContactListControl : UserControl
     {
+        string filter = String.Empty;
+        bool showOfflineContacts;
+        ContactListView contactListView;
+        
         public event EventHandler<ChatStartEventArgs> ChatStart = delegate { };
         public event EventHandler<BroadcastChatStartEventArgs> BroadcastChatStart = delegate { };
         public event EventHandler SignOut = delegate { };
         public event EventHandler OpenAbout = delegate { };
-
-        string filter = String.Empty;
-        bool showOfflineContacts;
-        ContactListView contactListView;
+        
         public static DependencyProperty ChatContextProperty = DependencyProperty.Register("ChatContext", typeof(ClientViewModel), typeof(ContactListControl), new PropertyMetadata(null));
         public ClientViewModel ChatContext
         {
@@ -231,22 +232,12 @@ namespace Squiggle.UI.Controls
         void SendEmail_Click(object sender, RoutedEventArgs e)
         {
             Buddy buddy = ((Control)sender).Tag as Buddy;
+            SendEmail(buddy);
+        }
+
+        static void SendEmail(Buddy buddy)
+        {
             System.Diagnostics.Process.Start("mailto:" + buddy.Properties.EmailAddress);
-        }
-
-        private void ChatCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-
-        }
-
-        private void EmailCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-
-        }
-
-        private void SendFileCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-
         }
     }
 

@@ -19,10 +19,6 @@ namespace Squiggle.UI.Controls
     /// </summary>
     public partial class ContactListItem : UserControl
     {
-        public static readonly ICommand ChatCommand = new RoutedUICommand();
-        public static readonly ICommand EmailCommand = new RoutedUICommand();
-        public static readonly ICommand SendFileCommand = new RoutedUICommand();
-
         public ContactListItem()
         {
             InitializeComponent();

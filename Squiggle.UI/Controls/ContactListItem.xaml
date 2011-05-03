@@ -128,9 +128,9 @@
                                 <ColumnDefinition Width="0.7*"/>
                             </Grid.ColumnDefinitions>
                             <DockPanel Background="#FFD6D9E5" Grid.ColumnSpan="2">
-                                <Button DockPanel.Dock="Left" Background="White" Content="Chat" MinWidth="75" Margin="5" Command="{x:Static local:ContactListItem.ChatCommand}" />
-                                <Button DockPanel.Dock="Left" Background="White" Content="Email" MinWidth="75" Margin="5" Command="{x:Static local:ContactListItem.EmailCommand}" />
-                                <Button DockPanel.Dock="Right" Background="White" Content="Send File" Width="100" Margin="5" HorizontalAlignment="Right" Command="{x:Static local:ContactListItem.SendFileCommand}" />
+                                <Button DockPanel.Dock="Left" Background="White" Content="Chat" MinWidth="75" Margin="5" />
+                                <Button DockPanel.Dock="Left" Background="White" Content="Email" MinWidth="75" Margin="5" />
+                                <Button DockPanel.Dock="Right" Background="White" Content="Send File" Width="100" Margin="5" HorizontalAlignment="Right" />
                             </DockPanel>
                             <Border BorderBrush="Black" BorderThickness="0,1,0,1" Background="White" VerticalAlignment="Stretch"  Grid.ColumnSpan="2" Grid.Row="1">
                                 <StackPanel Orientation="Vertical" Margin="0,5,0,0">
