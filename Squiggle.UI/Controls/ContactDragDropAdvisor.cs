@@ -78,7 +78,7 @@ namespace Squiggle.UI.Controls
 
         public bool IsDraggable(UIElement dragElt)
         {
-            return dragElt is ContactListItem;
+            return dragElt is Border;
         }
 
         public UIElement GetTopContainer()
@@ -136,7 +136,7 @@ namespace Squiggle.UI.Controls
             var chatWindow = TargetUI.GetVisualParent<ChatWindow>();
             if (chatWindow != null)
             {
-                ContactListItem item = GetContact(obj);
+                var item = GetContact(obj);
                 var buddy = item.DataContext as Buddy;
                 chatWindow.Invite(buddy);
             }
@@ -144,9 +144,9 @@ namespace Squiggle.UI.Controls
 
         #endregion
 
-        static ContactListItem GetContact(IDataObject obj)
+        static Border GetContact(IDataObject obj)
         {
-            var contact = obj.GetData(dataObjectName) as ContactListItem;
+            var contact = obj.GetData(dataObjectName) as Border;
             return contact;
         }
     }

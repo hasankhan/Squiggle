@@ -239,6 +239,21 @@ namespace Squiggle.UI.Controls
         {
             System.Diagnostics.Process.Start("mailto:" + buddy.Properties.EmailAddress);
         }
+
+        private void ChatCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            StartChat((Buddy)e.Parameter, false);
+        }
+
+        private void EmailCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            SendEmail((Buddy)e.Parameter);
+        }
+
+        private void SendFileCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            StartChat((Buddy)e.Parameter, true);
+        }
     }
 
     public class ChatStartEventArgs : EventArgs
