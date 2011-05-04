@@ -128,9 +128,9 @@
                                 <ColumnDefinition Width="0.7*"/>
                             </Grid.ColumnDefinitions>
                             <DockPanel Background="#FFD6D9E5" Grid.ColumnSpan="2">
-                                <Button DockPanel.Dock="Left" Background="White" Content="Chat" MinWidth="75" Margin="5" />
-                                <Button DockPanel.Dock="Left" Background="White" Content="Email" MinWidth="75" Margin="5" />
-                                <Button DockPanel.Dock="Right" Background="White" Content="Send File" Width="100" Margin="5" HorizontalAlignment="Right" />
+                                <Button DockPanel.Dock="Left" Background="White" Content="{StaticResource ContactListItem_ChatButton}" MinWidth="75" Margin="5" />
+                                <Button DockPanel.Dock="Left" Background="White" Content="{StaticResource ContactListItem_EmailButton}" MinWidth="75" Margin="5" />
+                                <Button DockPanel.Dock="Right" Background="White" Content="{StaticResource ContactListItem_SendFileButton}" Width="100" Margin="5" HorizontalAlignment="Right" />
                             </DockPanel>
                             <Border BorderBrush="Black" BorderThickness="0,1,0,1" Background="White" VerticalAlignment="Stretch"  Grid.ColumnSpan="2" Grid.Row="1">
                                 <StackPanel Orientation="Vertical" Margin="0,5,0,0">
@@ -145,8 +145,8 @@
                                 </StackPanel>
                             </Border>
                             <DockPanel Background="White" Grid.Row="2" Grid.ColumnSpan="2" >
-                                <TextBlock Margin="5,0,0,0" FontSize="10" Foreground="Black" Text="{Binding Properties.MachineName, StringFormat='Machine name: \{0\}'}" />
-                                <TextBlock Margin="0,0,5,0" DockPanel.Dock="Right" HorizontalAlignment="Right" Foreground="Black" FontSize="10" Text="{Binding LastUpdated, StringFormat='Last updated: \{0:T\}'}" />
+                                <TextBlock Margin="5,0,0,0" FontSize="10" Foreground="Black" Text="{Binding Properties.MachineName, StringFormat={StaticResource BuddyProps_MachineName}}" />
+                                <TextBlock Margin="0,0,5,0" DockPanel.Dock="Right" HorizontalAlignment="Right" Foreground="Black" FontSize="10" Text="{Binding LastUpdated, StringFormat={StaticResource BuddyProps_LastUpdated}}" />
                             </DockPanel>
                         </Grid>
                     </Border>

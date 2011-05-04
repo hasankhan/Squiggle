@@ -114,6 +114,9 @@
     <sys:String x:Key="ChatWindow_InviteContact">Invite someone to this conversation.</sys:String>
     <sys:String x:Key="Popup_NewMessage">New Message</sys:String>
     <sys:String x:Key="ContactList_SearchContacts">Search contacts...</sys:String>
+    <sys:String x:Key="ContactListItem_ChatButton">Chat</sys:String>
+    <sys:String x:Key="ContactListItem_EmailButton">Email</sys:String>
+    <sys:String x:Key="ContactListItem_SendFileButton">Send File</sys:String>
     <sys:String x:Key="FileTransfer_Waiting">Waiting</sys:String>
     <sys:String x:Key="FileTransfer_Cancel">Cancel</sys:String>
     <sys:String x:Key="FileTransfer_Reject">Reject</sys:String>
