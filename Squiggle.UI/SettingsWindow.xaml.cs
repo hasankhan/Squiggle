@@ -39,18 +39,8 @@ namespace Squiggle.UI
         {
             LoadSettings();
 
-            AdjustLocation();
             this.DataContext = settingsVm;
-        }
-
-        private void AdjustLocation()
-        {
-            if ((this.Left + Width) > System.Windows.SystemParameters.WorkArea.Right)
-                this.Left = System.Windows.SystemParameters.WorkArea.Right - Width - 5;
-
-            else if (this.Left < 0)
-                this.Left = 0;
-        }        
+        }            
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
