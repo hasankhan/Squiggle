@@ -28,6 +28,13 @@ namespace Squiggle.UI.Controls
         public SignInControl()
         {
             InitializeComponent();
+
+            SettingsProvider.Current.SettingsUpdated += new EventHandler(Current_SettingsUpdated);
+        }
+
+        void Current_SettingsUpdated(object sender, EventArgs e)
+        {
+            LoadSettings(SettingsProvider.Current.Settings);
         }
 
         public void SetDisplayName(string name)
@@ -56,18 +63,14 @@ namespace Squiggle.UI.Controls
             if (chkRememberName.IsChecked.GetValueOrDefault())
             {
                 // reset the display message if display name changes for saved user
-                if (settings.PersonalSettings.RememberMe &&
-                    settings.PersonalSettings.DisplayName != DisplayName)
-                    settings.PersonalSettings.DisplayMessage = String.Empty;
+                if (settings.PersonalSettings.RememberMe && settings.PersonalSettings.DisplayName != DisplayName)
+                    ResetPersonalSettings(settings);
 
                 settings.PersonalSettings.DisplayName = DisplayName;
                 settings.PersonalSettings.GroupName = GroupName;
             }
             else
-            {
-                settings.PersonalSettings.DisplayName = settings.PersonalSettings.DisplayMessage = String.Empty;
-                settings.PersonalSettings.GroupName = settings.PersonalSettings.GroupName = String.Empty;
-            }
+                ResetPersonalSettings(settings);
 
             settings.PersonalSettings.RememberMe = chkRememberName.IsChecked.GetValueOrDefault();
             settings.PersonalSettings.AutoSignMeIn = chkAutoSignIn.IsChecked.GetValueOrDefault();
@@ -84,6 +87,14 @@ namespace Squiggle.UI.Controls
             });
         }
 
+        static void ResetPersonalSettings(SquiggleSettings settings)
+        {
+            settings.PersonalSettings.DisplayName = String.Empty;
+            settings.PersonalSettings.DisplayMessage = String.Empty;
+            settings.PersonalSettings.GroupName = String.Empty;
+            settings.PersonalSettings.EmailAddress = String.Empty;
+        }
+
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             txtdisplayName.Focus();
@@ -97,7 +108,16 @@ namespace Squiggle.UI.Controls
                 SettingsProvider.Current.Settings.ContactSettings.ContactGroups.Remove((ContactGroup)txtGroupName.SelectedItem);
                 SettingsProvider.Current.Save();
             }
-        }        
+        }
+
+        internal void LoadSettings(SquiggleSettings settings)
+        {
+            chkAutoSignIn.IsChecked = settings.PersonalSettings.AutoSignMeIn;
+            chkRememberName.IsChecked = settings.PersonalSettings.RememberMe;
+            SetDisplayName(settings.PersonalSettings.DisplayName);
+            SetGroupName(settings.PersonalSettings.GroupName);
+            LoadGroups(settings.ContactSettings.ContactGroups);
+        }
     }
 
     public class LogInEventArgs : EventArgs
