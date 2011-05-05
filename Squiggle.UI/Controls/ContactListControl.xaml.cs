@@ -212,11 +212,6 @@ namespace Squiggle.UI.Controls
             BroadcastChatStart(this, new BroadcastChatStartEventArgs() { Buddies = buddies.ToList() });
         }
 
-        private void UpdateLink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
-        {
-            Shell.OpenUrl(e.Uri.ToString());
-        }
-
         void StartChat_Click(object sender, RoutedEventArgs e)
         {
             Buddy buddy = ((Control)sender).Tag as Buddy;

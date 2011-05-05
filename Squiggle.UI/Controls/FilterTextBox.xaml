@@ -19,21 +19,13 @@
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
-
-        <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Margin" Value="2"/>
-            <Setter Property="BorderBrush" Value="White" />
-            <Setter Property="BorderThickness" Value="0" />
-        </Style>
+        </Style>        
         <BooleanToVisibilityConverter x:Key="booltoVisibility" />
     </UserControl.Resources>
     <Border Style="{StaticResource BorderStyle}">
         <DockPanel >
             <Button TabIndex="1" x:Name="btnCancel" Visibility="{Binding Path=IsFocusedOrNotEmpty, Converter={StaticResource booltoVisibility}}" DockPanel.Dock="Right" Content="X" 
-                    VerticalContentAlignment="Top" Style="{StaticResource ButtonStyle}" Click="btnCancel_Click" />
+                    VerticalContentAlignment="Top" Style="{StaticResource CloseButtonStyle}" Click="btnCancel_Click" />
             <TextBox x:Name="txtFilter"
                          DockPanel.Dock="Left" Style="{StaticResource TextStyle}" 
                          TextChanged="txtFilter_TextChanged" GotFocus="txtFilter_GotFocus" LostFocus="txtFilter_LostFocus" />

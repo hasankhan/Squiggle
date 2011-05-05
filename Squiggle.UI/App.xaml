@@ -10,6 +10,13 @@
                 <ResourceDictionary Source="Resources\ComboBoxResource.xaml"/>
                 <ResourceDictionary Source="Resources\GlassButton.xaml"/>
                 <ResourceDictionary>
+                    <Style x:Key="CloseButtonStyle" TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="FontWeight" Value="Bold" />
+                        <Setter Property="Margin" Value="2"/>
+                        <Setter Property="BorderBrush" Value="White" />
+                        <Setter Property="BorderThickness" Value="0" />
+                    </Style>
                     <Border Margin="5" x:Key="BuddyToolTip">
                         <Grid>
                             <Grid.RowDefinitions>

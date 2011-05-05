@@ -177,6 +177,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\UpdateNotification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ConversationViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -270,6 +274,9 @@
       <DependentUpon>Emoticon.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TextBlockBugFix.cs" />
+    <Compile Include="Controls\UpdateNotification.xaml.cs">
+      <DependentUpon>UpdateNotification.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ConversationViewer.xaml.cs">
       <DependentUpon>ConversationViewer.xaml</DependentUpon>
     </Compile>

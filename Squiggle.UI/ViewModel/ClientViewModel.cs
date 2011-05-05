@@ -4,6 +4,7 @@ using System.Windows.Threading;
 using System.Linq;
 using Squiggle.Chat;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace Squiggle.UI.ViewModel
 {
@@ -32,6 +33,13 @@ namespace Squiggle.UI.ViewModel
         {
             get { return updateLink; }
             set { Set(()=>UpdateLink, ref updateLink, value); }
+        }
+
+        ICommand cancelUpdateCommand;
+        public ICommand CancelUpdateCommand
+        {
+            get { return cancelUpdateCommand; }
+            set { Set(() => cancelUpdateCommand, ref cancelUpdateCommand, value); }
         }
 
         public ClientViewModel(IChatClient chatClient)

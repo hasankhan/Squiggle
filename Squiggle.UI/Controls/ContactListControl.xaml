@@ -233,20 +233,7 @@
                     </ComboBox>
                 </StackPanel>
                 <controls:DisplayMessageBox DataContext="{Binding Path=LoggedInUser}" Margin="0,-5,0,0" VerticalAlignment="Bottom" Grid.Row="2" Width="Auto" Grid.ColumnSpan="4" SelfUser="{Binding}"/>
-                <Label Grid.Row="3" Grid.ColumnSpan="2" Background="LightYellow" Foreground="Blue">
-                    <Hyperlink NavigateUri="{Binding UpdateLink}" RequestNavigate="UpdateLink_RequestNavigate">
-                        <TextBlock Text="{StaticResource MainWindow_UpdateNotice}" />
-                    </Hyperlink>
-                    <Label.Style>
-                        <Style TargetType="Label">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding UpdateLink}" Value="{x:Null}">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Label.Style>
-                </Label>
+                <controls:UpdateNotification Grid.Row="3" Grid.ColumnSpan="2" />
             </Grid>
         </Border>
         <Grid Grid.Row="1" >

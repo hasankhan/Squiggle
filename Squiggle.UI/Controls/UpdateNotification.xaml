@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="Squiggle.UI.Controls.UpdateNotification"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Style>
+        <Style TargetType="UserControl">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding UpdateLink}" Value="{x:Null}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
+    <Grid>
+        <Label Background="LightYellow" Foreground="Blue">
+            <Hyperlink NavigateUri="{Binding UpdateLink}" RequestNavigate="UpdateLink_RequestNavigate">
+                <TextBlock Text="{DynamicResource MainWindow_UpdateNotice}" />
+            </Hyperlink>
+        </Label>
+        <Button TabIndex="1" Content="X" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{DynamicResource CloseButtonStyle}" Command="{Binding CancelUpdateCommand}" />
+    </Grid>
+</UserControl>

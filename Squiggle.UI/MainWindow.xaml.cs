@@ -215,7 +215,8 @@ namespace Squiggle.UI
                 clientViewModel = new ClientViewModel(ChatClient);
                 this.DataContext = clientViewModel;
                 chatControl.ChatContext = clientViewModel;
-
+                clientViewModel.CancelUpdateCommand = new RelayCommand(CancelUpdateCommand_Execute);
+                
                 VisualStateManager.GoToState(chatControl, "OnlineState", true);
                 autoSignout.OnSignIn(displayName, groupName);
 
@@ -227,6 +228,13 @@ namespace Squiggle.UI
                 onSignIn();
             },
             Dispatcher);
+        }
+
+        void CancelUpdateCommand_Execute(object argument)
+        {
+            SettingsProvider.Current.Settings.GeneralSettings.FirstRun = DateTimeOffset.Now;
+            SettingsProvider.Current.Save();
+            clientViewModel.UpdateLink = null;
         }
 
         void SignOut(bool byUser)
