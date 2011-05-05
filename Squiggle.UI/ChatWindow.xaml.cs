@@ -589,6 +589,12 @@ namespace Squiggle.UI
             }
         }
 
+        public void Invite(IEnumerable<Buddy> buddies)
+        {
+            foreach (Buddy buddy in buddies)
+                Invite(buddy);
+        }
+
         public void Invite(Buddy buddy)
         {
             if (buddy != null && chatSession != null && !Buddies.Contains(buddy))
@@ -721,8 +727,7 @@ namespace Squiggle.UI
         private void InviteContactMenu_Click(object sender, RoutedEventArgs e)
         {
             IEnumerable<Buddy> buddies = SquiggleUtility.SelectContacts(Translation.Instance.ChatWindow_InviteContact, this, b=>Buddies.Contains(b));
-            foreach (Buddy buddy in buddies)
-                Invite(buddy);
+            Invite(buddies);
         }
 
         private void SendEmoticon_Click(object sender, RoutedEventArgs e)

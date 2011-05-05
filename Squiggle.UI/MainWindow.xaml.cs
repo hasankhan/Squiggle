@@ -455,9 +455,13 @@ namespace Squiggle.UI
 
         private void SendMessageMenu_Click(object sender, RoutedEventArgs e)
         {
-            Buddy buddy = SquiggleUtility.SelectContact("Send an instant message", this);
+            IEnumerable<Buddy> buddies = SquiggleUtility.SelectContacts("Send an instant message", this);
+            Buddy buddy = buddies.FirstOrDefault();
             if (buddy != null)
-                StartChat(buddy);
+            {
+                ChatWindow chatWindow = StartChat(buddy);
+                chatWindow.Invite(buddies.Except(new[] { buddy }));
+            }
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
