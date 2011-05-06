@@ -28,13 +28,6 @@ namespace Squiggle.UI.Controls
         public SignInControl()
         {
             InitializeComponent();
-
-            SettingsProvider.Current.SettingsUpdated += new EventHandler(Current_SettingsUpdated);
-        }
-
-        void Current_SettingsUpdated(object sender, EventArgs e)
-        {
-            LoadSettings(SettingsProvider.Current.Settings);
         }
 
         public void SetDisplayName(string name)
