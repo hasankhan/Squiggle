@@ -324,6 +324,8 @@ namespace Squiggle.UI
             properties.GroupName = groupName;
             properties.MachineName = Environment.MachineName;
             properties.DisplayMessage = settings.PersonalSettings.DisplayMessage;
+            properties.EmailAddress = settings.PersonalSettings.EmailAddress;
+
             client.Login(displayName, properties);
             client.ChatStarted += new EventHandler<Squiggle.Chat.ChatStartedEventArgs>(client_ChatStarted);
             client.BuddyUpdated += new EventHandler<BuddyEventArgs>(client_BuddyUpdated);

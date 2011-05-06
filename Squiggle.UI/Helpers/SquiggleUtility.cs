@@ -60,14 +60,7 @@ namespace Squiggle.UI.Helpers
                 user = MainWindow.Instance.chatControl.ContactList.ChatContext.LoggedInUser;
             var settings = new SettingsWindow(user);
             settings.Owner = owner;
-            if (settings.ShowDialog() == true)
-            {
-                if (String.IsNullOrEmpty(MainWindow.Instance.chatControl.SignIn.DisplayName) &&
-                    MainWindow.Instance.chatControl.SignIn.Visibility == Visibility.Visible)
-                {
-                    MainWindow.Instance.chatControl.SignIn.DisplayName = SettingsProvider.Current.Settings.PersonalSettings.DisplayName;
-                }
-            }
+            settings.ShowDialog();
         }
 
         public static Buddy SelectContact(string title, Window owner, Predicate<Buddy> exclusionFilter = null)
