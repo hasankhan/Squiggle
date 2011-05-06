@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Squiggle.Chat.Services.Presence;
 
-namespace Squiggle.Chat.Services
+namespace Squiggle.Chat.Services.Presence
 {
     class UserOnlineEventArgs : UserEventArgs
     {

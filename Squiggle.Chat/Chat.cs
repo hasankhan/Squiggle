@@ -34,7 +34,7 @@ namespace Squiggle.Chat
             session.MessageReceived += new EventHandler<Squiggle.Chat.Services.Chat.Host.MessageReceivedEventArgs>(session_MessageReceived);
             session.UserTyping += new EventHandler<Squiggle.Chat.Services.Chat.Host.SessionEventArgs>(session_UserTyping);
             session.BuzzReceived += new EventHandler<Squiggle.Chat.Services.Chat.Host.SessionEventArgs>(session_BuzzReceived);
-            session.TransferInvitationReceived += new EventHandler<Squiggle.Chat.Services.FileTransferInviteEventArgs>(session_TransferInvitationReceived);
+            session.TransferInvitationReceived += new EventHandler<Squiggle.Chat.Services.Chat.FileTransferInviteEventArgs>(session_TransferInvitationReceived);
             session.UserJoined += new EventHandler<Services.Chat.Host.SessionEventArgs>(session_UserJoined);
             session.UserLeft += new EventHandler<Services.Chat.Host.SessionEventArgs>(session_UserLeft);
             session.GroupChatStarted += new EventHandler(session_GroupChatStarted);
@@ -137,9 +137,9 @@ namespace Squiggle.Chat
                     buddies[user.ClientID] = buddy;
             }
             GroupChatStarted(this, EventArgs.Empty);
-        }   
+        }
 
-        void session_TransferInvitationReceived(object sender, Squiggle.Chat.Services.FileTransferInviteEventArgs e)
+        void session_TransferInvitationReceived(object sender, Squiggle.Chat.Services.Chat.FileTransferInviteEventArgs e)
         {
             Buddy buddy;
             if (buddies.TryGetValue(e.Sender.ClientID, out buddy))

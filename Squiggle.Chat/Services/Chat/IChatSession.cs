@@ -4,9 +4,8 @@ using System.IO;
 using System.Net;
 using Squiggle.Chat.Services.Chat.Host;
 using System.Collections.Generic;
-using Squiggle.Chat.Services.Chat;
 
-namespace Squiggle.Chat.Services
+namespace Squiggle.Chat.Services.Chat
 {
     public class FileTransferInviteEventArgs: SessionEventArgs
     {

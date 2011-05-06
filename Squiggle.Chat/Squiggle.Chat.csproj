@@ -103,14 +103,14 @@
     <Compile Include="Services\Chat\Host\ChatHostProxyFactory.cs" />
     <Compile Include="Services\Chat\Host\SessionInfo.cs" />
     <Compile Include="OperationFailedException.cs" />
-    <Compile Include="Services\IPresenceService.cs" />
+    <Compile Include="Services\Presence\IPresenceService.cs" />
     <Compile Include="Services\Chat\Host\ChatHost.cs" />
     <Compile Include="Services\Chat\Host\ChatHostProxy.cs" />
     <Compile Include="Services\Chat\ChatService.cs" />
     <Compile Include="Services\Chat\ChatSession.cs" />
     <Compile Include="Services\Chat\Host\IChatHost.cs" />
-    <Compile Include="Services\IChatService.cs" />
-    <Compile Include="Services\IChatSession.cs" />
+    <Compile Include="Services\Chat\IChatService.cs" />
+    <Compile Include="Services\Chat\IChatSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Presence\KeepAliveService.cs" />
     <Compile Include="Services\Presence\Transport\Host\IPresenceHost.cs" />

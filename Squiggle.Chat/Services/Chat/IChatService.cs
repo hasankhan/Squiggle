@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Net;
-using Squiggle.Chat.Services.Chat;
 
-namespace Squiggle.Chat.Services
+namespace Squiggle.Chat.Services.Chat
 {
     public class ChatStartedEventArgs: EventArgs
     {
