@@ -81,7 +81,9 @@
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </Compile>
     <Compile Include="SquiggleBridge.cs" />
-    <Compile Include="SquiggleBridgeService.cs" />
+    <Compile Include="SquiggleBridgeService.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="SquiggleBridgeService.Designer.cs">
       <DependentUpon>SquiggleBridgeService.cs</DependentUpon>
     </Compile>

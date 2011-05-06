@@ -73,7 +73,9 @@
     <Compile Include="ProjectInstaller.Designer.cs">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </Compile>
-    <Compile Include="SquiggleMulticastService.cs" />
+    <Compile Include="SquiggleMulticastService.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="SquiggleMulticastService.Designer.cs">
       <DependentUpon>SquiggleMulticastService.cs</DependentUpon>
     </Compile>
