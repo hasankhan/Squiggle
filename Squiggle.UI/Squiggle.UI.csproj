@@ -110,6 +110,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\AssemblyInfo.Copyright.cs">
+      <Link>Properties\AssemblyInfo.Copyright.cs</Link>
+    </Compile>
+    <Compile Include="..\Shared\AssemblyInfo.Version.cs">
+      <Link>Properties\AssemblyInfo.Version.cs</Link>
+    </Compile>
     <Page Include="About.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

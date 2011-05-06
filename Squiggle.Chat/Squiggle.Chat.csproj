@@ -90,6 +90,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\AssemblyInfo.Copyright.cs">
+      <Link>Properties\AssemblyInfo.Copyright.cs</Link>
+    </Compile>
+    <Compile Include="..\Shared\AssemblyInfo.VersionSafe.cs">
+      <Link>Properties\AssemblyInfo.VersionSafe.cs</Link>
+    </Compile>
     <Compile Include="BroadcastChat.cs" />
     <Compile Include="Buddy.cs" />
     <Compile Include="BuddyList.cs" />

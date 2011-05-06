@@ -64,6 +64,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\AssemblyInfo.Copyright.cs">
+      <Link>Properties\AssemblyInfo.Copyright.cs</Link>
+    </Compile>
+    <Compile Include="..\Shared\AssemblyInfo.Version.cs">
+      <Link>Properties\AssemblyInfo.Versione.cs</Link>
+    </Compile>
     <Compile Include="Async.cs" />
     <Compile Include="ConfigReader.cs" />
     <Compile Include="StringValueAttribute.cs" />
