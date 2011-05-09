@@ -14,12 +14,15 @@ namespace Squiggle.History.DAL
         public void AddSessionEvent(Guid sessionId, DateTime stamp, EventType type, Guid sender, string senderName, IEnumerable<Guid> recepients, string data)
         {
             var session = context.Sessions.FirstOrDefault(s => s.Id == sessionId);
-            session.End = DateTime.Now;
-            var evnt = Event.CreateEvent((int)type, sender, stamp, senderName, Guid.NewGuid());
-            evnt.Data = data;
-            evnt.Session = session;
-            context.AddToEvents(evnt);
-            context.SaveChanges();
+            if (session != null)
+            {
+                session.End = DateTime.Now;
+                var evnt = Event.CreateEvent((int)type, sender, stamp, senderName, Guid.NewGuid());
+                evnt.Data = data;
+                evnt.Session = session;
+                context.AddToEvents(evnt);
+                context.SaveChanges();
+            }
         }
 
         public IEnumerable<Session> GetSessions(SessionCriteria criteria)
