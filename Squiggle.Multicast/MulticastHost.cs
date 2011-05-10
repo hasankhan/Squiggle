@@ -6,6 +6,7 @@ using Squiggle.Chat.Services.Presence.Transport.Broadcast.MultcastService;
 using Squiggle.Chat.Services.Presence.Transport;
 using System.ServiceModel;
 using Squiggle.Utilities;
+using System.Diagnostics;
 
 namespace Squiggle.Multicast
 {
@@ -30,18 +31,16 @@ namespace Squiggle.Multicast
             ExceptionMonster.EatTheException(() =>
             {
                 var client = GetCurrentClient();
-                lock (clients)
-                    clients.Add(client);
+                AddClient(client);
             }, "registering client");
-        }
+        }        
 
         public void UnRegisterClient()
         {
             ExceptionMonster.EatTheException(() =>
             {
                 var client = GetCurrentClient();
-                lock (clients)
-                    clients.Remove(client);
+                RemoveClient(client);
             }, "unregistering client");
         }
 
@@ -67,13 +66,27 @@ namespace Squiggle.Multicast
                             {
                                 current.ErrorCount++;
                                 if (current.ErrorCount >= 3)
-                                    lock (clients)
-                                        clients.Remove(client);
+                                {
+                                    Trace.WriteLine("Removing faulty client");
+                                    RemoveClient(client);
+                                }
                             }
                         });
                     }
 
             }, "forwarding message");
+        }
+
+        void AddClient(Client client)
+        {
+            lock (clients)
+                clients.Add(client);
+        }
+        
+        void RemoveClient(Client client)
+        {
+            lock (clients)
+                clients.Remove(client);
         }
 
         static bool ForwardMessage(Message message, Client current)
