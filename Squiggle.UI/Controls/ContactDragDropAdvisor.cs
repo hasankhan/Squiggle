@@ -78,7 +78,12 @@ namespace Squiggle.UI.Controls
 
         public bool IsDraggable(UIElement dragElt)
         {
-            return dragElt is Border;
+            bool isContactBorder = (dragElt is Border) && ((Border)dragElt).Name == "contactBorder";
+            if (isContactBorder)
+                return true;
+
+            bool isChildOfContactBorder = dragElt.GetVisualParent<Border>(border => border.Name == "contactBorder") != null;
+            return isChildOfContactBorder;
         }
 
         public UIElement GetTopContainer()

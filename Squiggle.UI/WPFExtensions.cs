@@ -28,11 +28,16 @@ namespace Squiggle.UI
 
         public static TParent GetVisualParent<TParent>(this DependencyObject element) where TParent:DependencyObject
         {
+            return GetVisualParent<TParent>(element, _ => true);
+        }
+
+        public static TParent GetVisualParent<TParent>(this DependencyObject element, Predicate<TParent> filter) where TParent:DependencyObject
+        {
             do
             {
                 element = VisualTreeHelper.GetParent(element);
             }
-            while (!(element is TParent) && element != null);
+            while (element != null && (!(element is TParent) || filter((TParent)element)));
             return (TParent)element;
         }
 

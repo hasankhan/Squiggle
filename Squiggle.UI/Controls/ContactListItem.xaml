@@ -43,7 +43,8 @@
             </Style.Triggers>
         </Style>
         <DataTemplate x:Key="standardView">
-            <Border x:Name="contactBorder" Padding="1" Cursor="Hand" Style="{StaticResource ContactListItem}" dragdrop:DragDropManager.DragSourceAdvisor="{DynamicResource contactDragDrop}">
+            <Border x:Name="contactBorder" Padding="1" Cursor="Hand" Style="{StaticResource ContactListItem}" 
+                    dragdrop:DragDropManager.DragSourceAdvisor="{DynamicResource contactDragDrop}">
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="30"/>
@@ -96,7 +97,8 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Border x:Name="contactBorder" Cursor="Hand"  Height="20" dragdrop:DragDropManager.DragSourceAdvisor="{DynamicResource contactDragDrop}">
+                <Border x:Name="contactBorder" Cursor="Hand"  Height="20" 
+                        dragdrop:DragDropManager.DragSourceAdvisor="{DynamicResource contactDragDrop}">
                     <Grid>
 
                         <StackPanel Orientation="Horizontal" Cursor="Hand" VerticalAlignment="Center" Margin="10,0,0,0">
