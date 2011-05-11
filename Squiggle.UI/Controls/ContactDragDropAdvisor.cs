@@ -44,6 +44,7 @@ using System.Windows.Controls;
 using System.Xml;
 using System.IO;
 using Squiggle.Chat;
+using System.Diagnostics;
 
 namespace Squiggle.UI.Controls
 {
@@ -119,7 +120,8 @@ namespace Squiggle.UI.Controls
 
         public bool IsValidDataObject(IDataObject obj)
         {
-            return obj.GetDataPresent(dataObjectName);
+            bool isValid = obj.GetDataPresent(DataFormats.FileDrop) || obj.GetDataPresent(dataObjectName);
+            return isValid;
         }
 
         public UIElement GetVisualFeedback(IDataObject obj)
@@ -146,9 +148,14 @@ namespace Squiggle.UI.Controls
             var chatWindow = TargetUI.GetVisualParent<ChatWindow>();
             if (chatWindow != null)
             {
-                var item = GetContact(obj);
-                var buddy = item.DataContext as Buddy;
-                chatWindow.Invite(buddy);
+                if (obj.GetDataPresent(DataFormats.FileDrop))
+                    chatWindow.SendFiles(obj.GetData(DataFormats.FileDrop) as string[]);
+                else
+                {
+                    var item = GetContact(obj);
+                    var buddy = item.DataContext as Buddy;
+                    chatWindow.Invite(buddy);
+                }                
             }
         }
 

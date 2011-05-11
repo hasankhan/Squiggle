@@ -218,12 +218,6 @@ namespace Squiggle.UI
             txtMessageEditBox.GetFocus();
         }
 
-        private void txtMessageEditBox_FileDropped(object sender, FileDroppedEventArgs e)
-        {
-            foreach (string file in e.Files)
-                SendFiles(file);
-        }
-
         private void OpenReceivedFilesMenu_Click(object sender, RoutedEventArgs e)
         {
             SquiggleUtility.OpenDownloadsFolder();

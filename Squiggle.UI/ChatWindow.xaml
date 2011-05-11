@@ -125,8 +125,7 @@
                             </Button>
                         </StackPanel>                        
                     </Border>                    
-                    <controls:MessageEditBox FileDropped="txtMessageEditBox_FileDropped" 
-                                             Margin="2,5,5,0" x:Name="txtMessageEditBox" 
+                    <controls:MessageEditBox Margin="2,5,5,0" x:Name="txtMessageEditBox" 
                                              MessageTyping="txtMessageEditBox_MessageTyping" 
                                              MessageSend="txtMessageEditBox_MessageSend" Grid.Row="1" />
                     <TextBlock Margin="0,10,0,0" x:Name="txbStatus" VerticalAlignment="Bottom" Grid.Row="2" Grid.ColumnSpan="2" Foreground="Black"/>                    

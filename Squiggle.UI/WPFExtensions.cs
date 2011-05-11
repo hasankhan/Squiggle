@@ -37,7 +37,7 @@ namespace Squiggle.UI
             {
                 element = VisualTreeHelper.GetParent(element);
             }
-            while (element != null && (!(element is TParent) || filter((TParent)element)));
+            while (element != null && (!(element is TParent) || !filter((TParent)element)));
             return (TParent)element;
         }
 
