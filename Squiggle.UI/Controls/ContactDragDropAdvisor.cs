@@ -126,14 +126,19 @@ namespace Squiggle.UI.Controls
         {
             var contact = GetContact(obj);
 
-            Rectangle rect = new Rectangle();
-            rect.Width = contact.ActualWidth;
-            rect.Height = contact.ActualHeight;
-            rect.Fill = new VisualBrush(contact);
-            rect.Opacity = 0.5;
-            rect.IsHitTestVisible = false;
+            if (contact != null)
+            {
+                Rectangle rect = new Rectangle();
+                rect.Width = contact.ActualWidth;
+                rect.Height = contact.ActualHeight;
+                rect.Fill = new VisualBrush(contact);
+                rect.Opacity = 0.5;
+                rect.IsHitTestVisible = false;
 
-            return rect;
+                return rect;
+            }
+            else
+                return null;
         }
 
         public void OnDropCompleted(IDataObject obj, Point dropPoint)
