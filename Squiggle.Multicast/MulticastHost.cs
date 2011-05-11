@@ -46,35 +46,29 @@ namespace Squiggle.Multicast
 
         public void ForwardMessage(Message message)
         {
-            ExceptionMonster.EatTheException(() =>
+            RegisterClient();
+
+            Client currentClient = GetCurrentClient();
+            IEnumerable<Client> clientsClone;
+
+            lock (clients)
+                clientsClone = clients.ToList();
+            
+            Async.Invoke(() =>
             {
-                RegisterClient();
-
-                Client currentClient = GetCurrentClient();
-                IEnumerable<Client> clientsClone;
-
-                lock (clients)
-                    clientsClone = clients.ToList();
-
-                foreach (var client in clientsClone)
-                    if (!client.Equals(currentClient))
+                foreach (Client current in clientsClone)
+                if (!current.Equals(currentClient))
+                {
+                    CommunicationState state = current.Channel.State;
+                    if (state == CommunicationState.Opened)
+                        current.Callback.MessageForwarded(message);
+                    else
                     {
-                        Client current = client; // to make it part of closure
-                        Async.Invoke(() =>
-                        {
-                            if (!ForwardMessage(message, current))
-                            {
-                                current.ErrorCount++;
-                                if (current.ErrorCount >= 3)
-                                {
-                                    Trace.WriteLine("Removing faulty client");
-                                    RemoveClient(client);
-                                }
-                            }
-                        });
+                        Trace.WriteLine("Removing faulty client");
+                        RemoveClient(current);
                     }
-
-            }, "forwarding message");
+                }
+            });
         }
 
         void AddClient(Client client)
@@ -89,30 +83,22 @@ namespace Squiggle.Multicast
                 clients.Remove(client);
         }
 
-        static bool ForwardMessage(Message message, Client current)
-        {
-            return ExceptionMonster.EatTheException(() =>
-            {
-                current.Callback.MessageForwarded(message);
-                current.ErrorCount = 0;
-            }, "forwarding message");
-        }
-
         Client GetCurrentClient()
         {
             var callback = OperationContext.Current.GetCallbackChannel<IMulticastServiceCallback>();
-            var client = new Client(callback);
+            var client = new Client(callback, OperationContext.Current.Channel);
             return client;
         }
 
         class Client
         {
             public IMulticastServiceCallback Callback { get; set; }
-            public int ErrorCount { get; set; }
+            public IContextChannel Channel { get; set; }
 
-            public Client(IMulticastServiceCallback callback)
+            public Client(IMulticastServiceCallback callback, IContextChannel channel)
             {
                 Callback = callback;
+                Channel = channel;
             }
 
             public override bool Equals(object obj)
