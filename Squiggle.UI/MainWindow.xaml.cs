@@ -385,7 +385,6 @@ namespace Squiggle.UI
             if (window == null)
             {
                 window = new ChatWindow(buddy);
-                window.Owner = this;
                 window.Closed += (sender, e) => chatWindows.Remove(window);
                 window.SetChatSession(chatSession ?? buddy.StartChat());
                 chatWindows.Add(window);
