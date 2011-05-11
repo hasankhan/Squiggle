@@ -48,9 +48,9 @@ using System.Diagnostics;
 
 namespace Squiggle.UI.Controls
 {
-    class ContactDragDropAdvisor : IDragSourceAdvisor, IDropTargetAdvisor
+    class ChatDragDropAdvisor : IDragSourceAdvisor, IDropTargetAdvisor
     {
-        const string dataObjectName = "DraggedContact";
+        static string dataObjectName = "DraggedContact_" + Guid.NewGuid();
         UIElement sourceElement;
         UIElement targetElement;
 
@@ -69,7 +69,8 @@ namespace Squiggle.UI.Controls
 
         public DataObject GetDataObject(UIElement draggedElt)
         {
-            DataObject obj = new DataObject(dataObjectName, draggedElt);
+            Border contact = GetContact(draggedElt);
+            DataObject obj = new DataObject(dataObjectName, contact);
             return obj;
         }
 
@@ -79,13 +80,9 @@ namespace Squiggle.UI.Controls
 
         public bool IsDraggable(UIElement dragElt)
         {
-            bool isContactBorder = (dragElt is Border) && ((Border)dragElt).Name == "contactBorder";
-            if (isContactBorder)
-                return true;
-
-            bool isChildOfContactBorder = dragElt.GetVisualParent<Border>(border => border.Name == "contactBorder") != null;
-            return isChildOfContactBorder;
-        }
+            bool isContactOrChildOfIt = GetContact(dragElt) != null;
+            return isContactOrChildOfIt;
+        }        
 
         public UIElement GetTopContainer()
         {
@@ -160,6 +157,18 @@ namespace Squiggle.UI.Controls
         }
 
         #endregion
+
+        static Border GetContact(UIElement element)
+        {
+            if (IsContact(element as FrameworkElement))
+                return element as Border;
+            return element.GetVisualParent<Border>(border => IsContact(border));
+        }
+
+        static bool IsContact(FrameworkElement element)
+        {
+            return element is Border && element.Name == "contactBorder";
+        }
 
         static Border GetContact(IDataObject obj)
         {

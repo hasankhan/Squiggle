@@ -15,7 +15,7 @@
         <converters:StatusIconConverter x:Key="statusIconConverter" />
         <converters:StatusConverter x:Key="statusConverter" />
         <converters:ORMultiConverter x:Key="orConverter" />
-        <local:ContactDragDropAdvisor x:Key="contactDragDrop" />
+        <local:ChatDragDropAdvisor x:Key="contactDragDrop" />
         <Style x:Key="StatusSymbol" TargetType="{x:Type Ellipse}">
             <Setter Property="Width" Value="9"/>
             <Setter Property="Height" Value="9"/>

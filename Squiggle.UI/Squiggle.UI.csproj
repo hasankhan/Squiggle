@@ -276,7 +276,7 @@
     <Compile Include="AppInfo.cs" />
     <Compile Include="AudioAlert.cs" />
     <Compile Include="ChatWindowCollection.cs" />
-    <Compile Include="Controls\ContactDragDropAdvisor.cs" />
+    <Compile Include="Controls\ChatDragDropAdvisor.cs" />
     <Compile Include="ContactsSelectWindow.xaml.cs">
       <DependentUpon>ContactsSelectWindow.xaml</DependentUpon>
     </Compile>
