@@ -151,6 +151,11 @@
   <sys:String x:Key="HistoryViewer_Results_End">Fin</sys:String>
   <sys:String x:Key="HistoryViewer_Results_Participants">Les participants</sys:String>
   <sys:String x:Key="HistoryViewer_Searching">Recherche ...</sys:String>
+  <sys:String x:Key="HistoryViewer_ConfirmClear">Etes-vous sûr de vouloir effacer l&amp;#39;histoire?</sys:String>
+  <sys:String x:Key="HistoryViewer_Clear">Effacer l&amp;#39;historique</sys:String>
+  <sys:String x:Key="HistoryViewer_Delete">Supprimer conversations sélectionnées</sys:String>
+  <sys:String x:Key="HistoryViewer_ConfirmDelete">Etes-vous sûr de vouloir supprimer les conversations sélectionnées?</sys:String>
+  <sys:String x:Key="Error_InvalidDate">S&amp;#39;il vous plaît entrer une date valide</sys:String>
   <sys:String x:Key="ConversationViewer_Stamp">Timbre</sys:String>
   <sys:String x:Key="ConversationViewer_Sender">Expéditeur</sys:String>
   <sys:String x:Key="ConversationViewer_Type">Type</sys:String>

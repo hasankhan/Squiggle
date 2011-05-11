@@ -151,6 +151,11 @@
   <sys:String x:Key="HistoryViewer_Results_End">نهاية</sys:String>
   <sys:String x:Key="HistoryViewer_Results_Participants">المشاركون</sys:String>
   <sys:String x:Key="HistoryViewer_Searching">البحث...</sys:String>
+  <sys:String x:Key="HistoryViewer_ConfirmClear">هل أنت متأكد أنك تريد مسح التاريخ؟</sys:String>
+  <sys:String x:Key="HistoryViewer_Clear">واضح التاريخ</sys:String>
+  <sys:String x:Key="HistoryViewer_Delete">اختيار المحادثات حذف</sys:String>
+  <sys:String x:Key="HistoryViewer_ConfirmDelete">هل أنت متأكد أنك تريد حذف الأحاديث المختارة؟</sys:String>
+  <sys:String x:Key="Error_InvalidDate">الرجاء إدخال تاريخ صالح</sys:String>
   <sys:String x:Key="ConversationViewer_Stamp">ختم</sys:String>
   <sys:String x:Key="ConversationViewer_Sender">مرسل</sys:String>
   <sys:String x:Key="ConversationViewer_Type">نوع</sys:String>

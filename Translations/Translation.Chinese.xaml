@@ -120,7 +120,7 @@
   <sys:String x:Key="FileTransfer_Cancel">取消</sys:String>
   <sys:String x:Key="FileTransfer_Reject">拒绝</sys:String>
   <sys:String x:Key="FileTransfer_FileSent">文件发送</sys:String>
-  <sys:String x:Key="FileTransfer_FileReceived">接收文件</sys:String>
+  <sys:String x:Key="FileTransfer_FileReceived">收到文件</sys:String>
   <sys:String x:Key="FileTransfer_SendingCancelled">发送取消</sys:String>
   <sys:String x:Key="FileTransfer_Cancelled">取消</sys:String>
   <sys:String x:Key="FileTransfer_Sending">发送</sys:String>
@@ -151,6 +151,11 @@
   <sys:String x:Key="HistoryViewer_Results_End">完</sys:String>
   <sys:String x:Key="HistoryViewer_Results_Participants">与会者</sys:String>
   <sys:String x:Key="HistoryViewer_Searching">搜索...</sys:String>
+  <sys:String x:Key="HistoryViewer_ConfirmClear">您是否确定要清除历史记录？</sys:String>
+  <sys:String x:Key="HistoryViewer_Clear">清除历史记录</sys:String>
+  <sys:String x:Key="HistoryViewer_Delete">删除选定的谈话</sys:String>
+  <sys:String x:Key="HistoryViewer_ConfirmDelete">你确定要删除选定的对话？</sys:String>
+  <sys:String x:Key="Error_InvalidDate">请输入有效的日期</sys:String>
   <sys:String x:Key="ConversationViewer_Stamp">邮票</sys:String>
   <sys:String x:Key="ConversationViewer_Sender">寄件人</sys:String>
   <sys:String x:Key="ConversationViewer_Type">类型</sys:String>
