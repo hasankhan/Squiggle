@@ -59,6 +59,7 @@ namespace Squiggle.UI.Resources
         public string Error { get; set; }
         public string Error_InvalidDate { get; set; }
         public string HistoryViewer_ConfirmClear { get; set; }
+        public string HistoryViewer_ConfirmDelete { get; set; }
 
         public static Translation Instance { get; set; }
 

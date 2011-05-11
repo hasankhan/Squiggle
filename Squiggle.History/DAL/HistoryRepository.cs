@@ -53,12 +53,10 @@ namespace Squiggle.History.DAL
 
         public void ClearHistory(Guid? sessionId = null)
         {
-            DeleteAll(context.Events, e=>sessionId == null || e.Session.Id == sessionId.Value);
-            DeleteAll(context.Participants, p => sessionId == null || p.Session.Id == sessionId.Value);
-            DeleteAll(context.Sessions, s => sessionId == null || s.Id == sessionId.Value);
+            DeleteSession(sessionId);
 
             context.SaveChanges();
-        }
+        }        
 
         public void AddSession(Session newSession, IEnumerable<Participant> participants)
         {
@@ -85,9 +83,24 @@ namespace Squiggle.History.DAL
             context.SaveChanges();
         }
 
+        public void DeleteSessions(IEnumerable<Guid> sessionIds)
+        {
+            foreach (Guid sessionId in sessionIds)
+                DeleteSession(sessionId);
+
+            context.SaveChanges();
+        }
+
         public void Dispose()
         {
             context.Dispose();
+        }
+
+        void DeleteSession(Guid? sessionId)
+        {
+            DeleteAll(context.Events, e => sessionId == null || e.Session.Id == sessionId.Value);
+            DeleteAll(context.Participants, p => sessionId == null || p.Session.Id == sessionId.Value);
+            DeleteAll(context.Sessions, s => sessionId == null || s.Id == sessionId.Value);
         }
 
         void AddParticipant(Session session, Participant participant)
@@ -96,10 +109,28 @@ namespace Squiggle.History.DAL
                 session.Participants.Add(participant);
         }
 
-        void DeleteAll<TEntity>(ObjectQuery<TEntity> items, Expression<Func<TEntity, bool>> condition)
+        void DeleteAll<TEntity>(IQueryable<TEntity> items, Expression<Func<TEntity, bool>> condition)
         {
             foreach (var item in items.Where(condition))
                 context.DeleteObject(item);
-        }        
+        }
+
+        IQueryable<TEntity> WhereIn<TEntity, TValue>(ObjectQuery<TEntity> query, Expression<Func<TEntity, TValue>> selector, IEnumerable<TValue> collection)
+        {
+            if (selector == null) 
+                throw new ArgumentNullException("selector");
+            if (collection == null) 
+                throw new ArgumentNullException("collection");
+            ParameterExpression p = selector.Parameters.Single();
+
+            if (!collection.Any()) 
+                return query;
+
+            IEnumerable<Expression> equals = collection.Select(value => (Expression)Expression.Equal(selector.Body, Expression.Constant(value, typeof(TValue))));
+
+            Expression body = equals.Aggregate((accumulate, equal) => Expression.Or(accumulate, equal));
+
+            return query.Where(Expression.Lambda<Func<TEntity, bool>>(body, p));
+        }
     }
 }

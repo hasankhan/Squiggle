@@ -24,6 +24,8 @@ namespace Squiggle.UI
     /// </summary>
     public partial class HistoryViewer : StickyWindow
     {
+        Action lastSearch;
+
         public HistoryViewer()
         {
             InitializeComponent();
@@ -39,7 +41,8 @@ namespace Squiggle.UI
                 return;
             string message = txtMessage.Text;
 
-            AsyncInvoke(()=>SearchSessions(from, to, message));
+            lastSearch = ()=>AsyncInvoke(()=>SearchSessions(from, to, message));
+            lastSearch();
         }               
 
         private void results_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -105,13 +108,19 @@ namespace Squiggle.UI
             return true;
         }
 
-        class Result
+        private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            public Guid Id { get; set; }
-            public DateTime Start { get; set; }
-            public DateTime? End { get; set; }
-            public string Participants { get; set; }
-        }
+            if (MessageBox.Show(Translation.Instance.HistoryViewer_ConfirmDelete, "Squiggle", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                IEnumerable<Guid> sessionIds = results.SelectedItems.Cast<Result>().Select(r => r.Id).ToList();
+                AsyncInvoke(() =>
+                {
+                    var historyManager = new HistoryManager();
+                    historyManager.DeleteSessions(sessionIds);
+                },
+                lastSearch);
+            }
+        }         
 
         private void Clear_Click(object sender, RoutedEventArgs e)
         {
@@ -121,12 +130,16 @@ namespace Squiggle.UI
                 {
                     var historyManager = new HistoryManager();
                     historyManager.Clear();
-                    Dispatcher.Invoke(() => results.ItemsSource = null);
-                });
+                }, () => results.ItemsSource = null);
             }
         }
 
         void AsyncInvoke(Action action)
+        {
+            AsyncInvoke(action, () => { });
+        }
+
+        void AsyncInvoke(Action action, Action onComplete)
         {
             busyIndicator.IsBusy = true;
             Async.Invoke(() =>
@@ -140,8 +153,25 @@ namespace Squiggle.UI
                     MessageBox.Show(ex.Message);
                 }
             },
-            () => busyIndicator.IsBusy = false
+            () =>
+            {
+                onComplete();
+                busyIndicator.IsBusy = false;
+            }
             , Dispatcher);
-        } 
+        }
+
+        private void results_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            deleteMenuItem.IsEnabled = results.SelectedItems.Count > 0;
+        }
+
+        class Result
+        {
+            public Guid Id { get; set; }
+            public DateTime Start { get; set; }
+            public DateTime? End { get; set; }
+            public string Participants { get; set; }
+        }
     }
 }

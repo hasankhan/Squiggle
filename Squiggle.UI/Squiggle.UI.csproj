@@ -214,7 +214,7 @@
     </Page>
     <Content Include="..\Squiggle.History\DAL\History.sdf">
       <Link>History.sdf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="Images\email.png" />
     <Content Include="Images\Emoticons\Icons-Author.txt">

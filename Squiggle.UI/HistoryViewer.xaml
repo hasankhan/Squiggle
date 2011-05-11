@@ -28,7 +28,12 @@
                 <Button Margin="5" Click="Clear_Click" Content="{StaticResource HistoryViewer_Clear}" />
                 <Button Width="50" Margin="5" Click="Search_Click" Content="{StaticResource HistoryViewer_Search}" IsDefault="True" />
             </StackPanel>
-            <ListView Grid.Row="4" Grid.ColumnSpan="2" x:Name="results" MouseDoubleClick="results_MouseDoubleClick">
+            <ListView Grid.Row="4" Grid.ColumnSpan="2" x:Name="results" MouseDoubleClick="results_MouseDoubleClick" ContextMenuOpening="results_ContextMenuOpening">
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="deleteMenuItem" Header="{StaticResource HistoryViewer_Delete}" Click="Delete_Click" />
+                    </ContextMenu>
+                </ListView.ContextMenu>
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="{StaticResource HistoryViewer_Results_Start}" DisplayMemberBinding="{Binding Start}" Width="140" />

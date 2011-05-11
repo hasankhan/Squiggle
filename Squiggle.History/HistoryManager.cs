@@ -44,5 +44,11 @@ namespace Squiggle.History
             using (var repository = new HistoryRepository())
                 repository.AddSession(newSession, participants);
         }
+
+        public void DeleteSessions(IEnumerable<Guid> sessionIds)
+        {
+            using (var repository = new HistoryRepository())
+                repository.DeleteSessions(sessionIds);
+        }
     }
 }
