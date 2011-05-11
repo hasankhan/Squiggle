@@ -15,6 +15,7 @@ using Squiggle.History.DAL;
 using System.Diagnostics;
 using Squiggle.UI.StickyWindows;
 using Squiggle.Utilities;
+using Squiggle.UI.Resources;
 
 namespace Squiggle.UI
 {
@@ -38,21 +39,8 @@ namespace Squiggle.UI
                 return;
             string message = txtMessage.Text;
 
-            busyIndicator.IsBusy = true;
-            Async.Invoke(() =>
-            {
-                try
-                {
-                    SearchSessions(from, to, message);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }, 
-            () => busyIndicator.IsBusy = false
-            , Dispatcher);
-        }        
+            AsyncInvoke(()=>SearchSessions(from, to, message));
+        }               
 
         private void results_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -110,7 +98,7 @@ namespace Squiggle.UI
                     result = date;
                 else
                 {
-                    MessageBox.Show("Please enter a valid date.");
+                    MessageBox.Show(Translation.Instance.Error_InvalidDate);
                     return false;
                 }
             }
@@ -124,5 +112,36 @@ namespace Squiggle.UI
             public DateTime? End { get; set; }
             public string Participants { get; set; }
         }
+
+        private void Clear_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(Translation.Instance.HistoryViewer_ConfirmClear, "Squiggle", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                AsyncInvoke(()=>
+                {
+                    var historyManager = new HistoryManager();
+                    historyManager.Clear();
+                    Dispatcher.Invoke(() => results.ItemsSource = null);
+                });
+            }
+        }
+
+        void AsyncInvoke(Action action)
+        {
+            busyIndicator.IsBusy = true;
+            Async.Invoke(() =>
+            {
+                try
+                {
+                    action();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            },
+            () => busyIndicator.IsBusy = false
+            , Dispatcher);
+        } 
     }
 }

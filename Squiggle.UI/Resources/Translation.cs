@@ -57,6 +57,8 @@ namespace Squiggle.UI.Resources
         public string Error_NoNetwork { get; set; }
         public string SettingsWindow_Error_InvalidPresenceIP { get; set; }
         public string Error { get; set; }
+        public string Error_InvalidDate { get; set; }
+        public string HistoryViewer_ConfirmClear { get; set; }
 
         public static Translation Instance { get; set; }
 
@@ -79,6 +81,7 @@ namespace Squiggle.UI.Resources
         {
             var translation = Application.Current.TryFindResource(key) as String;
             return translation;
-        }        
+        }
+
     }
 }
