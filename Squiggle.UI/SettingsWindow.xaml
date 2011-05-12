@@ -16,14 +16,14 @@
                             ObjectType="{x:Type sys:Enum}"
                             MethodName="GetValues">
             <ObjectDataProvider.MethodParameters>
-                <x:Type Type="{x:Type settings:ContactListView}" />
+                <x:Type TypeName="settings:ContactListView" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
         <ObjectDataProvider x:Key="sortFields" 
                             ObjectType="{x:Type sys:Enum}"
                             MethodName="GetValues">
             <ObjectDataProvider.MethodParameters>
-                <x:Type Type="{x:Type settings:ContactListSortField}" />
+                <x:Type TypeName="settings:ContactListSortField" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </Window.Resources>
@@ -40,7 +40,7 @@
                     <Border Grid.Row="1" Background="{StaticResource WorkAreaBackgroud}" BorderBrush="Black" BorderThickness="1" CornerRadius="3" Margin="5">
                         <Grid Margin="10">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
+                                <RowDefinition Height="100" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid Grid.Row="0">
@@ -108,24 +108,31 @@
                                     <RowDefinition Height="Auto" MinHeight="32" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="32*" />
                                 </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="0.5*" />
-                                    <ColumnDefinition Width="0.5*" />                                    
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.ColumnSpan="2" Text="{StaticResource SettingsWindow_SettingsTab_DisplayName}"/>
-                                <TextBox Margin="10,0,166,0" Grid.Row="1" Text="{Binding Path=PersonalSettings.DisplayName}" Grid.ColumnSpan="2" Height="22" VerticalAlignment="Top" />
-                                <TextBlock Margin="0,5,0,0" Grid.Row="2" Grid.ColumnSpan="2" Text="{StaticResource SettingsWindow_SettingsTab_DisplayMessage}"/>
-                                <TextBox Margin="10,0,49,0" Grid.Row="3"  Text="{Binding Path=PersonalSettings.DisplayMessage}" Grid.ColumnSpan="2" Height="22" VerticalAlignment="Top" />
-                                <TextBlock Margin="0,5,0,0" Grid.Row="4" Grid.ColumnSpan="2" Text="{StaticResource SettingsWindow_SettingsTab_EmailAddress}"/>
-                                <TextBox Margin="10,0,49,0" Grid.Row="5"  Text="{Binding Path=PersonalSettings.EmailAddress}" Grid.ColumnSpan="2" Height="22" VerticalAlignment="Top" />
-                                <TextBlock Margin="0,5,0,0" Grid.Row="6" Grid.ColumnSpan="2" Text="{StaticResource SettingsWindow_SettingsTab_IdleTimeout}" />
-                                <StackPanel Margin="0,5,0,0" Orientation="Horizontal" Grid.Row="6" Grid.Column="3">
-                                    <TextBox  Width="80" HorizontalAlignment="Left" Text="{Binding Path=PersonalSettings.IdleTimeout}" Margin="0,0,0,5" />
+                                <TextBlock Margin="5,0,0,0" HorizontalAlignment="Left" Text="{StaticResource SettingsWindow_SettingsTab_DisplayName}"/>
+                                <TextBox Margin="5,0,0,0" Width="200" HorizontalAlignment="Left" Grid.Row="1" Text="{Binding Path=PersonalSettings.DisplayName}" Height="22" VerticalAlignment="Top" />
+                                <TextBlock Margin="5,0,0,0" HorizontalAlignment="Left" Grid.Row="2" Text="{StaticResource SettingsWindow_SettingsTab_DisplayMessage}"/>
+                                <TextBox Margin="5,0,0,0" Width="200" HorizontalAlignment="Left" Grid.Row="3"  Text="{Binding Path=PersonalSettings.DisplayMessage}" Height="22" VerticalAlignment="Top" />
+                                <TextBlock Margin="5,0,0,0" HorizontalAlignment="Left" Grid.Row="4" Text="{StaticResource SettingsWindow_SettingsTab_EmailAddress}"/>
+                                <TextBox Margin="5,0,0,0" Width="200" HorizontalAlignment="Left" Grid.Row="5"  Text="{Binding Path=PersonalSettings.EmailAddress}" Height="22" VerticalAlignment="Top" />
+                                <StackPanel Margin="5,0,0,0" Grid.Row="6" Orientation="Horizontal">
+                                    <TextBlock Text="{StaticResource SettingsWindow_SettingsTab_IdleTimeout}" />
+                                    <TextBox Margin="5,0,0,5" Height="Auto" VerticalAlignment="Top" Width="40" HorizontalAlignment="Left" Text="{Binding Path=PersonalSettings.IdleTimeout}" />
                                     <TextBlock Margin="5,0,0,0">mins</TextBlock>
                                 </StackPanel>
-                                <CheckBox Content="{StaticResource SettingsWindow_SettingsTab_AutoSignIn}" Grid.Row="7" IsChecked="{Binding Path=PersonalSettings.AutoSignMeIn}"   Margin="5,5,0,0"/>
-                                <CheckBox Content="{StaticResource SettingsWindow_SettingsTab_RememberMe}" IsChecked="{Binding Path=PersonalSettings.RememberMe}" Grid.Row="7" Grid.Column="1" Margin="5,5,0,0"/>
+                                <CheckBox Content="{StaticResource SettingsWindow_SettingsTab_AutoSignIn}" Grid.Row="7" IsChecked="{Binding Path=PersonalSettings.AutoSignMeIn}"   Margin="5,5,198,0" />
+                                <CheckBox Content="{StaticResource SettingsWindow_SettingsTab_RememberMe}" IsChecked="{Binding Path=PersonalSettings.RememberMe}" Grid.Row="7" Margin="203,5,0,0"/>
+                                <StackPanel Grid.RowSpan="4" HorizontalAlignment="Left" Margin="282,0,0,0">
+                                    <Border BorderBrush="Black" BorderThickness=".5" Height="81" >
+                                        <Image Stretch="UniformToFill" VerticalAlignment="Top" Width="98" Grid.Row="1"
+                                           Source="{Binding PersonalSettings.DisplayImage}" />
+                                    </Border>
+                                    <StackPanel HorizontalAlignment="Right" Margin="0,5,0,0" Orientation="Horizontal">
+                                        <Button Content="Button" Height="23" Name="button1" Width="75" Click="button1_Click" />
+                                        <Button Content="X" />
+                                    </StackPanel>
+                                </StackPanel>
                             </Grid>
                         </Grid>
                     </Border>

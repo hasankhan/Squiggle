@@ -299,6 +299,7 @@
     </Compile>
     <Compile Include="Converters\ContactListGroupConverter.cs" />
     <Compile Include="Converters\EnumValueConverter.cs" />
+    <Compile Include="Converters\ImageConverter.cs" />
     <Compile Include="Converters\ORMultiConverter.cs" />
     <Compile Include="Converters\TitleCaseConverter.cs" />
     <Compile Include="Emoticon.cs" />

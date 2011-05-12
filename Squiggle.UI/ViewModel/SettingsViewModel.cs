@@ -89,7 +89,7 @@ namespace Squiggle.UI.ViewModel
         }
     }
 
-    class PersonalSettingsViewModel
+    class PersonalSettingsViewModel: ViewModelBase
     {
         public string DisplayName { get; set; }
         public string GroupName { get; set; }
@@ -98,6 +98,13 @@ namespace Squiggle.UI.ViewModel
         public int IdleTimeout { get; set; }
         public bool RememberMe { get; set; }
         public bool AutoSignMeIn { get; set; }
+
+        byte[] displayImage;
+        public byte[] DisplayImage 
+        {
+            get { return displayImage; }
+            set { Set(() => DisplayImage, ref displayImage, value); }
+        }
     }
 
     class GeneralSettingsViewModel

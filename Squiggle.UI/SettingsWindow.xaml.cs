@@ -14,6 +14,8 @@ using Squiggle.UI.StickyWindows;
 using System.Net;
 using Squiggle.UI.Resources;
 using Squiggle.Chat.Services;
+using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace Squiggle.UI
 {
@@ -158,6 +160,36 @@ namespace Squiggle.UI
         static string GetStartupPath()
         {
             return AppInfo.FilePath + " /background";
-        }        
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog();
+            dialog.CheckFileExists = true;
+            dialog.Filter = "Image files|*.jpg;*.jpeg;*.bmp;*.gif";
+            if (dialog.ShowDialog(this) == true)
+            {
+                if (IsValidImage(dialog.FileName))
+                    settingsVm.PersonalSettings.DisplayImage = File.ReadAllBytes(dialog.FileName);
+                else
+                    MessageBox.Show("Please select a valid image.", "Squiggle", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        bool IsValidImage(string filename)
+        {
+            try
+            {
+                BitmapImage newImage = new BitmapImage(new Uri(filename));
+            }
+            catch (NotSupportedException)
+            {
+                // System.NotSupportedException:
+                // No imaging component suitable to complete this operation was found.
+                return false;
+            }
+            return true;
+        }
+
     }
 }
