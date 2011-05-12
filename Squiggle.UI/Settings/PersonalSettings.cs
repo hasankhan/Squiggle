@@ -6,6 +6,7 @@ namespace Squiggle.UI.Settings
     {
         public string DisplayName { get; set; }
         public string DisplayMessage { get; set; }
+        public byte[] DisplayImage { get; set; }
         public string GroupName { get; set; }
         public string EmailAddress { get; set; }
         public int IdleTimeout { get; set; }
@@ -24,7 +25,5 @@ namespace Squiggle.UI.Settings
             FontColor = System.Drawing.Color.Black;
             IdleTimeout = 5;
         }
-
-
     }
 }

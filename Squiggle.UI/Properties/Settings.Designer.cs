@@ -49,6 +49,17 @@ namespace Squiggle.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public byte[] DisplayImage {
+            get {
+                return ((byte[])(this["DisplayImage"]));
+            }
+            set {
+                this["DisplayImage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("9998")]
         public int PresencePort {
             get {

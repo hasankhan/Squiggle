@@ -308,6 +308,7 @@
       <DependentUpon>EmoticonSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ImageFactory.cs" />
+    <Compile Include="Helpers\ImageUtility.cs" />
     <Compile Include="HistoryViewer.xaml.cs">
       <DependentUpon>HistoryViewer.xaml</DependentUpon>
     </Compile>

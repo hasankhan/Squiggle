@@ -8,6 +8,9 @@
     <Setting Name="DisplayMessage" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="DisplayImage" Type="System.Byte[]" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
     <Setting Name="PresencePort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">9998</Value>
     </Setting>

@@ -48,6 +48,7 @@ namespace Squiggle.UI.ViewModel
             ConnectionSettings.PresencePort = settings.ConnectionSettings.PresencePort;
 
             PersonalSettings.DisplayMessage = settings.PersonalSettings.DisplayMessage;
+            PersonalSettings.DisplayImage = settings.PersonalSettings.DisplayImage;
             PersonalSettings.DisplayName = settings.PersonalSettings.DisplayName;
             PersonalSettings.EmailAddress = settings.PersonalSettings.EmailAddress;
             PersonalSettings.GroupName = settings.PersonalSettings.GroupName;
@@ -80,6 +81,7 @@ namespace Squiggle.UI.ViewModel
             settings.ConnectionSettings.PresencePort = ConnectionSettings.PresencePort;
 
             settings.PersonalSettings.DisplayMessage = PersonalSettings.DisplayMessage;
+            settings.PersonalSettings.DisplayImage = PersonalSettings.DisplayImage;
             settings.PersonalSettings.GroupName = PersonalSettings.GroupName;
             settings.PersonalSettings.DisplayName = PersonalSettings.DisplayName;
             settings.PersonalSettings.IdleTimeout = PersonalSettings.IdleTimeout;

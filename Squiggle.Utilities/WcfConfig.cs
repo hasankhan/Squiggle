@@ -17,6 +17,7 @@ namespace Squiggle.Utilities
 
             binding.MaxReceivedMessageSize = 65535;
             binding.ReaderQuotas.MaxArrayLength = 65535;
+            binding.ReaderQuotas.MaxStringContentLength = 65535;
             binding.MaxConnections = 100;
             binding.OpenTimeout = TimeSpan.FromSeconds(5);
             binding.CloseTimeout = TimeSpan.FromSeconds(5);

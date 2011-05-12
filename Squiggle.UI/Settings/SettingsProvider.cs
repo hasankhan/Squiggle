@@ -104,6 +104,7 @@ namespace Squiggle.UI.Settings
             Settings.PersonalSettings.RememberMe = !String.IsNullOrEmpty(Properties.Settings.Default.DisplayName);
             Settings.PersonalSettings.DisplayName = Properties.Settings.Default.DisplayName;
             Settings.PersonalSettings.DisplayMessage = Properties.Settings.Default.DisplayMessage;
+            Settings.PersonalSettings.DisplayImage = Properties.Settings.Default.DisplayImage;
             Settings.PersonalSettings.EmailAddress = Properties.Settings.Default.EmailAddress;
             Settings.PersonalSettings.GroupName = Properties.Settings.Default.GroupName;
             Settings.PersonalSettings.AutoSignMeIn = Properties.Settings.Default.AutoSignIn;
@@ -135,6 +136,7 @@ namespace Squiggle.UI.Settings
         {
             Properties.Settings.Default.DisplayName = Settings.PersonalSettings.RememberMe ? Settings.PersonalSettings.DisplayName : String.Empty;
             Properties.Settings.Default.DisplayMessage = Settings.PersonalSettings.RememberMe ? Settings.PersonalSettings.DisplayMessage : String.Empty;
+            Properties.Settings.Default.DisplayImage = Settings.PersonalSettings.RememberMe ? Settings.PersonalSettings.DisplayImage : null;
             Properties.Settings.Default.GroupName = Settings.PersonalSettings.RememberMe ? Settings.PersonalSettings.GroupName : String.Empty;
             Properties.Settings.Default.EmailAddress = Settings.PersonalSettings.RememberMe ? Settings.PersonalSettings.EmailAddress : String.Empty;
 

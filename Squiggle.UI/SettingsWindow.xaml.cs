@@ -16,6 +16,8 @@ using Squiggle.UI.Resources;
 using Squiggle.Chat.Services;
 using System.IO;
 using System.Windows.Media.Imaging;
+using System.Drawing;
+using Squiggle.UI.Helpers;
 
 namespace Squiggle.UI
 {
@@ -67,6 +69,7 @@ namespace Squiggle.UI
                 settingsVm.PersonalSettings.DisplayName = SettingsProvider.Current.Settings.PersonalSettings.DisplayName;
                 settingsVm.PersonalSettings.GroupName = SettingsProvider.Current.Settings.PersonalSettings.GroupName;
                 settingsVm.PersonalSettings.DisplayMessage = SettingsProvider.Current.Settings.PersonalSettings.DisplayMessage;
+                settingsVm.PersonalSettings.DisplayImage = SettingsProvider.Current.Settings.PersonalSettings.DisplayImage;
                 settingsVm.PersonalSettings.EmailAddress = SettingsProvider.Current.Settings.PersonalSettings.EmailAddress;
             }
             else
@@ -74,6 +77,7 @@ namespace Squiggle.UI
                 settingsVm.PersonalSettings.DisplayName = user.DisplayName;
                 settingsVm.PersonalSettings.GroupName = user.Properties.GroupName;
                 settingsVm.PersonalSettings.DisplayMessage = user.Properties.DisplayMessage;
+                settingsVm.PersonalSettings.DisplayImage = user.Properties.DisplayImage;
                 settingsVm.PersonalSettings.EmailAddress = user.Properties.EmailAddress;
             }
         }
@@ -95,6 +99,7 @@ namespace Squiggle.UI
             {
                 user.DisplayName = settingsVm.PersonalSettings.DisplayName;
                 user.Properties.DisplayMessage = settingsVm.PersonalSettings.DisplayMessage;
+                user.Properties.DisplayImage = settingsVm.PersonalSettings.DisplayImage;
                 user.Properties.EmailAddress = settingsVm.PersonalSettings.EmailAddress;
             }
 
@@ -162,34 +167,27 @@ namespace Squiggle.UI
             return AppInfo.FilePath + " /background";
         }
 
-        private void button1_Click(object sender, RoutedEventArgs e)
+        private void btnSetDisplayImage_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
             dialog.CheckFileExists = true;
             dialog.Filter = "Image files|*.jpg;*.jpeg;*.bmp;*.gif";
             if (dialog.ShowDialog(this) == true)
             {
-                if (IsValidImage(dialog.FileName))
-                    settingsVm.PersonalSettings.DisplayImage = File.ReadAllBytes(dialog.FileName);
+                if (ImageUtility.IsValidImage(dialog.FileName))
+                {
+                    using (var image = Image.FromFile(dialog.FileName))
+                    using (var resized = image.ResizeTo(100, 100))
+                        settingsVm.PersonalSettings.DisplayImage = resized.ToBytes();
+                }
                 else
                     MessageBox.Show("Please select a valid image.", "Squiggle", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        bool IsValidImage(string filename)
+        private void btnClearDisplayImage_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                BitmapImage newImage = new BitmapImage(new Uri(filename));
-            }
-            catch (NotSupportedException)
-            {
-                // System.NotSupportedException:
-                // No imaging component suitable to complete this operation was found.
-                return false;
-            }
-            return true;
+            settingsVm.PersonalSettings.DisplayImage = null;
         }
-
     }
 }

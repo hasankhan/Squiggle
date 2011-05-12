@@ -86,6 +86,7 @@ namespace Squiggle.UI.Controls
             settings.PersonalSettings.DisplayMessage = String.Empty;
             settings.PersonalSettings.GroupName = String.Empty;
             settings.PersonalSettings.EmailAddress = String.Empty;
+            settings.PersonalSettings.DisplayImage = null;
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)

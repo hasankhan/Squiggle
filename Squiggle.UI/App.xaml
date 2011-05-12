@@ -28,7 +28,18 @@
                                 <ColumnDefinition Width="0.7*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock VerticalAlignment="Top" Text="Contact" Foreground="Black" FontWeight="Bold"/>
-                            <Image Stretch="None" Source="Images\man.png" Grid.Row="1"/>
+                            <Image Stretch="None" Grid.Row="1" Margin="5">
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Source" Value="{Binding Properties.DisplayImage}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Properties.DisplayImage}" Value="{x:Null}">
+                                                <Setter Property="Source" Value="Images\man.png" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
                             <StackPanel VerticalAlignment="Center" Orientation="Vertical" Grid.Column="1" Grid.Row="1">
                                 <TextBlock Foreground="Black" Text="{Binding DisplayName, StringFormat={StaticResource BuddyProps_DisplayName}}"/>
                                 <TextBlock Foreground="Black" Text="{Binding Status, StringFormat={StaticResource BuddyProps_Status}}"/>

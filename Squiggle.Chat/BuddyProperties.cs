@@ -58,6 +58,32 @@ namespace Squiggle.Chat
             set { this["DisplayMessage"] = value.Trim(); }
         }
 
+        public byte[] DisplayImage
+        {
+            get 
+            { 
+                string image = this["DisplayImage"];
+                if (String.IsNullOrEmpty(image))
+                    return null;
+                else
+                    try
+                    {
+                        return Convert.FromBase64String(image);
+                    }
+                    catch (FormatException)
+                    {
+                        return null;
+                    }
+            }
+            set 
+            {
+                string image = null;
+                if (value != null)
+                    image = Convert.ToBase64String(value);
+                this["DisplayImage"] = image; 
+            }
+        }
+
         public string EmailAddress
         {
             get { return this["EmailAddress"]; }
@@ -78,5 +104,6 @@ namespace Squiggle.Chat
         {
             return new Dictionary<string, string>(dictionary);
         }
+
     }
 }

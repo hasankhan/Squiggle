@@ -324,6 +324,7 @@ namespace Squiggle.UI
             properties.GroupName = groupName;
             properties.MachineName = Environment.MachineName;
             properties.DisplayMessage = settings.PersonalSettings.DisplayMessage;
+            properties.DisplayImage = settings.PersonalSettings.DisplayImage;
             properties.EmailAddress = settings.PersonalSettings.EmailAddress;
 
             client.Login(displayName, properties);
