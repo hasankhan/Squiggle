@@ -42,6 +42,9 @@ namespace Squiggle.UI
         {
             LoadSettings();
 
+            if (user != null)
+                personalTab.IsSelected = true;
+
             this.DataContext = settingsVm;
         }            
 

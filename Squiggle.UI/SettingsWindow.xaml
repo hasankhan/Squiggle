@@ -28,7 +28,7 @@
         </ObjectDataProvider>
     </Window.Resources>
     <Grid x:Name="LayoutRoot" FlowDirection="{StaticResource flowDirection}">
-        <TabControl>
+        <TabControl x:Name="tabs">
             <TabItem Header="{StaticResource SettingsWindow_GeneralTab_Heading}">
                 <Grid >
                     <Grid.RowDefinitions>
@@ -83,7 +83,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="{StaticResource SettingsWindow_PersonalTab_Heading}">
+            <TabItem x:Name="personalTab" Header="{StaticResource SettingsWindow_PersonalTab_Heading}">
                 <Grid >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>

@@ -208,8 +208,20 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="0.20*"/>
                 </Grid.RowDefinitions>
-                <StackPanel DataContext="{Binding Path=LoggedInUser}" Margin="0,-5,0,0" x:Name="signedInView" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left">
-                    <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" Text="{Binding DisplayName}" Foreground="Black" FontSize="16" x:Name="txtLoggedInUser" HorizontalAlignment="Left" />
+                <StackPanel DataContext="{Binding Path=LoggedInUser}" Margin="10,-5,0,0" x:Name="signedInView" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Image MaxWidth="30" MaxHeight="30" Source="{Binding Properties.DisplayImage}" VerticalAlignment="Top">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Setter Property="Margin" Value="0,0,5,0" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Properties.DisplayImage}" Value="{x:Null}">
+                                        <Setter Property="Margin" Value="0" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                    <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" Text="{Binding DisplayName}" Foreground="Black" FontSize="16" x:Name="txtLoggedInUser" HorizontalAlignment="Left" />
                     <ComboBox  Grid.Column="1" VerticalAlignment="Center" Style="{DynamicResource ComboBoxStyle}" Width="100" SelectedValue="{Binding Path=Status}"
                               Background="Gray" Focusable="False">
                         <ComboBox.ItemsSource>
