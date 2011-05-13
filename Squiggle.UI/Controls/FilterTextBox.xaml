@@ -24,8 +24,8 @@
     </UserControl.Resources>
     <Border Style="{StaticResource BorderStyle}">
         <DockPanel >
-            <Button TabIndex="1" x:Name="btnCancel" Visibility="{Binding Path=IsFocusedOrNotEmpty, Converter={StaticResource booltoVisibility}}" DockPanel.Dock="Right" Content="X" 
-                    VerticalContentAlignment="Top" Style="{StaticResource CloseButtonStyle}" Click="btnCancel_Click" />
+            <Button TabIndex="1" x:Name="btnCancel" Visibility="{Binding Path=IsFocusedOrNotEmpty, Converter={StaticResource booltoVisibility}}" DockPanel.Dock="Right" 
+                    VerticalContentAlignment="Top" Style="{DynamicResource CloseButtonStyle}" Click="btnCancel_Click" />
             <TextBox x:Name="txtFilter"
                          DockPanel.Dock="Left" Style="{StaticResource TextStyle}" 
                          TextChanged="txtFilter_TextChanged" GotFocus="txtFilter_GotFocus" LostFocus="txtFilter_LostFocus" />

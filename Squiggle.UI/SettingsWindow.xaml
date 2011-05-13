@@ -83,14 +83,14 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="{StaticResource SettingsWindow_SettingsTab_Heading}">
+            <TabItem Header="{StaticResource SettingsWindow_PersonalTab_Heading}">
                 <Grid >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Margin="5" FontWeight="Bold" Text="{StaticResource SettingsWindow_SettingsTab_SubHeading}" />
+                    <TextBlock Grid.Row="0" Margin="5" FontWeight="Bold" Text="{StaticResource SettingsWindow_PersonalTab_SubHeading}" />
                     <Border Grid.Row="1" Background="{StaticResource WorkAreaBackgroud}" BorderBrush="Black" BorderThickness="1" CornerRadius="3" Margin="5">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -110,27 +110,38 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="32*" />
                                 </Grid.RowDefinitions>
-                                <TextBlock Margin="5,0,0,0" HorizontalAlignment="Left" Text="{StaticResource SettingsWindow_SettingsTab_DisplayName}"/>
+                                <TextBlock Margin="5,0,0,0" HorizontalAlignment="Left" Text="{StaticResource SettingsWindow_PersonalTab_DisplayName}"/>
                                 <TextBox Margin="5,0,0,0" Width="200" HorizontalAlignment="Left" Grid.Row="1" Text="{Binding Path=PersonalSettings.DisplayName}" Height="22" VerticalAlignment="Top" />
-                                <TextBlock Margin="5,0,0,0" HorizontalAlignment="Left" Grid.Row="2" Text="{StaticResource SettingsWindow_SettingsTab_DisplayMessage}"/>
+                                <TextBlock Margin="5,0,0,0" HorizontalAlignment="Left" Grid.Row="2" Text="{StaticResource SettingsWindow_PersonalTab_DisplayMessage}"/>
                                 <TextBox Margin="5,0,0,0" Width="200" HorizontalAlignment="Left" Grid.Row="3"  Text="{Binding Path=PersonalSettings.DisplayMessage}" Height="22" VerticalAlignment="Top" />
-                                <TextBlock Margin="5,0,0,0" HorizontalAlignment="Left" Grid.Row="4" Text="{StaticResource SettingsWindow_SettingsTab_EmailAddress}"/>
+                                <TextBlock Margin="5,0,0,0" HorizontalAlignment="Left" Grid.Row="4" Text="{StaticResource SettingsWindow_PersonalTab_EmailAddress}"/>
                                 <TextBox Margin="5,0,0,0" Width="200" HorizontalAlignment="Left" Grid.Row="5"  Text="{Binding Path=PersonalSettings.EmailAddress}" Height="22" VerticalAlignment="Top" />
                                 <StackPanel Margin="5,0,0,0" Grid.Row="6" Orientation="Horizontal">
-                                    <TextBlock Text="{StaticResource SettingsWindow_SettingsTab_IdleTimeout}" />
+                                    <TextBlock Text="{StaticResource SettingsWindow_PersonalTab_IdleTimeout}" />
                                     <TextBox Margin="5,0,0,5" Height="Auto" VerticalAlignment="Top" Width="40" HorizontalAlignment="Left" Text="{Binding Path=PersonalSettings.IdleTimeout}" />
                                     <TextBlock Margin="5,0,0,0">mins</TextBlock>
                                 </StackPanel>
-                                <CheckBox Content="{StaticResource SettingsWindow_SettingsTab_AutoSignIn}" Grid.Row="7" IsChecked="{Binding Path=PersonalSettings.AutoSignMeIn}"   Margin="5,5,198,0" />
-                                <CheckBox Content="{StaticResource SettingsWindow_SettingsTab_RememberMe}" IsChecked="{Binding Path=PersonalSettings.RememberMe}" Grid.Row="7" Margin="203,5,0,0"/>
+                                <CheckBox Content="{StaticResource SettingsWindow_PersonalTab_AutoSignIn}" Grid.Row="7" IsChecked="{Binding Path=PersonalSettings.AutoSignMeIn}"   Margin="5,5,198,0" />
+                                <CheckBox Content="{StaticResource SettingsWindow_PersonalTab_RememberMe}" IsChecked="{Binding Path=PersonalSettings.RememberMe}" Grid.Row="7" Margin="203,5,0,0"/>
                                 <StackPanel Grid.RowSpan="4" HorizontalAlignment="Left" Margin="282,0,0,0">
                                     <Border BorderBrush="Black" BorderThickness=".5" Height="81" >
-                                        <Image Stretch="UniformToFill" VerticalAlignment="Top" Width="98" Grid.Row="1"
+                                        <Image VerticalAlignment="Top" Width="98" Grid.Row="1"
                                            Source="{Binding PersonalSettings.DisplayImage}" />
                                     </Border>
                                     <StackPanel HorizontalAlignment="Right" Margin="0,5,0,0" Orientation="Horizontal">
-                                        <Button Content="Button" Height="23" Name="btnSetDisplayImage" Width="75" Click="btnSetDisplayImage_Click" />
-                                        <Button Content="X" Name="btnClearDisplayImage" Click="btnClearDisplayImage_Click" />
+                                        <Button Content="{StaticResource SettingsWindow_PersonalTab_DisplayImage}" Height="23" 
+                                                Name="btnSetDisplayImage" Click="btnSetDisplayImage_Click" />
+                                        <Button Name="btnClearDisplayImage" Click="btnClearDisplayImage_Click">
+                                            <Button.Style>
+                                                <Style TargetType="Button" BasedOn="{StaticResource CloseButtonStyle}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding PersonalSettings.DisplayImage}" Value="{x:Null}">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
                                     </StackPanel>
                                 </StackPanel>
                             </Grid>

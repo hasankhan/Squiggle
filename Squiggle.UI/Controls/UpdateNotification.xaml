@@ -20,6 +20,6 @@
                 <TextBlock Text="{DynamicResource MainWindow_UpdateNotice}" />
             </Hyperlink>
         </Label>
-        <Button TabIndex="1" Content="X" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{DynamicResource CloseButtonStyle}" Command="{Binding CancelUpdateCommand}" />
+        <Button TabIndex="1" VerticalAlignment="Center" HorizontalAlignment="Right" Style="{DynamicResource CloseButtonStyle}" Command="{Binding CancelUpdateCommand}" />
     </Grid>
 </UserControl>

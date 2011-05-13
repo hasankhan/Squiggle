@@ -12,6 +12,8 @@ namespace Squiggle.UI.Resources
         public string Global_ContactSays { get; set; }
         public string Global_You { get; set; }
         public string Global_ContactSaid { get; set; }
+        public string Global_ImageFilter { get; set; }
+        public string Error_InvalidImage { get; set; }
         public string Popup_NewMessage { get; set; }
         public string ContactList_SearchContacts { get; set; }
         public string MainWindow_ShareAMessage { get; set; }

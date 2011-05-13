@@ -17,7 +17,6 @@ using Squiggle.Chat.Services;
 using System.IO;
 using System.Windows.Media.Imaging;
 using System.Drawing;
-using Squiggle.UI.Helpers;
 
 namespace Squiggle.UI
 {
@@ -171,7 +170,7 @@ namespace Squiggle.UI
         {
             var dialog = new OpenFileDialog();
             dialog.CheckFileExists = true;
-            dialog.Filter = "Image files|*.jpg;*.jpeg;*.bmp;*.gif";
+            dialog.Filter = Translation.Instance.Global_ImageFilter + "|*.jpg;*.jpeg;*.bmp;*.gif";
             if (dialog.ShowDialog(this) == true)
             {
                 if (ImageUtility.IsValidImage(dialog.FileName))
@@ -181,7 +180,7 @@ namespace Squiggle.UI
                         settingsVm.PersonalSettings.DisplayImage = resized.ToBytes();
                 }
                 else
-                    MessageBox.Show("Please select a valid image.", "Squiggle", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(Translation.Instance.Error_InvalidImage, Translation.Instance.Error, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

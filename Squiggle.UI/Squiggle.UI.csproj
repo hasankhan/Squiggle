@@ -229,6 +229,7 @@
     <Content Include="Images\Emoticons\winking.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\remove.png" />
     <Content Include="Resources\Translation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

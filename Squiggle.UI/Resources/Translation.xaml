@@ -8,6 +8,7 @@
     <sys:String x:Key="Global_ContactSays">says</sys:String>
     <sys:String x:Key="Global_ContactSaid">said</sys:String>
     <sys:String x:Key="Global_You">You</sys:String>
+    <sys:String x:Key="Global_ImageFilter">Image files</sys:String>
     <sys:String x:Key="Buddy_StartChat">Start Chat</sys:String>
     <sys:String x:Key="Buddy_SendFile">Send File</sys:String>
     <sys:String x:Key="Buddy_SendEmail">Send Email</sys:String>
@@ -49,14 +50,15 @@
     <sys:String x:Key="SettingsWindow_GeneralTab_AudioAlerts">Audio Alerts</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_DownloadsFolder">Downloads folder:</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_Browse">Browse</sys:String>    
-    <sys:String x:Key="SettingsWindow_SettingsTab_Heading">Personal</sys:String>
-    <sys:String x:Key="SettingsWindow_SettingsTab_SubHeading">Personal settings</sys:String>
-    <sys:String x:Key="SettingsWindow_SettingsTab_DisplayName">Type your name you want others to see it:</sys:String>
-    <sys:String x:Key="SettingsWindow_SettingsTab_EmailAddress">Type your email address:</sys:String>
-    <sys:String x:Key="SettingsWindow_SettingsTab_DisplayMessage">Type a personal message for your contacts to see:</sys:String>
-    <sys:String x:Key="SettingsWindow_SettingsTab_IdleTimeout">Show me "Idle" when I am inactive for</sys:String>
-    <sys:String x:Key="SettingsWindow_SettingsTab_RememberMe">Remember me</sys:String>
-    <sys:String x:Key="SettingsWindow_SettingsTab_AutoSignIn">Automatically sign me in</sys:String>
+    <sys:String x:Key="SettingsWindow_PersonalTab_Heading">Personal</sys:String>
+    <sys:String x:Key="SettingsWindow_PersonalTab_SubHeading">Personal settings</sys:String>
+    <sys:String x:Key="SettingsWindow_PersonalTab_DisplayName">Type your name you want others to see it:</sys:String>
+    <sys:String x:Key="SettingsWindow_PersonalTab_DisplayImage">Change Image</sys:String>
+    <sys:String x:Key="SettingsWindow_PersonalTab_EmailAddress">Type your email address:</sys:String>
+    <sys:String x:Key="SettingsWindow_PersonalTab_DisplayMessage">Type a personal message for your contacts to see:</sys:String>
+    <sys:String x:Key="SettingsWindow_PersonalTab_IdleTimeout">Show me "Idle" when I am inactive for</sys:String>
+    <sys:String x:Key="SettingsWindow_PersonalTab_RememberMe">Remember me</sys:String>
+    <sys:String x:Key="SettingsWindow_PersonalTab_AutoSignIn">Automatically sign me in</sys:String>
     <sys:String x:Key="SettingsWindow_ChatTab_Heading">Chat</sys:String>
     <sys:String x:Key="SettingsWindow_ChatTab_SubHeading">Chat settings</sys:String>
     <sys:String x:Key="SettingsWindow_ChatTab_EnableLogging">Enable Logging</sys:String>
@@ -172,4 +174,5 @@
     <sys:String x:Key="SortField_Status">Status</sys:String>
     <sys:String x:Key="ContactView_Standard">Standard</sys:String>
     <sys:String x:Key="ContactView_Compact">Compact</sys:String>
+    <sys:String x:Key="Error_InvalidImage">Please select a valid image.</sys:String>
 </ResourceDictionary>

@@ -11,11 +11,15 @@
                 <ResourceDictionary Source="Resources\GlassButton.xaml"/>
                 <ResourceDictionary>
                     <Style x:Key="CloseButtonStyle" TargetType="{x:Type Button}">
-                        <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="FontWeight" Value="Bold" />
-                        <Setter Property="Margin" Value="2"/>
-                        <Setter Property="BorderBrush" Value="White" />
-                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="Margin" Value="2" />
+                        <Setter Property="Cursor" Value="Hand" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <Image Width="14" Height="14" Source="/Images/remove.png" />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
                     </Style>
                     <Border Margin="5" x:Key="BuddyToolTip">
                         <Grid>
