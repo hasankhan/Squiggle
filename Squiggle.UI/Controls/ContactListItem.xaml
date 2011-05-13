@@ -147,9 +147,12 @@
                                         <TextBlock Foreground="Black" FontWeight="Bold"  Text="{Binding DisplayName}"/>
                                         <TextBlock Foreground="Black" VerticalAlignment="Center" Margin="5,0,0,0" FontSize="10" Text="{Binding Status, StringFormat=(\{0\})}"/>
                                     </StackPanel>
-                                    <ScrollViewer Height="90" VerticalScrollBarVisibility="Auto" >
-                                        <TextBlock Margin="10,0,0,0" Foreground="#FF9A9C9D" Text="{Binding Properties.DisplayMessage}" TextWrapping="WrapWithOverflow"/>
-                                    </ScrollViewer>
+                                    <DockPanel Height="90" LastChildFill="True">
+                                        <Image Source="{Binding Properties.DisplayImage}" Margin="5" />
+                                        <ScrollViewer DockPanel.Dock="Left" VerticalScrollBarVisibility="Auto" >
+                                            <TextBlock Margin="10,0,0,0" Foreground="#FF9A9C9D" Text="{Binding Properties.DisplayMessage}" TextWrapping="WrapWithOverflow"/>
+                                        </ScrollViewer>
+                                    </DockPanel>
                                 </StackPanel>
                             </Border>
                             <DockPanel Background="White" Grid.Row="2" Grid.ColumnSpan="2" >
