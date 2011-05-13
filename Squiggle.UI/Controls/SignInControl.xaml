@@ -36,11 +36,11 @@
                 <Border CornerRadius="5" BorderBrush="#FFD8E8F0" BorderThickness="1" Margin="20,5,20,5">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="{StaticResource MainWindow_SignIn_DisplayName}" TextWrapping="Wrap" />
-                        <TextBox Margin="5,10,5,0" x:Name="txtdisplayName"
+                        <TextBox Margin="5,10,5,0" x:Name="txtdisplayName" MaxLength="50"
                                  BorderBrush="{x:Null}" />
                         <TextBlock Margin="0,5,0,0" Text="{StaticResource MainWindow_SignIn_GroupName}" TextWrapping="Wrap" />
                         <ComboBox Margin="5,10,5,0" x:Name="txtGroupName"
-                                  IsEditable="True"
+                                  IsEditable="True" controls:EditableComboBox.MaxLength="25"
                                   PreviewKeyDown="txtGroupName_PreviewKeyDown" DisplayMemberPath="GroupName" 
                                   SelectedValuePath="GroupName" />
                         <CheckBox x:Name="chkRememberName" Margin="5,10,0,0" Content="{StaticResource MainWindow_SignIn_RememberMe}" HorizontalAlignment="Left"/>

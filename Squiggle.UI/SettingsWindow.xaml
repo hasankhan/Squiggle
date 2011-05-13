@@ -111,11 +111,14 @@
                                     <RowDefinition Height="32*" />
                                 </Grid.RowDefinitions>
                                 <TextBlock Margin="5,0,0,0" HorizontalAlignment="Left" Text="{StaticResource SettingsWindow_PersonalTab_DisplayName}"/>
-                                <TextBox Margin="5,0,0,0" Width="200" HorizontalAlignment="Left" Grid.Row="1" Text="{Binding Path=PersonalSettings.DisplayName}" Height="22" VerticalAlignment="Top" />
+                                <TextBox Margin="5,0,0,0" Width="200" HorizontalAlignment="Left" Grid.Row="1" MaxLength="50"
+                                         Text="{Binding Path=PersonalSettings.DisplayName}" Height="22" VerticalAlignment="Top" />
                                 <TextBlock Margin="5,0,0,0" HorizontalAlignment="Left" Grid.Row="2" Text="{StaticResource SettingsWindow_PersonalTab_DisplayMessage}"/>
-                                <TextBox Margin="5,0,0,0" Width="200" HorizontalAlignment="Left" Grid.Row="3"  Text="{Binding Path=PersonalSettings.DisplayMessage}" Height="22" VerticalAlignment="Top" />
+                                <TextBox Margin="5,0,0,0" Width="200" HorizontalAlignment="Left" Grid.Row="3"  MaxLength="150"
+                                         Text="{Binding Path=PersonalSettings.DisplayMessage}" Height="22" VerticalAlignment="Top" />
                                 <TextBlock Margin="5,0,0,0" HorizontalAlignment="Left" Grid.Row="4" Text="{StaticResource SettingsWindow_PersonalTab_EmailAddress}"/>
-                                <TextBox Margin="5,0,0,0" Width="200" HorizontalAlignment="Left" Grid.Row="5"  Text="{Binding Path=PersonalSettings.EmailAddress}" Height="22" VerticalAlignment="Top" />
+                                <TextBox Margin="5,0,0,0" Width="200" HorizontalAlignment="Left" Grid.Row="5" MaxLength="150"
+                                         Text="{Binding Path=PersonalSettings.EmailAddress}" Height="22" VerticalAlignment="Top" />
                                 <StackPanel Margin="5,0,0,0" Grid.Row="6" Orientation="Horizontal">
                                     <TextBlock Text="{StaticResource SettingsWindow_PersonalTab_IdleTimeout}" />
                                     <TextBox Margin="5,0,0,5" Height="Auto" VerticalAlignment="Top" Width="40" HorizontalAlignment="Left" Text="{Binding Path=PersonalSettings.IdleTimeout}" />

@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using Squiggle.Utilities;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace Squiggle.UI
 {
@@ -39,6 +40,32 @@ namespace Squiggle.UI
             }
             while (element != null && (!(element is TParent) || !filter((TParent)element)));
             return (TParent)element;
+        }
+        
+        public static IEnumerable<TChild> GetVisualChildren<TChild>(this DependencyObject element) where TChild:DependencyObject
+        {
+            return GetVisualChildren<TChild>(element, _ => true);
+        }
+
+        public static IEnumerable<TChild> GetVisualChildren<TChild>(this DependencyObject element, Predicate<TChild> filter) where TChild:DependencyObject
+        {
+            var pending = new Queue<DependencyObject>();
+            pending.Enqueue(element);
+
+            while (pending.Count > 0)
+            {
+                DependencyObject parent = pending.Dequeue();
+                int count = VisualTreeHelper.GetChildrenCount(parent);
+                if (count > 0)
+                    for (int i = 0; i < count; i++)
+                    {
+                        DependencyObject child = VisualTreeHelper.GetChild(parent, i);
+                        if (child is TChild && filter((TChild)child))
+                            yield return (TChild)child;
+                        else
+                            pending.Enqueue(child);
+                    }
+            }
         }
 
         public static ScrollViewer FindScrollViewer(this FlowDocumentScrollViewer flowDocumentScrollViewer)

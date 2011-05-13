@@ -288,6 +288,7 @@
       <DependentUpon>ContactListItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ContactsViewSelector.cs" />
+    <Compile Include="Controls\EditableComboBox.cs" />
     <Compile Include="Controls\Emoticon.xaml.cs">
       <DependentUpon>Emoticon.xaml</DependentUpon>
     </Compile>
