@@ -101,13 +101,11 @@
                 </Grid.ColumnDefinitions>
                 <Border x:Name="contactBorder" Cursor="Hand"  Height="20" 
                         dragdrop:DragDropManager.DragSourceAdvisor="{DynamicResource contactDragDrop}">
-                    <Grid>
-                        <StackPanel Orientation="Horizontal" Cursor="Hand" VerticalAlignment="Center" Margin="10,0,0,0">
+                        <StackPanel Orientation="Horizontal" Cursor="Hand" VerticalAlignment="Center" Margin="10,0,0,0" >
                             <Ellipse x:Name="ellipseStatus" Style="{StaticResource StatusSymbol}" />
                             <TextBlock Text="{Binding Path=DisplayName}" FontSize="11" />
                             <TextBlock Margin="5,0,0,0" Text="{Binding Path=Properties.DisplayMessage}" TextTrimming="WordEllipsis" ToolTip="{Binding Path=DisplayMessage}"  FontSize="10" Foreground="#FF9A9C9D" HorizontalAlignment="Left" />
                         </StackPanel>
-                    </Grid>
                 </Border>
                 <Popup x:Name="popup" PlacementTarget="{Binding ElementName=contactBorder}"
                            VerticalOffset="0"  Placement="Left" Width="350" Height="170"
@@ -141,19 +139,25 @@
                                         Width="100" Margin="5" HorizontalAlignment="Right" />
                             </DockPanel>
                             <Border BorderBrush="Black" BorderThickness="0,1,0,1" Background="White" VerticalAlignment="Stretch"  Grid.ColumnSpan="2" Grid.Row="1">
-                                <StackPanel Orientation="Vertical" Margin="0,5,0,0">
+                                <Grid Margin="0,5,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
                                     <StackPanel Orientation="Horizontal">
-                                        <Ellipse Style="{StaticResource StatusSymbol}"  Margin="5,0,5,0" VerticalAlignment="Center" />
+                                        <Ellipse Style="{StaticResource StatusSymbol}"  Margin="5,0,5,0"  />
                                         <TextBlock Foreground="Black" FontWeight="Bold"  Text="{Binding DisplayName}"/>
-                                        <TextBlock Foreground="Black" VerticalAlignment="Center" Margin="5,0,0,0" FontSize="10" Text="{Binding Status, StringFormat=(\{0\})}"/>
+                                        <TextBlock Foreground="Black" Margin="5,0,0,0" FontSize="10" Text="{Binding Status, StringFormat=(\{0\})}"/>
                                     </StackPanel>
-                                    <DockPanel Height="90" LastChildFill="True">
-                                        <Image Source="{Binding Properties.DisplayImage}" Margin="5" />
-                                        <ScrollViewer DockPanel.Dock="Left" VerticalScrollBarVisibility="Auto" >
-                                            <TextBlock Margin="10,0,0,0" Foreground="#FF9A9C9D" Text="{Binding Properties.DisplayMessage}" TextWrapping="WrapWithOverflow"/>
-                                        </ScrollViewer>
-                                    </DockPanel>
-                                </StackPanel>
+                                    <Image Grid.Column="1" Grid.RowSpan="2" Source="{Binding Properties.DisplayImage}" Margin="5" MaxHeight="100" MaxWidth="100" />
+                                    <ScrollViewer Grid.Row="1" DockPanel.Dock="Left" VerticalScrollBarVisibility="Auto" >
+                                        <TextBlock Margin="10,0,0,0" Foreground="#FF9A9C9D" Text="{Binding Properties.DisplayMessage}" TextWrapping="WrapWithOverflow"/>
+                                    </ScrollViewer>
+                                </Grid>
                             </Border>
                             <DockPanel Background="White" Grid.Row="2" Grid.ColumnSpan="2" >
                                 <TextBlock Margin="5,0,0,0" FontSize="10" Foreground="Black" Text="{Binding Properties.MachineName, StringFormat={StaticResource BuddyProps_MachineName}}" />
