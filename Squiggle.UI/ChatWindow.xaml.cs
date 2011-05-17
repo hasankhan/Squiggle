@@ -142,7 +142,6 @@ namespace Squiggle.UI
             flash = new FlashWindow(this);
 
             UpdateGroupChatControls();
-            this.KeyDown += new KeyEventHandler(ChatWindow_KeyDown);
             lock (eventQueue)
             {
                 loaded = true;
@@ -170,12 +169,6 @@ namespace Squiggle.UI
                 }
             });
         }
-
-        void ChatWindow_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Escape)
-                Close();
-        }       
 
         private void Window_Closed(object sender, EventArgs e)
         {

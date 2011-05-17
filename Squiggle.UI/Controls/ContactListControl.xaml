@@ -269,12 +269,12 @@
             </DockPanel>
             <ScrollViewer Grid.Row="1" Focusable="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
                 <StackPanel>
-                    <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}"                                   
+                    <ListBox Focusable="False" Margin="5" DataContext="{Binding}" BorderThickness="0"                                
                                   ItemsSource="{Binding Source={StaticResource buddiesCollection}}" 
                                   AlternationCount="2">
-                        <ItemsControl.ItemTemplate>
+                        <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <controls:ContactListItem AllowDrop="True" Drop="Buddy_Drop" DragOver="Buddy_DragOver" MouseLeftButtonUp="Buddy_Click">
+                                <controls:ContactListItem AllowDrop="True" Drop="Buddy_Drop" DragOver="Buddy_DragOver" MouseDoubleClick="Buddy_Click">
                                     <controls:ContactListItem.ContextMenu>
                                         <ContextMenu>
                                             <MenuItem Header="{StaticResource Buddy_StartChat}" Tag="{Binding}" Click="StartChat_Click" />
@@ -284,8 +284,8 @@
                                     </controls:ContactListItem.ContextMenu>
                                 </controls:ContactListItem>
                             </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                        <ItemsControl.GroupStyle>
+                        </ListBox.ItemTemplate>
+                        <ListBox.GroupStyle>
                             <GroupStyle>
                                 <GroupStyle.ContainerStyle>
                                     <Style TargetType="{x:Type GroupItem}">
@@ -293,8 +293,8 @@
                                     </Style>
                                 </GroupStyle.ContainerStyle>
                             </GroupStyle>
-                        </ItemsControl.GroupStyle>
-                    </ItemsControl>
+                        </ListBox.GroupStyle>
+                    </ListBox>
                 </StackPanel>
             </ScrollViewer>
         </Grid>

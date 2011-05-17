@@ -43,7 +43,7 @@
             </Style.Triggers>
         </Style>
         <DataTemplate x:Key="standardView">
-            <Border x:Name="contactBorder" Padding="1" Cursor="Hand" Style="{StaticResource ContactListItem}" 
+            <Border x:Name="contactBorder" Padding="1" Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ListBox}}" Style="{StaticResource ContactListItem}"
                     dragdrop:DragDropManager.DragSourceAdvisor="{DynamicResource contactDragDrop}">
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
