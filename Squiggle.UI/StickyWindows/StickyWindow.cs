@@ -32,13 +32,13 @@ namespace Squiggle.UI.StickyWindows
 
         void AdjustLocation()
         {
-            if ((this.Left + Width) > System.Windows.SystemParameters.WorkArea.Right)
-                this.Left = System.Windows.SystemParameters.WorkArea.Right - Width;
+            if ((this.Left + Width) > System.Windows.SystemParameters.VirtualScreenWidth)
+                this.Left = System.Windows.SystemParameters.VirtualScreenWidth - Width;
             else if (this.Left < 0)
                 this.Left = 0;
 
-            if ((this.Top + Height) > System.Windows.SystemParameters.WorkArea.Bottom)
-                this.Top = System.Windows.SystemParameters.WorkArea.Bottom - Height;
+            if ((this.Top + Height) > System.Windows.SystemParameters.VirtualScreenHeight)
+                this.Top = System.Windows.SystemParameters.VirtualScreenHeight - Height;
             else if (this.Top < 0)
                 this.Top = 0;
         }    
