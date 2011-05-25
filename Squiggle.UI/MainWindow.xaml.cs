@@ -381,7 +381,7 @@ namespace Squiggle.UI
             ChatWindow window = null;
 
             if (chatSession == null || !chatSession.IsGroupChat)
-                window = chatWindows.Find(w => w.Buddies.Contains(buddy) && !w.IsGroupChat);
+                window = chatWindows.Find(w => buddy.Equals(w.PrimaryBuddy) && !w.IsGroupChat);
 
             if (window == null)
             {
@@ -389,23 +389,11 @@ namespace Squiggle.UI
                 window.Closed += (sender, e) => chatWindows.Remove(window);
                 window.SetChatSession(chatSession ?? buddy.StartChat());
                 chatWindows.Add(window);
-                if (!initiatedByUser)
-                {
-                    if (SettingsProvider.Current.Settings.GeneralSettings.MinimizeChatWindows)
-                        window.WindowState = WindowState.Minimized;
-                    else
-                        window.ShowActivated = false;
-                }
-                
-                window.Show();
-                if (!initiatedByUser && !SettingsProvider.Current.Settings.GeneralSettings.MinimizeChatWindows)
-                    window.MoveToBottom();
             }
             else if (chatSession != null)
                 window.SetChatSession(chatSession);
 
-            if (initiatedByUser)
-                window.Restore();
+            window.Show(initiatedByUser);            
 
             return window;
         }

@@ -593,6 +593,7 @@ namespace Squiggle.UI
         {
             if (Visibility == System.Windows.Visibility.Collapsed)
                 Visibility = System.Windows.Visibility.Visible;
+
             if (WindowState == System.Windows.WindowState.Minimized)
                 WindowState = lastState;
             
@@ -658,12 +659,28 @@ namespace Squiggle.UI
         void FlashWindow()
         {
             if (this.Visibility == System.Windows.Visibility.Collapsed)
+                Show(false);
+            
+            flash.Start();
+        }
+
+        public void Show(bool initiatedByUser)
+        {
+            if (!initiatedByUser)
             {
-                this.Visibility = System.Windows.Visibility.Visible;
-                WindowState = System.Windows.WindowState.Minimized;
+                if (SettingsProvider.Current.Settings.GeneralSettings.MinimizeChatWindows)
+                    WindowState = WindowState.Minimized;
+                else
+                    ShowActivated = false;
             }
 
-            flash.Start();
+            Show();
+
+            if (!initiatedByUser && !SettingsProvider.Current.Settings.GeneralSettings.MinimizeChatWindows)
+                this.MoveToBottom();
+
+            if (initiatedByUser)
+                Restore();
         }
 
         static bool ShowSaveDialog(out string fileName, out string format)
@@ -775,16 +792,19 @@ namespace Squiggle.UI
             txtMessageEditBox.GetFocus();
         }
 
-        private void chatWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
-            if (chatStarted && !closing)
+            if (!closing && chatStarted && !IsGroupChat)
             {
                 e.Cancel = true;
+                this.WindowState = System.Windows.WindowState.Minimized;
                 this.Visibility = System.Windows.Visibility.Collapsed;
             }
+            else
+                base.OnClosing(e);
         }
 
-        private void chatWindow_KeyDown(object sender, KeyEventArgs e)
+        private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
                 Close();
