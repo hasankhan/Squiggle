@@ -43,7 +43,7 @@
             </Style.Triggers>
         </Style>
         <DataTemplate x:Key="standardView">
-            <Border x:Name="contactBorder" Padding="1" Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ListBox}}" Style="{StaticResource ContactListItem}"
+            <Border x:Name="contactBorder" Padding="1" Cursor="Hand" Style="{StaticResource ContactListItem}" 
                     dragdrop:DragDropManager.DragSourceAdvisor="{DynamicResource contactDragDrop}">
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
@@ -101,11 +101,11 @@
                 </Grid.ColumnDefinitions>
                 <Border x:Name="contactBorder" Cursor="Hand"  Height="20" 
                         dragdrop:DragDropManager.DragSourceAdvisor="{DynamicResource contactDragDrop}">
-                        <StackPanel Orientation="Horizontal" Cursor="Hand" VerticalAlignment="Center" Margin="10,0,0,0" >
-                            <Ellipse x:Name="ellipseStatus" Style="{StaticResource StatusSymbol}" />
-                            <TextBlock Text="{Binding Path=DisplayName}" FontSize="11" />
-                            <TextBlock Margin="5,0,0,0" Text="{Binding Path=Properties.DisplayMessage}" TextTrimming="WordEllipsis" ToolTip="{Binding Path=DisplayMessage}"  FontSize="10" Foreground="#FF9A9C9D" HorizontalAlignment="Left" />
-                        </StackPanel>
+                    <StackPanel Orientation="Horizontal" Cursor="Hand" VerticalAlignment="Center" Margin="10,0,0,0" >
+                        <Ellipse x:Name="ellipseStatus" Style="{StaticResource StatusSymbol}" />
+                        <TextBlock Text="{Binding Path=DisplayName}" FontSize="11" />
+                        <TextBlock Margin="5,0,0,0" Text="{Binding Path=Properties.DisplayMessage}" TextTrimming="WordEllipsis" ToolTip="{Binding Path=DisplayMessage}"  FontSize="10" Foreground="#FF9A9C9D" HorizontalAlignment="Left" />
+                    </StackPanel>
                 </Border>
                 <Popup x:Name="popup" PlacementTarget="{Binding ElementName=contactBorder}"
                            VerticalOffset="0"  Placement="Left" Width="350" Height="170"
