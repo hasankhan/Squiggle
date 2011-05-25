@@ -396,6 +396,7 @@ namespace Squiggle.UI
                     else
                         window.ShowActivated = false;
                 }
+                
                 window.Show();
                 if (!initiatedByUser && !SettingsProvider.Current.Settings.GeneralSettings.MinimizeChatWindows)
                     window.MoveToBottom();
@@ -425,7 +426,12 @@ namespace Squiggle.UI
 
                 foreach (Window window in Application.Current.Windows)
                     if (window != this)
-                        window.Close();
+                    {
+                        if (window is ChatWindow)
+                            ((ChatWindow)window).ForceClose();
+                        else
+                            window.Close();
+                    }
 
                 SignOut(true);
                 clientAvailable.WaitOne();

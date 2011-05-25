@@ -41,6 +41,7 @@ namespace Squiggle.UI
 
         MultiFilter filters = new MultiFilter();
         bool chatStarted;
+        bool closing;
 
         public Buddy PrimaryBuddy { get; private set; }
 
@@ -590,9 +591,18 @@ namespace Squiggle.UI
 
         public void Restore()
         {
+            if (Visibility == System.Windows.Visibility.Collapsed)
+                Visibility = System.Windows.Visibility.Visible;
             if (WindowState == System.Windows.WindowState.Minimized)
                 WindowState = lastState;
+            
             this.Activate();
+        }
+
+        public void ForceClose()
+        {
+            closing = true;
+            Close();
         }
 
         public void DestroySession()
@@ -647,6 +657,12 @@ namespace Squiggle.UI
 
         void FlashWindow()
         {
+            if (this.Visibility == System.Windows.Visibility.Collapsed)
+            {
+                this.Visibility = System.Windows.Visibility.Visible;
+                WindowState = System.Windows.WindowState.Minimized;
+            }
+
             flash.Start();
         }
 
@@ -757,6 +773,15 @@ namespace Squiggle.UI
         private void Window_Activated(object sender, EventArgs e)
         {
             txtMessageEditBox.GetFocus();
-        }        
+        }
+
+        private void chatWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (chatStarted && !closing)
+            {
+                e.Cancel = true;
+                this.Visibility = System.Windows.Visibility.Collapsed;
+            }
+        }
     }
 }

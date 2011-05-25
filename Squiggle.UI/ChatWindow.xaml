@@ -6,7 +6,7 @@
     xmlns:local="clr-namespace:Squiggle.UI"
     Title="ChatWindow" x:Name="chatWindow"
     xmlns:dragdrop="clr-namespace:FluidKit.Helpers.DragDrop;assembly=FluidKit"     
-    Loaded="Window_Loaded" Closed="Window_Closed" Activated="Window_Activated"
+    Loaded="Window_Loaded" Closing="chatWindow_Closing" Closed="Window_Closed" Activated="Window_Activated"
     SizeChanged="Window_SizeChanged" Icon="/Squiggle;component/Images/chat.ico">
     <Window.Resources>
         <ResourceDictionary>
