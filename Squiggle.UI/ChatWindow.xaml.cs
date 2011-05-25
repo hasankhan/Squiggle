@@ -783,5 +783,11 @@ namespace Squiggle.UI
                 this.Visibility = System.Windows.Visibility.Collapsed;
             }
         }
+
+        private void chatWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+                Close();
+        }
     }
 }
