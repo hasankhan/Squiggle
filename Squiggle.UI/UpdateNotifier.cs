@@ -7,6 +7,7 @@ using System.ServiceModel.Syndication;
 using System.Xml;
 using System.Reflection;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Squiggle.UI
 {
@@ -20,6 +21,8 @@ namespace Squiggle.UI
 
     class UpdateNotifier
     {
+        const string versionRegex = "Squiggle (?<version>\\d(?:\\.\\d+)+)";
+
         public static void CheckForUpdate(DateTimeOffset clientLastUpdate, Action<UpdateCheckResult> onUpdateCheckComplete)
         {
             Async.Invoke(() =>
@@ -27,8 +30,8 @@ namespace Squiggle.UI
                 var result = new UpdateCheckResult();
 
                 SyndicationItem lastUpdate = GetLastUpdate();
-                if (lastUpdate != null && lastUpdate.PublishDate > clientLastUpdate)
-                {
+                if (lastUpdate != null && lastUpdate.PublishDate > clientLastUpdate && VersionIsSameOrNewer(lastUpdate))
+                {                    
                     result.LastUpdate = lastUpdate.PublishDate.LocalDateTime;
                     result.IsUpdated = true;
                     result.Title = lastUpdate.Title.Text;
@@ -37,6 +40,17 @@ namespace Squiggle.UI
 
                 onUpdateCheckComplete(result);
             });
+        }
+
+        static bool VersionIsSameOrNewer(SyndicationItem lastUpdate)
+        {
+            if (!Regex.IsMatch(lastUpdate.Title.Text, versionRegex))
+                return false;
+
+            string version = Regex.Match(lastUpdate.Title.Text, versionRegex).Groups["version"].Value;
+
+            bool sameOrNewer = new Version(version) >= AppInfo.Version;
+            return sameOrNewer;
         }
 
         static SyndicationItem GetLastUpdate()
