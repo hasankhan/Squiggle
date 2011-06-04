@@ -9,7 +9,6 @@ namespace Squiggle.UI.Settings
         public bool ShowPopups { get; set; }
         public bool AudioAlerts { get; set; }
         public string DownloadsFolder { get; set; }
-        public bool MinimizeChatWindows { get; set; }
         public DateTimeOffset FirstRun { get; set; }
 
         public GeneralSettings()

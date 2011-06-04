@@ -452,5 +452,17 @@ namespace Squiggle.UI.Properties {
                 this["ContactListView"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool StealFocusOnNewMessage {
+            get {
+                return ((bool)(this["StealFocusOnNewMessage"]));
+            }
+            set {
+                this["StealFocusOnNewMessage"] = value;
+            }
+        }
     }
 }

@@ -668,18 +668,13 @@ namespace Squiggle.UI
         {
             if (!initiatedByUser)
             {
-                if (SettingsProvider.Current.Settings.GeneralSettings.MinimizeChatWindows)
+                if (!SettingsProvider.Current.Settings.ChatSettings.StealFocusOnNewMessage)
                     WindowState = WindowState.Minimized;
-                else
-                    ShowActivated = false;
             }
 
             Show();
 
-            if (!initiatedByUser && !SettingsProvider.Current.Settings.GeneralSettings.MinimizeChatWindows)
-                this.MoveToBottom();
-
-            if (initiatedByUser)
+            if (initiatedByUser || SettingsProvider.Current.Settings.ChatSettings.StealFocusOnNewMessage)
                 Restore();
         }
 

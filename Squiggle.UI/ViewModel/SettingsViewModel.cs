@@ -34,6 +34,7 @@ namespace Squiggle.UI.ViewModel
             GeneralSettings.DownloadsFolder = settings.GeneralSettings.DownloadsFolder;
 
             ChatSettings.SpellCheck = settings.ChatSettings.SpellCheck;
+            ChatSettings.StealFocusOnNewMessage = settings.ChatSettings.StealFocusOnNewMessage;
             ChatSettings.EnableLogging = settings.ChatSettings.EnableLogging;
             
             ContactSettings.ContactListSortField = settings.ContactSettings.ContactListSortField;
@@ -66,6 +67,7 @@ namespace Squiggle.UI.ViewModel
             settings.GeneralSettings.HideToSystemTray = GeneralSettings.HideToSystemTray;
             settings.GeneralSettings.ShowPopups = GeneralSettings.ShowPopups;
             settings.GeneralSettings.AudioAlerts = GeneralSettings.AudioAlerts;
+            settings.ChatSettings.StealFocusOnNewMessage = ChatSettings.StealFocusOnNewMessage;
             settings.ChatSettings.SpellCheck = ChatSettings.SpellCheck;
             settings.ChatSettings.EnableLogging = ChatSettings.EnableLogging;
             settings.ContactSettings.GroupContacts = ContactSettings.GroupContacts;
@@ -123,6 +125,7 @@ namespace Squiggle.UI.ViewModel
         public bool EnableLogging { get; set; }
         public bool SpellCheck { get; set; }
         public bool ShowEmoticons { get; set; }
+        public bool StealFocusOnNewMessage { get; set; }
     }
 
     class ContactSettingsViewModel

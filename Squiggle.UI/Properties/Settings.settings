@@ -110,5 +110,8 @@
     <Setting Name="ContactListView" Type="Squiggle.UI.Settings.ContactListView" Scope="User">
       <Value Profile="(Default)">Standard</Value>
     </Setting>
+    <Setting Name="StealFocusOnNewMessage" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

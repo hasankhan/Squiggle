@@ -64,6 +64,7 @@
     <sys:String x:Key="SettingsWindow_ChatTab_EnableLogging">Enable Logging</sys:String>
     <sys:String x:Key="SettingsWindow_ChatTab_ShowEmoticons">Show emoticons</sys:String>
     <sys:String x:Key="SettingsWindow_ChatTab_SpellCheck">Enable spell-check</sys:String>
+    <sys:String x:Key="SettingsWindow_ChatTab_StealFocusOnNewMessage">Steal focus on new message.</sys:String>
     <sys:String x:Key="SettingsWindow_ContactsTab_Heading">Contacts</sys:String>
     <sys:String x:Key="SettingsWindow_ContactsTab_SubHeading">Contacts settings</sys:String>
     <sys:String x:Key="SettingsWindow_ContactsTab_SortBy">Sort contacts by:</sys:String>

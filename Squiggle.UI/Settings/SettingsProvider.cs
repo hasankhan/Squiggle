@@ -88,7 +88,6 @@ namespace Squiggle.UI.Settings
                 firstRun = DateTimeOffset.Now;
 
             Settings.GeneralSettings.FirstRun = firstRun;
-            Settings.GeneralSettings.MinimizeChatWindows = ConfigReader.GetSetting<bool>("MinimizeChatWindows");
             Settings.GeneralSettings.HideToSystemTray = Properties.Settings.Default.HideToTray;
             Settings.GeneralSettings.ShowPopups = Properties.Settings.Default.ShowPopups;
             Settings.GeneralSettings.AudioAlerts = Properties.Settings.Default.AudioAlerts;
@@ -120,6 +119,7 @@ namespace Squiggle.UI.Settings
         {
             Settings.ChatSettings.ShowEmoticons = Properties.Settings.Default.ShowEmoticons;
             Settings.ChatSettings.SpellCheck = Properties.Settings.Default.SpellCheck;
+            Settings.ChatSettings.StealFocusOnNewMessage = Properties.Settings.Default.StealFocusOnNewMessage;
             Settings.ChatSettings.EnableLogging = Properties.Settings.Default.EnableLogging;
         }
 
@@ -172,6 +172,7 @@ namespace Squiggle.UI.Settings
         {
             Properties.Settings.Default.ShowEmoticons = Settings.ChatSettings.ShowEmoticons;
             Properties.Settings.Default.SpellCheck = Settings.ChatSettings.SpellCheck;
+            Properties.Settings.Default.StealFocusOnNewMessage = Settings.ChatSettings.StealFocusOnNewMessage;
             Properties.Settings.Default.EnableLogging = Settings.ChatSettings.EnableLogging;
             
         }
