@@ -11,12 +11,12 @@
         </Style>
 
         <Style x:Key="TextStyle" TargetType="{x:Type TextBox}">
-            <Setter Property="Margin" Value="2,1,2,2" />
+            <Setter Property="Margin" Value="2,2,0,2" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="BorderBrush" Value="{x:Null}" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
         </Style>
 
         <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
@@ -30,15 +30,16 @@
         </UserControl.Resources>
 
         <Border Style="{StaticResource BorderStyle}">
-            <DockPanel Focusable="True">
-            <Button TabIndex="1" x:Name="btnSend" IsEnabled="False" DockPanel.Dock="Right" Content="{StaticResource ChatWindow_SendButton}" ToolTip="{StaticResource ChatWindow_SendButtonToolTip}" 
+        <DockPanel Focusable="True">
+            <Button TabIndex="1" x:Name="btnSend" IsEnabled="False" DockPanel.Dock="Right" Height="60"
+                    Content="{DynamicResource ChatWindow_SendButton}" ToolTip="{DynamicResource ChatWindow_SendButtonToolTip}" 
         Style="{StaticResource ButtonStyle}" Click="btnSend_Click" />
-                <TextBox AllowDrop="True" x:Name="txtMessage"
+            <TextBox AllowDrop="True" x:Name="txtMessage"
                     DockPanel.Dock="Left" TabIndex="0"  Style="{StaticResource TextStyle}" 
-                    AcceptsReturn="True" Height="60" VerticalScrollBarVisibility="Auto"
-                    TextChanged="txtMessage_TextChanged" PreviewKeyDown="txtMessage_PreviewKeyDown" TextWrapping="Wrap" />                
-            </DockPanel>
-        </Border>
+                    AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
+                    TextChanged="txtMessage_TextChanged" PreviewKeyDown="txtMessage_PreviewKeyDown" TextWrapping="Wrap" />
+        </DockPanel>
+    </Border>
 
 </UserControl>
 
