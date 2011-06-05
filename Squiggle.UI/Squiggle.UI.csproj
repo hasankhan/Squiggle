@@ -342,6 +342,7 @@
     <Compile Include="Settings\ContactListSortField.cs" />
     <Compile Include="Settings\ContactListView.cs" />
     <Compile Include="Settings\ContactSettings.cs" />
+    <Compile Include="Settings\SettingKey.cs" />
     <Compile Include="StickyWindows\DpiHelper.cs" />
     <Compile Include="StickyWindows\NativeBehaviors.cs" />
     <Compile Include="StickyWindows\NativeBehaviour.cs" />

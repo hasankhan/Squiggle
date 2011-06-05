@@ -11,12 +11,6 @@
     <Setting Name="DisplayImage" Type="System.Byte[]" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="PresencePort" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">9998</Value>
-    </Setting>
-    <Setting Name="ChatPort" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">9999</Value>
-    </Setting>
     <Setting Name="BindToIP" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
@@ -25,18 +19,6 @@
     </Setting>
     <Setting Name="ShowPopups" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="IdleTimeout" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">5</Value>
-    </Setting>
-    <Setting Name="KeepAliveTime" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">60</Value>
-    </Setting>
-    <Setting Name="PresenceAddress" Type="System.String" Scope="User">
-      <Value Profile="(Default)">224.10.11.12</Value>
-    </Setting>
-    <Setting Name="AutoSignIn" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="MainWindowHeight" Type="System.Double" Scope="User">
       <Value Profile="(Default)">600</Value>
@@ -94,9 +76,6 @@
     </Setting>
     <Setting Name="ClientID" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="EnableLogging" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="FirstRun" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

@@ -26,12 +26,13 @@ namespace Squiggle.Utilities
         }
 
         public static void ConfigureHost(ServiceHost host)
-        {            
+        {
+            var reader = new ConfigReader();            
             host.Description.Behaviors.Add(new ServiceThrottlingBehavior()
             {
-                MaxConcurrentCalls = ConfigReader.GetSetting<int>("WCF_MaxConcurrentCalls", 100),
-                MaxConcurrentInstances = ConfigReader.GetSetting<int>("WCF_MaxConcurrentInstances", 100),
-                MaxConcurrentSessions = ConfigReader.GetSetting<int>("WCF_MaxConcurrentSessions", 100)
+                MaxConcurrentCalls = reader.GetSetting<int>("WCF_MaxConcurrentCalls", 100),
+                MaxConcurrentInstances = reader.GetSetting<int>("WCF_MaxConcurrentInstances", 100),
+                MaxConcurrentSessions = reader.GetSetting<int>("WCF_MaxConcurrentSessions", 100)
             });
         }
     }

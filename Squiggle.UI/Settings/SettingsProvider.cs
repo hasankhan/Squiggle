@@ -12,6 +12,8 @@ namespace Squiggle.UI.Settings
 {
     class SettingsProvider
     {
+        ConfigReader reader;
+
         public static SettingsProvider Current { get; private set; }
 
         static SettingsProvider()
@@ -23,6 +25,7 @@ namespace Squiggle.UI.Settings
 
         public SettingsProvider()
         {
+            reader = new ConfigReader();
             Load();
         }
 
@@ -48,6 +51,7 @@ namespace Squiggle.UI.Settings
             SaveConnectionSettings();
 
             Properties.Settings.Default.Save();
+            reader.Save();
 
             SettingsUpdated(this, EventArgs.Empty);
         }
@@ -60,7 +64,7 @@ namespace Squiggle.UI.Settings
 
         private void LoadConnectionSettings()
         {
-            Settings.ConnectionSettings.PresenceAddress = Properties.Settings.Default.PresenceAddress;
+            Settings.ConnectionSettings.PresenceAddress = reader.GetSetting(SettingKey.PresenceAddress, "224.10.11.12");
             Settings.ConnectionSettings.BindToIP = Properties.Settings.Default.BindToIP;
 
             bool requiresNewBindToIP = !NetworkUtility.IsValidIP(Settings.ConnectionSettings.BindToIP);
@@ -76,9 +80,9 @@ namespace Squiggle.UI.Settings
 #endif
                 Settings.ConnectionSettings.ClientID = Guid.NewGuid().ToString();
 
-            Settings.ConnectionSettings.ChatPort = Properties.Settings.Default.ChatPort;
-            Settings.ConnectionSettings.KeepAliveTime = Properties.Settings.Default.KeepAliveTime;
-            Settings.ConnectionSettings.PresencePort = Properties.Settings.Default.PresencePort;
+                Settings.ConnectionSettings.ChatPort = reader.GetSetting(SettingKey.ChatPort, 9999);
+            Settings.ConnectionSettings.KeepAliveTime = reader.GetSetting(SettingKey.KeepAliveTime, 60);
+            Settings.ConnectionSettings.PresencePort = reader.GetSetting(SettingKey.PresencePort, 9998);
         }
 
         private void LoadGeneralSettings()
@@ -106,8 +110,8 @@ namespace Squiggle.UI.Settings
             Settings.PersonalSettings.DisplayImage = Properties.Settings.Default.DisplayImage;
             Settings.PersonalSettings.EmailAddress = Properties.Settings.Default.EmailAddress;
             Settings.PersonalSettings.GroupName = Properties.Settings.Default.GroupName;
-            Settings.PersonalSettings.AutoSignMeIn = Properties.Settings.Default.AutoSignIn;
-            Settings.PersonalSettings.IdleTimeout = Properties.Settings.Default.IdleTimeout;
+            Settings.PersonalSettings.AutoSignMeIn = reader.GetSetting(SettingKey.AutoSignIn, false);
+            Settings.PersonalSettings.IdleTimeout = reader.GetSetting(SettingKey.IdleTimeout, 5);
             Settings.PersonalSettings.FontColor = Properties.Settings.Default.FontColor;
             Settings.PersonalSettings.FontStyle = Properties.Settings.Default.FontStyle;
             Settings.PersonalSettings.FontSize = Properties.Settings.Default.FontSize;
@@ -120,7 +124,7 @@ namespace Squiggle.UI.Settings
             Settings.ChatSettings.ShowEmoticons = Properties.Settings.Default.ShowEmoticons;
             Settings.ChatSettings.SpellCheck = Properties.Settings.Default.SpellCheck;
             Settings.ChatSettings.StealFocusOnNewMessage = Properties.Settings.Default.StealFocusOnNewMessage;
-            Settings.ChatSettings.EnableLogging = Properties.Settings.Default.EnableLogging;
+            Settings.ChatSettings.EnableLogging = reader.GetSetting(SettingKey.EnableLogging, false);
         }
 
         void LoadContactSettings()
@@ -140,8 +144,8 @@ namespace Squiggle.UI.Settings
             Properties.Settings.Default.GroupName = Settings.PersonalSettings.RememberMe ? Settings.PersonalSettings.GroupName : String.Empty;
             Properties.Settings.Default.EmailAddress = Settings.PersonalSettings.RememberMe ? Settings.PersonalSettings.EmailAddress : String.Empty;
 
-            Properties.Settings.Default.AutoSignIn = Settings.PersonalSettings.AutoSignMeIn;
-            Properties.Settings.Default.IdleTimeout = Settings.PersonalSettings.IdleTimeout;
+            reader.SetSetting(SettingKey.AutoSignIn, Settings.PersonalSettings.AutoSignMeIn);
+            reader.SetSetting(SettingKey.IdleTimeout, Settings.PersonalSettings.IdleTimeout);
             Properties.Settings.Default.FontColor = Settings.PersonalSettings.FontColor;
             Properties.Settings.Default.FontStyle = Settings.PersonalSettings.FontStyle;
             Properties.Settings.Default.FontSize = Settings.PersonalSettings.FontSize;
@@ -150,11 +154,11 @@ namespace Squiggle.UI.Settings
 
         private void SaveConnectionSettings()
         {
-            Properties.Settings.Default.PresenceAddress = Settings.ConnectionSettings.PresenceAddress;
+            reader.SetSetting(SettingKey.PresenceAddress, Settings.ConnectionSettings.PresenceAddress);
             Properties.Settings.Default.BindToIP = Settings.ConnectionSettings.BindToIP;
-            Properties.Settings.Default.ChatPort = Settings.ConnectionSettings.ChatPort;
-            Properties.Settings.Default.KeepAliveTime = Settings.ConnectionSettings.KeepAliveTime;
-            Properties.Settings.Default.PresencePort = Settings.ConnectionSettings.PresencePort;
+            reader.SetSetting(SettingKey.ChatPort, Settings.ConnectionSettings.ChatPort);
+            reader.SetSetting(SettingKey.KeepAliveTime, Settings.ConnectionSettings.KeepAliveTime);
+            reader.SetSetting(SettingKey.PresencePort, Settings.ConnectionSettings.PresencePort);
             Properties.Settings.Default.ClientID = Settings.ConnectionSettings.ClientID;
         }
 
@@ -173,7 +177,7 @@ namespace Squiggle.UI.Settings
             Properties.Settings.Default.ShowEmoticons = Settings.ChatSettings.ShowEmoticons;
             Properties.Settings.Default.SpellCheck = Settings.ChatSettings.SpellCheck;
             Properties.Settings.Default.StealFocusOnNewMessage = Settings.ChatSettings.StealFocusOnNewMessage;
-            Properties.Settings.Default.EnableLogging = Settings.ChatSettings.EnableLogging;
+            reader.SetSetting(SettingKey.EnableLogging, Settings.ChatSettings.EnableLogging);
             
         }
 

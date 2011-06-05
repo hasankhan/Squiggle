@@ -60,30 +60,6 @@ namespace Squiggle.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("9998")]
-        public int PresencePort {
-            get {
-                return ((int)(this["PresencePort"]));
-            }
-            set {
-                this["PresencePort"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("9999")]
-        public int ChatPort {
-            get {
-                return ((int)(this["ChatPort"]));
-            }
-            set {
-                this["ChatPort"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string BindToIP {
             get {
@@ -115,54 +91,6 @@ namespace Squiggle.UI.Properties {
             }
             set {
                 this["ShowPopups"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5")]
-        public int IdleTimeout {
-            get {
-                return ((int)(this["IdleTimeout"]));
-            }
-            set {
-                this["IdleTimeout"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("60")]
-        public int KeepAliveTime {
-            get {
-                return ((int)(this["KeepAliveTime"]));
-            }
-            set {
-                this["KeepAliveTime"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("224.10.11.12")]
-        public string PresenceAddress {
-            get {
-                return ((string)(this["PresenceAddress"]));
-            }
-            set {
-                this["PresenceAddress"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool AutoSignIn {
-            get {
-                return ((bool)(this["AutoSignIn"]));
-            }
-            set {
-                this["AutoSignIn"] = value;
             }
         }
         
@@ -390,18 +318,6 @@ namespace Squiggle.UI.Properties {
             }
             set {
                 this["ClientID"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool EnableLogging {
-            get {
-                return ((bool)(this["EnableLogging"]));
-            }
-            set {
-                this["EnableLogging"] = value;
             }
         }
         
