@@ -71,7 +71,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition x:Name="messagePanel" Height="Auto"/>
             </Grid.RowDefinitions>
             <Border Background="#FFFFFFE1"
                     Visibility="Collapsed" x:Name="buddyOfflineMessage">
@@ -133,7 +133,7 @@
             </Border>
             <GridSplitter ResizeDirection="Rows" HorizontalAlignment="Stretch"
                       Grid.Row="2" VerticalAlignment="Top" ResizeBehavior="PreviousAndCurrent"
-                      Height="5" />
+                      Height="5" DragCompleted="GridSplitter_DragCompleted" />
         </Grid>
     </Grid>
 </sticky:StickyWindow>

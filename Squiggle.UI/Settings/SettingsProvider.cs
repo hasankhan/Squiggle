@@ -80,7 +80,7 @@ namespace Squiggle.UI.Settings
 #endif
                 Settings.ConnectionSettings.ClientID = Guid.NewGuid().ToString();
 
-                Settings.ConnectionSettings.ChatPort = reader.GetSetting(SettingKey.ChatPort, 9999);
+            Settings.ConnectionSettings.ChatPort = reader.GetSetting(SettingKey.ChatPort, 9999);
             Settings.ConnectionSettings.KeepAliveTime = reader.GetSetting(SettingKey.KeepAliveTime, 60);
             Settings.ConnectionSettings.PresencePort = reader.GetSetting(SettingKey.PresencePort, 9998);
         }
@@ -92,6 +92,7 @@ namespace Squiggle.UI.Settings
                 firstRun = DateTimeOffset.Now;
 
             Settings.GeneralSettings.FirstRun = firstRun;
+            Settings.GeneralSettings.MessagePanelHeight = Math.Max(Properties.Settings.Default.MessagePanelHeight, 70);
             Settings.GeneralSettings.HideToSystemTray = Properties.Settings.Default.HideToTray;
             Settings.GeneralSettings.ShowPopups = Properties.Settings.Default.ShowPopups;
             Settings.GeneralSettings.AudioAlerts = Properties.Settings.Default.AudioAlerts;
@@ -164,6 +165,7 @@ namespace Squiggle.UI.Settings
 
         private void SaveGeneralSettings()
         {
+            Properties.Settings.Default.MessagePanelHeight = Settings.GeneralSettings.MessagePanelHeight;
             Properties.Settings.Default.FirstRun = Settings.GeneralSettings.FirstRun.ToString();
             Properties.Settings.Default.DownloadsFolder = Settings.GeneralSettings.DownloadsFolder;
             Properties.Settings.Default.HideToTray = Settings.GeneralSettings.HideToSystemTray;

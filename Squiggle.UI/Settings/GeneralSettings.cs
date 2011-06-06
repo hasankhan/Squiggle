@@ -10,9 +10,11 @@ namespace Squiggle.UI.Settings
         public bool AudioAlerts { get; set; }
         public string DownloadsFolder { get; set; }
         public DateTimeOffset FirstRun { get; set; }
+        public double MessagePanelHeight { get; set; }
 
         public GeneralSettings()
         {
+            MessagePanelHeight = 70;
             HideToSystemTray = true;
             ShowPopups = true;
             AudioAlerts = false;

@@ -64,12 +64,13 @@ namespace Squiggle.UI
             filters.Add(CommandsFilter.Instance);
         }
 
-        public ChatWindow(Buddy buddy) : this()
+        public ChatWindow(Buddy buddy)
+            : this()
         {
             this.PrimaryBuddy = buddy;
             this.PrimaryBuddy.Online += new EventHandler(buddy_Online);
             this.PrimaryBuddy.Offline += new EventHandler(buddy_Offline);
-        }        
+        }
 
         public IEnumerable<Buddy> Buddies
         {
@@ -84,7 +85,7 @@ namespace Squiggle.UI
 
         public bool IsGroupChat
         {
-            get 
+            get
             {
                 if (chatSession == null)
                     return false;
@@ -119,7 +120,7 @@ namespace Squiggle.UI
         public void SetChatSession(IChat chat)
         {
             if (chat == null)
-                return;            
+                return;
 
             DestroySession();
             chatSession = chat;
@@ -135,11 +136,12 @@ namespace Squiggle.UI
             mnuInviteContact.IsEnabled = !IsBroadcastChat;
             chatSession.EnableLogging = SettingsProvider.Current.Settings.ChatSettings.EnableLogging;
             UpdateTitle();
-            MonitorAll(); 
-        }        
+            MonitorAll();
+        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            messagePanel.Height = new GridLength(SettingsProvider.Current.Settings.GeneralSettings.MessagePanelHeight, GridUnitType.Pixel);
             flash = new FlashWindow(this);
 
             UpdateGroupChatControls();
@@ -161,7 +163,7 @@ namespace Squiggle.UI
                 {
                     if (buzzPending)
                     {
-                        Dispatcher.Invoke(()=>
+                        Dispatcher.Invoke(() =>
                         {
                             DoBuzzAction();
                         }, TimeSpan.FromSeconds(.5));
@@ -174,7 +176,7 @@ namespace Squiggle.UI
         private void Window_Closed(object sender, EventArgs e)
         {
             DestroySession();
-        }        
+        }
 
         private void txtMessage_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -186,7 +188,7 @@ namespace Squiggle.UI
         private void txtMessageEditBox_MessageSend(object sender, MessageSendEventArgs e)
         {
             SendMessage(e.Message);
-        }        
+        }
 
         private void txtMessageEditBox_MessageTyping(object sender, EventArgs e)
         {
@@ -230,7 +232,7 @@ namespace Squiggle.UI
         private void SendFileMenu_Click(object sender, RoutedEventArgs e)
         {
             SendFile();
-        }        
+        }
 
         private void CloseMenu_Click(object sender, RoutedEventArgs e)
         {
@@ -250,31 +252,31 @@ namespace Squiggle.UI
         void chatSession_GroupChatStarted(object sender, EventArgs e)
         {
             DeferIfNotLoaded(OnGroupChatStarted);
-        }        
+        }
 
         void chatSession_TransferInvitationReceived(object sender, FileTransferInviteEventArgs e)
         {
-            DeferIfNotLoaded(()=>OnTransferInvite(e));
+            DeferIfNotLoaded(() => OnTransferInvite(e));
         }
 
         void chatSession_BuzzReceived(object sender, BuddyEventArgs e)
         {
-            DeferIfNotLoaded(()=>OnBuzzReceived(e.Buddy));
-        }           
+            DeferIfNotLoaded(() => OnBuzzReceived(e.Buddy));
+        }
 
         void chatSession_MessageReceived(object sender, ChatMessageReceivedEventArgs e)
         {
-            DeferIfNotLoaded(()=>OnMessageReceived(e.Sender, e.Message, e.FontName, e.Color, e.FontSize, e.FontStyle));
+            DeferIfNotLoaded(() => OnMessageReceived(e.Sender, e.Message, e.FontName, e.Color, e.FontSize, e.FontStyle));
         }
 
         void chatSession_BuddyTyping(object sender, BuddyEventArgs e)
         {
-            DeferIfNotLoaded(()=>OnBuddyTyping(e));
+            DeferIfNotLoaded(() => OnBuddyTyping(e));
         }
 
         void chatSession_MessageFailed(object sender, MessageFailedEventArgs e)
         {
-            DeferIfNotLoaded(()=>OnMessageFailed(e));
+            DeferIfNotLoaded(() => OnMessageFailed(e));
         }
 
         void chatSession_BuddyLeft(object sender, BuddyEventArgs e)
@@ -290,11 +292,11 @@ namespace Squiggle.UI
         void buddy_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             Dispatcher.Invoke(UpdateTitle);
-        } 
+        }
 
         void buddy_Online(object sender, EventArgs e)
         {
-            Dispatcher.Invoke(() => 
+            Dispatcher.Invoke(() =>
             {
                 if (!IsGroupChat && Buddies.Contains(PrimaryBuddy))
                     buddyOfflineMessage.Visibility = Visibility.Collapsed;
@@ -311,7 +313,7 @@ namespace Squiggle.UI
                     buddyOfflineMessage.Visibility = Visibility.Visible;
                 }
             });
-        }          
+        }
 
         void OnBuddyTyping(BuddyEventArgs e)
         {
@@ -321,7 +323,7 @@ namespace Squiggle.UI
                 statusResetTimer.Stop();
                 statusResetTimer.Start();
             });
-        }        
+        }
 
         void OnMessageFailed(MessageFailedEventArgs e)
         {
@@ -347,7 +349,7 @@ namespace Squiggle.UI
                 chatTextBox.AddInfo(String.Format("{0} " + Translation.Instance.ChatWindow_HasJoinedConversation, buddy.DisplayName));
                 UpdateTitle();
             });
-        }        
+        }
 
         void OnBuddyLeft(Buddy buddy)
         {
@@ -391,7 +393,7 @@ namespace Squiggle.UI
                 {
                     chatTextBox.AddInfo(String.Format("{0} " + Translation.Instance.ChatWindow_HasSentYouBuzz, buddy.DisplayName));
                     if (this.WindowState != System.Windows.WindowState.Minimized)
-                        DoBuzzAction();                   
+                        DoBuzzAction();
                     else
                         buzzPending = true;
                     FlashWindow();
@@ -415,7 +417,7 @@ namespace Squiggle.UI
         void OnMessageReceived(Buddy buddy, string message, string fontName, System.Drawing.Color color, int fontSize, System.Drawing.FontStyle fontStyle)
         {
             Dispatcher.Invoke(() =>
-            {                
+            {
                 var temp = new StringBuilder(message);
                 if (filters.Filter(temp, this, FilterDirection.In))
                 {
@@ -434,13 +436,13 @@ namespace Squiggle.UI
 
         void OnGroupChatStarted()
         {
-            Dispatcher.Invoke(()=>
+            Dispatcher.Invoke(() =>
             {
                 UpdateGroupChatControls();
                 MonitorAll();
                 UpdateTitle();
             });
-        }        
+        }
 
         void OnTransferInvite(FileTransferInviteEventArgs e)
         {
@@ -480,8 +482,8 @@ namespace Squiggle.UI
                 message = temp.ToString();
                 chatSession.SendMessage(settings.FontName, settings.FontSize, settings.FontColor, settings.FontStyle, message);
                 chatTextBox.AddMessage(displayName, message, settings.FontName, settings.FontSize, settings.FontStyle, settings.FontColor);
-            }            
-        }      
+            }
+        }
 
         public void SendBuzz()
         {
@@ -497,7 +499,7 @@ namespace Squiggle.UI
             }
             else
                 chatTextBox.AddError(Translation.Instance.ChatWindow_BuzzTooEarly, String.Empty);
-        }        
+        }
 
         public void SendFile()
         {
@@ -560,7 +562,7 @@ namespace Squiggle.UI
             }
             else
                 SaveTo(lastSavedFile, lastSavedFormat);
-        }        
+        }
 
         public void SaveTo(string fileName, string format)
         {
@@ -596,7 +598,7 @@ namespace Squiggle.UI
 
             if (WindowState == System.Windows.WindowState.Minimized)
                 WindowState = lastState;
-            
+
             this.Activate();
         }
 
@@ -629,7 +631,7 @@ namespace Squiggle.UI
                     UpdateTitle();
                 });
             }
-        }                 
+        }
 
         void UpdateTitle()
         {
@@ -640,7 +642,7 @@ namespace Squiggle.UI
                 string title = String.Join(", ", Buddies.Select(b => b.DisplayName).ToArray());
                 this.Title = String.IsNullOrEmpty(title) ? PrimaryBuddy.DisplayName : title;
             }
-        }   
+        }
 
         void ChangeStatus(string message, params object[] args)
         {
@@ -660,7 +662,7 @@ namespace Squiggle.UI
         {
             if (this.Visibility == System.Windows.Visibility.Collapsed)
                 Show(false);
-            
+
             flash.Start();
         }
 
@@ -741,7 +743,7 @@ namespace Squiggle.UI
 
         private void InviteContactMenu_Click(object sender, RoutedEventArgs e)
         {
-            IEnumerable<Buddy> buddies = SquiggleUtility.SelectContacts(Translation.Instance.ChatWindow_InviteContact, this, b=>Buddies.Contains(b));
+            IEnumerable<Buddy> buddies = SquiggleUtility.SelectContacts(Translation.Instance.ChatWindow_InviteContact, this, b => Buddies.Contains(b));
             Invite(buddies);
         }
 
@@ -803,6 +805,12 @@ namespace Squiggle.UI
         {
             if (e.Key == Key.Escape)
                 Close();
+        }
+
+        private void GridSplitter_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            SettingsProvider.Current.Settings.GeneralSettings.MessagePanelHeight = messagePanel.Height.Value;
+            SettingsProvider.Current.Save();
         }
     }
 }

@@ -380,5 +380,17 @@ namespace Squiggle.UI.Properties {
                 this["StealFocusOnNewMessage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("70")]
+        public double MessagePanelHeight {
+            get {
+                return ((double)(this["MessagePanelHeight"]));
+            }
+            set {
+                this["MessagePanelHeight"] = value;
+            }
+        }
     }
 }

@@ -92,5 +92,8 @@
     <Setting Name="StealFocusOnNewMessage" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="MessagePanelHeight" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">70</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
