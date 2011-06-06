@@ -4,6 +4,8 @@ using System.Net;
 using Squiggle.Chat.Services;
 using Squiggle.Chat.Services.Chat;
 using Squiggle.Chat.Services.Presence;
+using Squiggle.Utilities;
+using Squiggle.Chat.History;
 
 namespace Squiggle.Chat
 {
@@ -27,6 +29,8 @@ namespace Squiggle.Chat
         }
 
         public bool LoggedIn { get; private set; }
+
+        public bool EnableLogging { get; set; }
 
         public ChatClient(SquiggleEndPoint localEndPoint, IPEndPoint presenceEndPoint, TimeSpan keepAliveTime)
         {
@@ -61,6 +65,7 @@ namespace Squiggle.Chat
             };
             self.EnableUpdates = true;
             CurrentUser = self;
+            LogStatus(self);
             LoggedIn = true;
         }        
 
@@ -72,10 +77,15 @@ namespace Squiggle.Chat
             buddies.Clear();
             chatService.Stop();
             presenceService.Logout();
+
+            ((SelfBuddy)CurrentUser).EnableUpdates = false;
+            CurrentUser.Status = UserStatus.Offline;
+            LogStatus(CurrentUser);
         }
         
         void Update()
         {
+            LogStatus(CurrentUser);
             var properties = CurrentUser.Properties.ToDictionary();
             presenceService.Update(CurrentUser.DisplayName, properties, CurrentUser.Status);
         }
@@ -145,16 +155,20 @@ namespace Squiggle.Chat
 
         void OnBuddyUpdated(Buddy buddy)
         {
+            LogStatus(buddy);
             BuddyUpdated(this, new BuddyEventArgs( buddy ));
         } 
 
         void OnBuddyOnline(Buddy buddy, bool discovered)
         {
+            if (!discovered)
+                LogStatus(buddy);
             BuddyOnline(this, new BuddyOnlineEventArgs() { Buddy = buddy, Discovered = discovered });
         }
 
         void OnBuddyOffline(Buddy buddy)
         {
+            LogStatus(buddy);
             BuddyOffline(this, new BuddyEventArgs( buddy ));
         }
 
@@ -163,6 +177,16 @@ namespace Squiggle.Chat
             buddy.Status = user.Status;
             buddy.DisplayName = user.DisplayName;
             buddy.SetProperties(user.Properties);
+        }
+
+        void LogStatus(Buddy buddy)
+        {
+            if (EnableLogging)
+                ExceptionMonster.EatTheException(() =>
+                {
+                    var manager = new HistoryManager();
+                    manager.AddStatusUpdate(DateTime.Now, new Guid(buddy.ID.ToString()), buddy.DisplayName, buddy.Status);
+                }, "logging history.");
         }
 
         #region IDisposable Members

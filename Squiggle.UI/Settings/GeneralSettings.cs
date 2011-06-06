@@ -11,6 +11,7 @@ namespace Squiggle.UI.Settings
         public string DownloadsFolder { get; set; }
         public DateTimeOffset FirstRun { get; set; }
         public double MessagePanelHeight { get; set; }
+        public bool EnableStatusLogging { get; set; }
 
         public GeneralSettings()
         {
@@ -18,6 +19,7 @@ namespace Squiggle.UI.Settings
             HideToSystemTray = true;
             ShowPopups = true;
             AudioAlerts = false;
+            EnableStatusLogging = false;
         }
     }
 }

@@ -10,8 +10,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Squiggle.History;
 using Squiggle.UI.StickyWindows;
+using Squiggle.Chat.History;
 
 namespace Squiggle.UI
 {

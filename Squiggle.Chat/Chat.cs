@@ -9,8 +9,8 @@ using Squiggle.Chat.Services;
 using System.Net;
 using Squiggle.Chat.Services.Chat;
 using Squiggle.Utilities;
-using Squiggle.History;
-using Squiggle.History.DAL;
+using Squiggle.Chat.History;
+using Squiggle.Chat.History.DAL;
 
 namespace Squiggle.Chat
 {    

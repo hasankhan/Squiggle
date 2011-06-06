@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Squiggle.History.DAL;
+using Squiggle.Chat.History.DAL;
 
-namespace Squiggle.History
+namespace Squiggle.Chat.History
 {
     public class HistoryManager
     {
@@ -19,6 +19,12 @@ namespace Squiggle.History
                     repository.AddParticipant(sessionId, participant);
                 }
             }
+        }
+
+        public void AddStatusUpdate(DateTime stamp, Guid contactId, string contactName, UserStatus status)
+        {
+            using (var repository = new HistoryRepository())
+                repository.AddStatusUpdate(stamp, contactId, contactName, status);
         }
 
         public IEnumerable<Session> GetSessions(SessionCriteria criteria)

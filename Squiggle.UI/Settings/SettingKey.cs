@@ -13,6 +13,7 @@ namespace Squiggle.UI.Settings
         public static readonly string KeepAliveTime = "KeepAliveTime";
         public static readonly string PresenceAddress = "PresenceAddress";
         public static readonly string AutoSignIn = "AutoSignIn";
-        public static readonly string EnableLogging = "EnableLogging";
+        public static readonly string EnableChatLogging = "EnableChatLogging";
+        public static readonly string EnableStatusLogging = "EnableStatusLogging";
     }
 }

@@ -4,11 +4,12 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="HistoryModel.Store" Alias="Self" Provider="System.Data.SqlServerCe.3.5" ProviderManifestToken="3.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+    <Schema Namespace="HistoryModel.Store" Alias="Self" Provider="System.Data.SqlServerCe.3.5" ProviderManifestToken="3.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
         <EntityContainer Name="HistoryModelStoreContainer">
           <EntitySet Name="Events" EntityType="HistoryModel.Store.Events" store:Type="Tables" />
           <EntitySet Name="Participants" EntityType="HistoryModel.Store.Participants" store:Type="Tables" />
           <EntitySet Name="Sessions" EntityType="HistoryModel.Store.Sessions" store:Type="Tables" />
+          <EntitySet Name="StatusUpdates" EntityType="HistoryModel.Store.StatusUpdates" store:Type="Tables" />
         </EntityContainer>
         <EntityType Name="Events">
           <Key>
@@ -41,8 +42,17 @@
           <Property Name="Start" Type="datetime" Nullable="false" />
           <Property Name="End" Type="datetime" />
         </EntityType>
-      </Schema>
-    </edmx:StorageModels>
+        <EntityType Name="StatusUpdates">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ContactId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ContactName" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="StatusCode" Type="int" Nullable="false" />
+          <Property Name="Stamp" Type="datetime" Nullable="false" />
+        </EntityType>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="HistoryModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
@@ -58,6 +68,7 @@
             <End Role="Session" EntitySet="Sessions" />
             <End Role="Participant" EntitySet="Participants" />
           </AssociationSet>
+          <EntitySet Name="StatusUpdates" EntityType="HistoryModel.StatusUpdate" />
         </EntityContainer>
         <EntityType Name="Event">
           <Key>
@@ -100,6 +111,16 @@
           <End Type="HistoryModel.Session" Role="Session" Multiplicity="1" />
           <End Type="HistoryModel.Participant" Role="Participant" Multiplicity="*" />
         </Association>
+        <EntityType Name="StatusUpdate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Guid" Name="ContactId" Nullable="false" />
+          <Property Type="String" Name="ContactName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="StatusCode" Nullable="false" />
+          <Property Type="DateTime" Name="Stamp" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -154,6 +175,17 @@
               <ScalarProperty Name="Id" ColumnName="SessionId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="StatusUpdates">
+            <EntityTypeMapping TypeName="HistoryModel.StatusUpdate">
+              <MappingFragment StoreEntitySet="StatusUpdates">
+                <ScalarProperty Name="Stamp" ColumnName="Stamp" />
+                <ScalarProperty Name="StatusCode" ColumnName="StatusCode" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="ContactId" ColumnName="ContactId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -186,6 +218,7 @@
           <ConnectorPoint PointX="5.75" PointY="3.75" />
           <ConnectorPoint PointX="5.75" PointY="2.537985026041667" />
         </AssociationConnector>
+        <EntityTypeShape EntityType="HistoryModel.StatusUpdate" Width="1.5" PointX="7.625" PointY="1.75" Height="1.9802864583333317" />
       </Diagram>
     </Diagrams>
   </Designer>

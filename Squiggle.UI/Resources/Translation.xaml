@@ -48,6 +48,7 @@
     <sys:String x:Key="SettingsWindow_GeneralTab_CloseToTray">Close to tray</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_ShowPopups">Show popups</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_AudioAlerts">Audio Alerts</sys:String>
+    <sys:String x:Key="SettingsWindow_GeneralTab_StatusLogging">Enable status logging</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_DownloadsFolder">Downloads folder:</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_Browse">Browse</sys:String>    
     <sys:String x:Key="SettingsWindow_PersonalTab_Heading">Personal</sys:String>

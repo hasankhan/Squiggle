@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Squiggle.History.DAL
+namespace Squiggle.Chat.History.DAL
 {
     partial class Event
     {

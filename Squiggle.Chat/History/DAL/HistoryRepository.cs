@@ -5,7 +5,7 @@ using System.Text;
 using System.Data.Objects;
 using System.Linq.Expressions;
 
-namespace Squiggle.History.DAL
+namespace Squiggle.Chat.History.DAL
 {
     class HistoryRepository : IDisposable
     {
@@ -91,6 +91,12 @@ namespace Squiggle.History.DAL
             context.SaveChanges();
         }
 
+        public void AddStatusUpdate(DateTime stamp, Guid contactId, string contactName, UserStatus status)
+        {
+            context.AddToStatusUpdates(StatusUpdate.CreateStatusUpdate(Guid.NewGuid(), contactId, contactName, (int)status, stamp));
+            context.SaveChanges();
+        }
+
         public void Dispose()
         {
             context.Dispose();
@@ -131,6 +137,6 @@ namespace Squiggle.History.DAL
             Expression body = equals.Aggregate((accumulate, equal) => Expression.Or(accumulate, equal));
 
             return query.Where(Expression.Lambda<Func<TEntity, bool>>(body, p));
-        }
+        }              
     }
 }

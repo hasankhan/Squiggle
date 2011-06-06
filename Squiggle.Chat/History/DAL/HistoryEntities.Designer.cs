@@ -9,12 +9,12 @@
 //------------------------------------------------------------------------------
 
 [assembly: global::System.Data.Objects.DataClasses.EdmSchemaAttribute()]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("HistoryModel", "SessionEvent", "Session", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Squiggle.History.DAL.Session), "Event", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Squiggle.History.DAL.Event))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("HistoryModel", "SessionParticipant", "Session", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Squiggle.History.DAL.Session), "Participant", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Squiggle.History.DAL.Participant))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("HistoryModel", "SessionEvent", "Session", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Squiggle.Chat.History.DAL.Session), "Event", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Squiggle.Chat.History.DAL.Event))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("HistoryModel", "SessionParticipant", "Session", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Squiggle.Chat.History.DAL.Session), "Participant", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Squiggle.Chat.History.DAL.Participant))]
 
 // Original file name:
-// Generation date: 5/1/2011 12:08:11 AM
-namespace Squiggle.History.DAL
+// Generation date: 6/6/2011 11:10:30 PM
+namespace Squiggle.Chat.History.DAL
 {
     
     /// <summary>
@@ -99,6 +99,23 @@ namespace Squiggle.History.DAL
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         private global::System.Data.Objects.ObjectQuery<Session> _Sessions;
         /// <summary>
+        /// There are no comments for StatusUpdates in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public global::System.Data.Objects.ObjectQuery<StatusUpdate> StatusUpdates
+        {
+            get
+            {
+                if ((this._StatusUpdates == null))
+                {
+                    this._StatusUpdates = base.CreateQuery<StatusUpdate>("[StatusUpdates]");
+                }
+                return this._StatusUpdates;
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private global::System.Data.Objects.ObjectQuery<StatusUpdate> _StatusUpdates;
+        /// <summary>
         /// There are no comments for Events in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
@@ -121,6 +138,14 @@ namespace Squiggle.History.DAL
         public void AddToSessions(Session session)
         {
             base.AddObject("Sessions", session);
+        }
+        /// <summary>
+        /// There are no comments for StatusUpdates in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public void AddToStatusUpdates(StatusUpdate statusUpdate)
+        {
+            base.AddObject("StatusUpdates", statusUpdate);
         }
     }
     /// <summary>
@@ -709,5 +734,171 @@ namespace Squiggle.History.DAL
                 }
             }
         }
+    }
+    /// <summary>
+    /// There are no comments for HistoryModel.StatusUpdate in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// Id
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="HistoryModel", Name="StatusUpdate")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    public partial class StatusUpdate : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new StatusUpdate object.
+        /// </summary>
+        /// <param name="id">Initial value of Id.</param>
+        /// <param name="contactId">Initial value of ContactId.</param>
+        /// <param name="contactName">Initial value of ContactName.</param>
+        /// <param name="statusCode">Initial value of StatusCode.</param>
+        /// <param name="stamp">Initial value of Stamp.</param>
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public static StatusUpdate CreateStatusUpdate(global::System.Guid id, global::System.Guid contactId, string contactName, int statusCode, global::System.DateTime stamp)
+        {
+            StatusUpdate statusUpdate = new StatusUpdate();
+            statusUpdate.Id = id;
+            statusUpdate.ContactId = contactId;
+            statusUpdate.ContactName = contactName;
+            statusUpdate.StatusCode = statusCode;
+            statusUpdate.Stamp = stamp;
+            return statusUpdate;
+        }
+        /// <summary>
+        /// There are no comments for property Id in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public global::System.Guid Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                this.OnIdChanging(value);
+                this.ReportPropertyChanging("Id");
+                this._Id = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Id");
+                this.OnIdChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private global::System.Guid _Id;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnIdChanging(global::System.Guid value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnIdChanged();
+        /// <summary>
+        /// There are no comments for property ContactId in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public global::System.Guid ContactId
+        {
+            get
+            {
+                return this._ContactId;
+            }
+            set
+            {
+                this.OnContactIdChanging(value);
+                this.ReportPropertyChanging("ContactId");
+                this._ContactId = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("ContactId");
+                this.OnContactIdChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private global::System.Guid _ContactId;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnContactIdChanging(global::System.Guid value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnContactIdChanged();
+        /// <summary>
+        /// There are no comments for property ContactName in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public string ContactName
+        {
+            get
+            {
+                return this._ContactName;
+            }
+            set
+            {
+                this.OnContactNameChanging(value);
+                this.ReportPropertyChanging("ContactName");
+                this._ContactName = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("ContactName");
+                this.OnContactNameChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private string _ContactName;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnContactNameChanging(string value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnContactNameChanged();
+        /// <summary>
+        /// There are no comments for property StatusCode in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public int StatusCode
+        {
+            get
+            {
+                return this._StatusCode;
+            }
+            set
+            {
+                this.OnStatusCodeChanging(value);
+                this.ReportPropertyChanging("StatusCode");
+                this._StatusCode = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("StatusCode");
+                this.OnStatusCodeChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private int _StatusCode;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnStatusCodeChanging(int value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnStatusCodeChanged();
+        /// <summary>
+        /// There are no comments for property Stamp in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public global::System.DateTime Stamp
+        {
+            get
+            {
+                return this._Stamp;
+            }
+            set
+            {
+                this.OnStampChanging(value);
+                this.ReportPropertyChanging("Stamp");
+                this._Stamp = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Stamp");
+                this.OnStampChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private global::System.DateTime _Stamp;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnStampChanging(global::System.DateTime value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnStampChanged();
     }
 }

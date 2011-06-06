@@ -319,7 +319,8 @@ namespace Squiggle.UI
             string clientID = settings.ConnectionSettings.ClientID;
 
             var client = new ChatClient(new SquiggleEndPoint(clientID, chatEndPoint), presenceEndPoint, keepAliveTimeout);
-
+            client.EnableLogging = settings.GeneralSettings.EnableStatusLogging;
+            
             var properties = new BuddyProperties();
             properties.GroupName = groupName;
             properties.MachineName = Environment.MachineName;

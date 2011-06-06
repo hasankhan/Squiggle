@@ -96,7 +96,8 @@ namespace Squiggle.UI.Settings
             Settings.GeneralSettings.HideToSystemTray = Properties.Settings.Default.HideToTray;
             Settings.GeneralSettings.ShowPopups = Properties.Settings.Default.ShowPopups;
             Settings.GeneralSettings.AudioAlerts = Properties.Settings.Default.AudioAlerts;
-            
+            Settings.GeneralSettings.EnableStatusLogging = reader.GetSetting(SettingKey.EnableStatusLogging, false);
+
             if (String.IsNullOrEmpty(Properties.Settings.Default.DownloadsFolder) || !Shell.CreateDirectoryIfNotExists(Properties.Settings.Default.DownloadsFolder))
                 Settings.GeneralSettings.DownloadsFolder = Path.Combine(AppInfo.Location, "Downloads");
             else
@@ -125,7 +126,7 @@ namespace Squiggle.UI.Settings
             Settings.ChatSettings.ShowEmoticons = Properties.Settings.Default.ShowEmoticons;
             Settings.ChatSettings.SpellCheck = Properties.Settings.Default.SpellCheck;
             Settings.ChatSettings.StealFocusOnNewMessage = Properties.Settings.Default.StealFocusOnNewMessage;
-            Settings.ChatSettings.EnableLogging = reader.GetSetting(SettingKey.EnableLogging, false);
+            Settings.ChatSettings.EnableLogging = reader.GetSetting(SettingKey.EnableChatLogging, false);
         }
 
         void LoadContactSettings()
@@ -172,6 +173,7 @@ namespace Squiggle.UI.Settings
             Properties.Settings.Default.ShowPopups = Settings.GeneralSettings.ShowPopups;
             Properties.Settings.Default.AudioAlerts = Settings.GeneralSettings.AudioAlerts;
             Properties.Settings.Default.DownloadsFolder = Settings.GeneralSettings.DownloadsFolder;
+            reader.SetSetting(SettingKey.EnableStatusLogging, Settings.GeneralSettings.EnableStatusLogging);
         }
 
         void SaveChatSettings()
@@ -179,7 +181,7 @@ namespace Squiggle.UI.Settings
             Properties.Settings.Default.ShowEmoticons = Settings.ChatSettings.ShowEmoticons;
             Properties.Settings.Default.SpellCheck = Settings.ChatSettings.SpellCheck;
             Properties.Settings.Default.StealFocusOnNewMessage = Settings.ChatSettings.StealFocusOnNewMessage;
-            reader.SetSetting(SettingKey.EnableLogging, Settings.ChatSettings.EnableLogging);
+            reader.SetSetting(SettingKey.EnableChatLogging, Settings.ChatSettings.EnableLogging);
             
         }
 

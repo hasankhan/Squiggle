@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Translate", "Squig
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Utilities", "Squiggle.Utilities\Squiggle.Utilities.csproj", "{8B57850B-FA7F-4F96-A4A0-BF81BF24E710}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.History", "Squiggle.History\Squiggle.History.csproj", "{7C28D795-0C3A-4154-9693-8F94C68CE540}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Multicast", "Squiggle.Multicast\Squiggle.Multicast.csproj", "{B5640D95-713B-4A4D-808F-C1B2511AC95B}"
 EndProject
 Global
@@ -47,10 +45,6 @@ Global
 		{8B57850B-FA7F-4F96-A4A0-BF81BF24E710}.Debug|x86.Build.0 = Debug|x86
 		{8B57850B-FA7F-4F96-A4A0-BF81BF24E710}.Release|x86.ActiveCfg = Release|x86
 		{8B57850B-FA7F-4F96-A4A0-BF81BF24E710}.Release|x86.Build.0 = Release|x86
-		{7C28D795-0C3A-4154-9693-8F94C68CE540}.Debug|x86.ActiveCfg = Debug|x86
-		{7C28D795-0C3A-4154-9693-8F94C68CE540}.Debug|x86.Build.0 = Debug|x86
-		{7C28D795-0C3A-4154-9693-8F94C68CE540}.Release|x86.ActiveCfg = Release|x86
-		{7C28D795-0C3A-4154-9693-8F94C68CE540}.Release|x86.Build.0 = Release|x86
 		{B5640D95-713B-4A4D-808F-C1B2511AC95B}.Debug|x86.ActiveCfg = Debug|x86
 		{B5640D95-713B-4A4D-808F-C1B2511AC95B}.Debug|x86.Build.0 = Debug|x86
 		{B5640D95-713B-4A4D-808F-C1B2511AC95B}.Release|x86.ActiveCfg = Release|x86
