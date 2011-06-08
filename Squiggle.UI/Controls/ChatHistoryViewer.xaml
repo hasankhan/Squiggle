@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="Squiggle.UI.Controls.ChatHistoryViewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:Squiggle.UI.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="586">
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="40" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="110" />
+                <ColumnDefinition Width="454*" />
+            </Grid.ColumnDefinitions>
+            <Label Content="{DynamicResource HistoryViewer_FromDate}" Margin="0,0,35,0" />
+            <TextBox x:Name="txtFrom" Grid.ColumnSpan="2" Margin="75,0,0,0" />
+            <Label Grid.Row="1" Content="{DynamicResource HistoryViewer_ToDate}" Margin="0,0,35,0" />
+            <TextBox Grid.Row="1" x:Name="txtTo" Grid.ColumnSpan="2" Margin="75,0,0,0" />
+            <Label Grid.Row="2" Content="{DynamicResource HistoryViewer_Message}" Margin="0,0,35,0" />
+            <TextBox Grid.Row="2" x:Name="txtMessage" Grid.ColumnSpan="2" Margin="75,0,0,0" />
+            <StackPanel Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal">
+                <Button Margin="5" Click="Clear_Click" Content="{DynamicResource HistoryViewer_Clear}" />
+                <Button Width="50" Margin="5" Click="Search_Click" Content="{DynamicResource HistoryViewer_Search}" IsDefault="True" />
+            </StackPanel>
+            <ListView Grid.Row="4" Grid.ColumnSpan="2" x:Name="results" MouseDoubleClick="results_MouseDoubleClick" ContextMenuOpening="results_ContextMenuOpening">
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="deleteMenuItem" Header="{DynamicResource HistoryViewer_Delete}" Click="Delete_Click" />
+                    </ContextMenu>
+                </ListView.ContextMenu>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="{DynamicResource HistoryViewer_Results_Start}" DisplayMemberBinding="{Binding Start}" Width="140" />
+                        <GridViewColumn Header="{DynamicResource HistoryViewer_Results_End}" DisplayMemberBinding="{Binding End}" Width="140" />
+                        <GridViewColumn Header="{DynamicResource HistoryViewer_Results_Participants}" DisplayMemberBinding="{Binding Participants}" Width="280"  />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        <controls:BusyIndicator x:Name="busyIndicator" Message="{DynamicResource HistoryViewer_Searching}" GotFocus="busyIndicator_GotFocus" />
+    </Grid>
+</UserControl>

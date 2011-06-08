@@ -146,6 +146,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\ChatHistoryViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ChatTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -193,6 +197,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\StatusHistoryViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\UpdateNotification.xaml">
       <SubType>Designer</SubType>
@@ -284,6 +292,9 @@
     <Compile Include="Controls\BusyIndicator.xaml.cs">
       <DependentUpon>BusyIndicator.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ChatHistoryViewer.xaml.cs">
+      <DependentUpon>ChatHistoryViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ContactListItem.xaml.cs">
       <DependentUpon>ContactListItem.xaml</DependentUpon>
     </Compile>
@@ -291,6 +302,9 @@
     <Compile Include="Controls\EditableComboBox.cs" />
     <Compile Include="Controls\Emoticon.xaml.cs">
       <DependentUpon>Emoticon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StatusHistoryViewer.xaml.cs">
+      <DependentUpon>StatusHistoryViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TextBlockBugFix.cs" />
     <Compile Include="Controls\UpdateNotification.xaml.cs">

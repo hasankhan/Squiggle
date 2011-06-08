@@ -177,4 +177,6 @@
     <sys:String x:Key="ContactView_Standard">Standard</sys:String>
     <sys:String x:Key="ContactView_Compact">Compact</sys:String>
     <sys:String x:Key="Error_InvalidImage">Please select a valid image.</sys:String>
+    <sys:String x:Key="HistoryViewer_ChatHistoryTab">Chat History</sys:String>
+    <sys:String x:Key="HistoryViewer_StatusHistoryTab">Status History</sys:String>
 </ResourceDictionary>
