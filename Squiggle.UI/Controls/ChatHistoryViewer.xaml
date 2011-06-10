@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:Squiggle.UI.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="586">
+             d:DesignHeight="300" d:DesignWidth="586" GotFocus="UserControl_GotFocus">
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -44,6 +44,6 @@
                 </ListView.View>
             </ListView>
         </Grid>
-        <controls:BusyIndicator x:Name="busyIndicator" Message="{DynamicResource HistoryViewer_Searching}" GotFocus="busyIndicator_GotFocus" />
+        <controls:BusyIndicator x:Name="busyIndicator" Message="{DynamicResource HistoryViewer_Searching}" />
     </Grid>
 </UserControl>

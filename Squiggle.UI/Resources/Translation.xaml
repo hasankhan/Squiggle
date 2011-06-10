@@ -155,6 +155,9 @@
     <sys:String x:Key="HistoryViewer_Results_Start">Start</sys:String>
     <sys:String x:Key="HistoryViewer_Results_End">End</sys:String>
     <sys:String x:Key="HistoryViewer_Results_Participants">Participants</sys:String>
+    <sys:String x:Key="HistoryViewer_Results_Time">Time</sys:String>
+    <sys:String x:Key="HistoryViewer_Results_Name">Name</sys:String>
+    <sys:String x:Key="HistoryViewer_Results_Status">Status</sys:String>
     <sys:String x:Key="HistoryViewer_Searching">Searching...</sys:String>
     <sys:String x:Key="HistoryViewer_ConfirmClear">Are you sure you want to clear the history?</sys:String>
     <sys:String x:Key="HistoryViewer_Clear">Clear history</sys:String>

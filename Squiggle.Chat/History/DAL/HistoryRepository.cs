@@ -51,12 +51,30 @@ namespace Squiggle.Chat.History.DAL
             return session;
         }
 
-        public void ClearHistory(Guid? sessionId = null)
+        public IEnumerable<StatusUpdate> GetStatusUpdates(StatusCriteria criteria)
+        {
+            var updates = (from update in context.StatusUpdates
+                           where (criteria.From == null || update.Stamp >= criteria.From.Value) &&
+                                 (criteria.To == null || update.Stamp <= criteria.To.Value)
+                           orderby update.Stamp
+                           select update);
+
+            return updates.ToList();
+        }
+
+        public void ClearChatHistory(Guid? sessionId = null)
         {
             DeleteSession(sessionId);
 
             context.SaveChanges();
-        }        
+        }
+
+        public void ClearStatusUpdates()
+        {
+            DeleteAll(context.StatusUpdates, _ => true);
+
+            context.SaveChanges();
+        }
 
         public void AddSession(Session newSession, IEnumerable<Participant> participants)
         {
@@ -137,6 +155,6 @@ namespace Squiggle.Chat.History.DAL
             Expression body = equals.Aggregate((accumulate, equal) => Expression.Or(accumulate, equal));
 
             return query.Where(Expression.Lambda<Func<TEntity, bool>>(body, p));
-        }              
+        }
     }
 }

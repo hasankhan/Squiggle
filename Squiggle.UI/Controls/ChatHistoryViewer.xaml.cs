@@ -124,7 +124,7 @@ namespace Squiggle.UI.Controls
                 AsyncInvoke(() =>
                 {
                     var historyManager = new HistoryManager();
-                    historyManager.Clear();
+                    historyManager.ClearChatHistory();
                 }, () => results.ItemsSource = null);
             }
         }
@@ -169,7 +169,7 @@ namespace Squiggle.UI.Controls
             public string Participants { get; set; }
         }
 
-        private void busyIndicator_GotFocus(object sender, RoutedEventArgs e)
+        private void UserControl_GotFocus(object sender, RoutedEventArgs e)
         {
             txtMessage.Focus();
         }

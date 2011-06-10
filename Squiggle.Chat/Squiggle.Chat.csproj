@@ -115,6 +115,8 @@
     </Compile>
     <Compile Include="History\DAL\HistoryRepository.cs" />
     <Compile Include="History\DAL\SessionCriteria.cs" />
+    <Compile Include="History\DAL\StatusCriteria.cs" />
+    <Compile Include="History\DAL\StatusUpdate.cs" />
     <Compile Include="History\HistoryManager.cs" />
     <Compile Include="IChat.cs" />
     <Compile Include="IChatClient.cs" />

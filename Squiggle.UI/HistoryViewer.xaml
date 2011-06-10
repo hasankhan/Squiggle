@@ -3,12 +3,12 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:Squiggle.UI.Controls"
-        Icon="/Squiggle;component/Images/Chat.ico"
+        Icon="/Squiggle;component/Images/Chat.ico" FocusManager.FocusedElement="{Binding ElementName=chatHistory}"
         Title="HistoryViewer" Height="300" Width="586" WindowStartupLocation="CenterOwner" KeyDown="StickyWindow_KeyDown">
     <Grid>
         <TabControl>
             <TabItem Header="{StaticResource HistoryViewer_ChatHistoryTab}">
-                <controls:ChatHistoryViewer />
+                <controls:ChatHistoryViewer x:Name="chatHistory" />
             </TabItem>
             <TabItem Header="{StaticResource HistoryViewer_StatusHistoryTab}">
                 <controls:StatusHistoryViewer />

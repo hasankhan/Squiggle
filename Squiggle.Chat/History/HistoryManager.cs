@@ -39,10 +39,23 @@ namespace Squiggle.Chat.History
                 return repository.GetSession(sessionId);
         }
 
-        public void Clear()
+
+        public IEnumerable<StatusUpdate> GetStatusUpdates(StatusCriteria criteria)
         {
             using (var repository = new HistoryRepository())
-                repository.ClearHistory();
+                return repository.GetStatusUpdates(criteria);
+        }
+
+        public void ClearChatHistory()
+        {
+            using (var repository = new HistoryRepository())
+                repository.ClearChatHistory();
+        }
+
+        public void ClearStatusHistory()
+        {
+            using (var repository = new HistoryRepository())
+                repository.ClearStatusUpdates();
         }
 
         public void AddSession(Session newSession, IEnumerable<Participant> participants)
