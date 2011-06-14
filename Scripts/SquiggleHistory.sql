@@ -32,11 +32,21 @@ CREATE TABLE [HistoryModelStoreContainer].[Sessions] (
 , [End] datetime NULL
 );
 GO
+CREATE TABLE [HistoryModelStoreContainer].[StatusUpdates] (
+  [Id] uniqueidentifier NOT NULL
+, [ContactId] uniqueidentifier NOT NULL
+, [ContactName] nvarchar(255) NOT NULL
+, [StatusCode] int NOT NULL
+, [Stamp] datetime NOT NULL
+);
+GO
 ALTER TABLE [HistoryModelStoreContainer].[Events] ADD CONSTRAINT [PK__Events__00000000000000B0] PRIMARY KEY ([Id]);
 GO
 ALTER TABLE [HistoryModelStoreContainer].[Participants] ADD CONSTRAINT [PK_Participants] PRIMARY KEY ([Id]);
 GO
 ALTER TABLE [HistoryModelStoreContainer].[Sessions] ADD CONSTRAINT [PK_Sessions] PRIMARY KEY ([Id]);
+GO
+ALTER TABLE [HistoryModelStoreContainer].[StatusUpdates] ADD CONSTRAINT [PK_StatusUpdates] PRIMARY KEY ([Id]);
 GO
 CREATE UNIQUE INDEX [UQ__Events__00000000000000A8] ON [HistoryModelStoreContainer].[Events] ([Id] ASC);
 GO
@@ -44,4 +54,7 @@ CREATE UNIQUE INDEX [UQ__Participants__00000000000000DB] ON [HistoryModelStoreCo
 GO
 CREATE UNIQUE INDEX [UQ__Sessions__00000000000000C9] ON [HistoryModelStoreContainer].[Sessions] ([Id] ASC);
 GO
+CREATE UNIQUE INDEX [UQ__StatusUpdates__00000000000000F8] ON [HistoryModelStoreContainer].[StatusUpdates] ([Id] ASC);
+GO
+
 
