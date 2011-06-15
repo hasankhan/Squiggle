@@ -52,7 +52,7 @@ namespace Squiggle.Chat.Services.Chat
             this.localUser = localUser;
             this.remoteUsers = new HashSet<SquiggleEndPoint>(remoteUsers);
             localHost.ChatInviteReceived += new EventHandler<ChatInviteReceivedEventArgs>(localHost_ChatInviteReceived);
-            localHost.TransferInvitationReceived += new EventHandler<TransferInvitationReceivedEventArgs>(localHost_TransferInvitationReceived);
+            localHost.AppInvitationReceived += new EventHandler<AppInvitationReceivedEventArgs>(localHost_AppInvitationReceived);
             localHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(host_MessageReceived);
             localHost.UserTyping += new EventHandler<SessionEventArgs>(localHost_UserTyping);
             localHost.BuzzReceived += new EventHandler<SessionEventArgs>(localHost_BuzzReceived);
@@ -130,16 +130,17 @@ namespace Squiggle.Chat.Services.Chat
                     }, "responding to chat invite");
                 GroupChatStarted(this, EventArgs.Empty);
             }
-        }       
+        }
 
-        void localHost_TransferInvitationReceived(object sender, TransferInvitationReceivedEventArgs e)
+        void localHost_AppInvitationReceived(object sender, AppInvitationReceivedEventArgs e)
         {
             if (e.SessionID == ID && !IsGroupSession)
             {
                 if (IsRemoteUser(e.Sender))
                 {
+                    var inviteData = new FileInviteData(e.Metadata);
                     RemoteHost remoteHost = PrimaryHost;
-                    IFileTransfer invitation = new FileTransfer(ID, remoteHost.Host, localHost, localUser, remoteHost.EndPoint, e.Name, e.Size, e.ID);
+                    IFileTransfer invitation = new FileTransfer(ID, remoteHost.Host, localHost, localUser, remoteHost.EndPoint, inviteData.Name, inviteData.Size, e.AppSessionId);
                     TransferInvitationReceived(this, new FileTransferInviteEventArgs()
                     {
                         Sender = e.Sender,
@@ -196,7 +197,7 @@ namespace Squiggle.Chat.Services.Chat
         public void End()
         {
             localHost.ChatInviteReceived -= new EventHandler<ChatInviteReceivedEventArgs>(localHost_ChatInviteReceived);
-            localHost.TransferInvitationReceived -= new EventHandler<TransferInvitationReceivedEventArgs>(localHost_TransferInvitationReceived);
+            localHost.AppInvitationReceived -= new EventHandler<AppInvitationReceivedEventArgs>(localHost_AppInvitationReceived);
             localHost.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(host_MessageReceived);
             localHost.UserTyping -= new EventHandler<SessionEventArgs>(localHost_UserTyping);
             localHost.BuzzReceived -= new EventHandler<SessionEventArgs>(localHost_BuzzReceived);

@@ -24,7 +24,7 @@ namespace Squiggle.Chat.Services.Chat
         SquiggleEndPoint localUser;
         SquiggleEndPoint remoteUser;
         Stream content;
-        Guid id;
+        Guid transferSessionId;
         ChatHost localHost;
         BackgroundWorker worker;
         bool sending;
@@ -47,11 +47,11 @@ namespace Squiggle.Chat.Services.Chat
             this.Name = name;
             this.Size = size;
             this.content = content;
-            id = Guid.NewGuid();
+            transferSessionId = Guid.NewGuid();
             sending = true;
         }
 
-        public FileTransfer(Guid sessionId, IChatHost remoteHost, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, string name, long size, Guid id)
+        public FileTransfer(Guid sessionId, IChatHost remoteHost, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, string name, long size, Guid transferSessionId)
         {
             this.sessionId = sessionId;
             this.localHost = localHost;
@@ -59,19 +59,19 @@ namespace Squiggle.Chat.Services.Chat
             this.localUser = localUser;
             this.Name = name;
             this.Size = size;
-            this.id = id;
+            this.transferSessionId = transferSessionId;
             sending = false;
-            localHost.TransferCancelled += new EventHandler<FileTransferEventArgs>(localHost_TransferCancelled);
+            localHost.AppSessionCancelled += new EventHandler<AppSessionEventArgs>(localHost_AppSessionCancelled);
         }
 
         public void Start()
         {
-            localHost.InvitationAccepted += new EventHandler<FileTransferEventArgs>(localHost_InvitationAccepted);
-            localHost.TransferCancelled += new EventHandler<FileTransferEventArgs>(localHost_TransferCancelled);
+            localHost.AppInvitationAccepted += new EventHandler<AppSessionEventArgs>(localHost_AppInvitationAccepted);
+            localHost.AppSessionCancelled += new EventHandler<AppSessionEventArgs>(localHost_AppSessionCancelled);
             Async.Invoke(() =>
             {
                 var data = new FileInviteData() { Name = Name, Size = Size };
-                bool success = ExceptionMonster.EatTheException(() => this.remoteHost.ReceiveAppInvite(sessionId, localUser, remoteUser, ChatApps.FileTransfer, id, data), "Sending file invite to " + remoteUser.ToString());
+                bool success = ExceptionMonster.EatTheException(() => this.remoteHost.ReceiveAppInvite(sessionId, localUser, remoteUser, ChatApps.FileTransfer, transferSessionId, data), "Sending file invite to " + remoteUser.ToString());
                 if (!success)
                 {
                     OnTransferFinished();
@@ -84,12 +84,12 @@ namespace Squiggle.Chat.Services.Chat
         {
             if (sending)
                 throw new InvalidOperationException("This operation is only valid in context of an invitation.");
-            localHost.TransferDataReceived += new EventHandler<FileTransferDataReceivedEventArgs>(localHost_TransferDataReceived);
+            localHost.AppDataReceived += new EventHandler<AppDataReceivedEventArgs>(localHost_AppDataReceived);
             bool success = ExceptionMonster.EatTheException(()=>
                             {
                                 saveToFile = filePath;
                                 content = File.OpenWrite(filePath);
-                                remoteHost.AcceptAppInvite(id, localUser, remoteUser);
+                                remoteHost.AcceptAppInvite(transferSessionId, localUser, remoteUser);
                             }, "accepting file transfer invite from " + remoteUser);
             if (success)
                 OnTransferStarted();
@@ -110,7 +110,7 @@ namespace Squiggle.Chat.Services.Chat
             selfCancelled = selfCancel;
 
             if (selfCancel)
-                ExceptionMonster.EatTheException(() => this.remoteHost.CancelAppSession(id, localUser, remoteUser), "cancelling file transfer with user" + remoteUser);
+                ExceptionMonster.EatTheException(() => this.remoteHost.CancelAppSession(transferSessionId, localUser, remoteUser), "cancelling file transfer with user" + remoteUser);
 
             if (sending && worker!=null)            
                  worker.CancelAsync();
@@ -162,7 +162,7 @@ namespace Squiggle.Chat.Services.Chat
                 int bytesRead = content.Read(buffer, 0, buffer.Length);
                 byte[] temp = new byte[bytesRead];
                 Buffer.BlockCopy(buffer, 0, temp, 0, temp.Length);
-                remoteHost.ReceiveAppData(id, localUser, remoteUser, temp);
+                remoteHost.ReceiveAppData(transferSessionId, localUser, remoteUser, temp);
                 bytesRemaining -= bytesRead;
                 float progress = (Size - bytesRemaining) / (float)Size * 100;
                 worker.ReportProgress((int)progress);
@@ -172,18 +172,18 @@ namespace Squiggle.Chat.Services.Chat
                 e.Cancel = true;
         }
 
-        void localHost_TransferCancelled(object sender, FileTransferEventArgs e)
+        void localHost_AppSessionCancelled(object sender, AppSessionEventArgs e)
         {
-            if (e.ID == id)
+            if (e.AppSessionId == transferSessionId)
             {
                 Cancel(false);
                 TransferCancelled(this, EventArgs.Empty);
             }
         }
 
-        void localHost_TransferDataReceived(object sender, FileTransferDataReceivedEventArgs e)
+        void localHost_AppDataReceived(object sender, AppDataReceivedEventArgs e)
         {
-            if (e.ID == id && content != null)
+            if (e.AppSessionId == transferSessionId && content != null)
             {
                 bytesReceived += e.Chunk.Length;
                 content.Write(e.Chunk, 0, e.Chunk.Length);
@@ -199,9 +199,9 @@ namespace Squiggle.Chat.Services.Chat
             }
         }
 
-        void localHost_InvitationAccepted(object sender, FileTransferEventArgs e)
+        void localHost_AppInvitationAccepted(object sender, AppSessionEventArgs e)
         {
-            if (e.ID == id)
+            if (e.AppSessionId == transferSessionId)
             {
                 worker = new BackgroundWorker();
                 worker.WorkerReportsProgress = true;
@@ -220,9 +220,9 @@ namespace Squiggle.Chat.Services.Chat
 
         void OnTransferFinished()
         {
-            localHost.TransferDataReceived -= new EventHandler<FileTransferDataReceivedEventArgs>(localHost_TransferDataReceived);
-            localHost.InvitationAccepted -= new EventHandler<FileTransferEventArgs>(localHost_InvitationAccepted);
-            localHost.TransferCancelled -= new EventHandler<FileTransferEventArgs>(localHost_TransferCancelled);
+            localHost.AppDataReceived -= new EventHandler<AppDataReceivedEventArgs>(localHost_AppDataReceived);
+            localHost.AppInvitationAccepted -= new EventHandler<AppSessionEventArgs>(localHost_AppInvitationAccepted);
+            localHost.AppSessionCancelled -= new EventHandler<AppSessionEventArgs>(localHost_AppSessionCancelled);
             if (content != null)
             {
                 content.Dispose();

@@ -5,10 +5,12 @@ using System.Net;
 using System.ServiceModel;
 using System.Threading;
 using System.Collections.Generic;
+using System.Linq;
 using Squiggle.Utilities;
 
 namespace Squiggle.Chat.Services.Chat.Host
 {
+    
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode=ConcurrencyMode.Multiple, UseSynchronizationContext=false)] 
     public class ChatHost: IChatHost
     {
@@ -18,10 +20,10 @@ namespace Squiggle.Chat.Services.Chat.Host
         public event EventHandler<ChatInviteReceivedEventArgs> ChatInviteReceived = delegate { };
         public event EventHandler<SessionEventArgs> UserJoined = delegate { };
         public event EventHandler<SessionEventArgs> UserLeft = delegate { };
-        public event EventHandler<FileTransferEventArgs> InvitationAccepted = delegate { };
-        public event EventHandler<FileTransferEventArgs> TransferCancelled = delegate { };        
-        public event EventHandler<TransferInvitationReceivedEventArgs> TransferInvitationReceived = delegate { };
-        public event EventHandler<FileTransferDataReceivedEventArgs> TransferDataReceived = delegate { };
+        public event EventHandler<AppSessionEventArgs> AppInvitationAccepted = delegate { };
+        public event EventHandler<AppSessionEventArgs> AppSessionCancelled = delegate { };        
+        public event EventHandler<AppInvitationReceivedEventArgs> AppInvitationReceived = delegate { };
+        public event EventHandler<AppDataReceivedEventArgs> AppDataReceived = delegate { };
         public event EventHandler<UserActivityEventArgs> UserActivity = delegate { };
         public event EventHandler<SessionInfoRequestedEventArgs> SessionInfoRequested = delegate { };
 
@@ -94,30 +96,29 @@ namespace Squiggle.Chat.Services.Chat.Host
         {
             OnUserActivity(sessionId, sender, recepient, ActivityType.TransferInvite);
             Trace.WriteLine(sender + " wants to send a file " + metadata.ToTraceString());
-            var data = new FileInviteData(metadata);
-            TransferInvitationReceived(this, new TransferInvitationReceivedEventArgs()
+            AppInvitationReceived(this, new AppInvitationReceivedEventArgs()
             {
                 SessionID = sessionId,
                 Sender = sender,
-                Name = data.Name,
-                ID = appSessionId,
-                Size = data.Size
+                AppId = appId,
+                AppSessionId = appSessionId,
+                Metadata = metadata.ToDictionary(i=>i.Key, i=>i.Value)
             });
         }
 
         public void ReceiveAppData(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] chunk)
         {
-            TransferDataReceived(this, new FileTransferDataReceivedEventArgs() { ID = appSessionId, Chunk = chunk });
+            AppDataReceived(this, new AppDataReceivedEventArgs() { AppSessionId = appSessionId, Chunk = chunk });
         }
 
         public void AcceptAppInvite(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
-            InvitationAccepted(this, new FileTransferEventArgs() { ID = appSessionId });
+            AppInvitationAccepted(this, new AppSessionEventArgs() { AppSessionId = appSessionId });
         }
 
         public void CancelAppSession(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
-            TransferCancelled(this, new FileTransferEventArgs() { ID = appSessionId });
+            AppSessionCancelled(this, new AppSessionEventArgs() { AppSessionId = appSessionId });
         }       
 
         #endregion
@@ -157,21 +158,20 @@ namespace Squiggle.Chat.Services.Chat.Host
         public string Message { get; set; }
     }    
 
-    public class FileTransferEventArgs : SessionEventArgs
+    public class AppSessionEventArgs : EventArgs
     {
-        public Guid ID { get; set; }
+        public Guid AppSessionId { get; set; }
     }
 
-    public class TransferInvitationReceivedEventArgs : SessionEventArgs
+    public class AppInvitationReceivedEventArgs : SessionEventArgs
     {
-        public Guid ID { get; set; }
-        public string Name { get; set; }
-        public long Size { get; set; }
+        public Guid AppSessionId { get; set; }
+        public Guid AppId { get; set; }
+        public IDictionary<string, string> Metadata { get; set; }
     }
 
-    public class FileTransferDataReceivedEventArgs : EventArgs
+    public class AppDataReceivedEventArgs : AppSessionEventArgs
     {
-        public Guid ID { get; set; }
         public byte[] Chunk { get; set; }
     }
 
