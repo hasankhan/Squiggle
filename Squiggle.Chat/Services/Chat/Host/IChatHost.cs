@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Net;
 using System.ServiceModel;
+using System.Collections.Generic;
 
 namespace Squiggle.Chat.Services.Chat.Host
 {
@@ -30,15 +31,15 @@ namespace Squiggle.Chat.Services.Chat.Host
         void LeaveChat(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient);
 
         [OperationContract]
-        void ReceiveFileInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, Guid id, string name, long size);
+        void ReceiveAppInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, Guid appId, Guid appSessionId, IEnumerable<KeyValuePair<string, string>> metadata);
 
         [OperationContract]
-        void ReceiveFileContent(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] chunk);
+        void ReceiveAppData(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] chunk);
 
         [OperationContract]
-        void AcceptFileInvite(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient);
+        void AcceptAppInvite(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient);
 
         [OperationContract]
-        void CancelFileTransfer(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient);
+        void CancelAppSession(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient);
     }
 }

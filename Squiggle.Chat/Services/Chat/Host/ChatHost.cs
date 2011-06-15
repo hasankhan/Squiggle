@@ -4,6 +4,8 @@ using System.Drawing;
 using System.Net;
 using System.ServiceModel;
 using System.Threading;
+using System.Collections.Generic;
+using Squiggle.Utilities;
 
 namespace Squiggle.Chat.Services.Chat.Host
 {
@@ -88,42 +90,41 @@ namespace Squiggle.Chat.Services.Chat.Host
             UserLeft(this, new UserActivityEventArgs() { SessionID = sessionId, Sender = sender});
         }
 
-        public void ReceiveFileInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, Guid id, string name, long size)
+        public void ReceiveAppInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, Guid appId, Guid appSessionId, IEnumerable<KeyValuePair<string, string>> metadata)
         {
             OnUserActivity(sessionId, sender, recepient, ActivityType.TransferInvite);
-            Trace.WriteLine(sender + " wants to send a file " + name);
+            Trace.WriteLine(sender + " wants to send a file " + metadata.ToTraceString());
+            var data = new FileInviteData(metadata);
             TransferInvitationReceived(this, new TransferInvitationReceivedEventArgs()
             {
                 SessionID = sessionId,
                 Sender = sender,
-                Name = name,
-                ID = id,
-                Size = size
+                Name = data.Name,
+                ID = appSessionId,
+                Size = data.Size
             });
         }
 
-        public void ReceiveFileContent(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] chunk)
+        public void ReceiveAppData(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] chunk)
         {
-            TransferDataReceived(this, new FileTransferDataReceivedEventArgs() { ID = id, Chunk = chunk });
+            TransferDataReceived(this, new FileTransferDataReceivedEventArgs() { ID = appSessionId, Chunk = chunk });
         }
 
-        public void AcceptFileInvite(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void AcceptAppInvite(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
-            InvitationAccepted(this, new FileTransferEventArgs() { ID = id });
+            InvitationAccepted(this, new FileTransferEventArgs() { ID = appSessionId });
         }
 
-        public void CancelFileTransfer(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void CancelAppSession(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
-            TransferCancelled(this, new FileTransferEventArgs() { ID = id });
+            TransferCancelled(this, new FileTransferEventArgs() { ID = appSessionId });
         }       
 
         #endregion
 
         void OnUserActivity(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, ActivityType type)
         {
-            UserActivity(this, new UserActivityEventArgs(){Sender = sender, 
-                                                                                    SessionID = sessionId,
-                                                                                    Type = type});
+            UserActivity(this, new UserActivityEventArgs(){Sender = sender, SessionID = sessionId, Type = type});
         }
     }
 

@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using Squiggle.Utilities;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Collections.Generic;
 
 namespace Squiggle.Chat.Services.Chat.Host
 {
@@ -74,24 +75,24 @@ namespace Squiggle.Chat.Services.Chat.Host
             EnsureProxy(p => p.LeaveChat(sessionId, sender, recepient));
         }
 
-        public void ReceiveFileInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, Guid id, string name, long size)
+        public void ReceiveAppInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, Guid appId, Guid appSessionId, IEnumerable<KeyValuePair<string, string>> metadata)
         {
-            EnsureProxy(p => p.ReceiveFileInvite(sessionId, sender, recepient, id, name, size));
+            EnsureProxy(p => p.ReceiveAppInvite(sessionId, sender, recepient, appId, appSessionId, metadata));
         }
 
-        public void ReceiveFileContent(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] chunk)
+        public void ReceiveAppData(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] chunk)
         {
-            EnsureProxy(p => p.ReceiveFileContent(id, sender, recepient, chunk));
+            EnsureProxy(p => p.ReceiveAppData(appSessionId, sender, recepient, chunk));
         }
 
-        public void AcceptFileInvite(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void AcceptAppInvite(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
-            EnsureProxy(p => p.AcceptFileInvite(id, sender, recepient));
+            EnsureProxy(p => p.AcceptAppInvite(appSessionId, sender, recepient));
         }
 
-        public void CancelFileTransfer(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void CancelAppSession(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
-            EnsureProxy(p => p.CancelFileTransfer(id, sender, recepient));
+            EnsureProxy(p => p.CancelAppSession(appSessionId, sender, recepient));
         }
 
         #endregion
@@ -147,28 +148,28 @@ namespace Squiggle.Chat.Services.Chat.Host
                 base.Channel.LeaveChat(sessionId, sender, recepient);
             }
 
-            public void ReceiveFileInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, Guid id, string name, long size)
+            public void ReceiveAppInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, Guid appId, Guid appSessionId, IEnumerable<KeyValuePair<string, string>> metadata)
             {
-                Trace.WriteLine("Sending file invite from: " + sender + ", name = " + name);
-                base.Channel.ReceiveFileInvite(sessionId, sender, recepient, id, name, size);
+                Trace.WriteLine("Sending file invite from: " + sender + ", " + metadata.ToTraceString());
+                base.Channel.ReceiveAppInvite(sessionId, sender, recepient, appId, appSessionId, metadata);
             }
 
-            public void ReceiveFileContent(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] chunk)
+            public void ReceiveAppData(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] chunk)
             {
-                Trace.WriteLine("Sending file content: " + id.ToString());
-                base.Channel.ReceiveFileContent(id, sender, recepient, chunk);
+                Trace.WriteLine("Sending file content: " + appSessionId.ToString());
+                base.Channel.ReceiveAppData(appSessionId, sender, recepient, chunk);
             }
 
-            public void AcceptFileInvite(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+            public void AcceptAppInvite(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
             {
-                Trace.WriteLine("Accepting file invite: " + id.ToString());
-                base.Channel.AcceptFileInvite(id, sender, recepient);
+                Trace.WriteLine("Accepting file invite: " + appSessionId.ToString());
+                base.Channel.AcceptAppInvite(appSessionId, sender, recepient);
             }
 
-            public void CancelFileTransfer(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+            public void CancelAppSession(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
             {
-                Trace.WriteLine("Cancel file transfer: " + id.ToString());
-                base.Channel.CancelFileTransfer(id, sender, recepient);
+                Trace.WriteLine("Cancel file transfer: " + appSessionId.ToString());
+                base.Channel.CancelAppSession(appSessionId, sender, recepient);
             }
 
             #endregion

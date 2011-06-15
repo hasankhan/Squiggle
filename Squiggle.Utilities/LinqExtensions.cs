@@ -18,5 +18,11 @@ namespace Squiggle.Utilities
             foreach (var item in items)
                 action(item);
         }
+
+        public static string ToTraceString<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> items)
+        {
+            string output = String.Join(", ", items.Select(i => i.Key + " = " + i.Value).ToArray());
+            return output;
+        }
     }
 }

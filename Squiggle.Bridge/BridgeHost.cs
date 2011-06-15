@@ -7,6 +7,7 @@ using System.Linq;
 using Squiggle.Chat.Services;
 using Squiggle.Chat.Services.Presence;
 using System.ServiceModel.Dispatcher;
+using System.Collections.Generic;
 
 namespace Squiggle.Bridge
 {
@@ -89,24 +90,24 @@ namespace Squiggle.Bridge
             bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.LeaveChat(sessionId, s, r), sender, recepient);
         }
 
-        public void ReceiveFileInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, Guid id, string name, long size)
+        public void ReceiveAppInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, Guid appId, Guid appSessionId, IEnumerable<KeyValuePair<string, string>> metadata)
         {
-            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.ReceiveFileInvite(sessionId, s, r, id, name, size), sender, recepient);
+            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.ReceiveAppInvite(sessionId, s, r, appId, appSessionId, metadata), sender, recepient);
         }
 
-        public void ReceiveFileContent(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] chunk)
+        public void ReceiveAppData(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] chunk)
         {
-            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.ReceiveFileContent(id, s, r, chunk), sender, recepient);
+            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.ReceiveAppData(appSessionId, s, r, chunk), sender, recepient);
         }
 
-        public void AcceptFileInvite(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void AcceptAppInvite(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
-            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.AcceptFileInvite(id, s, r), sender, recepient);
+            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.AcceptAppInvite(appSessionId, s, r), sender, recepient);
         }
 
-        public void CancelFileTransfer(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void CancelAppSession(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
-            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.CancelFileTransfer(id, s, r), sender, recepient);
+            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.CancelAppSession(appSessionId, s, r), sender, recepient);
         }
     }
 }

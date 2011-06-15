@@ -121,6 +121,8 @@
     <Compile Include="IChat.cs" />
     <Compile Include="IChatClient.cs" />
     <Compile Include="IFileTransfer.cs" />
+    <Compile Include="Services\ChatApps.cs" />
+    <Compile Include="Services\Chat\Host\FileInviteData.cs" />
     <Compile Include="Services\DefaultValues.cs" />
     <Compile Include="Services\Presence\Transport\Broadcast\IBroadcastService.cs" />
     <Compile Include="Services\Presence\Transport\Broadcast\MultcastService\IMulticastService.cs" />

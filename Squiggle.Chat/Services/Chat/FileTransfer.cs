@@ -6,6 +6,8 @@ using System.Net;
 using System.Threading;
 using Squiggle.Chat.Services.Chat.Host;
 using Squiggle.Utilities;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Squiggle.Chat.Services.Chat
 {
@@ -68,7 +70,8 @@ namespace Squiggle.Chat.Services.Chat
             localHost.TransferCancelled += new EventHandler<FileTransferEventArgs>(localHost_TransferCancelled);
             Async.Invoke(() =>
             {
-                bool success = ExceptionMonster.EatTheException(() => this.remoteHost.ReceiveFileInvite(sessionId, localUser, remoteUser, id, Name, Size), "Sending file invite to " + remoteUser.ToString());
+                var data = new FileInviteData() { Name = Name, Size = Size };
+                bool success = ExceptionMonster.EatTheException(() => this.remoteHost.ReceiveAppInvite(sessionId, localUser, remoteUser, ChatApps.FileTransfer, id, data), "Sending file invite to " + remoteUser.ToString());
                 if (!success)
                 {
                     OnTransferFinished();
@@ -86,7 +89,7 @@ namespace Squiggle.Chat.Services.Chat
                             {
                                 saveToFile = filePath;
                                 content = File.OpenWrite(filePath);
-                                remoteHost.AcceptFileInvite(id, localUser, remoteUser);
+                                remoteHost.AcceptAppInvite(id, localUser, remoteUser);
                             }, "accepting file transfer invite from " + remoteUser);
             if (success)
                 OnTransferStarted();
@@ -107,7 +110,7 @@ namespace Squiggle.Chat.Services.Chat
             selfCancelled = selfCancel;
 
             if (selfCancel)
-                ExceptionMonster.EatTheException(() => this.remoteHost.CancelFileTransfer(id, localUser, remoteUser), "cancelling file transfer with user" + remoteUser);
+                ExceptionMonster.EatTheException(() => this.remoteHost.CancelAppSession(id, localUser, remoteUser), "cancelling file transfer with user" + remoteUser);
 
             if (sending && worker!=null)            
                  worker.CancelAsync();
@@ -159,7 +162,7 @@ namespace Squiggle.Chat.Services.Chat
                 int bytesRead = content.Read(buffer, 0, buffer.Length);
                 byte[] temp = new byte[bytesRead];
                 Buffer.BlockCopy(buffer, 0, temp, 0, temp.Length);
-                remoteHost.ReceiveFileContent(id, localUser, remoteUser, temp);
+                remoteHost.ReceiveAppData(id, localUser, remoteUser, temp);
                 bytesRemaining -= bytesRead;
                 float progress = (Size - bytesRemaining) / (float)Size * 100;
                 worker.ReportProgress((int)progress);

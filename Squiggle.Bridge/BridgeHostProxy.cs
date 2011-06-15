@@ -11,6 +11,7 @@ using Squiggle.Utilities;
 using Squiggle.Chat.Services.Chat.Host;
 using Squiggle.Chat.Services.Chat;
 using Squiggle.Chat.Services;
+using System.Collections.Generic;
 
 namespace Squiggle.Bridge
 {
@@ -90,24 +91,24 @@ namespace Squiggle.Bridge
             EnsureProxy(p => p.LeaveChat(sessionId, sender, recepient));
         }
 
-        public void ReceiveFileInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, Guid id, string name, long size)
+        public void ReceiveAppInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, Guid appId, Guid appSessionId, IEnumerable<KeyValuePair<string, string>> metadata)
         {
-            EnsureProxy(p => p.ReceiveFileInvite(sessionId, sender, recepient, id, name, size));
+            EnsureProxy(p => p.ReceiveAppInvite(sessionId, sender, recepient, appId, appSessionId, metadata));
         }
 
-        public void ReceiveFileContent(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] chunk)
+        public void ReceiveAppData(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] chunk)
         {
-            EnsureProxy(p => p.ReceiveFileContent(id, sender, recepient, chunk));
+            EnsureProxy(p => p.ReceiveAppData(id, sender, recepient, chunk));
         }
 
-        public void AcceptFileInvite(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void AcceptAppInvite(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
-            EnsureProxy(p => p.AcceptFileInvite(id, sender, recepient));
+            EnsureProxy(p => p.AcceptAppInvite(id, sender, recepient));
         }
 
-        public void CancelFileTransfer(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void CancelAppSession(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
-            EnsureProxy(p => p.CancelFileTransfer(id, sender, recepient));
+            EnsureProxy(p => p.CancelAppSession(id, sender, recepient));
         }
 
         #endregion        
@@ -179,24 +180,24 @@ namespace Squiggle.Bridge
                 this.Channel.LeaveChat(sessionId, sender, recepient);
             }
 
-            public void ReceiveFileInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, Guid id, string name, long size)
+            public void ReceiveAppInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, Guid appId, Guid appSessionId, IEnumerable<KeyValuePair<string, string>> metadata)
             {
-                this.Channel.ReceiveFileInvite(sessionId, sender, recepient, id, name, size);
+                this.Channel.ReceiveAppInvite(sessionId, sender, recepient, appId, appSessionId, metadata);
             }
 
-            public void ReceiveFileContent(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] chunk)
+            public void ReceiveAppData(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] chunk)
             {
-                this.Channel.ReceiveFileContent(id, sender, recepient, chunk);
+                this.Channel.ReceiveAppData(id, sender, recepient, chunk);
             }
 
-            public void AcceptFileInvite(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+            public void AcceptAppInvite(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
             {
-                this.Channel.AcceptFileInvite(id, sender, recepient);
+                this.Channel.AcceptAppInvite(id, sender, recepient);
             }
 
-            public void CancelFileTransfer(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+            public void CancelAppSession(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
             {
-                this.Channel.CancelFileTransfer(id, sender, recepient);
+                this.Channel.CancelAppSession(id, sender, recepient);
             } 
 
             #endregion
