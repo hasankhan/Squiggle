@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace Squiggle.Chat.Services.Chat
 {
-    class FileTransfer: IFileTransfer
+    class FileTransfer: AppHandler, IFileTransfer
     {
         public event EventHandler TransferCompleted = delegate { };
         public event EventHandler TransferStarted = delegate { };

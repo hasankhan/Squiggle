@@ -124,30 +124,33 @@ namespace Squiggle.Chat.Services.Chat
             if (e.SessionID == ID)
             {
                 ExceptionMonster.EatTheException(() =>
-                    {
-                        AddParticipants(e.Participants);
-                        BroadCast((host, endpoint) => host.JoinChat(ID, localUser, endpoint));
-                    }, "responding to chat invite");
+                {
+                    AddParticipants(e.Participants);
+                    BroadCast((host, endpoint) => host.JoinChat(ID, localUser, endpoint));
+                }, "responding to chat invite");
                 GroupChatStarted(this, EventArgs.Empty);
             }
         }
 
         void localHost_AppInvitationReceived(object sender, AppInvitationReceivedEventArgs e)
         {
-            if (e.SessionID == ID && !IsGroupSession)
+            if (e.SessionID == ID && !IsGroupSession && IsRemoteUser(e.Sender))
             {
-                if (IsRemoteUser(e.Sender))
-                {
-                    var inviteData = new FileInviteData(e.Metadata);
-                    RemoteHost remoteHost = PrimaryHost;
-                    IFileTransfer invitation = new FileTransfer(ID, remoteHost.Host, localHost, localUser, remoteHost.EndPoint, inviteData.Name, inviteData.Size, e.AppSessionId);
-                    TransferInvitationReceived(this, new FileTransferInviteEventArgs()
-                    {
-                        Sender = e.Sender,
-                        Invitation = invitation
-                    });
-                }
+                if (e.AppId == ChatApps.FileTransfer)
+                    OnFileTransferInvite(e);
             }
+        }
+
+        void OnFileTransferInvite(AppInvitationReceivedEventArgs e)
+        {
+            var inviteData = new FileInviteData(e.Metadata);
+            RemoteHost remoteHost = PrimaryHost;
+            IFileTransfer invitation = new FileTransfer(ID, remoteHost.Host, localHost, localUser, remoteHost.EndPoint, inviteData.Name, inviteData.Size, e.AppSessionId);
+            TransferInvitationReceived(this, new FileTransferInviteEventArgs()
+            {
+                Sender = e.Sender,
+                Invitation = invitation
+            });
         }
 
         void localHost_UserTyping(object sender, SessionEventArgs e)
