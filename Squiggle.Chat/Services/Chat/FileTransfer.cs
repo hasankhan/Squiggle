@@ -18,211 +18,90 @@ namespace Squiggle.Chat.Services.Chat
         public event EventHandler TransferCancelled = delegate { };
         public event EventHandler TransferFinished = delegate { };
         public event EventHandler<System.ComponentModel.ProgressChangedEventArgs> ProgressChanged = delegate { };
-        public event EventHandler<ErrorEventArgs> Error = delegate { };        
 
-        IChatHost remoteHost;
-        SquiggleEndPoint localUser;
-        SquiggleEndPoint remoteUser;
         Stream content;
-        Guid transferSessionId;
-        ChatHost localHost;
-        BackgroundWorker worker;
-        bool sending;
-        long bytesReceived;
-        bool selfCancelled;
         string saveToFile;
-        Guid sessionId;
-        const int bufferSize = 32768; // 32KB
 
         public long Size { get; private set; }
         public string Name { get; private set; }
 
-        public FileTransfer(Guid sessionId, IChatHost remoteHost, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, string name, long size, Stream content)
+        public override Guid AppId
         {
-            this.sessionId = sessionId;
-            this.localHost = localHost;
-            this.remoteUser = remoteUser;
-            this.remoteHost = remoteHost;
-            this.localUser = localUser;
+            get { return ChatApps.FileTransfer; }
+        }
+
+        public string filePath {get; set; }
+
+        public FileTransfer(Guid sessionId, IChatHost remoteHost, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, string name, long size, Stream content)
+            :base(sessionId, remoteHost, localHost, localUser, remoteUser)
+        {
             this.Name = name;
             this.Size = size;
             this.content = content;
-            transferSessionId = Guid.NewGuid();
-            sending = true;
         }
 
-        public FileTransfer(Guid sessionId, IChatHost remoteHost, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, string name, long size, Guid transferSessionId)
+        public FileTransfer(Guid sessionId, IChatHost remoteHost, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, string name, long size, Guid appSessionId)
+            :base(sessionId, remoteHost, localHost, localUser, remoteUser, appSessionId)
         {
-            this.sessionId = sessionId;
-            this.localHost = localHost;
-            this.remoteHost = remoteHost;
-            this.localUser = localUser;
             this.Name = name;
             this.Size = size;
-            this.transferSessionId = transferSessionId;
-            sending = false;
-            localHost.AppSessionCancelled += new EventHandler<AppSessionEventArgs>(localHost_AppSessionCancelled);
         }
 
-        public void Start()
+        protected override IEnumerable<KeyValuePair<string, string>> CreateInviteMetadata()
         {
-            localHost.AppInvitationAccepted += new EventHandler<AppSessionEventArgs>(localHost_AppInvitationAccepted);
-            localHost.AppSessionCancelled += new EventHandler<AppSessionEventArgs>(localHost_AppSessionCancelled);
-            Async.Invoke(() =>
-            {
-                var data = new FileInviteData() { Name = Name, Size = Size };
-                bool success = ExceptionMonster.EatTheException(() => this.remoteHost.ReceiveAppInvite(sessionId, localUser, remoteUser, ChatApps.FileTransfer, transferSessionId, data), "Sending file invite to " + remoteUser.ToString());
-                if (!success)
-                {
-                    OnTransferFinished();
-                    OnError(new OperationFailedException());
-                }
-            });
+            IEnumerable<KeyValuePair<string, string>> data = new FileInviteData() { Name = Name, Size = Size };
+            return data;
         }
 
-        public void Accept(string filePath)
+        public void Accept(string fileName)
         {
-            if (sending)
-                throw new InvalidOperationException("This operation is only valid in context of an invitation.");
-            localHost.AppDataReceived += new EventHandler<AppDataReceivedEventArgs>(localHost_AppDataReceived);
-            bool success = ExceptionMonster.EatTheException(()=>
-                            {
-                                saveToFile = filePath;
-                                content = File.OpenWrite(filePath);
-                                remoteHost.AcceptAppInvite(transferSessionId, localUser, remoteUser);
-                            }, "accepting file transfer invite from " + remoteUser);
-            if (success)
-                OnTransferStarted();
-            else
-            {
-                OnTransferFinished();
-                OnError(new OperationFailedException());
-            }
-        }
-        
-        public void Cancel()
-        {
-            Cancel(true);
+            filePath = fileName;
+            this.Accept();
         }
 
-        void Cancel(bool selfCancel)
+        protected override void OnAccept()
         {
-            selfCancelled = selfCancel;
+            base.OnAccept();
 
-            if (selfCancel)
-                ExceptionMonster.EatTheException(() => this.remoteHost.CancelAppSession(transferSessionId, localUser, remoteUser), "cancelling file transfer with user" + remoteUser);
-
-            if (sending && worker!=null)            
-                 worker.CancelAsync();
-            else
-            {
-                OnTransferFinished();
-                OnTransferCancelled();
-            }
-        }        
-
-        void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            OnTransferFinished();
-
-            if (e.Cancelled)
-                OnTransferCancelled();
-            else if (e.Error != null)
-                OnError(e.Error);
-            else
-                TransferCompleted(this, EventArgs.Empty);
+            saveToFile = filePath;
+            content = File.OpenWrite(filePath);
         }
 
-        void OnError(Exception error)
+        protected override void OnTransferCompleted()
         {
-            Error(this, new ErrorEventArgs(error));
+            base.OnTransferCompleted();
+
+            TransferCompleted(this, EventArgs.Empty);
         }
 
-        void OnTransferCancelled()
+        protected override void OnTransferCancelled()
         {
-            if (!sending && content != null)
+            base.OnTransferCancelled();
+
+            if (!Sending && content != null)
                 File.Delete(saveToFile);
-            if (selfCancelled)
-                TransferCancelled(this, EventArgs.Empty);
+            
+            TransferCancelled(this, EventArgs.Empty);
         }
 
-        void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        protected override void OnTransferStarted()
         {
-            UpdateProgress(e.ProgressPercentage);
-        }
+            base.OnTransferStarted();
 
-        void worker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            OnTransferStarted();
-
-            byte[] buffer = new byte[bufferSize];
-            long bytesRemaining = Size;
-            while (bytesRemaining > 0 && !worker.CancellationPending)
-            {
-                int bytesRead = content.Read(buffer, 0, buffer.Length);
-                byte[] temp = new byte[bytesRead];
-                Buffer.BlockCopy(buffer, 0, temp, 0, temp.Length);
-                remoteHost.ReceiveAppData(transferSessionId, localUser, remoteUser, temp);
-                bytesRemaining -= bytesRead;
-                float progress = (Size - bytesRemaining) / (float)Size * 100;
-                worker.ReportProgress((int)progress);
-            }
-
-            if (worker.CancellationPending)
-                e.Cancel = true;
-        }
-
-        void localHost_AppSessionCancelled(object sender, AppSessionEventArgs e)
-        {
-            if (e.AppSessionId == transferSessionId)
-            {
-                Cancel(false);
-                TransferCancelled(this, EventArgs.Empty);
-            }
-        }
-
-        void localHost_AppDataReceived(object sender, AppDataReceivedEventArgs e)
-        {
-            if (e.AppSessionId == transferSessionId && content != null)
-            {
-                bytesReceived += e.Chunk.Length;
-                content.Write(e.Chunk, 0, e.Chunk.Length);
-
-                float progress = bytesReceived / (float)Size * 100;
-                UpdateProgress((int)progress);
-
-                if (bytesReceived >= Size)
-                {
-                    OnTransferFinished();
-                    TransferCompleted(this, EventArgs.Empty);
-                }
-            }
-        }
-
-        void localHost_AppInvitationAccepted(object sender, AppSessionEventArgs e)
-        {
-            if (e.AppSessionId == transferSessionId)
-            {
-                worker = new BackgroundWorker();
-                worker.WorkerReportsProgress = true;
-                worker.WorkerSupportsCancellation = true;
-                worker.DoWork += new DoWorkEventHandler(worker_DoWork);
-                worker.ProgressChanged += new ProgressChangedEventHandler(worker_ProgressChanged);
-                worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(worker_RunWorkerCompleted);
-                worker.RunWorkerAsync();
-            }
-        }
-
-        void OnTransferStarted()
-        {
             TransferStarted(this, EventArgs.Empty);
-        }        
+        }
 
-        void OnTransferFinished()
+        protected override void OnProgressChanged(int percentage)
         {
-            localHost.AppDataReceived -= new EventHandler<AppDataReceivedEventArgs>(localHost_AppDataReceived);
-            localHost.AppInvitationAccepted -= new EventHandler<AppSessionEventArgs>(localHost_AppInvitationAccepted);
-            localHost.AppSessionCancelled -= new EventHandler<AppSessionEventArgs>(localHost_AppSessionCancelled);
+            base.OnProgressChanged(percentage);
+
+            ProgressChanged(this, new ProgressChangedEventArgs(percentage, null));
+        }
+
+        protected override void OnTransferFinished()
+        {
+            base.OnTransferFinished();
+
             if (content != null)
             {
                 content.Dispose();
@@ -231,9 +110,34 @@ namespace Squiggle.Chat.Services.Chat
             TransferFinished(this, EventArgs.Empty);
         }
 
-        void UpdateProgress(int percentage)
+        protected override void OnDataReceived(byte[] chunk)
         {
-            ProgressChanged(this, new ProgressChangedEventArgs(percentage, null));
+            if (content != null)
+            {
+                content.Write(chunk, 0, chunk.Length);
+
+                float progress = BytesReceived / (float)Size * 100;
+                OnProgressChanged((int)progress);
+
+                if (BytesReceived >= Size)
+                    CompleteTransfer();
+            }
+        }
+
+        protected override void OnSendData(Func<bool> cancelPending)
+        {
+            byte[] buffer = new byte[bufferSize];
+            long bytesRemaining = Size;
+            while (bytesRemaining > 0 && !cancelPending())
+            {
+                int bytesRead = content.Read(buffer, 0, buffer.Length);
+                byte[] temp = new byte[bytesRead];
+                Buffer.BlockCopy(buffer, 0, temp, 0, temp.Length);
+                SendData(temp);
+                bytesRemaining -= bytesRead;
+                float progress = (Size - bytesRemaining) / (float)Size * 100;
+                UpdateProgress((int)progress);
+            }
         }
     }
 }
