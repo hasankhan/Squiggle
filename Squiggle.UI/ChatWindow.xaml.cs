@@ -62,6 +62,8 @@ namespace Squiggle.UI
 
             filters.Add(AliasFilter.Instance);
             filters.Add(CommandsFilter.Instance);
+
+            this.DataContext = this;
         }
 
         public ChatWindow(Buddy buddy)

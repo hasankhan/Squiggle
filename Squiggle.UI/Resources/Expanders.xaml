@@ -1,0 +1,215 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="GlyphExpandedBrush" Color="#444"/>
+    <LinearGradientBrush x:Key="GlyphCollapsedBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFEEE3E3" Offset="0"/>
+        <GradientStop Color="#FF555151" Offset="1"/>
+        <GradientStop Color="#FFC2B6B6" Offset="0.781"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="MouseOverBrush" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#FF5B7EEE" Offset="0.0"/>
+        <GradientStop Color="#FF848FB2" Offset="1.0"/>
+    </LinearGradientBrush>
+
+    <ControlTemplate x:Key="newToggleButtonControlTemplate" TargetType="{x:Type ToggleButton}">
+        <Grid Background="{TemplateBinding Background}">
+            <Path
+                    x:Name="Up_Arrow"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Fill="{DynamicResource GlyphCollapsedBrush}"
+                    Data="M 0 4 L 4 0 L 8 4 Z" RenderTransformOrigin="0.5,0.5" Stroke="#FF3D3D3D">
+                <Path.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                        <SkewTransform AngleX="0" AngleY="0"/>
+                        <RotateTransform Angle="90.013"/>
+                        <TranslateTransform X="0" Y="0"/>
+                    </TransformGroup>
+                </Path.RenderTransform>
+            </Path>
+            <Path
+                    x:Name="Down_Arrow"
+                    Visibility="Collapsed"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Fill="{DynamicResource GlyphExpandedBrush}" RenderTransformOrigin="0.5,0.5" Stroke="#FF000000"
+                    Data="M 0 4 L 4 0 L 8 4 Z">
+                <Path.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                        <SkewTransform AngleX="0" AngleY="0"/>
+                        <RotateTransform Angle="140.825"/>
+                        <TranslateTransform X="0" Y="0"/>
+                    </TransformGroup>
+                </Path.RenderTransform>
+            </Path>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter Property="Fill" Value="{DynamicResource MouseOverBrush}" TargetName="Up_Arrow"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter Property="Fill" Value="{DynamicResource MouseOverBrush}" TargetName="Down_Arrow"/>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="true">
+                <Setter Property="Visibility" Value="Visible" TargetName="Down_Arrow"/>
+                <Setter Property="Visibility" Value="Collapsed" TargetName="Up_Arrow"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="displayPicToggleButtonControlTemplate" TargetType="{x:Type ToggleButton}">
+        <Grid Background="{TemplateBinding Background}">
+            <Path
+                    x:Name="Up_Arrow"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Fill="{DynamicResource GlyphCollapsedBrush}"
+                    Data="M 0 4 L 4 0 L 8 4 Z" RenderTransformOrigin="0.5,0.5" Stroke="#FF3D3D3D">
+                <Path.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                        <SkewTransform AngleX="0" AngleY="0"/>
+                        <RotateTransform Angle="269.497"/>
+                        <TranslateTransform X="0" Y="0"/>
+                    </TransformGroup>
+                </Path.RenderTransform>
+            </Path>
+            <Path
+                    x:Name="Down_Arrow"
+                    Visibility="Collapsed"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                     Data="M 0 4 L 4 0 L 8 4 Z" RenderTransformOrigin="0.5,0.5" Stroke="#FF3D3D3D">
+                <Path.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                        <SkewTransform AngleX="0" AngleY="0"/>
+                        <RotateTransform Angle="90.013"/>
+                        <TranslateTransform X="0" Y="0"/>
+                    </TransformGroup>
+                </Path.RenderTransform>
+            </Path>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter Property="Fill" Value="{DynamicResource MouseOverBrush}" TargetName="Up_Arrow"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter Property="Fill" Value="{DynamicResource MouseOverBrush}" TargetName="Down_Arrow"/>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="true">
+                <Setter Property="Visibility" Value="Visible" TargetName="Down_Arrow"/>
+                <Setter Property="Visibility" Value="Collapsed" TargetName="Up_Arrow"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="newExpanderStyle" TargetType="{x:Type Expander}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Expander}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*" x:Name="ContentRow"/>
+                        </Grid.RowDefinitions>
+                        <Border
+                                x:Name="Border"
+                                Grid.Row="0"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="2,2,0,0" 
+                            >
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <ToggleButton
+                                        Template="{DynamicResource newToggleButtonControlTemplate}"
+                                        Background="{TemplateBinding Background}"
+                                        IsChecked="{Binding Path=IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                        OverridesDefaultStyle="True"
+                                    />
+                                <ContentPresenter Grid.Column="1" Margin="4" RecognizesAccessKey="True" ContentSource="Header"/>
+                            </Grid>
+                        </Border>
+                        <Border
+                                x:Name="ExpandSite"
+                                Grid.Row="1"
+                                Visibility="Collapsed"
+                                BorderThickness="1,0,1,1"
+                                CornerRadius="0,0,2,2"
+                            >
+                            <ContentPresenter
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Margin="{TemplateBinding Padding}"
+                                    Focusable="false"
+                                />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsExpanded" Value="True">
+                            <Setter Property="Visibility" Value="Visible" TargetName="ExpandSite"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="displayPicsExpanderStyle" TargetType="{x:Type Expander}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Expander}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*" x:Name="ContentRow"/>
+                        </Grid.RowDefinitions>
+                        <Border
+                                x:Name="Border"
+                                Grid.Row="0"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="2,2,0,0" 
+                            >
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <ToggleButton
+                                        Template="{DynamicResource displayPicToggleButtonControlTemplate}"
+                                        Background="{TemplateBinding Background}"
+                                        IsChecked="{Binding Path=IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                        OverridesDefaultStyle="True"
+                                    />
+                                <ContentPresenter Grid.Column="1" Margin="2,6,0,0" RecognizesAccessKey="True" ContentSource="Header"/>
+                            </Grid>
+                        </Border>
+                        <Border
+                                x:Name="ExpandSite"
+                                Grid.Row="1"
+                                Visibility="Collapsed"
+                                BorderThickness="1,0,1,1"
+                                CornerRadius="0,0,2,2"
+                            >
+                            <ContentPresenter
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Margin="{TemplateBinding Padding}"
+                                    Focusable="false"
+                                />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsExpanded" Value="True">
+                            <Setter Property="Visibility" Value="Visible" TargetName="ExpandSite"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

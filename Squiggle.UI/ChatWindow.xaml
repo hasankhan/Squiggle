@@ -12,6 +12,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources\RoundButton.xaml" />
+                <ResourceDictionary Source="Resources\Expanders.xaml" />
                 <ResourceDictionary>
                     <controls:ChatDragDropAdvisor x:Key="contactDragDrop" />
                     <Style x:Key="toolbarButton" BasedOn="{StaticResource RoundButton}" TargetType="{x:Type Button}">
@@ -21,7 +22,8 @@
                     </Style>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>        
+        </ResourceDictionary>
+
     </Window.Resources>
     <Grid Background="#FFF3F3F3" x:Name="LayoutRoot" 
           dragdrop:DragDropManager.DropTargetAdvisor="{DynamicResource contactDragDrop}"          
@@ -73,13 +75,32 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition x:Name="messagePanel" Height="Auto"/>
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
             <Border Background="#FFFFFFE1"
                     Visibility="Collapsed" x:Name="buddyOfflineMessage">
                 <TextBlock Margin="5" Focusable="False" Text="{Binding StringFormat='{}{0} appears to be offline.'}" />
             </Border>
             <controls:ChatTextBox Grid.Row="1" x:Name="chatTextBox" 
                                   Focusable="False" Height="Auto" Width="Auto" />
-            <Border Grid.Row="2" MinHeight="150">
+            <Expander Style="{DynamicResource displayPicsExpanderStyle}" Grid.Column="1" Grid.Row="1" ExpandDirection="Right">
+                <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}"                                   
+                                  ItemsSource="{Binding Buddies}" >
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Viewbox Height="60" Width="60" Margin="2">
+                                    <Image Source="{Binding Properties.DisplayImage}"/>
+                                </Viewbox>
+                                <TextBlock VerticalAlignment="Bottom" Text="{Binding DisplayName}" Margin="5"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Expander>
+            <Border Grid.Row="2" Grid.ColumnSpan="2" MinHeight="150">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -132,7 +153,7 @@
                 </Grid>
             </Border>
             <GridSplitter ResizeDirection="Rows" HorizontalAlignment="Stretch"
-                      Grid.Row="2" VerticalAlignment="Top" ResizeBehavior="PreviousAndCurrent"
+                      Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Top" ResizeBehavior="PreviousAndCurrent"
                       Height="5" DragCompleted="GridSplitter_DragCompleted" />
         </Grid>
     </Grid>

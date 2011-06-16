@@ -11,150 +11,41 @@
     xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"             
     Width="200" Height="400" Loaded="UserControl_Loaded" >
     <UserControl.Resources>
-        <CollectionViewSource Source="{Binding Buddies}" x:Key="buddiesCollection" Filter="CollectionViewSource_Filter" />
-        <converters:StatusConverter x:Key="statusConverter" />
-        <Style x:Key="ContactInfoToolTipStyle" TargetType="{x:Type ToolTip}">
-            <Setter Property="SnapsToDevicePixels" Value="True"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ToolTip}">
-                        <Border BorderBrush="#111111" BorderThickness="1" SnapsToDevicePixels="True">
-                            <Border Width="Auto" Height="Auto" Name="windowFrame" BorderBrush="#999999" BorderThickness="1" SnapsToDevicePixels="True" CornerRadius="0" Background="#525252" TextBlock.Foreground="Black" TextBlock.FontFamily="Verdana" TextBlock.FontSize="11" Margin="0" Padding="3">
-                                <ContentPresenter />
-                            </Border>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\Resources\Expanders.xaml" />
+                <ResourceDictionary>
+                    <CollectionViewSource Source="{Binding Buddies}" x:Key="buddiesCollection" Filter="CollectionViewSource_Filter" />
+                    <converters:StatusConverter x:Key="statusConverter" />
+                    <Style x:Key="ContactInfoToolTipStyle" TargetType="{x:Type ToolTip}">
+                        <Setter Property="SnapsToDevicePixels" Value="True"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ToolTip}">
+                                    <Border BorderBrush="#111111" BorderThickness="1" SnapsToDevicePixels="True">
+                                        <Border Width="Auto" Height="Auto" Name="windowFrame" BorderBrush="#999999" BorderThickness="1" SnapsToDevicePixels="True" CornerRadius="0" Background="#525252" TextBlock.Foreground="Black" TextBlock.FontFamily="Verdana" TextBlock.FontSize="11" Margin="0" Padding="3">
+                                            <ContentPresenter />
+                                        </Border>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
 
-        <SolidColorBrush x:Key="GlyphExpandedBrush" Color="#444"/>
-        <LinearGradientBrush x:Key="GlyphCollapsedBrush" EndPoint="0.5,1" StartPoint="0.5,0">
-            <GradientStop Color="#FFEEE3E3" Offset="0"/>
-            <GradientStop Color="#FF555151" Offset="1"/>
-            <GradientStop Color="#FFC2B6B6" Offset="0.781"/>
-        </LinearGradientBrush>
-        <LinearGradientBrush x:Key="MouseOverBrush" EndPoint="0,1" StartPoint="0,0">
-            <GradientStop Color="#FF5B7EEE" Offset="0.0"/>
-            <GradientStop Color="#FF848FB2" Offset="1.0"/>
-        </LinearGradientBrush>
-
-        <ControlTemplate x:Key="newToggleButtonControlTemplate" TargetType="{x:Type ToggleButton}">
-            <Grid Background="{TemplateBinding Background}">
-                <Path
-                    x:Name="Up_Arrow"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Fill="{DynamicResource GlyphCollapsedBrush}"
-                    Data="M 0 4 L 4 0 L 8 4 Z" RenderTransformOrigin="0.5,0.5" Stroke="#FF3D3D3D">
-                    <Path.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform ScaleX="1" ScaleY="1"/>
-                            <SkewTransform AngleX="0" AngleY="0"/>
-                            <RotateTransform Angle="90.013"/>
-                            <TranslateTransform X="0" Y="0"/>
-                        </TransformGroup>
-                    </Path.RenderTransform>
-                </Path>
-                <Path
-                    x:Name="Down_Arrow"
-                    Visibility="Collapsed"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Fill="{DynamicResource GlyphExpandedBrush}" RenderTransformOrigin="0.5,0.5" Stroke="#FF000000"
-                    Data="M 0 4 L 4 0 L 8 4 Z">
-                    <Path.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform ScaleX="1" ScaleY="1"/>
-                            <SkewTransform AngleX="0" AngleY="0"/>
-                            <RotateTransform Angle="140.825"/>
-                            <TranslateTransform X="0" Y="0"/>
-                        </TransformGroup>
-                    </Path.RenderTransform>
-                </Path>
-            </Grid>
-            <ControlTemplate.Triggers>
-                <Trigger Property="IsMouseOver" Value="true">
-                    <Setter Property="Fill" Value="{DynamicResource MouseOverBrush}" TargetName="Up_Arrow"/>
-                </Trigger>
-                <Trigger Property="IsMouseOver" Value="true">
-                    <Setter Property="Fill" Value="{DynamicResource MouseOverBrush}" TargetName="Down_Arrow"/>
-                </Trigger>
-                <Trigger Property="IsChecked" Value="true">
-                    <Setter Property="Visibility" Value="Visible" TargetName="Down_Arrow"/>
-                    <Setter Property="Visibility" Value="Collapsed" TargetName="Up_Arrow"/>
-                </Trigger>
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
-
-        <Style x:Key="newExpanderStyle" TargetType="{x:Type Expander}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Expander}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*" x:Name="ContentRow"/>
-                            </Grid.RowDefinitions>
-                            <Border
-                                x:Name="Border"
-                                Grid.Row="0"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="2,2,0,0" 
-                            >
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="20"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <ToggleButton
-                                        Template="{DynamicResource newToggleButtonControlTemplate}"
-                                        Background="{TemplateBinding Background}"
-                                        IsChecked="{Binding Path=IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                        OverridesDefaultStyle="True"
-                                    />
-                                    <ContentPresenter Grid.Column="1" Margin="4" RecognizesAccessKey="True" ContentSource="Header"/>
-                                </Grid>
-                            </Border>
-                            <Border
-                                x:Name="ExpandSite"
-                                Grid.Row="1"
-                                Visibility="Collapsed"
-                                BorderThickness="1,0,1,1"
-                                CornerRadius="0,0,2,2"
-                            >
-                                <ContentPresenter
-                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                    Margin="{TemplateBinding Padding}"
-                                    Focusable="false"
-                                />
-                            </Border>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsExpanded" Value="True">
-                                <Setter Property="Visibility" Value="Visible" TargetName="ExpandSite"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <ControlTemplate x:Key="groupTemplate">
-            <Expander 
+                    <ControlTemplate x:Key="groupTemplate">
+                        <Expander 
                         Style="{DynamicResource newExpanderStyle}"
                         Tag="{Binding Name}" 
                         Loaded="Group_Loaded"
                         Collapsed="Group_ExpandChanged" 
                         Expanded="Group_ExpandChanged">
-                <Expander.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="{StaticResource MainWindow_SendBroadcastMessage}" Tag="{Binding Items}" Click="SendBroadcastMessageMenu_Click" />
-                    </ContextMenu>
-                </Expander.ContextMenu>
-                <Expander.Header>
-                    <TextBlock FontSize="11" FontWeight="Bold">
+                            <Expander.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="{StaticResource MainWindow_SendBroadcastMessage}" Tag="{Binding Items}" Click="SendBroadcastMessageMenu_Click" />
+                                </ContextMenu>
+                            </Expander.ContextMenu>
+                            <Expander.Header>
+                                <TextBlock FontSize="11" FontWeight="Bold">
                         <controls:TextBlockBugFix.Text2>
                             <MultiBinding StringFormat="{}{0} ({1}/{2})">
                                 <Binding Path="Name" Converter="{x:Static converters:TitleCaseConverter.Instance}" />
@@ -162,28 +53,31 @@
                                 <Binding Path="ItemCount" />
                             </MultiBinding>
                         </controls:TextBlockBugFix.Text2>
-                    </TextBlock>
-                </Expander.Header>
-                <ItemsPresenter />
-            </Expander>
-        </ControlTemplate>
-        <LinearGradientBrush x:Key="ContactInfoBackground" EndPoint="0.5,1" StartPoint="0.5,0">
-            <GradientStop Color="#FFFCFCFD" Offset="0.04"/>
-            <GradientStop Color="#FFE5E5F1" Offset="0.99"/>
-        </LinearGradientBrush>
-        <LinearGradientBrush x:Key="HeaderBackground" EndPoint="0.5,1" StartPoint="0.5,0">
-            <GradientStop Color="#FFFCFCFC" Offset="0.087"/>
-            <GradientStop Color="#FFECECEC" Offset="0.478"/>
-        </LinearGradientBrush>
-        <LinearGradientBrush x:Key="ToolbarBackground" EndPoint="0.5,1" StartPoint="0.5,0" MappingMode="RelativeToBoundingBox">
-            <GradientStop Color="#FFEEF6FA" Offset="0"/>
-            <GradientStop Color="#FFE4F1F7" Offset="0.9"/>
-            <GradientStop Color="#FFE4F1F6" Offset="1"/>
-        </LinearGradientBrush>
-        <ObjectDataProvider MethodName="GetChangableStatuses" 
+                                </TextBlock>
+                            </Expander.Header>
+                            <ItemsPresenter />
+                        </Expander>
+                    </ControlTemplate>
+                    <LinearGradientBrush x:Key="ContactInfoBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFFCFCFD" Offset="0.04"/>
+                        <GradientStop Color="#FFE5E5F1" Offset="0.99"/>
+                    </LinearGradientBrush>
+                    <LinearGradientBrush x:Key="HeaderBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFFCFCFC" Offset="0.087"/>
+                        <GradientStop Color="#FFECECEC" Offset="0.478"/>
+                    </LinearGradientBrush>
+                    <LinearGradientBrush x:Key="ToolbarBackground" EndPoint="0.5,1" StartPoint="0.5,0" MappingMode="RelativeToBoundingBox">
+                        <GradientStop Color="#FFEEF6FA" Offset="0"/>
+                        <GradientStop Color="#FFE4F1F7" Offset="0.9"/>
+                        <GradientStop Color="#FFE4F1F6" Offset="1"/>
+                    </LinearGradientBrush>
+                    <ObjectDataProvider MethodName="GetChangableStatuses" 
             ObjectType="{x:Type helpers:SquiggleUtility}" 
             x:Key="AvailableUserStatus">
-        </ObjectDataProvider>
+                    </ObjectDataProvider>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.CommandBindings>
         <CommandBinding Command="{x:Static local:ContactListItem.ChatCommand}" Executed="ChatCommand_Executed" />
