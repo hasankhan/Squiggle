@@ -1,22 +1,15 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using Squiggle.Chat.Services.Chat;
 
 namespace Squiggle.Chat
 {
-    public interface IFileTransfer
+    public interface IFileTransfer: IAppHandler
     {
-        event EventHandler TransferCompleted;
-        event EventHandler TransferStarted;
-        event EventHandler TransferCancelled;
-        event EventHandler TransferFinished;
-        event EventHandler<ProgressChangedEventArgs> ProgressChanged;
-        event EventHandler<ErrorEventArgs> Error;
-
         long Size { get; }
         string Name { get; }
 
-        void Cancel();
         void Accept(string filePath);
     }
 }

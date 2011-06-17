@@ -121,6 +121,7 @@
     <Compile Include="History\DAL\StatusCriteria.cs" />
     <Compile Include="History\DAL\StatusUpdate.cs" />
     <Compile Include="History\HistoryManager.cs" />
+    <Compile Include="IVoiceChat.cs" />
     <Compile Include="IChat.cs" />
     <Compile Include="IChatClient.cs" />
     <Compile Include="IFileTransfer.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Services\Chat\FileTransfer\FileInviteData.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\Chat\IAppHandler.cs" />
     <Compile Include="Services\DefaultValues.cs" />
     <Compile Include="Services\Presence\Transport\Broadcast\IBroadcastService.cs" />
     <Compile Include="Services\Presence\Transport\Broadcast\MultcastService\IMulticastService.cs" />

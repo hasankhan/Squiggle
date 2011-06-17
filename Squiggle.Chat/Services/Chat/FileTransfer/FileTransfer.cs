@@ -13,12 +13,6 @@ namespace Squiggle.Chat.Services.Chat.FileTransfer
 {
     class FileTransfer: AppHandler, IFileTransfer
     {
-        public event EventHandler TransferCompleted = delegate { };
-        public event EventHandler TransferStarted = delegate { };
-        public event EventHandler TransferCancelled = delegate { };
-        public event EventHandler TransferFinished = delegate { };
-        public event EventHandler<System.ComponentModel.ProgressChangedEventArgs> ProgressChanged = delegate { };
-
         Stream content;
         string saveToFile;
         string filePath;
@@ -67,35 +61,12 @@ namespace Squiggle.Chat.Services.Chat.FileTransfer
             content = File.OpenWrite(filePath);
         }
 
-        protected override void OnTransferCompleted()
-        {
-            base.OnTransferCompleted();
-
-            TransferCompleted(this, EventArgs.Empty);
-        }
-
         protected override void OnTransferCancelled()
         {
             base.OnTransferCancelled();
 
             if (!SelfInitiated && content != null)
-                File.Delete(saveToFile);
-            
-            TransferCancelled(this, EventArgs.Empty);
-        }
-
-        protected override void OnTransferStarted()
-        {
-            base.OnTransferStarted();
-
-            TransferStarted(this, EventArgs.Empty);
-        }
-
-        protected override void OnProgressChanged(int percentage)
-        {
-            base.OnProgressChanged(percentage);
-
-            ProgressChanged(this, new ProgressChangedEventArgs(percentage, null));
+                File.Delete(saveToFile);            
         }
 
         protected override void OnTransferFinished()
@@ -107,7 +78,6 @@ namespace Squiggle.Chat.Services.Chat.FileTransfer
                 content.Dispose();
                 content = null;
             }
-            TransferFinished(this, EventArgs.Empty);
         }
 
         protected override void OnDataReceived(byte[] chunk)

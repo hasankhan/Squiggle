@@ -12,6 +12,11 @@ namespace Squiggle.Chat.Services.Chat
         public IFileTransfer Invitation {get; set; }
     }
 
+    public class VoiceChatInvitationReceivedEventArgs : SessionEventArgs
+    {
+        public IVoiceChat Invitation { get; set; }
+    }
+
     public interface IChatSession
     {
         event EventHandler<MessageReceivedEventArgs> MessageReceived;
@@ -20,6 +25,7 @@ namespace Squiggle.Chat.Services.Chat
         event EventHandler<SessionEventArgs> UserJoined;
         event EventHandler<SessionEventArgs> UserLeft;
         event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived;
+        event EventHandler<VoiceChatInvitationReceivedEventArgs> VoiceChatInvitationReceived;
         event EventHandler GroupChatStarted;
 
         IEnumerable<SquiggleEndPoint> RemoteUsers { get; }
@@ -30,6 +36,7 @@ namespace Squiggle.Chat.Services.Chat
         void SendMessage(string fontName, int fontSize, Color color, FontStyle fontStyle, string message);
         void NotifyTyping();
         IFileTransfer SendFile(string name, Stream content);
+        IVoiceChat StartVoiceChat();
         void End();
         void Invite(SquiggleEndPoint user);
     }

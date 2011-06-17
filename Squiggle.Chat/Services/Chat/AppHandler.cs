@@ -26,7 +26,12 @@ namespace Squiggle.Chat.Services.Chat
         protected bool SelfCancelled { get; private set; }
         public bool Connected { get; private set; }
 
-        public event EventHandler<ErrorEventArgs> Error = delegate { };        
+        public event EventHandler<ErrorEventArgs> Error = delegate { };
+        public event EventHandler TransferCompleted = delegate { };
+        public event EventHandler TransferStarted = delegate { };
+        public event EventHandler TransferCancelled = delegate { };
+        public event EventHandler TransferFinished = delegate { };
+        public event EventHandler<System.ComponentModel.ProgressChangedEventArgs> ProgressChanged = delegate { };
 
         public abstract Guid AppId { get; }
 
@@ -140,14 +145,20 @@ namespace Squiggle.Chat.Services.Chat
                 OnTransferCompleted();
         }
 
-        protected virtual void OnTransferCompleted() { }
+        protected virtual void OnTransferCompleted() 
+        {
+            TransferCompleted(this, EventArgs.Empty);
+        }
 
         protected void OnError(Exception error)
         {
             Error(this, new ErrorEventArgs(error));
         }
 
-        protected virtual void OnTransferCancelled() { }
+        protected virtual void OnTransferCancelled()
+        {
+            TransferCancelled(this, EventArgs.Empty);
+        }
 
         void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
@@ -205,6 +216,7 @@ namespace Squiggle.Chat.Services.Chat
         {
             Connected = true;
             localHost.AppDataReceived += new EventHandler<AppDataReceivedEventArgs>(localHost_AppDataReceived);
+            TransferStarted(this, EventArgs.Empty);
         }
 
         protected virtual void OnTransferFinished()
@@ -213,8 +225,12 @@ namespace Squiggle.Chat.Services.Chat
             localHost.AppDataReceived -= new EventHandler<AppDataReceivedEventArgs>(localHost_AppDataReceived);
             localHost.AppInvitationAccepted -= new EventHandler<AppSessionEventArgs>(localHost_AppInvitationAccepted);
             localHost.AppSessionCancelled -= new EventHandler<AppSessionEventArgs>(localHost_AppSessionCancelled);
+            TransferFinished(this, EventArgs.Empty);
         }
 
-        protected virtual void OnProgressChanged(int percentage) { }
+        protected virtual void OnProgressChanged(int percentage) 
+        {
+            ProgressChanged(this, new ProgressChangedEventArgs(percentage, null)); 
+        }
     }
 }

@@ -9,6 +9,7 @@ using System.Threading;
 using System.Diagnostics;
 using Squiggle.Utilities;
 using Squiggle.Chat.Services.Chat.FileTransfer;
+using Squiggle.Chat.Services.Chat.Audio;
 
 namespace Squiggle.Chat.Services.Chat
 {
@@ -27,6 +28,7 @@ namespace Squiggle.Chat.Services.Chat
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
         public event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived = delegate { };
+        public event EventHandler<VoiceChatInvitationReceivedEventArgs> VoiceChatInvitationReceived = delegate { };
         public event EventHandler<SessionEventArgs> UserTyping = delegate { };
         public event EventHandler<SessionEventArgs> UserJoined = delegate { };
         public event EventHandler<SessionEventArgs> UserLeft = delegate { };
@@ -139,7 +141,19 @@ namespace Squiggle.Chat.Services.Chat
             {
                 if (e.AppId == ChatApps.FileTransfer)
                     OnFileTransferInvite(e);
+                else if (e.AppId == ChatApps.VoiceChat)
+                    OnVoiceChatInvite(e);
             }
+        }
+
+        void OnVoiceChatInvite(AppInvitationReceivedEventArgs e)
+        {
+            RemoteHost remoteHost = PrimaryHost;
+            IVoiceChat invitation = new VoiceChat(ID, remoteHost.Host, localHost, localUser, remoteHost.EndPoint, e.AppSessionId);
+            VoiceChatInvitationReceived(this, new VoiceChatInvitationReceivedEventArgs()
+            {
+                Invitation = invitation
+            });
         }
 
         void OnFileTransferInvite(AppInvitationReceivedEventArgs e)
@@ -191,6 +205,16 @@ namespace Squiggle.Chat.Services.Chat
             var transfer = new FileTransfer.FileTransfer(ID, remoteHost.Host, localHost, localUser, remoteHost.EndPoint, name, size, content);
             transfer.Start();
             return transfer;
+        }
+
+        public IVoiceChat StartVoiceChat()
+        {
+            if (IsGroupSession)
+                throw new InvalidOperationException("Cannot start voice chat in group chat session.");
+            RemoteHost remoteHost = PrimaryHost;
+            var chat = new VoiceChat(ID, remoteHost.Host, localHost, localUser, remoteHost.EndPoint);
+            chat.Start();
+            return chat;
         }
 
         public void SendMessage(string fontName, int fontSize, Color color, FontStyle fontStyle, string message)

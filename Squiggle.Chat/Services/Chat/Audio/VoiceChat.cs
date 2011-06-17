@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace Squiggle.Chat.Services.Chat.Audio
 {
-    class VoiceChat: AppHandler
+    class VoiceChat: AppHandler, IVoiceChat
     {
         WaveIn waveIn;
         IWavePlayer waveOut;
@@ -33,7 +33,7 @@ namespace Squiggle.Chat.Services.Chat.Audio
 
         protected override IEnumerable<KeyValuePair<string, string>> CreateInviteMetadata()
         {
-            throw new NotImplementedException();
+            return Enumerable.Empty<KeyValuePair<string, string>>();
         }
 
         protected override void TransferData(Func<bool> cancelPending)
@@ -63,6 +63,11 @@ namespace Squiggle.Chat.Services.Chat.Audio
             waveProvider = new BufferedWaveProvider(codec.RecordFormat);
             waveOut.Init(waveProvider);
             waveOut.Play();
+        }
+
+        public new void Accept()
+        {
+            base.Accept();
         }
 
         protected override void OnTransferFinished()
