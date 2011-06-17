@@ -38,7 +38,7 @@ namespace Squiggle.Chat.Services.Chat.Audio
 
         protected override void TransferData(Func<bool> cancelPending)
         {
-            while (cancelPending())
+            while (!cancelPending())
                 Thread.Sleep(100);
         }
 
@@ -74,12 +74,15 @@ namespace Squiggle.Chat.Services.Chat.Audio
         {
             base.OnTransferFinished();
 
-            waveIn.DataAvailable -= waveIn_DataAvailable;
-            waveIn.StopRecording();
-            waveOut.Stop();
+            if (waveIn != null)
+            {
+                waveIn.DataAvailable -= waveIn_DataAvailable;
+                waveIn.StopRecording();
+                waveOut.Stop();
 
-            waveIn.Dispose();
-            waveOut.Dispose();
+                waveIn.Dispose();
+                waveOut.Dispose();
+            }
         }
 
         void waveIn_DataAvailable(object sender, WaveInEventArgs e)

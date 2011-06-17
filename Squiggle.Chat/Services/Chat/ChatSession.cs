@@ -152,6 +152,7 @@ namespace Squiggle.Chat.Services.Chat
             IVoiceChat invitation = new VoiceChat(ID, remoteHost.Host, localHost, localUser, remoteHost.EndPoint, e.AppSessionId);
             VoiceChatInvitationReceived(this, new VoiceChatInvitationReceivedEventArgs()
             {
+                Sender = e.Sender,
                 Invitation = invitation
             });
         }

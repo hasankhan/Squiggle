@@ -64,7 +64,7 @@ namespace Squiggle.Chat.Services.Chat
             Async.Invoke(() =>
             {
                 IEnumerable<KeyValuePair<string, string>> data = CreateInviteMetadata();
-                bool success = ExceptionMonster.EatTheException(() => this.remoteHost.ReceiveAppInvite(sessionId, localUser, remoteUser, ChatApps.FileTransfer, appSessionId, data), "Sending app invite to " + remoteUser.ToString());
+                bool success = ExceptionMonster.EatTheException(() => this.remoteHost.ReceiveAppInvite(sessionId, localUser, remoteUser, AppId, appSessionId, data), "Sending app invite to " + remoteUser.ToString());
                 if (!success)
                 {
                     OnTransferFinished();

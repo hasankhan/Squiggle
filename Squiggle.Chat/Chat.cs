@@ -35,10 +35,11 @@ namespace Squiggle.Chat
             session.UserTyping += new EventHandler<Squiggle.Chat.Services.Chat.Host.SessionEventArgs>(session_UserTyping);
             session.BuzzReceived += new EventHandler<Squiggle.Chat.Services.Chat.Host.SessionEventArgs>(session_BuzzReceived);
             session.TransferInvitationReceived += new EventHandler<Squiggle.Chat.Services.Chat.FileTransferInviteEventArgs>(session_TransferInvitationReceived);
+            session.VoiceChatInvitationReceived += new EventHandler<VoiceChatInvitationReceivedEventArgs>(session_VoiceChatInvitationReceived);
             session.UserJoined += new EventHandler<Services.Chat.Host.SessionEventArgs>(session_UserJoined);
             session.UserLeft += new EventHandler<Services.Chat.Host.SessionEventArgs>(session_UserLeft);
             session.GroupChatStarted += new EventHandler(session_GroupChatStarted);
-        }                  
+        }
 
         #region IChat Members
 
@@ -162,6 +163,17 @@ namespace Squiggle.Chat
                 LogHistory(EventType.Transfer, buddy);
             }
         }
+
+
+        void session_VoiceChatInvitationReceived(object sender, VoiceChatInvitationReceivedEventArgs e)
+        {
+            Buddy buddy;
+            if (buddies.TryGetValue(e.Sender.ClientID, out buddy))
+            {
+                VoiceChatInvitationReceived(this, new VoiceChatInviteEventArgs() { Sender = buddy, Invitation = e.Invitation });
+                LogHistory(EventType.Voice, buddy);
+            }
+        }                  
 
         void session_BuzzReceived(object sender, Squiggle.Chat.Services.Chat.Host.SessionEventArgs e)
         {
