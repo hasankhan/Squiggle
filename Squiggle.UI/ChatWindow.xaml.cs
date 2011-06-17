@@ -469,6 +469,7 @@ namespace Squiggle.UI
             Dispatcher.Invoke(() =>
             {
                 // TODO: activate voice chat UI
+                e.Invitation.Dispatcher = Dispatcher;
                 FlashWindow();
             });
         }
