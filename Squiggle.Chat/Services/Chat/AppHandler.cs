@@ -24,7 +24,7 @@ namespace Squiggle.Chat.Services.Chat
         protected bool SelfInitiated { get; private set; }
         protected long BytesReceived { get; private set; }
         protected bool SelfCancelled { get; private set; }
-        public bool Connected { get; private set; }
+        public bool IsConnected { get; private set; }
 
         public event EventHandler<ErrorEventArgs> Error = delegate { };
         public event EventHandler TransferCompleted = delegate { };
@@ -184,7 +184,8 @@ namespace Squiggle.Chat.Services.Chat
 
         protected void SendData(byte[] chunk)
         {
-            remoteHost.ReceiveAppData(appSessionId, localUser, remoteUser, chunk);
+            if (IsConnected)
+                remoteHost.ReceiveAppData(appSessionId, localUser, remoteUser, chunk);
         }
 
         void localHost_AppDataReceived(object sender, AppDataReceivedEventArgs e)
@@ -214,14 +215,14 @@ namespace Squiggle.Chat.Services.Chat
 
         protected virtual void OnTransferStarted() 
         {
-            Connected = true;
+            IsConnected = true;
             localHost.AppDataReceived += new EventHandler<AppDataReceivedEventArgs>(localHost_AppDataReceived);
             TransferStarted(this, EventArgs.Empty);
         }
 
         protected virtual void OnTransferFinished()
         {
-            Connected = false;
+            IsConnected = false;
             localHost.AppDataReceived -= new EventHandler<AppDataReceivedEventArgs>(localHost_AppDataReceived);
             localHost.AppInvitationAccepted -= new EventHandler<AppSessionEventArgs>(localHost_AppInvitationAccepted);
             localHost.AppSessionCancelled -= new EventHandler<AppSessionEventArgs>(localHost_AppSessionCancelled);
