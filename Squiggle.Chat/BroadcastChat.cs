@@ -61,6 +61,7 @@ namespace Squiggle.Chat
         public event EventHandler<BuddyEventArgs> BuddyTyping = delegate { };
         public event EventHandler<MessageFailedEventArgs> MessageFailed = delegate { };
         public event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived = delegate { };
+        public event EventHandler<VoiceChatInviteEventArgs> VoiceChatInvitationReceived = delegate { };
         public event EventHandler GroupChatStarted = delegate { };
 
         public void NotifyTyping()
@@ -84,6 +85,11 @@ namespace Squiggle.Chat
         public IFileTransfer SendFile(string name, System.IO.Stream content)
         {
             throw new InvalidOperationException("Can not send a file in a broadcast chat session.");
+        }
+
+        public IVoiceChat StartVoiceChat()
+        {
+            throw new InvalidOperationException("Can not start voice chat in a broadcast chat session.");
         }
 
         public void Leave()

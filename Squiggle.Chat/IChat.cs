@@ -27,6 +27,12 @@ namespace Squiggle.Chat
         public IFileTransfer Invitation { get; set; }
     }
 
+    public class VoiceChatInviteEventArgs: EventArgs
+    {
+        public Buddy Sender {get; set; }
+        public IVoiceChat Invitation {get; set; }
+    }
+
     public interface IChat
     {
         IEnumerable<Buddy> Buddies { get; }
@@ -40,12 +46,14 @@ namespace Squiggle.Chat
         event EventHandler<BuddyEventArgs> BuddyTyping;
         event EventHandler<MessageFailedEventArgs> MessageFailed;
         event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived;
+        event EventHandler<VoiceChatInviteEventArgs> VoiceChatInvitationReceived;
         event EventHandler GroupChatStarted;
 
         void NotifyTyping();
         void SendBuzz();
         void SendMessage(string fontName, int fontSize, Color color, FontStyle style, string message);
         IFileTransfer SendFile(string name, Stream content);
+        IVoiceChat StartVoiceChat();
         void Leave();
 
         void Invite(Buddy buddy);

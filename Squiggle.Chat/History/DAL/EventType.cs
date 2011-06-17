@@ -12,5 +12,6 @@ namespace Squiggle.Chat.History.DAL
         Joined,
         Left,
         Transfer,
+        Voice,
     }
 }

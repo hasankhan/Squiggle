@@ -61,6 +61,7 @@ namespace Squiggle.Chat
         public event EventHandler<BuddyEventArgs> BuddyTyping = delegate { };
         public event EventHandler<BuddyEventArgs> BuzzReceived = delegate { };
         public event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived = delegate { };
+        public event EventHandler<VoiceChatInviteEventArgs> VoiceChatInvitationReceived = delegate { };
         public event EventHandler GroupChatStarted = delegate { };
 
         public void SendMessage(string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
@@ -109,6 +110,19 @@ namespace Squiggle.Chat
                 LogHistory(EventType.Transfer, self, name);
                 return transfer;
             }, "sending file request");
+        }
+
+        public IVoiceChat StartVoiceChat()
+        {
+            if (IsGroupChat)
+                throw new InvalidOperationException("Can not start voice chat in group chat session.");
+
+            return ExceptionMonster.EatTheException(() =>
+            {
+                var chat = session.StartVoiceChat();
+                LogHistory(EventType.Voice, self);
+                return chat;
+            }, "sending voice chat invite");
         }
 
         public void Leave()
