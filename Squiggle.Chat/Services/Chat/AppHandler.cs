@@ -38,10 +38,10 @@ namespace Squiggle.Chat.Services.Chat
         protected AppHandler(Guid sessionId, IChatHost remoteHost, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser)
         {
             this.sessionId = sessionId;
-            this.localHost = localHost;
-            this.remoteUser = remoteUser;
             this.remoteHost = remoteHost;
+            this.localHost = localHost;
             this.localUser = localUser;
+            this.remoteUser = remoteUser;
             appSessionId = Guid.NewGuid();
             SelfInitiated = true;
         }
@@ -49,9 +49,10 @@ namespace Squiggle.Chat.Services.Chat
         protected AppHandler(Guid sessionId, IChatHost remoteHost, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, Guid appSessionId)
         {
             this.sessionId = sessionId;
-            this.localHost = localHost;
             this.remoteHost = remoteHost;
+            this.localHost = localHost;
             this.localUser = localUser;
+            this.remoteUser = remoteUser;
             this.appSessionId = appSessionId;
             SelfInitiated = false;
             localHost.AppSessionCancelled += new EventHandler<AppSessionEventArgs>(localHost_AppSessionCancelled);
