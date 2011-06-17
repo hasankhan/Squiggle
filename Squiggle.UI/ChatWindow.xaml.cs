@@ -133,6 +133,7 @@ namespace Squiggle.UI
             chatSession.MessageFailed += new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
             chatSession.BuddyTyping += new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
             chatSession.TransferInvitationReceived += new EventHandler<FileTransferInviteEventArgs>(chatSession_TransferInvitationReceived);
+            chatSession.VoiceChatInvitationReceived += new EventHandler<VoiceChatInviteEventArgs>(chatSession_VoiceChatInvitationReceived);
             chatSession.GroupChatStarted += new EventHandler(chatSession_GroupChatStarted);
             txtMessageEditBox.Enabled = true;
             mnuInviteContact.IsEnabled = !IsBroadcastChat;
@@ -259,6 +260,12 @@ namespace Squiggle.UI
         void chatSession_TransferInvitationReceived(object sender, FileTransferInviteEventArgs e)
         {
             DeferIfNotLoaded(() => OnTransferInvite(e));
+        }
+
+
+        void chatSession_VoiceChatInvitationReceived(object sender, VoiceChatInviteEventArgs e)
+        {
+            DeferIfNotLoaded(() => OnVoiceInvite(e));
         }
 
         void chatSession_BuzzReceived(object sender, BuddyEventArgs e)
@@ -457,6 +464,15 @@ namespace Squiggle.UI
             });
         }
 
+        void OnVoiceInvite(VoiceChatInviteEventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                // TODO: activate voice chat UI
+                FlashWindow();
+            });
+        }
+
         public void SendMessage(string message)
         {
             chatStarted = true;
@@ -501,6 +517,15 @@ namespace Squiggle.UI
             }
             else
                 chatTextBox.AddError(Translation.Instance.ChatWindow_BuzzTooEarly, String.Empty);
+        }
+
+        public void StartVoiceChat()
+        {
+            if (chatSession.IsGroupChat)
+                return;
+
+            // TODO: If there is no other voice chat session currently in progress then start it. Though button should be disabled in such case.
+            IVoiceChat chat = chatSession.StartVoiceChat(Dispatcher);
         }
 
         public void SendFile()
