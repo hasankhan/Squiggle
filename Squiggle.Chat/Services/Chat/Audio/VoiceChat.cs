@@ -6,6 +6,8 @@ using Squiggle.Chat.Services.Chat.Host;
 using System.IO;
 using NAudio.Wave;
 using System.Threading;
+using Squiggle.Utilities;
+using System.Windows.Threading;
 
 namespace Squiggle.Chat.Services.Chat.Audio
 {
@@ -20,6 +22,8 @@ namespace Squiggle.Chat.Services.Chat.Audio
         {
             get { return ChatApps.VoiceChat; }
         }
+
+        public Dispatcher Dispatcher { get; set; }
 
         public VoiceChat(Guid sessionId, IChatHost remoteHost, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser)
             :base(sessionId, remoteHost, localHost, localUser, remoteUser)
@@ -52,17 +56,20 @@ namespace Squiggle.Chat.Services.Chat.Audio
         {
             base.OnTransferStarted();
 
-            waveIn = new WaveIn();
-            waveIn.BufferMilliseconds = 50;
-            waveIn.DeviceNumber = -1;
-            waveIn.WaveFormat = codec.RecordFormat;
-            waveIn.DataAvailable += waveIn_DataAvailable;
-            waveIn.StartRecording();
+            Dispatcher.Invoke(() =>
+            {
+                waveIn = new WaveIn();
+                waveIn.BufferMilliseconds = 50;
+                waveIn.DeviceNumber = -1;
+                waveIn.WaveFormat = codec.RecordFormat;
+                waveIn.DataAvailable += waveIn_DataAvailable;
+                waveIn.StartRecording();
 
-            waveOut = new WaveOut();
-            waveProvider = new BufferedWaveProvider(codec.RecordFormat);
-            waveOut.Init(waveProvider);
-            waveOut.Play();
+                waveOut = new WaveOut();
+                waveProvider = new BufferedWaveProvider(codec.RecordFormat);
+                waveOut.Init(waveProvider);
+                waveOut.Play();
+            });
         }
 
         public new void Accept()
@@ -74,15 +81,18 @@ namespace Squiggle.Chat.Services.Chat.Audio
         {
             base.OnTransferFinished();
 
-            if (waveIn != null)
+            Dispatcher.Invoke(() =>
             {
-                waveIn.DataAvailable -= waveIn_DataAvailable;
-                waveIn.StopRecording();
-                waveOut.Stop();
+                if (waveIn != null)
+                {
+                    waveIn.DataAvailable -= waveIn_DataAvailable;
+                    waveIn.StopRecording();
+                    waveOut.Stop();
 
-                waveIn.Dispose();
-                waveOut.Dispose();
-            }
+                    waveIn.Dispose();
+                    waveOut.Dispose();
+                }
+            });
         }
 
         void waveIn_DataAvailable(object sender, WaveInEventArgs e)

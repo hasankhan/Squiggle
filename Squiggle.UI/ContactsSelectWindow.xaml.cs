@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Squiggle.Chat;
 using Squiggle.UI.Controls;
 using Squiggle.UI.ViewModel;
+using Squiggle.Utilities;
 using System.Globalization;
 using Squiggle.UI.StickyWindows;
 

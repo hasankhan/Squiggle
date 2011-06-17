@@ -27,7 +27,6 @@ namespace Squiggle.Chat
             monitor.Start();
         }
 
-        static IChat chat = null;
         private static void TestPresence()
         {
             ChatClient client1 = new ChatClient(new SquiggleEndPoint(Guid.NewGuid().ToString(), new IPEndPoint(IPAddress.Loopback, 1234)),
@@ -61,7 +60,7 @@ namespace Squiggle.Chat
         static void client2_ChatStarted(object sender, ChatStartedEventArgs e)
         {
             e.Chat.TransferInvitationReceived += new EventHandler<FileTransferInviteEventArgs>(Chat_TransferInvitationReceived);
-            chat.SendFile("aloo", File.OpenRead(@"c:\test.txt"));
+            //chat.SendFile(null, "aloo", File.OpenRead(@"c:\test.txt"));
         }
 
         static void Chat_TransferInvitationReceived(object sender, FileTransferInviteEventArgs e)

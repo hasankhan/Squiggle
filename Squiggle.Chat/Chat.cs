@@ -11,6 +11,7 @@ using Squiggle.Chat.Services.Chat;
 using Squiggle.Utilities;
 using Squiggle.Chat.History;
 using Squiggle.Chat.History.DAL;
+using System.Windows.Threading;
 
 namespace Squiggle.Chat
 {    
@@ -113,14 +114,14 @@ namespace Squiggle.Chat
             }, "sending file request");
         }
 
-        public IVoiceChat StartVoiceChat()
+        public IVoiceChat StartVoiceChat(Dispatcher dispatcher)
         {
             if (IsGroupChat)
                 throw new InvalidOperationException("Can not start voice chat in group chat session.");
 
             return ExceptionMonster.EatTheException(() =>
             {
-                var chat = session.StartVoiceChat();
+                var chat = session.StartVoiceChat(dispatcher);
                 LogHistory(EventType.Voice, self);
                 return chat;
             }, "sending voice chat invite");

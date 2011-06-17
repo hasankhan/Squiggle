@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using Squiggle.Chat.Services.Chat.Host;
 using System.Collections.Generic;
+using System.Windows.Threading;
 
 namespace Squiggle.Chat.Services.Chat
 {
@@ -36,7 +37,7 @@ namespace Squiggle.Chat.Services.Chat
         void SendMessage(string fontName, int fontSize, Color color, FontStyle fontStyle, string message);
         void NotifyTyping();
         IFileTransfer SendFile(string name, Stream content);
-        IVoiceChat StartVoiceChat();
+        IVoiceChat StartVoiceChat(Dispatcher dispatcher);
         void End();
         void Invite(SquiggleEndPoint user);
     }

@@ -90,23 +90,6 @@ namespace Squiggle.UI
             }
 
             return border.Child as ScrollViewer;
-        }
-
-        public static void Invoke(this Dispatcher dispatcher, Action action)
-        {
-            if (dispatcher.CheckAccess())
-                action();
-            else
-                dispatcher.Invoke(action);
-        }
-
-        public static void Invoke(this Dispatcher dispatcher, Action action, TimeSpan delay)
-        {
-            Async.Invoke(() =>
-            {
-                Thread.Sleep((int)delay.TotalMilliseconds);
-                Invoke(dispatcher, action);
-            });
-        }
+        }        
     }
 }

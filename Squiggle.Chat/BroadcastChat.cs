@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Threading;
 
 namespace Squiggle.Chat
 {
@@ -87,7 +88,7 @@ namespace Squiggle.Chat
             throw new InvalidOperationException("Can not send a file in a broadcast chat session.");
         }
 
-        public IVoiceChat StartVoiceChat()
+        public IVoiceChat StartVoiceChat(Dispatcher dispatcher)
         {
             throw new InvalidOperationException("Can not start voice chat in a broadcast chat session.");
         }

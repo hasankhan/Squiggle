@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using System.IO;
+using System.Windows.Threading;
 
 namespace Squiggle.Chat.Services.Chat
 {
@@ -15,7 +16,7 @@ namespace Squiggle.Chat.Services.Chat
         event EventHandler TransferFinished;
         event EventHandler<ProgressChangedEventArgs> ProgressChanged;
         event EventHandler<ErrorEventArgs> Error;
-
+        
         void Cancel();
     }
 }

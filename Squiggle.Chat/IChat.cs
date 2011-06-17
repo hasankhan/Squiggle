@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Windows.Threading;
 
 namespace Squiggle.Chat
 {
@@ -53,7 +54,7 @@ namespace Squiggle.Chat
         void SendBuzz();
         void SendMessage(string fontName, int fontSize, Color color, FontStyle style, string message);
         IFileTransfer SendFile(string name, Stream content);
-        IVoiceChat StartVoiceChat();
+        IVoiceChat StartVoiceChat(Dispatcher dispatcher);
         void Leave();
 
         void Invite(Buddy buddy);

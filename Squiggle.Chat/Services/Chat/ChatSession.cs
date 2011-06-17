@@ -10,6 +10,7 @@ using System.Diagnostics;
 using Squiggle.Utilities;
 using Squiggle.Chat.Services.Chat.FileTransfer;
 using Squiggle.Chat.Services.Chat.Audio;
+using System.Windows.Threading;
 
 namespace Squiggle.Chat.Services.Chat
 {
@@ -208,12 +209,13 @@ namespace Squiggle.Chat.Services.Chat
             return transfer;
         }
 
-        public IVoiceChat StartVoiceChat()
+        public IVoiceChat StartVoiceChat(Dispatcher dispatcher)
         {
             if (IsGroupSession)
                 throw new InvalidOperationException("Cannot start voice chat in group chat session.");
             RemoteHost remoteHost = PrimaryHost;
             var chat = new VoiceChat(ID, remoteHost.Host, localHost, localUser, remoteHost.EndPoint);
+            chat.Dispatcher = dispatcher;
             chat.Start();
             return chat;
         }

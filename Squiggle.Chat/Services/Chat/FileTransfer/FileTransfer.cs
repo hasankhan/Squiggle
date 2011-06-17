@@ -8,6 +8,7 @@ using Squiggle.Chat.Services.Chat.Host;
 using Squiggle.Utilities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Threading;
 
 namespace Squiggle.Chat.Services.Chat.FileTransfer
 {
