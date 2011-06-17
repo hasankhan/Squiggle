@@ -112,7 +112,7 @@ namespace Squiggle.Chat.Services.Chat.FileTransfer
 
         protected override void OnDataReceived(byte[] chunk)
         {
-            if (content != null)
+            if (!SelfInitiated && content != null)
             {
                 content.Write(chunk, 0, chunk.Length);
 
@@ -124,7 +124,7 @@ namespace Squiggle.Chat.Services.Chat.FileTransfer
             }
         }
 
-        protected override void OnSendData(Func<bool> cancelPending)
+        protected override void TransferData(Func<bool> cancelPending)
         {
             byte[] buffer = new byte[bufferSize];
             long bytesRemaining = Size;

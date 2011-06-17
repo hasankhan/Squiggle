@@ -70,7 +70,7 @@ namespace Squiggle.Chat.Services.Chat
 
         protected abstract IEnumerable<KeyValuePair<string, string>> CreateInviteMetadata();
 
-        public void Accept()
+        protected void Accept()
         {
             if (SelfInitiated)
                 throw new InvalidOperationException("This operation is only valid in context of an invitation.");
@@ -158,7 +158,7 @@ namespace Squiggle.Chat.Services.Chat
         {
             OnTransferStarted();
 
-            OnSendData(() => worker.CancellationPending);
+            TransferData(() => worker.CancellationPending);
 
             if (worker.CancellationPending)
                 e.Cancel = true;
@@ -169,7 +169,7 @@ namespace Squiggle.Chat.Services.Chat
             worker.ReportProgress(progress);
         }
 
-        protected abstract void OnSendData(Func<bool> cancelPending);
+        protected abstract void TransferData(Func<bool> cancelPending);
 
         protected void SendData(byte[] chunk)
         {

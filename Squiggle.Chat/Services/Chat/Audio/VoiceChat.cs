@@ -36,7 +36,7 @@ namespace Squiggle.Chat.Services.Chat.Audio
             throw new NotImplementedException();
         }
 
-        protected override void OnSendData(Func<bool> cancelPending)
+        protected override void TransferData(Func<bool> cancelPending)
         {
             while (cancelPending())
                 Thread.Sleep(100);
