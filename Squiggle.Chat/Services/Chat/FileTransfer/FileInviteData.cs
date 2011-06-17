@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Squiggle.Chat.Services.Chat.Host
+namespace Squiggle.Chat.Services.Chat.FileTransfer
 {
     class FileInviteData : IEnumerable<KeyValuePair<string, string>>
     {

@@ -9,7 +9,7 @@ using Squiggle.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Squiggle.Chat.Services.Chat
+namespace Squiggle.Chat.Services.Chat.FileTransfer
 {
     class FileTransfer: AppHandler, IFileTransfer
     {
@@ -21,6 +21,7 @@ namespace Squiggle.Chat.Services.Chat
 
         Stream content;
         string saveToFile;
+        string filePath;
 
         public long Size { get; private set; }
         public string Name { get; private set; }
@@ -30,7 +31,6 @@ namespace Squiggle.Chat.Services.Chat
             get { return ChatApps.FileTransfer; }
         }
 
-        public string filePath {get; set; }
 
         public FileTransfer(Guid sessionId, IChatHost remoteHost, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, string name, long size, Stream content)
             :base(sessionId, remoteHost, localHost, localUser, remoteUser)
@@ -78,7 +78,7 @@ namespace Squiggle.Chat.Services.Chat
         {
             base.OnTransferCancelled();
 
-            if (!Sending && content != null)
+            if (!SelfInitiated && content != null)
                 File.Delete(saveToFile);
             
             TransferCancelled(this, EventArgs.Empty);

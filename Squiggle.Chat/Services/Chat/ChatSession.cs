@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Diagnostics;
 using Squiggle.Utilities;
+using Squiggle.Chat.Services.Chat.FileTransfer;
 
 namespace Squiggle.Chat.Services.Chat
 {
@@ -145,7 +146,7 @@ namespace Squiggle.Chat.Services.Chat
         {
             var inviteData = new FileInviteData(e.Metadata);
             RemoteHost remoteHost = PrimaryHost;
-            IFileTransfer invitation = new FileTransfer(ID, remoteHost.Host, localHost, localUser, remoteHost.EndPoint, inviteData.Name, inviteData.Size, e.AppSessionId);
+            IFileTransfer invitation = new FileTransfer.FileTransfer(ID, remoteHost.Host, localHost, localUser, remoteHost.EndPoint, inviteData.Name, inviteData.Size, e.AppSessionId);
             TransferInvitationReceived(this, new FileTransferInviteEventArgs()
             {
                 Sender = e.Sender,
@@ -187,7 +188,7 @@ namespace Squiggle.Chat.Services.Chat
                 throw new InvalidOperationException("Cannot send files in a group chat session.");
             RemoteHost remoteHost = PrimaryHost;
             long size = content.Length;
-            var transfer = new FileTransfer(ID, remoteHost.Host, localHost, localUser, remoteHost.EndPoint, name, size, content);
+            var transfer = new FileTransfer.FileTransfer(ID, remoteHost.Host, localHost, localUser, remoteHost.EndPoint, name, size, content);
             transfer.Start();
             return transfer;
         }
