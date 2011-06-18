@@ -14,7 +14,7 @@ namespace Squiggle.Chat.Services.Chat.Audio
     class VoiceChat: AppHandler, IVoiceChat
     {
         WaveIn waveIn;
-        IWavePlayer waveOut;
+        WaveOut waveOut;
         BufferedWaveProvider waveProvider;
         AcmChatCodec codec = new Gsm610ChatCodec();
 
@@ -24,6 +24,8 @@ namespace Squiggle.Chat.Services.Chat.Audio
         }
 
         public Dispatcher Dispatcher { get; set; }
+
+        public bool IsMuted { get; set; }
 
         public VoiceChat(Guid sessionId, IChatHost remoteHost, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser)
             :base(sessionId, remoteHost, localHost, localUser, remoteUser)
@@ -38,6 +40,16 @@ namespace Squiggle.Chat.Services.Chat.Audio
         protected override IEnumerable<KeyValuePair<string, string>> CreateInviteMetadata()
         {
             return Enumerable.Empty<KeyValuePair<string, string>>();
+        }
+
+        public float Volume
+        {
+            get { return waveOut.Coalesce(w=>w.Volume, 0); }
+            set
+            {
+                if (waveOut != null)
+                    waveOut.Volume = Math.Max(0, Math.Min(value, 1));
+            }
         }
 
         protected override void TransferData(Func<bool> cancelPending)
@@ -97,6 +109,9 @@ namespace Squiggle.Chat.Services.Chat.Audio
 
         void waveIn_DataAvailable(object sender, WaveInEventArgs e)
         {
+            if (IsMuted)
+                return;
+
             byte[] encoded = codec.Encode(e.Buffer, 0, e.BytesRecorded);
             SendData(encoded);
         }
