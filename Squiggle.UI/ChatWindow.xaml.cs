@@ -348,7 +348,6 @@ namespace Squiggle.UI
             });
         }
 
-
         void OnBuddyJoined(Buddy buddy)
         {
             Monitor(buddy);
