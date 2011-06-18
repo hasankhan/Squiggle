@@ -10,6 +10,8 @@ namespace Squiggle.Chat
     public interface IVoiceChat: IAppHandler
     {
         Dispatcher Dispatcher { get; set; }
+        bool IsMuted { get; set; }
+        float Volume { get; set; }
         void Accept();
     }
 }
