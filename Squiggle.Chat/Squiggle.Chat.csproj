@@ -128,6 +128,8 @@
     <Compile Include="Services\ChatApps.cs" />
     <Compile Include="Services\Chat\AppHandler.cs" />
     <Compile Include="Services\Chat\Audio\AcmChatCodec.cs" />
+    <Compile Include="Services\Chat\Audio\EchoFilter.cs" />
+    <Compile Include="Services\Chat\Audio\EchoFilterWaveProvider.cs" />
     <Compile Include="Services\Chat\Audio\Gsm610ChatCodec.cs" />
     <Compile Include="Services\Chat\Audio\VoiceChat.cs" />
     <Compile Include="Services\Chat\FileTransfer\FileInviteData.cs">
@@ -210,6 +212,16 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>HistoryEntities.Designer.cs</LastGenOutput>
     </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Libraries\Speex\libspeex-license.txt">
+      <Link>libspeex-license.txt</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Libraries\Speex\libspeex.dll">
+      <Link>libspeex.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
