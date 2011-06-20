@@ -42,7 +42,7 @@ namespace Squiggle.Chat.Services.Chat.Audio
             lock (syncRoot)
             {
                 playing.AddSamples(buffer, offset, count);
-                while (playing.BufferedBytes > frameBytes && recorded.BufferedBytes > frameBytes)
+                while (playing.BufferedBytes >= frameBytes && recorded.BufferedBytes >= frameBytes)
                 {
                     playing.Read(playingFrame, 0, frameBytes);
                     recorded.Read(recordedFrame, 0, frameBytes);
