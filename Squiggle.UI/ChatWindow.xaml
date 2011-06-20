@@ -86,19 +86,26 @@
             <controls:ChatTextBox Grid.Row="1" x:Name="chatTextBox" 
                                   Focusable="False" Height="Auto" Width="Auto" />
             <Expander Style="{DynamicResource displayPicsExpanderStyle}" Grid.Column="1" Grid.Row="1" ExpandDirection="Right">
+                <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
                 <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}"                                   
                                   ItemsSource="{Binding Buddies}" >
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Viewbox Height="60" Width="60" Margin="2">
-                                    <Image Source="{Binding Properties.DisplayImage}"/>
-                                </Viewbox>
-                                <TextBlock VerticalAlignment="Bottom" Text="{Binding DisplayName}" Margin="5"/>
-                            </StackPanel>
+                            <Border Margin="5,1,5,1" Style="{StaticResource ContactListItem}" Tag="{Binding}">
+                                <StackPanel Orientation="Vertical" >
+                                    <Viewbox HorizontalAlignment="Center" Height="70" Width="70" Margin="2">
+                                        <Image Source="{Binding Properties.DisplayImage}"/>
+                                    </Viewbox>
+                                    <Grid>
+                                        <Border Background="LightGray" CornerRadius="3" Height="20" />
+                                        <TextBlock MaxWidth="80" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextTrimming="CharacterEllipsis" Text="{Binding DisplayName}" Margin="5"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+                </ScrollViewer>
             </Expander>
             <Border Grid.Row="2" Grid.ColumnSpan="2" MinHeight="150">
                 <Grid>
