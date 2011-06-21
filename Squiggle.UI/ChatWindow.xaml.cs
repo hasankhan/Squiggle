@@ -17,6 +17,8 @@ using System.Globalization;
 using Squiggle.UI.Resources;
 using Squiggle.Utilities;
 using Squiggle.UI.StickyWindows;
+using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace Squiggle.UI
 {
@@ -356,6 +358,7 @@ namespace Squiggle.UI
                 UpdateGroupChatControls();
                 chatTextBox.AddInfo(String.Format("{0} " + Translation.Instance.ChatWindow_HasJoinedConversation, buddy.DisplayName));
                 UpdateTitle();
+                UpdateDisplayPicPanel();
             });
         }
 
@@ -367,7 +370,14 @@ namespace Squiggle.UI
                 UpdateGroupChatControls();
                 chatTextBox.AddInfo(String.Format("{0} " + Translation.Instance.ChatWindow_HasLeftConversation, buddy.DisplayName));
                 UpdateTitle();
+                UpdateDisplayPicPanel();
             });
+        }
+
+        void UpdateDisplayPicPanel()
+        {
+            var itemsView = CollectionViewSource.GetDefaultView(displayPicsItemControl.ItemsSource);
+            itemsView.Refresh();
         }
 
         void Monitor(Buddy buddy)

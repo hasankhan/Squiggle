@@ -87,15 +87,26 @@
                                   Focusable="False" Height="Auto" Width="Auto" />
             <Expander Style="{DynamicResource displayPicsExpanderStyle}" Grid.Column="1" Grid.Row="1" ExpandDirection="Right">
                 <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
-                <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}"                                   
+                <ItemsControl x:Name="displayPicsItemControl" Focusable="False" Margin="5" DataContext="{Binding}"                                   
                                   ItemsSource="{Binding Buddies}" >
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border Margin="5,1,5,1" Style="{StaticResource ContactListItem}" Tag="{Binding}">
                                 <StackPanel Orientation="Vertical" >
                                     <Viewbox HorizontalAlignment="Center" Height="70" Width="70" Margin="2">
-                                        <Image Source="{Binding Properties.DisplayImage}"/>
-                                    </Viewbox>
+                                            <Image>
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Source" Value="{Binding Properties.DisplayImage}" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Properties.DisplayImage}" Value="{x:Null}">
+                                                                <Setter Property="Source" Value="Images\man.png" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
+                                        </Viewbox>
                                     <Grid>
                                         <Border Background="LightGray" CornerRadius="3" Height="20" />
                                         <TextBlock MaxWidth="80" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextTrimming="CharacterEllipsis" Text="{Binding DisplayName}" Margin="5"/>
