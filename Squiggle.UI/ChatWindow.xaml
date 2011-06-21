@@ -85,7 +85,8 @@
             </Border>
             <controls:ChatTextBox Grid.Row="1" x:Name="chatTextBox" 
                                   Focusable="False" Height="Auto" Width="Auto" />
-            <Expander Style="{DynamicResource displayPicsExpanderStyle}" Grid.Column="1" Grid.Row="1" ExpandDirection="Right">
+            <Expander Style="{DynamicResource displayPicsExpanderStyle}" Grid.Column="1" Grid.Row="1" 
+                      IsExpanded="True" ExpandDirection="Right">
                 <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
                 <ItemsControl x:Name="displayPicsItemControl" Focusable="False" Margin="5" DataContext="{Binding}"                                   
                                   ItemsSource="{Binding Buddies}" >
