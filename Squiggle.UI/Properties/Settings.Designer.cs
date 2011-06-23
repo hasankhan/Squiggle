@@ -392,5 +392,17 @@ namespace Squiggle.UI.Properties {
                 this["MessagePanelHeight"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ChatWindowShowDisplayPictures {
+            get {
+                return ((bool)(this["ChatWindowShowDisplayPictures"]));
+            }
+            set {
+                this["ChatWindowShowDisplayPictures"] = value;
+            }
+        }
     }
 }

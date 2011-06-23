@@ -54,6 +54,8 @@ namespace Squiggle.UI
             this.Height = Properties.Settings.Default.ChatWindowHeight;
             this.Width = Properties.Settings.Default.ChatWindowWidth;
 
+            expanderDisplayPics.IsExpanded = Properties.Settings.Default.ChatWindowShowDisplayPictures;
+
             statusResetTimer = new DispatcherTimer();
             statusResetTimer.Interval = TimeSpan.FromSeconds(5);
             statusResetTimer.Tick += (sender, e) => ResetStatus();
@@ -848,6 +850,22 @@ namespace Squiggle.UI
         {
             SettingsProvider.Current.Settings.GeneralSettings.MessagePanelHeight = messagePanel.Height.Value;
             SettingsProvider.Current.Save();
+        }
+
+        private void Expander_Expanded(object sender, RoutedEventArgs e)
+        {
+            ChangeExpanderState(true);
+        }
+
+        private void Expander_Collapsed(object sender, RoutedEventArgs e)
+        {
+            ChangeExpanderState(false);
+        }
+
+        private static void ChangeExpanderState(bool show)
+        {
+            Properties.Settings.Default.ChatWindowShowDisplayPictures = show;
+            Properties.Settings.Default.Save();
         }
     }
 }
