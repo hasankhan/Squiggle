@@ -9,6 +9,7 @@
                 <ResourceDictionary Source="/PresentationFramework.Aero;V3.0.0.0;31bf3856ad364e35;component\themes/aero.normalcolor.xaml" />
                 <ResourceDictionary Source="Resources\ComboBoxResource.xaml"/>
                 <ResourceDictionary Source="Resources\GlassButton.xaml"/>
+                <ResourceDictionary Source="Resources\RoundButton.xaml" />
                 <ResourceDictionary>
                     <Style x:Key="CloseButtonStyle" TargetType="{x:Type Button}">
                         <Setter Property="Margin" Value="2" />

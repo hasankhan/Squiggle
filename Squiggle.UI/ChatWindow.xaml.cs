@@ -479,7 +479,8 @@ namespace Squiggle.UI
         {
             Dispatcher.Invoke(() =>
             {
-                // TODO: activate voice chat UI
+                chatTextBox.AddVoiceChatReceivedRequest(e.Invitation);
+                voiceController.VoiceChatContext = e.Invitation;
                 e.Invitation.Dispatcher = Dispatcher;
                 FlashWindow();
             });
@@ -531,13 +532,16 @@ namespace Squiggle.UI
                 chatTextBox.AddError(Translation.Instance.ChatWindow_BuzzTooEarly, String.Empty);
         }
 
-        public void StartVoiceChat()
+        public IVoiceChat StartVoiceChat()
         {
             if (chatSession.IsGroupChat)
-                return;
+                return null;
 
-            // TODO: If there is no other voice chat session currently in progress then start it. Though button should be disabled in such case.
-            IVoiceChat chat = chatSession.StartVoiceChat(Dispatcher);
+            IVoiceChat voiceChat = chatSession.StartVoiceChat(Dispatcher);
+            if (voiceChat != null)
+                chatTextBox.AddVoiceChatSentRequest(voiceChat);
+
+            return voiceChat;
         }
 
         public void SendFile()
@@ -866,6 +870,12 @@ namespace Squiggle.UI
         {
             Properties.Settings.Default.ChatWindowShowDisplayPictures = show;
             Properties.Settings.Default.Save();
+        }
+
+        private void VoiceChatToolbarControl_StartChat(object sender, EventArgs e)
+        {
+            IVoiceChat voiceChat = StartVoiceChat();
+            ((VoiceChatToolbarControl)sender).VoiceChatContext = voiceChat;
         }
     }
 }

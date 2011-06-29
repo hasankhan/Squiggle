@@ -107,6 +107,16 @@ namespace Squiggle.UI.Controls
             para.Inlines.Add(new LineBreak());
         }
 
+        public void AddVoiceChatSentRequest(IVoiceChat voiceChat)
+        {
+            AddVoiceChatRequest(voiceChat, true);
+        }
+
+        public void AddVoiceChatReceivedRequest(IVoiceChat voiceChat)
+        {
+            AddVoiceChatRequest(voiceChat, false);
+        }
+
         public void SaveTo(string fileName)
         {
             var range = new TextRange(sentMessages.Document.ContentStart, sentMessages.Document.ContentEnd);
@@ -117,6 +127,13 @@ namespace Squiggle.UI.Controls
         public void Clear()
         {
             para.Inlines.Clear();
+        }
+
+        void AddVoiceChatRequest(IVoiceChat voiceChat, bool sending)
+        {
+            var voiceChatUI = new VoiceChatControl(voiceChat, sending);
+            para.Inlines.Add(new InlineUIContainer(voiceChatUI));
+            para.Inlines.Add(new LineBreak());
         }
     }
 }

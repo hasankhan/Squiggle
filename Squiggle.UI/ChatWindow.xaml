@@ -11,15 +11,10 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources\RoundButton.xaml" />
                 <ResourceDictionary Source="Resources\Expanders.xaml" />
                 <ResourceDictionary>
                     <controls:ChatDragDropAdvisor x:Key="contactDragDrop" />
-                    <Style x:Key="toolbarButton" BasedOn="{StaticResource RoundButton}" TargetType="{x:Type Button}">
-                        <Setter Property="Height" Value="25" />
-                        <Setter Property="Width" Value="25" />
-                        <Setter Property="Background" Value="#704682B4" />
-                    </Style>
+                    
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -137,33 +132,41 @@
                                 <GradientStop Color="#FFECECEC" Offset="0.478"/>
                             </LinearGradientBrush>
                         </Border.Background>
-                        <StackPanel Orientation="Horizontal" ToolTip="Send File">
-                            <Button x:Name="btnSendFile" Style="{StaticResource toolbarButton}" 
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Horizontal" ToolTip="Send File">
+                                <Button x:Name="btnSendFile" Style="{StaticResource toolbarButton}" 
                                     ToolTip="Send File"
-                                    Click="SendFile_Click" Foreground="Black">                                
-                                <Image Width="16" Height="16" Source="Images/Upload.png" Stretch="Fill"/>                                
-                            </Button>
-                            <Button Style="{StaticResource toolbarButton}" 
+                                    Click="SendFile_Click" Foreground="Black">
+                                    <Image Width="16" Height="16" Source="Images/Upload.png" Stretch="Fill"/>
+                                </Button>
+                                <Button Style="{StaticResource toolbarButton}" 
                                     Margin="5,0,0,0" ToolTip="Email"
                                     Click="SendEmail_Click" Foreground="Black">
-                                <Image Width="16" Height="16" Source="Images/email.png" Stretch="Fill"/>
-                            </Button>
-                            <Button Style="{StaticResource toolbarButton}" 
+                                    <Image Width="16" Height="16" Source="Images/email.png" Stretch="Fill"/>
+                                </Button>
+                                <Button Style="{StaticResource toolbarButton}" 
                                     Margin="5,0,0,0" ToolTip="Change Font"
                                     Click="ChangeFont_Click" Foreground="Black">
-                                <Image Width="16" Height="16" Source="Images/Font.png" Stretch="Fill"/>
-                            </Button>
-                            <Button Style="{StaticResource toolbarButton}" 
+                                    <Image Width="16" Height="16" Source="Images/Font.png" Stretch="Fill"/>
+                                </Button>
+                                <Button Style="{StaticResource toolbarButton}" 
                                     Margin="5,0,0,0" ToolTip="Send Buzz"
                                     Click="SendBuzz_Click" Foreground="Black">
-                                <Image Width="16" Height="16" Source="Images/Buzz.png" Stretch="Fill"/>
-                            </Button>
-                            <Button Style="{StaticResource toolbarButton}" 
+                                    <Image Width="16" Height="16" Source="Images/Buzz.png" Stretch="Fill"/>
+                                </Button>
+                                <Button Style="{StaticResource toolbarButton}" 
                                     Margin="5,0,0,0" ToolTip="Select an emoticon"
                                     Click="SendEmoticon_Click" Foreground="Black">
-                                <Image Width="16" Height="16" Source="Images/Emoticons/Smile.png" Stretch="Fill"/>                                                                
-                            </Button>
-                        </StackPanel>                        
+                                    <Image Width="16" Height="16" Source="Images/Emoticons/Smile.png" Stretch="Fill"/>
+                                </Button>
+                            </StackPanel>
+                            <controls:VoiceChatToolbarControl Margin="5,2,10,0" x:Name="voiceController" StartChat="VoiceChatToolbarControl_StartChat"  Grid.Column="2"/>
+                        </Grid>
                     </Border>                    
                     <controls:MessageEditBox Margin="2,5,5,0" x:Name="txtMessageEditBox" MinHeight="70"
                                              MessageTyping="txtMessageEditBox_MessageTyping" 

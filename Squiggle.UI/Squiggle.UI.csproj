@@ -206,6 +206,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\VoiceChatControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\VoiceChatToolbarControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ConversationViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -225,6 +233,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="Images\email.png" />
+    <Resource Include="Images\Chat-Audio.png" />
+    <Resource Include="Images\call_stop.png" />
     <Content Include="Images\Emoticons\Icons-Author.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -238,6 +248,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="Images\remove.png" />
+    <Resource Include="Images\voice-chat.png" />
     <Content Include="Resources\Translation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -314,6 +325,12 @@
     <Compile Include="Controls\UpdateNotification.xaml.cs">
       <DependentUpon>UpdateNotification.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\VoiceChatControl.xaml.cs">
+      <DependentUpon>VoiceChatControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\VoiceChatToolbarControl.xaml.cs">
+      <DependentUpon>VoiceChatToolbarControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ConversationViewer.xaml.cs">
       <DependentUpon>ConversationViewer.xaml</DependentUpon>
     </Compile>
@@ -321,6 +338,7 @@
     <Compile Include="Converters\EnumValueConverter.cs" />
     <Compile Include="Converters\ORMultiConverter.cs" />
     <Compile Include="Converters\TitleCaseConverter.cs" />
+    <Compile Include="Converters\VoiceChatToVisibilityConverter.cs" />
     <Compile Include="Emoticon.cs" />
     <Compile Include="Emoticons.cs" />
     <Compile Include="EmoticonSelector.xaml.cs">
