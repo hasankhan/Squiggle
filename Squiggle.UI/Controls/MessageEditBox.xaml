@@ -30,15 +30,15 @@
         </UserControl.Resources>
 
         <Border Style="{StaticResource BorderStyle}">
-        <DockPanel Focusable="True">
-            <Button TabIndex="1" x:Name="btnSend" IsEnabled="False" DockPanel.Dock="Right" Height="60"
-                    Content="{DynamicResource ChatWindow_SendButton}" ToolTip="{DynamicResource ChatWindow_SendButtonToolTip}" 
-        Style="{StaticResource ButtonStyle}" Click="btnSend_Click" />
+        <Grid Focusable="True">            
             <TextBox AllowDrop="True" x:Name="txtMessage"
-                    DockPanel.Dock="Left" TabIndex="0"  Style="{StaticResource TextStyle}" 
+                    TabIndex="0"  Style="{StaticResource TextStyle}" 
                     AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
                     TextChanged="txtMessage_TextChanged" PreviewKeyDown="txtMessage_PreviewKeyDown" TextWrapping="Wrap" />
-        </DockPanel>
+            <Button TabIndex="1" x:Name="btnSend" IsEnabled="False" HorizontalAlignment="Right" Height="60"
+                    Content="{DynamicResource ChatWindow_SendButton}" ToolTip="{DynamicResource ChatWindow_SendButtonToolTip}" 
+        Style="{StaticResource ButtonStyle}" Click="btnSend_Click" />
+        </Grid>
     </Border>
 
 </UserControl>
