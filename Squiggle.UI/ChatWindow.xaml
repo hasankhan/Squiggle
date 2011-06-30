@@ -139,27 +139,27 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Orientation="Horizontal" ToolTip="Send File">
-                                <Button x:Name="btnSendFile" Style="{StaticResource toolbarButton}" 
+                                <Button x:Name="btnSendFile" Style="{DynamicResource toolbarButton}" 
                                     ToolTip="Send File"
                                     Click="SendFile_Click" Foreground="Black">
                                     <Image Width="16" Height="16" Source="Images/Upload.png" Stretch="Fill"/>
                                 </Button>
-                                <Button Style="{StaticResource toolbarButton}" 
+                                <Button Style="{DynamicResource toolbarButton}" 
                                     Margin="5,0,0,0" ToolTip="Email"
                                     Click="SendEmail_Click" Foreground="Black">
                                     <Image Width="16" Height="16" Source="Images/email.png" Stretch="Fill"/>
                                 </Button>
-                                <Button Style="{StaticResource toolbarButton}" 
+                                <Button Style="{DynamicResource toolbarButton}" 
                                     Margin="5,0,0,0" ToolTip="Change Font"
                                     Click="ChangeFont_Click" Foreground="Black">
                                     <Image Width="16" Height="16" Source="Images/Font.png" Stretch="Fill"/>
                                 </Button>
-                                <Button Style="{StaticResource toolbarButton}" 
+                                <Button Style="{DynamicResource toolbarButton}" 
                                     Margin="5,0,0,0" ToolTip="Send Buzz"
                                     Click="SendBuzz_Click" Foreground="Black">
                                     <Image Width="16" Height="16" Source="Images/Buzz.png" Stretch="Fill"/>
                                 </Button>
-                                <Button Style="{StaticResource toolbarButton}" 
+                                <Button Style="{DynamicResource toolbarButton}" 
                                     Margin="5,0,0,0" ToolTip="Select an emoticon"
                                     Click="SendEmoticon_Click" Foreground="Black">
                                     <Image Width="16" Height="16" Source="Images/Emoticons/Smile.png" Stretch="Fill"/>
