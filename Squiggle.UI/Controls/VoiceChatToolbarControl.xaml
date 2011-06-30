@@ -10,7 +10,7 @@
         
     </UserControl.Resources>
     <Grid>
-        <Button Style="{StaticResource toolbarButton}" HorizontalAlignment="Right" Visibility="{Binding ElementName=voiceChatToolbarControl, Path=VoiceChatContext, Converter={StaticResource visibiltyConverter}, ConverterParameter=voicechatoff}"
+        <Button Style="{DynamicResource toolbarButton}" HorizontalAlignment="Right" Visibility="{Binding ElementName=voiceChatToolbarControl, Path=VoiceChatContext, Converter={StaticResource visibiltyConverter}, ConverterParameter=voicechatoff}"
                                     Margin="5,0,0,0" ToolTip="Start voice chat"
                                     Click="StartVoiceChat_Click" Foreground="Black">
             <Image Width="16" Height="16" Source="../Images/voice-chat.png" Stretch="Fill"/>
