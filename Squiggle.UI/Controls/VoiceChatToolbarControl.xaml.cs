@@ -64,9 +64,9 @@ namespace Squiggle.UI.Controls
         void voiceChatContext_TransferFinished(object sender, EventArgs e)
         {
             Dispatcher.Invoke(() =>
-                {
-                    EndChat();
-                });
+            {
+                EndChat();
+            });
         }
 
         void voiceChatContext_TransferCompleted(object sender, EventArgs e)

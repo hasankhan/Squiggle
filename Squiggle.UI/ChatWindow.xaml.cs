@@ -834,6 +834,9 @@ namespace Squiggle.UI
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
+            if (voiceController.VoiceChatContext != null)
+                voiceController.VoiceChatContext.Cancel();
+
             if (!closing && chatStarted && !IsGroupChat)
             {
                 e.Cancel = true;
