@@ -29,6 +29,9 @@ namespace Squiggle.Chat.Services.Chat.Audio
             recorded = new BufferedWaveProvider(format);
             playing = new BufferedWaveProvider(format);
             filtered = new BufferedWaveProvider(format);
+            recorded.DiscardOnBufferOverflow = playing.DiscardOnBufferOverflow 
+                                             = filtered.DiscardOnBufferOverflow 
+                                             = true;
         }
 
         public void AddRecordedSamples(byte[] buffer, int offset, int count)

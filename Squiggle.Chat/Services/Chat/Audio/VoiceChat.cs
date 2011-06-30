@@ -15,7 +15,7 @@ namespace Squiggle.Chat.Services.Chat.Audio
     {
         WaveIn waveIn;
         WaveOut waveOut;
-        BufferedWaveProvider waveProvider;
+        EchoFilterWaveProvider waveProvider;
         AcmChatCodec codec = new Gsm610ChatCodec();
 
         public override Guid AppId
@@ -61,7 +61,7 @@ namespace Squiggle.Chat.Services.Chat.Audio
         protected override void OnDataReceived(byte[] chunk)
         {
             byte[] decoded = codec.Decode(chunk, 0, chunk.Length);
-            waveProvider.AddSamples(decoded, 0, decoded.Length);
+            waveProvider.AddPlaybackSamples(decoded, 0, decoded.Length);
         }
 
         protected override void OnTransferStarted()
@@ -78,7 +78,9 @@ namespace Squiggle.Chat.Services.Chat.Audio
                 waveIn.StartRecording();
 
                 waveOut = new WaveOut();
-                waveProvider = new BufferedWaveProvider(codec.RecordFormat);
+                int frameSize = codec.RecordFormat.AverageBytesPerSecond/2;
+                int filterLength = frameSize * 2;
+                waveProvider = new EchoFilterWaveProvider(codec.RecordFormat, frameSize, filterLength);
                 waveOut.Init(waveProvider);
                 waveOut.Play();
             });
@@ -112,6 +114,7 @@ namespace Squiggle.Chat.Services.Chat.Audio
             if (IsMuted)
                 return;
 
+            waveProvider.AddRecordedSamples(e.Buffer, 0, e.BytesRecorded);
             byte[] encoded = codec.Encode(e.Buffer, 0, e.BytesRecorded);
             SendData(encoded);
         }
