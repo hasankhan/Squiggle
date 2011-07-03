@@ -82,7 +82,7 @@
                                   Focusable="False" Height="Auto" Width="Auto" />
             <Expander x:Name="expanderDisplayPics" Style="{DynamicResource displayPicsExpanderStyle}" Grid.Column="1" Grid.Row="1" 
                       ExpandDirection="Right" Expanded="Expander_Expanded" Collapsed="Expander_Collapsed">
-                <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
+                <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" Width="115">
                 <ItemsControl x:Name="displayPicsItemControl" Focusable="False" Margin="5" DataContext="{Binding}"                                   
                                   ItemsSource="{Binding Buddies}" >
                     <ItemsControl.ItemTemplate>
