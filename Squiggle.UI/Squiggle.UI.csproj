@@ -249,6 +249,8 @@
     </Content>
     <Resource Include="Images\remove.png" />
     <Resource Include="Images\voice-chat.png" />
+    <Resource Include="Images\mic_green.png" />
+    <Resource Include="Images\mic_red.png" />
     <Content Include="Resources\Translation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

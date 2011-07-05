@@ -7,7 +7,20 @@
             x:Name="voiceChatToolbarControl">
     <UserControl.Resources>
         <converters:VoiceChatToVisibilityConverter x:Key="visibiltyConverter" />
+        <Image x:Key="muteImage" Source="..\Images\mic_red.png" ToolTip="Mute"/>
+        <Image x:Key="unmuteImage" Source="..\Images\mic_green.png" ToolTip="Un-mute"/>
         
+        <Style x:Key="muteUnmuteStyle" TargetType="{x:Type ToggleButton}" >
+            <Setter Property="Content" Value="{StaticResource muteImage}"/>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content" Value="{StaticResource unmuteImage}" />
+                </Trigger>
+                <Trigger Property="IsChecked" Value="False">
+                    <Setter Property="Content" Value="{StaticResource muteImage}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Button Style="{DynamicResource toolbarButton}" HorizontalAlignment="Right" Visibility="{Binding ElementName=voiceChatToolbarControl, Path=VoiceChatContext, Converter={StaticResource visibiltyConverter}, ConverterParameter=voicechatoff}"
@@ -19,9 +32,16 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Button Content="Mute" Margin="5" Height="20"/>
-            <Slider VerticalAlignment="Center" Grid.Column="2" Width="100" Minimum="0" Maximum="1" Value="{Binding ElementName=voiceChatToolbarControl, Path=Value, Mode=OneWay}" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
+            <Button Margin="10,0,5,0" HorizontalAlignment="Right"  Height="20"
+                                    ToolTip="End voice chat"
+                                    Click="StopVoiceChat_Click" Foreground="Black">
+                <Image Width="16" Height="16" Source="../Images/call_stop.png" Stretch="Fill"/>
+            </Button>
+            <ToggleButton Margin="5,0,5,0" Height="26" Grid.Column="1" Style="{StaticResource muteUnmuteStyle}" IsChecked="{Binding ElementName=voiceChatToolbarControl, Path=IsMuted, Mode=TwoWay}">
+            </ToggleButton>
+            <Slider Margin="2,0,2,0" VerticalAlignment="Center" Grid.Column="2" Width="100" Minimum="0" Maximum="1" Value="{Binding ElementName=voiceChatToolbarControl, Path=Volume, Mode=TwoWay}" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
         </Grid>
     </Grid>
 </UserControl>

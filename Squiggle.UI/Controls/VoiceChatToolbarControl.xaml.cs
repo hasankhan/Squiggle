@@ -90,6 +90,12 @@ namespace Squiggle.UI.Controls
             StartChat(this, e);
         }
 
+        private void StopVoiceChat_Click(object sender, RoutedEventArgs e)
+        {
+            if (voiceChatContext != null)
+                voiceChatContext.Cancel();
+        }
+
         public void EndChat()
         {
             VoiceChatContext = null;
