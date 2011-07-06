@@ -7,8 +7,8 @@
             x:Name="voiceChatToolbarControl">
     <UserControl.Resources>
         <converters:VoiceChatToVisibilityConverter x:Key="visibiltyConverter" />
-        <Image x:Key="muteImage" Source="..\Images\mic_red.png" ToolTip="Mute"/>
-        <Image x:Key="unmuteImage" Source="..\Images\mic_green.png" ToolTip="Un-mute"/>
+        <Image x:Key="muteImage" Source="..\Images\vc-unmute.png" ToolTip="Mute"/>
+        <Image x:Key="unmuteImage" Source="..\Images\vc-mute.png" ToolTip="Un-mute"/>
         
         <Style x:Key="muteUnmuteStyle" TargetType="{x:Type ToggleButton}" >
             <Setter Property="Content" Value="{StaticResource muteImage}"/>
@@ -26,7 +26,7 @@
         <Button Style="{DynamicResource toolbarButton}" HorizontalAlignment="Right" Visibility="{Binding ElementName=voiceChatToolbarControl, Path=VoiceChatContext, Converter={StaticResource visibiltyConverter}, ConverterParameter=voicechatoff}"
                                     Margin="5,0,0,0" ToolTip="Start voice chat"
                                     Click="StartVoiceChat_Click" Foreground="Black">
-            <Image Width="16" Height="16" Source="../Images/voice-chat.png" Stretch="Fill"/>
+            <Image Width="16" Height="16" Source="../Images/vc-startcall.png" Stretch="Fill"/>
         </Button>
         <Grid x:Name="grdVoiceChatActivated" Visibility="{Binding ElementName=voiceChatToolbarControl, Path=VoiceChatContext, Converter={StaticResource visibiltyConverter}, ConverterParameter=voicechaton}">
             <Grid.ColumnDefinitions>
@@ -37,7 +37,7 @@
             <Button Margin="10,0,5,0" HorizontalAlignment="Right"  Height="20"
                                     ToolTip="End voice chat"
                                     Click="StopVoiceChat_Click" Foreground="Black">
-                <Image Width="16" Height="16" Source="../Images/call_stop.png" Stretch="Fill"/>
+                <Image Width="16" Height="16" Source="../Images/vc-endcall.png" Stretch="Fill"/>
             </Button>
             <ToggleButton Margin="5,0,5,0" Height="26" Grid.Column="1" Style="{StaticResource muteUnmuteStyle}" IsChecked="{Binding ElementName=voiceChatToolbarControl, Path=IsMuted, Mode=TwoWay}">
             </ToggleButton>

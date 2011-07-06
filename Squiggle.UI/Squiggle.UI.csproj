@@ -233,8 +233,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="Images\email.png" />
-    <Resource Include="Images\Chat-Audio.png" />
-    <Resource Include="Images\call_stop.png" />
+    <Resource Include="Images\vc-endcall.png" />
     <Content Include="Images\Emoticons\Icons-Author.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -248,9 +247,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="Images\remove.png" />
-    <Resource Include="Images\voice-chat.png" />
-    <Resource Include="Images\mic_green.png" />
-    <Resource Include="Images\mic_red.png" />
+    <Resource Include="Images\vc-startcall.png" />
+    <Resource Include="Images\vc-mute.png" />
+    <Resource Include="Images\vc-unmute.png" />
     <Content Include="Resources\Translation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
