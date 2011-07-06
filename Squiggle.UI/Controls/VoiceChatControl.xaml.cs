@@ -58,6 +58,7 @@ namespace Squiggle.UI.Controls
         {
             Dispatcher.Invoke(() =>
             {
+                StopRing();
                 ShowAccepted();
             });
         }
@@ -88,11 +89,13 @@ namespace Squiggle.UI.Controls
 
         void ShowWaiting()
         {
+            PlayRing();
+
             stkAccepted.Visibility = Visibility.Hidden;
             stkInvitation.Visibility = sending ? Visibility.Hidden : Visibility.Visible;
             stkWaitingAcceptance.Visibility = sending ? Visibility.Visible : Visibility.Hidden;
             stkCompleted.Visibility = Visibility.Hidden;
-        }
+        }        
 
         void ShowCancelled()
         {
@@ -108,6 +111,8 @@ namespace Squiggle.UI.Controls
             stkInvitation.Visibility = Visibility.Hidden;
             stkWaitingAcceptance.Visibility = Visibility.Hidden;
             stkCompleted.Visibility = Visibility.Visible;
+
+            AudioAlert.Instance.Play(AudioAlertType.VoiceChatDisconnected);
         }
 
         private void Accept_Click(object sender, RoutedEventArgs e)
@@ -133,8 +138,25 @@ namespace Squiggle.UI.Controls
             voiceChat.Cancel();
             Dispatcher.Invoke(() =>
             {
+                StopRing();
                 ShowCompleted();
             });
+        }
+
+        void PlayRing()
+        {
+            if (sending)
+                AudioAlert.Instance.Play(AudioAlertType.VoiceChatRingingOut);
+            else
+                AudioAlert.Instance.Play(AudioAlertType.VoiceChatRingingIn);
+        }
+
+        void StopRing()
+        {
+            if (sending)
+                AudioAlert.Instance.Stop(AudioAlertType.VoiceChatRingingOut);
+            else
+                AudioAlert.Instance.Stop(AudioAlertType.VoiceChatRingingIn);
         }
     }
 }

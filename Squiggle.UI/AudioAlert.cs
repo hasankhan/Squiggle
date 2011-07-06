@@ -5,6 +5,7 @@ using System.Text;
 using System.Media;
 using System.Reflection;
 using System.IO;
+using Squiggle.Utilities;
 
 namespace Squiggle.UI
 {
@@ -15,13 +16,16 @@ namespace Squiggle.UI
         BuddyOnline,
         BuddyOffline,
         MessageReceived,
+        VoiceChatDisconnected,
+        VoiceChatRingingIn,
+        VoiceChatRingingOut
     }
 
     class AudioAlert
     {
         public static AudioAlert Instance = LoadAlerts();
 
-        Dictionary<AudioAlertType, Action> sounds = new Dictionary<AudioAlertType, Action>();
+        Dictionary<AudioAlertType, SoundPlayer> sounds = new Dictionary<AudioAlertType, SoundPlayer>();
 
         public bool Enabled { get; set; }
 
@@ -37,9 +41,16 @@ namespace Squiggle.UI
 
         public void Play(AudioAlertType alertType)
         {
-            Action playAction;
-            if (Enabled && sounds.TryGetValue(alertType, out playAction))
-                playAction();
+            SoundPlayer player;
+            if (Enabled && sounds.TryGetValue(alertType, out player))
+                player.Play();
+        }
+
+        public void Stop(AudioAlertType alertType)
+        {
+            SoundPlayer player;
+            if (sounds.TryGetValue(alertType, out player))
+                player.Stop();
         }
 
         void LoadSound(AudioAlertType alertType)
@@ -52,7 +63,7 @@ namespace Squiggle.UI
             if (File.Exists(soundLocation))
             {
                 var player = new SoundPlayer(soundLocation);
-                sounds[alertType] = () => player.Play();
+                sounds[alertType] = player;
             }
         }
     }
