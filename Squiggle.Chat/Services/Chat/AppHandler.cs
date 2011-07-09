@@ -186,8 +186,15 @@ namespace Squiggle.Chat.Services.Chat
 
         protected void SendData(byte[] chunk)
         {
-            if (IsConnected)
-                remoteHost.ReceiveAppData(appSessionId, localUser, remoteUser, chunk);
+            if (!IsConnected)
+                return;
+
+            Exception ex;
+            if (!ExceptionMonster.EatTheException(() =>
+                {
+                    remoteHost.ReceiveAppData(appSessionId, localUser, remoteUser, chunk);
+                }, "sending data to " + remoteUser.ToString(), out ex))
+                OnError(ex);
         }
 
         void localHost_AppDataReceived(object sender, AppDataReceivedEventArgs e)
