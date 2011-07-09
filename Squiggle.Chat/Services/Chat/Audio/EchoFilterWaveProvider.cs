@@ -37,7 +37,10 @@ namespace Squiggle.Chat.Services.Chat.Audio
         public void AddRecordedSamples(byte[] buffer, int offset, int count)
         {
             lock (syncRoot)
+            {
                 recorded.AddSamples(buffer, offset, count);
+                DoPlayback();
+            }
         }
 
         public void AddPlaybackSamples(byte[] buffer, int offset, int count)
@@ -45,15 +48,9 @@ namespace Squiggle.Chat.Services.Chat.Audio
             lock (syncRoot)
             {
                 playing.AddSamples(buffer, offset, count);
-                while (playing.BufferedBytes >= frameBytes && recorded.BufferedBytes >= frameBytes)
-                {
-                    playing.Read(playingFrame, 0, frameBytes);
-                    recorded.Read(recordedFrame, 0, frameBytes);
-                    filter.Filter(recordedFrame, playingFrame, outputFrame);
-                    filtered.AddSamples(outputFrame, 0, outputFrame.Length);
-                }
+                DoPlayback();
             }
-        }
+        }        
 
         public WaveFormat WaveFormat
         {
@@ -64,6 +61,17 @@ namespace Squiggle.Chat.Services.Chat.Audio
         {
             lock (syncRoot)
                 return filtered.Read(buffer, offset, count);
+        }
+
+        void DoPlayback()
+        {
+            while (playing.BufferedBytes >= frameBytes && recorded.BufferedBytes >= frameBytes)
+            {
+                playing.Read(playingFrame, 0, frameBytes);
+                recorded.Read(recordedFrame, 0, frameBytes);
+                filter.Filter(recordedFrame, playingFrame, outputFrame);
+                filtered.AddSamples(outputFrame, 0, outputFrame.Length);
+            }
         }
 
         public void Dispose()

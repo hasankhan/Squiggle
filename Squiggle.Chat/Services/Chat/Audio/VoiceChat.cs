@@ -78,8 +78,8 @@ namespace Squiggle.Chat.Services.Chat.Audio
                 waveIn.StartRecording();
 
                 waveOut = new WaveOut();
-                int frameSize = codec.RecordFormat.AverageBytesPerSecond/2;
-                int filterLength = frameSize * 2;
+                int frameSize = 128;
+                int filterLength = frameSize * 10;
                 waveProvider = new EchoFilterWaveProvider(codec.RecordFormat, frameSize, filterLength);
                 waveOut.Init(waveProvider);
                 waveOut.Play();
@@ -111,12 +111,19 @@ namespace Squiggle.Chat.Services.Chat.Audio
 
         void waveIn_DataAvailable(object sender, WaveInEventArgs e)
         {
-            if (IsMuted)
-                return;
-
-            waveProvider.AddRecordedSamples(e.Buffer, 0, e.BytesRecorded);
-            byte[] encoded = codec.Encode(e.Buffer, 0, e.BytesRecorded);
+            byte[] buffer = IsMuted ? GetEmptyBuffer(e.BytesRecorded) : e.Buffer;
+         
+            waveProvider.AddRecordedSamples(buffer, 0, e.BytesRecorded);
+            byte[] encoded = codec.Encode(buffer, 0, e.BytesRecorded);
             SendData(encoded);
+        }
+
+        byte[] emptyBuffer;
+        byte[] GetEmptyBuffer(int size)
+        {
+            if (emptyBuffer == null || emptyBuffer.Length < size)
+                emptyBuffer = new byte[size];
+            return emptyBuffer;
         }
     }
 }
