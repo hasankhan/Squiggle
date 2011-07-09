@@ -56,13 +56,15 @@ namespace Squiggle.UI.Resources
         public string Emoticon_Surprised { get; set; }
         public string Emoticon_ToungeOut { get; set; }
         public string Emoticon_Wink { get; set; }
+        public string VoiceChat_ReceivedWaiting { get; set; }
+        public string VoiceChat_SentWaiting { get; set; }
         public string Error_NoNetwork { get; set; }
         public string SettingsWindow_Error_InvalidPresenceIP { get; set; }
         public string Error { get; set; }
         public string Error_InvalidDate { get; set; }
         public string HistoryViewer_ConfirmClear { get; set; }
         public string HistoryViewer_ConfirmDelete { get; set; }
-
+        
         public static Translation Instance { get; set; }
 
         static Translation()

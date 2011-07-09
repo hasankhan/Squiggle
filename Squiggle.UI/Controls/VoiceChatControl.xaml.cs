@@ -95,9 +95,9 @@ namespace Squiggle.UI.Controls
             PlayRing();
 
             if(sending)
-                txbWaitingSentAcceptance.Text = String.Format(Translation.GetTranslation("VoiceChat_SentWaiting"), buddyName);
+                txbWaitingSentAcceptance.Text = String.Format(Translation.Instance.VoiceChat_SentWaiting, buddyName);
             else
-                txbWaitingReceivedAcceptance.Text = String.Format(Translation.GetTranslation("VoiceChat_ReceivedWaiting"), buddyName);
+                txbWaitingReceivedAcceptance.Text = String.Format(Translation.Instance.VoiceChat_ReceivedWaiting, buddyName);
 
             stkAccepted.Visibility = Visibility.Hidden;
             stkInvitation.Visibility = sending ? Visibility.Hidden : Visibility.Visible;
