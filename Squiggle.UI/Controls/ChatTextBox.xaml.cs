@@ -107,14 +107,14 @@ namespace Squiggle.UI.Controls
             para.Inlines.Add(new LineBreak());
         }
 
-        public void AddVoiceChatSentRequest(IVoiceChat voiceChat)
+        public void AddVoiceChatSentRequest(IVoiceChat voiceChat, string buddyName)
         {
-            AddVoiceChatRequest(voiceChat, true);
+            AddVoiceChatRequest(voiceChat, buddyName, true);
         }
 
-        public void AddVoiceChatReceivedRequest(IVoiceChat voiceChat)
+        public void AddVoiceChatReceivedRequest(IVoiceChat voiceChat, string buddyName)
         {
-            AddVoiceChatRequest(voiceChat, false);
+            AddVoiceChatRequest(voiceChat, buddyName, false);
         }
 
         public void SaveTo(string fileName)
@@ -129,9 +129,9 @@ namespace Squiggle.UI.Controls
             para.Inlines.Clear();
         }
 
-        void AddVoiceChatRequest(IVoiceChat voiceChat, bool sending)
+        void AddVoiceChatRequest(IVoiceChat voiceChat, string buddyName, bool sending)
         {
-            var voiceChatUI = new VoiceChatControl(voiceChat, sending);
+            var voiceChatUI = new VoiceChatControl(voiceChat, buddyName, sending);
             para.Inlines.Add(new InlineUIContainer(voiceChatUI));
             para.Inlines.Add(new LineBreak());
         }

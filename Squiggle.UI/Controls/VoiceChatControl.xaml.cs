@@ -25,6 +25,7 @@ namespace Squiggle.UI.Controls
     {
         IVoiceChat voiceChat;
         bool sending;
+        string buddyName;
 
         public string Status { get; private set; }
 
@@ -33,15 +34,17 @@ namespace Squiggle.UI.Controls
             InitializeComponent();
         }
 
-        public VoiceChatControl(IVoiceChat voiceChat, bool sending) : this()
+        public VoiceChatControl(IVoiceChat voiceChat, string buddyName, bool sending) : this()
         {
             this.voiceChat = voiceChat;
             this.sending = sending;
+            this.buddyName = buddyName;
 
             this.voiceChat.TransferCancelled += new EventHandler(voiceChat_TransferCancelled);
             this.voiceChat.TransferCompleted += new EventHandler(voiceChat_TransferCompleted);
             this.voiceChat.TransferStarted += new EventHandler(voiceChat_TransferStarted);
             this.voiceChat.TransferFinished += new EventHandler(voiceChat_TransferFinished);
+
 
             ShowWaiting();
         }
@@ -90,6 +93,11 @@ namespace Squiggle.UI.Controls
         void ShowWaiting()
         {
             PlayRing();
+
+            if(sending)
+                txbWaitingSentAcceptance.Text = String.Format(Translation.GetTranslation("VoiceChat_SentWaiting"), buddyName);
+            else
+                txbWaitingReceivedAcceptance.Text = String.Format(Translation.GetTranslation("VoiceChat_ReceivedWaiting"), buddyName);
 
             stkAccepted.Visibility = Visibility.Hidden;
             stkInvitation.Visibility = sending ? Visibility.Hidden : Visibility.Visible;

@@ -479,7 +479,7 @@ namespace Squiggle.UI
         {
             Dispatcher.Invoke(() =>
             {
-                chatTextBox.AddVoiceChatReceivedRequest(e.Invitation);
+                chatTextBox.AddVoiceChatReceivedRequest(e.Invitation, e.Sender.DisplayName);
                 voiceController.VoiceChatContext = e.Invitation;
                 e.Invitation.Dispatcher = Dispatcher;
                 FlashWindow();
@@ -539,7 +539,7 @@ namespace Squiggle.UI
 
             IVoiceChat voiceChat = chatSession.StartVoiceChat(Dispatcher);
             if (voiceChat != null)
-                chatTextBox.AddVoiceChatSentRequest(voiceChat);
+                chatTextBox.AddVoiceChatSentRequest(voiceChat, PrimaryBuddy.DisplayName);
 
             return voiceChat;
         }

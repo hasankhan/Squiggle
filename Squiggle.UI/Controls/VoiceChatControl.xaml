@@ -3,13 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             x:Name="fileTransferControl">
+             x:Name="voiceChatControl">
     <Grid>
         <StackPanel x:Name="stkInvitation" Orientation="Horizontal" Visibility="Hidden">
             <Viewbox Height="24" Width="24">
                 <Image Source="..\Images\vc-startcall.png"/>
             </Viewbox>
-            <TextBlock Margin="5" Text="Buddy wants to talk to you"/>
+            <TextBlock x:Name="txbWaitingReceivedAcceptance" Margin="5" />
             <Button Content="Accept" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="5,0,0,0" Click="Accept_Click" 
                             Template="{DynamicResource BlackGlassButton}" Foreground="White"/>
             <Button Content="Reject" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="5,0,0,0" Click="Reject_Click"
@@ -19,7 +19,7 @@
             <Viewbox Height="24" Width="24">
                 <Image Source="..\Images\vc-startcall.png"/>
             </Viewbox>
-            <TextBlock Text="Waiting for buddy to accpet voice chat request" Margin="5"/>
+            <TextBlock x:Name="txbWaitingSentAcceptance"  Margin="5" />
             <Button x:Name="btnCancelTransfer" Content="Cancel" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="10,0,0,0" Click="Reject_Click"
                             Template="{DynamicResource BlackGlassButton}" Foreground="White"/>
         </StackPanel>
@@ -27,7 +27,7 @@
             <Viewbox Height="24" Width="24">
                 <Image Source="..\Images\vc-startcall.png"/>
             </Viewbox>
-            <TextBlock Text="Voice chat started" Margin="5"/>
+            <TextBlock Text="{StaticResource VoiceChat_Started}" Margin="5"/>
             <Button Content="End call" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="5,0,0,0" Click="Finished_Click" 
                             Template="{DynamicResource BlackGlassButton}" Foreground="White"/>
         </StackPanel>
@@ -35,7 +35,7 @@
             <Viewbox Height="24" Width="24">
                 <Image Source="..\Images\vc-startcall.png"/>
             </Viewbox>
-            <TextBlock Margin="5" Text="Voice chat ended"/>
+            <TextBlock Margin="5" Text="{StaticResource VoiceChat_Ended}"/>
         </StackPanel>
     </Grid>
 </UserControl>

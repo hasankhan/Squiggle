@@ -7,8 +7,8 @@
             x:Name="voiceChatToolbarControl">
     <UserControl.Resources>
         <converters:VoiceChatToVisibilityConverter x:Key="visibiltyConverter" />
-        <Image x:Key="muteImage" Source="..\Images\vc-unmute.png" ToolTip="Mute"/>
-        <Image x:Key="unmuteImage" Source="..\Images\vc-mute.png" ToolTip="Un-mute"/>
+        <Image x:Key="muteImage" Source="..\Images\vc-unmute.png" ToolTip="{StaticResource VoiceChat_Mute}"/>
+        <Image x:Key="unmuteImage" Source="..\Images\vc-mute.png" ToolTip="{StaticResource VoiceChat_Unmute}"/>
         
         <Style x:Key="muteUnmuteStyle" TargetType="{x:Type ToggleButton}" >
             <Setter Property="Content" Value="{StaticResource muteImage}"/>
@@ -24,7 +24,7 @@
     </UserControl.Resources>
     <Grid>
         <Button Style="{DynamicResource toolbarButton}" HorizontalAlignment="Right" Visibility="{Binding ElementName=voiceChatToolbarControl, Path=VoiceChatContext, Converter={StaticResource visibiltyConverter}, ConverterParameter=voicechatoff}"
-                                    Margin="5,0,0,0" ToolTip="Start voice chat"
+                                    Margin="5,0,0,0" ToolTip="{StaticResource VoiceChat_Start}"
                                     Click="StartVoiceChat_Click" Foreground="Black">
             <Image Width="16" Height="16" Source="../Images/vc-startcall.png" Stretch="Fill"/>
         </Button>
@@ -35,7 +35,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Button Margin="10,0,5,0" HorizontalAlignment="Right"  Height="20"
-                                    ToolTip="End voice chat"
+                                    ToolTip="{StaticResource VoiceChat_End}"
                                     Click="StopVoiceChat_Click" Foreground="Black">
                 <Image Width="16" Height="16" Source="../Images/vc-endcall.png" Stretch="Fill"/>
             </Button>
