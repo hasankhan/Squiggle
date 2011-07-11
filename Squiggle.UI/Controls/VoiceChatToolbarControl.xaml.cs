@@ -59,6 +59,10 @@ namespace Squiggle.UI.Controls
 
         void voiceChatContext_TransferStarted(object sender, EventArgs e)
         {
+            Dispatcher.Invoke(() =>
+            {
+                volume.GetBindingExpression(Slider.ValueProperty).UpdateTarget();
+            });
         }
 
         void voiceChatContext_TransferFinished(object sender, EventArgs e)

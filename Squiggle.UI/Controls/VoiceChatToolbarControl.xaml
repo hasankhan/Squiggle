@@ -41,7 +41,7 @@
             </Button>
             <ToggleButton Margin="5,0,5,0" Height="26" Grid.Column="1" Style="{StaticResource muteUnmuteStyle}" IsChecked="{Binding ElementName=voiceChatToolbarControl, Path=VoiceChatContext.IsMuted, Mode=TwoWay}">
             </ToggleButton>
-            <Slider Margin="2,0,2,0" VerticalAlignment="Center" Grid.Column="2" Width="100" Minimum="0" Maximum="1" Value="{Binding ElementName=voiceChatToolbarControl, Path=VoiceChatContext.Volume, Mode=TwoWay}" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
+            <Slider x:Name="volume" Margin="2,0,2,0" VerticalAlignment="Center" Grid.Column="2" Width="100" Minimum="0" Maximum="1" Value="{Binding ElementName=voiceChatToolbarControl, Path=VoiceChatContext.Volume, Mode=TwoWay}" IsSnapToTickEnabled="True" TickFrequency="0.1"/>
         </Grid>
     </Grid>
 </UserControl>

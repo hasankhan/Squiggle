@@ -66,8 +66,6 @@ namespace Squiggle.Chat.Services.Chat.Audio
 
         protected override void OnTransferStarted()
         {
-            base.OnTransferStarted();
-
             Dispatcher.Invoke(() =>
             {
                 waveIn = new WaveIn();
@@ -84,6 +82,8 @@ namespace Squiggle.Chat.Services.Chat.Audio
                 waveOut.Init(waveProvider);
                 waveOut.Play();
             });
+
+            base.OnTransferStarted();
         }
 
         public new void Accept()
@@ -93,8 +93,6 @@ namespace Squiggle.Chat.Services.Chat.Audio
 
         protected override void OnTransferFinished()
         {
-            base.OnTransferFinished();
-
             Dispatcher.Invoke(() =>
             {
                 if (waveIn != null)
@@ -107,6 +105,8 @@ namespace Squiggle.Chat.Services.Chat.Audio
                     waveOut.Dispose();
                 }
             });
+
+            base.OnTransferFinished();
         }
 
         void waveIn_DataAvailable(object sender, WaveInEventArgs e)

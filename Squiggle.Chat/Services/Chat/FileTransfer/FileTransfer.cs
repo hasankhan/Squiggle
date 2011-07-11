@@ -56,29 +56,29 @@ namespace Squiggle.Chat.Services.Chat.FileTransfer
 
         protected override void OnAccept()
         {
-            base.OnAccept();
-
             saveToFile = filePath;
             content = File.OpenWrite(filePath);
+
+            base.OnAccept();
         }
 
         protected override void OnTransferCancelled()
         {
-            base.OnTransferCancelled();
-
             if (!SelfInitiated && content != null)
-                File.Delete(saveToFile);            
+                File.Delete(saveToFile);
+
+            base.OnTransferCancelled();
         }
 
         protected override void OnTransferFinished()
         {
-            base.OnTransferFinished();
-
             if (content != null)
             {
                 content.Dispose();
                 content = null;
             }
+
+            base.OnTransferFinished();
         }
 
         protected override void OnDataReceived(byte[] chunk)
