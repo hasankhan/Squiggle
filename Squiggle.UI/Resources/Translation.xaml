@@ -189,5 +189,5 @@
     <sys:String x:Key="VoiceChat_Started">Voice chat started</sys:String>
     <sys:String x:Key="VoiceChat_Ended">Voice chat ended</sys:String>
     <sys:String x:Key="VoiceChat_ReceivedWaiting">{0} wants to talk to you</sys:String>
-    <sys:String x:Key="VoiceChat_SentWaiting">Waiting for {0} to accpet voice chat request</sys:String>
+    <sys:String x:Key="VoiceChat_SentWaiting">Waiting for {0} to accept voice chat request</sys:String>
 </ResourceDictionary>
