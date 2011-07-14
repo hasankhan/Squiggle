@@ -24,9 +24,9 @@ namespace Squiggle.Chat.Services.Chat.Audio
             state = speex_echo_state_init(frameSize, filterLength);
         }
 
-        public void Filter(byte[] recorded, byte[] played, byte[] output)
+        public void Filter(byte[] remoteSoundAndEcho, byte[] localVoice, byte[] output)
         {
-            speex_echo_cancellation(state, recorded, played, output);
+            speex_echo_cancellation(state, remoteSoundAndEcho, localVoice, output);
         }
 
         public void Dispose()

@@ -61,7 +61,7 @@ namespace Squiggle.Chat.Services.Chat.Audio
         protected override void OnDataReceived(byte[] chunk)
         {
             byte[] decoded = codec.Decode(chunk, 0, chunk.Length);
-            waveProvider.AddPlaybackSamples(decoded, 0, decoded.Length);
+            waveProvider.AddRemoteSamples(decoded, 0, decoded.Length);
         }
 
         protected override void OnTransferStarted()
@@ -113,7 +113,7 @@ namespace Squiggle.Chat.Services.Chat.Audio
         {
             byte[] buffer = IsMuted ? GetEmptyBuffer(e.BytesRecorded) : e.Buffer;
          
-            waveProvider.AddRecordedSamples(buffer, 0, e.BytesRecorded);
+            waveProvider.AddLocalSamples(buffer, 0, e.BytesRecorded);
             byte[] encoded = codec.Encode(buffer, 0, e.BytesRecorded);
             SendData(encoded);
         }

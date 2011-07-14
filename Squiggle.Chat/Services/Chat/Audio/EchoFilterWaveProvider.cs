@@ -8,69 +8,61 @@ namespace Squiggle.Chat.Services.Chat.Audio
 {
     class EchoFilterWaveProvider : IWaveProvider, IDisposable
     {
-        BufferedWaveProvider recorded;
-        BufferedWaveProvider playing;
+        BufferedWaveProvider localSound;
+        BufferedWaveProvider remoteSoundAndEcho;
         BufferedWaveProvider filtered;
         int frameBytes;
         EchoFilter filter;
-        byte[] playingFrame;
-        byte[] recordedFrame;
+        byte[] remoteFrame;
+        byte[] localFrame;
         byte[] outputFrame;
         object syncRoot = new object();
 
         public EchoFilterWaveProvider(WaveFormat format, int frameSize, int filterLength)
         {
             frameBytes = frameSize * 2;
-            playingFrame = new byte[frameBytes];
-            recordedFrame = new byte[frameBytes];
+            remoteFrame = new byte[frameBytes];
+            localFrame = new byte[frameBytes];
             outputFrame = new byte[frameBytes];
 
             filter = new EchoFilter(frameSize, filterLength);
-            recorded = new BufferedWaveProvider(format);
-            playing = new BufferedWaveProvider(format);
+            localSound = new BufferedWaveProvider(format);
+            remoteSoundAndEcho = new BufferedWaveProvider(format);
             filtered = new BufferedWaveProvider(format);
-            recorded.DiscardOnBufferOverflow = playing.DiscardOnBufferOverflow 
+            localSound.DiscardOnBufferOverflow = remoteSoundAndEcho.DiscardOnBufferOverflow 
                                              = filtered.DiscardOnBufferOverflow 
                                              = true;
         }
 
-        public void AddRecordedSamples(byte[] buffer, int offset, int count)
+        public void AddLocalSamples(byte[] buffer, int offset, int count)
         {
             lock (syncRoot)
-            {
-                recorded.AddSamples(buffer, offset, count);
-                DoPlayback();
-            }
+                localSound.AddSamples(buffer, offset, count);
         }
 
-        public void AddPlaybackSamples(byte[] buffer, int offset, int count)
+        public void AddRemoteSamples(byte[] buffer, int offset, int count)
         {
             lock (syncRoot)
-            {
-                playing.AddSamples(buffer, offset, count);
-                DoPlayback();
-            }
+                remoteSoundAndEcho.AddSamples(buffer, offset, count);
         }        
 
         public WaveFormat WaveFormat
         {
-            get { return playing.WaveFormat; }
+            get { return remoteSoundAndEcho.WaveFormat; }
         }
 
         public int Read(byte[] buffer, int offset, int count)
         {
             lock (syncRoot)
-                return filtered.Read(buffer, offset, count);
-        }
-
-        void DoPlayback()
-        {
-            while (playing.BufferedBytes >= frameBytes && recorded.BufferedBytes >= frameBytes)
             {
-                playing.Read(playingFrame, 0, frameBytes);
-                recorded.Read(recordedFrame, 0, frameBytes);
-                filter.Filter(recordedFrame, playingFrame, outputFrame);
-                filtered.AddSamples(outputFrame, 0, outputFrame.Length);
+                while (remoteSoundAndEcho.BufferedBytes >= frameBytes && localSound.BufferedBytes >= frameBytes)
+                {
+                    remoteSoundAndEcho.Read(remoteFrame, 0, frameBytes);
+                    localSound.Read(localFrame, 0, frameBytes);
+                    filter.Filter(remoteFrame, localFrame, outputFrame);
+                    filtered.AddSamples(outputFrame, 0, outputFrame.Length);
+                }
+                return filtered.Read(buffer, offset, count);
             }
         }
 
