@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Forms;
 
 namespace Squiggle.UI.StickyWindows
 {
@@ -32,15 +33,18 @@ namespace Squiggle.UI.StickyWindows
 
         void AdjustLocation()
         {
-            if ((this.Left + Width) > System.Windows.SystemParameters.VirtualScreenWidth)
-                this.Left = System.Windows.SystemParameters.VirtualScreenWidth - Width;
-            else if (this.Left < 0)
-                this.Left = 0;
+            var bottomLeft = new System.Drawing.Point((int)this.Left + (int)this.Width, (int)this.Top + (int)this.Height);
+            var screen = Screen.FromPoint(bottomLeft);
 
-            if ((this.Top + Height) > System.Windows.SystemParameters.VirtualScreenHeight)
-                this.Top = System.Windows.SystemParameters.VirtualScreenHeight - Height;
-            else if (this.Top < 0)
-                this.Top = 0;
+            if (bottomLeft.X > screen.WorkingArea.Width)
+                this.Left = screen.WorkingArea.Width - Width;
+            else if (this.Left < screen.WorkingArea.X)
+                this.Left = screen.WorkingArea.X;
+
+            if (bottomLeft.Y > screen.WorkingArea.Height)
+                this.Top = screen.WorkingArea.Height - Height;
+            else if (this.Top < screen.WorkingArea.Y)
+                this.Top = screen.WorkingArea.Y;
         }    
     }
 }
