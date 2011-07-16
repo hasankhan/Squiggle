@@ -698,7 +698,7 @@ namespace Squiggle.UI
             if (!lastMessageReceived.HasValue)
                 ChangeStatus(String.Empty);
             else
-                ChangeStatus(Translation.Instance.ChatWindow_LastMessageAt + String.Format("{0:T} on {0:d}", lastMessageReceived));
+                ChangeStatus(Translation.Instance.ChatWindow_LastMessageAt + String.Format(" {0:T} on {0:d}", lastMessageReceived));
         }
 
         void FlashWindow()

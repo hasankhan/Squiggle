@@ -15,9 +15,6 @@ namespace Squiggle.UI.Settings
 
         public ContactSettings()
         {
-            ContactListSortField = ContactListSortField.DisplayName;
-            ContactListView = ContactListView.Standard;
-            GroupContacts = true;
             ContactGroups = new ContactGroups();
         }
     }

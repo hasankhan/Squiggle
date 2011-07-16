@@ -7,6 +7,7 @@ using Squiggle.Chat;
 using Squiggle.UI.Helpers;
 using Squiggle.Utilities;
 using System.Configuration;
+using Squiggle.Chat.Services;
 
 namespace Squiggle.UI.Settings
 {
@@ -64,7 +65,7 @@ namespace Squiggle.UI.Settings
 
         private void LoadConnectionSettings()
         {
-            Settings.ConnectionSettings.PresenceAddress = reader.GetSetting(SettingKey.PresenceAddress, "224.10.11.12");
+            Settings.ConnectionSettings.PresenceAddress = reader.GetSetting(SettingKey.PresenceAddress, DefaultValues.PresenceAddress);
             Settings.ConnectionSettings.BindToIP = Properties.Settings.Default.BindToIP;
 
             bool requiresNewBindToIP = !NetworkUtility.IsValidIP(Settings.ConnectionSettings.BindToIP);
@@ -80,9 +81,9 @@ namespace Squiggle.UI.Settings
 #endif
                 Settings.ConnectionSettings.ClientID = Guid.NewGuid().ToString();
 
-            Settings.ConnectionSettings.ChatPort = reader.GetSetting(SettingKey.ChatPort, 9999);
-            Settings.ConnectionSettings.KeepAliveTime = reader.GetSetting(SettingKey.KeepAliveTime, 60);
-            Settings.ConnectionSettings.PresencePort = reader.GetSetting(SettingKey.PresencePort, 9998);
+            Settings.ConnectionSettings.ChatPort = reader.GetSetting(SettingKey.ChatPort, DefaultValues.ChatPort);
+            Settings.ConnectionSettings.KeepAliveTime = reader.GetSetting(SettingKey.KeepAliveTime, DefaultValues.KeepAliveTime);
+            Settings.ConnectionSettings.PresencePort = reader.GetSetting(SettingKey.PresencePort, DefaultValues.PresencePort);
         }
 
         private void LoadGeneralSettings()
@@ -92,7 +93,7 @@ namespace Squiggle.UI.Settings
                 firstRun = DateTimeOffset.Now;
 
             Settings.GeneralSettings.FirstRun = firstRun;
-            Settings.GeneralSettings.MessagePanelHeight = Math.Max(Properties.Settings.Default.MessagePanelHeight, 70);
+            Settings.GeneralSettings.MessagePanelHeight = Math.Max(Properties.Settings.Default.MessagePanelHeight, 150);
             Settings.GeneralSettings.HideToSystemTray = Properties.Settings.Default.HideToTray;
             Settings.GeneralSettings.ShowPopups = Properties.Settings.Default.ShowPopups;
             Settings.GeneralSettings.AudioAlerts = Properties.Settings.Default.AudioAlerts;

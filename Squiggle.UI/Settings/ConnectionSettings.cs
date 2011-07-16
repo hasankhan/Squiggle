@@ -10,13 +10,5 @@ namespace Squiggle.UI.Settings
         public string BindToIP { get; set; }
         public string PresenceAddress { get; set; }
         public string ClientID { get; set; }
-
-        public ConnectionSettings()
-        {
-            PresencePort = DefaultValues.PresencePort;
-            ChatPort = DefaultValues.ChatPort;
-            KeepAliveTime = DefaultValues.KeepAliveTime;
-            PresenceAddress = DefaultValues.PresenceAddress;
-        }
     }
 }

@@ -16,14 +16,5 @@ namespace Squiggle.UI.Settings
         public int FontSize { get; set; }
         public Color FontColor { get; set; }
         public FontStyle FontStyle { get; set; }
-
-        public PersonalSettings()
-        {
-            FontName = "Georgia";
-            FontSize = 12;
-            FontStyle = System.Drawing.FontStyle.Regular;
-            FontColor = System.Drawing.Color.Black;
-            IdleTimeout = 5;
-        }
     }
 }

@@ -12,14 +12,5 @@ namespace Squiggle.UI.Settings
         public DateTimeOffset FirstRun { get; set; }
         public double MessagePanelHeight { get; set; }
         public bool EnableStatusLogging { get; set; }
-
-        public GeneralSettings()
-        {
-            MessagePanelHeight = 70;
-            HideToSystemTray = true;
-            ShowPopups = true;
-            AudioAlerts = false;
-            EnableStatusLogging = false;
-        }
     }
 }

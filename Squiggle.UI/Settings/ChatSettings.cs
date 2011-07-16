@@ -11,13 +11,5 @@ namespace Squiggle.UI.Settings
         public bool ShowEmoticons { get; set; }
         public bool SpellCheck { get; set; }
         public bool StealFocusOnNewMessage { get; set; }
-
-        public ChatSettings()
-        {
-            ShowEmoticons = true;
-            SpellCheck = true;
-            EnableLogging = true;
-            StealFocusOnNewMessage = false;
-        }
     }
 }
