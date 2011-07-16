@@ -49,7 +49,7 @@ namespace Squiggle.UI
 
             string version = Regex.Match(lastUpdate.Title.Text, versionRegex).Groups["version"].Value;
 
-            bool sameOrNewer = new Version(version) >= AppInfo.Version;
+            bool sameOrNewer = new Version(version) >= new Version(AppInfo.Version.Major, AppInfo.Version.Minor);
             return sameOrNewer;
         }
 
