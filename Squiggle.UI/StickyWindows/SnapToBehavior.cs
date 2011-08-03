@@ -32,15 +32,15 @@ namespace Squiggle.UI.StickyWindows
             if ((windowPosition.Flags & NativeMethods.WindowPositionFlags.NoMove) == 0)
             {
                 // If we use the WPF SystemParameters, these should be "Logical" pixels
-                Rect validArea = new Rect(SystemParameters.WorkArea.Left,
-                                          SystemParameters.WorkArea.Top,
-                                          SystemParameters.WorkArea.Width,
-                                          SystemParameters.WorkArea.Height);
+                Rect validArea = new Rect(SystemParameters.VirtualScreenLeft,
+                                          SystemParameters.VirtualScreenTop,
+                                          SystemParameters.VirtualScreenWidth,
+                                          SystemParameters.VirtualScreenHeight);
 
-                Rect snapToBorder = new Rect(SystemParameters.WorkArea.Left + SnapDistance.Left,
-                                         SystemParameters.WorkArea.Top + SnapDistance.Top,
-                                         SystemParameters.WorkArea.Width - (SnapDistance.Left + SnapDistance.Right),
-                                         SystemParameters.WorkArea.Height - (SnapDistance.Top + SnapDistance.Bottom));
+                Rect snapToBorder = new Rect(SystemParameters.VirtualScreenLeft + SnapDistance.Left,
+                                         SystemParameters.VirtualScreenTop + SnapDistance.Top,
+                                         SystemParameters.VirtualScreenWidth - (SnapDistance.Left + SnapDistance.Right),
+                                         SystemParameters.VirtualScreenHeight - (SnapDistance.Top + SnapDistance.Bottom));
 
                 // Enforce left boundary
                 if (windowPosition.Left < snapToBorder.Left)
