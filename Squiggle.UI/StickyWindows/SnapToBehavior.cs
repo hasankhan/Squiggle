@@ -43,7 +43,7 @@ namespace Squiggle.UI.StickyWindows
                 lastPosition = windowPosition;
                 return IntPtr.Zero;
             }
-            else if (lastUpdated.HasValue && (DateTime.Now - lastUpdated.Value).TotalSeconds < 1)
+            else if (lastUpdated.HasValue && (DateTime.Now - lastUpdated.Value).TotalSeconds < 0.5)
             {
                 Marshal.StructureToPtr(lastPosition, lParam, true);
                 return IntPtr.Zero;
