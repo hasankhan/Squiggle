@@ -4,11 +4,21 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using MessageMapping = System.Collections.Generic.KeyValuePair<Squiggle.UI.StickyWindows.NativeMethods.WindowMessage, Squiggle.UI.StickyWindows.NativeMethods.MessageHandler>;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Squiggle.UI.StickyWindows
 {
     public class SnapToBehavior : NativeBehavior
     {
+        DateTime? lastUpdated;
+
+        bool Between<T>(T value, T first, T second) where T:IComparable
+        {
+            return (value.CompareTo(first) >= 0 && value.CompareTo(second) <=0);
+        }
+
+        NativeMethods.WindowPosition? lastPosition;
+
         /// <summary>
         /// Gets the <see cref="MessageMapping"/>s for this behavior:
         /// A single mapping of a handler for WM_WINDOWPOSCHANGING.
@@ -28,50 +38,56 @@ namespace Squiggle.UI.StickyWindows
         {
             bool updated = false;
             var windowPosition = (NativeMethods.WindowPosition)Marshal.PtrToStructure(lParam, typeof(NativeMethods.WindowPosition));
+            if (lastPosition == null)
+            {
+                lastPosition = windowPosition;
+                return IntPtr.Zero;
+            }
+            else if (lastUpdated.HasValue && (DateTime.Now - lastUpdated.Value).TotalSeconds < 1)
+            {
+                Marshal.StructureToPtr(lastPosition, lParam, true);
+                return IntPtr.Zero;
+            }             
+
+            Screen screen = Screen.FromPoint(new System.Drawing.Point(windowPosition.Left, windowPosition.Top));
 
             if ((windowPosition.Flags & NativeMethods.WindowPositionFlags.NoMove) == 0)
             {
                 // If we use the WPF SystemParameters, these should be "Logical" pixels
-                Rect validArea = new Rect(SystemParameters.VirtualScreenLeft,
-                                          SystemParameters.VirtualScreenTop,
-                                          SystemParameters.VirtualScreenWidth,
-                                          SystemParameters.VirtualScreenHeight);
-
-                Rect snapToBorder = new Rect(SystemParameters.VirtualScreenLeft + SnapDistance.Left,
-                                         SystemParameters.VirtualScreenTop + SnapDistance.Top,
-                                         SystemParameters.VirtualScreenWidth - (SnapDistance.Left + SnapDistance.Right),
-                                         SystemParameters.VirtualScreenHeight - (SnapDistance.Top + SnapDistance.Bottom));
+                Rect validArea = new Rect(screen.WorkingArea.Left,
+                                          screen.WorkingArea.Top,
+                                          screen.WorkingArea.Width,
+                                          screen.WorkingArea.Height);
 
                 // Enforce left boundary
-                if (windowPosition.Left < snapToBorder.Left)
+                if ((Between(windowPosition.Left - validArea.Left, SnapDistance.Left, SnapDistance.Right)) && (windowPosition.Left < lastPosition.Value.Left))
                 {
                     windowPosition.Left = (int)validArea.Left;
                     updated = true;
                 }
 
                 // Enforce top boundary
-                if (windowPosition.Top < snapToBorder.Y)
+                if ((Between(windowPosition.Top - validArea.Top, SnapDistance.Top, SnapDistance.Bottom)) && (windowPosition.Top < lastPosition.Value.Top))
                 {
                     windowPosition.Top = (int)validArea.Top;
                     updated = true;
                 }
 
                 // Enforce right boundary
-                if (windowPosition.Right > snapToBorder.Right)
+                if ((Between(windowPosition.Right, validArea.Right - SnapDistance.Left, validArea.Right)) && (windowPosition.Left > lastPosition.Value.Left))
                 {
                     windowPosition.Left = (int)(validArea.Right - windowPosition.Width);
                     updated = true;
                 }
 
                 // Enforce bottom boundary
-                if (windowPosition.Bottom > snapToBorder.Bottom)
+                if ((Between(validArea.Bottom - windowPosition.Bottom, SnapDistance.Top, SnapDistance.Bottom)) && (windowPosition.Top > lastPosition.Value.Top))
                 {
                     windowPosition.Top = (int)(validArea.Bottom - windowPosition.Height);
                     updated = true;
                 }
 
                 formRect = new Rectangle(windowPosition.Left, windowPosition.Top, windowPosition.Width, windowPosition.Height);
-
 
                 #region Try to snap with other windows
                 foreach (Window sw in WindowManager.Windows)
@@ -107,12 +123,13 @@ namespace Squiggle.UI.StickyWindows
                     }
                 }
                 #endregion
-
-
             }
+
+            lastPosition = windowPosition;
             if (updated)
             {
                 Marshal.StructureToPtr(windowPosition, lParam, true);
+                lastUpdated = DateTime.Now;
             }
 
             return IntPtr.Zero;

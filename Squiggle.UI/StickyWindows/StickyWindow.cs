@@ -36,15 +36,15 @@ namespace Squiggle.UI.StickyWindows
             var bottomLeft = new System.Drawing.Point((int)this.Left + (int)this.Width, (int)this.Top + (int)this.Height);
             var screen = Screen.FromPoint(bottomLeft);
 
-            if (bottomLeft.X > screen.WorkingArea.Width)
-                this.Left = screen.WorkingArea.Width - Width;
-            else if (this.Left < screen.WorkingArea.X)
-                this.Left = screen.WorkingArea.X;
+            if (bottomLeft.X > screen.Bounds.Right)
+                this.Left = screen.Bounds.Right - Width;
+            else if (this.Left < screen.Bounds.Left)
+                this.Left = screen.Bounds.Left;
 
-            if (bottomLeft.Y > screen.WorkingArea.Height)
-                this.Top = screen.WorkingArea.Height - Height;
-            else if (this.Top < screen.WorkingArea.Y)
-                this.Top = screen.WorkingArea.Y;
+            if (bottomLeft.Y > screen.Bounds.Bottom)
+                this.Top = screen.Bounds.Bottom - Height;
+            else if (this.Top < screen.Bounds.Top)
+                this.Top = screen.Bounds.Top;
         }    
     }
 }
