@@ -5,20 +5,35 @@ using System.Windows;
 using MessageMapping = System.Collections.Generic.KeyValuePair<Squiggle.UI.StickyWindows.NativeMethods.WindowMessage, Squiggle.UI.StickyWindows.NativeMethods.MessageHandler>;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Windows.Input;
 
 namespace Squiggle.UI.StickyWindows
 {
+        [StructLayout(LayoutKind.Sequential)]
+        public struct POINT
+        {
+            public int X;
+            public int Y;
+
+            public POINT(int x, int y)
+            {
+                this.X = x;
+                this.Y = y;
+            }
+
+            public static implicit operator System.Drawing.Point(POINT p)
+            {
+                return new System.Drawing.Point(p.X, p.Y);
+            }
+
+            public static implicit operator POINT(System.Drawing.Point p)
+            {
+                return new POINT(p.X, p.Y);
+            }
+        }        
+
     public class SnapToBehavior : NativeBehavior
     {
-        DateTime? lastUpdated;
-
-        bool Between<T>(T value, T first, T second) where T:IComparable
-        {
-            return (value.CompareTo(first) >= 0 && value.CompareTo(second) <=0);
-        }
-
-        NativeMethods.WindowPosition? lastPosition;
-
         /// <summary>
         /// Gets the <see cref="MessageMapping"/>s for this behavior:
         /// A single mapping of a handler for WM_WINDOWPOSCHANGING.
@@ -26,111 +41,57 @@ namespace Squiggle.UI.StickyWindows
         /// <returns>A collection of <see cref="MessageMapping"/> objects.</returns>
         public override IEnumerable<MessageMapping> GetHandlers()
         {
-            yield return new MessageMapping(NativeMethods.WindowMessage.WindowPositionChanging, OnPreviewPositionChange);
+            yield return new MessageMapping(NativeMethods.WindowMessage.Moving, OnMoving);
+            yield return new MessageMapping(NativeMethods.WindowMessage.EnterSizeMove, OnEnterSizeMove);
         }
-        /// <summary>Handles the WindowPositionChanging Window Message.
-        /// </summary>
-        /// <param name="wParam">The wParam.</param>
-        /// <param name="lParam">The lParam.</param>
-        /// <param name="handled">Whether or not this message has been handled ... (we don't change it)</param>
-        /// <returns>IntPtr.Zero</returns>      
-        private IntPtr OnPreviewPositionChange(IntPtr wParam, IntPtr lParam, ref bool handled)
+
+        System.Windows.Point snapPoint;
+
+        IntPtr OnEnterSizeMove(IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            bool updated = false;
-            var windowPosition = (NativeMethods.WindowPosition)Marshal.PtrToStructure(lParam, typeof(NativeMethods.WindowPosition));
-            if (lastPosition == null)
-            {
-                lastPosition = windowPosition;
-                return IntPtr.Zero;
-            }
-            else if (lastUpdated.HasValue && (DateTime.Now - lastUpdated.Value).TotalSeconds < 0.5)
-            {
-                Marshal.StructureToPtr(lastPosition, lParam, true);
-                return IntPtr.Zero;
-            }             
+            var rectangle = new Rectangle((int)OriginalForm.Left, (int)OriginalForm.Top, (int)OriginalForm.Width, (int)OriginalForm.Height);
+            snapPoint = GetMousePosition();
+            snapPoint.X = snapPoint.X - rectangle.Left;
+            snapPoint.Y = snapPoint.Y - rectangle.Top;
 
-            Screen screen = Screen.FromPoint(new System.Drawing.Point(windowPosition.Left, windowPosition.Top));
+            return IntPtr.Zero;
+        }
 
-            if ((windowPosition.Flags & NativeMethods.WindowPositionFlags.NoMove) == 0)
-            {
-                // If we use the WPF SystemParameters, these should be "Logical" pixels
-                Rect validArea = new Rect(screen.WorkingArea.Left,
-                                          screen.WorkingArea.Top,
-                                          screen.WorkingArea.Width,
-                                          screen.WorkingArea.Height);
+        void OffsetRect(ref NativeMethods.WindowPosition rect, double x, double y)
+        {
+            rect.Left += (int)x;
+            rect.Right += (int)x;
+            rect.Top += (int)y;
+            rect.Bottom += (int)y;
+        }
 
-                // Enforce left boundary
-                if ((Between(windowPosition.Left - validArea.Left, SnapDistance.Left, SnapDistance.Right)) && (windowPosition.Left < lastPosition.Value.Left))
-                {
-                    windowPosition.Left = (int)validArea.Left;
-                    updated = true;
-                }
+        bool IsSnapClose(double a, double b, double margin)
+        {
+            return (Math.Abs(a - b) < margin);
+        }
 
-                // Enforce top boundary
-                if ((Between(windowPosition.Top - validArea.Top, SnapDistance.Top, SnapDistance.Bottom)) && (windowPosition.Top < lastPosition.Value.Top))
-                {
-                    windowPosition.Top = (int)validArea.Top;
-                    updated = true;
-                }
+        //http://www.codeproject.com/KB/winsdk/snapping_window.aspx
+        IntPtr OnMoving(IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            var snap_prc = (NativeMethods.WindowPosition)Marshal.PtrToStructure(lParam, typeof(NativeMethods.WindowPosition));
+            var snap_cur_pos = GetMousePosition();
+            OffsetRect(ref snap_prc, snap_cur_pos.X - (snap_prc.Left + snapPoint.X),
+                                     snap_cur_pos.Y - (snap_prc.Top + snapPoint.Y));
 
-                // Enforce right boundary
-                if ((Between(windowPosition.Right, validArea.Right - SnapDistance.Left, validArea.Right)) && (windowPosition.Left > lastPosition.Value.Left))
-                {
-                    windowPosition.Left = (int)(validArea.Right - windowPosition.Width);
-                    updated = true;
-                }
+            Screen screen = Screen.FromPoint(new System.Drawing.Point((int)snap_cur_pos.X, (int)snap_cur_pos.Y));
+            Rect snap_wa = new Rect(screen.WorkingArea.Left, screen.WorkingArea.Top, screen.WorkingArea.Width, screen.WorkingArea.Height);
 
-                // Enforce bottom boundary
-                if ((Between(validArea.Bottom - windowPosition.Bottom, SnapDistance.Top, SnapDistance.Bottom)) && (windowPosition.Top > lastPosition.Value.Top))
-                {
-                    windowPosition.Top = (int)(validArea.Bottom - windowPosition.Height);
-                    updated = true;
-                }
+            if (IsSnapClose(snap_prc.Left, snap_wa.Left, SnapDistance.Right))
+                OffsetRect(ref snap_prc, snap_wa.Left - snap_prc.Left, 0);
+            else if (IsSnapClose(snap_wa.Right, snap_prc.Right, SnapDistance.Right))
+                OffsetRect(ref snap_prc, snap_wa.Right - snap_prc.Right, 0);
 
-                formRect = new Rectangle(windowPosition.Left, windowPosition.Top, windowPosition.Width, windowPosition.Height);
+            if (IsSnapClose(snap_prc.Top, snap_wa.Top, SnapDistance.Bottom))
+                OffsetRect(ref snap_prc, 0, snap_wa.Top - snap_prc.Top);
+            else if (IsSnapClose(snap_wa.Bottom, snap_prc.Bottom, SnapDistance.Bottom))
+                OffsetRect(ref snap_prc, 0, snap_wa.Bottom - snap_prc.Bottom);
 
-                #region Try to snap with other windows
-                foreach (Window sw in WindowManager.Windows)
-                {
-
-                    formRect = new Rectangle(windowPosition.Left, windowPosition.Top, windowPosition.Width, windowPosition.Height);
-
-                    if (sw != OriginalForm)
-                    {
-                        formOffsetPoint.X = (int)SnapDistance.Left + 1;	// (more than) maximum gaps
-                        formOffsetPoint.Y = (int)SnapDistance.Bottom + 1;
-
-                        Rectangle rect = new Rectangle(Convert.ToInt32(sw.Left), Convert.ToInt32(sw.Top), Convert.ToInt32(sw.Width), Convert.ToInt32(sw.Height));
-
-                        Move_Stick(rect, true);
-
-                        if (formOffsetPoint.X == SnapDistance.Left + 1)
-                            formOffsetPoint.X = 0;
-                        if (formOffsetPoint.Y == SnapDistance.Top + 1)
-                            formOffsetPoint.Y = 0;
-
-                        if ((formOffsetPoint.X != SnapDistance.Left)
-                            && (formOffsetPoint.Y != SnapDistance.Bottom))
-                        {
-                            windowPosition.Left = windowPosition.Left + formOffsetPoint.X;
-                            windowPosition.Top = windowPosition.Top + formOffsetPoint.Y;
-                        }
-
-                        //WindowList[0].Title = "Left:" + windowPosition.Top + "  Top:" + windowPosition.Top;
-
-                        updated = true;
-                        // }
-                    }
-                }
-                #endregion
-            }
-
-            lastPosition = windowPosition;
-            if (updated)
-            {
-                Marshal.StructureToPtr(windowPosition, lParam, true);
-                lastUpdated = DateTime.Now;
-            }
+            Marshal.StructureToPtr(snap_prc, lParam, true);
 
             return IntPtr.Zero;
         }
@@ -143,63 +104,17 @@ namespace Squiggle.UI.StickyWindows
             set { originalForm = value; }
         }
 
-        Rectangle formRect;			// form bounds
-        System.Drawing.Point formOffsetPoint;	// calculated offset rect to be added !! (min distances in all directions!!)
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool GetCursorPos(out POINT lpPoint);        
 
-
-        void Move_Stick(Rectangle toRect, bool bInsideStick)
+        System.Windows.Point GetMousePosition()
         {
-            // compare distance from toRect to formRect
-            // and then with the found distances, compare the most closed position
-            if (formRect.Bottom >= (toRect.Top - SnapDistance.Top) && formRect.Top <= (toRect.Bottom + SnapDistance.Bottom))
-            {
-                if (bInsideStick)
-                {
-                    if ((Math.Abs(formRect.Left - toRect.Right) <= Math.Abs(formOffsetPoint.X)))
-                    {	// left 2 right
-                        formOffsetPoint.X = toRect.Right - formRect.Left;
-                    }
-                    if ((Math.Abs(formRect.Left + formRect.Width - toRect.Left) <= Math.Abs(formOffsetPoint.X)))
-                    {	// right 2 left
-                        formOffsetPoint.X = toRect.Left - formRect.Width - formRect.Left;
-                    }
-                }
-
-                if (Math.Abs(formRect.Left - toRect.Left) <= Math.Abs(formOffsetPoint.X))
-                {	// snap left 2 left
-                    formOffsetPoint.X = toRect.Left - formRect.Left;
-                }
-                if (Math.Abs(formRect.Left + formRect.Width - toRect.Left - toRect.Width) <= Math.Abs(formOffsetPoint.X))
-                {	// snap right 2 right
-                    formOffsetPoint.X = toRect.Left + toRect.Width - formRect.Width - formRect.Left;
-                }
-            }
-            if (formRect.Right >= (toRect.Left - SnapDistance.Left) && formRect.Left <= (toRect.Right + SnapDistance.Right))
-            {
-                if (bInsideStick)
-                {
-                    if (Math.Abs(formRect.Top - toRect.Bottom) <= Math.Abs(formOffsetPoint.Y) && bInsideStick)
-                    {	// Stick Top to Bottom
-                        formOffsetPoint.Y = toRect.Bottom - formRect.Top;
-                    }
-                    if (Math.Abs(formRect.Top + formRect.Height - toRect.Top) <= Math.Abs(formOffsetPoint.Y) && bInsideStick)
-                    {	// snap Bottom to Top
-                        formOffsetPoint.Y = toRect.Top - formRect.Height - formRect.Top;
-                    }
-                }
-
-                // try to snap top 2 top also
-                if (Math.Abs(formRect.Top - toRect.Top) <= Math.Abs(formOffsetPoint.Y))
-                {	// top 2 top
-                    formOffsetPoint.Y = toRect.Top - formRect.Top;
-                }
-                if (Math.Abs(formRect.Top + formRect.Height - toRect.Top - toRect.Height) <= Math.Abs(formOffsetPoint.Y))
-                {	// bottom 2 bottom
-                    formOffsetPoint.Y = toRect.Top + toRect.Height - formRect.Height - formRect.Top;
-                }
-            }
+            POINT pt;
+            GetCursorPos(out pt);
+            var point = new System.Windows.Point(pt.X, pt.Y);
+            return point;
         }
-
 
         #region Additional Dependency Properties
         /// <summary>

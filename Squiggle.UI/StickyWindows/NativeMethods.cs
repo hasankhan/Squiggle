@@ -207,6 +207,7 @@ namespace Squiggle.UI.StickyWindows
             GetTextLength = 0x000e,
             Paint = 0x000f,
             Close = 0x0010,
+            EnterSizeMove = 0x0231,
             QueryEndSession = 0x0011,
             Quit = 0x0012,
             QueryOpen = 0x0013,
@@ -535,16 +536,10 @@ namespace Squiggle.UI.StickyWindows
         [StructLayout(LayoutKind.Sequential)]
         public struct WindowPosition
         {
-            public IntPtr Handle;
-            public IntPtr HandleInsertAfter;
             public int Left;
             public int Top;
-            public int Width;
-            public int Height;
-            public WindowPositionFlags Flags;
-
-            public int Right { get { return Left + Width; } }
-            public int Bottom { get { return Top + Height; } }
+            public int Right;
+            public int Bottom;
         }
 
         /// <summary>A Win32 Margins structure for the DWM api calls.
