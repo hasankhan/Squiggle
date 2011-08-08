@@ -9,19 +9,25 @@ namespace Squiggle.UI.StickyWindows
 {
     public class StickyWindow: Window
     {
+        bool loaded;
+
         public StickyWindow()
-        {
-            WindowManager.RegisterWindow(this);
-            var nativeBehaviors = new NativeBehaviors(this);
-            var snapBehavior = new SnapToBehavior();
-            snapBehavior.OriginalForm = this;
-            nativeBehaviors.Add(snapBehavior);
+        {            
             this.Loaded += new RoutedEventHandler(StickyWindow_Loaded);
         }
 
         void StickyWindow_Loaded(object sender, RoutedEventArgs e)
         {
             AdjustLocation();
+            if (loaded)
+                return;
+
+            WindowManager.RegisterWindow(this);
+            var nativeBehaviors = new NativeBehaviors(this);
+            var snapBehavior = new SnapToBehavior();
+            snapBehavior.OriginalForm = this;
+            nativeBehaviors.Add(snapBehavior);
+            loaded = true;
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -33,18 +39,19 @@ namespace Squiggle.UI.StickyWindows
 
         void AdjustLocation()
         {
-            var bottomLeft = new System.Drawing.Point((int)this.Left + (int)this.Width, (int)this.Top + (int)this.Height);
-            var screen = Screen.FromPoint(bottomLeft);
+            var bottomRight = new System.Drawing.Point((int)this.Left + (int)this.Width, (int)this.Top + (int)this.Height);
+            var topLeft = new System.Drawing.Point((int)this.Left, (int)this.Top);
+            var screen = Screen.FromPoint(topLeft);
 
-            if (bottomLeft.X > screen.Bounds.Right)
-                this.Left = screen.Bounds.Right - Width;
-            else if (this.Left < screen.Bounds.Left)
-                this.Left = screen.Bounds.Left;
+            if (bottomRight.X > screen.WorkingArea.Right)
+                this.Left = screen.WorkingArea.Right - this.Width;
+            else if (this.Left < screen.WorkingArea.Left)
+                this.Left = screen.WorkingArea.Left;
 
-            if (bottomLeft.Y > screen.Bounds.Bottom)
-                this.Top = screen.Bounds.Bottom - Height;
-            else if (this.Top < screen.Bounds.Top)
-                this.Top = screen.Bounds.Top;
+            if (bottomRight.Y > screen.WorkingArea.Bottom)
+                this.Top = screen.WorkingArea.Bottom - this.Height;
+            else if (this.Top < screen.WorkingArea.Top)
+                this.Top = screen.WorkingArea.Top;
         }    
     }
 }
