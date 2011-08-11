@@ -31,11 +31,15 @@
 
         <Border Style="{StaticResource BorderStyle}">
         <Grid Focusable="True">            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="80" />
+            </Grid.ColumnDefinitions>
             <TextBox AllowDrop="True" x:Name="txtMessage"
                     TabIndex="0"  Style="{StaticResource TextStyle}" 
                     AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
                     TextChanged="txtMessage_TextChanged" PreviewKeyDown="txtMessage_PreviewKeyDown" TextWrapping="Wrap" />
-            <Button TabIndex="1" x:Name="btnSend" IsEnabled="False" HorizontalAlignment="Right" Height="60"
+            <Button TabIndex="1" x:Name="btnSend" IsEnabled="False" HorizontalAlignment="Right" Height="60" Grid.Column="1"
                     Content="{DynamicResource ChatWindow_SendButton}" ToolTip="{DynamicResource ChatWindow_SendButtonToolTip}" 
         Style="{StaticResource ButtonStyle}" Click="btnSend_Click" />
         </Grid>
