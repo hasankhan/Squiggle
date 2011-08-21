@@ -124,7 +124,7 @@
                                 <CollectionContainer Collection="{Binding Source={StaticResource AvailableUserStatus}}"/>
                                 <Separator IsEnabled="False"/>
                                 <ComboBoxItem PreviewMouseLeftButtonDown="ComboBoxItem_PreviewMouseLeftButtonDown"
-                                              PreviewKeyDown="ComboBoxItem_PreviewKeyDown" Content="{StaticResource MainWindow_TrayMenu_SignOut}" />
+                                              PreviewKeyDown="ComboBoxItem_PreviewKeyDown" Content="{DynamicResource MainWindow_TrayMenu_SignOut}" />
                             </CompositeCollection>
                         </ComboBox.ItemsSource>
                         <ComboBox.ItemsPanel>
