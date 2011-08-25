@@ -111,7 +111,7 @@
                            VerticalOffset="0"  Placement="Left" Width="350" Height="170"
                            AllowsTransparency="true" Focusable="true" StaysOpen="true">
                     <Popup.IsOpen>
-                        <MultiBinding Converter="{StaticResource orConverter}">
+                        <MultiBinding Converter="{StaticResource orConverter}" Mode="OneWay">
                             <Binding ElementName="contactBorder" Path="IsMouseOver" Mode="OneWay" />
                             <Binding ElementName="popup" Path="IsMouseOver" Mode="OneWay" />
                         </MultiBinding>
