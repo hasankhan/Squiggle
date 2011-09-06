@@ -11,5 +11,6 @@ namespace Squiggle.UI.Settings
         public bool ShowEmoticons { get; set; }
         public bool SpellCheck { get; set; }
         public bool StealFocusOnNewMessage { get; set; }
+        public bool ClearChatOnWindowClose { get; set; }
     }
 }

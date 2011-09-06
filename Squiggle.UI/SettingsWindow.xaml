@@ -175,11 +175,13 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <CheckBox Grid.Row="0" Margin="5,0,0,5" Content="{StaticResource SettingsWindow_ChatTab_ShowEmoticons}" IsChecked="{Binding Path=ChatSettings.ShowEmoticons}" />
                             <CheckBox Grid.Row="1" Margin="5,0,0,5" Content="{StaticResource SettingsWindow_ChatTab_EnableLogging}" IsChecked="{Binding Path=ChatSettings.EnableLogging}" />
                             <CheckBox Grid.Row="2" Margin="5,0,0,5" Content="{StaticResource SettingsWindow_ChatTab_SpellCheck}" IsChecked="{Binding Path=ChatSettings.SpellCheck}" />
                             <CheckBox Grid.Row="3" Margin="5,0,0,5" Content="{StaticResource SettingsWindow_ChatTab_StealFocusOnNewMessage}" IsChecked="{Binding Path=ChatSettings.StealFocusOnNewMessage}" />
+                            <CheckBox Grid.Row="4" Margin="5,0,0,5" Content="{StaticResource SettingsWindow_ChatTab_ClearChatOnWindowClose}" IsChecked="{Binding Path=ChatSettings.ClearChatOnWindowClose}" />
                         </Grid>
                     </Border>
                     <Grid Grid.Row="2">

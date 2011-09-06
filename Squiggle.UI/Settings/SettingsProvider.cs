@@ -127,6 +127,7 @@ namespace Squiggle.UI.Settings
             Settings.ChatSettings.ShowEmoticons = Properties.Settings.Default.ShowEmoticons;
             Settings.ChatSettings.SpellCheck = Properties.Settings.Default.SpellCheck;
             Settings.ChatSettings.StealFocusOnNewMessage = Properties.Settings.Default.StealFocusOnNewMessage;
+            Settings.ChatSettings.ClearChatOnWindowClose = Properties.Settings.Default.ClearChatOnWindowClose;
             Settings.ChatSettings.EnableLogging = reader.GetSetting(SettingKey.EnableChatLogging, false);
         }
 
@@ -182,8 +183,8 @@ namespace Squiggle.UI.Settings
             Properties.Settings.Default.ShowEmoticons = Settings.ChatSettings.ShowEmoticons;
             Properties.Settings.Default.SpellCheck = Settings.ChatSettings.SpellCheck;
             Properties.Settings.Default.StealFocusOnNewMessage = Settings.ChatSettings.StealFocusOnNewMessage;
+            Properties.Settings.Default.ClearChatOnWindowClose = Settings.ChatSettings.ClearChatOnWindowClose;
             reader.SetSetting(SettingKey.EnableChatLogging, Settings.ChatSettings.EnableLogging);
-            
         }
 
         void SaveContactSettings()

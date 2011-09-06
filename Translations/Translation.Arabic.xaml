@@ -65,6 +65,7 @@
   <sys:String x:Key="SettingsWindow_ChatTab_ShowEmoticons">تظهر الرموز</sys:String>
   <sys:String x:Key="SettingsWindow_ChatTab_SpellCheck">تمكين التدقيق الإملائي</sys:String>
   <sys:String x:Key="SettingsWindow_ChatTab_StealFocusOnNewMessage">سرقة التركيز على رسالة جديدة.</sys:String>
+  <sys:String x:Key="SettingsWindow_ChatTab_ClearChatOnWindowClose">دردشة واضحة على وثيقة الإطار.</sys:String>
   <sys:String x:Key="SettingsWindow_ContactsTab_Heading">الاتصالات</sys:String>
   <sys:String x:Key="SettingsWindow_ContactsTab_SubHeading">ضبط الأسماء</sys:String>
   <sys:String x:Key="SettingsWindow_ContactsTab_SortBy">اتصالات المرتبة حسب :</sys:String>

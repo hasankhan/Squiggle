@@ -65,6 +65,7 @@
   <sys:String x:Key="SettingsWindow_ChatTab_ShowEmoticons">Emoticons anzeigen</sys:String>
   <sys:String x:Key="SettingsWindow_ChatTab_SpellCheck">Aktivieren Sie die Rechtschreibung prüfen</sys:String>
   <sys:String x:Key="SettingsWindow_ChatTab_StealFocusOnNewMessage">Steal Fokus auf neue Nachricht.</sys:String>
+  <sys:String x:Key="SettingsWindow_ChatTab_ClearChatOnWindowClose">Klare Chat auf Fenster zu schließen.</sys:String>
   <sys:String x:Key="SettingsWindow_ContactsTab_Heading">Kontakt</sys:String>
   <sys:String x:Key="SettingsWindow_ContactsTab_SubHeading">Impressum Einstellungen</sys:String>
   <sys:String x:Key="SettingsWindow_ContactsTab_SortBy">Sortieren von Kontakten nach:</sys:String>

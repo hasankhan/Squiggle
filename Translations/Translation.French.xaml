@@ -65,6 +65,7 @@
   <sys:String x:Key="SettingsWindow_ChatTab_ShowEmoticons">Afficher les émoticônes</sys:String>
   <sys:String x:Key="SettingsWindow_ChatTab_SpellCheck">Activer la vérification orthographique</sys:String>
   <sys:String x:Key="SettingsWindow_ChatTab_StealFocusOnNewMessage">Steal se concentrer sur un nouveau message.</sys:String>
+  <sys:String x:Key="SettingsWindow_ChatTab_ClearChatOnWindowClose">Effacer chat sur fermer la fenêtre.</sys:String>
   <sys:String x:Key="SettingsWindow_ContactsTab_Heading">Contacts</sys:String>
   <sys:String x:Key="SettingsWindow_ContactsTab_SubHeading">Paramètres Contacts</sys:String>
   <sys:String x:Key="SettingsWindow_ContactsTab_SortBy">Trier les contacts par:</sys:String>
@@ -150,7 +151,7 @@
   <sys:String x:Key="HistoryViewer_FromDate">Depuis la date:</sys:String>
   <sys:String x:Key="HistoryViewer_ToDate">À ce jour:</sys:String>
   <sys:String x:Key="HistoryViewer_Message">Message:</sys:String>
-  <sys:String x:Key="HistoryViewer_Search">Recherche</sys:String>
+  <sys:String x:Key="HistoryViewer_Search">Rechercher</sys:String>
   <sys:String x:Key="HistoryViewer_Results_Start">Démarrer</sys:String>
   <sys:String x:Key="HistoryViewer_Results_End">Fin</sys:String>
   <sys:String x:Key="HistoryViewer_Results_Participants">Les participants</sys:String>

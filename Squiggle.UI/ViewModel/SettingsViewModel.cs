@@ -36,6 +36,7 @@ namespace Squiggle.UI.ViewModel
 
             ChatSettings.SpellCheck = settings.ChatSettings.SpellCheck;
             ChatSettings.StealFocusOnNewMessage = settings.ChatSettings.StealFocusOnNewMessage;
+            ChatSettings.ClearChatOnWindowClose = settings.ChatSettings.ClearChatOnWindowClose;
             ChatSettings.EnableLogging = settings.ChatSettings.EnableLogging;
             
             ContactSettings.ContactListSortField = settings.ContactSettings.ContactListSortField;
@@ -70,6 +71,7 @@ namespace Squiggle.UI.ViewModel
             settings.GeneralSettings.ShowPopups = GeneralSettings.ShowPopups;
             settings.GeneralSettings.AudioAlerts = GeneralSettings.AudioAlerts;
             settings.ChatSettings.StealFocusOnNewMessage = ChatSettings.StealFocusOnNewMessage;
+            settings.ChatSettings.ClearChatOnWindowClose = ChatSettings.ClearChatOnWindowClose;
             settings.ChatSettings.SpellCheck = ChatSettings.SpellCheck;
             settings.ChatSettings.EnableLogging = ChatSettings.EnableLogging;
             settings.ContactSettings.GroupContacts = ContactSettings.GroupContacts;
@@ -129,6 +131,7 @@ namespace Squiggle.UI.ViewModel
         public bool SpellCheck { get; set; }
         public bool ShowEmoticons { get; set; }
         public bool StealFocusOnNewMessage { get; set; }
+        public bool ClearChatOnWindowClose { get; set; }
     }
 
     class ContactSettingsViewModel

@@ -65,6 +65,7 @@
   <sys:String x:Key="SettingsWindow_ChatTab_ShowEmoticons">显示表情符号</sys:String>
   <sys:String x:Key="SettingsWindow_ChatTab_SpellCheck">启用拼写检查</sys:String>
   <sys:String x:Key="SettingsWindow_ChatTab_StealFocusOnNewMessage">抢断重点放在新的消息。</sys:String>
+  <sys:String x:Key="SettingsWindow_ChatTab_ClearChatOnWindowClose">清除关闭聊天窗口。</sys:String>
   <sys:String x:Key="SettingsWindow_ContactsTab_Heading">联系</sys:String>
   <sys:String x:Key="SettingsWindow_ContactsTab_SubHeading">联系人设置</sys:String>
   <sys:String x:Key="SettingsWindow_ContactsTab_SortBy">联系人排序：</sys:String>

@@ -837,7 +837,7 @@ namespace Squiggle.UI
             if (voiceController.VoiceChatContext != null)
                 voiceController.VoiceChatContext.Cancel();
 
-            if (!closing && chatStarted && !IsGroupChat)
+            if (!closing && chatStarted && !(IsGroupChat || SettingsProvider.Current.Settings.ChatSettings.ClearChatOnWindowClose))
             {
                 e.Cancel = true;
                 this.WindowState = System.Windows.WindowState.Minimized;
