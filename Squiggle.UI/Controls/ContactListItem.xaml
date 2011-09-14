@@ -155,7 +155,7 @@
                                     </StackPanel>
                                     <Image Grid.Column="1" Grid.RowSpan="2" Source="{Binding Properties.DisplayImage}" Margin="5" MaxHeight="100" MaxWidth="100" />
                                     <ScrollViewer Grid.Row="1" DockPanel.Dock="Left" VerticalScrollBarVisibility="Auto" >
-                                        <TextBlock Margin="10,0,0,0" Foreground="#FF9A9C9D" Text="{Binding Properties.DisplayMessage}" TextWrapping="WrapWithOverflow"/>
+                                        <TextBox Margin="10,0,0,0" Foreground="#FF9A9C9D" IsReadOnly="True" BorderThickness="0" Text="{Binding Properties.DisplayMessage}" TextWrapping="WrapWithOverflow"/>
                                     </ScrollViewer>
                                 </Grid>
                             </Border>
