@@ -132,6 +132,7 @@
     <Compile Include="Services\Chat\Audio\EchoFilterWaveProvider.cs" />
     <Compile Include="Services\Chat\Audio\Gsm610ChatCodec.cs" />
     <Compile Include="Services\Chat\Audio\VoiceChat.cs" />
+    <Compile Include="Services\Chat\ChatExtensions.cs" />
     <Compile Include="Services\Chat\FileTransfer\FileInviteData.cs">
       <SubType>Code</SubType>
     </Compile>
