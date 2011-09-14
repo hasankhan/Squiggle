@@ -32,6 +32,7 @@ namespace Squiggle.Chat.Services.Chat
         IEnumerable<SquiggleEndPoint> RemoteUsers { get; }
         Guid ID { get; }
         bool IsGroupSession { get; }
+        IEnumerable<IAppHandler> AppSessions { get; }
 
         void SendBuzz();
         void SendMessage(string fontName, int fontSize, Color color, FontStyle fontStyle, string message);

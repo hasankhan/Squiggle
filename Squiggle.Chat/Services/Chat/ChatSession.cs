@@ -26,6 +26,7 @@ namespace Squiggle.Chat.Services.Chat
         ChatHost localHost;
         HashSet<SquiggleEndPoint> remoteUsers;
         Dictionary<string, RemoteHost> remoteHosts;
+        List<IAppHandler> appSessions;
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
         public event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived = delegate { };
@@ -42,9 +43,15 @@ namespace Squiggle.Chat.Services.Chat
         {
             get { return remoteUsers; }
         }
+
         public bool IsGroupSession
         {
             get { return remoteUsers.Count > 1; }
+        }
+
+        public IEnumerable<IAppHandler> AppSessions
+        {
+            get { return appSessions; }
         }
 
         public ChatSession(Guid sessionID, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser): this(sessionID, localHost, localUser, Enumerable.Repeat(remoteUser, 1)) { }
@@ -64,6 +71,8 @@ namespace Squiggle.Chat.Services.Chat
             localHost.UserLeft += new EventHandler<SessionEventArgs>(localHost_UserLeft);
             localHost.SessionInfoRequested += new EventHandler<SessionInfoRequestedEventArgs>(localHost_SessionInfoRequested);
             remoteHosts = new Dictionary<string, RemoteHost>();
+            appSessions = new List<IAppHandler>();
+
             CreateRemoteHosts();
         }
 
@@ -156,6 +165,7 @@ namespace Squiggle.Chat.Services.Chat
                 Sender = e.Sender,
                 Invitation = invitation
             });
+            OnAppSessionStarted((AppHandler)invitation);
         }
 
         void OnFileTransferInvite(AppInvitationReceivedEventArgs e)
@@ -168,6 +178,7 @@ namespace Squiggle.Chat.Services.Chat
                 Sender = e.Sender,
                 Invitation = invitation
             });
+            OnAppSessionStarted((AppHandler)invitation);
         }
 
         void localHost_UserTyping(object sender, SessionEventArgs e)
@@ -205,6 +216,7 @@ namespace Squiggle.Chat.Services.Chat
             RemoteHost remoteHost = PrimaryHost;
             long size = content.Length;
             var transfer = new FileTransfer.FileTransfer(ID, remoteHost.Host, localHost, localUser, remoteHost.EndPoint, name, size, content);
+            OnAppSessionStarted(transfer);
             transfer.Start();
             return transfer;
         }
@@ -217,6 +229,7 @@ namespace Squiggle.Chat.Services.Chat
             var chat = new VoiceChat(ID, remoteHost.Host, localHost, localUser, remoteHost.EndPoint);
             chat.Dispatcher = dispatcher;
             chat.Start();
+            OnAppSessionStarted(chat);
             return chat;
         }
 
@@ -303,6 +316,18 @@ namespace Squiggle.Chat.Services.Chat
                 remoteUsers.Add(user);
 
             CreateRemoteHosts();
+        }
+
+        void OnAppSessionStarted(AppHandler handler)
+        {
+            appSessions.Add(handler);
+            handler.TransferFinished += new EventHandler(handler_TransferFinished);
+        }
+
+        void handler_TransferFinished(object sender, EventArgs e)
+        {
+            var handler = (AppHandler)sender;
+            appSessions.Remove(handler);
         }
 
         public override bool Equals(object obj)

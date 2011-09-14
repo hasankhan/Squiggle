@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Net;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Squiggle.Chat.Services.Chat
 {
@@ -12,6 +14,7 @@ namespace Squiggle.Chat.Services.Chat
     {
         void Start();
         void Stop();
+        IEnumerable<IChatSession> Sessions { get; }
         IChatSession CreateSession(SquiggleEndPoint endpoint);
         event EventHandler<ChatStartedEventArgs> ChatStarted;
     }

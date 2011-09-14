@@ -25,6 +25,11 @@ namespace Squiggle.Chat.Services.Chat
 
         #region IChatService Members
 
+        public IEnumerable<IChatSession> Sessions
+        {
+            get { return chatSessions; }
+        }
+
         public IChatSession CreateSession(SquiggleEndPoint endPoint)
         {
             IChatSession session = chatSessions.Find(s => !s.IsGroupSession && s.RemoteUsers.Contains(endPoint));

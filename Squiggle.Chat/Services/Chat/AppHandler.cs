@@ -10,7 +10,7 @@ using System.Windows.Threading;
 
 namespace Squiggle.Chat.Services.Chat
 {
-    abstract class AppHandler
+    abstract class AppHandler: IAppHandler
     {
         IChatHost remoteHost;
         SquiggleEndPoint localUser;

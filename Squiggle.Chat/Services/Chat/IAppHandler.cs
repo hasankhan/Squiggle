@@ -16,7 +16,7 @@ namespace Squiggle.Chat.Services.Chat
         event EventHandler TransferFinished;
         event EventHandler<ProgressChangedEventArgs> ProgressChanged;
         event EventHandler<ErrorEventArgs> Error;
-        
+        Guid AppId { get; }
         void Cancel();
     }
 }
