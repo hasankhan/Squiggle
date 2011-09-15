@@ -13,8 +13,6 @@ namespace Squiggle.UI.Settings
 {
     class SettingsProvider
     {
-        ConfigReader reader;
-
         public static SettingsProvider Current { get; private set; }
 
         static SettingsProvider()
@@ -26,7 +24,6 @@ namespace Squiggle.UI.Settings
 
         public SettingsProvider()
         {
-            reader = new ConfigReader();
             Load();
         }
 
@@ -36,20 +33,23 @@ namespace Squiggle.UI.Settings
         {
             if (Settings == null)
                 Settings = new SquiggleSettings();
-            LoadGeneralSettings();
-            LoadPersonalSettings();
-            LoadChatSettings();
+            var reader = new ConfigReader();
+
+            LoadGeneralSettings(reader);
+            LoadPersonalSettings(reader);
+            LoadChatSettings(reader);
             LoadContactSettings();
-            LoadConnectionSettings();
+            LoadConnectionSettings(reader);
         }
 
         public void Save()
         {
-            SaveGeneralSettings();
-            SavePersonalSettings();
-            SaveChatSettings();
+            var reader = new ConfigReader();
+            SaveGeneralSettings(reader);
+            SavePersonalSettings(reader);
+            SaveChatSettings(reader);
             SaveContactSettings();
-            SaveConnectionSettings();
+            SaveConnectionSettings(reader);
 
             Properties.Settings.Default.Save();
             reader.Save();
@@ -63,7 +63,7 @@ namespace Squiggle.UI.Settings
             Save();
         }
 
-        private void LoadConnectionSettings()
+        private void LoadConnectionSettings(ConfigReader reader)
         {
             Settings.ConnectionSettings.PresenceAddress = reader.GetSetting(SettingKey.PresenceAddress, DefaultValues.PresenceAddress);
             Settings.ConnectionSettings.BindToIP = Properties.Settings.Default.BindToIP;
@@ -86,7 +86,7 @@ namespace Squiggle.UI.Settings
             Settings.ConnectionSettings.PresencePort = reader.GetSetting(SettingKey.PresencePort, DefaultValues.PresencePort);
         }
 
-        private void LoadGeneralSettings()
+        private void LoadGeneralSettings(ConfigReader reader)
         {
             DateTimeOffset firstRun;
             if (!DateTimeOffset.TryParse(Properties.Settings.Default.FirstRun, out firstRun))
@@ -105,7 +105,7 @@ namespace Squiggle.UI.Settings
                 Settings.GeneralSettings.DownloadsFolder = Properties.Settings.Default.DownloadsFolder;
         }
 
-        private void LoadPersonalSettings()
+        private void LoadPersonalSettings(ConfigReader reader)
         {
             Settings.PersonalSettings.RememberMe = !String.IsNullOrEmpty(Properties.Settings.Default.DisplayName);
             Settings.PersonalSettings.DisplayName = Properties.Settings.Default.DisplayName;
@@ -122,7 +122,7 @@ namespace Squiggle.UI.Settings
 
         }
 
-        void LoadChatSettings()
+        void LoadChatSettings(ConfigReader reader)
         {
             Settings.ChatSettings.ShowEmoticons = Properties.Settings.Default.ShowEmoticons;
             Settings.ChatSettings.SpellCheck = Properties.Settings.Default.SpellCheck;
@@ -140,7 +140,7 @@ namespace Squiggle.UI.Settings
             Settings.ContactSettings.ContactListView = Properties.Settings.Default.ContactListView;
         }
 
-        private void SavePersonalSettings()
+        private void SavePersonalSettings(ConfigReader reader)
         {
             Properties.Settings.Default.DisplayName = Settings.PersonalSettings.RememberMe ? Settings.PersonalSettings.DisplayName : String.Empty;
             Properties.Settings.Default.DisplayMessage = Settings.PersonalSettings.RememberMe ? Settings.PersonalSettings.DisplayMessage : String.Empty;
@@ -156,7 +156,7 @@ namespace Squiggle.UI.Settings
             Properties.Settings.Default.FontName = Settings.PersonalSettings.FontName;
         }
 
-        private void SaveConnectionSettings()
+        private void SaveConnectionSettings(ConfigReader reader)
         {
             reader.SetSetting(SettingKey.PresenceAddress, Settings.ConnectionSettings.PresenceAddress);
             Properties.Settings.Default.BindToIP = Settings.ConnectionSettings.BindToIP;
@@ -166,7 +166,7 @@ namespace Squiggle.UI.Settings
             Properties.Settings.Default.ClientID = Settings.ConnectionSettings.ClientID;
         }
 
-        private void SaveGeneralSettings()
+        private void SaveGeneralSettings(ConfigReader reader)
         {
             Properties.Settings.Default.MessagePanelHeight = Settings.GeneralSettings.MessagePanelHeight;
             Properties.Settings.Default.FirstRun = Settings.GeneralSettings.FirstRun.ToString();
@@ -178,7 +178,7 @@ namespace Squiggle.UI.Settings
             reader.SetSetting(SettingKey.EnableStatusLogging, Settings.GeneralSettings.EnableStatusLogging);
         }
 
-        void SaveChatSettings()
+        void SaveChatSettings(ConfigReader reader)
         {
             Properties.Settings.Default.ShowEmoticons = Settings.ChatSettings.ShowEmoticons;
             Properties.Settings.Default.SpellCheck = Settings.ChatSettings.SpellCheck;

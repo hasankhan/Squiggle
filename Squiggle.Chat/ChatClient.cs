@@ -6,6 +6,7 @@ using Squiggle.Chat.Services.Chat;
 using Squiggle.Chat.Services.Presence;
 using Squiggle.Utilities;
 using Squiggle.Chat.History;
+using System.Linq;
 
 namespace Squiggle.Chat
 {
@@ -29,6 +30,10 @@ namespace Squiggle.Chat
         }
 
         public bool LoggedIn { get; private set; }
+        public bool VoiceChatActive
+        {
+            get { return chatService.Coalesce(service => service.Sessions.Any(s => s.HasVoiceChat()), false); }
+        }
 
         public bool EnableLogging { get; set; }
 

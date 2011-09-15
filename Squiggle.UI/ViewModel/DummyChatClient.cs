@@ -38,6 +38,11 @@ namespace Squiggle.UI.ViewModel
             get { return false; }
         }
 
+        public bool VoiceChatActive
+        {
+            get { return false; }
+        }
+
         public IChat StartChat(Buddy buddy)
         {
             throw new NotImplementedException();

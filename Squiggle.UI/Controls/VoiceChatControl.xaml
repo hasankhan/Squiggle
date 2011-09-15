@@ -10,9 +10,9 @@
                 <Image Source="..\Images\vc-startcall.png"/>
             </Viewbox>
             <TextBlock x:Name="txbWaitingReceivedAcceptance" Margin="5" />
-            <Button Content="Accept" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="5,0,0,0" Click="Accept_Click" 
+            <Button x:Name="btnAccept" Content="{StaticResource VoiceChat_Accept}" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="5,0,0,0" Click="Accept_Click" 
                             Template="{DynamicResource BlackGlassButton}" Foreground="White"/>
-            <Button Content="Reject" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="5,0,0,0" Click="Reject_Click"
+            <Button Content="{StaticResource VoiceChat_Reject}" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="5,0,0,0" Click="Reject_Click"
                             Template="{DynamicResource BlackGlassButton}" Foreground="White"/>
         </StackPanel>
         <StackPanel x:Name="stkWaitingAcceptance" Orientation="Horizontal" Visibility="Hidden">

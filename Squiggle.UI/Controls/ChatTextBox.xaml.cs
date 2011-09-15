@@ -92,7 +92,7 @@ namespace Squiggle.UI.Controls
             sentMessages.FindScrollViewer().ScrollToBottom();
         }
 
-        public void AddFileReceiveRequest(string user, IFileTransfer fileTransfer, string downloadsFolder)
+        public void AddFileReceiveRequest(string user, IFileTransfer fileTransfer, string downloadsFolder, bool alreadyInChat)
         {
             var transferUI = new FileTarnsferControl(fileTransfer, false);
             transferUI.DownloadFolder = downloadsFolder;
@@ -109,12 +109,12 @@ namespace Squiggle.UI.Controls
 
         public void AddVoiceChatSentRequest(IVoiceChat voiceChat, string buddyName)
         {
-            AddVoiceChatRequest(voiceChat, buddyName, true);
+            AddVoiceChatRequest(voiceChat, buddyName, true, false);
         }
 
-        public void AddVoiceChatReceivedRequest(IVoiceChat voiceChat, string buddyName)
+        public void AddVoiceChatReceivedRequest(IVoiceChat voiceChat, string buddyName, bool alreadyInChat)
         {
-            AddVoiceChatRequest(voiceChat, buddyName, false);
+            AddVoiceChatRequest(voiceChat, buddyName, false, alreadyInChat);
         }
 
         public void SaveTo(string fileName)
@@ -129,9 +129,9 @@ namespace Squiggle.UI.Controls
             para.Inlines.Clear();
         }
 
-        void AddVoiceChatRequest(IVoiceChat voiceChat, string buddyName, bool sending)
+        void AddVoiceChatRequest(IVoiceChat voiceChat, string buddyName, bool sending, bool alreadyInChat)
         {
-            var voiceChatUI = new VoiceChatControl(voiceChat, buddyName, sending);
+            var voiceChatUI = new VoiceChatControl(voiceChat, buddyName, sending, alreadyInChat);
             para.Inlines.Add(new InlineUIContainer(voiceChatUI));
             para.Inlines.Add(new LineBreak());
         }

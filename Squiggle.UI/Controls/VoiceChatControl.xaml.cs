@@ -26,6 +26,7 @@ namespace Squiggle.UI.Controls
         IVoiceChat voiceChat;
         bool sending;
         string buddyName;
+        bool alreadyInChat;
 
         public string Status { get; private set; }
 
@@ -34,11 +35,12 @@ namespace Squiggle.UI.Controls
             InitializeComponent();
         }
 
-        public VoiceChatControl(IVoiceChat voiceChat, string buddyName, bool sending) : this()
+        public VoiceChatControl(IVoiceChat voiceChat, string buddyName, bool sending, bool alreadyInChat) : this()
         {
             this.voiceChat = voiceChat;
             this.sending = sending;
             this.buddyName = buddyName;
+            this.alreadyInChat = alreadyInChat;
 
             this.voiceChat.TransferCancelled += new EventHandler(voiceChat_TransferCancelled);
             this.voiceChat.TransferCompleted += new EventHandler(voiceChat_TransferCompleted);
@@ -101,6 +103,8 @@ namespace Squiggle.UI.Controls
 
             stkAccepted.Visibility = Visibility.Hidden;
             stkInvitation.Visibility = sending ? Visibility.Hidden : Visibility.Visible;
+            btnAccept.IsEnabled = !alreadyInChat;
+
             stkWaitingAcceptance.Visibility = sending ? Visibility.Visible : Visibility.Hidden;
             stkCompleted.Visibility = Visibility.Hidden;
         }        

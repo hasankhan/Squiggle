@@ -50,7 +50,7 @@ namespace Squiggle.Utilities
 
         public void Save()
         {
-            config.Save(ConfigurationSaveMode.Full);
+            config.Save(ConfigurationSaveMode.Modified);
         }
 
         static T Cast<T>(object value)

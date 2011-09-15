@@ -64,6 +64,8 @@ namespace Squiggle.UI.Resources
         public string Error_InvalidDate { get; set; }
         public string HistoryViewer_ConfirmClear { get; set; }
         public string HistoryViewer_ConfirmDelete { get; set; }
+        public string ChatWindow_AlreadyInVoiceChat { get; set; }
+        public string ChatWindow_VoiceChatNotAllowedInGroup { get; set; }
         
         public static Translation Instance { get; set; }
 
