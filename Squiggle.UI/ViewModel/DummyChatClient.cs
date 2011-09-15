@@ -38,9 +38,9 @@ namespace Squiggle.UI.ViewModel
             get { return false; }
         }
 
-        public bool VoiceChatActive
+        public IVoiceChat ActiveVoiceChat
         {
-            get { return false; }
+            get { return null; }
         }
 
         public IChat StartChat(Buddy buddy)

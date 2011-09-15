@@ -108,6 +108,7 @@
     <Compile Include="Chat.cs" />
     <Compile Include="ChatClient.cs" />
     <Compile Include="ActionQueue.cs" />
+    <Compile Include="ClientExtensions.cs" />
     <Compile Include="FileTransferCollection.cs" />
     <Compile Include="History\DAL\Event.cs" />
     <Compile Include="History\DAL\EventType.cs" />

@@ -469,7 +469,7 @@ namespace Squiggle.UI
             Dispatcher.Invoke(() =>
             {
                 string downloadsFolder = SettingsProvider.Current.Settings.GeneralSettings.DownloadsFolder;
-                chatTextBox.AddFileReceiveRequest(e.Sender.DisplayName, e.Invitation, downloadsFolder, MainWindow.Instance.ChatClient.VoiceChatActive);
+                chatTextBox.AddFileReceiveRequest(e.Sender.DisplayName, e.Invitation, downloadsFolder, MainWindow.Instance.ChatClient.IsVoiceChatActive());
                 fileTransfers.Add(e.Invitation);
                 FlashWindow();
             });
@@ -479,7 +479,7 @@ namespace Squiggle.UI
         {
             Dispatcher.Invoke(() =>
             {
-                chatTextBox.AddVoiceChatReceivedRequest(e.Invitation, e.Sender.DisplayName, MainWindow.Instance.ChatClient.VoiceChatActive);
+                chatTextBox.AddVoiceChatReceivedRequest(e.Invitation, e.Sender.DisplayName, MainWindow.Instance.ChatClient.IsVoiceChatActive());
                 voiceController.VoiceChatContext = e.Invitation;
                 e.Invitation.Dispatcher = Dispatcher;
                 FlashWindow();
@@ -539,7 +539,7 @@ namespace Squiggle.UI
                 chatTextBox.AddError(Translation.Instance.ChatWindow_VoiceChatNotAllowedInGroup, String.Empty);
                 return null;
             }
-            else if (MainWindow.Instance.ChatClient.VoiceChatActive)
+            else if (MainWindow.Instance.ChatClient.IsVoiceChatActive())
             {
                 chatTextBox.AddError(Translation.Instance.ChatWindow_AlreadyInVoiceChat, String.Empty);
                 return null;

@@ -30,9 +30,9 @@ namespace Squiggle.Chat
         }
 
         public bool LoggedIn { get; private set; }
-        public bool VoiceChatActive
+        public IVoiceChat ActiveVoiceChat
         {
-            get { return chatService.Coalesce(service => service.Sessions.Any(s => s.HasVoiceChat()), false); }
+            get { return chatService.Coalesce(service => service.Sessions.SelectMany(s => s.AppSessions.OfType<IVoiceChat>()).FirstOrDefault(), null); }
         }
 
         public bool EnableLogging { get; set; }

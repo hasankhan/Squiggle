@@ -129,6 +129,9 @@ namespace Squiggle.UI.Controls
 
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
+            if (MainWindow.Instance.ChatClient.ActiveVoiceChat != voiceChat)
+                return;
+
             voiceChat.Accept();
             Dispatcher.Invoke(() =>
                 {
