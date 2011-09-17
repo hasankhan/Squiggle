@@ -140,7 +140,7 @@
                     </ComboBox>
                 </StackPanel>
                 <controls:DisplayMessageBox DataContext="{Binding}" Margin="0,-5,0,0" VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="1" Width="Auto" SelfUser="{Binding}"/>
-                <controls:UpdateNotification Grid.Row="3" Grid.ColumnSpan="2" />
+                <controls:UpdateNotification Grid.Row="3" DataContext="{Binding DataContext,RelativeSource={RelativeSource AncestorType=UserControl}}"  Grid.ColumnSpan="2" />
             </Grid>
         </Border>
         <Grid Grid.Row="1" >
