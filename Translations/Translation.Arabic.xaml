@@ -116,6 +116,8 @@
   <sys:String x:Key="ChatWindow_BroadCastChatTitle">بث دردشة</sys:String>
   <sys:String x:Key="ChatWindow_LastMessageAt">آخر رسالة وردت في</sys:String>
   <sys:String x:Key="ChatWindow_InviteContact">دعوة شخص إلى هذه المحادثة.</sys:String>
+  <sys:String x:Key="ChatWindow_AlreadyInVoiceChat">لا يمكن إلا دورة واحدة الدردشة الصوتية تكون نشطة في وقت واحد.</sys:String>
+  <sys:String x:Key="ChatWindow_VoiceChatNotAllowedInGroup">لا يمكن أن تبدأ الدردشة الصوتية في محادثة المجموعة.</sys:String>
   <sys:String x:Key="Popup_NewMessage">رسالة جديدة</sys:String>
   <sys:String x:Key="ContactList_SearchContacts">ابحث عن الاتصالات...</sys:String>
   <sys:String x:Key="ContactListItem_ChatButton">دردشة</sys:String>
@@ -190,4 +192,6 @@
   <sys:String x:Key="VoiceChat_Ended">انتهت الدردشة الصوتية</sys:String>
   <sys:String x:Key="VoiceChat_ReceivedWaiting">{0} يريد التحدث معك</sys:String>
   <sys:String x:Key="VoiceChat_SentWaiting">انتظار {0} صوت لقبول طلب دردشة</sys:String>
+  <sys:String x:Key="VoiceChat_Accept">قبول</sys:String>
+  <sys:String x:Key="VoiceChat_Reject">رفض</sys:String>
 </ResourceDictionary>

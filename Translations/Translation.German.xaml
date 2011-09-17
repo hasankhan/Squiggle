@@ -116,6 +116,8 @@
   <sys:String x:Key="ChatWindow_BroadCastChatTitle">Broadcast-Chat</sys:String>
   <sys:String x:Key="ChatWindow_LastMessageAt">Letzte Nachricht empfangen zu</sys:String>
   <sys:String x:Key="ChatWindow_InviteContact">Jemanden einladen, dieses Gespräch.</sys:String>
+  <sys:String x:Key="ChatWindow_AlreadyInVoiceChat">Nur ein Voice-Chat-Sitzung können gleichzeitig aktiv sein.</sys:String>
+  <sys:String x:Key="ChatWindow_VoiceChatNotAllowedInGroup">Voice-Chat können nicht in Gruppen-Chat gestartet werden.</sys:String>
   <sys:String x:Key="Popup_NewMessage">Neue Nachricht</sys:String>
   <sys:String x:Key="ContactList_SearchContacts">Suche Kontakte ...</sys:String>
   <sys:String x:Key="ContactListItem_ChatButton">Plaudern</sys:String>
@@ -190,4 +192,6 @@
   <sys:String x:Key="VoiceChat_Ended">Voice-Chat endete</sys:String>
   <sys:String x:Key="VoiceChat_ReceivedWaiting">{0} möchte mit Ihnen sprechen</sys:String>
   <sys:String x:Key="VoiceChat_SentWaiting">Waiting for {0} Voice-Chat-Anfrage akzeptieren</sys:String>
+  <sys:String x:Key="VoiceChat_Accept">Akzeptieren</sys:String>
+  <sys:String x:Key="VoiceChat_Reject">Ablehnen</sys:String>
 </ResourceDictionary>

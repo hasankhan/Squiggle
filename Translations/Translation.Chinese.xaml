@@ -52,7 +52,7 @@
   <sys:String x:Key="SettingsWindow_GeneralTab_Browse">浏览</sys:String>
   <sys:String x:Key="SettingsWindow_PersonalTab_Heading">个人</sys:String>
   <sys:String x:Key="SettingsWindow_PersonalTab_SubHeading">个人设置</sys:String>
-  <sys:String x:Key="SettingsWindow_PersonalTab_DisplayName">输入你的名字，你希望别人看到它：</sys:String>
+  <sys:String x:Key="SettingsWindow_PersonalTab_DisplayName">输入你的名字，你希望别人看到：</sys:String>
   <sys:String x:Key="SettingsWindow_PersonalTab_DisplayImage">更改图片</sys:String>
   <sys:String x:Key="SettingsWindow_PersonalTab_EmailAddress">输入您的电子邮件地址：</sys:String>
   <sys:String x:Key="SettingsWindow_PersonalTab_DisplayMessage">输入您的联系人的个人信息，看到：</sys:String>
@@ -68,7 +68,7 @@
   <sys:String x:Key="SettingsWindow_ChatTab_ClearChatOnWindowClose">清除关闭聊天窗口。</sys:String>
   <sys:String x:Key="SettingsWindow_ContactsTab_Heading">联系</sys:String>
   <sys:String x:Key="SettingsWindow_ContactsTab_SubHeading">联系人设置</sys:String>
-  <sys:String x:Key="SettingsWindow_ContactsTab_SortBy">联系人排序：</sys:String>
+  <sys:String x:Key="SettingsWindow_ContactsTab_SortBy">排序联系人：</sys:String>
   <sys:String x:Key="SettingsWindow_ContactsTab_View">联系列表视图：</sys:String>
   <sys:String x:Key="SettingsWindow_ContactsTab_ShowGroupedContacts">显示分组接触</sys:String>
   <sys:String x:Key="SettingsWindow_ContactsTab_ShowOfflineContacts">显示离线联系人</sys:String>
@@ -112,10 +112,12 @@
   <sys:String x:Key="ChatWindow_YouSentBuzz">您已经发出了嗡嗡声。</sys:String>
   <sys:String x:Key="ChatWindow_BuzzTooEarly">BUZZ不能发送过于频繁。</sys:String>
   <sys:String x:Key="ChatWindow_CouldNotReadFile">无法读取文件</sys:String>
-  <sys:String x:Key="ChatWindow_MakeSureFileNotInUse">。请确保其不使用。</sys:String>
+  <sys:String x:Key="ChatWindow_MakeSureFileNotInUse">。请确保它不是在使用。</sys:String>
   <sys:String x:Key="ChatWindow_BroadCastChatTitle">广播聊天</sys:String>
   <sys:String x:Key="ChatWindow_LastMessageAt">最后收到的消息</sys:String>
   <sys:String x:Key="ChatWindow_InviteContact">邀请某人在这段对话。</sys:String>
+  <sys:String x:Key="ChatWindow_AlreadyInVoiceChat">只有一个语音聊天会话可以被激活一次。</sys:String>
+  <sys:String x:Key="ChatWindow_VoiceChatNotAllowedInGroup">语音聊天无法启动组成员交谈。</sys:String>
   <sys:String x:Key="Popup_NewMessage">新讯息</sys:String>
   <sys:String x:Key="ContactList_SearchContacts">搜索联系人... ...</sys:String>
   <sys:String x:Key="ContactListItem_ChatButton">聊天</sys:String>
@@ -158,10 +160,10 @@
   <sys:String x:Key="HistoryViewer_Results_Time">时间</sys:String>
   <sys:String x:Key="HistoryViewer_Results_Name">名称</sys:String>
   <sys:String x:Key="HistoryViewer_Results_Status">状态</sys:String>
-  <sys:String x:Key="HistoryViewer_Searching">搜寻中...</sys:String>
+  <sys:String x:Key="HistoryViewer_Searching">搜索...</sys:String>
   <sys:String x:Key="HistoryViewer_ConfirmClear">你是否确定要清除历史记录？</sys:String>
   <sys:String x:Key="HistoryViewer_Clear">清除历史记录</sys:String>
-  <sys:String x:Key="HistoryViewer_Delete">删除选定的对话</sys:String>
+  <sys:String x:Key="HistoryViewer_Delete">删除选定的会话</sys:String>
   <sys:String x:Key="HistoryViewer_ConfirmDelete">你确定要删除所选的谈话吗？</sys:String>
   <sys:String x:Key="Error_InvalidDate">请输入有效的日期</sys:String>
   <sys:String x:Key="ConversationViewer_Stamp">邮票</sys:String>
@@ -190,4 +192,6 @@
   <sys:String x:Key="VoiceChat_Ended">语音聊天结束</sys:String>
   <sys:String x:Key="VoiceChat_ReceivedWaiting">{0}想和你谈谈</sys:String>
   <sys:String x:Key="VoiceChat_SentWaiting">等待{0}接受语音聊天请求</sys:String>
+  <sys:String x:Key="VoiceChat_Accept">接受</sys:String>
+  <sys:String x:Key="VoiceChat_Reject">拒绝</sys:String>
 </ResourceDictionary>

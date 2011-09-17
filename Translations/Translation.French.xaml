@@ -116,6 +116,8 @@
   <sys:String x:Key="ChatWindow_BroadCastChatTitle">Diffusion de chat</sys:String>
   <sys:String x:Key="ChatWindow_LastMessageAt">Dernier message reçu à</sys:String>
   <sys:String x:Key="ChatWindow_InviteContact">Inviter quelqu&amp;#39;un à cette conversation.</sys:String>
+  <sys:String x:Key="ChatWindow_AlreadyInVoiceChat">Une seule session de chat vocal peut être actif à la fois.</sys:String>
+  <sys:String x:Key="ChatWindow_VoiceChatNotAllowedInGroup">Chat vocal ne peut pas être démarré dans la conversation de groupe.</sys:String>
   <sys:String x:Key="Popup_NewMessage">Nouveau message</sys:String>
   <sys:String x:Key="ContactList_SearchContacts">Rechercher des contacts ...</sys:String>
   <sys:String x:Key="ContactListItem_ChatButton">Chat</sys:String>
@@ -190,4 +192,6 @@
   <sys:String x:Key="VoiceChat_Ended">Le chat vocal terminée</sys:String>
   <sys:String x:Key="VoiceChat_ReceivedWaiting">{0} veut vous parler</sys:String>
   <sys:String x:Key="VoiceChat_SentWaiting">Waiting for {0} pour accepter la demande de chat vocal</sys:String>
+  <sys:String x:Key="VoiceChat_Accept">Accepter</sys:String>
+  <sys:String x:Key="VoiceChat_Reject">Rejettent</sys:String>
 </ResourceDictionary>
