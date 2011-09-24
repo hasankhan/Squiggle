@@ -12,8 +12,7 @@ namespace Squiggle.UI.Resources
         public string Global_ContactSays { get; set; }
         public string Global_You { get; set; }
         public string Global_ContactSaid { get; set; }
-        public string Global_ImageFilter { get; set; }
-        public string Error_InvalidImage { get; set; }
+        public string Global_ImageFilter { get; set; }        
         public string Popup_NewMessage { get; set; }
         public string ContactList_SearchContacts { get; set; }
         public string MainWindow_ShareAMessage { get; set; }
@@ -58,10 +57,11 @@ namespace Squiggle.UI.Resources
         public string Emoticon_Wink { get; set; }
         public string VoiceChat_ReceivedWaiting { get; set; }
         public string VoiceChat_SentWaiting { get; set; }
-        public string Error_NoNetwork { get; set; }
         public string SettingsWindow_Error_InvalidPresenceIP { get; set; }
         public string Error { get; set; }
         public string Error_InvalidDate { get; set; }
+        public string Error_InvalidImage { get; set; }
+        public string Error_NoNetwork { get; set; }
         public string HistoryViewer_ConfirmClear { get; set; }
         public string HistoryViewer_ConfirmDelete { get; set; }
         public string ChatWindow_AlreadyInVoiceChat { get; set; }

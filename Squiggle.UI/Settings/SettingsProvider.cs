@@ -68,7 +68,7 @@ namespace Squiggle.UI.Settings
             Settings.ConnectionSettings.PresenceAddress = reader.GetSetting(SettingKey.PresenceAddress, DefaultValues.PresenceAddress);
             Settings.ConnectionSettings.BindToIP = Properties.Settings.Default.BindToIP;
 
-            bool requiresNewBindToIP = !NetworkUtility.IsValidIP(Settings.ConnectionSettings.BindToIP);
+            bool requiresNewBindToIP = !NetworkUtility.IsValidLocalIP(Settings.ConnectionSettings.BindToIP);
             if (requiresNewBindToIP)
             {
                 var ip = NetworkUtility.GetLocalIPAddress();

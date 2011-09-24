@@ -87,7 +87,7 @@ namespace Squiggle.UI
         bool SaveSettings()
         {
             IPAddress presenceAddress;
-            if (!IPAddress.TryParse(settingsVm.ConnectionSettings.PresenceAddress, out presenceAddress))
+            if (!NetworkUtility.TryParseAddress(settingsVm.ConnectionSettings.PresenceAddress, out presenceAddress))
             {
                 MessageBox.Show(Translation.Instance.SettingsWindow_Error_InvalidPresenceIP, Translation.Instance.Error, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return false;

@@ -19,6 +19,7 @@ using Squiggle.Utilities;
 using Squiggle.UI.StickyWindows;
 using Squiggle.UI.Resources;
 using System.Windows.Media.Animation;
+using System.Net.Sockets;
 
 namespace Squiggle.UI
 {
@@ -308,7 +309,11 @@ namespace Squiggle.UI
 
             var localIP = IPAddress.Parse(settings.ConnectionSettings.BindToIP);
             TimeSpan keepAliveTimeout = settings.ConnectionSettings.KeepAliveTime.Seconds();
-            var presenceAddress = IPAddress.Parse(settings.ConnectionSettings.PresenceAddress);
+
+            IPAddress presenceAddress;
+            if (!NetworkUtility.TryParseAddress(settings.ConnectionSettings.PresenceAddress, out presenceAddress))
+                throw new ApplicationException(Translation.Instance.SettingsWindow_Error_InvalidPresenceIP);
+            
             int presencePort = settings.ConnectionSettings.PresencePort;
 
             var chatEndPoint = new IPEndPoint(localIP, chatPort);

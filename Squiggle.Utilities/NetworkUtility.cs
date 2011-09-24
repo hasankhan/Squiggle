@@ -43,15 +43,35 @@ namespace Squiggle.Utilities
             return true;
         }
 
-        public static bool IsValidIP(string address)
+        public static bool TryParseAddress(string address, out IPAddress ip)
+        {
+            if (IPAddress.TryParse(address, out ip))
+                return true;
+            else
+            {
+                try
+                {
+                    IPAddress[] addresses = Dns.GetHostAddresses(address);
+                    if (addresses.Any())
+                    {
+                        ip = addresses.First();
+                        return true;
+                    }
+                }
+                catch (SocketException) { }
+            }
+            return false;
+        }
+
+        public static bool IsValidLocalIP(string address)
         {
             IPAddress ip;
             bool isValid = !String.IsNullOrEmpty(address) &&
-                          (IPAddress.TryParse(address, out ip) && IsValidIP(ip));
+                          (IPAddress.TryParse(address, out ip) && IsValidLocalIP(ip));
             return isValid;
         }
 
-        public static bool IsValidIP(IPAddress address)
+        public static bool IsValidLocalIP(IPAddress address)
         {
             bool isValid = GetLocalIPAddresses().Contains(address);
             return isValid;

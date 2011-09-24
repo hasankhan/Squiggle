@@ -45,7 +45,7 @@ namespace Squiggle.Multicast
         {
             string temp = ConfigurationManager.AppSettings["ip"];
             IPAddress ip;
-            if (String.IsNullOrEmpty(temp) || !IPAddress.TryParse(temp, out ip) || !NetworkUtility.IsValidIP(ip))
+            if (String.IsNullOrEmpty(temp) || !IPAddress.TryParse(temp, out ip) || !NetworkUtility.IsValidLocalIP(ip))
                 ip = NetworkUtility.GetLocalIPAddress();
 
             var reader = new ConfigReader();
