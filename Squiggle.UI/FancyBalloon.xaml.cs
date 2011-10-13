@@ -7,7 +7,7 @@ using System.Windows.Input;
 using Hardcodet.Wpf.TaskbarNotification;
 using System.Globalization;
 
-namespace StackOverflowClient
+namespace Squiggle.UI
 {
   /// <summary>
   /// Interaction logic for FancyBalloon.xaml
