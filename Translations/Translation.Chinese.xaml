@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <FlowDirection x:Key="flowDirection">LeftToRight</FlowDirection>
-  <sys:String x:Key="Global_OKButton">“确定”</sys:String>
+  <sys:String x:Key="Global_OKButton">确定</sys:String>
   <sys:String x:Key="Global_CancelButton">取消</sys:String>
   <sys:String x:Key="Global_Menu_About">关于我们Squiggle</sys:String>
   <sys:String x:Key="Global_ContactSays">说</sys:String>
@@ -27,16 +27,16 @@
   <sys:String x:Key="MainWindow_MainMenu_SendMessage">发送即时消息</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_SendFile">发送文件</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_Tools">工具</sys:String>
-  <sys:String x:Key="MainWindow_MainMenu_GroupBuddies">集团箱</sys:String>
+  <sys:String x:Key="MainWindow_MainMenu_GroupBuddies">组箱</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_SortBuddies">分类箱</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_SortByName">按名称</sys:String>
-  <sys:String x:Key="MainWindow_MainMenu_SortByStatus">按状态</sys:String>
+  <sys:String x:Key="MainWindow_MainMenu_SortByStatus">通过状态</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_HistoryViewer">历史... ...</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_Settings">设置...</sys:String>
   <sys:String x:Key="MainWindow_MainMenu_Help">帮助</sys:String>
   <sys:String x:Key="MainWindow_SignIn_SignIn">登录</sys:String>
   <sys:String x:Key="MainWindow_SignIn_DisplayName">显示名称：</sys:String>
-  <sys:String x:Key="MainWindow_SignIn_GroupName">组名：</sys:String>
+  <sys:String x:Key="MainWindow_SignIn_GroupName">群组名称：</sys:String>
   <sys:String x:Key="MainWindow_SignIn_RememberMe">记住我</sys:String>
   <sys:String x:Key="MainWindow_SignIn_AutoSignIn">我在自动登录</sys:String>
   <sys:String x:Key="MainWindow_SignIn_SignInButton">登录</sys:String>
@@ -55,8 +55,8 @@
   <sys:String x:Key="SettingsWindow_PersonalTab_DisplayName">输入你的名字，你希望别人看到：</sys:String>
   <sys:String x:Key="SettingsWindow_PersonalTab_DisplayImage">更改图片</sys:String>
   <sys:String x:Key="SettingsWindow_PersonalTab_EmailAddress">输入您的电子邮件地址：</sys:String>
-  <sys:String x:Key="SettingsWindow_PersonalTab_DisplayMessage">输入您的联系人的个人信息，看到：</sys:String>
-  <sys:String x:Key="SettingsWindow_PersonalTab_IdleTimeout">告诉我，当我处于非活动状态“闲置”</sys:String>
+  <sys:String x:Key="SettingsWindow_PersonalTab_DisplayMessage">键入您的联系人看到的个人消息：</sys:String>
+  <sys:String x:Key="SettingsWindow_PersonalTab_IdleTimeout">告诉我当我不活动的“空闲”</sys:String>
   <sys:String x:Key="SettingsWindow_PersonalTab_RememberMe">记住我</sys:String>
   <sys:String x:Key="SettingsWindow_PersonalTab_AutoSignIn">自动为我登录</sys:String>
   <sys:String x:Key="SettingsWindow_ChatTab_Heading">聊天</sys:String>
@@ -70,7 +70,7 @@
   <sys:String x:Key="SettingsWindow_ContactsTab_SubHeading">联系人设置</sys:String>
   <sys:String x:Key="SettingsWindow_ContactsTab_SortBy">排序联系人：</sys:String>
   <sys:String x:Key="SettingsWindow_ContactsTab_View">联系列表视图：</sys:String>
-  <sys:String x:Key="SettingsWindow_ContactsTab_ShowGroupedContacts">显示分组接触</sys:String>
+  <sys:String x:Key="SettingsWindow_ContactsTab_ShowGroupedContacts">显示分组联系人</sys:String>
   <sys:String x:Key="SettingsWindow_ContactsTab_ShowOfflineContacts">显示离线联系人</sys:String>
   <sys:String x:Key="SettingsWindow_ConnectionTab_Heading">连接</sys:String>
   <sys:String x:Key="SettingsWindow_ConnectionTab_SubHeading">配置连接设置</sys:String>
@@ -97,13 +97,13 @@
   <sys:String x:Key="ChatWindow_MainMenu_Delete">删除</sys:String>
   <sys:String x:Key="ChatWindow_MainMenu_SelectAll">选择所有</sys:String>
   <sys:String x:Key="ChatWindow_MainMenu_Actions">动作</sys:String>
-  <sys:String x:Key="ChatWindow_MainMenu_InviteContact">邀请联系人参加这次谈话... ...</sys:String>
+  <sys:String x:Key="ChatWindow_MainMenu_InviteContact">邀请联系人加入这个谈话...</sys:String>
   <sys:String x:Key="ChatWindow_MainMenu_Tools">工具</sys:String>
   <sys:String x:Key="ChatWindow_MainMenu_Settings">设置...</sys:String>
   <sys:String x:Key="ChatWindow_MainMenu_Help">帮助</sys:String>
   <sys:String x:Key="ChatWindow_SendButton">发送</sys:String>
   <sys:String x:Key="ChatWindow_SendButtonToolTip">送信</sys:String>
-  <sys:String x:Key="ChatWindow_ShowInFolder">显示在文件夹</sys:String>
+  <sys:String x:Key="ChatWindow_ShowInFolder">显示文件夹</sys:String>
   <sys:String x:Key="ChatWindow_IsTyping">正在输入...</sys:String>
   <sys:String x:Key="ChatWindow_MessageCouldNotBeDelivered">下列讯息无法传递到收件人：</sys:String>
   <sys:String x:Key="ChatWindow_HasJoinedConversation">已经加入了谈话。</sys:String>
@@ -112,14 +112,14 @@
   <sys:String x:Key="ChatWindow_YouSentBuzz">您已经发出了嗡嗡声。</sys:String>
   <sys:String x:Key="ChatWindow_BuzzTooEarly">BUZZ不能发送过于频繁。</sys:String>
   <sys:String x:Key="ChatWindow_CouldNotReadFile">无法读取文件</sys:String>
-  <sys:String x:Key="ChatWindow_MakeSureFileNotInUse">。请确保它不是在使用。</sys:String>
+  <sys:String x:Key="ChatWindow_MakeSureFileNotInUse">。请确保它不是使用。</sys:String>
   <sys:String x:Key="ChatWindow_BroadCastChatTitle">广播聊天</sys:String>
   <sys:String x:Key="ChatWindow_LastMessageAt">最后收到的消息</sys:String>
   <sys:String x:Key="ChatWindow_InviteContact">邀请某人在这段对话。</sys:String>
   <sys:String x:Key="ChatWindow_AlreadyInVoiceChat">只有一个语音聊天会话可以被激活一次。</sys:String>
-  <sys:String x:Key="ChatWindow_VoiceChatNotAllowedInGroup">语音聊天无法启动组成员交谈。</sys:String>
+  <sys:String x:Key="ChatWindow_VoiceChatNotAllowedInGroup">语音聊天不能启动组谈话。</sys:String>
   <sys:String x:Key="Popup_NewMessage">新讯息</sys:String>
-  <sys:String x:Key="ContactList_SearchContacts">搜索联系人... ...</sys:String>
+  <sys:String x:Key="ContactList_SearchContacts">搜索联系人...</sys:String>
   <sys:String x:Key="ContactListItem_ChatButton">聊天</sys:String>
   <sys:String x:Key="ContactListItem_EmailButton">电子邮件</sys:String>
   <sys:String x:Key="ContactListItem_SendFileButton">发送文件</sys:String>
@@ -164,7 +164,7 @@
   <sys:String x:Key="HistoryViewer_ConfirmClear">你是否确定要清除历史记录？</sys:String>
   <sys:String x:Key="HistoryViewer_Clear">清除历史记录</sys:String>
   <sys:String x:Key="HistoryViewer_Delete">删除选定的会话</sys:String>
-  <sys:String x:Key="HistoryViewer_ConfirmDelete">你确定要删除所选的谈话吗？</sys:String>
+  <sys:String x:Key="HistoryViewer_ConfirmDelete">你确定要删除选定的交谈吗？</sys:String>
   <sys:String x:Key="Error_InvalidDate">请输入有效的日期</sys:String>
   <sys:String x:Key="ConversationViewer_Stamp">邮票</sys:String>
   <sys:String x:Key="ConversationViewer_Sender">寄件人</sys:String>
@@ -174,8 +174,8 @@
   <sys:String x:Key="BuddyProps_DisplayName">显示名称：{0}</sys:String>
   <sys:String x:Key="BuddyProps_Status">状态：{0}</sys:String>
   <sys:String x:Key="BuddyProps_EmailAddress">电子邮件：{0}</sys:String>
-  <sys:String x:Key="BuddyProps_MachineName">机器名称：{0}</sys:String>
-  <sys:String x:Key="BuddyProps_GroupName">群组名称：{0}</sys:String>
+  <sys:String x:Key="BuddyProps_MachineName">计算机名：{0}</sys:String>
+  <sys:String x:Key="BuddyProps_GroupName">集团名称：{0}</sys:String>
   <sys:String x:Key="BuddyProps_LastUpdated">最后更新：{0：T}</sys:String>
   <sys:String x:Key="SortField_DisplayName">显示名称</sys:String>
   <sys:String x:Key="SortField_Status">状态</sys:String>
@@ -188,7 +188,7 @@
   <sys:String x:Key="VoiceChat_Unmute">取消静音</sys:String>
   <sys:String x:Key="VoiceChat_Start">启动语音聊天</sys:String>
   <sys:String x:Key="VoiceChat_End">结束语音聊天</sys:String>
-  <sys:String x:Key="VoiceChat_Started">开始语音聊天</sys:String>
+  <sys:String x:Key="VoiceChat_Started">语音聊天开始</sys:String>
   <sys:String x:Key="VoiceChat_Ended">语音聊天结束</sys:String>
   <sys:String x:Key="VoiceChat_ReceivedWaiting">{0}想和你谈谈</sys:String>
   <sys:String x:Key="VoiceChat_SentWaiting">等待{0}接受语音聊天请求</sys:String>

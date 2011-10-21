@@ -60,7 +60,7 @@ namespace Squiggle.Chat.Services.Presence
         public void LeaveUser(UserInfo user)
         {
             HeIsGone(user);
-            lock (aliveUsers)
+            lock (lostUsers)
                 lostUsers.Remove(user);
         }
 
@@ -73,17 +73,20 @@ namespace Squiggle.Chat.Services.Presence
         public void HeIsAlive(UserInfo user)
         {
             lock (aliveUsers)
-            {                                
-                aliveUsers[user] = DateTime.Now;                
+                aliveUsers[user] = DateTime.Now;   
+            lock (lostUsers)
                 lostUsers.Remove(user);
-            }
         }
 
         public void Stop()
         {
             channel.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
-            lostUsers.Clear();
-            aliveUsers.Clear();
+
+            lock (lostUsers)
+                lostUsers.Clear();
+
+            lock (aliveUsers)
+                aliveUsers.Clear();
 
             timer.Stop();
             timer = null;
@@ -93,17 +96,17 @@ namespace Squiggle.Chat.Services.Presence
         {
             ImAlive();
 
-            lock (aliveUsers)
-            {
-                List<UserInfo> gone = GetLostUsers();
+            List<UserInfo> gone = GetLostUsers();
 
-                foreach (UserInfo user in gone)
-                {
+            foreach (UserInfo user in gone)
+            {
+                lock (lostUsers)
                     lostUsers.Add(user);
-                    HeIsGone(user);
-                    UserLost(this, new UserEventArgs() { User = user });
-                }
+                HeIsGone(user);
             }
+
+            foreach (UserInfo user in gone)
+                UserLost(this, new UserEventArgs() { User = user });
         }        
 
         void OnKeepAliveMessage(KeepAliveMessage message)

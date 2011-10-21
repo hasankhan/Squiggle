@@ -65,6 +65,13 @@ namespace Squiggle.Chat.Services.Presence
                 OnPresenceMessage(userInfo, true);
         }
 
+        public bool IsUserAlive(SquiggleEndPoint user)
+        {
+            UserInfo userInfo = channel.GetUserInfo(user);
+            bool isAlive = (userInfo != null);
+            return isAlive;
+        }
+
         void channel_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
             ExceptionMonster.EatTheException(() =>

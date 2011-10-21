@@ -4,6 +4,7 @@ using System.Net;
 using System.Linq;
 using Squiggle.Chat.Services.Presence.Transport;
 using Squiggle.Chat.Services.Chat;
+using Squiggle.Utilities;
 
 namespace Squiggle.Chat.Services.Presence
 {
@@ -93,7 +94,14 @@ namespace Squiggle.Chat.Services.Presence
         void keepAlive_UserLost(object sender, UserEventArgs e)
         {
             if (ResolveUser(e))
-                OnUserOffline(e);
+                Async.Invoke(() =>
+                {
+                    bool isAlive = discovery.IsUserAlive(new SquiggleEndPoint(e.User.ID, e.User.PresenceEndPoint));
+                    if (isAlive)
+                        keepAlive.HeIsAlive(e.User);
+                    else
+                        OnUserOffline(e);
+                });
         }        
 
         void discovery_UserUpdated(object sender, UserEventArgs e)
