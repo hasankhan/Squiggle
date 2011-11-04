@@ -64,7 +64,7 @@
                         </StackPanel>
                         <TextBlock Margin="5,0,0,0" Text="{Binding Path=Properties.DisplayMessage}" TextTrimming="WordEllipsis" ToolTip="{Binding Path=DisplayMessage}"  FontSize="10" Foreground="#FF9A9C9D" HorizontalAlignment="Left" />
                     </StackPanel>
-                    <Image Width="30" Height="30" Source="{Binding Properties.DisplayImage}" VerticalAlignment="Top" Grid.Column="2" />
+                    <Image Width="30" Height="30" Stretch="UniformToFill" Source="{Binding Properties.DisplayImage}" VerticalAlignment="Top" Grid.Column="2" />
                 </Grid>
             </Border>
             <DataTemplate.Triggers>
@@ -153,7 +153,7 @@
                                         <TextBlock Foreground="Black" FontWeight="Bold"  Text="{Binding DisplayName}"/>
                                         <TextBlock Foreground="Black" Margin="5,0,0,0" FontSize="10" Text="{Binding Status, StringFormat=(\{0\})}"/>
                                     </StackPanel>
-                                    <Image Grid.Column="1" Grid.RowSpan="2" Source="{Binding Properties.DisplayImage}" Margin="5" MaxHeight="100" MaxWidth="100" />
+                                    <Image Grid.Column="1" Grid.RowSpan="2" Source="{Binding Properties.DisplayImage}" Margin="5" Stretch="UniformToFill" Height="100" Width="100" />
                                     <ScrollViewer Grid.Row="1" DockPanel.Dock="Left" VerticalScrollBarVisibility="Auto" >
                                         <TextBox Margin="10,0,0,0" Foreground="#FF9A9C9D" IsReadOnly="True" BorderThickness="0" Text="{Binding Properties.DisplayMessage}" TextWrapping="WrapWithOverflow"/>
                                     </ScrollViewer>

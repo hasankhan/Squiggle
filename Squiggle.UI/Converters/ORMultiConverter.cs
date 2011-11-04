@@ -14,7 +14,7 @@ namespace Squiggle.UI.Converters
         {
             foreach (object value in values)
             {
-                if ((bool)value == true)
+                if (value is bool && (bool)value == true)
                     return true;
             }
 

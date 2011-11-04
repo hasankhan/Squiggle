@@ -33,7 +33,7 @@
                                 <ColumnDefinition Width="0.7*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock VerticalAlignment="Top" Text="Contact" Foreground="Black" FontWeight="Bold"/>
-                            <Image Stretch="None" Grid.Row="1" Margin="5">
+                            <Image Grid.Row="1" Margin="5" Width="100" Height="100" Stretch="UniformToFill">
                                 <Image.Style>
                                     <Style TargetType="Image">
                                         <Setter Property="Source" Value="{Binding Properties.DisplayImage}" />

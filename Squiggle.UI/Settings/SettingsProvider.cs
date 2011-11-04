@@ -51,8 +51,11 @@ namespace Squiggle.UI.Settings
             SaveContactSettings();
             SaveConnectionSettings(reader);
 
-            Properties.Settings.Default.Save();
-            reader.Save();
+            ExceptionMonster.EatTheException(() =>
+            {
+                Properties.Settings.Default.Save();
+                reader.Save();
+            }, "saving configuration settings");
 
             SettingsUpdated(this, EventArgs.Empty);
         }
