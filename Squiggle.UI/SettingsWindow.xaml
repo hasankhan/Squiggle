@@ -199,7 +199,7 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Margin="5" FontWeight="Bold" Text="{StaticResource SettingsWindow_ChatTab_SubHeading}" />
+                    <TextBlock Grid.Row="0" Margin="5" FontWeight="Bold" Text="{StaticResource SettingsWindow_ContactsTab_SubHeading}" />
                     <Border Grid.Row="1" Background="{StaticResource WorkAreaBackgroud}" BorderBrush="Black" BorderThickness="1" CornerRadius="3" Margin="5">
                         <Grid Margin="10">
                             <Grid.RowDefinitions>
