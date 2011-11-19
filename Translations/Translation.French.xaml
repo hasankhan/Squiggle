@@ -105,7 +105,7 @@
   <sys:String x:Key="ChatWindow_SendButtonToolTip">Envoyer un message</sys:String>
   <sys:String x:Key="ChatWindow_ShowInFolder">Afficher le dossier</sys:String>
   <sys:String x:Key="ChatWindow_IsTyping">est saisissant ...</sys:String>
-  <sys:String x:Key="ChatWindow_MessageCouldNotBeDelivered">Le message suivant n&amp;#39;a pas pu être livrés à quelques-uns des récipiendaires:</sys:String>
+  <sys:String x:Key="ChatWindow_MessageCouldNotBeDelivered">Le message suivant n&amp;#39;a pas pu être livrées à certains des destinataires:</sys:String>
   <sys:String x:Key="ChatWindow_HasJoinedConversation">a rejoint la conversation.</sys:String>
   <sys:String x:Key="ChatWindow_HasLeftConversation">a quitté la conversation.</sys:String>
   <sys:String x:Key="ChatWindow_HasSentYouBuzz">vous a envoyé un buzz.</sys:String>
