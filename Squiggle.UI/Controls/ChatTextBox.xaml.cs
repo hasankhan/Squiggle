@@ -13,6 +13,7 @@ using Squiggle.UI.MessageParsers;
 using Squiggle.UI.MessageFilters;
 using Squiggle.UI.Resources;
 using Squiggle.UI.Controls.ChatItems;
+using Squiggle.UI.Helpers;
 
 namespace Squiggle.UI.Controls
 {
@@ -21,11 +22,15 @@ namespace Squiggle.UI.Controls
     /// </summary>
     public partial class ChatTextBox : UserControl
     {
+        BoundedQueue<ChatItem> history = new BoundedQueue<ChatItem>(100);
+
         MultiParser parsers;
         public MultiParser MessageParsers
         {
             get { return parsers; }
         }
+
+        public bool KeepHistory { get; set; }
 
         public ChatTextBox()
         {
@@ -38,8 +43,17 @@ namespace Squiggle.UI.Controls
         public void AddItem(ChatItem item)
         {
             item.AddTo(para.Inlines);
+
+            if (KeepHistory)
+                history.Enqueue(item);
+
             para.Inlines.Add(new LineBreak());
             sentMessages.FindScrollViewer().ScrollToBottom();
+        }
+
+        public IEnumerable<ChatItem> GetHistory()
+        {
+            return history;
         }
 
         public void SaveTo(string fileName)

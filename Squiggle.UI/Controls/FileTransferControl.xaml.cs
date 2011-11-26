@@ -15,7 +15,7 @@ namespace Squiggle.UI.Controls
     /// <summary>
     /// Interaction logic for FileTransferControl.xaml
     /// </summary>
-    public partial class FileTarnsferControl : UserControl, INotifyPropertyChanged
+    public partial class FileTransferControl : UserControl, INotifyPropertyChanged
     {
         IFileTransfer fileTransfer;
         bool sending;
@@ -40,13 +40,13 @@ namespace Squiggle.UI.Controls
             }
         }
 
-        public FileTarnsferControl()
+        public FileTransferControl()
         {
             DownloadFolder = System.IO.Path.Combine(AppInfo.Location, "Downloads");
             InitializeComponent();
         }
 
-        public FileTarnsferControl(IFileTransfer fileTransfer, bool sending) : this()
+        public FileTransferControl(IFileTransfer fileTransfer, bool sending) : this()
         {
             this.fileTransfer = fileTransfer;
             this.sending = sending;

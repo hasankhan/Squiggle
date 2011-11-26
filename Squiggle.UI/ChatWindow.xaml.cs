@@ -19,6 +19,7 @@ using Squiggle.Utilities;
 using Squiggle.UI.StickyWindows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Squiggle.UI.Controls.ChatItems;
 
 namespace Squiggle.UI
 {
@@ -40,10 +41,10 @@ namespace Squiggle.UI
         bool buzzPending;
         WindowState lastState;
         FileTransferCollection fileTransfers = new FileTransferCollection();
+        static Dictionary<Buddy, IEnumerable<ChatItem>> chatHistory = new Dictionary<Buddy, IEnumerable<ChatItem>>(); 
 
         MultiFilter filters = new MultiFilter();
         bool chatStarted;
-        bool closing;
 
         public Buddy PrimaryBuddy { get; private set; }
 
@@ -76,6 +77,21 @@ namespace Squiggle.UI
             this.PrimaryBuddy = buddy;
             this.PrimaryBuddy.Online += new EventHandler(buddy_Online);
             this.PrimaryBuddy.Offline += new EventHandler(buddy_Offline);
+
+            chatTextBox.KeepHistory = !SettingsProvider.Current.Settings.ChatSettings.ClearChatOnWindowClose;
+
+            DeferIfNotLoaded(() =>
+            {
+                if (!IsGroupChat && chatTextBox.KeepHistory)
+                {
+                    IEnumerable<ChatItem> history;
+                    if (chatHistory.TryGetValue(buddy, out history))
+                    {
+                        history.RemoveAll();
+                        chatTextBox.AddItems(history);
+                    }
+                }
+            });
         }
 
         public IEnumerable<Buddy> Buddies
@@ -113,6 +129,9 @@ namespace Squiggle.UI
 
         void LoadSettings()
         {
+            if (SettingsProvider.Current.Settings.ChatSettings.ClearChatOnWindowClose)
+                chatHistory.Clear();
+
             chatTextBox.MessageParsers.Remove(EmoticonParser.Instance);
             if (SettingsProvider.Current.Settings.ChatSettings.ShowEmoticons)
                 chatTextBox.MessageParsers.Add(EmoticonParser.Instance);
@@ -178,11 +197,6 @@ namespace Squiggle.UI
                     }
                 }
             });
-        }
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            DestroySession();
         }
 
         private void txtMessage_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -473,6 +487,7 @@ namespace Squiggle.UI
                 fileTransfers.Add(e.Invitation);
                 FlashWindow();
             });
+            chatStarted = true;
         }
 
         void OnVoiceInvite(VoiceChatInviteEventArgs e)
@@ -484,6 +499,7 @@ namespace Squiggle.UI
                 e.Invitation.Dispatcher = Dispatcher;
                 FlashWindow();
             });
+            chatStarted = true;
         }
 
         public void SendMessage(string message)
@@ -548,6 +564,8 @@ namespace Squiggle.UI
             IVoiceChat voiceChat = chatSession.StartVoiceChat(Dispatcher);
             if (voiceChat != null)
                 chatTextBox.AddVoiceChatSentRequest(voiceChat, PrimaryBuddy.DisplayName);
+            
+            chatStarted = true;
 
             return voiceChat;
         }
@@ -594,6 +612,8 @@ namespace Squiggle.UI
                 fileTransfers.Add(fileTransfer);
                 if (fileTransfer != null)
                     chatTextBox.AddFileSentRequest(fileTransfer);
+
+                chatStarted = true;
             }
         }
 
@@ -653,14 +673,11 @@ namespace Squiggle.UI
             this.Activate();
         }
 
-        public void ForceClose()
-        {
-            closing = true;
-            Close();
-        }
-
         public void DestroySession()
         {
+            if (voiceController.VoiceChatContext != null)
+                voiceController.VoiceChatContext.Cancel();
+
             fileTransfers.CancelAll();
             if (chatSession != null)
             {
@@ -842,17 +859,14 @@ namespace Squiggle.UI
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
-            if (voiceController.VoiceChatContext != null)
-                voiceController.VoiceChatContext.Cancel();
+            DestroySession();
 
-            if (!closing && chatStarted && !(IsGroupChat || SettingsProvider.Current.Settings.ChatSettings.ClearChatOnWindowClose))
-            {
-                e.Cancel = true;
-                this.WindowState = System.Windows.WindowState.Minimized;
-                this.Visibility = System.Windows.Visibility.Collapsed;
-            }
-            else
-                base.OnClosing(e);
+            var history = chatTextBox.GetHistory();
+
+            if (!(IsGroupChat || SettingsProvider.Current.Settings.ChatSettings.ClearChatOnWindowClose))
+                chatHistory[PrimaryBuddy] = history;
+
+            base.OnClosing(e);
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)

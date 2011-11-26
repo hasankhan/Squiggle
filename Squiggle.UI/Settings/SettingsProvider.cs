@@ -132,6 +132,7 @@ namespace Squiggle.UI.Settings
             Settings.ChatSettings.StealFocusOnNewMessage = Properties.Settings.Default.StealFocusOnNewMessage;
             Settings.ChatSettings.ClearChatOnWindowClose = Properties.Settings.Default.ClearChatOnWindowClose;
             Settings.ChatSettings.EnableLogging = reader.GetSetting(SettingKey.EnableChatLogging, false);
+            Settings.ChatSettings.MaxMessagesToPreserve = reader.GetSetting(SettingKey.MaxMessagesToPreserve, 100);
         }
 
         void LoadContactSettings()

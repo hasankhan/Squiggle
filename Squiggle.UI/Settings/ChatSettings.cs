@@ -12,5 +12,6 @@ namespace Squiggle.UI.Settings
         public bool SpellCheck { get; set; }
         public bool StealFocusOnNewMessage { get; set; }
         public bool ClearChatOnWindowClose { get; set; }
+        public int MaxMessagesToPreserve { get; set; }
     }
 }

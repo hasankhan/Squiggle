@@ -179,7 +179,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\FileTarnsferControl.xaml">
+    <Page Include="Controls\FileTransferControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -326,6 +326,7 @@
     <Compile Include="Controls\ChatItems\FileTransferItem.cs" />
     <Compile Include="Controls\ChatItems\InfoItem.cs" />
     <Compile Include="Controls\ChatItems\MessageItem.cs" />
+    <Compile Include="Controls\ChatItems\UIChatItem.cs" />
     <Compile Include="Controls\ChatItems\VoiceChatItem.cs" />
     <Compile Include="Controls\ContactListItem.xaml.cs">
       <DependentUpon>ContactListItem.xaml</DependentUpon>
@@ -361,6 +362,7 @@
     <Compile Include="EmoticonSelector.xaml.cs">
       <DependentUpon>EmoticonSelector.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\BoundedQueue.cs" />
     <Compile Include="Helpers\ImageFactory.cs" />
     <Compile Include="Helpers\ImageUtility.cs" />
     <Compile Include="HistoryViewer.xaml.cs">
@@ -418,8 +420,8 @@
     <Compile Include="Controls\DisplayMessageBox.xaml.cs">
       <DependentUpon>DisplayMessageBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\FileTarnsferControl.xaml.cs">
-      <DependentUpon>FileTarnsferControl.xaml</DependentUpon>
+    <Compile Include="Controls\FileTransferControl.xaml.cs">
+      <DependentUpon>FileTransferControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\MessageEditBox.xaml.cs">
       <DependentUpon>MessageEditBox.xaml</DependentUpon>

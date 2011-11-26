@@ -422,7 +422,7 @@ namespace Squiggle.UI
                     if (window != this)
                     {
                         if (window is ChatWindow)
-                            ((ChatWindow)window).ForceClose();
+                            ((ChatWindow)window).Close();
                         else
                             window.Close();
                     }
