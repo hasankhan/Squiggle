@@ -320,6 +320,13 @@
     <Compile Include="Controls\ChatHistoryViewer.xaml.cs">
       <DependentUpon>ChatHistoryViewer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ChatItems\ChatItem.cs" />
+    <Compile Include="Controls\ChatItems\ChatItemHelper.cs" />
+    <Compile Include="Controls\ChatItems\ErrorItem.cs" />
+    <Compile Include="Controls\ChatItems\FileTransferItem.cs" />
+    <Compile Include="Controls\ChatItems\InfoItem.cs" />
+    <Compile Include="Controls\ChatItems\MessageItem.cs" />
+    <Compile Include="Controls\ChatItems\VoiceChatItem.cs" />
     <Compile Include="Controls\ContactListItem.xaml.cs">
       <DependentUpon>ContactListItem.xaml</DependentUpon>
     </Compile>
@@ -381,6 +388,7 @@
     <Compile Include="MessageParsers\MultiParser.cs" />
     <Compile Include="MessageParsers\RegexParser.cs" />
     <Compile Include="RelayCommand.cs" />
+    <Compile Include="Resources\BrushFactory.cs" />
     <Compile Include="Resources\Translation.cs" />
     <Compile Include="Settings\ChatSettings.cs" />
     <Compile Include="Settings\ContactGroup.cs" />

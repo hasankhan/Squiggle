@@ -1,4 +1,5 @@
 ﻿using System.Windows.Media;
+using Squiggle.UI.Resources;
 
 namespace Squiggle.UI
 {
@@ -13,7 +14,7 @@ namespace Squiggle.UI
 
         public FontSetting(System.Drawing.Color color, string familyName, float size, System.Drawing.FontStyle style)
         {
-            Foreground = new SolidColorBrush(System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B));
+            Foreground = BrushFactory.Create(Color.FromArgb(color.A, color.R, color.G, color.B));
             Family = new FontFamily(familyName);
             Size = size;
             Style = (style & System.Drawing.FontStyle.Italic) == System.Drawing.FontStyle.Italic ? System.Windows.FontStyles.Italic : System.Windows.FontStyles.Normal; 

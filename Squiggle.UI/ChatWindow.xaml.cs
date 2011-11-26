@@ -469,7 +469,7 @@ namespace Squiggle.UI
             Dispatcher.Invoke(() =>
             {
                 string downloadsFolder = SettingsProvider.Current.Settings.GeneralSettings.DownloadsFolder;
-                chatTextBox.AddFileReceiveRequest(e.Sender.DisplayName, e.Invitation, downloadsFolder, MainWindow.Instance.ChatClient.IsVoiceChatActive());
+                chatTextBox.AddFileReceiveRequest(e.Invitation, downloadsFolder);
                 fileTransfers.Add(e.Invitation);
                 FlashWindow();
             });

@@ -55,7 +55,7 @@ namespace Squiggle.UI.Controls
             if (waterMarked)
             {
                 txtFilter.Text = String.Empty;
-                txtFilter.Foreground = new SolidColorBrush(Colors.Black);
+                txtFilter.Foreground = Brushes.Black;
             }
             waterMarked = false;
         }
@@ -72,7 +72,7 @@ namespace Squiggle.UI.Controls
         {
             waterMarked = true;
             txtFilter.Text = Translation.Instance.ContactList_SearchContacts;
-            txtFilter.Foreground = new SolidColorBrush(Colors.LightGray);
+            txtFilter.Foreground = Brushes.LightGray;
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)

@@ -12,6 +12,7 @@ using Squiggle.Chat;
 using Squiggle.UI.MessageParsers;
 using Squiggle.UI.MessageFilters;
 using Squiggle.UI.Resources;
+using Squiggle.UI.Controls.ChatItems;
 
 namespace Squiggle.UI.Controls
 {
@@ -21,7 +22,7 @@ namespace Squiggle.UI.Controls
     public partial class ChatTextBox : UserControl
     {
         MultiParser parsers;
-        public IList<IMessageParser> MessageParsers
+        public MultiParser MessageParsers
         {
             get { return parsers; }
         }
@@ -34,87 +35,11 @@ namespace Squiggle.UI.Controls
             MessageParsers.Add(HyperlinkParser.Instance);
         }        
 
-        public void AddInfo(string info)
+        public void AddItem(ChatItem item)
         {
-            info = String.Format("[{0}] {1}", DateTime.Now.ToShortTimeString(), info);
-
-            var errorText = new Run(info);
-            errorText.Foreground = new SolidColorBrush(Colors.DarkGray);
-            para.Inlines.Add(errorText);
-            para.Inlines.Add(new LineBreak());
-
-            sentMessages.FindScrollViewer().ScrollToBottom();
-        }
-
-        public void AddError(string error, string detail)
-        {
-            var errorText = new Run(error);
-            errorText.Foreground = new SolidColorBrush(Colors.Red);
-
-            var detailText = new Run(detail);
-            detailText.Foreground = new SolidColorBrush(Colors.Gray);
-
-            para.Inlines.Add(errorText);
-            if (!String.IsNullOrEmpty(detail))
-            {
-                para.Inlines.Add(new LineBreak());
-                para.Inlines.Add(detailText);
-            }            
-            para.Inlines.Add(new LineBreak());
-
-            sentMessages.FindScrollViewer().ScrollToBottom();
-        }
-
-        public void AddMessage(string user, string message, string fontName, int fontSize, System.Drawing.FontStyle fontStyle, System.Drawing.Color color)
-        {
-            string text = String.Format("{0} " + Translation.Instance.Global_ContactSaid + " ({1}): ", user, DateTime.Now.ToShortTimeString());
-            var items = parsers.ParseText(text);
-            foreach (var item in items)
-            {
-                item.Foreground = Brushes.Gray;
-                para.Inlines.Add(item);
-            }
-            para.Inlines.Add(new LineBreak());
-            items = parsers.ParseText(message);
-            var fontsettings = new FontSetting(color, fontName, fontSize, fontStyle);
-            foreach (var item in items)
-            {
-                item.FontFamily = fontsettings.Family;
-                item.FontSize = fontsettings.Size;
-                item.Foreground = fontsettings.Foreground;
-                item.FontStyle = fontsettings.Style;
-                item.FontWeight = fontsettings.Weight;
-                para.Inlines.Add(item);
-            }
-
-            para.Inlines.AddRange(items);
+            item.AddTo(para.Inlines);
             para.Inlines.Add(new LineBreak());
             sentMessages.FindScrollViewer().ScrollToBottom();
-        }
-
-        public void AddFileReceiveRequest(string user, IFileTransfer fileTransfer, string downloadsFolder, bool alreadyInChat)
-        {
-            var transferUI = new FileTarnsferControl(fileTransfer, false);
-            transferUI.DownloadFolder = downloadsFolder;
-            para.Inlines.Add(new InlineUIContainer(transferUI));
-            para.Inlines.Add(new LineBreak());
-        }
-
-        public void AddFileSentRequest(IFileTransfer fileTransfer)
-        {
-            var transferUI = new FileTarnsferControl(fileTransfer, true);
-            para.Inlines.Add(new InlineUIContainer(transferUI));
-            para.Inlines.Add(new LineBreak());
-        }
-
-        public void AddVoiceChatSentRequest(IVoiceChat voiceChat, string buddyName)
-        {
-            AddVoiceChatRequest(voiceChat, buddyName, true, false);
-        }
-
-        public void AddVoiceChatReceivedRequest(IVoiceChat voiceChat, string buddyName, bool alreadyInChat)
-        {
-            AddVoiceChatRequest(voiceChat, buddyName, false, alreadyInChat);
         }
 
         public void SaveTo(string fileName)
@@ -127,13 +52,6 @@ namespace Squiggle.UI.Controls
         public void Clear()
         {
             para.Inlines.Clear();
-        }
-
-        void AddVoiceChatRequest(IVoiceChat voiceChat, string buddyName, bool sending, bool alreadyInChat)
-        {
-            var voiceChatUI = new VoiceChatControl(voiceChat, buddyName, sending, alreadyInChat);
-            para.Inlines.Add(new InlineUIContainer(voiceChatUI));
-            para.Inlines.Add(new LineBreak());
-        }
+        }        
     }
 }

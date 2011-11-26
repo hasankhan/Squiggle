@@ -7,7 +7,7 @@ using System.Windows.Documents;
 
 namespace Squiggle.UI.MessageParsers
 {
-    class MultiParser: List<IMessageParser>
+    public class MultiParser: List<IMessageParser>
     {
         public IEnumerable<Inline> ParseText(string message)
         {
