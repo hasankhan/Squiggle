@@ -97,7 +97,7 @@
     <Compile Include="..\Shared\AssemblyInfo.Copyright.cs">
       <Link>Properties\AssemblyInfo.Copyright.cs</Link>
     </Compile>
-    <Compile Include="..\Shared\AssemblyInfo.VersionSafe.cs">
+    <Compile Include="..\Shared\AssemblyInfo.Version.cs">
       <Link>Properties\AssemblyInfo.VersionSafe.cs</Link>
     </Compile>
     <Compile Include="BroadcastChat.cs" />

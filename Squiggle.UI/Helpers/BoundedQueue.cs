@@ -28,11 +28,10 @@ namespace Squiggle.UI.Helpers
             return queue.Dequeue();
         }
 
-        public bool IsEmpty
+        public void Clear()
         {
-            get { return queue.Count == 0; }
+            queue.Clear();
         }
-
 
         public IEnumerator<T> GetEnumerator()
         {

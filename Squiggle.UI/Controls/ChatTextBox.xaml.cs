@@ -53,7 +53,7 @@ namespace Squiggle.UI.Controls
 
         public IEnumerable<ChatItem> GetHistory()
         {
-            return history;
+            return history.ToList();
         }
 
         public void SaveTo(string fileName)
@@ -65,6 +65,7 @@ namespace Squiggle.UI.Controls
 
         public void Clear()
         {
+            history.Clear();
             para.Inlines.Clear();
         }        
     }
