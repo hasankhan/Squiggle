@@ -16,12 +16,16 @@ namespace Squiggle.UI.Controls.ChatItems
         {
             if (control == null)
                 control = CreateControl();
+            else
+                Remove();
+
             inlines.Add(new InlineUIContainer(control));
         }
 
         public override void Remove()
         {
-            ((InlineUIContainer)control.Parent).Child = null;
+            if (control != null && control.Parent != null)
+                ((InlineUIContainer)control.Parent).Child = null;
 
             base.Remove();
         }

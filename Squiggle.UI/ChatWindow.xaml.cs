@@ -86,10 +86,7 @@ namespace Squiggle.UI
                 {
                     IEnumerable<ChatItem> history;
                     if (chatHistory.TryGetValue(buddy, out history))
-                    {
-                        history.RemoveAll();
                         chatTextBox.AddItems(history);
-                    }
                 }
             });
         }
@@ -865,6 +862,8 @@ namespace Squiggle.UI
 
             if (!(IsGroupChat || SettingsProvider.Current.Settings.ChatSettings.ClearChatOnWindowClose))
                 chatHistory[PrimaryBuddy] = history;
+
+            history.RemoveAll();
 
             base.OnClosing(e);
         }
