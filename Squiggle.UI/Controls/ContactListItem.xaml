@@ -86,14 +86,7 @@
                                 TargetName="contactBorder"></Setter>
                 </Trigger>
                 <Trigger SourceName="contactBorder" Property="IsMouseOver" Value="True">
-                    <Setter TargetName="contactBorder" Property="Background" >
-                        <Setter.Value>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="#FFF0F0F0" Offset="0.061"/>
-                                <GradientStop Color="#FFE3E4E4" Offset="0.939"/>
-                            </LinearGradientBrush>
-                        </Setter.Value>
-                    </Setter>
+                    <Setter TargetName="contactBorder" Property="Background" Value="{StaticResource ContactBorderBrush}" />                    
                 </Trigger>
             </DataTemplate.Triggers>
         </DataTemplate>
@@ -180,14 +173,7 @@
                                 TargetName="contactBorder"></Setter>
                 </Trigger>
                 <Trigger SourceName="contactBorder" Property="IsMouseOver" Value="True">
-                    <Setter TargetName="contactBorder" Property="Background" >
-                        <Setter.Value>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="#FFF0F0F0" Offset="0.061"/>
-                                <GradientStop Color="#FFE3E4E4" Offset="0.939"/>
-                            </LinearGradientBrush>
-                        </Setter.Value>
-                    </Setter>
+                    <Setter TargetName="contactBorder" Property="Background" Value="{StaticResource ContactBorderBrush}" />                    
                 </Trigger>
             </DataTemplate.Triggers>
         </DataTemplate>

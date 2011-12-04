@@ -36,6 +36,7 @@ namespace Squiggle.Chat.Services.Presence
         public void Login(UserInfo me)
         {
             thisUser = me;
+
             channel.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
             channel.MessageReceived += new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
             var message = Message.FromUserInfo<LoginMessage>(thisUser);
@@ -47,6 +48,13 @@ namespace Squiggle.Chat.Services.Presence
         {
             thisUser = me;
             var message = Message.FromUserInfo<UserUpdateMessage>(thisUser);
+            channel.SendMessage(message);
+        }
+
+        public void FakeLogout(UserInfo me)
+        {
+            thisUser = me;
+            var message = Message.FromUserInfo<LogoutMessage>(thisUser);
             channel.SendMessage(message);
         }
 

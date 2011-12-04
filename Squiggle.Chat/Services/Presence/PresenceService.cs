@@ -62,10 +62,23 @@ namespace Squiggle.Chat.Services.Presence
 
         public void Update(string name, Dictionary<string, string> properties, UserStatus status)
         {
+            UserStatus lastStatus = thisUser.Status;            
+
             thisUser.DisplayName = name;
             thisUser.Status = status;
             thisUser.Properties = properties;
-            discovery.Update(thisUser);
+
+            if (lastStatus == UserStatus.Offline)
+            {
+                if (status == UserStatus.Offline)
+                    return;
+                else
+                    discovery.Login(thisUser);
+            }
+            else if (status == UserStatus.Offline)
+                discovery.FakeLogout(thisUser);
+            else
+                discovery.Update(thisUser);
         }
 
         public void Logout()

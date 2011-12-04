@@ -11,13 +11,7 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
-    <!--<LinearGradientBrush x:Key="ButtonNormalBackground" EndPoint="0,1" StartPoint="0,0">
-        <GradientStop Color="#F3F3F3" Offset="0"/>
-        <GradientStop Color="#EBEBEB" Offset="0.5"/>
-        <GradientStop Color="#DDDDDD" Offset="0.5"/>
-        <GradientStop Color="#CDCDCD" Offset="1"/>
-    </LinearGradientBrush>-->
+    </Style>    
     <SolidColorBrush x:Key="ButtonNormalBorder" Color="#FF707070"/>
     <Geometry x:Key="DownArrowGeometry">M 0 0 L 3.5 4 L 7 0 Z</Geometry>
     <Style x:Key="ComboBoxReadonlyToggleButton" TargetType="{x:Type ToggleButton}">
@@ -49,9 +43,6 @@
         </Setter>
     </Style>
     <LinearGradientBrush x:Key="TextBoxBorder" MappingMode="Absolute" EndPoint="0,20" StartPoint="0,0">
-        <!--<GradientStop Color="#ABADB3" Offset="0.05"/>
-        <GradientStop Color="#E2E3EA" Offset="0.07"/>
-        <GradientStop Color="#E3E9EF" Offset="1"/>-->
     </LinearGradientBrush>
     <Style x:Key="ComboBoxEditableTextBox" TargetType="{x:Type TextBox}">
         <Setter Property="OverridesDefaultStyle" Value="true"/>
