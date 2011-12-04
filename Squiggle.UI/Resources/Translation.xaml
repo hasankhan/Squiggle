@@ -2,6 +2,11 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <FlowDirection x:Key="flowDirection">LeftToRight</FlowDirection>
+    <sys:String x:Key="Confirmation_YesButton">Yes</sys:String>
+    <sys:String x:Key="Confirmation_NoButton">No</sys:String>
+    <sys:String x:Key="Confirmation_DoNotShow">Do not show this again</sys:String>
+    <sys:String x:Key="Confirmation_FileTransferWindowClose_Title">File transfer in progress...</sys:String>
+    <sys:String x:Key="Confirmation_FileTransferWindowClose_Message" xml:space="preserve">File transfer is in progress. Closing the window will cancel the file transfer.&#13;&#10;&#13;&#10;Are you sure you want to close this window?</sys:String>
     <sys:String x:Key="Global_OKButton">OK</sys:String>
     <sys:String x:Key="Global_CancelButton">Cancel</sys:String>
     <sys:String x:Key="Global_Menu_About">_About Squiggle</sys:String>
@@ -82,8 +87,10 @@
     <sys:String x:Key="SettingsWindow_ConnectionTab_BindToIP">Bind To IP:</sys:String>
     <sys:String x:Key="SettingsWindow_ConnectionTab_Reset">Reset</sys:String>
     <sys:String x:Key="SettingsWindow_Error_InvalidPresenceIP">Please enter a valid presence address.</sys:String>
-    <sys:String x:Key="ContactSelectWindow_Heading">Send an instant message</sys:String>
-    <sys:String x:Key="ContactSelectWindow_SubHeading">Select a contact</sys:String>
+    <sys:String x:Key="ContactSelectWindow_Heading_InstantMessage">Send an instant message</sys:String>
+    <sys:String x:Key="ContactSelectWindow_Heading_File">Send a file</sys:String>
+    <sys:String x:Key="ContactSelectWindow_SingleSelect">Select a contact</sys:String>
+    <sys:String x:Key="ContactSelectWindow_MultiSelect">Select one or more contacts</sys:String>
     <sys:String x:Key="ChatWindow_MainMenu_File">_File</sys:String>
     <sys:String x:Key="ChatWindow_MainMenu_Save">_Save</sys:String>
     <sys:String x:Key="ChatWindow_MainMenu_SaveAs">Save _as...</sys:String>

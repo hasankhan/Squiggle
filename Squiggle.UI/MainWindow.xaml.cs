@@ -20,6 +20,7 @@ using Squiggle.UI.StickyWindows;
 using Squiggle.UI.Resources;
 using System.Windows.Media.Animation;
 using System.Net.Sockets;
+using Squiggle.UI.Controls;
 
 namespace Squiggle.UI
 {
@@ -422,7 +423,7 @@ namespace Squiggle.UI
                     if (window != this)
                     {
                         if (window is ChatWindow)
-                            ((ChatWindow)window).Close();
+                            ((ChatWindow)window).ForceClose();
                         else
                             window.Close();
                     }
@@ -454,17 +455,17 @@ namespace Squiggle.UI
 
         private void SendFileMenu_Click(object sender, RoutedEventArgs e)
         {
-            Buddy buddy = SquiggleUtility.SelectContact("Send a file", this);
+            Buddy buddy = SquiggleUtility.SelectContact(Translation.Instance.ContactSelectWindow_Heading_File, this);
             if (buddy != null)
                 StartChat(buddy, true, null);
         }
 
         private void SendMessageMenu_Click(object sender, RoutedEventArgs e)
         {
-            IEnumerable<Buddy> buddies = SquiggleUtility.SelectContacts("Send an instant message", this);
-            Buddy buddy = buddies.FirstOrDefault();
-            if (buddy != null)
+            IEnumerable<Buddy> buddies = SquiggleUtility.SelectContacts(Translation.Instance.ContactSelectWindow_Heading_InstantMessage, this);
+            if (buddies.Any())
             {
+                Buddy buddy = buddies.First();
                 ChatWindow chatWindow = StartChat(buddy);
                 chatWindow.Invite(buddies.Except(new[] { buddy }));
             }

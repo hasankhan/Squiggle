@@ -10,11 +10,18 @@ using Squiggle.UI.Settings;
 using System.Reflection;
 using Squiggle.UI.ViewModel;
 using Squiggle.Utilities;
+using Squiggle.UI.Controls;
 
 namespace Squiggle.UI.Helpers
 {
     class SquiggleUtility
     {
+        public static bool Confirm(ConfirmationDialogType dialogType, Window parent)
+        {
+            string username = MainWindow.Instance.ChatClient.Coalesce(c=>c.CurrentUser.DisplayName, String.Empty);
+            return ConfirmationDialog.Show(username, dialogType, parent);
+        }
+
         public static IEnumerable<UserStatus> GetChangableStatuses()
         {
             var statuses = from status in Enum.GetValues(typeof(UserStatus)).Cast<UserStatus>()

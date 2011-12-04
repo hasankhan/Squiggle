@@ -35,6 +35,7 @@
     <Setting Name="SpellCheck" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="ConfirmDialogs" Type="System.Collections.Generic.List&lt;System.String&gt;" Scope="User" />
     <Setting Name="ContactListSortField" Type="Squiggle.UI.Settings.ContactListSortField" Scope="User">
       <Value Profile="(Default)">DisplayName</Value>
     </Setting>

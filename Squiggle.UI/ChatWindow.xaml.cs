@@ -854,8 +854,22 @@ namespace Squiggle.UI
             txtMessageEditBox.GetFocus();
         }
 
+        bool forceClose;
+        public void ForceClose()
+        {
+            forceClose = true;
+            Close();
+        }
+
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
+            if (!forceClose && fileTransfers.Any())
+            {
+                e.Cancel = !SquiggleUtility.Confirm(ConfirmationDialogType.FileTransferWindowClose, this);
+                if (e.Cancel)
+                    return;
+            }
+
             DestroySession();
 
             var history = chatTextBox.GetHistory();

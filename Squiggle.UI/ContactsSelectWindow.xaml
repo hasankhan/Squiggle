@@ -6,7 +6,7 @@
         xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat"
         xmlns:controls="clr-namespace:Squiggle.UI.Controls" KeyDown="Window_KeyDown"
         Icon="/Squiggle;component/Images/Chat.ico"                      
-        Title="{StaticResource ContactSelectWindow_Heading}" Height="500" Width="360" x:Name="contactSelectControl" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+        Height="500" Width="360" x:Name="contactSelectControl" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
     <Window.Resources>
         <CollectionViewSource Source="{Binding Buddies}" x:Key="buddiesCollection" Filter="CollectionViewSource_Filter" />
         <converters:StatusIconConverter x:Key="statusIconConverter" />
@@ -14,8 +14,11 @@
         <BooleanToVisibilityConverter x:Key="visibilityConverter"/>
         
         <DataTemplate DataType="{x:Type chat:Buddy}">
-            <Border x:Name="contactBorder" Padding="1" Cursor="Hand" Style="{StaticResource ContactListItem}"
+            <Border x:Name="contactBorder" Padding="1" Cursor="Hand"
                     Tag="{Binding}" MouseLeftButtonUp="contactBorder_MouseLeftButtonUp">
+                <Border.ToolTip>
+                    <ToolTip Style="{StaticResource BuddyToolTip}" />
+                </Border.ToolTip>
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -72,7 +75,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="txtMessage" Text="{StaticResource ContactSelectWindow_SubHeading}" Margin="10,0,0,0" />
+        <TextBlock x:Name="txtMessage" Text="{StaticResource ContactSelectWindow_SingleSelect}" Margin="10,0,0,0" />
         <controls:FilterTextBox FilterChanged="FilterTextBox_FilterChanged" VerticalAlignment="Top" Grid.Row="1"  Width="Auto" HorizontalAlignment="Stretch" Margin="10" Height="25"/>
         <ScrollViewer Grid.Row="2" Focusable="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
             <ItemsControl Focusable="False" Margin="5" DataContext="{Binding}" ItemsSource="{Binding Source={StaticResource buddiesCollection}}" AlternationCount="2"  />

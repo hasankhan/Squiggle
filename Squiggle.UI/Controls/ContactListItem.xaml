@@ -43,8 +43,11 @@
             </Style.Triggers>
         </Style>
         <DataTemplate x:Key="standardView">
-            <Border x:Name="contactBorder" Padding="1" Cursor="Hand" Style="{StaticResource ContactListItem}" 
+            <Border x:Name="contactBorder" Padding="1" Cursor="Hand"
                     dragdrop:DragDropManager.DragSourceAdvisor="{DynamicResource contactDragDrop}">
+                <Border.ToolTip>
+                    <ToolTip Style="{StaticResource BuddyToolTip}" />
+                </Border.ToolTip>
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="30"/>

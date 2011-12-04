@@ -129,8 +129,11 @@ namespace Squiggle.Chat
 
         public void Leave()
         {
-            L(()=>session.End(), "leaving chat");
-            LogHistory(EventType.Left, self);
+            Async.Invoke(() =>
+            {
+                L(() => session.End(), "leaving chat");
+                LogHistory(EventType.Left, self);
+            });
         }
 
         public void Invite(Buddy buddy)

@@ -11,6 +11,7 @@ using Squiggle.UI.ViewModel;
 using Squiggle.Utilities;
 using System.Globalization;
 using Squiggle.UI.StickyWindows;
+using Squiggle.UI.Resources;
 
 namespace Squiggle.UI
 {
@@ -48,7 +49,7 @@ namespace Squiggle.UI
             this.clientViewModel = clientViewModel;
             this.AllowMultiSelect = allowMultiSelect;
             if (allowMultiSelect)
-                txtMessage.Text = "Select one or more contacts";
+                txtMessage.Text = Translation.Instance.ContactSelectWindow_MultiSelect;
 
             this.clientViewModel.ContactListUpdated += new EventHandler(clientViewModel_ContactListUpdated);
 

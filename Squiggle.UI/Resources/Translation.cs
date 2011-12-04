@@ -9,6 +9,8 @@ namespace Squiggle.UI.Resources
 {
     class Translation
     {
+        public string Confirmation_FileTransferWindowClose_Title { get; set; }
+        public string Confirmation_FileTransferWindowClose_Message { get; set; }
         public string Global_ContactSays { get; set; }
         public string Global_You { get; set; }
         public string Global_ContactSaid { get; set; }
@@ -16,6 +18,9 @@ namespace Squiggle.UI.Resources
         public string Popup_NewMessage { get; set; }
         public string ContactList_SearchContacts { get; set; }
         public string MainWindow_ShareAMessage { get; set; }
+        public string ContactSelectWindow_MultiSelect { get; set; }
+        public string ContactSelectWindow_Heading_InstantMessage { get; set; }
+        public string ContactSelectWindow_Heading_File { get; set; }
         public string ChatWindow_IsTyping { get; set; }
         public string ChatWindow_MessageCouldNotBeDelivered { get; set; }
         public string ChatWindow_HasJoinedConversation { get; set; }

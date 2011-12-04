@@ -22,42 +22,48 @@
                             </Setter.Value>
                         </Setter>
                     </Style>
-                    <Border Margin="5" x:Key="BuddyToolTip">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="0.3*"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0.3*"/>
-                                <ColumnDefinition Width="0.7*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock VerticalAlignment="Top" Text="Contact" Foreground="Black" FontWeight="Bold"/>
-                            <Image Grid.Row="1" Margin="5" Width="100" Height="100" Stretch="UniformToFill">
-                                <Image.Style>
-                                    <Style TargetType="Image">
-                                        <Setter Property="Source" Value="{Binding Properties.DisplayImage}" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Properties.DisplayImage}" Value="{x:Null}">
-                                                <Setter Property="Source" Value="Images\man.png" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Image.Style>
-                            </Image>
-                            <StackPanel VerticalAlignment="Center" Orientation="Vertical" Grid.Column="1" Grid.Row="1">
-                                <TextBlock Foreground="Black" Text="{Binding DisplayName, StringFormat={StaticResource BuddyProps_DisplayName}}"/>
-                                <TextBlock Foreground="Black" Text="{Binding Status, StringFormat={StaticResource BuddyProps_Status}}"/>
-                                <TextBlock Foreground="Black" Text="{Binding Properties.EmailAddress, StringFormat={StaticResource BuddyProps_EmailAddress}}"/>
-                                <TextBlock Foreground="Black" Text="{Binding Properties.MachineName, StringFormat={StaticResource BuddyProps_MachineName}}" />
-                                <TextBlock Foreground="Black" Text="{Binding Properties.GroupName, StringFormat={StaticResource BuddyProps_GroupName}}" />
-                                <TextBlock Foreground="Black" Text="{Binding LastUpdated, StringFormat={StaticResource BuddyProps_LastUpdated}}" />
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-                    <Style TargetType="{x:Type Border}" x:Key="ContactListItem">
-                        <Setter Property="ToolTip" Value="{StaticResource BuddyToolTip}" />
-                        <Setter Property="ToolTip.Placement" Value="Left" />
+                    <Style TargetType="ToolTip" x:Key="BuddyToolTip">
+                        <Setter Property="Placement" Value="Left" />
+                        <Setter Property="Content" Value="{Binding}" />
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <Border Margin="5">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="0.3*"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="0.3*"/>
+                                                <ColumnDefinition Width="0.7*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock VerticalAlignment="Top" Text="Contact" Foreground="Black" FontWeight="Bold"/>
+                                            <Image Grid.Row="1" Margin="5" Width="100" Height="100" Stretch="UniformToFill">
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Source" Value="{Binding Properties.DisplayImage}" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Properties.DisplayImage}" Value="{x:Null}">
+                                                                <Setter Property="Source" Value="Images\man.png" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
+                                            <StackPanel VerticalAlignment="Center" Orientation="Vertical" Grid.Column="1" Grid.Row="1">
+                                                <TextBlock Foreground="Black" Text="{Binding DisplayName, StringFormat={StaticResource BuddyProps_DisplayName}}"/>
+                                                <TextBlock Foreground="Black" Text="{Binding Status, StringFormat={StaticResource BuddyProps_Status}}"/>
+                                                <TextBlock Foreground="Black" Text="{Binding Properties.EmailAddress, StringFormat={StaticResource BuddyProps_EmailAddress}}"/>
+                                                <TextBlock Foreground="Black" Text="{Binding Properties.MachineName, StringFormat={StaticResource BuddyProps_MachineName}}" />
+                                                <TextBlock Foreground="Black" Text="{Binding Properties.GroupName, StringFormat={StaticResource BuddyProps_GroupName}}" />
+                                                <TextBlock Foreground="Black" Text="{Binding LastUpdated, StringFormat={StaticResource BuddyProps_LastUpdated}}" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
                     </Style>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
