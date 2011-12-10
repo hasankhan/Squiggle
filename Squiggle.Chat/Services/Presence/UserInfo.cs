@@ -13,8 +13,6 @@ namespace Squiggle.Chat.Services.Presence
         [DataMember]
         public string DisplayName { get; set; }
         [DataMember]
-        public string EmailAddress { get; set; }
-        [DataMember]
         public IPEndPoint ChatEndPoint { get; set; }
         [DataMember]
         public IPEndPoint PresenceEndPoint { get; set; }
