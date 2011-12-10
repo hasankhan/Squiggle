@@ -15,6 +15,7 @@ namespace Squiggle.Chat.Services.Presence
         TimeSpan keepAliveSyncTime;
         Message keepAliveMessage;
         Dictionary<UserInfo, DateTime> aliveUsers;
+        DateTime lastKeepAliveMessage;
 
         public event EventHandler<UserEventArgs> UserLost = delegate { };
         public event EventHandler<UserEventArgs> UserDiscovered = delegate { };
@@ -41,11 +42,6 @@ namespace Squiggle.Chat.Services.Presence
             if (e.Message is KeepAliveMessage)
                 OnKeepAliveMessage((KeepAliveMessage)e.Message);
         }        
-
-        public void ImAlive()
-        {
-            channel.SendMessage(keepAliveMessage);
-        }
 
         public void MonitorUser(UserInfo user)
         {
@@ -80,8 +76,17 @@ namespace Squiggle.Chat.Services.Presence
             timer = null;
         }
 
+        void ImAlive()
+        {
+            channel.SendMessage(keepAliveMessage);
+        }
+
         void timer_Elapsed(object sender, ElapsedEventArgs e)
         {
+            if ((DateTime.UtcNow - lastKeepAliveMessage).TotalMilliseconds < timer.Interval / 2)
+                return;
+
+            lastKeepAliveMessage = DateTime.UtcNow;
             ImAlive();
 
             List<UserInfo> gone = GetLostUsers();
@@ -97,7 +102,11 @@ namespace Squiggle.Chat.Services.Presence
         {
             var user = new UserInfo() { ID = message.ClientID,
                                         PresenceEndPoint = message.PresenceEndPoint };
-            if (aliveUsers.ContainsKey(user))
+            bool existingUser;
+            lock (aliveUsers)
+                existingUser = aliveUsers.ContainsKey(user);
+
+            if (existingUser)
                 HeIsAlive(user);
             else
                 UserDiscovered(this, new UserEventArgs() { User = user });

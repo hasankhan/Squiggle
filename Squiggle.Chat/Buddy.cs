@@ -128,7 +128,7 @@ namespace Squiggle.Chat
                 return equals;
             }
             else
-                return base.Equals(obj);
+                return false;
         }
 
         public override int GetHashCode()
