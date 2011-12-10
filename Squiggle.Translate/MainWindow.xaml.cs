@@ -33,6 +33,7 @@ namespace Squiggle.Translate
 
         string[] stopWords = new[] { "Squiggle", "IP", "Port" };
         const string stopWordSymbol = "|";
+        const string newLineSymbol = "$";
         
         class LineMap
         {
@@ -66,7 +67,7 @@ namespace Squiggle.Translate
 
             foreach (string line in lines)
             {
-                var cleanLine = line.Replace("_", "");
+                var cleanLine = line.Replace("_", "").Replace("\r\n", newLineSymbol);
                 var map = new LineMap();
                 foreach (string word in SplitWords(line))
                 {
@@ -110,11 +111,12 @@ namespace Squiggle.Translate
             string text = inputText.Text;
             string apiKey = key.Text;
             string direciton = Direction.Content.ToString();
+            string output = outputText.Text;
             layoutRoot.IsEnabled = false;
 
             Task.Factory.StartNew(() =>
             {
-                string output = TranslateText(targetLanguage, text, apiKey);
+                //string output = TranslateText(targetLanguage, text, apiKey);
                 string file = GenerateTranslationFile(languageName, direciton, output);
                 return new
                 {
@@ -150,6 +152,7 @@ namespace Squiggle.Translate
                 {
                     LineMap map = mapQueue.Dequeue();
                     node.Value = lineQueue.Dequeue();
+                    node.Value = node.Value.Replace(newLineSymbol, "\r\n");
                     foreach (string word in map.Stopped)
                         node.Value = ReplaceFirstOccurrance(node.Value, stopWordSymbol, word);
                 }

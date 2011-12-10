@@ -48,15 +48,15 @@
                             <DataTrigger Binding="{Binding Text,ElementName=language}" Value="">
                                 <Setter Property="IsEnabled" Value="False" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Text,ElementName=key}" Value="">
+                            <!--<DataTrigger Binding="{Binding Text,ElementName=key}" Value="">
                                 <Setter Property="IsEnabled" Value="False" />
-                            </DataTrigger>
+                            </DataTrigger>-->
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
             </Button>
         </StackPanel>
         <TextBox Grid.Row="1" x:Name="inputText" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" IsReadOnly="True"  />
-        <TextBox Grid.Row="1" Grid.Column="1" x:Name="outputText" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" IsReadOnly="True"   />
+        <TextBox Grid.Row="1" Grid.Column="1" x:Name="outputText" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" IsReadOnly="False"   />
     </Grid>
 </Window>
