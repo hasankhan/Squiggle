@@ -56,29 +56,35 @@ namespace Squiggle.Chat.Services.Presence
             thisUser.Properties = properties.ToDictionary();
 
             channel.Start();
-            discovery.Login(thisUser);
+            discovery.Login(thisUser.Clone());
             keepAlive.Start();
         }
 
         public void Update(string name, Dictionary<string, string> properties, UserStatus status)
         {
-            UserStatus lastStatus = thisUser.Status;            
+            UserStatus lastStatus = thisUser.Status;
 
-            thisUser.DisplayName = name;
-            thisUser.Status = status;
-            thisUser.Properties = properties;
+            UserInfo userInfo;
+            lock (thisUser)
+            {
+                thisUser.DisplayName = name;
+                thisUser.Status = status;
+                thisUser.Properties = properties;
+
+                userInfo = thisUser.Clone();
+            }
 
             if (lastStatus == UserStatus.Offline)
             {
                 if (status == UserStatus.Offline)
                     return;
                 else
-                    discovery.Login(thisUser);
+                    discovery.Login(userInfo);
             }
             else if (status == UserStatus.Offline)
-                discovery.FakeLogout(thisUser);
+                discovery.FakeLogout(userInfo);
             else
-                discovery.Update(thisUser);
+                discovery.Update(userInfo);
         }
 
         public void Logout()
@@ -90,7 +96,8 @@ namespace Squiggle.Chat.Services.Presence
 
         void channel_UserInfoRequested(object sender, Transport.Host.UserInfoRequestedEventArgs e)
         {
-            e.UserInfo = thisUser;
+            lock (thisUser)
+                e.UserInfo = thisUser.Clone();
         }             
 
         void keepAlive_UserDiscovered(object sender, UserEventArgs e)

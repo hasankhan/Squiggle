@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace Squiggle.Chat.Services.Presence
@@ -41,14 +42,29 @@ namespace Squiggle.Chat.Services.Presence
                 return ID.Equals(id);
             }
 
-            return base.Equals(obj);
+            return false;
         }
 
         public override int GetHashCode()
         {
             if (this.ID != null)
                 return ID.GetHashCode();
-            return base.GetHashCode();
+            return 0;
+        }
+
+        public UserInfo Clone()
+        {
+            var info = new UserInfo()
+            {
+                ChatEndPoint = ChatEndPoint,
+                DisplayName = DisplayName,
+                ID = ID,
+                KeepAliveSyncTime = KeepAliveSyncTime,
+                PresenceEndPoint = PresenceEndPoint,
+                Properties = Properties.ToDictionary(t => t.Key, t => t.Value),
+                Status = Status,
+            };
+            return info;
         }
     }
 }

@@ -39,7 +39,7 @@ namespace Squiggle.Chat.Services.Presence
 
             channel.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
             channel.MessageReceived += new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
-            var message = Message.FromUserInfo<LoginMessage>(thisUser);
+            var message = Message.FromUserInfo<LoginMessage>(me);
             channel.SendMessage(message);
             localEndPoint = new SquiggleEndPoint(me.ID, me.ChatEndPoint);
         }        
@@ -47,14 +47,14 @@ namespace Squiggle.Chat.Services.Presence
         public void Update(UserInfo me)
         {
             thisUser = me;
-            var message = Message.FromUserInfo<UserUpdateMessage>(thisUser);
+            var message = Message.FromUserInfo<UserUpdateMessage>(me);
             channel.SendMessage(message);
         }
 
         public void FakeLogout(UserInfo me)
         {
             thisUser = me;
-            var message = Message.FromUserInfo<LogoutMessage>(thisUser);
+            var message = Message.FromUserInfo<LogoutMessage>(me);
             channel.SendMessage(message);
         }
 

@@ -15,9 +15,6 @@ namespace Squiggle.Chat.Services.Presence
         TimeSpan keepAliveSyncTime;
         Message keepAliveMessage;
         Dictionary<UserInfo, DateTime> aliveUsers;
-        HashSet<UserInfo> lostUsers;
-
-        public UserInfo User { get; private set; }
 
         public event EventHandler<UserEventArgs> UserLost = delegate { };
         public event EventHandler<UserEventArgs> UserDiscovered = delegate { };
@@ -26,9 +23,8 @@ namespace Squiggle.Chat.Services.Presence
         {
             this.channel = channel;
             this.keepAliveSyncTime = keepAliveSyncTime;
-            this.User = user;
+            keepAliveMessage = Message.FromUserInfo<KeepAliveMessage>(user);
             aliveUsers = new Dictionary<UserInfo, DateTime>();
-            lostUsers = new HashSet<UserInfo>();
         }
 
         public void Start()
@@ -38,7 +34,6 @@ namespace Squiggle.Chat.Services.Presence
             this.timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
             this.timer.Start();
             channel.MessageReceived += new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
-            keepAliveMessage = Message.FromUserInfo<KeepAliveMessage>(User);
         }
 
         void channel_MessageReceived(object sender, MessageReceivedEventArgs e)
@@ -60,8 +55,6 @@ namespace Squiggle.Chat.Services.Presence
         public void LeaveUser(UserInfo user)
         {
             HeIsGone(user);
-            lock (lostUsers)
-                lostUsers.Remove(user);
         }
 
         public void HeIsGone(UserInfo user)
@@ -74,16 +67,11 @@ namespace Squiggle.Chat.Services.Presence
         {
             lock (aliveUsers)
                 aliveUsers[user] = DateTime.Now;   
-            lock (lostUsers)
-                lostUsers.Remove(user);
         }
 
         public void Stop()
         {
             channel.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
-
-            lock (lostUsers)
-                lostUsers.Clear();
 
             lock (aliveUsers)
                 aliveUsers.Clear();
@@ -99,11 +87,7 @@ namespace Squiggle.Chat.Services.Presence
             List<UserInfo> gone = GetLostUsers();
 
             foreach (UserInfo user in gone)
-            {
-                lock (lostUsers)
-                    lostUsers.Add(user);
                 HeIsGone(user);
-            }
 
             foreach (UserInfo user in gone)
                 UserLost(this, new UserEventArgs() { User = user });
