@@ -101,6 +101,8 @@ namespace Squiggle.Chat.Services.Chat.Audio
                     waveIn.StopRecording();
                     waveOut.Stop();
 
+                    codec.Dispose();                   
+                    waveProvider.Dispose();
                     waveIn.Dispose();
                     waveOut.Dispose();
                 }

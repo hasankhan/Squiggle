@@ -69,7 +69,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NAudio">
-      <HintPath>..\Libraries\NAudio.dll</HintPath>
+      <HintPath>..\Libraries\NAudio\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
@@ -222,6 +222,12 @@
     </None>
     <None Include="..\Libraries\Speex\libspeex.dll">
       <Link>libspeex.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Libraries\NAudio\NAudio-license.txt">
+      <Link>NAudio-license.txt</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
