@@ -158,6 +158,12 @@
     <sys:String x:Key="Emoticon_Surprised">Surprised</sys:String>
     <sys:String x:Key="Emoticon_ToungeOut">Tongue out</sys:String>
     <sys:String x:Key="Emoticon_Wink">Wink</sys:String>
+    <sys:String x:Key="Emoticon_Love">Love</sys:String>
+    <sys:String x:Key="Emoticon_Burn">Burn</sys:String>
+    <sys:String x:Key="Emoticon_Blushing">Blushing</sys:String>
+    <sys:String x:Key="Emoticon_Shout">Shout</sys:String>
+    <sys:String x:Key="Emoticon_Slobber">Slobber</sys:String>
+    <sys:String x:Key="Emoticon_Question">Question</sys:String>
     <sys:String x:Key="HistoryViewer_FromDate">From date:</sys:String>
     <sys:String x:Key="HistoryViewer_ToDate">To date:</sys:String>
     <sys:String x:Key="HistoryViewer_Message">Message:</sys:String>

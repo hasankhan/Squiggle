@@ -60,6 +60,12 @@ namespace Squiggle.UI.Resources
         public string Emoticon_Surprised { get; set; }
         public string Emoticon_ToungeOut { get; set; }
         public string Emoticon_Wink { get; set; }
+        public string Emoticon_Blushing { get; set; }
+        public string Emoticon_Love { get; set; }
+        public string Emoticon_Burn { get; set; }
+        public string Emoticon_Shout { get; set; }
+        public string Emoticon_Slobber { get; set; }
+        public string Emoticon_Question { get; set; }
         public string VoiceChat_ReceivedWaiting { get; set; }
         public string VoiceChat_SentWaiting { get; set; }
         public string SettingsWindow_Error_InvalidPresenceIP { get; set; }

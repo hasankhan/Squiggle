@@ -19,6 +19,31 @@ namespace Squiggle.UI
         //public static readonly Emoticon Disappointed = new Emoticon(new Uri("pack://siteoforigin:,,,/Images/Emoticons/disappointed.png", UriKind.Absolute),
         //                                                            Translation.Instance.Emoticon_Disappointed, 
         //                                                            ":-|", ":|");
+        // Added By Javier Hernandez
+        public static readonly Emoticon Blushing = new Emoticon(new Uri("pack://siteoforigin:,,,/Images/Emoticons/blushing.png", UriKind.Absolute),
+                                                                    Translation.Instance.Emoticon_Blushing, 
+                                                                    ":-8", ":8");
+        public static readonly Emoticon Love = new Emoticon(new Uri("pack://siteoforigin:,,,/Images/Emoticons/love.png", UriKind.Absolute),
+                                                                    Translation.Instance.Emoticon_Love,
+                                                                    "8-|", "8|");
+
+        public static readonly Emoticon Burn = new Emoticon(new Uri("pack://siteoforigin:,,,/Images/Emoticons/burn.png", UriKind.Absolute),
+                                                                    Translation.Instance.Emoticon_Burn,
+                                                                    "(b)", "(burn)");
+
+        public static readonly Emoticon Shout = new Emoticon(new Uri("pack://siteoforigin:,,,/Images/Emoticons/shout.png", UriKind.Absolute),
+                                                            Translation.Instance.Emoticon_Shout,
+                                                            "(s)", "(shout)");
+
+        public static readonly Emoticon Slobber= new Emoticon(new Uri("pack://siteoforigin:,,,/Images/Emoticons/slobber.png", UriKind.Absolute),
+                                                    Translation.Instance.Emoticon_Slobber,
+                                                    ":-P-", ":P-");
+
+        public static readonly Emoticon Question = new Emoticon(new Uri("pack://siteoforigin:,,,/Images/Emoticons/question.png", UriKind.Absolute),
+                                                    Translation.Instance.Emoticon_Question,
+                                                    "?:-P", "?:P");
+
+        // --------------------------
 
         public static readonly Emoticon Hot = new Emoticon(new Uri("pack://siteoforigin:,,,/Images/Emoticons/hot.png", UriKind.Absolute), 
                                                             Translation.Instance.Emoticon_Hot, 
