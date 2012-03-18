@@ -42,6 +42,7 @@
                             <Expander.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Header="{StaticResource MainWindow_SendBroadcastMessage}" Tag="{Binding Items}" Click="SendBroadcastMessageMenu_Click" />
+                                    <MenuItem Header="{StaticResource MainWindow_StartGroupChat}" Tag="{Binding Items}" Click="StartGroupChatMenu_Click" />
                                 </ContextMenu>
                             </Expander.ContextMenu>
                             <Expander.Header>

@@ -25,7 +25,8 @@ namespace Squiggle.UI.Controls
         ContactListView contactListView;
         
         public event EventHandler<ChatStartEventArgs> ChatStart = delegate { };
-        public event EventHandler<BroadcastChatStartEventArgs> BroadcastChatStart = delegate { };
+        public event EventHandler<BuddiesActionEventArgs> BroadcastChatStart = delegate { };
+        public event EventHandler<BuddiesActionEventArgs> GroupChatStart = delegate { };
         public event EventHandler SignOut = delegate { };
         public event EventHandler OpenAbout = delegate { };
         
@@ -207,9 +208,12 @@ namespace Squiggle.UI.Controls
 
         private void SendBroadcastMessageMenu_Click(object sender, RoutedEventArgs e)
         {
-            var menuItem = (MenuItem)sender;
-            var buddies = ((IEnumerable<object>)menuItem.Tag).Cast<Buddy>();
-            BroadcastChatStart(this, new BroadcastChatStartEventArgs() { Buddies = buddies.ToList() });
+            RaiseBuddiesEvent(sender, BroadcastChatStart);
+        }
+
+        private void StartGroupChatMenu_Click(object sender, RoutedEventArgs e)
+        {
+            RaiseBuddiesEvent(sender, GroupChatStart);
         }
 
         void StartChat_Click(object sender, RoutedEventArgs e)
@@ -249,6 +253,13 @@ namespace Squiggle.UI.Controls
         {
             StartChat((Buddy)e.Parameter, true);
         }
+
+        void RaiseBuddiesEvent(object sender, EventHandler<BuddiesActionEventArgs> evt)
+        {
+            var menuItem = (MenuItem)sender;
+            var buddies = ((IEnumerable<object>)menuItem.Tag).Cast<Buddy>();
+            evt(this, new BuddiesActionEventArgs() { Buddies = buddies.ToList() });
+        }
     }
 
     public class ChatStartEventArgs : EventArgs
@@ -258,7 +269,7 @@ namespace Squiggle.UI.Controls
         public string[] Files { get; set; }
     }
 
-    public class BroadcastChatStartEventArgs: EventArgs
+    public class BuddiesActionEventArgs: EventArgs
     {
         public IEnumerable<Buddy> Buddies {get; set;}
     }

@@ -20,6 +20,7 @@
     <sys:String x:Key="MainWindow_PleaseWait">Please wait...</sys:String>
     <sys:String x:Key="MainWindow_UpdateNotice">Newer version of Squiggle is available.</sys:String>
     <sys:String x:Key="MainWindow_SendBroadcastMessage">Send an instant _broadcast message</sys:String>
+    <sys:String x:Key="MainWindow_StartGroupChat">Start _group chat</sys:String>
     <sys:String x:Key="MainWindow_TrayMenu_Open">Open</sys:String>
     <sys:String x:Key="MainWindow_TrayMenu_ChangeStatus">Change Status</sys:String>
     <sys:String x:Key="MainWindow_TrayMenu_SignOut">Sign Out</sys:String>

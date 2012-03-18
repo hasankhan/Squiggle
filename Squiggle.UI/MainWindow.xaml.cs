@@ -59,7 +59,8 @@ namespace Squiggle.UI
             chatWindows = new ChatWindowCollection();
 
             chatControl.SignIn.LoginInitiated += new EventHandler<Squiggle.UI.Controls.LogInEventArgs>(ContactList_LoginInitiated);
-            chatControl.ContactList.BroadcastChatStart += new EventHandler<Controls.BroadcastChatStartEventArgs>(ContactList_BroadcastChatStart);
+            chatControl.ContactList.BroadcastChatStart += new EventHandler<Controls.BuddiesActionEventArgs>(ContactList_BroadcastChatStart);
+            chatControl.ContactList.GroupChatStart += new EventHandler<BuddiesActionEventArgs>(ContactList_GroupChatStart);
             chatControl.ContactList.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(ContactList_StartChat);
             chatControl.ContactList.SignOut += new EventHandler(ContactList_SignOut);
             dummyViewModel = new ClientViewModel(new DummyChatClient());
@@ -109,9 +110,14 @@ namespace Squiggle.UI
             StartChat(e.Buddy, e.SendFile, e.Files);
         }
 
-        void ContactList_BroadcastChatStart(object sender, Controls.BroadcastChatStartEventArgs e)
+        void ContactList_BroadcastChatStart(object sender, Controls.BuddiesActionEventArgs e)
         {
             StartBroadcastChat(e.Buddies);
+        }
+
+        void ContactList_GroupChatStart(object sender, BuddiesActionEventArgs e)
+        {
+            StartGroupChat(e.Buddies);
         }
 
         ChatWindow StartChat(Buddy buddy, bool sendFile, params string[] filePaths)
@@ -504,6 +510,15 @@ namespace Squiggle.UI
                 var session = groupChat.ChatSessions.FirstOrDefault(c => c.Buddies.Contains(b.Buddy) && !c.IsGroupChat);
                 groupChat.RemoveSession(session);
             };
+        }
+
+        void StartGroupChat(IEnumerable<Buddy> buddies)
+        {
+            if (!buddies.Any())
+                return;
+
+            var chat = StartChat(buddies.FirstOrDefault());
+            chat.Invite(buddies.Skip(1));
         }
 
         private void SortMenu_Click(object sender, RoutedEventArgs e)
