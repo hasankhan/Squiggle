@@ -33,13 +33,8 @@ namespace Squiggle.UI.Controls
 
         void Search_Click(object sender, RoutedEventArgs e)
         {
-            DateTime? from;
-            if (!GetDate(txtFrom.Text, out from))
-                return;
-            DateTime? to;
-            if (!GetDate(txtTo.Text, out to))
-                return;
-
+            DateTime? from = txtFrom.SelectedDate;
+            DateTime? to = txtTo.SelectedDate;
             lastSearch = () => AsyncInvoke(() => SearchUpdates(from, to));
             lastSearch();
         }
@@ -62,23 +57,6 @@ namespace Squiggle.UI.Controls
             {
                 results.ItemsSource = updates;
             });
-        }
-
-        bool GetDate(string input, out DateTime? result)
-        {
-            result = null;
-            DateTime date;
-            if (input.Length > 0)
-            {
-                if (DateTime.TryParse(input, out date))
-                    result = date;
-                else
-                {
-                    MessageBox.Show(Translation.Instance.Error_InvalidDate);
-                    return false;
-                }
-            }
-            return true;
         }
 
         private void Clear_Click(object sender, RoutedEventArgs e)
