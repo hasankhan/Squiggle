@@ -180,7 +180,6 @@
     <sys:String x:Key="HistoryViewer_Clear">Clear history</sys:String>
     <sys:String x:Key="HistoryViewer_Delete">Delete selected conversations</sys:String>
     <sys:String x:Key="HistoryViewer_ConfirmDelete">Are you sure you want to delete the selected conversations?</sys:String>
-    <sys:String x:Key="Error_InvalidDate">Please enter a valid date</sys:String>
     <sys:String x:Key="ConversationViewer_Stamp">Stamp</sys:String>
     <sys:String x:Key="ConversationViewer_Sender">Sender</sys:String>
     <sys:String x:Key="ConversationViewer_Type">Type</sys:String>

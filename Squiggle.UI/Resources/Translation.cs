@@ -70,7 +70,6 @@ namespace Squiggle.UI.Resources
         public string VoiceChat_SentWaiting { get; set; }
         public string SettingsWindow_Error_InvalidPresenceIP { get; set; }
         public string Error { get; set; }
-        public string Error_InvalidDate { get; set; }
         public string Error_InvalidImage { get; set; }
         public string Error_NoNetwork { get; set; }
         public string HistoryViewer_ConfirmClear { get; set; }
