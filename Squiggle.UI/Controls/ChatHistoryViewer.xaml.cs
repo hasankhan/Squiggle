@@ -171,7 +171,8 @@ namespace Squiggle.UI.Controls
 
         private void UserControl_GotFocus(object sender, RoutedEventArgs e)
         {
-            txtMessage.Focus();
+            if (e.OriginalSource == this)
+                txtMessage.Focus();
         }
     }
 }
