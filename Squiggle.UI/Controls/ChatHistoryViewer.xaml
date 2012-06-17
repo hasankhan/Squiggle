@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:Squiggle.UI.Controls"
-             xmlns:toolkit="http://schemas.microsoft.com/wpf/2008/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="586" GotFocus="UserControl_GotFocus">
     <Grid>
@@ -21,9 +20,9 @@
                 <ColumnDefinition Width="454*" />
             </Grid.ColumnDefinitions>
             <Label Content="{DynamicResource HistoryViewer_FromDate}" Margin="0,0,35,0" />
-            <toolkit:DatePicker x:Name="txtFrom" Grid.ColumnSpan="2" Margin="75,0,0,0" />
+            <DatePicker x:Name="txtFrom" Grid.ColumnSpan="2" Margin="75,0,0,0" />
             <Label Grid.Row="1" Content="{DynamicResource HistoryViewer_ToDate}" Margin="0,0,35,0" />
-            <toolkit:DatePicker Grid.Row="1" x:Name="txtTo" Grid.ColumnSpan="2" Margin="75,0,0,0" />
+            <DatePicker Grid.Row="1" x:Name="txtTo" Grid.ColumnSpan="2" Margin="75,0,0,0" />
             <Label Grid.Row="2" Content="{DynamicResource HistoryViewer_Message}" Margin="0,0,35,0" />
             <TextBox Grid.Row="2" x:Name="txtMessage" Grid.ColumnSpan="2" Margin="75,0,0,0" />
             <StackPanel Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal">
