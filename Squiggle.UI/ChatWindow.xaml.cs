@@ -186,7 +186,7 @@ namespace Squiggle.UI
                 {
                     if (buzzPending)
                     {
-                        Dispatcher.Invoke(() =>
+                        Dispatcher.Delay(() =>
                         {
                             DoBuzzAction();
                         }, TimeSpan.FromSeconds(.5));

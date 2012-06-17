@@ -83,7 +83,7 @@ namespace Squiggle.UI
             chatControl.SignIn.LoadSettings(settings);           
 
             if (!String.IsNullOrEmpty(name) && settings.PersonalSettings.AutoSignMeIn)
-                Dispatcher.Invoke(() => SignIn(name, groupName, false, () => { }),
+                Dispatcher.Delay(() => SignIn(name, groupName, false, () => { }),
                              TimeSpan.FromSeconds(5));
             else if (!String.IsNullOrEmpty(name))
                 chatControl.SignIn.chkRememberName.IsChecked = true;
@@ -214,7 +214,6 @@ namespace Squiggle.UI
                     return;
                 }
 
-
                 CreateMonitor();
                 clientViewModel = new ClientViewModel(ChatClient);
                 this.DataContext = clientViewModel;
@@ -230,8 +229,7 @@ namespace Squiggle.UI
                 UpdateNotifier.CheckForUpdate(SettingsProvider.Current.Settings.GeneralSettings.FirstRun, OnUpdateCheckComplete);
 
                 onSignIn();
-            },
-            Dispatcher);
+            });
         }
 
         void CancelUpdateCommand_Execute(object argument)

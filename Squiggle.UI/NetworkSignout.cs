@@ -49,7 +49,7 @@ namespace Squiggle.UI
         {
             if (e.IsAvailable)
             {
-                dispatcher.Invoke(()=>
+                dispatcher.Delay(()=>
                 {
                     if (autoSignout && !String.IsNullOrEmpty(userName) && !loggedIn)
                         signinFunction(new NetworkSinginInfo() { DisplayName = userName, GroupName = groupName });

@@ -17,13 +17,12 @@ namespace Squiggle.Utilities
                 dispatcher.Invoke(action);
         }
 
-        public static void Invoke(this Dispatcher dispatcher, Action action, TimeSpan delay)
+        public static void Delay(this Dispatcher dispatcher, Action action, TimeSpan delay)
         {
             Async.Invoke(() =>
             {
                 Thread.Sleep((int)delay.TotalMilliseconds);
-                Invoke(dispatcher, action);
-            });
+            }, action);
         }
     }
 }

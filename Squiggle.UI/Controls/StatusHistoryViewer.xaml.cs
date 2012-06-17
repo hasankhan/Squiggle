@@ -94,8 +94,7 @@ namespace Squiggle.UI.Controls
             {
                 onComplete();
                 busyIndicator.IsBusy = false;
-            }
-            , Dispatcher);
+            });
         }
 
         class Result

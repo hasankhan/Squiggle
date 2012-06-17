@@ -131,8 +131,7 @@ namespace Squiggle.UI.Controls
             {
                 onComplete();
                 busyIndicator.IsBusy = false;
-            }
-            , Dispatcher);
+            });
         }
 
         private void results_ContextMenuOpening(object sender, ContextMenuEventArgs e)
