@@ -12,7 +12,6 @@ using Squiggle.Utilities;
 using Squiggle.History;
 using Squiggle.History.DAL;
 using System.Windows.Threading;
-using Squiggle.History.DAL;
 
 namespace Squiggle.Chat
 {    
