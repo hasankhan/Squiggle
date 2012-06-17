@@ -5,6 +5,12 @@
         xmlns:controls="clr-namespace:Squiggle.UI.Controls"
         Icon="/Squiggle;component/Images/Chat.ico" FocusManager.FocusedElement="{Binding ElementName=chatHistory}"
         Title="HistoryViewer" Height="300" Width="586" WindowStartupLocation="CenterOwner" KeyDown="StickyWindow_KeyDown">
+    <sticky:StickyWindow.Resources>
+        <Style TargetType="DatePicker">
+            <Setter Property="Width" Value="200" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+    </sticky:StickyWindow.Resources>
     <Grid>
         <TabControl>
             <TabItem Header="{StaticResource HistoryViewer_ChatHistoryTab}">
