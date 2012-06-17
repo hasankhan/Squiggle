@@ -43,6 +43,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\Shared\AssemblyInfo.Copyright.cs">
+      <Link>Properties\AssemblyInfo.Copyright.cs</Link>
+    </Compile>
+    <Compile Include="..\Shared\AssemblyInfo.Version.cs">
+      <Link>Properties\AssemblyInfo.VersionSafe.cs</Link>
+    </Compile>
     <Compile Include="DAL\Event.cs" />
     <Compile Include="DAL\EventType.cs" />
     <Compile Include="DAL\HistoryEntities.Designer.cs">
