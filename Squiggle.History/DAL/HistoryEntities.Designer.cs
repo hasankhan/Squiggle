@@ -19,12 +19,12 @@ using System.Xml.Serialization;
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
 
-[assembly: EdmRelationshipAttribute("HistoryModel", "SessionEvent", "Session", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Squiggle.Chat.History.DAL.Session), "Event", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Squiggle.Chat.History.DAL.Event))]
-[assembly: EdmRelationshipAttribute("HistoryModel", "SessionParticipant", "Session", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Squiggle.Chat.History.DAL.Session), "Participant", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Squiggle.Chat.History.DAL.Participant))]
+[assembly: EdmRelationshipAttribute("HistoryModel", "SessionEvent", "Session", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Squiggle.History.DAL.Session), "Event", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Squiggle.History.DAL.Event))]
+[assembly: EdmRelationshipAttribute("HistoryModel", "SessionParticipant", "Session", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Squiggle.History.DAL.Session), "Participant", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Squiggle.History.DAL.Participant))]
 
 #endregion
 
-namespace Squiggle.Chat.History.DAL
+namespace Squiggle.History.DAL
 {
     #region Contexts
     

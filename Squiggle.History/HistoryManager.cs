@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Squiggle.Chat.History.DAL;
+using Squiggle.History.DAL;
 
-namespace Squiggle.Chat.History
+namespace Squiggle.History
 {
     public class HistoryManager
     {
@@ -21,7 +21,7 @@ namespace Squiggle.Chat.History
             }
         }
 
-        public void AddStatusUpdate(DateTime stamp, Guid contactId, string contactName, UserStatus status)
+        public void AddStatusUpdate(DateTime stamp, Guid contactId, string contactName, int status)
         {
             using (var repository = new HistoryRepository())
                 repository.AddStatusUpdate(stamp, contactId, contactName, status);

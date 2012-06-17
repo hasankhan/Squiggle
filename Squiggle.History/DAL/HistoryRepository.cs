@@ -5,7 +5,7 @@ using System.Text;
 using System.Data.Objects;
 using System.Linq.Expressions;
 
-namespace Squiggle.Chat.History.DAL
+namespace Squiggle.History.DAL
 {
     class HistoryRepository : IDisposable
     {
@@ -109,9 +109,9 @@ namespace Squiggle.Chat.History.DAL
             context.SaveChanges();
         }
 
-        public void AddStatusUpdate(DateTime stamp, Guid contactId, string contactName, UserStatus status)
+        public void AddStatusUpdate(DateTime stamp, Guid contactId, string contactName, int status)
         {
-            context.AddToStatusUpdates(StatusUpdate.CreateStatusUpdate(Guid.NewGuid(), contactId, contactName, (int)status, stamp));
+            context.AddToStatusUpdates(StatusUpdate.CreateStatusUpdate(Guid.NewGuid(), contactId, contactName, status, stamp));
             context.SaveChanges();
         }
 

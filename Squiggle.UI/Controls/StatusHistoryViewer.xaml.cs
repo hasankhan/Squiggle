@@ -11,11 +11,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Squiggle.Chat.History;
-using Squiggle.Chat.History.DAL;
 using Squiggle.UI.Resources;
 using Squiggle.Utilities;
 using Squiggle.Chat;
+using Squiggle.History;
+using Squiggle.History.DAL;
 
 namespace Squiggle.UI.Controls
 {
@@ -50,7 +50,7 @@ namespace Squiggle.UI.Controls
             {
                 Time = update.Stamp,
                 Name = update.ContactName,
-                Status = update.Status
+                Status = (UserStatus)update.StatusCode
             }).ToList();
 
             Dispatcher.Invoke(() =>

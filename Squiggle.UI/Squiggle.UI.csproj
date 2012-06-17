@@ -82,9 +82,9 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
-    <Reference Include="System.Data.SqlServerCe.Entity, Version=3.5.1.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+    <Reference Include="System.Data.SqlServerCe.Entity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libraries\SQL Server Compact Edition\System.Data.SqlServerCe.Entity.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
@@ -257,7 +257,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Content Include="..\Squiggle.Chat\History\DAL\History.sdf">
+    <Content Include="..\Squiggle.History\DAL\History.sdf">
       <Link>History.sdf</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -536,6 +536,10 @@
     <ProjectReference Include="..\Squiggle.Chat\Squiggle.Chat.csproj">
       <Project>{CF28694A-887E-4118-874F-76F028DAB56E}</Project>
       <Name>Squiggle.Chat</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Squiggle.History\Squiggle.History.csproj">
+      <Project>{C3214C5A-4B20-415E-A62E-F13229264072}</Project>
+      <Name>Squiggle.History</Name>
     </ProjectReference>
     <ProjectReference Include="..\Squiggle.Utilities\Squiggle.Utilities.csproj">
       <Project>{8B57850B-FA7F-4F96-A4A0-BF81BF24E710}</Project>

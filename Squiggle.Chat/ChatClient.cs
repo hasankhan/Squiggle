@@ -5,7 +5,7 @@ using Squiggle.Chat.Services;
 using Squiggle.Chat.Services.Chat;
 using Squiggle.Chat.Services.Presence;
 using Squiggle.Utilities;
-using Squiggle.Chat.History;
+using Squiggle.History;
 using System.Linq;
 
 namespace Squiggle.Chat
@@ -190,7 +190,7 @@ namespace Squiggle.Chat
                 ExceptionMonster.EatTheException(() =>
                 {
                     var manager = new HistoryManager();
-                    manager.AddStatusUpdate(DateTime.Now, new Guid(buddy.ID.ToString()), buddy.DisplayName, buddy.Status);
+                    manager.AddStatusUpdate(DateTime.Now, new Guid(buddy.ID.ToString()), buddy.DisplayName, (int)buddy.Status);
                 }, "logging history.");
         }
 

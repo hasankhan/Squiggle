@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Squiggle.UI.StickyWindows;
-using Squiggle.Chat.History;
+using Squiggle.History;
 
 namespace Squiggle.UI
 {

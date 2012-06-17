@@ -111,18 +111,6 @@
     <Compile Include="ActionQueue.cs" />
     <Compile Include="ClientExtensions.cs" />
     <Compile Include="FileTransferCollection.cs" />
-    <Compile Include="History\DAL\Event.cs" />
-    <Compile Include="History\DAL\EventType.cs" />
-    <Compile Include="History\DAL\HistoryEntities.Designer.cs">
-      <DependentUpon>HistoryEntities.edmx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="History\DAL\HistoryRepository.cs" />
-    <Compile Include="History\DAL\SessionCriteria.cs" />
-    <Compile Include="History\DAL\StatusCriteria.cs" />
-    <Compile Include="History\DAL\StatusUpdate.cs" />
-    <Compile Include="History\HistoryManager.cs" />
     <Compile Include="IVoiceChat.cs" />
     <Compile Include="IChat.cs" />
     <Compile Include="IChatClient.cs" />
@@ -203,18 +191,14 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Squiggle.History\Squiggle.History.csproj">
+      <Project>{C3214C5A-4B20-415E-A62E-F13229264072}</Project>
+      <Name>Squiggle.History</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Squiggle.Utilities\Squiggle.Utilities.csproj">
       <Project>{8B57850B-FA7F-4F96-A4A0-BF81BF24E710}</Project>
       <Name>Squiggle.Utilities</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.Config" />
-    <None Include="History\DAL\History.sdf" />
-    <EntityDeploy Include="History\DAL\HistoryEntities.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>HistoryEntities.Designer.cs</LastGenOutput>
-    </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Libraries\Speex\libspeex-license.txt">

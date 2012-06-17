@@ -11,11 +11,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Squiggle.Chat.History;
 using Squiggle.UI;
-using Squiggle.Chat.History.DAL;
 using Squiggle.UI.Resources;
 using Squiggle.Utilities;
+using Squiggle.History;
+using Squiggle.History.DAL;
 
 namespace Squiggle.UI.Controls
 {
