@@ -62,11 +62,6 @@
     <Compile Include="HistoryManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.SQL.Server.Compact.3.5">
-      <Visible>False</Visible>
-      <ProductName>SQL Server Compact 3.5 SP2</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
     <None Include="App.Config" />
     <None Include="DAL\History.sdf" />
     <EntityDeploy Include="DAL\HistoryEntities.edmx">
