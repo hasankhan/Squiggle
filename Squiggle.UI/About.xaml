@@ -35,7 +35,7 @@
             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                 <TextBlock>Support:</TextBlock>
                 <TextBlock Margin="10,0,0,0">
-                    <Hyperlink NavigateUri="mailto:info@overroot.com" RequestNavigate="Link_RequestNavigate">info@overroot.com</Hyperlink>
+                    <Hyperlink NavigateUri="mailto:hasan@overroot.com" RequestNavigate="Link_RequestNavigate">hasan@overroot.com</Hyperlink>
                 </TextBlock>
             </StackPanel>
         </StackPanel>
