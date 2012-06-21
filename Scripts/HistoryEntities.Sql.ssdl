@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="HistoryModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+<Schema Namespace="HistoryModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
 	<EntityContainer Name="HistoryModelStoreContainer">
-	  <EntitySet Name="Events" EntityType="HistoryModel.Store.Events" store:Type="Tables" />
-	  <EntitySet Name="Participants" EntityType="HistoryModel.Store.Participants" store:Type="Tables" />
-	  <EntitySet Name="Sessions" EntityType="HistoryModel.Store.Sessions" store:Type="Tables" />
-	  <EntitySet Name="StatusUpdates" EntityType="HistoryModel.Store.StatusUpdates" store:Type="Tables" />
+	  <EntitySet Name="Events" EntityType="HistoryModel.Store.Events" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+	  <EntitySet Name="Participants" EntityType="HistoryModel.Store.Participants" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+	  <EntitySet Name="Sessions" EntityType="HistoryModel.Store.Sessions" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+	  <EntitySet Name="StatusUpdates" EntityType="HistoryModel.Store.StatusUpdates" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
 	</EntityContainer>
 	<EntityType Name="Events">
 	  <Key>
