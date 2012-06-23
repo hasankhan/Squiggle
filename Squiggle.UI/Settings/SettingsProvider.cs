@@ -7,7 +7,7 @@ using Squiggle.Chat;
 using Squiggle.UI.Helpers;
 using Squiggle.Utilities;
 using System.Configuration;
-using Squiggle.Chat.Services;
+using Squiggle.Core;
 
 namespace Squiggle.UI.Settings
 {

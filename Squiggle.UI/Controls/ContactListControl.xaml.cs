@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Squiggle.Utilities;
 using System.Windows.Controls.Primitives;
+using Squiggle.Core.Presence;
 
 namespace Squiggle.UI.Controls
 {

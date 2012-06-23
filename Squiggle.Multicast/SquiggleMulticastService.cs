@@ -10,7 +10,7 @@ using Squiggle.Utilities;
 using System.Configuration;
 using System.Net;
 using System.Text.RegularExpressions;
-using Squiggle.Chat.Services;
+using Squiggle.Core;
 
 namespace Squiggle.Multicast
 {

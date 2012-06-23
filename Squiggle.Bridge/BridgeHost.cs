@@ -1,11 +1,11 @@
 ﻿using System;
 using System.ServiceModel;
-using Squiggle.Chat.Services.Presence.Transport;
-using Squiggle.Chat.Services.Chat;
+using Squiggle.Core.Presence.Transport;
+using Squiggle.Core.Chat;
 using System.Net;
 using System.Linq;
-using Squiggle.Chat.Services;
-using Squiggle.Chat.Services.Presence;
+using Squiggle.Core;
+using Squiggle.Core.Presence;
 using System.ServiceModel.Dispatcher;
 using System.Collections.Generic;
 
@@ -40,7 +40,7 @@ namespace Squiggle.Bridge
             PresenceMessageForwarded(this, args);
         }
 
-        public Chat.Services.Presence.UserInfo GetUserInfo(SquiggleEndPoint user)
+        public Squiggle.Core.Presence.UserInfo GetUserInfo(SquiggleEndPoint user)
         {
             UserInfo userInfo = bridge.RoutePresenceMessageToLocalUser((channel, localEndPoint, presenceEndPoint) => channel.GetUserInfo(presenceEndPoint), sender: null, recepient: user);
             if (userInfo != null)
@@ -54,7 +54,7 @@ namespace Squiggle.Bridge
             bridge.RoutePresenceMessageToLocalUser((channel, localEndPoint, presenceEndPoint)=>channel.SendMessage(messageOBj, localEndPoint, presenceEndPoint), sender, recepient);
         }
 
-        public Chat.Services.Chat.Host.SessionInfo GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public Squiggle.Core.Chat.Host.SessionInfo GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
             return bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.GetSessionInfo(sessionId, s, r), sender, recepient);
         }

@@ -1,5 +1,5 @@
 ﻿
-using Squiggle.Chat.Services;
+using Squiggle.Core;
 namespace Squiggle.UI.Settings
 {
     class ConnectionSettings

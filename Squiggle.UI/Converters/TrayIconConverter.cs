@@ -5,6 +5,7 @@ using Squiggle.Chat;
 using Squiggle.UI.Helpers;
 using System.Drawing;
 using System.Windows;
+using Squiggle.Core.Presence;
 
 namespace Squiggle.UI.Converters
 {

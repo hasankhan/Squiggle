@@ -20,6 +20,8 @@ using Squiggle.UI.StickyWindows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using Squiggle.UI.Controls.ChatItems;
+using Squiggle.Core.Chat.Voice;
+using Squiggle.Core.Chat.FileTransfer;
 
 namespace Squiggle.UI
 {

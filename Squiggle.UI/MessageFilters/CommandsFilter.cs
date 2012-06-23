@@ -21,11 +21,11 @@ namespace Squiggle.UI.MessageFilters
         {
             simpleCommands["CLS"] = window => window.chatTextBox.Clear();
             simpleCommands["/QUIT"] = window => MainWindow.Instance.Quit();
-            simpleCommands["/ONLINE"] = window => MainWindow.Instance.ChatClient.CurrentUser.Status = UserStatus.Online;
-            simpleCommands["/OFFLINE"] = window => MainWindow.Instance.ChatClient.CurrentUser.Status = UserStatus.Offline;
-            simpleCommands["/AWAY"] = window => MainWindow.Instance.ChatClient.CurrentUser.Status = UserStatus.Away;
-            simpleCommands["/BRB"] = window => MainWindow.Instance.ChatClient.CurrentUser.Status = UserStatus.BeRightBack;
-            simpleCommands["/BUSY"] = window => MainWindow.Instance.ChatClient.CurrentUser.Status = UserStatus.Busy;
+            simpleCommands["/ONLINE"] = window => MainWindow.Instance.ChatClient.CurrentUser.Status = Core.Presence.UserStatus.Online;
+            simpleCommands["/OFFLINE"] = window => MainWindow.Instance.ChatClient.CurrentUser.Status = Core.Presence.UserStatus.Offline;
+            simpleCommands["/AWAY"] = window => MainWindow.Instance.ChatClient.CurrentUser.Status = Core.Presence.UserStatus.Away;
+            simpleCommands["/BRB"] = window => MainWindow.Instance.ChatClient.CurrentUser.Status = Core.Presence.UserStatus.BeRightBack;
+            simpleCommands["/BUSY"] = window => MainWindow.Instance.ChatClient.CurrentUser.Status = Core.Presence.UserStatus.Busy;
             simpleCommands["/BUZZ"] = window => window.SendBuzz();
             simpleCommands["/MAIN"] = window => MainWindow.Instance.RestoreWindow();
         }

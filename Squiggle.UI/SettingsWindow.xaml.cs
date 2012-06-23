@@ -13,7 +13,7 @@ using Squiggle.Utilities;
 using Squiggle.UI.StickyWindows;
 using System.Net;
 using Squiggle.UI.Resources;
-using Squiggle.Chat.Services;
+using Squiggle.Core;
 using System.IO;
 using System.Windows.Media.Imaging;
 using System.Drawing;

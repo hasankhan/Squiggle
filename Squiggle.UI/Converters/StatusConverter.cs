@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Data;
 using Squiggle.Chat;
 using Squiggle.UI.Resources;
+using Squiggle.Core.Presence;
 
 namespace Squiggle.UI.Converters
 {

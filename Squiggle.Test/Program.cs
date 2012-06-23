@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
-using Squiggle.Chat.Services.Chat;
-using Squiggle.Chat.Services;
 using Squiggle.Utilities;
+using Squiggle.Core;
+using Squiggle.Core.Presence;
 
 namespace Squiggle.Chat
 {

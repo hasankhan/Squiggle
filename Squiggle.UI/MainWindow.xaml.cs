@@ -12,15 +12,16 @@ using Squiggle.UI.Helpers;
 using Squiggle.UI.ViewModel;
 using System.Windows.Controls;
 using System.Diagnostics;
-using Squiggle.Chat.Services.Chat;
+using Squiggle.Core.Chat;
 using System.Globalization;
-using Squiggle.Chat.Services;
+using Squiggle.Core;
 using Squiggle.Utilities;
 using Squiggle.UI.StickyWindows;
 using Squiggle.UI.Resources;
 using System.Windows.Media.Animation;
 using System.Net.Sockets;
 using Squiggle.UI.Controls;
+using Squiggle.Core.Presence;
 
 namespace Squiggle.UI
 {
@@ -151,7 +152,7 @@ namespace Squiggle.UI
 
         private void StatusMenu_Click(object sender, RoutedEventArgs e)
         {
-            var status = (UserStatus)((System.Windows.Controls.MenuItem)e.OriginalSource).DataContext;
+            var status = (Core.Presence.UserStatus)((System.Windows.Controls.MenuItem)e.OriginalSource).DataContext;
             clientViewModel.LoggedInUser.Status = status;
         }
 

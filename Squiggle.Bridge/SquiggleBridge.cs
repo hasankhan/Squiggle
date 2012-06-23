@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Net;
 using System.ServiceModel;
 using System.Linq;
-using Squiggle.Chat.Services.Presence.Transport;
+using Squiggle.Core.Presence.Transport;
 using System.ServiceModel.Channels;
-using Squiggle.Chat.Services.Presence.Transport.Host;
-using Squiggle.Chat.Services;
-using Squiggle.Chat.Services.Chat.Host;
+using Squiggle.Core.Presence.Transport.Host;
+using Squiggle.Core;
+using Squiggle.Core.Chat.Host;
 using System.Diagnostics;
-using Squiggle.Chat;
 using Squiggle.Utilities;
 
 namespace Squiggle.Bridge
@@ -68,8 +67,8 @@ namespace Squiggle.Bridge
 
             presenceChannel = new PresenceChannel(presenceEndPoint, presenceServiceEndPoint);
             presenceChannel.Start();
-            presenceChannel.MessageReceived += new EventHandler<Chat.Services.Presence.Transport.MessageReceivedEventArgs>(presenceChannel_MessageReceived);
-            presenceChannel.UserInfoRequested += new EventHandler<Chat.Services.Presence.Transport.Host.UserInfoRequestedEventArgs>(presenceChannel_UserInfoRequested);
+            presenceChannel.MessageReceived += new EventHandler<Squiggle.Core.Presence.Transport.MessageReceivedEventArgs>(presenceChannel_MessageReceived);
+            presenceChannel.UserInfoRequested += new EventHandler<Squiggle.Core.Presence.Transport.Host.UserInfoRequestedEventArgs>(presenceChannel_UserInfoRequested);
         }
 
         protected override void OnStop()
@@ -114,7 +113,7 @@ namespace Squiggle.Bridge
             }, "getting user info from remote bridge for local client");
         }
 
-        void presenceChannel_MessageReceived(object sender, Squiggle.Chat.Services.Presence.Transport.MessageReceivedEventArgs e)
+        void presenceChannel_MessageReceived(object sender, Squiggle.Core.Presence.Transport.MessageReceivedEventArgs e)
         {
             ExceptionMonster.EatTheException(() =>
             {

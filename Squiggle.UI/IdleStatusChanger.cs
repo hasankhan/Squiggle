@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Squiggle.Chat;
 using Squiggle.Utilities;
+using Squiggle.Core.Presence;
 
 namespace Squiggle.UI
 {

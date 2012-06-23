@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.ServiceModel;
-using Squiggle.Chat;
-using Squiggle.Chat.Services.Presence.Transport.Broadcast.MultcastService;
-using Squiggle.Chat.Services;
+using Squiggle.Core.Presence.Transport.Broadcast.MultcastService;
+using Squiggle.Core;
 using Squiggle.Utilities;
 
 namespace Squiggle.Multicast

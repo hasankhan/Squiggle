@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using Squiggle.Chat.Services;
-using Squiggle.Chat.Services.Chat;
-using Squiggle.Chat.Services.Presence;
+using Squiggle.Core;
+using Squiggle.Core.Chat;
+using Squiggle.Core.Presence;
 using Squiggle.Utilities;
 using Squiggle.History;
 using System.Linq;
+using Squiggle.Core.Chat.Voice;
 
 namespace Squiggle.Chat
 {
@@ -41,7 +42,7 @@ namespace Squiggle.Chat
         {
             chatService = new ChatService(localEndPoint);
             buddies = new BuddyList();
-            chatService.ChatStarted += new EventHandler<Squiggle.Chat.Services.Chat.ChatStartedEventArgs>(chatService_ChatStarted);
+            chatService.ChatStarted += new EventHandler<Squiggle.Core.Chat.ChatStartedEventArgs>(chatService_ChatStarted);
             presenceService = new PresenceService(localEndPoint, presenceEndPoint, localEndPoint.Address, keepAliveTime);
             presenceService.UserOffline += new EventHandler<UserEventArgs>(presenceService_UserOffline);
             presenceService.UserOnline += new EventHandler<UserOnlineEventArgs>(presenceService_UserOnline);
@@ -95,7 +96,7 @@ namespace Squiggle.Chat
             presenceService.Update(CurrentUser.DisplayName, properties, CurrentUser.Status);
         }
 
-        void chatService_ChatStarted(object sender, Squiggle.Chat.Services.Chat.ChatStartedEventArgs e)
+        void chatService_ChatStarted(object sender, Squiggle.Core.Chat.ChatStartedEventArgs e)
         {
             var buddyList = new List<Buddy>();
             foreach (SquiggleEndPoint user in e.Session.RemoteUsers)

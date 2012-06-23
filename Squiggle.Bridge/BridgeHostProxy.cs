@@ -3,14 +3,13 @@ using System.Diagnostics;
 using System.Net.Sockets;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using Squiggle.Chat;
-using Squiggle.Chat.Services.Presence;
+using Squiggle.Core.Presence;
 using System.Net;
 using System.Drawing;
 using Squiggle.Utilities;
-using Squiggle.Chat.Services.Chat.Host;
-using Squiggle.Chat.Services.Chat;
-using Squiggle.Chat.Services;
+using Squiggle.Core.Chat.Host;
+using Squiggle.Core.Chat;
+using Squiggle.Core;
 using System.Collections.Generic;
 
 namespace Squiggle.Bridge
@@ -131,7 +130,7 @@ namespace Squiggle.Bridge
 
             #region IPresenceHost
             
-            public Chat.Services.Presence.UserInfo GetUserInfo(SquiggleEndPoint user)
+            public Squiggle.Core.Presence.UserInfo GetUserInfo(SquiggleEndPoint user)
             {
                 return this.Channel.GetUserInfo(user);
             }
@@ -141,7 +140,7 @@ namespace Squiggle.Bridge
                 this.Channel.ReceivePresenceMessage(sender, recepient, message);
             }
 
-            public Chat.Services.Chat.Host.SessionInfo GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+            public Squiggle.Core.Chat.Host.SessionInfo GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
             {
                 return this.Channel.GetSessionInfo(sessionId, sender, recepient);
             } 

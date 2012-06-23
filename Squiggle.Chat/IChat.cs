@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Threading;
+using Squiggle.Core.Chat.FileTransfer;
+using Squiggle.Core.Chat.Voice;
 
 namespace Squiggle.Chat
 {

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Squiggle.Chat;
 using System.Net;
+using Squiggle.Core.Chat.Voice;
+using Squiggle.Core.Presence;
 
 namespace Squiggle.UI.ViewModel
 {

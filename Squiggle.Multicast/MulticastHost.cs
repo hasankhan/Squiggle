@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Squiggle.Chat.Services.Presence.Transport.Broadcast.MultcastService;
-using Squiggle.Chat.Services.Presence.Transport;
+using Squiggle.Core.Presence.Transport.Broadcast.MultcastService;
+using Squiggle.Core.Presence.Transport;
 using System.ServiceModel;
 using Squiggle.Utilities;
 using System.Diagnostics;

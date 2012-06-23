@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using Squiggle.Chat;
 using System.ComponentModel;
 using Squiggle.Utilities;
+using Squiggle.Core.Chat.Voice;
 
 namespace Squiggle.UI.Controls
 {
