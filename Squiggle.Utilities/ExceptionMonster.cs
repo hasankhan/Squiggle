@@ -44,7 +44,7 @@ namespace Squiggle.Utilities
             catch (Exception exception)
             {
                 ex = exception;
-                Trace.WriteLine("Erorr occured while " + actionDescription + ": " + ex.Message);
+                Trace.WriteLine("Erorr occured while " + actionDescription + ": " + ex.ToString());
             }
             success = false;
             return default(T);

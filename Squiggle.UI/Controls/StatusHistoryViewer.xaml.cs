@@ -82,14 +82,9 @@ namespace Squiggle.UI.Controls
             busyIndicator.IsBusy = true;
             Async.Invoke(() =>
             {
-                try
-                {
-                    action();
-                }
-                catch (Exception ex)
-                {
+                Exception ex;
+                if (!ExceptionMonster.EatTheException(action, "searching history", out ex))
                     MessageBox.Show(ex.Message);
-                }
             },
             () =>
             {
