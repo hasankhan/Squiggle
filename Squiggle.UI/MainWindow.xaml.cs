@@ -196,22 +196,20 @@ namespace Squiggle.UI
 
             busyIndicator.IsBusy = true;
 
+            Exception ex = null;
+
             Async.Invoke(() =>
             {
                 clientAvailable.WaitOne(TimeSpan.FromSeconds(20));
+                ExceptionMonster.EatTheException(() => ChatClient = CreateClient(displayName, groupName), "creating chat client", out ex);
             },
             () =>
             {
                 busyIndicator.IsBusy = false;
 
-                Exception ex;
-                if (!ExceptionMonster.EatTheException(() =>
-                                                      {
-                                                          ChatClient = CreateClient(displayName, groupName);
-                                                      }, "creating chat client", out ex))
+                if (ex != null && byUser)
                 {
-                    if (byUser)
-                        MessageBox.Show(ex.Message, Translation.Instance.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, Translation.Instance.Error, MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
@@ -227,7 +225,9 @@ namespace Squiggle.UI
                 foreach (var window in chatWindows)
                     window.Enabled = true;
 
-                UpdateNotifier.CheckForUpdate(SettingsProvider.Current.Settings.GeneralSettings.FirstRun, OnUpdateCheckComplete);
+                UpdateCheckResult result = null;
+                Async.Invoke(()=>result = UpdateNotifier.CheckForUpdate(SettingsProvider.Current.Settings.GeneralSettings.FirstRun),
+                             ()=>OnUpdateCheckComplete(result));
 
                 onSignIn();
             });
@@ -548,7 +548,7 @@ namespace Squiggle.UI
 
         void OnUpdateCheckComplete(UpdateCheckResult result)
         {
-            if (result.IsUpdated)
+            if (result != null && result.IsUpdated)
                 clientViewModel.UpdateLink = result.UpdateLink;
         }
 

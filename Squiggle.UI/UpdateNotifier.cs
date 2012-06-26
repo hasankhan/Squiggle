@@ -23,23 +23,20 @@ namespace Squiggle.UI
     {
         const string versionRegex = "Squiggle (?<version>\\d(?:\\.\\d+)+)";
 
-        public static void CheckForUpdate(DateTimeOffset clientLastUpdate, Action<UpdateCheckResult> onUpdateCheckComplete)
+        public static UpdateCheckResult CheckForUpdate(DateTimeOffset clientLastUpdate)
         {
-            Async.Invoke(() =>
+            var result = new UpdateCheckResult();
+
+            SyndicationItem lastUpdate = GetLastUpdate();
+            if (lastUpdate != null && lastUpdate.PublishDate > clientLastUpdate && VersionIsSameOrNewer(lastUpdate))
             {
-                var result = new UpdateCheckResult();
+                result.LastUpdate = lastUpdate.PublishDate.LocalDateTime;
+                result.IsUpdated = true;
+                result.Title = lastUpdate.Title.Text;
+                result.UpdateLink = lastUpdate.Links.FirstOrDefault().Uri.ToString();
+            }
 
-                SyndicationItem lastUpdate = GetLastUpdate();
-                if (lastUpdate != null && lastUpdate.PublishDate > clientLastUpdate && VersionIsSameOrNewer(lastUpdate))
-                {                    
-                    result.LastUpdate = lastUpdate.PublishDate.LocalDateTime;
-                    result.IsUpdated = true;
-                    result.Title = lastUpdate.Title.Text;
-                    result.UpdateLink = lastUpdate.Links.FirstOrDefault().Uri.ToString();
-                }
-
-                onUpdateCheckComplete(result);
-            });
+            return result;
         }
 
         static bool VersionIsSameOrNewer(SyndicationItem lastUpdate)

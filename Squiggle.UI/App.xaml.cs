@@ -3,6 +3,8 @@ using System.Windows;
 using Microsoft.VisualBasic.ApplicationServices;
 using Squiggle.UI.Resources;
 using System.Diagnostics;
+using Squiggle.Utilities;
+using System.Threading.Tasks;
 
 namespace Messenger
 {
@@ -85,6 +87,7 @@ namespace Messenger
                 RunInBackground = e.Args[0].Trim() == "/background";
 
             Translation.Initialize();
+            Async.UIScheduler = TaskScheduler.FromCurrentSynchronizationContext();
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)
