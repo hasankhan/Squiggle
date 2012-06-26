@@ -225,12 +225,20 @@ namespace Squiggle.UI
                 foreach (var window in chatWindows)
                     window.Enabled = true;
 
-                UpdateCheckResult result = null;
-                Async.Invoke(()=>result = UpdateNotifier.CheckForUpdate(SettingsProvider.Current.Settings.GeneralSettings.FirstRun),
-                             ()=>OnUpdateCheckComplete(result));
+                CheckForUpdates();
 
                 onSignIn();
             });
+        }
+
+        void CheckForUpdates()
+        {
+            if (!SettingsProvider.Current.Settings.GeneralSettings.CheckForUpdates)
+                return;
+
+            UpdateCheckResult result = null;
+            Async.Invoke(() => result = UpdateNotifier.CheckForUpdate(SettingsProvider.Current.Settings.GeneralSettings.FirstRun),
+                         () => OnUpdateCheckComplete(result));
         }
 
         void CancelUpdateCommand_Execute(object argument)

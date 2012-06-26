@@ -100,6 +100,7 @@ namespace Squiggle.UI.Settings
             Settings.GeneralSettings.ShowPopups = Properties.Settings.Default.ShowPopups;
             Settings.GeneralSettings.AudioAlerts = Properties.Settings.Default.AudioAlerts;
             Settings.GeneralSettings.EnableStatusLogging = reader.GetSetting(SettingKey.EnableStatusLogging, false);
+            Settings.GeneralSettings.CheckForUpdates = reader.GetSetting(SettingKey.CheckForUpdates, true);
 
             if (String.IsNullOrEmpty(Properties.Settings.Default.DownloadsFolder) || !Shell.CreateDirectoryIfNotExists(Properties.Settings.Default.DownloadsFolder))
                 Settings.GeneralSettings.DownloadsFolder = Path.Combine(AppInfo.Location, "Downloads");
@@ -121,7 +122,6 @@ namespace Squiggle.UI.Settings
             Settings.PersonalSettings.FontStyle = Properties.Settings.Default.FontStyle;
             Settings.PersonalSettings.FontSize = Properties.Settings.Default.FontSize;
             Settings.PersonalSettings.FontName = Properties.Settings.Default.FontName;
-
         }
 
         void LoadChatSettings(ConfigReader reader)
@@ -179,6 +179,7 @@ namespace Squiggle.UI.Settings
             Properties.Settings.Default.AudioAlerts = Settings.GeneralSettings.AudioAlerts;
             Properties.Settings.Default.DownloadsFolder = Settings.GeneralSettings.DownloadsFolder;
             reader.SetSetting(SettingKey.EnableStatusLogging, Settings.GeneralSettings.EnableStatusLogging);
+            reader.SetSetting(SettingKey.CheckForUpdates, Settings.GeneralSettings.CheckForUpdates);
         }
 
         void SaveChatSettings(ConfigReader reader)

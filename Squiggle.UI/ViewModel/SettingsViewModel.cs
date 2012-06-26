@@ -33,6 +33,7 @@ namespace Squiggle.UI.ViewModel
             GeneralSettings.AudioAlerts = settings.GeneralSettings.AudioAlerts;
             GeneralSettings.DownloadsFolder = settings.GeneralSettings.DownloadsFolder;
             GeneralSettings.EnableStatusLogging = settings.GeneralSettings.EnableStatusLogging;
+            GeneralSettings.CheckForUpdates = settings.GeneralSettings.CheckForUpdates;
 
             ChatSettings.SpellCheck = settings.ChatSettings.SpellCheck;
             ChatSettings.StealFocusOnNewMessage = settings.ChatSettings.StealFocusOnNewMessage;
@@ -67,6 +68,7 @@ namespace Squiggle.UI.ViewModel
 
             settings.ChatSettings.ShowEmoticons = ChatSettings.ShowEmoticons;
             settings.GeneralSettings.EnableStatusLogging = GeneralSettings.EnableStatusLogging;
+            settings.GeneralSettings.CheckForUpdates = GeneralSettings.CheckForUpdates;
             settings.GeneralSettings.HideToSystemTray = GeneralSettings.HideToSystemTray;
             settings.GeneralSettings.ShowPopups = GeneralSettings.ShowPopups;
             settings.GeneralSettings.AudioAlerts = GeneralSettings.AudioAlerts;
@@ -123,6 +125,7 @@ namespace Squiggle.UI.ViewModel
         public string DownloadsFolder { get; set; }
         public bool AudioAlerts { get; set; }
         public bool EnableStatusLogging { get; set; }
+        public bool CheckForUpdates { get; set; }
     }
 
     class ChatSettingsViewModel

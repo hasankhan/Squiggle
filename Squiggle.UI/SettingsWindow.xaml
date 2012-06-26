@@ -51,6 +51,7 @@
                                     <RowDefinition />
                                     <RowDefinition />
                                     <RowDefinition />
+                                    <RowDefinition />
                                 </Grid.RowDefinitions>
                                 
                                 <CheckBox Content="{StaticResource SettingsWindow_GeneralTab_RunOnStartup}" IsChecked="{Binding Path=GeneralSettings.RunAtStartup}" />
@@ -58,6 +59,7 @@
                                 <CheckBox Grid.Row="2" Content="{StaticResource SettingsWindow_GeneralTab_ShowPopups}" IsChecked="{Binding Path=GeneralSettings.ShowPopups}" />
                                 <CheckBox Grid.Row="3" Content="{StaticResource SettingsWindow_GeneralTab_AudioAlerts}" IsChecked="{Binding Path=GeneralSettings.AudioAlerts}" />
                                 <CheckBox Grid.Row="4" Content="{StaticResource SettingsWindow_GeneralTab_StatusLogging}" IsChecked="{Binding Path=GeneralSettings.EnableStatusLogging}" />
+                                <CheckBox Grid.Row="5" Content="{StaticResource SettingsWindow_GeneralTab_CheckForUpdates}" IsChecked="{Binding Path=GeneralSettings.CheckForUpdates}" />
                             </Grid>
                             <Grid Grid.Row="1">
                                 <Grid.RowDefinitions>

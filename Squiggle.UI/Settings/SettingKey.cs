@@ -16,5 +16,6 @@ namespace Squiggle.UI.Settings
         public static readonly string EnableChatLogging = "EnableChatLogging";
         public static readonly string EnableStatusLogging = "EnableStatusLogging";
         public static readonly string MaxMessagesToPreserve = "MaxMessagesToPreserve";
+        public static readonly string CheckForUpdates = "CheckForUpdates";
     }
 }

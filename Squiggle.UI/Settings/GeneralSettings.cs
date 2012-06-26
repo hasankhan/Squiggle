@@ -12,5 +12,6 @@ namespace Squiggle.UI.Settings
         public DateTimeOffset FirstRun { get; set; }
         public double MessagePanelHeight { get; set; }
         public bool EnableStatusLogging { get; set; }
+        public bool CheckForUpdates { get; set; }
     }
 }
