@@ -68,7 +68,6 @@ namespace Squiggle.Bridge
             presenceChannel = new PresenceChannel(presenceEndPoint, presenceServiceEndPoint);
             presenceChannel.Start();
             presenceChannel.MessageReceived += new EventHandler<Squiggle.Core.Presence.Transport.MessageReceivedEventArgs>(presenceChannel_MessageReceived);
-            presenceChannel.UserInfoRequested += new EventHandler<Squiggle.Core.Presence.Transport.Host.UserInfoRequestedEventArgs>(presenceChannel_UserInfoRequested);
         }
 
         protected override void OnStop()
@@ -92,25 +91,11 @@ namespace Squiggle.Bridge
                         lock (remoteClientBridgeMap)
                             remoteClientBridgeMap[e.Message.ClientID] = bridge;
                         e.Message.PresenceEndPoint = presenceServiceEndPoint;
-                        presenceChannel.SendMessage(e.Message);
+                        presenceChannel.SendMulticastMessage(e.Message);
                     }
                     Trace.WriteLine("Replay: " + e.Message.ToString());
                 }
             }, "replaying bridge message to local clients");
-        }
-
-        void presenceChannel_UserInfoRequested(object sender, UserInfoRequestedEventArgs e)
-        {
-            ExceptionMonster.EatTheException(() =>
-            {                    
-                TargetBridge bridge = FindBridge(e.User.ClientID);
-                if (bridge != null)
-                {
-                    e.UserInfo = bridge.Proxy.GetUserInfo(e.User);
-                    e.UserInfo.ChatEndPoint = bridgeEndPointInternal;
-                    e.UserInfo.PresenceEndPoint = presenceServiceEndPoint;
-                }
-            }, "getting user info from remote bridge for local client");
         }
 
         void presenceChannel_MessageReceived(object sender, Squiggle.Core.Presence.Transport.MessageReceivedEventArgs e)

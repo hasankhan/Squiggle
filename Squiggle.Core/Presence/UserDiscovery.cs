@@ -13,7 +13,8 @@ namespace Squiggle.Core.Presence
     class UserDiscovery
     {
         UserInfo thisUser;
-        SquiggleEndPoint localEndPoint;
+        SquiggleEndPoint localChatEndPoint;
+        SquiggleEndPoint localPresenceEndPoint;
         PresenceChannel channel;
         HashSet<UserInfo> onlineUsers;
 
@@ -37,47 +38,41 @@ namespace Squiggle.Core.Presence
         {
             thisUser = me;
 
-            channel.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
+            UnsubscribeChannel();
+
             channel.MessageReceived += new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
-            var message = Message.FromUserInfo<LoginMessage>(me);
-            channel.SendMessage(message);
-            localEndPoint = new SquiggleEndPoint(me.ID, me.ChatEndPoint);
+
+            var message = Message.FromSender<LoginMessage>(me);
+            channel.SendMulticastMessage(message);
+            localChatEndPoint = new SquiggleEndPoint(me.ID, me.ChatEndPoint);
+            localPresenceEndPoint = new SquiggleEndPoint(me.ID, me.PresenceEndPoint);
         }        
 
         public void Update(UserInfo me)
         {
             thisUser = me;
-            var message = Message.FromUserInfo<UserUpdateMessage>(me);
-            channel.SendMessage(message);
+            var message = Message.FromSender<UserUpdateMessage>(me);
+            channel.SendMulticastMessage(message);
         }
 
         public void FakeLogout(UserInfo me)
         {
             thisUser = me;
-            var message = Message.FromUserInfo<LogoutMessage>(me);
-            channel.SendMessage(message);
+            var message = Message.FromSender<LogoutMessage>(me);
+            channel.SendMulticastMessage(message);
         }
 
         public void Logout()
         {
-            channel.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
+            UnsubscribeChannel();
 
-            var message = Message.FromUserInfo<LogoutMessage>(thisUser);
-            channel.SendMessage(message);
-        }
+            var message = Message.FromSender<LogoutMessage>(thisUser);
+            channel.SendMulticastMessage(message);
+        }        
 
         public void DiscoverUser(SquiggleEndPoint user)
         {
-            UserInfo userInfo = channel.GetUserInfo(user);
-            if (userInfo != null)
-                OnPresenceMessage(userInfo, true);
-        }
-
-        public bool IsUserAlive(SquiggleEndPoint user)
-        {
-            UserInfo userInfo = channel.GetUserInfo(user);
-            bool isAlive = (userInfo != null);
-            return isAlive;
+            AskForUserInfo(user, UserInfoState.PresenceDiscovered);
         }
 
         void channel_MessageReceived(object sender, MessageReceivedEventArgs e)
@@ -85,47 +80,69 @@ namespace Squiggle.Core.Presence
             ExceptionMonster.EatTheException(() =>
                 {
                     if (e.Message is LoginMessage)
-                    {
                         OnLoginMessage(e.Message);
-                        SayHi(new SquiggleEndPoint(e.Message.ClientID, e.Message.PresenceEndPoint));
-                    }
-                    else if (e.Message is LogoutMessage)
-                        OnLogoutMessage((LogoutMessage)e.Message);
                     else if (e.Message is HiMessage)
                         OnHiMessage((HiMessage)e.Message);
+                    else if (e.Message is HelloMessage)
+                        OnHelloMessage((HelloMessage)e.Message);
                     else if (e.Message is UserUpdateMessage)
                         OnUpdateMessage((UserUpdateMessage)e.Message);
+                    else if (e.Message is GiveUserInfoMessage)
+                        OnGiveUserInfoMessage((GiveUserInfoMessage)e.Message);
+                    else if (e.Message is UserInfoMessage)
+                        OnUserInfoMessage((UserInfoMessage)e.Message);
+                    else if (e.Message is LogoutMessage)
+                        OnLogoutMessage((LogoutMessage)e.Message);
+                    
                 }, "handling presence message in userdiscovery class");
-        }        
-
-        void SayHi(SquiggleEndPoint presenceEndPoint)
-        {
-            var message = PresenceMessage.FromUserInfo<HiMessage>(thisUser);
-            channel.SendMessage(message, localEndPoint, presenceEndPoint);            
-        }
+        }       
 
         void OnLogoutMessage(LogoutMessage message)
         {
             IPEndPoint presenceEndPoint = message.PresenceEndPoint;
             OnUserOffline(presenceEndPoint);
-        }
-
-        void OnUserOffline(IPEndPoint endPoint)
-        {
-            var user = onlineUsers.FirstOrDefault(u => u.PresenceEndPoint.Equals(endPoint));
-            if (user != null)
-            {
-                onlineUsers.Remove(user);
-                UserOffline(this, new UserEventArgs() { User = user });
-            }
-        }        
+        }      
 
         void OnLoginMessage(Message message)
         {
-            UserInfo newUser = channel.GetUserInfo(new SquiggleEndPoint(message.ClientID, message.PresenceEndPoint));
-            if (newUser != null)
-                OnPresenceMessage(newUser, false);
+            var reply = PresenceMessage.FromUserInfo<HiMessage>(thisUser);
+            channel.SendMessage(reply, localChatEndPoint, new SquiggleEndPoint(message.ClientID, message.PresenceEndPoint)); 
         }
+
+        void OnHiMessage(HiMessage message)
+        {
+            var reply = PresenceMessage.FromUserInfo<HelloMessage>(thisUser);
+            channel.SendMessage(reply, localChatEndPoint, new SquiggleEndPoint(message.ClientID, message.PresenceEndPoint));
+
+            UserInfo user = message.GetUser();
+            OnPresenceMessage(user, true);
+        }
+
+        void OnHelloMessage(HelloMessage message)
+        {
+            OnPresenceMessage(message.GetUser(), discovered: false);
+        }
+
+        void OnUpdateMessage(UserUpdateMessage message)
+        {
+            AskForUserInfo(new SquiggleEndPoint(message.ClientID, message.PresenceEndPoint), UserInfoState.Update);
+        }
+
+        void OnUserInfoMessage(UserInfoMessage message)
+        {
+            var state = (UserInfoState)message.State;
+            if (state == UserInfoState.Update)
+                OnUserUpdated(message.GetUser());
+            else if (state == UserInfoState.PresenceDiscovered)
+                OnPresenceMessage(message.GetUser(), discovered: true);
+        }
+
+        void OnGiveUserInfoMessage(GiveUserInfoMessage message)
+        {
+            var reply = PresenceMessage.FromUserInfo<UserInfoMessage>(thisUser);
+            reply.State = message.State;
+            channel.SendMessage(reply, localChatEndPoint, new SquiggleEndPoint(message.ClientID, message.PresenceEndPoint));
+        }        
 
         void OnPresenceMessage(UserInfo user, bool discovered)
         {
@@ -145,6 +162,16 @@ namespace Squiggle.Core.Presence
                 OnUserOffline(user.PresenceEndPoint);
         }
 
+        void OnUserOffline(IPEndPoint endPoint)
+        {
+            var user = onlineUsers.FirstOrDefault(u => u.PresenceEndPoint.Equals(endPoint));
+            if (user != null)
+            {
+                onlineUsers.Remove(user);
+                UserOffline(this, new UserEventArgs() { User = user });
+            }
+        }  
+
         void OnUserUpdated(UserInfo newUser)
         {
             var oldUser = onlineUsers.FirstOrDefault(u => u.Equals(newUser));
@@ -157,17 +184,22 @@ namespace Squiggle.Core.Presence
             }
         }
 
-        void OnHiMessage(HiMessage message)
+        void AskForUserInfo(SquiggleEndPoint user, UserInfoState state)
         {
-            UserInfo user = message.GetUser();
-            OnPresenceMessage(user, true);
+            var reply = Message.FromSender<GiveUserInfoMessage>(thisUser);
+            reply.State = (int)state;
+            channel.SendMessage(reply, localChatEndPoint, user);
         }
 
-        void OnUpdateMessage(UserUpdateMessage message)
+        void UnsubscribeChannel()
         {
-            UserInfo newUser = channel.GetUserInfo(new SquiggleEndPoint(message.ClientID, message.PresenceEndPoint));
-            if (newUser != null)
-                OnUserUpdated(newUser);
-        }        
+            channel.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
+        }
+
+        enum UserInfoState
+        {
+            Update = 1,
+            PresenceDiscovered = 2
+        }
     }
 }

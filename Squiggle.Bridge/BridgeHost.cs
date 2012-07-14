@@ -40,14 +40,6 @@ namespace Squiggle.Bridge
             PresenceMessageForwarded(this, args);
         }
 
-        public Squiggle.Core.Presence.UserInfo GetUserInfo(SquiggleEndPoint user)
-        {
-            UserInfo userInfo = bridge.RoutePresenceMessageToLocalUser((channel, localEndPoint, presenceEndPoint) => channel.GetUserInfo(presenceEndPoint), sender: null, recepient: user);
-            if (userInfo != null)
-                bridge.AddLocalChatEndPoint(userInfo.ID, userInfo.ChatEndPoint);
-            return userInfo;
-        }        
-
         public void ReceivePresenceMessage(SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] message)
         {
             var messageOBj = Message.Deserialize(message);

@@ -12,7 +12,7 @@ namespace Squiggle.Core.Presence.Transport
         public string ClientID { get; set; }
         public IPEndPoint PresenceEndPoint { get; set; }
 
-        public static TMessage FromUserInfo<TMessage>(UserInfo user) where TMessage:Message, new()
+        public static TMessage FromSender<TMessage>(UserInfo user) where TMessage:Message, new()
         {
             var message = new TMessage()
             {

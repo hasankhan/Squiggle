@@ -32,7 +32,6 @@ namespace Squiggle.Core.Presence.Transport
 
         PresenceHost presenceHost;
 
-        public event EventHandler<UserInfoRequestedEventArgs> UserInfoRequested = delegate { };
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
 
         public Guid ChannelID { get; private set; }
@@ -50,8 +49,7 @@ namespace Squiggle.Core.Presence.Transport
             
             this.serviceEndPoint = serviceEndPoint;
             this.presenceHost = new PresenceHost();
-            this.presenceHost.UserInfoRequested += new EventHandler<UserInfoRequestedEventArgs>(presenceHost_UserInfoRequested);
-            presenceHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(presenceHost_MessageReceived);
+            this.presenceHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(presenceHost_MessageReceived);
             this.presenceHosts = new Dictionary<IPEndPoint, IPresenceHost>();
         }
 
@@ -71,34 +69,21 @@ namespace Squiggle.Core.Presence.Transport
             broadcastService.Stop();
         }
 
-        public void SendMessage(Message message)
+        public void SendMulticastMessage(Message message)
         {
             message.ChannelID = ChannelID;
             broadcastService.SendMessage(message);
         }
 
-        public void SendMessage(Message message, SquiggleEndPoint localEndPoint, SquiggleEndPoint presenceEndPoint)
+        public void SendMessage(Message message, SquiggleEndPoint sourceChatEndPoint, SquiggleEndPoint targetPresenceEndPoint)
         {
             message.ChannelID = ChannelID;
-            IPresenceHost host = GetPresenceHost(presenceEndPoint.Address);
+            IPresenceHost host = GetPresenceHost(targetPresenceEndPoint.Address);
 
             ExceptionMonster.EatTheException(() =>
             {
-                host.ReceivePresenceMessage(localEndPoint, presenceEndPoint, message.Serialize());
-            }, "sending presence message to " + presenceEndPoint);
-        }
-
-        public UserInfo GetUserInfo(SquiggleEndPoint user)
-        {
-            IPresenceHost host = GetPresenceHost(user.Address);
-            UserInfo info = null;
-
-            ExceptionMonster.EatTheException(() =>
-            {
-                info = host.GetUserInfo(user);
-            }, "getting user info for " + user);
-            
-            return info;
+                host.ReceivePresenceMessage(sourceChatEndPoint, targetPresenceEndPoint, message.Serialize());
+            }, "sending presence message to " + targetPresenceEndPoint);
         }
 
         protected override ServiceHost CreateHost()
@@ -126,11 +111,6 @@ namespace Squiggle.Core.Presence.Transport
             {
                 OnMessageReceived(e.Sender, e.Recipient, e.Message);
             });
-        }
-
-        void presenceHost_UserInfoRequested(object sender, UserInfoRequestedEventArgs e)
-        {
-            UserInfoRequested(this, e);
         }
 
         void OnMessageReceived(SquiggleEndPoint sender, SquiggleEndPoint recipient, Message message)

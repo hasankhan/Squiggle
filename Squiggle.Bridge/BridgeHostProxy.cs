@@ -41,11 +41,6 @@ namespace Squiggle.Bridge
 
         #region IPresenceHost
         
-        public UserInfo GetUserInfo(SquiggleEndPoint user)
-        {
-            return EnsureProxy<UserInfo>(p => p.GetUserInfo(user));
-        }
-
         public void ReceivePresenceMessage(SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] message)
         {
             EnsureProxy(p => p.ReceivePresenceMessage(sender, recepient, message));
@@ -130,11 +125,6 @@ namespace Squiggle.Bridge
 
             #region IPresenceHost
             
-            public Squiggle.Core.Presence.UserInfo GetUserInfo(SquiggleEndPoint user)
-            {
-                return this.Channel.GetUserInfo(user);
-            }
-
             public void ReceivePresenceMessage(SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] message)
             {
                 this.Channel.ReceivePresenceMessage(sender, recepient, message);
