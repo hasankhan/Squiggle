@@ -15,6 +15,19 @@ namespace Squiggle.Bridge
     {
         public IPEndPoint BridgeEndPoint { get; set; }
         public Message Message {get; set; }
+        public SquiggleEndPoint Recepient {get; set; }
+
+        public bool IsBroadcast
+        {
+            get { return Recepient == null; }
+        }
+
+        public PresenceMessageForwardedEventArgs (Message message, IPEndPoint bridgeEdnpoint, SquiggleEndPoint recepient)
+	    {
+            this.Message = message;
+            this.BridgeEndPoint = bridgeEdnpoint;
+	        this.Recepient = recepient;
+        }
     }
 
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)] 
@@ -29,21 +42,11 @@ namespace Squiggle.Bridge
             this.bridge = bridge;
         }
 
-        public void ForwardPresenceMessage(byte[] message, IPEndPoint bridgeEndPoint)
+        public void ForwardPresenceMessage(SquiggleEndPoint recepient, byte[] message, IPEndPoint bridgeEndPoint)
         {
             var msg = Message.Deserialize(message);
-            var args = new PresenceMessageForwardedEventArgs() 
-                        { 
-                            Message = msg, 
-                            BridgeEndPoint = bridgeEndPoint 
-                        };
+            var args = new PresenceMessageForwardedEventArgs(msg, bridgeEndPoint, recepient);
             PresenceMessageForwarded(this, args);
-        }
-
-        public void ReceivePresenceMessage(SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] message)
-        {
-            var messageOBj = Message.Deserialize(message);
-            bridge.RoutePresenceMessageToLocalUser((channel, localEndPoint, presenceEndPoint)=>channel.SendMessage(messageOBj, localEndPoint, presenceEndPoint), sender, recepient);
         }
 
         public Squiggle.Core.Chat.Host.SessionInfo GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)

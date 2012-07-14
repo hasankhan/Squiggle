@@ -15,7 +15,6 @@ namespace Squiggle.Core.Presence.Transport
     public class MessageReceivedEventArgs : EventArgs
     {
         public SquiggleEndPoint Recipient { get; set; }
-        public SquiggleEndPoint Sender { get; set; }
         public Message Message { get; set; }
 
         public bool IsBroadcast
@@ -75,14 +74,14 @@ namespace Squiggle.Core.Presence.Transport
             broadcastService.SendMessage(message);
         }
 
-        public void SendMessage(Message message, SquiggleEndPoint sourceChatEndPoint, SquiggleEndPoint targetPresenceEndPoint)
+        public void SendMessage(Message message, SquiggleEndPoint targetPresenceEndPoint)
         {
             message.ChannelID = ChannelID;
             IPresenceHost host = GetPresenceHost(targetPresenceEndPoint.Address);
 
             ExceptionMonster.EatTheException(() =>
             {
-                host.ReceivePresenceMessage(sourceChatEndPoint, targetPresenceEndPoint, message.Serialize());
+                host.ReceivePresenceMessage(targetPresenceEndPoint, message.Serialize());
             }, "sending presence message to " + targetPresenceEndPoint);
         }
 
@@ -101,7 +100,7 @@ namespace Squiggle.Core.Presence.Transport
         {
             Async.Invoke(() =>
             {
-                OnMessageReceived(e.Sender, e.Recipient, e.Message);
+                OnMessageReceived(e.Recipient, e.Message);
             });
         }   
 
@@ -109,11 +108,11 @@ namespace Squiggle.Core.Presence.Transport
         {
             Async.Invoke(() =>
             {
-                OnMessageReceived(e.Sender, e.Recipient, e.Message);
+                OnMessageReceived(e.Recipient, e.Message);
             });
         }
 
-        void OnMessageReceived(SquiggleEndPoint sender, SquiggleEndPoint recipient, Message message)
+        void OnMessageReceived(SquiggleEndPoint recipient, Message message)
         {
             if (message.IsValid && !message.ChannelID.Equals(ChannelID))
             {
@@ -121,7 +120,6 @@ namespace Squiggle.Core.Presence.Transport
                 {
                     Recipient = recipient,
                     Message = message,
-                    Sender = sender
                 };
                 MessageReceived(this, args);
             }

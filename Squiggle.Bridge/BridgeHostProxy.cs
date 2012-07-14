@@ -32,28 +32,19 @@ namespace Squiggle.Bridge
 
         #region IBridgeHost
 
-        public void ForwardPresenceMessage(byte[] message, IPEndPoint bridgeEndPoint)
+        public void ForwardPresenceMessage(SquiggleEndPoint recepient, byte[] message, IPEndPoint bridgeEndPoint)
         {
-            EnsureProxy(p => p.ForwardPresenceMessage(message, bridgeEndPoint));
-        }
-        
-        #endregion        
-
-        #region IPresenceHost
-        
-        public void ReceivePresenceMessage(SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] message)
-        {
-            EnsureProxy(p => p.ReceivePresenceMessage(sender, recepient, message));
-        }
-
-        public SessionInfo GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
-        {
-            return EnsureProxy<SessionInfo>(p => p.GetSessionInfo(sessionId, sender, recepient));
+            EnsureProxy(p => p.ForwardPresenceMessage(recepient, message, bridgeEndPoint));
         }
         
         #endregion        
 
         #region IChatHost
+
+        public SessionInfo GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        {
+            return EnsureProxy<SessionInfo>(p => p.GetSessionInfo(sessionId, sender, recepient));
+        }
 
         public void Buzz(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
@@ -115,19 +106,10 @@ namespace Squiggle.Bridge
             }
 
             #region IBridgeHost
-            
-            public void ForwardPresenceMessage(byte[] message, IPEndPoint sourceBridge)
-            {
-                this.Channel.ForwardPresenceMessage(message, sourceBridge);
-            } 
 
-            #endregion
-
-            #region IPresenceHost
-            
-            public void ReceivePresenceMessage(SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] message)
+            public void ForwardPresenceMessage(SquiggleEndPoint recepient, byte[] message, IPEndPoint bridgeEndPoint)
             {
-                this.Channel.ReceivePresenceMessage(sender, recepient, message);
+                this.Channel.ForwardPresenceMessage(recepient, message, bridgeEndPoint);
             }
 
             public Squiggle.Core.Chat.Host.SessionInfo GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)

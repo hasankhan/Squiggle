@@ -10,14 +10,13 @@ namespace Squiggle.Core.Presence.Transport.Host
     {
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
 
-        public void ReceivePresenceMessage(SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] message)
+        public void ReceivePresenceMessage(SquiggleEndPoint recepient, byte[] message)
         {
             var msg = Message.Deserialize(message);
             MessageReceived(this, new MessageReceivedEventArgs() 
             { 
                 Recipient = recepient,
                 Message = msg, 
-                Sender = sender 
             });
         }
     }

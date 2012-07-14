@@ -85,7 +85,6 @@ namespace Squiggle.Core.Presence.Transport.Broadcast
         {
             MessageReceived(this, new MessageReceivedEventArgs()
             {
-                Sender = message.Sender,
                 Recipient = null,
                 Message = message
             });

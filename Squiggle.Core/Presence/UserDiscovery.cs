@@ -13,8 +13,6 @@ namespace Squiggle.Core.Presence
     class UserDiscovery
     {
         UserInfo thisUser;
-        SquiggleEndPoint localChatEndPoint;
-        SquiggleEndPoint localPresenceEndPoint;
         PresenceChannel channel;
         HashSet<UserInfo> onlineUsers;
 
@@ -44,8 +42,6 @@ namespace Squiggle.Core.Presence
 
             var message = Message.FromSender<LoginMessage>(me);
             channel.BroadcastMessage(message);
-            localChatEndPoint = new SquiggleEndPoint(me.ID, me.ChatEndPoint);
-            localPresenceEndPoint = new SquiggleEndPoint(me.ID, me.PresenceEndPoint);
         }        
 
         public void Update(UserInfo me)
@@ -106,13 +102,13 @@ namespace Squiggle.Core.Presence
         void OnLoginMessage(Message message)
         {
             var reply = PresenceMessage.FromUserInfo<HiMessage>(thisUser);
-            channel.SendMessage(reply, localChatEndPoint, message.Sender); 
+            channel.SendMessage(reply, message.Sender); 
         }
 
         void OnHiMessage(HiMessage message)
         {
             var reply = PresenceMessage.FromUserInfo<HelloMessage>(thisUser);
-            channel.SendMessage(reply, localChatEndPoint, message.Sender);
+            channel.SendMessage(reply, message.Sender);
 
             UserInfo user = message.GetUser();
             OnPresenceMessage(user, true);
@@ -141,7 +137,7 @@ namespace Squiggle.Core.Presence
         {
             var reply = PresenceMessage.FromUserInfo<UserInfoMessage>(thisUser);
             reply.State = message.State;
-            channel.SendMessage(reply, localChatEndPoint, message.Sender);
+            channel.SendMessage(reply, message.Sender);
         }        
 
         void OnPresenceMessage(UserInfo user, bool discovered)
@@ -188,7 +184,7 @@ namespace Squiggle.Core.Presence
         {
             var reply = Message.FromSender<GiveUserInfoMessage>(thisUser);
             reply.State = (int)state;
-            channel.SendMessage(reply, localChatEndPoint, user);
+            channel.SendMessage(reply, user);
         }
 
         void UnsubscribeChannel()
