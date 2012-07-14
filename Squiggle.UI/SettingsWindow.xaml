@@ -40,28 +40,34 @@
                     <Border Grid.Row="1" Background="{StaticResource WorkAreaBackgroud}" BorderBrush="Black" BorderThickness="1" CornerRadius="3" Margin="5">
                         <Grid Margin="10">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="100" />
+                                <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <Grid Grid.Row="0">
+                            <Grid Grid.Row="0" Margin="5,0,0,0"> 
                                 <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 
-                                <CheckBox Content="{StaticResource SettingsWindow_GeneralTab_RunOnStartup}" IsChecked="{Binding Path=GeneralSettings.RunAtStartup}" />
-                                <CheckBox Grid.Row="1" Content="{StaticResource SettingsWindow_GeneralTab_CloseToTray}" IsChecked="{Binding Path=GeneralSettings.HideToSystemTray}" />
-                                <CheckBox Grid.Row="2" Content="{StaticResource SettingsWindow_GeneralTab_ShowPopups}" IsChecked="{Binding Path=GeneralSettings.ShowPopups}" />
-                                <CheckBox Grid.Row="3" Content="{StaticResource SettingsWindow_GeneralTab_AudioAlerts}" IsChecked="{Binding Path=GeneralSettings.AudioAlerts}" />
-                                <CheckBox Grid.Row="4" Content="{StaticResource SettingsWindow_GeneralTab_StatusLogging}" IsChecked="{Binding Path=GeneralSettings.EnableStatusLogging}" />
-                                <CheckBox Grid.Row="5" Content="{StaticResource SettingsWindow_GeneralTab_CheckForUpdates}" IsChecked="{Binding Path=GeneralSettings.CheckForUpdates}" />
+                                <CheckBox Grid.Row="0" Margin="0,0,0,5" 
+                                          Content="{StaticResource SettingsWindow_GeneralTab_RunOnStartup}" IsChecked="{Binding Path=GeneralSettings.RunAtStartup}" />
+                                <CheckBox Grid.Row="1" Margin="0,0,0,5" 
+                                           Content="{StaticResource SettingsWindow_GeneralTab_CloseToTray}" IsChecked="{Binding Path=GeneralSettings.HideToSystemTray}" />
+                                <CheckBox Grid.Row="2" Margin="0,0,0,5" 
+                                           Content="{StaticResource SettingsWindow_GeneralTab_ShowPopups}" IsChecked="{Binding Path=GeneralSettings.ShowPopups}" />
+                                <CheckBox Grid.Row="3" Margin="0,0,0,5" 
+                                           Content="{StaticResource SettingsWindow_GeneralTab_AudioAlerts}" IsChecked="{Binding Path=GeneralSettings.AudioAlerts}" />
+                                <CheckBox Grid.Row="4" Margin="0,0,0,5" 
+                                           Content="{StaticResource SettingsWindow_GeneralTab_StatusLogging}" IsChecked="{Binding Path=GeneralSettings.EnableStatusLogging}" />
+                                <CheckBox Grid.Row="5" Margin="0,0,0,5" 
+                                           Content="{StaticResource SettingsWindow_GeneralTab_CheckForUpdates}" IsChecked="{Binding Path=GeneralSettings.CheckForUpdates}" />
                             </Grid>
-                            <Grid Grid.Row="1">
+                            <Grid Grid.Row="1" Margin="5,10,0,0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition />
@@ -103,33 +109,46 @@
                             </Grid.RowDefinitions>
                             <Grid Grid.Row="1" Margin="10">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" MinHeight="16" />
-                                    <RowDefinition Height="Auto" MinHeight="22" />
-                                    <RowDefinition Height="Auto" MinHeight="21" />
-                                    <RowDefinition Height="Auto" MinHeight="22" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" MinHeight="32" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="32*" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <TextBlock Margin="5,0,0,0" HorizontalAlignment="Left" Text="{StaticResource SettingsWindow_PersonalTab_DisplayName}"/>
-                                <TextBox Margin="5,0,0,0" Width="200" HorizontalAlignment="Left" Grid.Row="1" MaxLength="50"
-                                         Text="{Binding Path=PersonalSettings.DisplayName}" Height="22" VerticalAlignment="Top" />
-                                <TextBlock Margin="5,0,0,0" HorizontalAlignment="Left" Grid.Row="2" Text="{StaticResource SettingsWindow_PersonalTab_DisplayMessage}"/>
-                                <TextBox Margin="5,0,0,0" Width="200" HorizontalAlignment="Left" Grid.Row="3"  MaxLength="150"
-                                         Text="{Binding Path=PersonalSettings.DisplayMessage}" Height="22" VerticalAlignment="Top" />
-                                <TextBlock Margin="5,0,0,0" HorizontalAlignment="Left" Grid.Row="4" Text="{StaticResource SettingsWindow_PersonalTab_EmailAddress}"/>
-                                <TextBox Margin="5,0,0,0" Width="200" HorizontalAlignment="Left" Grid.Row="5" MaxLength="150"
-                                         Text="{Binding Path=PersonalSettings.EmailAddress}" Height="22" VerticalAlignment="Top" />
-                                <StackPanel Margin="5,0,0,0" Grid.Row="6" Orientation="Horizontal">
+                                <TextBlock HorizontalAlignment="Left" Margin="5,0,0,5" 
+                                    Text="{StaticResource SettingsWindow_PersonalTab_DisplayName}"/>
+                                <TextBox Width="200" Margin="5,0,0,5" 
+                                         Grid.Row="1" MaxLength="50" HorizontalAlignment="Left"
+                                         Text="{Binding Path=PersonalSettings.DisplayName}" 
+                                         Height="22" VerticalAlignment="Top" />
+                                <TextBlock HorizontalAlignment="Left" Grid.Row="2"
+                                           Margin="5,0,0,5" 
+                                           Text="{StaticResource SettingsWindow_PersonalTab_DisplayMessage}"/>
+                                <TextBox Width="200" HorizontalAlignment="Left" Grid.Row="3"  MaxLength="150"
+                                         Margin="5,0,0,5" Height="22" VerticalAlignment="Top"
+                                         Text="{Binding Path=PersonalSettings.DisplayMessage}" />
+                                <TextBlock HorizontalAlignment="Left" Grid.Row="4" 
+                                           Margin="5,0,0,5" 
+                                           Text="{StaticResource SettingsWindow_PersonalTab_EmailAddress}"/>
+                                <TextBox Width="200" HorizontalAlignment="Left"
+                                         Grid.Row="5" MaxLength="150" Margin="5,0,0,5" 
+                                         Text="{Binding Path=PersonalSettings.EmailAddress}" 
+                                         Height="22" VerticalAlignment="Top" />
+                                <StackPanel Grid.Row="6" Orientation="Horizontal" Margin="5,0,0,5">
                                     <TextBlock Text="{StaticResource SettingsWindow_PersonalTab_IdleTimeout}" />
-                                    <TextBox Margin="5,0,0,5" Height="Auto" VerticalAlignment="Top" Width="40" HorizontalAlignment="Left" Text="{Binding Path=PersonalSettings.IdleTimeout}" />
+                                    <TextBox Margin="5,0,0,0" Height="Auto" VerticalAlignment="Top" Width="40" HorizontalAlignment="Left" Text="{Binding Path=PersonalSettings.IdleTimeout}" />
                                     <TextBlock Margin="5,0,0,0">mins</TextBlock>
                                 </StackPanel>
-                                <CheckBox Content="{StaticResource SettingsWindow_PersonalTab_AutoSignIn}" Grid.Row="7" IsChecked="{Binding Path=PersonalSettings.AutoSignMeIn}"   Margin="5,5,198,0" />
-                                <CheckBox Content="{StaticResource SettingsWindow_PersonalTab_RememberMe}" IsChecked="{Binding Path=PersonalSettings.RememberMe}" Grid.Row="7" Margin="203,5,0,0"/>
+                                <CheckBox Content="{StaticResource SettingsWindow_PersonalTab_AutoSignIn}" 
+                                          Grid.Row="7" Margin="5,0,0,5"
+                                          IsChecked="{Binding Path=PersonalSettings.AutoSignMeIn}" />
+                                <CheckBox Content="{StaticResource SettingsWindow_PersonalTab_RememberMe}"
+                                          Grid.Row="8" Margin="5,0,0,5"                                      
+                                          IsChecked="{Binding Path=PersonalSettings.RememberMe}"/>
                                 <StackPanel Grid.RowSpan="4" HorizontalAlignment="Left" Margin="282,0,0,0">
                                     <Border BorderBrush="Black" BorderThickness=".5" Height="81" >
                                         <Image VerticalAlignment="Top" Width="98" Grid.Row="1"
