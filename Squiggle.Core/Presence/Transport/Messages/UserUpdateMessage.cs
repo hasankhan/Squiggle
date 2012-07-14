@@ -1,8 +1,9 @@
 ﻿using System;
+using ProtoBuf;
 
 namespace Squiggle.Core.Presence.Transport.Messages
 {
-    [Serializable]
+    [ProtoContract]
     public class UserUpdateMessage : Message
     {
     }
