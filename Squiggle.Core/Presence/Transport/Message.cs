@@ -19,13 +19,26 @@ namespace Squiggle.Core.Presence.Transport
         [ProtoMember(1)]
         public Guid ChannelID { get; set; }
         [ProtoMember(2)]
-        public string ClientID { get; set; }
+        string ClientID { get; set; }
         [ProtoMember(3)]
         IPAddress PresenceIP { get; set; }
         [ProtoMember(4)]
         int PresencePort { get; set; }
 
-        public IPEndPoint PresenceEndPoint
+        /// <summary>
+        /// Presence endpoint for the sender
+        /// </summary>
+        public SquiggleEndPoint Sender
+        {
+            get { return new SquiggleEndPoint(ClientID, PresenceEndPoint); }
+            set
+            {
+                ClientID = value.ClientID;
+                PresenceEndPoint = value.Address;
+            }
+        }
+
+        IPEndPoint PresenceEndPoint
         {
             get { return new IPEndPoint(PresenceIP, PresencePort); }
             set

@@ -34,13 +34,12 @@ namespace Squiggle.Core.Presence.Transport.Messages
             }
         }
 
-        public static new TMessage FromUserInfo<TMessage>(UserInfo user) where TMessage: PresenceMessage, new ()
+        public static TMessage FromUserInfo<TMessage>(UserInfo user) where TMessage: PresenceMessage, new ()
         {
             var message = new TMessage()            
             {   
-                ClientID = user.ID,
                 ChatEndPoint = user.ChatEndPoint,
-                PresenceEndPoint = user.PresenceEndPoint,
+                Sender = new SquiggleEndPoint(user.ID, user.PresenceEndPoint),
                 Status = user.Status,                
                 Properties = user.Properties,
                 KeepAliveSyncTime = user.KeepAliveSyncTime,
@@ -53,9 +52,9 @@ namespace Squiggle.Core.Presence.Transport.Messages
         {
             var user = new UserInfo()
             {
-                ID = this.ClientID,
+                ID = this.Sender.ClientID,
                 ChatEndPoint = this.ChatEndPoint,
-                PresenceEndPoint = this.PresenceEndPoint,
+                PresenceEndPoint = this.Sender.Address,
                 Status = this.Status,
                 Properties = this.Properties, 
                 KeepAliveSyncTime = this.KeepAliveSyncTime,

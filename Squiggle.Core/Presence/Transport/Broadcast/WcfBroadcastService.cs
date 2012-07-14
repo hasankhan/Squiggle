@@ -52,7 +52,7 @@ namespace Squiggle.Core.Presence.Transport.Broadcast
             MessageReceived(this, new MessageReceivedEventArgs()
             {
                 Message = message,
-                Sender = new SquiggleEndPoint(message.ClientID, message.PresenceEndPoint),
+                Sender = message.Sender,
                 Recipient = null
             });
         }

@@ -106,8 +106,8 @@ namespace Squiggle.Core.Presence
 
         void OnKeepAliveMessage(KeepAliveMessage message)
         {
-            var user = new UserInfo() { ID = message.ClientID,
-                                        PresenceEndPoint = message.PresenceEndPoint };
+            var user = new UserInfo() { ID = message.Sender.ClientID,
+                                        PresenceEndPoint = message.Sender.Address };
             bool existingUser;
             lock (aliveUsers)
                 existingUser = aliveUsers.ContainsKey(user);

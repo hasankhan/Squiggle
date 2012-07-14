@@ -99,20 +99,20 @@ namespace Squiggle.Core.Presence
 
         void OnLogoutMessage(LogoutMessage message)
         {
-            IPEndPoint presenceEndPoint = message.PresenceEndPoint;
+            IPEndPoint presenceEndPoint = message.Sender.Address;
             OnUserOffline(presenceEndPoint);
         }      
 
         void OnLoginMessage(Message message)
         {
             var reply = PresenceMessage.FromUserInfo<HiMessage>(thisUser);
-            channel.SendMessage(reply, localChatEndPoint, new SquiggleEndPoint(message.ClientID, message.PresenceEndPoint)); 
+            channel.SendMessage(reply, localChatEndPoint, message.Sender); 
         }
 
         void OnHiMessage(HiMessage message)
         {
             var reply = PresenceMessage.FromUserInfo<HelloMessage>(thisUser);
-            channel.SendMessage(reply, localChatEndPoint, new SquiggleEndPoint(message.ClientID, message.PresenceEndPoint));
+            channel.SendMessage(reply, localChatEndPoint, message.Sender);
 
             UserInfo user = message.GetUser();
             OnPresenceMessage(user, true);
@@ -125,7 +125,7 @@ namespace Squiggle.Core.Presence
 
         void OnUpdateMessage(UserUpdateMessage message)
         {
-            AskForUserInfo(new SquiggleEndPoint(message.ClientID, message.PresenceEndPoint), UserInfoState.Update);
+            AskForUserInfo(message.Sender, UserInfoState.Update);
         }
 
         void OnUserInfoMessage(UserInfoMessage message)
@@ -141,7 +141,7 @@ namespace Squiggle.Core.Presence
         {
             var reply = PresenceMessage.FromUserInfo<UserInfoMessage>(thisUser);
             reply.State = message.State;
-            channel.SendMessage(reply, localChatEndPoint, new SquiggleEndPoint(message.ClientID, message.PresenceEndPoint));
+            channel.SendMessage(reply, localChatEndPoint, message.Sender);
         }        
 
         void OnPresenceMessage(UserInfo user, bool discovered)

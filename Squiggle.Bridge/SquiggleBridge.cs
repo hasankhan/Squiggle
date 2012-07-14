@@ -89,8 +89,8 @@ namespace Squiggle.Bridge
                     if (bridge != null)
                     {
                         lock (remoteClientBridgeMap)
-                            remoteClientBridgeMap[e.Message.ClientID] = bridge;
-                        e.Message.PresenceEndPoint = presenceServiceEndPoint;
+                            remoteClientBridgeMap[e.Message.Sender.ClientID] = bridge;
+                        e.Message.Sender = new SquiggleEndPoint(e.Message.Sender.ClientID, presenceServiceEndPoint);
                         presenceChannel.BroadcastMessage(e.Message);
                     }
                     Trace.WriteLine("Replay: " + e.Message.GetType().Name);
