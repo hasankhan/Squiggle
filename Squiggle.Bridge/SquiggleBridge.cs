@@ -93,7 +93,7 @@ namespace Squiggle.Bridge
                         e.Message.PresenceEndPoint = presenceServiceEndPoint;
                         presenceChannel.SendMulticastMessage(e.Message);
                     }
-                    Trace.WriteLine("Replay: " + e.Message.ToString());
+                    Trace.WriteLine("Replay: " + e.Message.GetType().Name);
                 }
             }, "replaying bridge message to local clients");
         }
@@ -117,7 +117,7 @@ namespace Squiggle.Bridge
                     TargetBridge bridge = FindBridge(e.Recipient.ClientID);
                     bridge.Proxy.ReceivePresenceMessage(newSender, e.Recipient, message);
                 }
-                Trace.WriteLine("Forward: " + e.Message.ToString());
+                Trace.WriteLine("Forward: " + e.Message.GetType().Name);
             }, "forwarding presence message to bridge(s)");
         }        
 

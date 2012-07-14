@@ -39,12 +39,12 @@ namespace Squiggle.Bridge
         {
             Trace.WriteLine(":: Settings ::");
             Trace.WriteLine("");
-            Trace.WriteLine("Internal Service: " + config.InternalServiceBinding.EndPoint);
-            Trace.WriteLine("External Service: " + config.ExternalServiceBinding.EndPoint);
-            Trace.WriteLine("Channel MCast: " + config.ChannelBinding.MulticastEndPoint);
-            Trace.WriteLine("Channel Service: " + channelServiceEndPoint);
+            Trace.WriteLine("Internal bridge endpoint: " + config.InternalServiceBinding.EndPoint);
+            Trace.WriteLine("External bridge endpoint: " + config.ExternalServiceBinding.EndPoint);
+            Trace.WriteLine("Presence multicast endpoint: " + config.ChannelBinding.MulticastEndPoint);
+            Trace.WriteLine("Presence endpoint: " + channelServiceEndPoint);
             Trace.WriteLine("");
-            Trace.WriteLine(":: Targets ::");
+            Trace.WriteLine(":: Target bridges ::");
             Trace.WriteLine("");
             foreach (Target target in config.Targets)
                 Trace.WriteLine(target.EndPoint);
