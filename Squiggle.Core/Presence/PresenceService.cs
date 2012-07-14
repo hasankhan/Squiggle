@@ -59,7 +59,7 @@ namespace Squiggle.Core.Presence
             keepAlive.Start();
         }
 
-        public void Update(string name, Dictionary<string, string> properties, UserStatus status)
+        public void Update(string name, BuddyProperties properties, UserStatus status)
         {
             UserStatus lastStatus = thisUser.Status;
 
@@ -68,7 +68,7 @@ namespace Squiggle.Core.Presence
             {
                 thisUser.DisplayName = name;
                 thisUser.Status = status;
-                thisUser.Properties = properties;
+                thisUser.Properties = properties.ToDictionary();
 
                 userInfo = thisUser.Clone();
             }

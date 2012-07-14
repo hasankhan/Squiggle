@@ -8,7 +8,7 @@ namespace Squiggle.Core.Presence
     {
         Dictionary<string, string> dictionary;
 
-        public const string DefaultGroupName = "Others";
+        public static readonly string DefaultGroupName = "Others";
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
         public BuddyProperties(Dictionary<string, string> properties)
@@ -100,10 +100,14 @@ namespace Squiggle.Core.Presence
             get { return dictionary.Values; }
         }
 
+        public BuddyProperties Clone()
+        {
+            return new BuddyProperties(ToDictionary());
+        }
+
         public Dictionary<string, string> ToDictionary()
         {
             return new Dictionary<string, string>(dictionary);
         }
-
     }
 }

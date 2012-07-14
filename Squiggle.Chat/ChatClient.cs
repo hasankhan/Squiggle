@@ -92,7 +92,7 @@ namespace Squiggle.Chat
         void Update()
         {
             LogStatus(CurrentUser);
-            var properties = CurrentUser.Properties.ToDictionary();
+            var properties = CurrentUser.Properties.Clone();
             presenceService.Update(CurrentUser.DisplayName, properties, CurrentUser.Status);
         }
 

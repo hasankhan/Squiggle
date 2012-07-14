@@ -16,8 +16,8 @@ namespace Squiggle.Core.Presence
 
         IEnumerable<UserInfo> Users { get; }
         
-        void Login(string name, BuddyProperties properties);
-        void Update(string displayName, Dictionary<string, string> properties, UserStatus status);
+        void Login(string displayName, BuddyProperties properties);
+        void Update(string displayName, BuddyProperties properties, UserStatus status);
         void Logout();
     }
 }
