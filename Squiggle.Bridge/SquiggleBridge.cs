@@ -91,7 +91,7 @@ namespace Squiggle.Bridge
                         lock (remoteClientBridgeMap)
                             remoteClientBridgeMap[e.Message.ClientID] = bridge;
                         e.Message.PresenceEndPoint = presenceServiceEndPoint;
-                        presenceChannel.SendMulticastMessage(e.Message);
+                        presenceChannel.BroadcastMessage(e.Message);
                     }
                     Trace.WriteLine("Replay: " + e.Message.GetType().Name);
                 }

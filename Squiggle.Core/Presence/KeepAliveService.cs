@@ -80,7 +80,7 @@ namespace Squiggle.Core.Presence
 
         void ImAlive()
         {
-            channel.SendMulticastMessage(keepAliveMessage);
+            channel.BroadcastMessage(keepAliveMessage);
         }
 
         void timer_Elapsed(object sender, ElapsedEventArgs e)

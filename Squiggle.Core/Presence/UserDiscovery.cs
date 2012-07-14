@@ -43,7 +43,7 @@ namespace Squiggle.Core.Presence
             channel.MessageReceived += new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
 
             var message = Message.FromSender<LoginMessage>(me);
-            channel.SendMulticastMessage(message);
+            channel.BroadcastMessage(message);
             localChatEndPoint = new SquiggleEndPoint(me.ID, me.ChatEndPoint);
             localPresenceEndPoint = new SquiggleEndPoint(me.ID, me.PresenceEndPoint);
         }        
@@ -52,14 +52,14 @@ namespace Squiggle.Core.Presence
         {
             thisUser = me;
             var message = Message.FromSender<UserUpdateMessage>(me);
-            channel.SendMulticastMessage(message);
+            channel.BroadcastMessage(message);
         }
 
         public void FakeLogout(UserInfo me)
         {
             thisUser = me;
             var message = Message.FromSender<LogoutMessage>(me);
-            channel.SendMulticastMessage(message);
+            channel.BroadcastMessage(message);
         }
 
         public void Logout()
@@ -67,7 +67,7 @@ namespace Squiggle.Core.Presence
             UnsubscribeChannel();
 
             var message = Message.FromSender<LogoutMessage>(thisUser);
-            channel.SendMulticastMessage(message);
+            channel.BroadcastMessage(message);
         }        
 
         public void DiscoverUser(SquiggleEndPoint user)

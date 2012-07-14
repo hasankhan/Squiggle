@@ -69,7 +69,7 @@ namespace Squiggle.Core.Presence.Transport
             broadcastService.Stop();
         }
 
-        public void SendMulticastMessage(Message message)
+        public void BroadcastMessage(Message message)
         {
             message.ChannelID = ChannelID;
             broadcastService.SendMessage(message);
