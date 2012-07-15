@@ -51,7 +51,7 @@ namespace Squiggle.Core.Chat.Transport.Host
 
         public static void ReceiveAppInvite(this IChatHost host, Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, Guid appId, Guid appSessionId, IEnumerable<KeyValuePair<string, string>> metadata)
         {
-            host.ReceiveChatMessage(recipient, new AppInvitationMessage() { SessionId = sessionId, Sender = sender, AppId = appId, AppSessionId = appSessionId, Metadata = metadata.ToDictionary(kv=>kv.Key, kv=>kv.Value) }.Serialize());
+            host.ReceiveChatMessage(recipient, new AppInviteMessage() { SessionId = sessionId, Sender = sender, AppId = appId, AppSessionId = appSessionId, Metadata = metadata.ToDictionary(kv=>kv.Key, kv=>kv.Value) }.Serialize());
         }
 
         public static void ReceiveAppData(this IChatHost host, Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, byte[] chunk)
@@ -61,7 +61,7 @@ namespace Squiggle.Core.Chat.Transport.Host
 
         public static void AcceptAppInvite(this IChatHost host, Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
         {
-            host.ReceiveChatMessage(recipient, new AppInvitationAcceptMessage() { SessionId = appSessionId, Sender = sender } .Serialize());
+            host.ReceiveChatMessage(recipient, new AppInviteAcceptMessage() { SessionId = appSessionId, Sender = sender } .Serialize());
         }
 
         public static void CancelAppSession(this IChatHost host, Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)

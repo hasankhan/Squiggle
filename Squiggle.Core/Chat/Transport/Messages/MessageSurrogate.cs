@@ -15,9 +15,9 @@ namespace Squiggle.Core.Chat.Transport.Messages
         [ProtoMember(2)]
         AppDataMessage AppDataMessage { get; set; }
         [ProtoMember(3)]
-        AppInvitationAcceptMessage AppInvitationAcceptMessage { get; set; }
+        AppInviteAcceptMessage AppInviteAcceptMessage { get; set; }
         [ProtoMember(4)]
-        AppInvitationMessage AppInvitationMessage { get; set; }
+        AppInviteMessage AppInviteMessage { get; set; }
         [ProtoMember(5)]
         BuzzMessage BuzzMessage { get; set; }
         [ProtoMember(6)]

@@ -69,8 +69,8 @@
     <Compile Include="Chat\Transport\Message.cs" />
     <Compile Include="Chat\Transport\Messages\AppCancelMessage.cs" />
     <Compile Include="Chat\Transport\Messages\AppDataMessage.cs" />
-    <Compile Include="Chat\Transport\Messages\AppInvitationAcceptMessage.cs" />
-    <Compile Include="Chat\Transport\Messages\AppInvitationMessage.cs" />
+    <Compile Include="Chat\Transport\Messages\AppInviteAcceptMessage.cs" />
+    <Compile Include="Chat\Transport\Messages\AppInviteMessage.cs" />
     <Compile Include="Chat\Transport\Messages\BuzzMessage.cs" />
     <Compile Include="Chat\Transport\Messages\ChatInviteMessage.cs" />
     <Compile Include="Chat\Transport\Messages\ChatJoinMessage.cs" />

@@ -7,7 +7,7 @@ using ProtoBuf;
 namespace Squiggle.Core.Chat.Transport.Messages
 {
     [ProtoContract]
-    class AppInvitationAcceptMessage : Message
+    class AppInviteAcceptMessage : Message
     {
     }
 }

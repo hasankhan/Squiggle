@@ -38,10 +38,10 @@ namespace Squiggle.Core.Chat.Transport.Host
                 CancelAppSession(recipient, (AppCancelMessage)obj);
             else if (obj is AppDataMessage)
                 ReceiveAppData(recipient, (AppDataMessage)obj);
-            else if (obj is AppInvitationAcceptMessage)
-                AcceptAppInvite(recipient, (AppInvitationAcceptMessage)obj);
-            else if (obj is AppInvitationMessage)
-                ReceiveAppInvite(recipient, (AppInvitationMessage)obj);
+            else if (obj is AppInviteAcceptMessage)
+                AcceptAppInvite(recipient, (AppInviteAcceptMessage)obj);
+            else if (obj is AppInviteMessage)
+                ReceiveAppInvite(recipient, (AppInviteMessage)obj);
             else if (obj is BuzzMessage)
                 Buzz(recipient, (BuzzMessage)obj);
             else if (obj is ChatInviteMessage)
@@ -126,7 +126,7 @@ namespace Squiggle.Core.Chat.Transport.Host
             UserLeft(this, new UserActivityEventArgs() { SessionID = msg.SessionId, Sender = msg.Sender});
         }
 
-        void ReceiveAppInvite(SquiggleEndPoint recipient, AppInvitationMessage msg)
+        void ReceiveAppInvite(SquiggleEndPoint recipient, AppInviteMessage msg)
         {
             OnUserActivity(msg.SessionId, msg.Sender, recipient, ActivityType.TransferInvite);
             Trace.WriteLine(msg.Sender + " wants to send a file " + msg.Metadata.ToTraceString());
@@ -145,7 +145,7 @@ namespace Squiggle.Core.Chat.Transport.Host
             AppDataReceived(this, new AppDataReceivedEventArgs() { AppSessionId = msg.SessionId, Chunk = msg.Data });
         }
 
-        void AcceptAppInvite(SquiggleEndPoint recipient, AppInvitationAcceptMessage msg)
+        void AcceptAppInvite(SquiggleEndPoint recipient, AppInviteAcceptMessage msg)
         {
             AppInvitationAccepted(this, new AppSessionEventArgs() { AppSessionId = msg.SessionId });
         }
