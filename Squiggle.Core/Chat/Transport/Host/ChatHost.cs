@@ -68,7 +68,7 @@ namespace Squiggle.Core.Chat.Transport.Host
 
         void ReceiveSessionInfo(SquiggleEndPoint recipient, SessionInfoMessage msg)
         {
-            SessionInfoReceived(this, new SessionInfoEventArgs() { Participants = msg.Participants, Sender = msg.Sender, SessionID = msg.SessionId });
+            SessionInfoReceived(this, new SessionInfoEventArgs() { Participants = msg.Participants.ToArray(), Sender = msg.Sender, SessionID = msg.SessionId });
             Trace.WriteLine(msg.Sender + " is sent session info.");
         }
 
@@ -110,7 +110,7 @@ namespace Squiggle.Core.Chat.Transport.Host
             { 
                 SessionID = msg.SessionId, 
                 Sender = msg.Sender, 
-                Participants = msg.Participants 
+                Participants = msg.Participants.ToArray() 
             });
         }
 

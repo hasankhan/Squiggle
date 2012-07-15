@@ -7,9 +7,14 @@ using ProtoBuf;
 namespace Squiggle.Core.Chat.Transport.Messages
 {
     [ProtoContract]
-    class ChatInviteMessage : Message
+    class ChatInviteMessage : Message, IMessageHasParticipants
     {
         [ProtoMember(1)]
-        public SquiggleEndPoint[] Participants { get; set; }
+        public List<SquiggleEndPoint> Participants { get; set; }
+
+        public ChatInviteMessage()
+        {
+            Participants = new List<SquiggleEndPoint>();
+        }
     }
 }

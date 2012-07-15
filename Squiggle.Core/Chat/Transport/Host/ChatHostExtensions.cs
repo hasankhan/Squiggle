@@ -16,7 +16,7 @@ namespace Squiggle.Core.Chat.Transport.Host
 
         public static void ReceiveSessionInfo(this IChatHost host, Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, SquiggleEndPoint[] participants)
         {
-            host.ReceiveChatMessage(recipient, new SessionInfoMessage() { SessionId = sessionId, Sender = sender, Participants = participants }.Serialize());
+            host.ReceiveChatMessage(recipient, new SessionInfoMessage() { SessionId = sessionId, Sender = sender, Participants = participants.ToList() }.Serialize());
         }
 
         public static void Buzz(this IChatHost host, Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
@@ -36,7 +36,7 @@ namespace Squiggle.Core.Chat.Transport.Host
 
         public static void ReceiveChatInvite(this IChatHost host, Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, SquiggleEndPoint[] participants)
         {
-            host.ReceiveChatMessage(recipient, new ChatInviteMessage() { SessionId = sessionId, Sender = sender, Participants = participants }.Serialize());
+            host.ReceiveChatMessage(recipient, new ChatInviteMessage() { SessionId = sessionId, Sender = sender, Participants = participants.ToList() }.Serialize());
         }
 
         public static void JoinChat(this IChatHost host, Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)

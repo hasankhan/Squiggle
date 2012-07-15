@@ -31,12 +31,19 @@ namespace Squiggle.Bridge
         }
     }
 
+    public class ChatMessageReceivedEventArgs : EventArgs
+    {
+        public SquiggleEndPoint Recipient { get; set; }
+        public Squiggle.Core.Chat.Transport.Message Message { get; set; }
+    }
+
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)] 
     public class BridgeHost: IBridgeHost
     {
         SquiggleBridge bridge;
 
         public event EventHandler<PresenceMessageForwardedEventArgs> PresenceMessageForwarded = delegate { };
+        public event EventHandler<ChatMessageReceivedEventArgs> ChatMessageReceived = delegate { };
 
         internal BridgeHost(SquiggleBridge bridge)
         {
@@ -53,11 +60,8 @@ namespace Squiggle.Bridge
         public void ReceiveChatMessage(SquiggleEndPoint recipient, byte[] message)
         {
             var msg = Squiggle.Core.Chat.Transport.Message.Deserialize(message);
-            bridge.RouteChatMessageToLocalOrRemoteUser((host, newSender, newRecipient) =>
-            {
-                msg.Sender = newSender;
-                host.ReceiveChatMessage(recipient, msg.Serialize());
-            }, msg.Sender, recipient);
+            var args = new ChatMessageReceivedEventArgs() { Message = msg, Recipient = recipient };
+            ChatMessageReceived(this, args);
         }
     }
 }

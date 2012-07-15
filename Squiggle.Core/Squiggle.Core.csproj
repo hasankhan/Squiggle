@@ -76,6 +76,7 @@
     <Compile Include="Chat\Transport\Messages\ChatJoinMessage.cs" />
     <Compile Include="Chat\Transport\Messages\ChatLeaveMessage.cs" />
     <Compile Include="Chat\Transport\Messages\GiveSessionInfoMessage.cs" />
+    <Compile Include="Chat\Transport\Messages\IMessageHasParticipants.cs" />
     <Compile Include="Chat\Transport\Messages\MessageSurrogate.cs" />
     <Compile Include="Chat\Transport\Messages\SessionInfoMessage.cs" />
     <Compile Include="Chat\Transport\Messages\TextMessage.cs" />

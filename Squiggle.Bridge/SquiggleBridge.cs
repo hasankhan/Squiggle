@@ -11,6 +11,7 @@ using Squiggle.Core.Chat.Transport.Host;
 using System.Diagnostics;
 using Squiggle.Utilities;
 using Squiggle.Core.Presence.Transport.Messages;
+using Squiggle.Core.Chat.Transport.Messages;
 
 namespace Squiggle.Bridge
 {
@@ -48,6 +49,7 @@ namespace Squiggle.Bridge
 
             bridgeHost = new BridgeHost(this);
             bridgeHost.PresenceMessageForwarded += new EventHandler<PresenceMessageForwardedEventArgs>(bridgeHost_PresenceMessageForwarded);
+            bridgeHost.ChatMessageReceived += new EventHandler<ChatMessageReceivedEventArgs>(bridgeHost_ChatMessageReceived);
         }
 
         public void AddTarget(IPEndPoint target)
@@ -115,6 +117,21 @@ namespace Squiggle.Bridge
                 }, "routing presence message to local user");
         }
 
+        void bridgeHost_ChatMessageReceived(object sender, ChatMessageReceivedEventArgs e)
+        {
+            if (e.Message is IMessageHasParticipants)
+            {
+                var msg = (IMessageHasParticipants)e.Message;
+                msg.Participants = ConvertChatEndPointsForRecipient(msg.Participants, e.Recipient).ToList();
+            }
+
+            RouteChatMessageToLocalOrRemoteUser((host, newSender, newRecipient) =>
+            {
+                e.Message.Sender = newSender;
+                host.ReceiveChatMessage(newRecipient, e.Message.Serialize());
+            }, e.Message.Sender, e.Recipient);
+        }
+
         void presenceChannel_MessageReceived(object sender, Squiggle.Core.Presence.Transport.MessageReceivedEventArgs e)
         {
             ExceptionMonster.EatTheException(() =>
@@ -137,7 +154,7 @@ namespace Squiggle.Bridge
             }, "forwarding presence message to bridge(s)");
         }       
 
-        public void RouteChatMessageToLocalOrRemoteUser(RouteAction action, SquiggleEndPoint sender, SquiggleEndPoint recipient)
+        void RouteChatMessageToLocalOrRemoteUser(RouteAction action, SquiggleEndPoint sender, SquiggleEndPoint recipient)
         {
             if (IsLocalChatEndpoint(recipient))
                 RouteChatMessageToLocalUser(action, sender, recipient);
@@ -145,7 +162,7 @@ namespace Squiggle.Bridge
                 RouteMessageToRemoteUser((h, s, r) => action(h, s, r), sender, recipient);
         }
 
-        public IEnumerable<SquiggleEndPoint> ConvertChatEndPointsForRecipient(IEnumerable<SquiggleEndPoint> endpoints, SquiggleEndPoint recipient)
+        IEnumerable<SquiggleEndPoint> ConvertChatEndPointsForRecipient(IEnumerable<SquiggleEndPoint> endpoints, SquiggleEndPoint recipient)
         {
             if (IsLocalChatEndpoint(recipient))
                 return endpoints.Select(ep => new SquiggleEndPoint(ep.ClientID, bridgeEndPointInternal)).ToList();
