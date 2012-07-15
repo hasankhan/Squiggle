@@ -139,19 +139,10 @@ namespace Squiggle.Bridge
 
         public void RouteChatMessageToLocalOrRemoteUser(RouteAction action, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
-            RouteChatMessageToLocalOrRemoteUser((h,s,e)=>
-            {
-                action(h, s, e);
-                return (object)null;
-            }, sender, recepient);
-        }
-
-        public T RouteChatMessageToLocalOrRemoteUser<T>(Func<IChatHost, SquiggleEndPoint, SquiggleEndPoint, T> action, SquiggleEndPoint sender, SquiggleEndPoint recepient)
-        {
             if (IsLocalChatEndpoint(recepient))
-                return RouteChatMessageToLocalUser(action, sender, recepient);
+                RouteChatMessageToLocalUser(action, sender, recepient);
             else
-                return RouteMessageToRemoteUser((h, s, r)=>action(h, s, r), sender, recepient);
+                RouteMessageToRemoteUser((h, s, r) => action(h, s, r), sender, recepient);
         }
 
         bool IsLocalChatEndpoint(SquiggleEndPoint recepient)
@@ -159,26 +150,25 @@ namespace Squiggle.Bridge
             return routeTable.GetLocalChatEndPoint(recepient.ClientID) != null;
         }
 
-        T RouteMessageToRemoteUser<T>(Func<IChatHost, SquiggleEndPoint, SquiggleEndPoint, T> action, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        void RouteMessageToRemoteUser(RouteAction action, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
-            return ExceptionMonster.EatTheException(() =>
+            ExceptionMonster.EatTheException(() =>
             {
                 sender = new SquiggleEndPoint(sender.ClientID, BridgeEndPointExternal);
                 TargetBridge bridge = routeTable.FindBridge(recepient.ClientID);
                 if (bridge != null)
-                    return action(bridge.Proxy, sender, recepient);
-                return default(T);
+                    action(bridge.Proxy, sender, recepient);                
             }, "routing message to remote user");            
         }
 
-        T RouteChatMessageToLocalUser<T>(Func<IChatHost, SquiggleEndPoint, SquiggleEndPoint, T> action, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        void RouteChatMessageToLocalUser(RouteAction action, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
-            return ExceptionMonster.EatTheException(() =>
+            ExceptionMonster.EatTheException(() =>
             {
                 sender = new SquiggleEndPoint(sender.ClientID, bridgeEndPointInternal);
                 IPEndPoint endpoint = routeTable.GetLocalChatEndPoint(recepient.ClientID);
                 var proxy = ChatHostProxyFactory.Get(endpoint);
-                return action(proxy, sender, new SquiggleEndPoint(recepient.ClientID, endpoint));
+                action(proxy, sender, new SquiggleEndPoint(recepient.ClientID, endpoint));
             }, "routing chat message to local user");            
         }
 
