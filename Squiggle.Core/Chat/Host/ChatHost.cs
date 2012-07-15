@@ -65,7 +65,7 @@ namespace Squiggle.Core.Chat.Host
                                                                                           Color = color,
                                                                                           FontStyle = fontStyle,
                                                                                           Message = message });
-            Trace.WriteLine("Message received from: " + sender + ", sessionId= " + sessionId + ", message = " + message);
+            Trace.WriteLine("Message received from: " + sender + ", sessionId= " + sessionId);
         }
 
         public void ReceiveChatInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, SquiggleEndPoint[] participants)
