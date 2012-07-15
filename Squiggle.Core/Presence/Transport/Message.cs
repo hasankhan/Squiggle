@@ -18,53 +18,17 @@ namespace Squiggle.Core.Presence.Transport
     {
         [ProtoMember(1)]
         public Guid ChannelID { get; set; }
-        [ProtoMember(2)]
-        string ClientID { get; set; }
-        [ProtoMember(3)]
-        IPAddress PresenceIP { get; set; }
-        [ProtoMember(4)]
-        int PresencePort { get; set; }
 
         /// <summary>
         /// Presence endpoint for the sender
         /// </summary>
-        public SquiggleEndPoint Sender
-        {
-            get { return new SquiggleEndPoint(ClientID, PresenceEndPoint); }
-            set
-            {
-                ClientID = value.ClientID;
-                PresenceEndPoint = value.Address;
-            }
-        }
-
-        IPEndPoint PresenceEndPoint
-        {
-            get { return new IPEndPoint(PresenceIP, PresencePort); }
-            set
-            {
-                PresenceIP = value.Address;
-                PresencePort = value.Port;
-            }
-        }
+        [ProtoMember(2)]
+        public SquiggleEndPoint Sender { get; set; }
 
         public static TMessage FromSender<TMessage>(UserInfo user) where TMessage:Message, new()
         {
-            var message = new TMessage()
-            {
-                ClientID = user.ID,
-                PresenceEndPoint = user.PresenceEndPoint,
-            };
+            var message = new TMessage() { Sender = new SquiggleEndPoint(user.ID, user.PresenceEndPoint) };
             return message;
-        }
-
-        public bool IsValid
-        {
-            get
-            {
-                bool isValid = !String.IsNullOrEmpty(ClientID) && PresenceEndPoint != null;
-                return isValid;
-            }
         }
 
         public byte[] Serialize()
@@ -86,7 +50,7 @@ namespace Squiggle.Core.Presence.Transport
 
         public override string ToString()
         {
-            string output = String.Format("Sender: {0}, Message: {1}", PresenceEndPoint, base.ToString());
+            string output = String.Format("Sender: {0}, Message: {1}", Sender, base.ToString());
             return output;
         }
     }

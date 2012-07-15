@@ -15,5 +15,10 @@ namespace Squiggle.Core.Chat.Transport.Messages
         public Guid AppSessionId { get; set; }
         [ProtoMember(3)]
         public Dictionary<string, string> Metadata { get; set; }
+
+        public AppInvitationMessage()
+        {
+            Metadata = new Dictionary<string, string>();
+        }
     }
 }

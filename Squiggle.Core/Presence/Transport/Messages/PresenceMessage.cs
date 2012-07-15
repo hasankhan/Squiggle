@@ -24,6 +24,11 @@ namespace Squiggle.Core.Presence.Transport.Messages
         [ProtoMember(6)]
         int ChatPort { get; set; }
 
+        public PresenceMessage()
+        {
+            Properties = new Dictionary<string, string>();
+        }
+
         public IPEndPoint ChatEndPoint
         {
             get { return new IPEndPoint(ChatIP, ChatPort); }

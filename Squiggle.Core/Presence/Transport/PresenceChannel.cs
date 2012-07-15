@@ -114,7 +114,7 @@ namespace Squiggle.Core.Presence.Transport
 
         void OnMessageReceived(SquiggleEndPoint recipient, Message message)
         {
-            if (message.IsValid && !message.ChannelID.Equals(ChannelID))
+            if (!message.ChannelID.Equals(ChannelID))
             {
                 var args = new MessageReceivedEventArgs()
                 {

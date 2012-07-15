@@ -26,34 +26,11 @@ namespace Squiggle.Core.Chat.Transport
     {
         [ProtoMember(1)]
         public Guid SessionId { get; set; }
-        [ProtoMember(2)]
-        string ClientID { get; set; }
-        [ProtoMember(3)]
-        IPAddress ChatIP { get; set; }
-        [ProtoMember(4)]
-        int ChatPort { get; set; }
         /// <summary>
         /// Chat endpoint for the sender
         /// </summary>
-        public SquiggleEndPoint Sender
-        {
-            get { return new SquiggleEndPoint(ClientID, ChatEndPoint); }
-            set
-            {
-                ClientID = value.ClientID;
-                ChatEndPoint = value.Address;
-            }
-        }
-
-        IPEndPoint ChatEndPoint
-        {
-            get { return new IPEndPoint(ChatIP, ChatPort); }
-            set
-            {
-                ChatIP = value.Address;
-                ChatPort = value.Port;
-            }
-        }
+        [ProtoMember(2)]
+        public SquiggleEndPoint Sender { get; set; }
 
         public byte[] Serialize()
         {
