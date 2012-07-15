@@ -44,8 +44,8 @@ namespace Squiggle.Utilities
         {
             serviceHost = CreateHost();
             WcfConfig.ConfigureHost(serviceHost);
-            serviceHost.Faulted += new EventHandler(serviceHost_Faulted);
             serviceHost.Open();
+            serviceHost.Faulted += new EventHandler(serviceHost_Faulted);
         }
 
         void DestroyServiceHost()
