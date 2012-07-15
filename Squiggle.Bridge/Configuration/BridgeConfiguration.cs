@@ -9,30 +9,30 @@ namespace Squiggle.Bridge.Configuration
             return (BridgeConfiguration)ConfigurationManager.GetSection("BridgeConfiguration") ?? new BridgeConfiguration();
         }
 
-        [ConfigurationProperty("externalservicebinding")]
+        [ConfigurationProperty("ExternalServiceBinding")]
         public Target ExternalServiceBinding
         {
-            get { return (Target)this["externalservicebinding"] ?? new Target(); }
+            get { return (Target)this["ExternalServiceBinding"] ?? new Target(); }
         }
 
-        [ConfigurationProperty("internalservicebinding")]
+        [ConfigurationProperty("InternalServiceBinding")]
         public Target InternalServiceBinding
         {
-            get { return (Target)this["internalservicebinding"] ?? new Target(); }
+            get { return (Target)this["InternalServiceBinding"] ?? new Target(); }
         }
 
-        [ConfigurationProperty("channelbinding")]
-        public ChannelBinding ChannelBinding
+        [ConfigurationProperty("PresenceBinding")]
+        public PresenceBinding PresenceBinding
         {
-            get { return (ChannelBinding)this["channelbinding"] ?? new ChannelBinding(); }
+            get { return (PresenceBinding)this["PresenceBinding"] ?? new PresenceBinding(); }
         }
 
-        [ConfigurationProperty("targets")]
+        [ConfigurationProperty("Targets")]
         public TargetCollection Targets
         {
             get
             {
-                return (TargetCollection)this["targets"] ??
+                return (TargetCollection)this["Targets"] ??
                    new TargetCollection();
             }
         }

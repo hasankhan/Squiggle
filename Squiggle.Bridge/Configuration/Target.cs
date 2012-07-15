@@ -6,16 +6,16 @@ namespace Squiggle.Bridge.Configuration
 {
     class Target : ConfigurationElement
     {
-        [ConfigurationProperty("ip", IsRequired = true)]
+        [ConfigurationProperty("IP", IsRequired = true)]
         public string IP
         {
-            get { return this["ip"] as string; }
+            get { return this["IP"] as string; }
         }
 
-        [ConfigurationProperty("port", IsRequired = true)]
+        [ConfigurationProperty("Port", IsRequired = true)]
         public int Port
         {
-            get { return Convert.ToInt32(this["port"]); }
+            get { return Convert.ToInt32(this["Port"]); }
         }
 
         public IPEndPoint EndPoint
