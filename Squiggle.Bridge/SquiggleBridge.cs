@@ -27,6 +27,7 @@ namespace Squiggle.Bridge
         BridgeHost bridgeHost;
         IPEndPoint presenceServiceEndPoint;
         IPEndPoint bridgeEndPointInternal;
+        IPEndPoint bridgeEndPointExternal;
         IPEndPoint multicastEndPoint;
         PresenceChannel presenceChannel;
         PresenceMessageInspector messageInspector;
@@ -34,7 +35,6 @@ namespace Squiggle.Bridge
         List<TargetBridge> targetBridges = new List<TargetBridge>();
         RouteTable routeTable;
 
-        public IPEndPoint BridgeEndPointExternal { get; private set; }
 
         public SquiggleBridge(IPEndPoint bridgeEndPointInternal,
                               IPEndPoint bridgeEndPointExternal,
@@ -42,7 +42,7 @@ namespace Squiggle.Bridge
                               IPEndPoint presenceServiceEndPoint)
         {
             this.bridgeEndPointInternal = bridgeEndPointInternal;
-            this.BridgeEndPointExternal = bridgeEndPointExternal;
+            this.bridgeEndPointExternal = bridgeEndPointExternal;
             this.presenceServiceEndPoint = presenceServiceEndPoint;
             this.multicastEndPoint = multicastEndPoint;
 
@@ -126,12 +126,12 @@ namespace Squiggle.Bridge
                 if (e.IsBroadcast)
                 {
                     foreach (TargetBridge target in targetBridges)
-                        target.Proxy.ForwardPresenceMessage(null, message, BridgeEndPointExternal);
+                        target.Proxy.ForwardPresenceMessage(null, message, bridgeEndPointExternal);
                 }
                 else
                 {
                     TargetBridge bridge = routeTable.FindBridge(e.Recipient.ClientID);
-                    bridge.Proxy.ForwardPresenceMessage(e.Recipient, message, BridgeEndPointExternal);
+                    bridge.Proxy.ForwardPresenceMessage(e.Recipient, message, bridgeEndPointExternal);
                 }
                 Trace.WriteLine("Forward: " + e.Message.GetType().Name);
             }, "forwarding presence message to bridge(s)");
@@ -143,6 +143,13 @@ namespace Squiggle.Bridge
                 RouteChatMessageToLocalUser(action, sender, recepient);
             else
                 RouteMessageToRemoteUser((h, s, r) => action(h, s, r), sender, recepient);
+        }
+
+        public IEnumerable<SquiggleEndPoint> ConvertChatEndPointsForRecepient(IEnumerable<SquiggleEndPoint> endpoints, SquiggleEndPoint recipient)
+        {
+            if (IsLocalChatEndpoint(recipient))
+                return endpoints.Select(ep => new SquiggleEndPoint(ep.ClientID, bridgeEndPointInternal)).ToList();
+            return endpoints;
         }
 
         bool IsLocalChatEndpoint(SquiggleEndPoint recepient)
@@ -185,7 +192,7 @@ namespace Squiggle.Bridge
             Uri address;
             GetBridgeConnectionParams(bridgeEndPointInternal, ServiceNames.ChatService, out address, out binding);
             serviceHost.AddServiceEndpoint(typeof(IBridgeHost), binding, address);
-            GetBridgeConnectionParams(BridgeEndPointExternal, ServiceNames.BridgeService, out address, out binding);
+            GetBridgeConnectionParams(bridgeEndPointExternal, ServiceNames.BridgeService, out address, out binding);
             serviceHost.AddServiceEndpoint(typeof(IBridgeHost), binding, address);
 
             return serviceHost;
