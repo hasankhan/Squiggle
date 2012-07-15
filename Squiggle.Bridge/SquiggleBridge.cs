@@ -154,7 +154,6 @@ namespace Squiggle.Bridge
         {
             ExceptionMonster.EatTheException(() =>
             {
-                sender = new SquiggleEndPoint(sender.ClientID, BridgeEndPointExternal);
                 TargetBridge bridge = routeTable.FindBridge(recepient.ClientID);
                 if (bridge != null)
                     action(bridge.Proxy, sender, recepient);                

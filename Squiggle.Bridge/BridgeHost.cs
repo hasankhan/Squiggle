@@ -57,7 +57,7 @@ namespace Squiggle.Bridge
 
         public void ReceiveSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, SessionInfo sessionInfo)
         {
-            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.GetSessionInfo(sessionId, s, r), sender, recepient);
+            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.ReceiveSessionInfo(sessionId, s, r, sessionInfo), sender, recepient);
         }
 
         public void Buzz(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
