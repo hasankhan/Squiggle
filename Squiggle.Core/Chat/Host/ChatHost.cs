@@ -25,20 +25,21 @@ namespace Squiggle.Core.Chat.Host
         public event EventHandler<AppInvitationReceivedEventArgs> AppInvitationReceived = delegate { };
         public event EventHandler<AppDataReceivedEventArgs> AppDataReceived = delegate { };
         public event EventHandler<UserActivityEventArgs> UserActivity = delegate { };
-        public event EventHandler<SessionInfoRequestedEventArgs> SessionInfoRequested = delegate { };
+        public event EventHandler<SessionEventArgs> SessionInfoRequested = delegate { };
+        public event EventHandler<SessionInfoEventArgs> SessionInfoReceived = delegate { };
 
         #region IChatHost Members
 
-        public SessionInfo GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
-            var args = new SessionInfoRequestedEventArgs() 
-            { 
-                SessionID = sessionId, 
-                Sender = sender, 
-                Info = new SessionInfo() 
-            };
-            SessionInfoRequested(this, args);
-            return args.Info;
+            SessionInfoRequested(this, new SessionEventArgs(sessionId, sender));
+            Trace.WriteLine(sender + " is requesting session info.");
+        }
+
+        public void ReceiveSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, SessionInfo sessionInfo)
+        {
+            SessionInfoReceived(this, new SessionInfoEventArgs() { Info = sessionInfo, Sender = sender, SessionID = sessionId });
+            Trace.WriteLine(sender + " is sent session info.");
         }
 
         public void Buzz(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
@@ -189,7 +190,7 @@ namespace Squiggle.Core.Chat.Host
         public ActivityType Type { get; set; }
     }
 
-    public class SessionInfoRequestedEventArgs : SessionEventArgs
+    public class SessionInfoEventArgs : SessionEventArgs
     {
         public SessionInfo Info { get; set; }
     }

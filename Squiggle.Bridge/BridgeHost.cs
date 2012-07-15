@@ -8,6 +8,7 @@ using Squiggle.Core;
 using Squiggle.Core.Presence;
 using System.ServiceModel.Dispatcher;
 using System.Collections.Generic;
+using Squiggle.Core.Chat.Host;
 
 namespace Squiggle.Bridge
 {
@@ -49,9 +50,14 @@ namespace Squiggle.Bridge
             PresenceMessageForwarded(this, args);
         }
 
-        public Squiggle.Core.Chat.Host.SessionInfo GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
-            return bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.GetSessionInfo(sessionId, s, r), sender, recepient);
+            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.GetSessionInfo(sessionId, s, r), sender, recepient);
+        }
+
+        public void ReceiveSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, SessionInfo sessionInfo)
+        {
+            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.GetSessionInfo(sessionId, s, r), sender, recepient);
         }
 
         public void Buzz(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)

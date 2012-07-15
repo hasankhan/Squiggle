@@ -128,13 +128,14 @@ namespace Squiggle.Core.Presence.Transport
         IPresenceHost GetPresenceHost(IPEndPoint endPoint)
         {
             IPresenceHost host;
-            if (!presenceHosts.TryGetValue(endPoint, out host))
-            {
-                Uri uri = CreateServiceUri(endPoint.ToString());
-                var binding = WcfConfig.CreateBinding();
-                host = new PresenceHostProxy(binding, new EndpointAddress(uri));
-                presenceHosts[endPoint] = host;
-            }
+            lock (presenceHosts)
+                if (!presenceHosts.TryGetValue(endPoint, out host))
+                {
+                    Uri uri = CreateServiceUri(endPoint.ToString());
+                    var binding = WcfConfig.CreateBinding();
+                    host = new PresenceHostProxy(binding, new EndpointAddress(uri));
+                    presenceHosts[endPoint] = host;
+                }
             return host;
         }
 

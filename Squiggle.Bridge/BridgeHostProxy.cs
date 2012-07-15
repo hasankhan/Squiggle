@@ -41,9 +41,14 @@ namespace Squiggle.Bridge
 
         #region IChatHost
 
-        public SessionInfo GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
-            return EnsureProxy<SessionInfo>(p => p.GetSessionInfo(sessionId, sender, recepient));
+            EnsureProxy(p => p.GetSessionInfo(sessionId, sender, recepient));
+        }
+
+        public void ReceiveSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, SessionInfo sessionInfo)
+        {
+            EnsureProxy(p=>p.ReceiveSessionInfo(sessionId, sender, recepient, sessionInfo));
         }
 
         public void Buzz(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
@@ -112,10 +117,15 @@ namespace Squiggle.Bridge
                 this.Channel.ForwardPresenceMessage(recepient, message, bridgeEndPoint);
             }
 
-            public Squiggle.Core.Chat.Host.SessionInfo GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+            public void GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
             {
-                return this.Channel.GetSessionInfo(sessionId, sender, recepient);
-            } 
+                this.Channel.GetSessionInfo(sessionId, sender, recepient);
+            }
+
+            public void ReceiveSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, SessionInfo sessionInfo)
+            {
+                this.Channel.ReceiveSessionInfo(sessionId, sender, recepient, sessionInfo);
+            }
 
             #endregion
 

@@ -160,7 +160,6 @@ namespace Squiggle.UI
             txtMessageEditBox.Enabled = true;
             mnuInviteContact.IsEnabled = !IsBroadcastChat;
             chatSession.EnableLogging = SettingsProvider.Current.Settings.ChatSettings.EnableLogging;
-            UpdateTitle();
             MonitorAll();
         }
 
@@ -169,7 +168,7 @@ namespace Squiggle.UI
             messagePanel.Height = new GridLength(SettingsProvider.Current.Settings.GeneralSettings.MessagePanelHeight, GridUnitType.Pixel);
             flash = new FlashWindow(this);
 
-            UpdateGroupChatControls();
+            OnParticipantsChanged();
             lock (eventQueue)
             {
                 loaded = true;
@@ -317,7 +316,7 @@ namespace Squiggle.UI
 
         void buddy_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            Dispatcher.Invoke(UpdateTitle);
+            Dispatcher.Invoke(OnParticipantsChanged);
         }
 
         void buddy_Online(object sender, EventArgs e)
@@ -370,10 +369,8 @@ namespace Squiggle.UI
             Monitor(buddy);
             Dispatcher.Invoke(() =>
             {
-                UpdateGroupChatControls();
                 chatTextBox.AddInfo(String.Format("{0} " + Translation.Instance.ChatWindow_HasJoinedConversation, buddy.DisplayName));
-                UpdateTitle();
-                UpdateDisplayPicPanel();
+                OnParticipantsChanged();
             });
         }
 
@@ -382,11 +379,16 @@ namespace Squiggle.UI
             StopMonitoring(buddy);
             Dispatcher.Invoke(() =>
             {
-                UpdateGroupChatControls();
                 chatTextBox.AddInfo(String.Format("{0} " + Translation.Instance.ChatWindow_HasLeftConversation, buddy.DisplayName));
-                UpdateTitle();
-                UpdateDisplayPicPanel();
+                OnParticipantsChanged();
             });
+        }
+
+        void OnParticipantsChanged()
+        {
+            UpdateGroupChatControls();
+            UpdateTitle();
+            UpdateDisplayPicPanel();
         }
 
         void UpdateDisplayPicPanel()
@@ -471,9 +473,8 @@ namespace Squiggle.UI
         {
             Dispatcher.Invoke(() =>
             {
-                UpdateGroupChatControls();
                 MonitorAll();
-                UpdateTitle();
+                OnParticipantsChanged();
             });
         }
 
@@ -694,8 +695,8 @@ namespace Squiggle.UI
                 chatSession = null;
                 Dispatcher.Invoke(() =>
                 {
+                    OnParticipantsChanged();
                     txtMessageEditBox.Enabled = false;
-                    UpdateTitle();
                 });
             }
         }

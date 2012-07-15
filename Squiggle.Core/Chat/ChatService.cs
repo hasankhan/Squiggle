@@ -103,8 +103,8 @@ namespace Squiggle.Core.Chat
             if (!chatSessions.Contains(sessionId))
             {
                 var session = CreateSession(sessionId, user);
-                session.UpdateSessionInfo();
-                ChatStarted(this, new ChatStartedEventArgs() { Session = session });
+                ChatStarted(this, new ChatStartedEventArgs(){ Session = session});
+                session.Initialize();
             }
         }
     }

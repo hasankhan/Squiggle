@@ -10,7 +10,10 @@ namespace Squiggle.Core.Chat.Host
     public interface IChatHost
     {
         [OperationContract]
-        SessionInfo GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient);
+        void GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient);
+
+        [OperationContract]
+        void ReceiveSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, SessionInfo sessionInfo);
 
         [OperationContract]
         void Buzz(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient);

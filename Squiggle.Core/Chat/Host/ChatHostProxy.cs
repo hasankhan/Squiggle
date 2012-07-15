@@ -43,11 +43,14 @@ namespace Squiggle.Core.Chat.Host
             EnsureProxy(p => p.UserIsTyping(sessionId, sender, recepient));
         }
 
-        public SessionInfo GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
-            SessionInfo info = null;
-            EnsureProxy(p => info = p.GetSessionInfo(sessionId, sender, recepient));
-            return info;
+            EnsureProxy(p => p.GetSessionInfo(sessionId, sender, recepient));
+        }
+
+        public void ReceiveSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, SessionInfo sessionInfo)
+        {
+            EnsureProxy(p => p.ReceiveSessionInfo(sessionId, sender, recepient, sessionInfo));
         }
 
         public void Buzz(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
@@ -112,10 +115,16 @@ namespace Squiggle.Core.Chat.Host
                 base.Channel.UserIsTyping(sessionId, sender, recepient);
             }
 
-            public SessionInfo GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+            public void GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
             {
                 Trace.WriteLine("Getting session information from: " + sender);
-                return base.Channel.GetSessionInfo(sessionId, sender, recepient);
+                base.Channel.GetSessionInfo(sessionId, sender, recepient);
+            }
+
+            public void ReceiveSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, SessionInfo sessionInfo)
+            {
+                Trace.WriteLine("Sending session information to: " + recepient);
+                base.Channel.ReceiveSessionInfo(sessionId, sender, recepient, sessionInfo);
             }
 
             public void Buzz(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)

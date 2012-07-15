@@ -27,10 +27,9 @@ namespace Squiggle.Core.Presence.Transport.Host
 
         public void ReceivePresenceMessage(SquiggleEndPoint recepient, byte[] message)
         {
-            EnsureProxy<object>(p=>
+            EnsureProxy(p=>
             {
                 p.ReceivePresenceMessage(recepient, message);
-                return null;
             });
         }
 
