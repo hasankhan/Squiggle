@@ -10,6 +10,7 @@ using Squiggle.Core;
 using Squiggle.Core.Chat.Host;
 using System.Diagnostics;
 using Squiggle.Utilities;
+using Squiggle.Core.Presence.Transport.Messages;
 
 namespace Squiggle.Bridge
 {
@@ -92,7 +93,10 @@ namespace Squiggle.Bridge
 
             lock (remoteClientBridgeMap)
                 remoteClientBridgeMap[e.Message.Sender.ClientID] = bridge;
+
             e.Message.Sender = new SquiggleEndPoint(e.Message.Sender.ClientID, presenceServiceEndPoint);
+            if (e.Message is PresenceMessage)
+                ((PresenceMessage)e.Message).ChatEndPoint = bridgeEndPointInternal; 
 
             Trace.WriteLine("Replay: " + e.Message.GetType().Name);
 
@@ -122,6 +126,9 @@ namespace Squiggle.Bridge
             {
                 lock (localPresenceEndPoints)
                     localPresenceEndPoints[e.Message.Sender.ClientID] = e.Message.Sender;
+                if (e.Message is PresenceMessage)
+                    lock (localChatEndPoints)
+                        localChatEndPoints[e.Message.Sender.ClientID] = new SquiggleEndPoint(e.Message.Sender.ClientID, ((PresenceMessage)e.Message).ChatEndPoint);
 
                 byte[] message = e.Message.Serialize();
 
