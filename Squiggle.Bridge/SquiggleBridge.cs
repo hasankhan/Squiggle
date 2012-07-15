@@ -27,23 +27,24 @@ namespace Squiggle.Bridge
         BridgeHost bridgeHost;
         IPEndPoint presenceServiceEndPoint;
         IPEndPoint bridgeEndPointInternal;
-        IPEndPoint presenceEndPoint;
+        IPEndPoint multicastEndPoint;
         PresenceChannel presenceChannel;
+        PresenceMessageInspector messageInspector;
 
         List<TargetBridge> targetBridges = new List<TargetBridge>();
-        RouteTable routeTable = new RouteTable();
+        RouteTable routeTable;
 
         public IPEndPoint BridgeEndPointExternal { get; private set; }
 
         public SquiggleBridge(IPEndPoint bridgeEndPointInternal,
                               IPEndPoint bridgeEndPointExternal,
-                              IPEndPoint presenceEndPoint,
+                              IPEndPoint multicastEndPoint,
                               IPEndPoint presenceServiceEndPoint)
         {
             this.bridgeEndPointInternal = bridgeEndPointInternal;
             this.BridgeEndPointExternal = bridgeEndPointExternal;
             this.presenceServiceEndPoint = presenceServiceEndPoint;
-            this.presenceEndPoint = presenceEndPoint;
+            this.multicastEndPoint = multicastEndPoint;
 
             bridgeHost = new BridgeHost(this);
             bridgeHost.PresenceMessageForwarded += new EventHandler<PresenceMessageForwardedEventArgs>(bridgeHost_PresenceMessageForwarded);
@@ -66,7 +67,10 @@ namespace Squiggle.Bridge
         {
             base.OnStart();
 
-            presenceChannel = new PresenceChannel(presenceEndPoint, presenceServiceEndPoint);
+            routeTable = new RouteTable();
+            messageInspector = new PresenceMessageInspector(routeTable, presenceServiceEndPoint, bridgeEndPointInternal);
+
+            presenceChannel = new PresenceChannel(multicastEndPoint, presenceServiceEndPoint);
             presenceChannel.Start();
             presenceChannel.MessageReceived += new EventHandler<Squiggle.Core.Presence.Transport.MessageReceivedEventArgs>(presenceChannel_MessageReceived);
         }
@@ -89,9 +93,7 @@ namespace Squiggle.Bridge
             if (bridge == null) // not coming from a target bridge list
                 return;
 
-            routeTable.AddRemoteClient(e.Message.Sender.ClientID, bridge);
-
-            ReplaceSenderWithBridgeEndPoints(e.Message); 
+            messageInspector.InspectForeignPresenceMessage(e.Message, bridge);
 
             Trace.WriteLine("Replay: " + e.Message.GetType().Name);
 
@@ -117,7 +119,7 @@ namespace Squiggle.Bridge
         {
             ExceptionMonster.EatTheException(() =>
             {
-                ExtractLocalEndpoints(e.Message);
+                messageInspector.InspectLocalPresenceMessage(e.Message);
 
                 byte[] message = e.Message.Serialize();
 
@@ -150,20 +152,6 @@ namespace Squiggle.Bridge
                 return RouteChatMessageToLocalUser(action, sender, recepient);
             else
                 return RouteMessageToRemoteUser((h, s, r)=>action(h, s, r), sender, recepient);
-        }
-
-        void ExtractLocalEndpoints(Squiggle.Core.Presence.Transport.Message message)
-        {
-            routeTable.AddLocalPresenceEndPoint(message.Sender);
-            if (message is PresenceMessage)
-                routeTable.AddLocalChatEndPoint(message.Sender.ClientID, ((PresenceMessage)message).ChatEndPoint);
-        } 
-
-        void ReplaceSenderWithBridgeEndPoints(Squiggle.Core.Presence.Transport.Message message)
-        {
-            message.Sender = new SquiggleEndPoint(message.Sender.ClientID, presenceServiceEndPoint);
-            if (message is PresenceMessage)
-                ((PresenceMessage)message).ChatEndPoint = bridgeEndPointInternal;
         }
 
         bool IsLocalChatEndpoint(SquiggleEndPoint recepient)
