@@ -80,7 +80,7 @@ namespace Squiggle.Core.Presence.Transport
                 throw new ArgumentNullException("data");
 
             var stream = new MemoryStream(data);
-            Message message = ProtoBuf.Serializer.Deserialize<MessageSurrogate>(stream).GetMessage();
+            Message message = ProtoBuf.Serializer.Deserialize<MessageSurrogate>(stream).GetObject();
             return message;
         }
 

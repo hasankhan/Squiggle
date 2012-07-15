@@ -75,6 +75,7 @@
     <Compile Include="CoalesceExtensions.cs" />
     <Compile Include="ConfigReader.cs" />
     <Compile Include="DispatcherExtensions.cs" />
+    <Compile Include="SerializationSurrogate.cs" />
     <Compile Include="StringValueAttribute.cs" />
     <Compile Include="WcfConfig.cs" />
     <Compile Include="ConsoleService.cs">

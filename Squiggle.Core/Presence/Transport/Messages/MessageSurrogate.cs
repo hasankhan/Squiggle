@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using ProtoBuf;
 using System.Reflection;
+using Squiggle.Utilities;
 
 namespace Squiggle.Core.Presence.Transport.Messages
 {
     [ProtoContract(SkipConstructor=true)]
-    class MessageSurrogate
+    class MessageSurrogate: SerializationSurrogate<Message>
     {
         [ProtoMember(1)]
         GiveUserInfoMessage GiveUserInfoMessage { get; set; }
@@ -27,19 +28,6 @@ namespace Squiggle.Core.Presence.Transport.Messages
         [ProtoMember(8)]
         UserUpdateMessage UserUpdateMessage { get; set; }
 
-        public MessageSurrogate(Message message)
-        {
-            string propName = message.GetType().Name;
-            PropertyInfo propInfo = typeof(MessageSurrogate).GetProperty(propName, BindingFlags.Instance | BindingFlags.NonPublic);
-            propInfo.SetValue(this, message, null);
-        }
-
-        public Message GetMessage()
-        {
-            var properties = typeof(MessageSurrogate).GetProperties(BindingFlags.Instance | BindingFlags.NonPublic);
-            var message = (Message)properties.Select(propInfo => propInfo.GetValue(this, null)).Where(x => x != null).FirstOrDefault();
-            return message;
-        }
-
+        public MessageSurrogate(Message message): base(message) { }
     }
 }
