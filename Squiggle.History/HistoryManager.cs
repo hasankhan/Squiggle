@@ -8,11 +8,11 @@ namespace Squiggle.History
 {
     public class HistoryManager
     {
-        public void AddSessionEvent(Guid sessionId, DateTime stamp, EventType type, Guid sender, string senderName, IEnumerable<Guid> recepients, string data)
+        public void AddSessionEvent(Guid sessionId, DateTime stamp, EventType type, Guid sender, string senderName, IEnumerable<Guid> recipients, string data)
         {
             using (var repository = new HistoryRepository())
             {
-                repository.AddSessionEvent(sessionId, stamp, type, sender, senderName, recepients, data);
+                repository.AddSessionEvent(sessionId, stamp, type, sender, senderName, recipients, data);
                 if (type == EventType.Joined)
                 {
                     var participant = Participant.CreateParticipant(Guid.NewGuid(), sender, senderName);

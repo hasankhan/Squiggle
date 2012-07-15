@@ -16,18 +16,18 @@ namespace Squiggle.Bridge
     {
         public IPEndPoint BridgeEndPoint { get; set; }
         public Message Message {get; set; }
-        public SquiggleEndPoint Recepient {get; set; }
+        public SquiggleEndPoint Recipient {get; set; }
 
         public bool IsBroadcast
         {
-            get { return Recepient == null; }
+            get { return Recipient == null; }
         }
 
-        public PresenceMessageForwardedEventArgs (Message message, IPEndPoint bridgeEdnpoint, SquiggleEndPoint recepient)
+        public PresenceMessageForwardedEventArgs (Message message, IPEndPoint bridgeEdnpoint, SquiggleEndPoint recipient)
 	    {
             this.Message = message;
             this.BridgeEndPoint = bridgeEdnpoint;
-	        this.Recepient = recepient;
+	        this.Recipient = recipient;
         }
     }
 
@@ -43,72 +43,72 @@ namespace Squiggle.Bridge
             this.bridge = bridge;
         }
 
-        public void ForwardPresenceMessage(SquiggleEndPoint recepient, byte[] message, IPEndPoint bridgeEndPoint)
+        public void ForwardPresenceMessage(SquiggleEndPoint recipient, byte[] message, IPEndPoint bridgeEndPoint)
         {
             var msg = Message.Deserialize(message);
-            var args = new PresenceMessageForwardedEventArgs(msg, bridgeEndPoint, recepient);
+            var args = new PresenceMessageForwardedEventArgs(msg, bridgeEndPoint, recipient);
             PresenceMessageForwarded(this, args);
         }
 
-        public void GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
         {
-            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.GetSessionInfo(sessionId, s, r), sender, recepient);
+            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.GetSessionInfo(sessionId, s, r), sender, recipient);
         }
 
-        public void ReceiveSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, SessionInfo sessionInfo)
+        public void ReceiveSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, SessionInfo sessionInfo)
         {
-            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.ReceiveSessionInfo(sessionId, s, r, sessionInfo), sender, recepient);
+            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.ReceiveSessionInfo(sessionId, s, r, sessionInfo), sender, recipient);
         }
 
-        public void Buzz(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void Buzz(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
         {
-            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.Buzz(sessionId, s, r), sender, recepient);
+            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.Buzz(sessionId, s, r), sender, recipient);
         }
 
-        public void UserIsTyping(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void UserIsTyping(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
         {
-            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.UserIsTyping(sessionId, s, r), sender, recepient);
+            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.UserIsTyping(sessionId, s, r), sender, recipient);
         }
 
-        public void ReceiveMessage(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, string fontName, int fontSize, System.Drawing.Color color, System.Drawing.FontStyle fontStyle, string message)
+        public void ReceiveMessage(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, string fontName, int fontSize, System.Drawing.Color color, System.Drawing.FontStyle fontStyle, string message)
         {
-            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.ReceiveMessage(sessionId, s, r, fontName, fontSize, color, fontStyle, message), sender, recepient);
+            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.ReceiveMessage(sessionId, s, r, fontName, fontSize, color, fontStyle, message), sender, recipient);
         }
 
-        public void ReceiveChatInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, SquiggleEndPoint[] participants)
+        public void ReceiveChatInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, SquiggleEndPoint[] participants)
         {
-            participants = bridge.ConvertChatEndPointsForRecepient(participants, recepient).ToArray();
-            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.ReceiveChatInvite(sessionId, s, r, participants), sender, recepient);
+            participants = bridge.ConvertChatEndPointsForRecipient(participants, recipient).ToArray();
+            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.ReceiveChatInvite(sessionId, s, r, participants), sender, recipient);
         }
 
-        public void JoinChat(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void JoinChat(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
         {
-            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.JoinChat(sessionId, s, r), sender, recepient);
+            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.JoinChat(sessionId, s, r), sender, recipient);
         }
 
-        public void LeaveChat(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void LeaveChat(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
         {
-            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.LeaveChat(sessionId, s, r), sender, recepient);
+            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.LeaveChat(sessionId, s, r), sender, recipient);
         }
 
-        public void ReceiveAppInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, Guid appId, Guid appSessionId, IEnumerable<KeyValuePair<string, string>> metadata)
+        public void ReceiveAppInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, Guid appId, Guid appSessionId, IEnumerable<KeyValuePair<string, string>> metadata)
         {
-            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.ReceiveAppInvite(sessionId, s, r, appId, appSessionId, metadata), sender, recepient);
+            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.ReceiveAppInvite(sessionId, s, r, appId, appSessionId, metadata), sender, recipient);
         }
 
-        public void ReceiveAppData(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] chunk)
+        public void ReceiveAppData(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, byte[] chunk)
         {
-            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.ReceiveAppData(appSessionId, s, r, chunk), sender, recepient);
+            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.ReceiveAppData(appSessionId, s, r, chunk), sender, recipient);
         }
 
-        public void AcceptAppInvite(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void AcceptAppInvite(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
         {
-            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.AcceptAppInvite(appSessionId, s, r), sender, recepient);
+            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.AcceptAppInvite(appSessionId, s, r), sender, recipient);
         }
 
-        public void CancelAppSession(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void CancelAppSession(Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
         {
-            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.CancelAppSession(appSessionId, s, r), sender, recepient);
+            bridge.RouteChatMessageToLocalOrRemoteUser((h, s, r) => h.CancelAppSession(appSessionId, s, r), sender, recipient);
         }
     }
 }

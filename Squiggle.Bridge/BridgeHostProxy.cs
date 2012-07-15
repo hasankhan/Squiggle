@@ -32,73 +32,73 @@ namespace Squiggle.Bridge
 
         #region IBridgeHost
 
-        public void ForwardPresenceMessage(SquiggleEndPoint recepient, byte[] message, IPEndPoint bridgeEndPoint)
+        public void ForwardPresenceMessage(SquiggleEndPoint recipient, byte[] message, IPEndPoint bridgeEndPoint)
         {
-            EnsureProxy(p => p.ForwardPresenceMessage(recepient, message, bridgeEndPoint));
+            EnsureProxy(p => p.ForwardPresenceMessage(recipient, message, bridgeEndPoint));
         }
         
         #endregion        
 
         #region IChatHost
 
-        public void GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
         {
-            EnsureProxy(p => p.GetSessionInfo(sessionId, sender, recepient));
+            EnsureProxy(p => p.GetSessionInfo(sessionId, sender, recipient));
         }
 
-        public void ReceiveSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, SessionInfo sessionInfo)
+        public void ReceiveSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, SessionInfo sessionInfo)
         {
-            EnsureProxy(p=>p.ReceiveSessionInfo(sessionId, sender, recepient, sessionInfo));
+            EnsureProxy(p=>p.ReceiveSessionInfo(sessionId, sender, recipient, sessionInfo));
         }
 
-        public void Buzz(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void Buzz(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
         {
-            EnsureProxy(p => p.Buzz(sessionId, sender, recepient));
+            EnsureProxy(p => p.Buzz(sessionId, sender, recipient));
         }
 
-        public void UserIsTyping(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void UserIsTyping(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
         {
-            EnsureProxy(p => p.UserIsTyping(sessionId, sender, recepient));
+            EnsureProxy(p => p.UserIsTyping(sessionId, sender, recipient));
         }
 
-        public void ReceiveMessage(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
+        public void ReceiveMessage(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
         {
-            EnsureProxy(p => p.ReceiveMessage(sessionId, sender, recepient, fontName, fontSize, color, fontStyle, message));
+            EnsureProxy(p => p.ReceiveMessage(sessionId, sender, recipient, fontName, fontSize, color, fontStyle, message));
         }
 
-        public void ReceiveChatInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, SquiggleEndPoint[] participants)
+        public void ReceiveChatInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, SquiggleEndPoint[] participants)
         {
-            EnsureProxy(p => p.ReceiveChatInvite(sessionId, sender, recepient, participants));
+            EnsureProxy(p => p.ReceiveChatInvite(sessionId, sender, recipient, participants));
         }
 
-        public void JoinChat(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void JoinChat(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
         {
-            EnsureProxy(p => p.JoinChat(sessionId, sender, recepient));
+            EnsureProxy(p => p.JoinChat(sessionId, sender, recipient));
         }
 
-        public void LeaveChat(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void LeaveChat(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
         {
-            EnsureProxy(p => p.LeaveChat(sessionId, sender, recepient));
+            EnsureProxy(p => p.LeaveChat(sessionId, sender, recipient));
         }
 
-        public void ReceiveAppInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, Guid appId, Guid appSessionId, IEnumerable<KeyValuePair<string, string>> metadata)
+        public void ReceiveAppInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, Guid appId, Guid appSessionId, IEnumerable<KeyValuePair<string, string>> metadata)
         {
-            EnsureProxy(p => p.ReceiveAppInvite(sessionId, sender, recepient, appId, appSessionId, metadata));
+            EnsureProxy(p => p.ReceiveAppInvite(sessionId, sender, recipient, appId, appSessionId, metadata));
         }
 
-        public void ReceiveAppData(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] chunk)
+        public void ReceiveAppData(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recipient, byte[] chunk)
         {
-            EnsureProxy(p => p.ReceiveAppData(id, sender, recepient, chunk));
+            EnsureProxy(p => p.ReceiveAppData(id, sender, recipient, chunk));
         }
 
-        public void AcceptAppInvite(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void AcceptAppInvite(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recipient)
         {
-            EnsureProxy(p => p.AcceptAppInvite(id, sender, recepient));
+            EnsureProxy(p => p.AcceptAppInvite(id, sender, recipient));
         }
 
-        public void CancelAppSession(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void CancelAppSession(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recipient)
         {
-            EnsureProxy(p => p.CancelAppSession(id, sender, recepient));
+            EnsureProxy(p => p.CancelAppSession(id, sender, recipient));
         }
 
         #endregion        
@@ -112,73 +112,73 @@ namespace Squiggle.Bridge
 
             #region IBridgeHost
 
-            public void ForwardPresenceMessage(SquiggleEndPoint recepient, byte[] message, IPEndPoint bridgeEndPoint)
+            public void ForwardPresenceMessage(SquiggleEndPoint recipient, byte[] message, IPEndPoint bridgeEndPoint)
             {
-                this.Channel.ForwardPresenceMessage(recepient, message, bridgeEndPoint);
+                this.Channel.ForwardPresenceMessage(recipient, message, bridgeEndPoint);
             }
 
-            public void GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+            public void GetSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
             {
-                this.Channel.GetSessionInfo(sessionId, sender, recepient);
+                this.Channel.GetSessionInfo(sessionId, sender, recipient);
             }
 
-            public void ReceiveSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, SessionInfo sessionInfo)
+            public void ReceiveSessionInfo(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, SessionInfo sessionInfo)
             {
-                this.Channel.ReceiveSessionInfo(sessionId, sender, recepient, sessionInfo);
+                this.Channel.ReceiveSessionInfo(sessionId, sender, recipient, sessionInfo);
             }
 
             #endregion
 
             #region IChatHost
 
-            public void Buzz(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+            public void Buzz(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
             {
-                this.Channel.Buzz(sessionId, sender, recepient);
+                this.Channel.Buzz(sessionId, sender, recipient);
             }
 
-            public void UserIsTyping(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+            public void UserIsTyping(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
             {
-                this.Channel.UserIsTyping(sessionId, sender, recepient);
+                this.Channel.UserIsTyping(sessionId, sender, recipient);
             }
 
-            public void ReceiveMessage(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, string fontName, int fontSize, Color color, System.Drawing.FontStyle fontStyle, string message)
+            public void ReceiveMessage(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, string fontName, int fontSize, Color color, System.Drawing.FontStyle fontStyle, string message)
             {
-                this.Channel.ReceiveMessage(sessionId, sender, recepient, fontName, fontSize, color, fontStyle, message);
+                this.Channel.ReceiveMessage(sessionId, sender, recipient, fontName, fontSize, color, fontStyle, message);
             }
 
-            public void ReceiveChatInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, SquiggleEndPoint[] participants)
+            public void ReceiveChatInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, SquiggleEndPoint[] participants)
             {
-                this.Channel.ReceiveChatInvite(sessionId, sender, recepient, participants);
+                this.Channel.ReceiveChatInvite(sessionId, sender, recipient, participants);
             }
 
-            public void JoinChat(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+            public void JoinChat(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
             {
-                this.Channel.JoinChat(sessionId, sender, recepient);
+                this.Channel.JoinChat(sessionId, sender, recipient);
             }
 
-            public void LeaveChat(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+            public void LeaveChat(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
             {
-                this.Channel.LeaveChat(sessionId, sender, recepient);
+                this.Channel.LeaveChat(sessionId, sender, recipient);
             }
 
-            public void ReceiveAppInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, Guid appId, Guid appSessionId, IEnumerable<KeyValuePair<string, string>> metadata)
+            public void ReceiveAppInvite(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, Guid appId, Guid appSessionId, IEnumerable<KeyValuePair<string, string>> metadata)
             {
-                this.Channel.ReceiveAppInvite(sessionId, sender, recepient, appId, appSessionId, metadata);
+                this.Channel.ReceiveAppInvite(sessionId, sender, recipient, appId, appSessionId, metadata);
             }
 
-            public void ReceiveAppData(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient, byte[] chunk)
+            public void ReceiveAppData(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recipient, byte[] chunk)
             {
-                this.Channel.ReceiveAppData(id, sender, recepient, chunk);
+                this.Channel.ReceiveAppData(id, sender, recipient, chunk);
             }
 
-            public void AcceptAppInvite(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+            public void AcceptAppInvite(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recipient)
             {
-                this.Channel.AcceptAppInvite(id, sender, recepient);
+                this.Channel.AcceptAppInvite(id, sender, recipient);
             }
 
-            public void CancelAppSession(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+            public void CancelAppSession(Guid id, SquiggleEndPoint sender, SquiggleEndPoint recipient)
             {
-                this.Channel.CancelAppSession(id, sender, recepient);
+                this.Channel.CancelAppSession(id, sender, recipient);
             } 
 
             #endregion

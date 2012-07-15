@@ -115,7 +115,7 @@
     <sys:String x:Key="ChatWindow_SendButtonToolTip">Send Message</sys:String>
     <sys:String x:Key="ChatWindow_ShowInFolder">Show In Folder</sys:String>
     <sys:String x:Key="ChatWindow_IsTyping">is typing...</sys:String>
-    <sys:String x:Key="ChatWindow_MessageCouldNotBeDelivered">Following message could not be delivered to some of the recepients:</sys:String>
+    <sys:String x:Key="ChatWindow_MessageCouldNotBeDelivered">Following message could not be delivered to some of the recipients:</sys:String>
     <sys:String x:Key="ChatWindow_HasJoinedConversation">has joined the conversation.</sys:String>
     <sys:String x:Key="ChatWindow_HasLeftConversation">has left the conversation.</sys:String>
     <sys:String x:Key="ChatWindow_HasSentYouBuzz">sent you a buzz.</sys:String>

@@ -10,6 +10,6 @@ namespace Squiggle.Bridge
     public interface IBridgeHost: IChatHost
     {
         [OperationContract]
-        void ForwardPresenceMessage(SquiggleEndPoint recepient, byte[] message, IPEndPoint bridgeEndPoint);
+        void ForwardPresenceMessage(SquiggleEndPoint recipient, byte[] message, IPEndPoint bridgeEndPoint);
     }
 }

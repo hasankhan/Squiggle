@@ -11,7 +11,7 @@ namespace Squiggle.History.DAL
     {
         HistoryEntities context = new HistoryEntities();
 
-        public void AddSessionEvent(Guid sessionId, DateTime stamp, EventType type, Guid sender, string senderName, IEnumerable<Guid> recepients, string data)
+        public void AddSessionEvent(Guid sessionId, DateTime stamp, EventType type, Guid sender, string senderName, IEnumerable<Guid> recipients, string data)
         {
             var session = context.Sessions.FirstOrDefault(s => s.Id == sessionId);
             if (session != null)
