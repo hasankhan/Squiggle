@@ -160,7 +160,7 @@ namespace Squiggle.Bridge
                 return localChatEndPoints.ContainsKey(recepient.ClientID);
         }
 
-        T RouteMessageToRemoteUser<T>(Func<IBridgeHost, SquiggleEndPoint, SquiggleEndPoint, T> action, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        T RouteMessageToRemoteUser<T>(Func<IChatHost, SquiggleEndPoint, SquiggleEndPoint, T> action, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
             return ExceptionMonster.EatTheException(() =>
             {
