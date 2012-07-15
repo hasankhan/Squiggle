@@ -4,16 +4,33 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.Runtime.Serialization;
+using ProtoBuf;
 
 namespace Squiggle.Core
 {
     [DataContract]
     public class SquiggleEndPoint
     {
+        [ProtoMember(1)]
         [DataMember]
         public string ClientID { get; set; }
+        [ProtoMember(2)]
+        IPAddress IP { get; set; }
+        [ProtoMember(3)]
+        int Port { get; set; }
+
         [DataMember]
-        public IPEndPoint Address { get; set; }
+        public IPEndPoint Address
+        {
+            get { return new IPEndPoint(IP, Port); }
+            set
+            {
+                IP = value.Address;
+                Port = value.Port;
+            }
+        }
+
+        public SquiggleEndPoint() { }
 
         public SquiggleEndPoint(string id, IPEndPoint address)
         {

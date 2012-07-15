@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Net;
-using Squiggle.Core.Chat.Host;
+using Squiggle.Core.Chat.Transport.Host;
 using System.Collections.Generic;
 using System.Windows.Threading;
 using Squiggle.Core.Chat.FileTransfer;

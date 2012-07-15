@@ -7,7 +7,7 @@ using Squiggle.Core.Presence.Transport;
 using System.ServiceModel.Channels;
 using Squiggle.Core.Presence.Transport.Host;
 using Squiggle.Core;
-using Squiggle.Core.Chat.Host;
+using Squiggle.Core.Chat.Transport.Host;
 using System.Diagnostics;
 using Squiggle.Utilities;
 using Squiggle.Core.Presence.Transport.Messages;

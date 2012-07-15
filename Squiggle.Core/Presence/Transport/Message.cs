@@ -14,7 +14,7 @@ namespace Squiggle.Core.Presence.Transport
     [ProtoInclude(53, typeof(LogoutMessage))]
     [ProtoInclude(54, typeof(UserUpdateMessage))]
     [ProtoInclude(55, typeof(PresenceMessage))]
-    public class Message
+    public abstract class Message
     {
         [ProtoMember(1)]
         public Guid ChannelID { get; set; }

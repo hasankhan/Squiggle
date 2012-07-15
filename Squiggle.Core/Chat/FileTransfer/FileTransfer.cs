@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Threading;
-using Squiggle.Core.Chat.Host;
+using Squiggle.Core.Chat.Transport.Host;
 using Squiggle.Utilities;
 using System.Collections.Generic;
 using System.Linq;

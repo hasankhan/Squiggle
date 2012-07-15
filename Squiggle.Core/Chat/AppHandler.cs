@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Squiggle.Core.Chat.Host;
+using Squiggle.Core.Chat.Transport.Host;
 using System.IO;
 using System.ComponentModel;
 using Squiggle.Utilities;

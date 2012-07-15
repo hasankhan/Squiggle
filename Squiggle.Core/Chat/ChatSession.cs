@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-using Squiggle.Core.Chat.Host;
+using Squiggle.Core.Chat.Transport.Host;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -107,20 +107,19 @@ namespace Squiggle.Core.Chat
                 {
                     ExceptionMonster.EatTheException(() =>
                     {
-                        var info = new SessionInfo();
-                        info.Participants = remoteUsers.Except(Enumerable.Repeat(e.Sender, 1)).ToArray();
+                        var participants = remoteUsers.Except(Enumerable.Repeat(e.Sender, 1)).ToArray();
                         ChatHostProxy host = ChatHostProxyFactory.Get(e.Sender.Address);
-                        host.ReceiveSessionInfo(ID, localUser, e.Sender, info);
+                        host.ReceiveSessionInfo(ID, localUser, e.Sender, participants);
                     }, "sending session info");
                 });
         }
 
         void localHost_SessionInfoReceived(object sender, SessionInfoEventArgs e)
         {
-            if (e.SessionID == ID && e.Info != null && e.Info.Participants != null)
+            if (e.SessionID == ID && e.Participants != null)
             {
                 bool wasGroupSession = IsGroupSession;
-                AddParticipants(e.Info.Participants);
+                AddParticipants(e.Participants);
                 if (!wasGroupSession && IsGroupSession)
                     GroupChatStarted(this, EventArgs.Empty);
                 

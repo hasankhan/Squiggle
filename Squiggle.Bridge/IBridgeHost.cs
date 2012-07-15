@@ -1,6 +1,6 @@
 ﻿using System.ServiceModel;
 using Squiggle.Core.Presence.Transport.Host;
-using Squiggle.Core.Chat.Host;
+using Squiggle.Core.Chat.Transport.Host;
 using System.Net;
 using Squiggle.Core;
 
