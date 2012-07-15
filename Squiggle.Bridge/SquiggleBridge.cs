@@ -19,6 +19,8 @@ namespace Squiggle.Bridge
         public BridgeHostProxy Proxy { get; set; }
     }
 
+    delegate void RouteAction(IChatHost targetHost, SquiggleEndPoint sender, SquiggleEndPoint recepient);
+
     class SquiggleBridge: WcfHost
     {
         BridgeHost bridgeHost;
@@ -137,7 +139,7 @@ namespace Squiggle.Bridge
             }, "forwarding presence message to bridge(s)");
         }        
 
-        public void RouteChatMessageToLocalOrRemoteUser(Action<IChatHost, SquiggleEndPoint, SquiggleEndPoint> action, SquiggleEndPoint sender, SquiggleEndPoint recepient)
+        public void RouteChatMessageToLocalOrRemoteUser(RouteAction action, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
             RouteChatMessageToLocalOrRemoteUser((h,s,e)=>
             {
