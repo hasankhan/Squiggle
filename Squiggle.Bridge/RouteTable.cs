@@ -19,7 +19,7 @@ namespace Squiggle.Bridge
                 remoteClientBridgeMap[clientId] = bridge;
         }
 
-        public IPEndPoint GetLocalPresnceEndPoint(string clientId)
+        public IPEndPoint GetLocalPresenceEndPoint(string clientId)
         {
             IPEndPoint endpoint;
             lock (localPresenceEndPoints)

@@ -26,7 +26,7 @@ namespace Squiggle.Bridge
         {
             routeTable.AddRemoteClient(message.Sender.ClientID, bridge);
             ReplaceSenderWithBridgeEndPoints(message);
-        }        
+        }
 
         public void InspectLocalPresenceMessage(Message message)
         {

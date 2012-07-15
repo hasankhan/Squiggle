@@ -105,7 +105,7 @@ namespace Squiggle.Bridge
             else
                 ExceptionMonster.EatTheException(() =>
                 {
-                    IPEndPoint endpoint = routeTable.GetLocalPresnceEndPoint(e.Recepient.ClientID);
+                    IPEndPoint endpoint = routeTable.GetLocalPresenceEndPoint(e.Recepient.ClientID);
 
                     if (endpoint != null)
                     {
