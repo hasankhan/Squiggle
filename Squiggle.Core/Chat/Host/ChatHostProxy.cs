@@ -126,7 +126,7 @@ namespace Squiggle.Core.Chat.Host
 
             public void ReceiveMessage(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recepient, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
             {
-                Trace.WriteLine("Sending message from: " + sender + ", message = " + message);
+                Trace.WriteLine("Sending message from: " + sender);
                 base.Channel.ReceiveMessage(sessionId, sender, recepient, fontName, fontSize, color, fontStyle, message);
             }
 
