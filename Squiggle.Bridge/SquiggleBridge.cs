@@ -120,6 +120,7 @@ namespace Squiggle.Bridge
             {
                 lock (localPresenceEndPoints)
                     localPresenceEndPoints[e.Message.Sender.ClientID] = e.Message.Sender;
+
                 byte[] message = e.Message.Serialize();
 
                 if (e.IsBroadcast)
@@ -135,12 +136,6 @@ namespace Squiggle.Bridge
                 Trace.WriteLine("Forward: " + e.Message.GetType().Name);
             }, "forwarding presence message to bridge(s)");
         }        
-
-        public void AddLocalChatEndPoint(string clientID, IPEndPoint endPoint)
-        {
-            lock (localChatEndPoints)
-                localChatEndPoints[clientID] = new SquiggleEndPoint(clientID, endPoint);
-        }       
 
         public void RouteChatMessageToLocalOrRemoteUser(Action<IChatHost, SquiggleEndPoint, SquiggleEndPoint> action, SquiggleEndPoint sender, SquiggleEndPoint recepient)
         {
