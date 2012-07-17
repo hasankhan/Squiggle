@@ -7,6 +7,7 @@ using Squiggle.Core.Presence.Transport;
 using System.ServiceModel;
 using Squiggle.Utilities;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Squiggle.Multicast
 {
@@ -49,23 +50,22 @@ namespace Squiggle.Multicast
             RegisterClient();
 
             Client currentClient = GetCurrentClient();
-            IEnumerable<Client> clientsClone;
+            IEnumerable<Client> clientsList;
 
             lock (clients)
-                clientsClone = clients.ToList();
+                clientsList = clients.ToList();
             
-            Async.Invoke(() =>
+            Parallel.ForEach(clientsList, client =>
             {
-                foreach (Client current in clientsClone)
-                if (!current.Equals(currentClient))
+                if (!client.Equals(currentClient))
                 {
-                    CommunicationState state = current.Channel.State;
+                    CommunicationState state = client.Channel.State;
                     if (state == CommunicationState.Opened)
-                        current.Callback.MessageForwarded(message);
+                        client.Callback.MessageForwarded(message);
                     else
                     {
                         Trace.WriteLine("Removing faulty client");
-                        RemoveClient(current);
+                        RemoveClient(client);
                     }
                 }
             });

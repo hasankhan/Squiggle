@@ -11,6 +11,7 @@ using Squiggle.Core.Chat.FileTransfer;
 using Squiggle.Core.Chat.Voice;
 using System.Windows.Threading;
 using System.Drawing;
+using System.Threading.Tasks;
 
 namespace Squiggle.Core.Chat
 {
@@ -24,7 +25,6 @@ namespace Squiggle.Core.Chat
 
         SquiggleEndPoint localUser;
         ChatHost localHost;
-        HashSet<SquiggleEndPoint> remoteUsers;
         Dictionary<string, RemoteHost> remoteHosts;
         List<IAppHandler> appSessions;
         bool initialized;
@@ -43,12 +43,20 @@ namespace Squiggle.Core.Chat
         public Guid ID { get; private set; }
         public IEnumerable<SquiggleEndPoint> RemoteUsers
         {
-            get { return remoteUsers; }
+            get 
+            {
+                lock (remoteHosts)
+                    return remoteHosts.Values.Select(h=>h.EndPoint).ToList(); 
+            }
         }
 
         public bool IsGroupSession
         {
-            get { return remoteUsers.Count > 1; }
+            get 
+            { 
+                lock (remoteHosts)
+                    return remoteHosts.Count > 1; 
+            }
         }
 
         public IEnumerable<IAppHandler> AppSessions
@@ -63,7 +71,6 @@ namespace Squiggle.Core.Chat
             this.ID = sessionID;
             this.localHost = localHost;
             this.localUser = localUser;
-            this.remoteUsers = new HashSet<SquiggleEndPoint>(remoteUsers);
 
             localHost.ChatInviteReceived += new EventHandler<ChatInviteReceivedEventArgs>(localHost_ChatInviteReceived);
             localHost.AppInvitationReceived += new EventHandler<AppInvitationReceivedEventArgs>(localHost_AppInvitationReceived);
@@ -78,7 +85,7 @@ namespace Squiggle.Core.Chat
             remoteHosts = new Dictionary<string, RemoteHost>();
             appSessions = new List<IAppHandler>();
 
-            CreateRemoteHosts();
+            CreateRemoteHosts(remoteUsers);
         }
 
         RemoteHost PrimaryHost
@@ -107,7 +114,7 @@ namespace Squiggle.Core.Chat
                 {
                     ExceptionMonster.EatTheException(() =>
                     {
-                        var participants = remoteUsers.Except(Enumerable.Repeat(e.Sender, 1)).ToArray();
+                        var participants = RemoteUsers.Except(Enumerable.Repeat(e.Sender, 1)).ToArray();
                         ChatHostProxy host = ChatHostProxyFactory.Get(e.Sender.Address);
                         host.ReceiveSessionInfo(ID, localUser, e.Sender, participants);
                     }, "sending session info");
@@ -119,7 +126,7 @@ namespace Squiggle.Core.Chat
             if (e.SessionID == ID && e.Participants != null)
             {
                 bool wasGroupSession = IsGroupSession;
-                AddParticipants(e.Participants);
+                CreateRemoteHosts(e.Participants);
                 if (!wasGroupSession && IsGroupSession)
                     GroupChatStarted(this, EventArgs.Empty);
                 
@@ -131,21 +138,25 @@ namespace Squiggle.Core.Chat
 
         void localHost_UserLeft(object sender, SessionEventArgs e)
         {
+            bool left = false;
             if (e.SessionID == ID && IsGroupSession)
-                if (remoteUsers.Remove(e.Sender))
-                {
-                    remoteHosts.Remove(e.Sender.ClientID);
-                    UserLeft(this, e);
-                }
+                left = remoteHosts.Remove(e.Sender.ClientID);
+            
+            if (left)
+                UserLeft(this, e);
         }
 
         void localHost_UserJoined(object sender, SessionEventArgs e)
         {
-            if (e.SessionID == ID && remoteUsers.Add(e.Sender))
+            bool joined = false;
+            lock (remoteHosts)
+            if (e.SessionID == ID && !remoteHosts.ContainsKey(e.Sender.ClientID))
             {
                 AddRemoteHost(e.Sender);
-                UserJoined(this, e);
+                joined = true;
             }
+            if (joined)
+                UserJoined(this, e);
         }
 
         void localHost_ChatInviteReceived(object sender, ChatInviteReceivedEventArgs e)
@@ -154,7 +165,7 @@ namespace Squiggle.Core.Chat
             {
                 ExceptionMonster.EatTheException(() =>
                 {
-                    AddParticipants(e.Participants);
+                    CreateRemoteHosts(e.Participants);
                     BroadCast((host, endpoint) => host.JoinChat(ID, localUser, endpoint));
                 }, "responding to chat invite");
                 GroupChatStarted(this, EventArgs.Empty);
@@ -276,12 +287,13 @@ namespace Squiggle.Core.Chat
         public void Invite(SquiggleEndPoint user)
         {
             var proxy = ChatHostProxyFactory.Get(user.Address);
-            proxy.ReceiveChatInvite(ID, localUser, user, remoteUsers.ToArray());
+            proxy.ReceiveChatInvite(ID, localUser, user, RemoteUsers);
         }
 
         bool IsRemoteUser(SquiggleEndPoint user)
         {
-            return remoteUsers.Contains(user);
+            lock (remoteHosts)
+                return remoteHosts.ContainsKey(user.ClientID);
         }
 
         RemoteHost AddRemoteHost(SquiggleEndPoint endpoint)
@@ -297,50 +309,36 @@ namespace Squiggle.Core.Chat
             return result;
         }
 
-        void CreateRemoteHosts()
+        void CreateRemoteHosts(IEnumerable<SquiggleEndPoint> remoteUsers)
         {
-            foreach (SquiggleEndPoint user in RemoteUsers)
+            foreach (SquiggleEndPoint user in remoteUsers)
                 AddRemoteHost(user);
         }
 
         void BroadCast(Action<IChatHost, SquiggleEndPoint> hostAction)
         {
-            BroadCast(hostAction, true);
-        }
-
-        void BroadCast(Action<IChatHost, SquiggleEndPoint> hostAction, bool continueOnError)
-        {
             bool allSuccess = true;
 
             IEnumerable<RemoteHost> hosts;
+            
             lock (remoteHosts)
                 hosts = remoteHosts.Values.ToList();
-            foreach (RemoteHost host in hosts)
+
+            Parallel.ForEach(hosts, host =>
             {
                 Exception ex;
-                if (!ExceptionMonster.EatTheException(()=>
-                    {
-                        hostAction(host.Host, host.EndPoint);
-                    },"doing a broadcast operation in chat", out ex))
+                if (!ExceptionMonster.EatTheException(() =>
+                {
+                    hostAction(host.Host, host.EndPoint);
+                }, "doing a broadcast operation in chat", out ex))
                 {
                     allSuccess = false;
-                    if (continueOnError)
-                        Trace.WriteLine(ex.Message);
-                    else
-                        throw ex;
+                    Trace.WriteLine(ex.Message);
                 }
-            }
+            });
 
-            if (continueOnError && !allSuccess)
+            if (!allSuccess)
                 throw new OperationFailedException();
-        }
-
-        void AddParticipants(SquiggleEndPoint[] participants)
-        {
-            foreach (SquiggleEndPoint user in participants)
-                remoteUsers.Add(user);
-
-            CreateRemoteHosts();
         }
 
         void OnAppSessionStarted(AppHandler handler)
