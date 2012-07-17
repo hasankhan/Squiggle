@@ -102,13 +102,15 @@ namespace Squiggle.Core.Presence
         void OnLoginMessage(Message message)
         {
             var reply = PresenceMessage.FromUserInfo<HiMessage>(thisUser);
-            channel.SendMessage(reply, message.Sender); 
+            reply.Recipient = message.Sender;
+            channel.SendMessage(reply); 
         }
 
         void OnHiMessage(HiMessage message)
         {
             var reply = PresenceMessage.FromUserInfo<HelloMessage>(thisUser);
-            channel.SendMessage(reply, message.Sender);
+            reply.Recipient = message.Sender;
+            channel.SendMessage(reply);
 
             UserInfo user = message.GetUser();
             OnPresenceMessage(user, true);
@@ -137,7 +139,8 @@ namespace Squiggle.Core.Presence
         {
             var reply = PresenceMessage.FromUserInfo<UserInfoMessage>(thisUser);
             reply.State = message.State;
-            channel.SendMessage(reply, message.Sender);
+            reply.Recipient = message.Sender;
+            channel.SendMessage(reply);
         }        
 
         void OnPresenceMessage(UserInfo user, bool discovered)
@@ -184,7 +187,8 @@ namespace Squiggle.Core.Presence
         {
             var reply = Message.FromSender<GiveUserInfoMessage>(thisUser);
             reply.State = (int)state;
-            channel.SendMessage(reply, user);
+            reply.Recipient = user;
+            channel.SendMessage(reply);
         }
 
         void UnsubscribeChannel()

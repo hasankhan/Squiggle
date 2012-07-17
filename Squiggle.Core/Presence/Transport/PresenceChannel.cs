@@ -14,12 +14,11 @@ namespace Squiggle.Core.Presence.Transport
 {
     public class MessageReceivedEventArgs : EventArgs
     {
-        public SquiggleEndPoint Recipient { get; set; }
         public Message Message { get; set; }
 
         public bool IsBroadcast
         {
-            get { return Recipient == null; }
+            get { return Message.Recipient == null; }
         }
     }
 
@@ -74,15 +73,15 @@ namespace Squiggle.Core.Presence.Transport
             broadcastService.SendMessage(message);
         }
 
-        public void SendMessage(Message message, SquiggleEndPoint targetPresenceEndPoint)
+        public void SendMessage(Message message)
         {
             message.ChannelID = ChannelID;
-            IPresenceHost host = GetPresenceHost(targetPresenceEndPoint.Address);
+            IPresenceHost host = GetPresenceHost(message.Recipient.Address);
 
             ExceptionMonster.EatTheException(() =>
             {
-                host.ReceivePresenceMessage(targetPresenceEndPoint, message.Serialize());
-            }, "sending presence message to " + targetPresenceEndPoint);
+                host.ReceivePresenceMessage(message.Serialize());
+            }, "sending presence message to " + message.Recipient);
         }
 
         protected override ServiceHost CreateHost()
@@ -100,7 +99,7 @@ namespace Squiggle.Core.Presence.Transport
         {
             Async.Invoke(() =>
             {
-                OnMessageReceived(e.Recipient, e.Message);
+                OnMessageReceived(e.Message);
             });
         }   
 
@@ -108,19 +107,15 @@ namespace Squiggle.Core.Presence.Transport
         {
             Async.Invoke(() =>
             {
-                OnMessageReceived(e.Recipient, e.Message);
+                OnMessageReceived(e.Message);
             });
         }
 
-        void OnMessageReceived(SquiggleEndPoint recipient, Message message)
+        void OnMessageReceived(Message message)
         {
             if (!message.ChannelID.Equals(ChannelID))
             {
-                var args = new MessageReceivedEventArgs()
-                {
-                    Recipient = recipient,
-                    Message = message,
-                };
+                var args = new MessageReceivedEventArgs(){ Message = message };
                 MessageReceived(this, args);
             }
         }      

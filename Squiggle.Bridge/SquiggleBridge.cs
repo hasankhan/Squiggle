@@ -111,8 +111,8 @@ namespace Squiggle.Bridge
 
                     if (endpoint != null)
                     {
-                        var recipient = new SquiggleEndPoint(e.Recipient.ClientID, endpoint);
-                        presenceChannel.SendMessage(e.Message, recipient);
+                        e.Message.Recipient = new SquiggleEndPoint(e.Recipient.ClientID, endpoint);
+                        presenceChannel.SendMessage(e.Message);
                     }
                 }, "routing presence message to local user");
         }
@@ -147,8 +147,8 @@ namespace Squiggle.Bridge
                 }
                 else
                 {
-                    TargetBridge bridge = routeTable.FindBridge(e.Recipient.ClientID);
-                    bridge.Proxy.ForwardPresenceMessage(e.Recipient, message, bridgeEndPointExternal);
+                    TargetBridge bridge = routeTable.FindBridge(e.Message.Recipient.ClientID);
+                    bridge.Proxy.ForwardPresenceMessage(e.Message.Recipient, message, bridgeEndPointExternal);
                 }
                 Trace.WriteLine("Forward: " + e.Message.GetType().Name);
             }, "forwarding presence message to bridge(s)");

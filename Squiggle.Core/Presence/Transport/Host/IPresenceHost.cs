@@ -8,6 +8,6 @@ namespace Squiggle.Core.Presence.Transport.Host
     public interface IPresenceHost
     {
         [OperationContract]
-        void ReceivePresenceMessage(SquiggleEndPoint recipient, byte[] message);
+        void ReceivePresenceMessage(byte[] message);
     }
 }

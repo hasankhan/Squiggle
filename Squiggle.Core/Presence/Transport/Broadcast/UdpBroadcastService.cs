@@ -83,11 +83,7 @@ namespace Squiggle.Core.Presence.Transport.Broadcast
 
         void OnMessageReceived(Message message)
         {
-            MessageReceived(this, new MessageReceivedEventArgs()
-            {
-                Recipient = null,
-                Message = message
-            });
+            MessageReceived(this, new MessageReceivedEventArgs() { Message = message });
         }
     }
 }

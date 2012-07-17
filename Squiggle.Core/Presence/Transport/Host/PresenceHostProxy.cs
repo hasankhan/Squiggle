@@ -25,11 +25,11 @@ namespace Squiggle.Core.Presence.Transport.Host
             return new InnerProxy(binding, address);
         }
 
-        public void ReceivePresenceMessage(SquiggleEndPoint recipient, byte[] message)
+        public void ReceivePresenceMessage(byte[] message)
         {
             EnsureProxy(p=>
             {
-                p.ReceivePresenceMessage(recipient, message);
+                p.ReceivePresenceMessage(message);
             });
         }
 
@@ -41,9 +41,9 @@ namespace Squiggle.Core.Presence.Transport.Host
             {
             }
 
-            public void ReceivePresenceMessage(SquiggleEndPoint recipient, byte[] message)
+            public void ReceivePresenceMessage(byte[] message)
             {
-                base.Channel.ReceivePresenceMessage(recipient, message);
+                base.Channel.ReceivePresenceMessage(message);
             }
         }
     }
