@@ -31,64 +31,64 @@ namespace Squiggle.Core.Chat.Transport.Host
 
         #region IChatHost Members
 
-        public void ReceiveChatMessage(SquiggleEndPoint recipient, byte[] message)
+        public void ReceiveChatMessage(byte[] message)
         {
             Message obj = Message.Deserialize(message);
             if (obj is AppCancelMessage)
-                CancelAppSession(recipient, (AppCancelMessage)obj);
+                CancelAppSession((AppCancelMessage)obj);
             else if (obj is AppDataMessage)
-                ReceiveAppData(recipient, (AppDataMessage)obj);
+                ReceiveAppData((AppDataMessage)obj);
             else if (obj is AppInviteAcceptMessage)
-                AcceptAppInvite(recipient, (AppInviteAcceptMessage)obj);
+                AcceptAppInvite((AppInviteAcceptMessage)obj);
             else if (obj is AppInviteMessage)
-                ReceiveAppInvite(recipient, (AppInviteMessage)obj);
+                ReceiveAppInvite((AppInviteMessage)obj);
             else if (obj is BuzzMessage)
-                Buzz(recipient, (BuzzMessage)obj);
+                Buzz((BuzzMessage)obj);
             else if (obj is ChatInviteMessage)
-                ReceiveChatInvite(recipient, (ChatInviteMessage)obj);
+                ReceiveChatInvite((ChatInviteMessage)obj);
             else if (obj is ChatJoinMessage)
-                JoinChat(recipient, (ChatJoinMessage)obj);
+                JoinChat((ChatJoinMessage)obj);
             else if (obj is ChatLeaveMessage)
-                LeaveChat(recipient, (ChatLeaveMessage)obj);
+                LeaveChat((ChatLeaveMessage)obj);
             else if (obj is GiveSessionInfoMessage)
-                GetSessionInfo(recipient, (GiveSessionInfoMessage)obj);
+                GetSessionInfo((GiveSessionInfoMessage)obj);
             else if (obj is SessionInfoMessage)
-                ReceiveSessionInfo(recipient, (SessionInfoMessage)obj);
+                ReceiveSessionInfo((SessionInfoMessage)obj);
             else if (obj is TextMessage)
-                ReceiveMessage(recipient, (TextMessage)obj);
+                ReceiveMessage((TextMessage)obj);
             else if (obj is UserTypingMessage)
-                UserIsTyping(recipient, (UserTypingMessage)obj);
+                UserIsTyping((UserTypingMessage)obj);
         }
 
-        void GetSessionInfo(SquiggleEndPoint recipient, GiveSessionInfoMessage msg)
+        void GetSessionInfo(GiveSessionInfoMessage msg)
         {
             SessionInfoRequested(this, new SessionEventArgs(msg.SessionId, msg.Sender));
             Trace.WriteLine(msg.Sender + " is requesting session info.");
         }
 
-        void ReceiveSessionInfo(SquiggleEndPoint recipient, SessionInfoMessage msg)
+        void ReceiveSessionInfo(SessionInfoMessage msg)
         {
             SessionInfoReceived(this, new SessionInfoEventArgs() { Participants = msg.Participants.ToArray(), Sender = msg.Sender, SessionID = msg.SessionId });
             Trace.WriteLine(msg.Sender + " is sent session info.");
         }
 
-        void Buzz(SquiggleEndPoint recipient, BuzzMessage msg)
+        void Buzz(BuzzMessage msg)
         {
-            OnUserActivity(msg.SessionId, msg.Sender, recipient, ActivityType.Buzz);
+            OnUserActivity(msg.SessionId, msg.Sender, ActivityType.Buzz);
             BuzzReceived(this, new SessionEventArgs(msg.SessionId, msg.Sender));
             Trace.WriteLine(msg.Sender + " is buzzing.");
         }
 
-        void UserIsTyping(SquiggleEndPoint recipient, UserTypingMessage msg)
+        void UserIsTyping(UserTypingMessage msg)
         {
-            OnUserActivity(msg.SessionId, msg.Sender, recipient, ActivityType.Typing);
+            OnUserActivity(msg.SessionId, msg.Sender, ActivityType.Typing);
             UserTyping(this, new SessionEventArgs(msg.SessionId, msg.Sender ));
             Trace.WriteLine(msg.Sender + " is typing.");
         }
 
-        void ReceiveMessage(SquiggleEndPoint recipient, TextMessage msg)
+        void ReceiveMessage(TextMessage msg)
         {
-            OnUserActivity(msg.SessionId, msg.Sender, recipient, ActivityType.Message);
+            OnUserActivity(msg.SessionId, msg.Sender, ActivityType.Message);
             MessageReceived(this, new MessageReceivedEventArgs()
             {
                 SessionID = msg.SessionId, 
@@ -102,9 +102,9 @@ namespace Squiggle.Core.Chat.Transport.Host
             Trace.WriteLine("Message received from: " + msg.Sender + ", sessionId= " + msg.SessionId);
         }
 
-        void ReceiveChatInvite(SquiggleEndPoint recipient, ChatInviteMessage msg)
+        void ReceiveChatInvite(ChatInviteMessage msg)
         {
-            OnUserActivity(msg.SessionId, msg.Sender, recipient, ActivityType.ChatInvite);
+            OnUserActivity(msg.SessionId, msg.Sender, ActivityType.ChatInvite);
             Trace.WriteLine(msg.Sender + " invited you to group chat.");
             ChatInviteReceived(this, new ChatInviteReceivedEventArgs() 
             { 
@@ -114,21 +114,21 @@ namespace Squiggle.Core.Chat.Transport.Host
             });
         }
 
-        void JoinChat(SquiggleEndPoint recipient, ChatJoinMessage msg)
+        void JoinChat(ChatJoinMessage msg)
         {
             Trace.WriteLine(msg.Sender + " has joined the chat.");
             UserJoined(this, new UserActivityEventArgs() { SessionID = msg.SessionId, Sender = msg.Sender});
         }
 
-        void LeaveChat(SquiggleEndPoint recipient, ChatLeaveMessage msg)
+        void LeaveChat(ChatLeaveMessage msg)
         {
             Trace.WriteLine(msg.Sender + " has left the chat.");
             UserLeft(this, new UserActivityEventArgs() { SessionID = msg.SessionId, Sender = msg.Sender});
         }
 
-        void ReceiveAppInvite(SquiggleEndPoint recipient, AppInviteMessage msg)
+        void ReceiveAppInvite(AppInviteMessage msg)
         {
-            OnUserActivity(msg.SessionId, msg.Sender, recipient, ActivityType.TransferInvite);
+            OnUserActivity(msg.SessionId, msg.Sender, ActivityType.TransferInvite);
             Trace.WriteLine(msg.Sender + " wants to send a file " + msg.Metadata.ToTraceString());
             AppInvitationReceived(this, new AppInvitationReceivedEventArgs()
             {
@@ -140,24 +140,24 @@ namespace Squiggle.Core.Chat.Transport.Host
             });
         }
 
-        void ReceiveAppData(SquiggleEndPoint recipient, AppDataMessage msg)
+        void ReceiveAppData(AppDataMessage msg)
         {
             AppDataReceived(this, new AppDataReceivedEventArgs() { AppSessionId = msg.SessionId, Chunk = msg.Data });
         }
 
-        void AcceptAppInvite(SquiggleEndPoint recipient, AppInviteAcceptMessage msg)
+        void AcceptAppInvite(AppInviteAcceptMessage msg)
         {
             AppInvitationAccepted(this, new AppSessionEventArgs() { AppSessionId = msg.SessionId });
         }
 
-        void CancelAppSession(SquiggleEndPoint recipient, AppCancelMessage msg)
+        void CancelAppSession(AppCancelMessage msg)
         {
             AppSessionCancelled(this, new AppSessionEventArgs() { AppSessionId = msg.SessionId });
         }       
 
         #endregion
 
-        void OnUserActivity(Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, ActivityType type)
+        void OnUserActivity(Guid sessionId, SquiggleEndPoint sender, ActivityType type)
         {
             UserActivity(this, new UserActivityEventArgs(){Sender = sender, SessionID = sessionId, Type = type});
         }

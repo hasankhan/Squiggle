@@ -33,7 +33,6 @@ namespace Squiggle.Bridge
 
     public class ChatMessageReceivedEventArgs : EventArgs
     {
-        public SquiggleEndPoint Recipient { get; set; }
         public Squiggle.Core.Chat.Transport.Message Message { get; set; }
     }
 
@@ -57,10 +56,10 @@ namespace Squiggle.Bridge
             PresenceMessageForwarded(this, args);
         }
 
-        public void ReceiveChatMessage(SquiggleEndPoint recipient, byte[] message)
+        public void ReceiveChatMessage(byte[] message)
         {
             var msg = Squiggle.Core.Chat.Transport.Message.Deserialize(message);
-            var args = new ChatMessageReceivedEventArgs() { Message = msg, Recipient = recipient };
+            var args = new ChatMessageReceivedEventArgs() { Message = msg};
             ChatMessageReceived(this, args);
         }
     }

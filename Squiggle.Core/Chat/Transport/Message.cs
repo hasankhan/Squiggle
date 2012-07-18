@@ -32,6 +32,12 @@ namespace Squiggle.Core.Chat.Transport
         [ProtoMember(2)]
         public SquiggleEndPoint Sender { get; set; }
 
+        /// <summary>
+        /// Chat endpoint for the recipient
+        /// </summary>
+        [ProtoMember(3)]
+        public SquiggleEndPoint Recipient { get; set; }
+
         public byte[] Serialize()
         {
             var stream = new MemoryStream();

@@ -41,9 +41,9 @@ namespace Squiggle.Bridge
 
         #region IChatHost
 
-        public void ReceiveChatMessage(SquiggleEndPoint recipient, byte[] message)
+        public void ReceiveChatMessage(byte[] message)
         {
-            EnsureProxy(p => p.ReceiveChatMessage(recipient, message));
+            EnsureProxy(p => p.ReceiveChatMessage(message));
         }
 
         #endregion        
@@ -66,9 +66,9 @@ namespace Squiggle.Bridge
 
             #region IChatHost
 
-            public void ReceiveChatMessage(SquiggleEndPoint recipient, byte[] message)
+            public void ReceiveChatMessage(byte[] message)
             {
-                this.Channel.ReceiveChatMessage(recipient, message);
+                this.Channel.ReceiveChatMessage(message);
             }
 
             #endregion

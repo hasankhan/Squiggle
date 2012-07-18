@@ -122,14 +122,15 @@ namespace Squiggle.Bridge
             if (e.Message is IMessageHasParticipants)
             {
                 var msg = (IMessageHasParticipants)e.Message;
-                msg.Participants = ConvertChatEndPointsForRecipient(msg.Participants, e.Recipient).ToList();
+                msg.Participants = ConvertChatEndPointsForRecipient(msg.Participants, e.Message.Recipient).ToList();
             }
 
             RouteChatMessageToLocalOrRemoteUser((host, newSender, newRecipient) =>
             {
                 e.Message.Sender = newSender;
-                host.ReceiveChatMessage(newRecipient, e.Message.Serialize());
-            }, e.Message.Sender, e.Recipient);
+                e.Message.Recipient = newRecipient;
+                host.ReceiveChatMessage(e.Message.Serialize());
+            }, e.Message.Sender, e.Message.Recipient);
         }
 
         void presenceChannel_MessageReceived(object sender, Squiggle.Core.Presence.Transport.MessageReceivedEventArgs e)

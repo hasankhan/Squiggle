@@ -38,9 +38,9 @@ namespace Squiggle.Core.Chat.Transport.Host
 
         #region IChatHost Members
 
-        public void ReceiveChatMessage(SquiggleEndPoint recipient, byte[] message)
+        public void ReceiveChatMessage(byte[] message)
         {
-            EnsureProxy(p => p.ReceiveChatMessage(recipient, message));
+            EnsureProxy(p => p.ReceiveChatMessage(message));
         }
 
         #endregion
@@ -54,9 +54,9 @@ namespace Squiggle.Core.Chat.Transport.Host
 
             #region IChatHost Members
 
-            public void ReceiveChatMessage(SquiggleEndPoint recipient, byte[] message)
+            public void ReceiveChatMessage(byte[] message)
             {
-                base.Channel.ReceiveChatMessage(recipient, message);
+                base.Channel.ReceiveChatMessage(message);
             }
 
             #endregion

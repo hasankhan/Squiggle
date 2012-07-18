@@ -10,6 +10,6 @@ namespace Squiggle.Core.Chat.Transport.Host
     public interface IChatHost
     {
         [OperationContract]
-        void ReceiveChatMessage(SquiggleEndPoint recipient, byte[] message);
+        void ReceiveChatMessage(byte[] message);
     }
 }
