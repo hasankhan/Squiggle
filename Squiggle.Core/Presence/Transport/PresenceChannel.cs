@@ -69,6 +69,7 @@ namespace Squiggle.Core.Presence.Transport
 
         public void BroadcastMessage(Message message)
         {
+            message.Recipient = null;
             message.ChannelID = ChannelID;
             broadcastService.SendMessage(message);
         }
