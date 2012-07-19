@@ -64,9 +64,7 @@ namespace Squiggle.Core.Chat
             get { return appSessions; }
         }
 
-        public ChatSession(Guid sessionID, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser): this(sessionID, localHost, localUser, Enumerable.Repeat(remoteUser, 1)) { }
-
-        public ChatSession(Guid sessionID, ChatHost localHost, SquiggleEndPoint localUser, IEnumerable<SquiggleEndPoint> remoteUsers)
+        public ChatSession(Guid sessionID, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser)
         {
             this.ID = sessionID;
             this.localHost = localHost;
@@ -85,7 +83,7 @@ namespace Squiggle.Core.Chat
             remoteHosts = new Dictionary<string, RemoteHost>();
             appSessions = new List<IAppHandler>();
 
-            CreateRemoteHosts(remoteUsers);
+            CreateRemoteHosts(Enumerable.Repeat(remoteUser, 1));
         }
 
         RemoteHost PrimaryHost
