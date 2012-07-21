@@ -19,9 +19,8 @@ namespace Squiggle.Chat
 {    
     class Chat: IChat
     {
-        Dictionary<object, Buddy> buddies;
         IChatSession session;
-        Func<object, Buddy> buddyResolver;
+        ChatBuddies buddies;
         Buddy self;
 
         public Chat(IChatSession session, Buddy self, Buddy buddy, Func<object, Buddy> buddyResolver) : this(session, self, Enumerable.Repeat(buddy, 1), buddyResolver) { }
@@ -29,26 +28,25 @@ namespace Squiggle.Chat
         public Chat(IChatSession session, Buddy self, IEnumerable<Buddy> buddies, Func<object, Buddy> buddyResolver)
         {
             this.self = self;
-            this.buddyResolver = buddyResolver;
-            this.buddies = new Dictionary<object, Buddy>();
-            foreach (Buddy buddy in buddies)
-                this.buddies[buddy.ID] = buddy;
+            
+            this.buddies = new ChatBuddies(session, buddyResolver, buddies);
+            this.buddies.BuddyJoined += new EventHandler<BuddyEventArgs>(buddies_BuddyJoined);
+            this.buddies.BuddyLeft += new EventHandler<BuddyEventArgs>(buddies_BuddyLeft);
+            this.buddies.GroupChatStarted += new EventHandler(buddies_GroupChatStarted);
+
             this.session = session;
             session.MessageReceived += new EventHandler<Squiggle.Core.Chat.Transport.Host.MessageReceivedEventArgs>(session_MessageReceived);
             session.UserTyping += new EventHandler<Squiggle.Core.Chat.Transport.Host.SessionEventArgs>(session_UserTyping);
             session.BuzzReceived += new EventHandler<Squiggle.Core.Chat.Transport.Host.SessionEventArgs>(session_BuzzReceived);
             session.TransferInvitationReceived += new EventHandler<Squiggle.Core.Chat.FileTransferInviteEventArgs>(session_TransferInvitationReceived);
             session.VoiceChatInvitationReceived += new EventHandler<VoiceChatInvitationReceivedEventArgs>(session_VoiceChatInvitationReceived);
-            session.UserJoined += new EventHandler<Squiggle.Core.Chat.Transport.Host.SessionEventArgs>(session_UserJoined);
-            session.UserLeft += new EventHandler<Squiggle.Core.Chat.Transport.Host.SessionEventArgs>(session_UserLeft);
-            session.GroupChatStarted += new EventHandler(session_GroupChatStarted);
-        }
+        }        
 
         #region IChat Members
 
         public IEnumerable<Buddy> Buddies
         {
-            get { return buddies.Values; }
+            get { return buddies; }
         }
 
         public bool IsGroupChat
@@ -149,21 +147,15 @@ namespace Squiggle.Chat
 
         #endregion
 
-        void session_GroupChatStarted(object sender, EventArgs e)
+        void buddies_GroupChatStarted(object sender, EventArgs e)
         {
-            foreach (SquiggleEndPoint user in session.RemoteUsers)
-            {
-                Buddy buddy = buddyResolver(user.ClientID);
-                if (buddy != null)
-                    buddies[user.ClientID] = buddy;
-            }
             GroupChatStarted(this, EventArgs.Empty);
         }
 
         void session_TransferInvitationReceived(object sender, Squiggle.Core.Chat.FileTransferInviteEventArgs e)
         {
             Buddy buddy;
-            if (buddies.TryGetValue(e.Sender.ClientID, out buddy))
+            if (buddies.TryGet(e.Sender.ClientID, out buddy))
             {
                 TransferInvitationReceived(this, new FileTransferInviteEventArgs() { Sender = buddy, Invitation = e.Invitation });
                 LogHistory(EventType.Transfer, buddy);
@@ -174,7 +166,7 @@ namespace Squiggle.Chat
         void session_VoiceChatInvitationReceived(object sender, VoiceChatInvitationReceivedEventArgs e)
         {
             Buddy buddy;
-            if (buddies.TryGetValue(e.Sender.ClientID, out buddy))
+            if (buddies.TryGet(e.Sender.ClientID, out buddy))
             {
                 VoiceChatInvitationReceived(this, new VoiceChatInviteEventArgs() { Sender = buddy, Invitation = e.Invitation });
                 LogHistory(EventType.Voice, buddy);
@@ -184,7 +176,7 @@ namespace Squiggle.Chat
         void session_BuzzReceived(object sender, Squiggle.Core.Chat.Transport.Host.SessionEventArgs e)
         {
             Buddy buddy;
-            if (buddies.TryGetValue(e.Sender.ClientID, out buddy))
+            if (buddies.TryGet(e.Sender.ClientID, out buddy))
             {
                 BuzzReceived(this, new BuddyEventArgs(buddy));
                 LogHistory(EventType.Buzz, buddy);
@@ -194,36 +186,26 @@ namespace Squiggle.Chat
         void session_UserTyping(object sender, Squiggle.Core.Chat.Transport.Host.SessionEventArgs e)
         {
             Buddy buddy;
-            if (buddies.TryGetValue(e.Sender.ClientID, out buddy))
+            if (buddies.TryGet(e.Sender.ClientID, out buddy))
                 BuddyTyping(this, new BuddyEventArgs( buddy ));
         }
 
-        void session_UserLeft(object sender, Squiggle.Core.Chat.Transport.Host.SessionEventArgs e)
+        void buddies_BuddyLeft(object sender, BuddyEventArgs e)
         {
-            Buddy buddy;
-            if (buddies.TryGetValue(e.Sender.ClientID, out buddy))
-            {
-                buddies.Remove(buddy.ID);
-                BuddyLeft(this, new BuddyEventArgs(buddy));
-                LogHistory(EventType.Left, buddy);
-            }
+            BuddyLeft(this, e);
+            LogHistory(EventType.Left, e.Buddy);
         }
 
-        void session_UserJoined(object sender, Squiggle.Core.Chat.Transport.Host.SessionEventArgs e)
+        void buddies_BuddyJoined(object sender, BuddyEventArgs e)
         {
-            Buddy buddy = buddyResolver(e.Sender.ClientID);
-            if (buddy != null)
-            {
-                buddies[buddy.ID] = buddy;
-                BuddyJoined(this, new BuddyEventArgs( buddy ));
-                LogHistory(EventType.Joined, buddy);
-            }
-        }   
+            BuddyJoined(this, e);
+            LogHistory(EventType.Joined, e.Buddy);
+        }
 
         void session_MessageReceived(object sender, Squiggle.Core.Chat.Transport.Host.MessageReceivedEventArgs e)
         {
             Buddy buddy;
-            if (buddies.TryGetValue(e.Sender.ClientID, out buddy))
+            if (buddies.TryGet(e.Sender.ClientID, out buddy))
             {
                 MessageReceived(this, new ChatMessageReceivedEventArgs()
                 {
@@ -245,7 +227,7 @@ namespace Squiggle.Chat
             {
                 if (!sessionLogged)
                     LogSessionStart();
-                manager.AddSessionEvent(session.ID, DateTime.Now, eventType, new Guid(sender.ID.ToString()), sender.DisplayName, buddies.Values.Select(b => new Guid(b.ID.ToString())), data);
+                manager.AddSessionEvent(session.ID, DateTime.Now, eventType, new Guid(sender.ID.ToString()), sender.DisplayName, buddies.Select(b => new Guid(b.ID.ToString())), data);
             });
         }
 

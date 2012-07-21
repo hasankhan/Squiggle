@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Net;
 using System.Diagnostics;
 using Squiggle.Core.Presence;
+using Squiggle.Core;
 
 namespace Squiggle.Chat
 {
@@ -79,11 +80,13 @@ namespace Squiggle.Chat
             OnPropertyChanged("Properties");
         }
 
-        public void SetProperties(Dictionary<string, string> properties)
+        public void Update(IPEndPoint chatEndPoint, Dictionary<string, string> properties)
         {
+            this.ChatEndPoint = chatEndPoint;
             this.properties = new BuddyProperties(properties ?? new Dictionary<string, string>());
             this.properties.PropertyChanged += (sender, e) => OnBuddyPropertiesChanged();
-            OnPropertyChanged("Properties");
+            OnBuddyPropertiesChanged();
+            OnPropertyChanged("ChatEndPoint");
         }
         
         public IChat StartChat()

@@ -72,7 +72,7 @@ namespace Squiggle.Core.Chat
 
             localHost.ChatInviteReceived += new EventHandler<ChatInviteReceivedEventArgs>(localHost_ChatInviteReceived);
             localHost.AppInvitationReceived += new EventHandler<AppInvitationReceivedEventArgs>(localHost_AppInvitationReceived);
-            localHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(host_MessageReceived);
+            localHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(localHost_MessageReceived);
             localHost.UserTyping += new EventHandler<SessionEventArgs>(localHost_UserTyping);
             localHost.BuzzReceived += new EventHandler<SessionEventArgs>(localHost_BuzzReceived);
             localHost.UserJoined += new EventHandler<SessionEventArgs>(localHost_UserJoined);
@@ -105,128 +105,14 @@ namespace Squiggle.Core.Chat
             },"requesting session info");
         }
 
-        void localHost_SessionInfoRequested(object sender, SessionEventArgs e)
-        {
-            if (e.SessionID == ID)
-                Async.Invoke(() =>
-                {
-                    ExceptionMonster.EatTheException(() =>
-                    {
-                        var participants = RemoteUsers.Except(Enumerable.Repeat(e.Sender, 1)).ToArray();
-                        ChatHostProxy host = ChatHostProxyFactory.Get(e.Sender.Address);
-                        host.ReceiveSessionInfo(ID, localUser, e.Sender, participants);
-                    }, "sending session info");
-                });
-        }
-
-        void localHost_SessionInfoReceived(object sender, SessionInfoEventArgs e)
-        {
-            if (e.SessionID == ID && e.Participants != null)
-            {
-                bool wasGroupSession = IsGroupSession;
-                CreateRemoteHosts(e.Participants);
-                if (!wasGroupSession && IsGroupSession)
-                    GroupChatStarted(this, EventArgs.Empty);
-                
-                if (!initialized)
-                    Initialized(this, EventArgs.Empty);
-                initialized = true;
-            }
-        }
-
-        void localHost_UserLeft(object sender, SessionEventArgs e)
-        {
-            bool left = false;
-            if (e.SessionID == ID && IsGroupSession)
-                left = remoteHosts.Remove(e.Sender.ClientID);
-            
-            if (left)
-                UserLeft(this, e);
-        }
-
-        void localHost_UserJoined(object sender, SessionEventArgs e)
-        {
-            bool joined = false;
-            lock (remoteHosts)
-            if (e.SessionID == ID && !remoteHosts.ContainsKey(e.Sender.ClientID))
-            {
-                AddRemoteHost(e.Sender);
-                joined = true;
-            }
-            if (joined)
-                UserJoined(this, e);
-        }
-
-        void localHost_ChatInviteReceived(object sender, ChatInviteReceivedEventArgs e)
-        {
-            if (e.SessionID == ID)
-            {
-                ExceptionMonster.EatTheException(() =>
-                {
-                    CreateRemoteHosts(e.Participants);
-                    BroadCast((host, endpoint) => host.JoinChat(ID, localUser, endpoint));
-                }, "responding to chat invite");
-                GroupChatStarted(this, EventArgs.Empty);
-            }
-        }
-
-        void localHost_AppInvitationReceived(object sender, AppInvitationReceivedEventArgs e)
-        {
-            if (e.SessionID == ID && !IsGroupSession && IsRemoteUser(e.Sender))
-            {
-                if (e.AppId == ChatApps.FileTransfer)
-                    OnFileTransferInvite(e);
-                else if (e.AppId == ChatApps.VoiceChat)
-                    OnVoiceChatInvite(e);
-            }
-        }
-
-        void OnVoiceChatInvite(AppInvitationReceivedEventArgs e)
-        {
-            RemoteHost remoteHost = PrimaryHost;
-            IVoiceChat invitation = new VoiceChat(ID, remoteHost.Host, localHost, localUser, remoteHost.EndPoint, e.AppSessionId);
-            VoiceChatInvitationReceived(this, new VoiceChatInvitationReceivedEventArgs()
-            {
-                Sender = e.Sender,
-                Invitation = invitation
-            });
-            OnAppSessionStarted((AppHandler)invitation);
-        }
-
-        void OnFileTransferInvite(AppInvitationReceivedEventArgs e)
-        {
-            var inviteData = new FileInviteData(e.Metadata);
-            RemoteHost remoteHost = PrimaryHost;
-            IFileTransfer invitation = new FileTransfer.FileTransfer(ID, remoteHost.Host, localHost, localUser, remoteHost.EndPoint, inviteData.Name, inviteData.Size, e.AppSessionId);
-            TransferInvitationReceived(this, new FileTransferInviteEventArgs()
-            {
-                Sender = e.Sender,
-                Invitation = invitation
-            });
-            OnAppSessionStarted((AppHandler)invitation);
-        }
-
-        void localHost_UserTyping(object sender, SessionEventArgs e)
-        {
-            if (e.SessionID == ID && IsRemoteUser(e.Sender))
-                UserTyping(this, e);
-        }
-
-        void localHost_BuzzReceived(object sender, SessionEventArgs e)
-        {
-            if (e.SessionID == ID && IsRemoteUser(e.Sender))
-                BuzzReceived(this, e);
-        }
-
-        void host_MessageReceived(object sender, MessageReceivedEventArgs e)
-        {
-            if (e.SessionID == ID && IsRemoteUser(e.Sender))
-                MessageReceived(this, e);
-        }
-
         public void SendBuzz()
         {
             BroadCast((host, endpoint) => host.Buzz(ID, localUser, endpoint));
+        }
+
+        public void UpdateUser(SquiggleEndPoint user)
+        {
+            AddRemoteHost(user);
         }
 
         public void NotifyTyping()
@@ -267,7 +153,7 @@ namespace Squiggle.Core.Chat
         {
             localHost.ChatInviteReceived -= new EventHandler<ChatInviteReceivedEventArgs>(localHost_ChatInviteReceived);
             localHost.AppInvitationReceived -= new EventHandler<AppInvitationReceivedEventArgs>(localHost_AppInvitationReceived);
-            localHost.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(host_MessageReceived);
+            localHost.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(localHost_MessageReceived);
             localHost.UserTyping -= new EventHandler<SessionEventArgs>(localHost_UserTyping);
             localHost.BuzzReceived -= new EventHandler<SessionEventArgs>(localHost_BuzzReceived);
             localHost.UserJoined -= new EventHandler<SessionEventArgs>(localHost_UserJoined);
@@ -286,6 +172,125 @@ namespace Squiggle.Core.Chat
         {
             var proxy = ChatHostProxyFactory.Get(user.Address);
             proxy.ReceiveChatInvite(ID, localUser, user, RemoteUsers);
+        }
+
+        void localHost_SessionInfoRequested(object sender, SessionEventArgs e)
+        {
+            if (e.SessionID == ID)
+                Async.Invoke(() =>
+                {
+                    ExceptionMonster.EatTheException(() =>
+                    {
+                        var participants = RemoteUsers.Except(Enumerable.Repeat(e.Sender, 1)).ToArray();
+                        ChatHostProxy host = ChatHostProxyFactory.Get(e.Sender.Address);
+                        host.ReceiveSessionInfo(ID, localUser, e.Sender, participants);
+                    }, "sending session info");
+                });
+        }
+
+        void localHost_SessionInfoReceived(object sender, SessionInfoEventArgs e)
+        {
+            if (e.SessionID == ID && e.Participants != null)
+            {
+                bool wasGroupSession = IsGroupSession;
+                CreateRemoteHosts(e.Participants);
+                if (!wasGroupSession && IsGroupSession)
+                    GroupChatStarted(this, EventArgs.Empty);
+
+                if (!initialized)
+                    Initialized(this, EventArgs.Empty);
+                initialized = true;
+            }
+        }
+
+        void localHost_UserLeft(object sender, SessionEventArgs e)
+        {
+            bool left = false;
+            if (e.SessionID == ID && IsGroupSession)
+                left = remoteHosts.Remove(e.Sender.ClientID);
+
+            if (left)
+                UserLeft(this, e);
+        }
+
+        void localHost_UserJoined(object sender, SessionEventArgs e)
+        {
+            bool joined = false;
+            lock (remoteHosts)
+                if (e.SessionID == ID && !remoteHosts.ContainsKey(e.Sender.ClientID))
+                {
+                    AddRemoteHost(e.Sender);
+                    joined = true;
+                }
+            if (joined)
+                UserJoined(this, e);
+        }
+
+        void localHost_ChatInviteReceived(object sender, ChatInviteReceivedEventArgs e)
+        {
+            if (e.SessionID == ID)
+            {
+                ExceptionMonster.EatTheException(() =>
+                {
+                    CreateRemoteHosts(e.Participants);
+                    BroadCast((host, endpoint) => host.JoinChat(ID, localUser, endpoint));
+                }, "responding to chat invite");
+                GroupChatStarted(this, EventArgs.Empty);
+            }
+        }
+
+        void localHost_AppInvitationReceived(object sender, AppInvitationReceivedEventArgs e)
+        {
+            if (e.SessionID == ID && !IsGroupSession && IsRemoteUser(e.Sender))
+            {
+                if (e.AppId == ChatApps.FileTransfer)
+                    OnFileTransferInvite(e);
+                else if (e.AppId == ChatApps.VoiceChat)
+                    OnVoiceChatInvite(e);
+            }
+        }
+
+        void localHost_UserTyping(object sender, SessionEventArgs e)
+        {
+            if (e.SessionID == ID && IsRemoteUser(e.Sender))
+                UserTyping(this, e);
+        }
+
+        void localHost_BuzzReceived(object sender, SessionEventArgs e)
+        {
+            if (e.SessionID == ID && IsRemoteUser(e.Sender))
+                BuzzReceived(this, e);
+        }
+
+        void localHost_MessageReceived(object sender, MessageReceivedEventArgs e)
+        {
+            if (e.SessionID == ID && IsRemoteUser(e.Sender))
+                MessageReceived(this, e);
+        }
+
+        void OnVoiceChatInvite(AppInvitationReceivedEventArgs e)
+        {
+            RemoteHost remoteHost = PrimaryHost;
+            IVoiceChat invitation = new VoiceChat(ID, remoteHost.Host, localHost, localUser, remoteHost.EndPoint, e.AppSessionId);
+            VoiceChatInvitationReceived(this, new VoiceChatInvitationReceivedEventArgs()
+            {
+                Sender = e.Sender,
+                Invitation = invitation
+            });
+            OnAppSessionStarted((AppHandler)invitation);
+        }
+
+        void OnFileTransferInvite(AppInvitationReceivedEventArgs e)
+        {
+            var inviteData = new FileInviteData(e.Metadata);
+            RemoteHost remoteHost = PrimaryHost;
+            IFileTransfer invitation = new FileTransfer.FileTransfer(ID, remoteHost.Host, localHost, localUser, remoteHost.EndPoint, inviteData.Name, inviteData.Size, e.AppSessionId);
+            TransferInvitationReceived(this, new FileTransferInviteEventArgs()
+            {
+                Sender = e.Sender,
+                Invitation = invitation
+            });
+            OnAppSessionStarted((AppHandler)invitation);
         }
 
         bool IsRemoteUser(SquiggleEndPoint user)

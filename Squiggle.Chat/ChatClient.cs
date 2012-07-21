@@ -182,7 +182,7 @@ namespace Squiggle.Chat
         {
             buddy.Status = user.Status;
             buddy.DisplayName = user.DisplayName;
-            buddy.SetProperties(user.Properties);
+            buddy.Update(user.ChatEndPoint, user.Properties);
         }
 
         void LogStatus(Buddy buddy)

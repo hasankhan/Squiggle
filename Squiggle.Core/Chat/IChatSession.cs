@@ -43,5 +43,6 @@ namespace Squiggle.Core.Chat
         IVoiceChat StartVoiceChat(Dispatcher dispatcher);
         void End();
         void Invite(SquiggleEndPoint user);
+        void UpdateUser(SquiggleEndPoint user);
     }
 }
