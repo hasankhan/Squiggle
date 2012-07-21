@@ -65,11 +65,11 @@ namespace Squiggle.Chat
 
         void AddBuddy(Buddy buddy)
         {
-            if (buddy == null || buddies.ContainsKey(buddy.ID))
+            if (buddy == null || buddies.ContainsKey(buddy.Id))
                 return;
 
             buddy.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(buddy_PropertyChanged);
-            buddies[buddy.ID] = buddy;
+            buddies[buddy.Id] = buddy;
         }
 
         Buddy RemoveBuddy(string clientId)
@@ -85,7 +85,7 @@ namespace Squiggle.Chat
             if (e.PropertyName == "ChatEndPoint")
             {
                 var buddy = (Buddy)sender;
-                session.UpdateUser(new SquiggleEndPoint(buddy.ID.ToString(), buddy.ChatEndPoint));
+                session.UpdateUser(new SquiggleEndPoint(buddy.Id, buddy.ChatEndPoint));
             }
         }
 

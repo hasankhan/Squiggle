@@ -16,7 +16,7 @@ namespace Squiggle.Chat
         bool initialized;
 
         protected IChatClient ChatClient { get; private set; }
-        public object ID { get; private set; }
+        public string Id { get; private set; }
         public IPEndPoint ChatEndPoint { get; private set; }
         public DateTime LastUpdated { get; set; }
 
@@ -28,9 +28,9 @@ namespace Squiggle.Chat
         {
         }
 
-        public Buddy(IChatClient chatClient, object id, IPEndPoint chatEndPoint, BuddyProperties properties)
+        public Buddy(IChatClient chatClient, string id, IPEndPoint chatEndPoint, BuddyProperties properties)
         {
-            this.ID = id;
+            this.Id = id;
             this.ChatEndPoint = chatEndPoint;
             this.ChatClient = chatClient;
             this.ChatClient.BuddyOffline += new EventHandler<BuddyEventArgs>(chatClient_BuddyOffline);
@@ -128,7 +128,7 @@ namespace Squiggle.Chat
             if (obj != null && obj is Buddy)
             {
                 var otherBuddy = (Buddy)obj;
-                bool equals = this.ID.Equals(otherBuddy.ID);
+                bool equals = this.Id.Equals(otherBuddy.Id);
                 return equals;
             }
             else
@@ -137,7 +137,7 @@ namespace Squiggle.Chat
 
         public override int GetHashCode()
         {
-            return this.ID.GetHashCode();
+            return this.Id.GetHashCode();
         }
 
         #region IDisposable Members

@@ -39,7 +39,7 @@ namespace Squiggle.Chat
             {
                 lock (buddies)
                 {
-                    Buddy buddy = buddies.FirstOrDefault(b => b.ID.Equals(id));
+                    Buddy buddy = buddies.FirstOrDefault(b => b.Id.Equals(id));
                     return buddy;
                 }
             }

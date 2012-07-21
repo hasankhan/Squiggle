@@ -140,7 +140,7 @@ namespace Squiggle.Chat
         {
             Async.Invoke(() =>
             {
-                var endpoint = new SquiggleEndPoint(buddy.ID.ToString(), buddy.ChatEndPoint);
+                var endpoint = new SquiggleEndPoint(buddy.Id, buddy.ChatEndPoint);
                 L(() => session.Invite(endpoint), "sending chat invite to " + endpoint);
             });
         }
@@ -227,7 +227,7 @@ namespace Squiggle.Chat
             {
                 if (!sessionLogged)
                     LogSessionStart();
-                manager.AddSessionEvent(session.ID, DateTime.Now, eventType, new Guid(sender.ID.ToString()), sender.DisplayName, buddies.Select(b => new Guid(b.ID.ToString())), data);
+                manager.AddSessionEvent(session.ID, DateTime.Now, eventType, new Guid(sender.Id), sender.DisplayName, buddies.Select(b => new Guid(b.Id)), data);
             });
         }
 
@@ -237,8 +237,8 @@ namespace Squiggle.Chat
             {
                 sessionLogged = true;
                 Buddy primaryBuddy = Buddies.FirstOrDefault();
-                var newSession = Session.CreateSession(session.ID, new Guid(primaryBuddy.ID.ToString()), primaryBuddy.DisplayName, DateTime.Now);
-                manager.AddSession(newSession, Buddies.Select(b => Participant.CreateParticipant(Guid.NewGuid(), new Guid(b.ID.ToString()), b.DisplayName)));
+                var newSession = Session.CreateSession(session.ID, new Guid(primaryBuddy.Id), primaryBuddy.DisplayName, DateTime.Now);
+                manager.AddSession(newSession, Buddies.Select(b => Participant.CreateParticipant(Guid.NewGuid(), new Guid(b.Id), b.DisplayName)));
             });
         }
 

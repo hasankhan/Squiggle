@@ -14,7 +14,7 @@ namespace Squiggle.UI.ViewModel
 
         public DummyChatClient()
         {
-            self = new Buddy(this, new object(), null, new BuddyProperties());
+            self = new Buddy(this, String.Empty, null, new BuddyProperties());
             self.Status = UserStatus.Offline;
         }
 

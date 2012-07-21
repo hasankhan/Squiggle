@@ -52,7 +52,7 @@ namespace Squiggle.Chat
 
         public IChat StartChat(Buddy buddy)
         {
-            IChatSession session = chatService.CreateSession(new SquiggleEndPoint(buddy.ID.ToString(), buddy.ChatEndPoint));
+            IChatSession session = chatService.CreateSession(new SquiggleEndPoint(buddy.Id, buddy.ChatEndPoint));
             var chat = new Chat(session, CurrentUser, buddy, id=>buddies[id]);
             return chat;
         }        
@@ -191,7 +191,7 @@ namespace Squiggle.Chat
                 ExceptionMonster.EatTheException(() =>
                 {
                     var manager = new HistoryManager();
-                    manager.AddStatusUpdate(DateTime.Now, new Guid(buddy.ID.ToString()), buddy.DisplayName, (int)buddy.Status);
+                    manager.AddStatusUpdate(DateTime.Now, new Guid(buddy.Id), buddy.DisplayName, (int)buddy.Status);
                 }, "logging history.");
         }
 
