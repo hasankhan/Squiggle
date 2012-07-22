@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ProtoBuf;
 using Squiggle.Utilities;
+using Squiggle.Utilities.Serialization;
 
 namespace Squiggle.Core.Chat.Transport.Messages
 {

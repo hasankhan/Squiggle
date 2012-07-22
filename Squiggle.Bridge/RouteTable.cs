@@ -9,11 +9,11 @@ namespace Squiggle.Bridge
 {
     class RouteTable
     {
-        Dictionary<string, TargetBridge> remoteClientBridgeMap = new Dictionary<string, TargetBridge>();
+        Dictionary<string, IPEndPoint> remoteClientBridgeMap = new Dictionary<string, IPEndPoint>();
         Dictionary<string, IPEndPoint> localPresenceEndPoints = new Dictionary<string, IPEndPoint>();
         Dictionary<string, IPEndPoint> localChatEndPoints = new Dictionary<string, IPEndPoint>();
 
-        public void AddRemoteClient(string clientId, TargetBridge bridge)
+        public void AddRemoteClient(string clientId, IPEndPoint bridge)
         {
             lock (remoteClientBridgeMap)
                 remoteClientBridgeMap[clientId] = bridge;
@@ -47,9 +47,9 @@ namespace Squiggle.Bridge
             return endpoint;
         }
 
-        public TargetBridge FindBridge(string clientID)
+        public IPEndPoint FindBridge(string clientID)
         {
-            TargetBridge bridge;
+            IPEndPoint bridge;
             lock (remoteClientBridgeMap)
                 remoteClientBridgeMap.TryGetValue(clientID, out bridge);
             return bridge;

@@ -55,6 +55,9 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="protobuf-net">
+      <HintPath>..\Libraries\Protobuf-net\protobuf-net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.Install" />
@@ -83,7 +86,8 @@
     <Compile Include="Application\DispatcherExtensions.cs" />
     <Compile Include="Net\Pipe\MessagePipe.cs" />
     <Compile Include="Net\Pipe\MessageReceivedEventArgs.cs" />
-    <Compile Include="SerializationSurrogate.cs" />
+    <Compile Include="Serialization\SerializationHelper.cs" />
+    <Compile Include="Serialization\SerializationSurrogate.cs" />
     <Compile Include="Application\StringValueAttribute.cs" />
     <Compile Include="Net\Wcf\WcfConfig.cs" />
     <Compile Include="ConsoleService.cs">

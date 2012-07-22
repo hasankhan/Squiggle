@@ -11,7 +11,7 @@ using Squiggle.Utilities.Net.Wcf;
 
 namespace Squiggle.Core.Chat
 {
-    public class ChatService : WcfHost, IChatService
+    public class ChatService : IChatService
     {
         ChatHost chatHost;
         ChatSessionCollection chatSessions;
@@ -41,36 +41,23 @@ namespace Squiggle.Core.Chat
 
         #endregion
 
-        protected override void OnStart()
+        public void Start()
         {
-            chatHost = new ChatHost();
+            chatHost = new ChatHost(localEndPoint.Address);
+            chatHost.Start();
             chatHost.UserActivity += new EventHandler<UserActivityEventArgs>(chatHost_UserActivity);
             chatSessions = new ChatSessionCollection();
-
-            base.OnStart();
         }
 
-        protected override void OnStop()
+        public void Stop()
         {
-            base.OnStop();
-
             if (chatHost != null)
             {
                 chatHost.UserActivity -= new EventHandler<UserActivityEventArgs>(chatHost_UserActivity);
+                chatHost.Dispose();
                 chatHost = null;
                 chatSessions.Clear();
             }
-        }
-
-        protected override ServiceHost CreateHost()
-        {
-            var serviceHost = new ServiceHost(chatHost);
-
-            var address = CreateServiceUri(localEndPoint.Address.ToString());
-            var binding = WcfConfig.CreateBinding();
-            serviceHost.AddServiceEndpoint(typeof(IChatHost), binding, address);
-
-            return serviceHost;
         }
 
         void chatHost_UserActivity(object sender, UserActivityEventArgs e)

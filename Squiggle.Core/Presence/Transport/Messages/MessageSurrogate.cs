@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using ProtoBuf;
 using Squiggle.Utilities;
+using Squiggle.Utilities.Serialization;
 
 namespace Squiggle.Core.Presence.Transport.Messages
 {

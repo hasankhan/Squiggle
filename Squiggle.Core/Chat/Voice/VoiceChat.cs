@@ -28,13 +28,13 @@ namespace Squiggle.Core.Chat.Voice
 
         public bool IsMuted { get; set; }
 
-        public VoiceChat(Guid sessionId, IChatHost remoteHost, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser)
-            :base(sessionId, remoteHost, localHost, localUser, remoteUser)
+        public VoiceChat(Guid sessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser)
+            :base(sessionId, chatHost, localUser, remoteUser)
         {
         }
 
-        public VoiceChat(Guid sessionId, IChatHost remoteHost, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, Guid appSessionId)
-            :base(sessionId, remoteHost, localHost, localUser, remoteUser, appSessionId)
+        public VoiceChat(Guid sessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, Guid appSessionId)
+            :base(sessionId, chatHost, localUser, remoteUser, appSessionId)
         {
         }
 

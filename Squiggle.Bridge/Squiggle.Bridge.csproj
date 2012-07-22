@@ -47,6 +47,9 @@
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="protobuf-net, Version=2.0.0.480, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <HintPath>..\Libraries\Protobuf-net\protobuf-net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Configuration.Install" />
@@ -68,12 +71,14 @@
       <Link>Properties\AssemblyInfo.VersionSafe.cs</Link>
     </Compile>
     <Compile Include="BridgeHost.cs" />
-    <Compile Include="BridgeHostProxy.cs" />
     <Compile Include="Configuration\BridgeConfiguration.cs" />
     <Compile Include="Configuration\PresenceBinding.cs" />
     <Compile Include="Configuration\Target.cs" />
     <Compile Include="Configuration\TargetCollection.cs" />
-    <Compile Include="IBridgeHost.cs" />
+    <Compile Include="Messages\ForwardChatMessage.cs" />
+    <Compile Include="Messages\ForwardPresenceMessage.cs" />
+    <Compile Include="Messages\Message.cs" />
+    <Compile Include="Messages\MessageSurrogate.cs" />
     <Compile Include="PresenceMessageInspector.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>

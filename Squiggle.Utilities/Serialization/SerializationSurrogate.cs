@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Squiggle.Utilities
+namespace Squiggle.Utilities.Serialization
 {
     public abstract class SerializationSurrogate<T>
     {

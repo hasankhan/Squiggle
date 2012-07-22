@@ -85,6 +85,7 @@
     <Compile Include="Presence\Transport\Messages\HelloMessage.cs" />
     <Compile Include="Presence\Transport\Messages\MessageSurrogate.cs" />
     <Compile Include="Presence\Transport\Messages\UserInfoMessage.cs" />
+    <Compile Include="Presence\Transport\PresenceHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\Shared\AssemblyInfo.Copyright.cs">
       <Link>Properties\AssemblyInfo.Copyright.cs</Link>
@@ -110,9 +111,6 @@
     <Compile Include="Chat\FileTransfer\FileInviteData.cs" />
     <Compile Include="Chat\FileTransfer\FileTransfer.cs" />
     <Compile Include="Chat\Transport\Host\ChatHost.cs" />
-    <Compile Include="Chat\Transport\Host\ChatHostProxy.cs" />
-    <Compile Include="Chat\Transport\Host\ChatHostProxyFactory.cs" />
-    <Compile Include="Chat\Transport\Host\IChatHost.cs" />
     <Compile Include="Chat\IAppHandler.cs" />
     <Compile Include="Chat\IChatService.cs" />
     <Compile Include="Chat\IChatSession.cs" />

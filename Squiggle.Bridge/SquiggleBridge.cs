@@ -18,12 +18,11 @@ namespace Squiggle.Bridge
     class TargetBridge
     {
         public IPEndPoint EndPoint { get; set; }
-        public BridgeHostProxy Proxy { get; set; }
     }
 
-    delegate void RouteAction(IChatHost targetHost, SquiggleEndPoint sender, SquiggleEndPoint recipient);
+    delegate void RouteAction(bool local, IPEndPoint target, SquiggleEndPoint sender, SquiggleEndPoint recipient);
 
-    class SquiggleBridge: WcfHost
+    class SquiggleBridge
     {
         BridgeHost bridgeHost;
         IPEndPoint presenceServiceEndPoint;
@@ -33,7 +32,7 @@ namespace Squiggle.Bridge
         PresenceChannel presenceChannel;
         PresenceMessageInspector messageInspector;
 
-        List<TargetBridge> targetBridges = new List<TargetBridge>();
+        List<IPEndPoint> targetBridges = new List<IPEndPoint>();
         RouteTable routeTable;
 
 
@@ -45,29 +44,20 @@ namespace Squiggle.Bridge
             this.bridgeEndPointInternal = bridgeEndPointInternal;
             this.bridgeEndPointExternal = bridgeEndPointExternal;
             this.presenceServiceEndPoint = presenceServiceEndPoint;
-            this.multicastEndPoint = multicastEndPoint;
-
-            bridgeHost = new BridgeHost(this);
-            bridgeHost.PresenceMessageForwarded += new EventHandler<PresenceMessageForwardedEventArgs>(bridgeHost_PresenceMessageForwarded);
-            bridgeHost.ChatMessageReceived += new EventHandler<ChatMessageReceivedEventArgs>(bridgeHost_ChatMessageReceived);
+            this.multicastEndPoint = multicastEndPoint;            
         }
 
         public void AddTarget(IPEndPoint target)
         {
-            Uri address;
-            Binding binding;
-            GetBridgeConnectionParams(target, ServiceNames.BridgeService, out address, out binding);
-            var proxy = new BridgeHostProxy(binding, new EndpointAddress(address));
-            targetBridges.Add(new TargetBridge()
-            {
-                EndPoint = target,
-                Proxy = proxy
-            });
+            targetBridges.Add(target);
         }
 
-        protected override void OnStart()
+        public void Start()
         {
-            base.OnStart();
+            bridgeHost = new BridgeHost(this, bridgeEndPointExternal, bridgeEndPointInternal);
+            bridgeHost.PresenceMessageForwarded += new EventHandler<PresenceMessageForwardedEventArgs>(bridgeHost_PresenceMessageForwarded);
+            bridgeHost.ChatMessageReceived += new EventHandler<ChatMessageReceivedEventArgs>(bridgeHost_ChatMessageReceived);
+            bridgeHost.Start();
 
             routeTable = new RouteTable();
             messageInspector = new PresenceMessageInspector(routeTable, presenceServiceEndPoint, bridgeEndPointInternal);
@@ -77,13 +67,11 @@ namespace Squiggle.Bridge
             presenceChannel.MessageReceived += new EventHandler<Squiggle.Core.Presence.Transport.MessageReceivedEventArgs>(presenceChannel_MessageReceived);
         }
 
-        protected override void OnStop()
+        public void Stop()
         {
-            base.OnStop();
+            bridgeHost.Dispose();
 
             presenceChannel.Stop();
-            foreach (TargetBridge target in targetBridges)
-                target.Proxy.Dispose();
         }
 
         void bridgeHost_PresenceMessageForwarded(object sender, PresenceMessageForwardedEventArgs e)
@@ -91,11 +79,10 @@ namespace Squiggle.Bridge
             if (e.Message.ChannelID == presenceChannel.ChannelID)
                 return; // my own message
             
-            TargetBridge bridge = FindBridge(e.BridgeEndPoint);
-            if (bridge == null) // not coming from a target bridge list
+            if (!targetBridges.Contains(e.BridgeEndPoint)) // not coming from a target bridge list
                 return;
 
-            messageInspector.InspectForeignPresenceMessage(e.Message, bridge);
+            messageInspector.InspectForeignPresenceMessage(e.Message, e.BridgeEndPoint);
 
             Trace.WriteLine("Replay: " + e.Message.GetType().Name);
 
@@ -107,11 +94,11 @@ namespace Squiggle.Bridge
             else
                 ExceptionMonster.EatTheException(() =>
                 {
-                    IPEndPoint endpoint = routeTable.GetLocalPresenceEndPoint(e.Recipient.ClientID);
+                    IPEndPoint endpoint = routeTable.GetLocalPresenceEndPoint(e.Message.Recipient.ClientID);
 
                     if (endpoint != null)
                     {
-                        e.Message.Recipient = new SquiggleEndPoint(e.Recipient.ClientID, endpoint);
+                        e.Message.Recipient = new SquiggleEndPoint(e.Message.Recipient.ClientID, endpoint);
                         presenceChannel.SendMessage(e.Message);
                     }
                 }, "routing presence message to local user");
@@ -125,11 +112,11 @@ namespace Squiggle.Bridge
                 msg.Participants = ConvertChatEndPointsForRecipient(msg.Participants, e.Message.Recipient).ToList();
             }
 
-            RouteChatMessageToLocalOrRemoteUser((host, newSender, newRecipient) =>
+            RouteChatMessageToLocalOrRemoteUser((local, target, newSender, newRecipient) =>
             {
                 e.Message.Sender = newSender;
                 e.Message.Recipient = newRecipient;
-                host.ReceiveChatMessage(e.Message.Serialize());
+                bridgeHost.SendChatMessage(local, target, e.Message);
             }, e.Message.Sender, e.Message.Recipient);
         }
 
@@ -143,13 +130,13 @@ namespace Squiggle.Bridge
 
                 if (e.IsBroadcast)
                 {
-                    foreach (TargetBridge target in targetBridges)
-                        target.Proxy.ForwardPresenceMessage(null, message, bridgeEndPointExternal);
+                    foreach (IPEndPoint target in targetBridges)
+                        bridgeHost.SendPresenceMessage(target, message);
                 }
                 else
                 {
-                    TargetBridge bridge = routeTable.FindBridge(e.Message.Recipient.ClientID);
-                    bridge.Proxy.ForwardPresenceMessage(e.Message.Recipient, message, bridgeEndPointExternal);
+                    IPEndPoint bridge = routeTable.FindBridge(e.Message.Recipient.ClientID);
+                    bridgeHost.SendPresenceMessage(bridge, message);
                 }
                 Trace.WriteLine("Forward: " + e.Message.GetType().Name);
             }, "forwarding presence message to bridge(s)");
@@ -160,7 +147,7 @@ namespace Squiggle.Bridge
             if (IsLocalChatEndpoint(recipient))
                 RouteChatMessageToLocalUser(action, sender, recipient);
             else
-                RouteMessageToRemoteUser((h, s, r) => action(h, s, r), sender, recipient);
+                RouteMessageToRemoteUser((local, target, s, r) => action(local, target, s, r), sender, recipient);
         }
 
         IEnumerable<SquiggleEndPoint> ConvertChatEndPointsForRecipient(IEnumerable<SquiggleEndPoint> endpoints, SquiggleEndPoint recipient)
@@ -179,9 +166,9 @@ namespace Squiggle.Bridge
         {
             ExceptionMonster.EatTheException(() =>
             {
-                TargetBridge bridge = routeTable.FindBridge(recipient.ClientID);
+                IPEndPoint bridge = routeTable.FindBridge(recipient.ClientID);
                 if (bridge != null)
-                    action(bridge.Proxy, sender, recipient);                
+                    action(false, bridge, sender, recipient);                
             }, "routing message to remote user");            
         }
 
@@ -191,35 +178,14 @@ namespace Squiggle.Bridge
             {
                 sender = new SquiggleEndPoint(sender.ClientID, bridgeEndPointInternal);
                 IPEndPoint endpoint = routeTable.GetLocalChatEndPoint(recipient.ClientID);
-                var proxy = ChatHostProxyFactory.Get(endpoint);
-                action(proxy, sender, new SquiggleEndPoint(recipient.ClientID, endpoint));
+                action(true, endpoint, sender, new SquiggleEndPoint(recipient.ClientID, endpoint));
             }, "routing chat message to local user");            
         }
 
-        TargetBridge FindBridge(IPEndPoint bridgeEndPoint)
+        IPEndPoint FindBridge(IPEndPoint bridgeEndPoint)
         {
-            TargetBridge bridge = targetBridges.FirstOrDefault(t => t.EndPoint.Equals(bridgeEndPoint));
+            IPEndPoint bridge = targetBridges.FirstOrDefault(t => t.Equals(bridgeEndPoint));
             return bridge;
-        }        
-
-        protected override ServiceHost CreateHost()
-        {
-            var serviceHost = new ServiceHost(bridgeHost);
-
-            Binding binding;
-            Uri address;
-            GetBridgeConnectionParams(bridgeEndPointInternal, ServiceNames.ChatService, out address, out binding);
-            serviceHost.AddServiceEndpoint(typeof(IBridgeHost), binding, address);
-            GetBridgeConnectionParams(bridgeEndPointExternal, ServiceNames.BridgeService, out address, out binding);
-            serviceHost.AddServiceEndpoint(typeof(IBridgeHost), binding, address);
-
-            return serviceHost;
-        }
-
-        void GetBridgeConnectionParams(IPEndPoint endPoint, string addressSuffix, out Uri address, out Binding binding)
-        {
-            address = new Uri("net.tcp://" + endPoint.ToString() + "/" + addressSuffix);
-            binding = WcfConfig.CreateBinding();
-        }
+        }    
     }
 }

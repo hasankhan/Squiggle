@@ -27,16 +27,16 @@ namespace Squiggle.Core.Chat.FileTransfer
         }
 
 
-        public FileTransfer(Guid sessionId, IChatHost remoteHost, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, string name, long size, Stream content)
-            :base(sessionId, remoteHost, localHost, localUser, remoteUser)
+        public FileTransfer(Guid sessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, string name, long size, Stream content)
+            :base(sessionId, chatHost, localUser, remoteUser)
         {
             this.Name = name;
             this.Size = size;
             this.content = content;
         }
 
-        public FileTransfer(Guid sessionId, IChatHost remoteHost, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, string name, long size, Guid appSessionId)
-            :base(sessionId, remoteHost, localHost, localUser, remoteUser, appSessionId)
+        public FileTransfer(Guid sessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, string name, long size, Guid appSessionId)
+            :base(sessionId, chatHost, localUser, remoteUser, appSessionId)
         {
             this.Name = name;
             this.Size = size;

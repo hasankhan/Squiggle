@@ -4,6 +4,7 @@ using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
 using ProtoBuf;
 using Squiggle.Core.Presence.Transport.Messages;
+using Squiggle.Utilities.Serialization;
 
 namespace Squiggle.Core.Presence.Transport
 {
@@ -39,18 +40,12 @@ namespace Squiggle.Core.Presence.Transport
 
         public byte[] Serialize()
         {
-            var stream = new MemoryStream();
-            ProtoBuf.Serializer.Serialize(stream, new MessageSurrogate(this));
-            return stream.ToArray();
+            return SerializationHelper.Serialize(new MessageSurrogate(this));
         }        
 
         public static Message Deserialize(byte[] data)
         {
-            if (data == null)
-                throw new ArgumentNullException("data");
-
-            var stream = new MemoryStream(data);
-            Message message = ProtoBuf.Serializer.Deserialize<MessageSurrogate>(stream).GetObject();
+            Message message = SerializationHelper.Deserialize<MessageSurrogate>(data).GetObject();
             return message;
         }
 

@@ -22,7 +22,7 @@ namespace Squiggle.Bridge
             this.bridgeChatEndPoint = bridgeChatEndPoint;
         }
 
-        public void InspectForeignPresenceMessage(Message message, TargetBridge bridge)
+        public void InspectForeignPresenceMessage(Message message, IPEndPoint bridge)
         {
             routeTable.AddRemoteClient(message.Sender.ClientID, bridge);
             ReplaceSenderWithBridgeEndPoints(message);

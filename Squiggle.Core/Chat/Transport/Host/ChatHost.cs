@@ -8,13 +8,16 @@ using System.ServiceModel;
 using System.Threading;
 using Squiggle.Core.Chat.Transport.Messages;
 using Squiggle.Utilities;
+using Squiggle.Utilities.Net.Pipe;
 
 namespace Squiggle.Core.Chat.Transport.Host
 {
     
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode=ConcurrencyMode.Multiple, UseSynchronizationContext=false)] 
-    public class ChatHost: IChatHost
+    public class ChatHost: IDisposable
     {
+        IPEndPoint endpoint;
+        MessagePipe pipe;
+
         public event EventHandler<SessionEventArgs> BuzzReceived = delegate { };
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
         public event EventHandler<SessionEventArgs> UserTyping = delegate { };
@@ -29,35 +32,51 @@ namespace Squiggle.Core.Chat.Transport.Host
         public event EventHandler<SessionEventArgs> SessionInfoRequested = delegate { };
         public event EventHandler<SessionInfoEventArgs> SessionInfoReceived = delegate { };
 
-        #region IChatHost Members
-
-        public void ReceiveChatMessage(byte[] message)
+        public ChatHost(IPEndPoint endpoint)
         {
-            Message obj = Message.Deserialize(message);
-            if (obj is AppCancelMessage)
-                CancelAppSession((AppCancelMessage)obj);
-            else if (obj is AppDataMessage)
-                ReceiveAppData((AppDataMessage)obj);
-            else if (obj is AppInviteAcceptMessage)
-                AcceptAppInvite((AppInviteAcceptMessage)obj);
-            else if (obj is AppInviteMessage)
-                ReceiveAppInvite((AppInviteMessage)obj);
-            else if (obj is BuzzMessage)
-                Buzz((BuzzMessage)obj);
-            else if (obj is ChatInviteMessage)
-                ReceiveChatInvite((ChatInviteMessage)obj);
-            else if (obj is ChatJoinMessage)
-                JoinChat((ChatJoinMessage)obj);
-            else if (obj is ChatLeaveMessage)
-                LeaveChat((ChatLeaveMessage)obj);
-            else if (obj is GiveSessionInfoMessage)
-                GetSessionInfo((GiveSessionInfoMessage)obj);
-            else if (obj is SessionInfoMessage)
-                ReceiveSessionInfo((SessionInfoMessage)obj);
-            else if (obj is TextMessage)
-                ReceiveMessage((TextMessage)obj);
-            else if (obj is UserTypingMessage)
-                UserIsTyping((UserTypingMessage)obj);
+            this.endpoint = endpoint;
+        }
+
+        public void Start()
+        {
+            this.pipe = new MessagePipe(endpoint);
+            pipe.MessageReceived += new EventHandler<Utilities.Net.Pipe.MessageReceivedEventArgs>(pipe_MessageReceived);
+            pipe.Open();
+        }
+
+        void pipe_MessageReceived(object sender, Utilities.Net.Pipe.MessageReceivedEventArgs e)
+        {
+            Message msg = Message.Deserialize(e.Message);
+            if (msg is AppCancelMessage)
+                CancelAppSession((AppCancelMessage)msg);
+            else if (msg is AppDataMessage)
+                ReceiveAppData((AppDataMessage)msg);
+            else if (msg is AppInviteAcceptMessage)
+                AcceptAppInvite((AppInviteAcceptMessage)msg);
+            else if (msg is AppInviteMessage)
+                ReceiveAppInvite((AppInviteMessage)msg);
+            else if (msg is BuzzMessage)
+                Buzz((BuzzMessage)msg);
+            else if (msg is ChatInviteMessage)
+                ReceiveChatInvite((ChatInviteMessage)msg);
+            else if (msg is ChatJoinMessage)
+                JoinChat((ChatJoinMessage)msg);
+            else if (msg is ChatLeaveMessage)
+                LeaveChat((ChatLeaveMessage)msg);
+            else if (msg is GiveSessionInfoMessage)
+                GetSessionInfo((GiveSessionInfoMessage)msg);
+            else if (msg is SessionInfoMessage)
+                ReceiveSessionInfo((SessionInfoMessage)msg);
+            else if (msg is TextMessage)
+                ReceiveMessage((TextMessage)msg);
+            else if (msg is UserTypingMessage)
+                UserIsTyping((UserTypingMessage)msg);
+        }
+
+        public void Send(Message message)
+        {
+            byte[] data = message.Serialize();
+            pipe.Send(message.Recipient.Address, data);
         }
 
         void GetSessionInfo(GiveSessionInfoMessage msg)
@@ -155,11 +174,18 @@ namespace Squiggle.Core.Chat.Transport.Host
             AppSessionCancelled(this, new AppSessionEventArgs() { AppSessionId = msg.SessionId });
         }       
 
-        #endregion
-
         void OnUserActivity(Guid sessionId, SquiggleEndPoint sender, ActivityType type)
         {
             UserActivity(this, new UserActivityEventArgs(){Sender = sender, SessionID = sessionId, Type = type});
+        }
+
+        public void Dispose()
+        {
+            if (pipe != null)
+            {
+                pipe.Dispose();
+                pipe = null;
+            }
         }
     }
 

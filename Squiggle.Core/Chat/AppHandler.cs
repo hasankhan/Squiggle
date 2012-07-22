@@ -12,11 +12,10 @@ namespace Squiggle.Core.Chat
 {
     abstract class AppHandler: IAppHandler
     {
-        IChatHost remoteHost;
         SquiggleEndPoint localUser;
         SquiggleEndPoint remoteUser;
         Guid appSessionId;
-        ChatHost localHost;
+        ChatHost chatHost;
         BackgroundWorker worker;
         Guid sessionId;
 
@@ -36,37 +35,35 @@ namespace Squiggle.Core.Chat
 
         public abstract Guid AppId { get; }
 
-        protected AppHandler(Guid sessionId, IChatHost remoteHost, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser)
+        protected AppHandler(Guid sessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser)
         {
             this.sessionId = sessionId;
-            this.remoteHost = remoteHost;
-            this.localHost = localHost;
+            this.chatHost = chatHost;
             this.localUser = localUser;
             this.remoteUser = remoteUser;
             appSessionId = Guid.NewGuid();
             SelfInitiated = true;
         }
 
-        protected AppHandler(Guid sessionId, IChatHost remoteHost, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, Guid appSessionId)
+        protected AppHandler(Guid sessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, Guid appSessionId)
         {
             this.sessionId = sessionId;
-            this.remoteHost = remoteHost;
-            this.localHost = localHost;
+            this.chatHost = chatHost;
             this.localUser = localUser;
             this.remoteUser = remoteUser;
             this.appSessionId = appSessionId;
             SelfInitiated = false;
-            localHost.AppSessionCancelled += new EventHandler<AppSessionEventArgs>(localHost_AppSessionCancelled);
+            chatHost.AppSessionCancelled += new EventHandler<AppSessionEventArgs>(localHost_AppSessionCancelled);
         }
 
         public void Start()
         {
-            localHost.AppInvitationAccepted += new EventHandler<AppSessionEventArgs>(localHost_AppInvitationAccepted);
-            localHost.AppSessionCancelled += new EventHandler<AppSessionEventArgs>(localHost_AppSessionCancelled);
+            chatHost.AppInvitationAccepted += new EventHandler<AppSessionEventArgs>(localHost_AppInvitationAccepted);
+            chatHost.AppSessionCancelled += new EventHandler<AppSessionEventArgs>(localHost_AppSessionCancelled);
             Async.Invoke(() =>
             {
                 IEnumerable<KeyValuePair<string, string>> data = CreateInviteMetadata();
-                bool success = ExceptionMonster.EatTheException(() => this.remoteHost.ReceiveAppInvite(sessionId, localUser, remoteUser, AppId, appSessionId, data), "Sending app invite to " + remoteUser.ToString());
+                bool success = ExceptionMonster.EatTheException(() => this.chatHost.ReceiveAppInvite(sessionId, localUser, remoteUser, AppId, appSessionId, data), "Sending app invite to " + remoteUser.ToString());
                 if (!success)
                 {
                     OnTransferFinished();
@@ -85,7 +82,7 @@ namespace Squiggle.Core.Chat
             bool success = ExceptionMonster.EatTheException(() =>
             {
                 OnAccept();
-                remoteHost.AcceptAppInvite(appSessionId, localUser, remoteUser);
+                chatHost.AcceptAppInvite(appSessionId, localUser, remoteUser);
             }, "accepting app invite from " + remoteUser);
 
             if (success)
@@ -115,7 +112,7 @@ namespace Squiggle.Core.Chat
             SelfCancelled = selfCancel;
 
             if (selfCancel)
-                ExceptionMonster.EatTheException(() => this.remoteHost.CancelAppSession(appSessionId, localUser, remoteUser), "cancelling file transfer with user" + remoteUser);
+                ExceptionMonster.EatTheException(() => this.chatHost.CancelAppSession(appSessionId, localUser, remoteUser), "cancelling file transfer with user" + remoteUser);
 
             if (SelfInitiated && worker != null)
                 worker.CancelAsync();
@@ -192,7 +189,7 @@ namespace Squiggle.Core.Chat
             Exception ex;
             if (!ExceptionMonster.EatTheException(() =>
                 {
-                    remoteHost.ReceiveAppData(appSessionId, localUser, remoteUser, chunk);
+                    chatHost.ReceiveAppData(appSessionId, localUser, remoteUser, chunk);
                 }, "sending data to " + remoteUser.ToString(), out ex))
                 OnError(ex);
         }
@@ -225,16 +222,16 @@ namespace Squiggle.Core.Chat
         protected virtual void OnTransferStarted() 
         {
             IsConnected = true;
-            localHost.AppDataReceived += new EventHandler<AppDataReceivedEventArgs>(localHost_AppDataReceived);
+            chatHost.AppDataReceived += new EventHandler<AppDataReceivedEventArgs>(localHost_AppDataReceived);
             TransferStarted(this, EventArgs.Empty);
         }
 
         protected virtual void OnTransferFinished()
         {
             IsConnected = false;
-            localHost.AppDataReceived -= new EventHandler<AppDataReceivedEventArgs>(localHost_AppDataReceived);
-            localHost.AppInvitationAccepted -= new EventHandler<AppSessionEventArgs>(localHost_AppInvitationAccepted);
-            localHost.AppSessionCancelled -= new EventHandler<AppSessionEventArgs>(localHost_AppSessionCancelled);
+            chatHost.AppDataReceived -= new EventHandler<AppDataReceivedEventArgs>(localHost_AppDataReceived);
+            chatHost.AppInvitationAccepted -= new EventHandler<AppSessionEventArgs>(localHost_AppInvitationAccepted);
+            chatHost.AppSessionCancelled -= new EventHandler<AppSessionEventArgs>(localHost_AppSessionCancelled);
             TransferFinished(this, EventArgs.Empty);
         }
 
