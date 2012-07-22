@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Net;
-using Squiggle.Core.Chat.Transport.Host;
-using System.Collections.Generic;
 using System.Windows.Threading;
 using Squiggle.Core.Chat.FileTransfer;
+using Squiggle.Core.Chat.Transport.Host;
 using Squiggle.Core.Chat.Voice;
 
 namespace Squiggle.Core.Chat

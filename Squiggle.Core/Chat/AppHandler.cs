@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
-using Squiggle.Core.Chat.Transport.Host;
-using System.IO;
-using System.ComponentModel;
-using Squiggle.Utilities;
 using System.Windows.Threading;
+using Squiggle.Core.Chat.Transport.Host;
+using Squiggle.Utilities;
 
 namespace Squiggle.Core.Chat
 {

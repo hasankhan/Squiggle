@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows;
-using MessageMapping = System.Collections.Generic.KeyValuePair<Squiggle.UI.StickyWindows.NativeMethods.WindowMessage, Squiggle.UI.StickyWindows.NativeMethods.MessageHandler>;
-using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Input;
+using MessageMapping = System.Collections.Generic.KeyValuePair<Squiggle.UI.StickyWindows.NativeMethods.WindowMessage,Squiggle.UI.StickyWindows.NativeMethods.MessageHandler>;
 
 namespace Squiggle.UI.StickyWindows
 {

@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Net;
 using System.ServiceModel;
-using System.Collections.Generic;
 
 namespace Squiggle.Core.Chat.Transport.Host
 {

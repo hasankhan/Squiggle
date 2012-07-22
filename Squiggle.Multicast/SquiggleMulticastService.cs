@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.ServiceProcess;
 using System.Text;
-using Squiggle.Utilities;
-using System.Configuration;
-using System.Net;
 using System.Text.RegularExpressions;
 using Squiggle.Core;
-using Squiggle.Utilities.Net;
+using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
+using Squiggle.Utilities.Net;
 
 namespace Squiggle.Multicast
 {

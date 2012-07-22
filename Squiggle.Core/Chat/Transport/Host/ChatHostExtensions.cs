@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using Squiggle.Core.Chat.Transport.Messages;
-using System.Drawing;
 
 namespace Squiggle.Core.Chat.Transport.Host
 {

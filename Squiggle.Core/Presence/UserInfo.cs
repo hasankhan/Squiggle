@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Linq;
+using System.Net;
 using System.Runtime.Serialization;
 
 namespace Squiggle.Core.Presence

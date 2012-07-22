@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Linq;
-using Squiggle.Core.Presence.Transport;
+using System.Net;
 using Squiggle.Core.Chat;
+using Squiggle.Core.Presence.Transport;
 using Squiggle.Utilities;
 
 namespace Squiggle.Core.Presence

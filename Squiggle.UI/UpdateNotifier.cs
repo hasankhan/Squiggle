@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Squiggle.Utilities;
-using System.ServiceModel.Syndication;
-using System.Xml;
-using System.Reflection;
 using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.ServiceModel.Syndication;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
+using Squiggle.Utilities;
 
 namespace Squiggle.UI
 {

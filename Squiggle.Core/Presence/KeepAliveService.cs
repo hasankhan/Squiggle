@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Timers;
 using Squiggle.Core.Presence.Transport;
 using Squiggle.Core.Presence.Transport.Messages;
 using Squiggle.Utilities;
-using System.Diagnostics;
-using System.Linq;
 
 namespace Squiggle.Core.Presence
 {

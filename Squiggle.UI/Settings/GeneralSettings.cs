@@ -1,6 +1,6 @@
 ﻿
-using System.Collections.Specialized;
 using System;
+using System.Collections.Specialized;
 namespace Squiggle.UI.Settings
 {
     class GeneralSettings

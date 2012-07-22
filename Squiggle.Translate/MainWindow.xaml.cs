@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -12,12 +16,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
-using System.Text.RegularExpressions;
-using System.Globalization;
-using System.Threading.Tasks;
-using System.Collections.Concurrent;
-using Squiggle.Utilities;
 using Squiggle.Translate.Properties;
+using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 
 namespace Squiggle.Translate

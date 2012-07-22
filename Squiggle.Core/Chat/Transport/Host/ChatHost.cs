@@ -1,13 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Net;
 using System.ServiceModel;
 using System.Threading;
-using System.Collections.Generic;
-using System.Linq;
-using Squiggle.Utilities;
 using Squiggle.Core.Chat.Transport.Messages;
+using Squiggle.Utilities;
 
 namespace Squiggle.Core.Chat.Transport.Host
 {

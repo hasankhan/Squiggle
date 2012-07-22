@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Drawing;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using Squiggle.Chat;
-using Squiggle.UI.Helpers;
-using System.Drawing;
-using System.Windows;
 using Squiggle.Core.Presence;
+using Squiggle.UI.Helpers;
 
 namespace Squiggle.UI.Converters
 {

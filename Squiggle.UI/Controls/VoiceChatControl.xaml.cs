@@ -12,11 +12,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Squiggle.Chat;
+using Squiggle.Core.Chat.Voice;
 using Squiggle.UI.Helpers;
 using Squiggle.UI.Resources;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
-using Squiggle.Core.Chat.Voice;
 
 namespace Squiggle.UI.Controls
 {

@@ -5,12 +5,12 @@ using System.Net;
 using System.Net.Sockets;
 using System.ServiceModel;
 using System.Threading;
-using Squiggle.Core.Presence.Transport.Host;
 using Squiggle.Core.Chat;
-using Squiggle.Utilities;
 using Squiggle.Core.Presence.Transport.Broadcast;
-using Squiggle.Utilities.Net.Wcf;
+using Squiggle.Core.Presence.Transport.Host;
+using Squiggle.Utilities;
 using Squiggle.Utilities.Net;
+using Squiggle.Utilities.Net.Wcf;
 
 namespace Squiggle.Core.Presence.Transport
 {

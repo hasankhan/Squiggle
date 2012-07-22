@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using Squiggle.Chat;
+using Squiggle.Core.Presence;
+using Squiggle.UI.Controls;
 using Squiggle.UI.Settings;
-using System.Reflection;
 using Squiggle.UI.ViewModel;
 using Squiggle.Utilities;
-using Squiggle.UI.Controls;
-using Squiggle.Core.Presence;
 using Squiggle.Utilities.Application;
 
 namespace Squiggle.UI.Helpers

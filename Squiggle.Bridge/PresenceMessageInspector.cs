@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Squiggle.Core.Presence.Transport;
 using System.Net;
-using Squiggle.Core.Presence.Transport.Messages;
+using System.Text;
 using Squiggle.Core;
+using Squiggle.Core.Presence.Transport;
+using Squiggle.Core.Presence.Transport.Messages;
 
 namespace Squiggle.Bridge
 {

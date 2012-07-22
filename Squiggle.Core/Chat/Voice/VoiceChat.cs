@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using Squiggle.Core.Chat.Transport.Host;
-using System.IO;
-using NAudio.Wave;
 using System.Threading;
+using System.Windows.Threading;
+using NAudio.Wave;
+using Squiggle.Core.Chat.Transport.Host;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
-using System.Windows.Threading;
 
 namespace Squiggle.Core.Chat.Voice
 {

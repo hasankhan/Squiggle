@@ -2,8 +2,8 @@
 using System.IO;
 using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
-using Squiggle.Core.Presence.Transport.Messages;
 using ProtoBuf;
+using Squiggle.Core.Presence.Transport.Messages;
 
 namespace Squiggle.Core.Presence.Transport
 {

@@ -29,9 +29,9 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Resources;
 using Hardcodet.Wpf.TaskbarNotification.Interop;
-using System.Windows.Media.Imaging;
 
 namespace Hardcodet.Wpf.TaskbarNotification
 {

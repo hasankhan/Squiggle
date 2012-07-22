@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.VisualBasic.ApplicationServices;
 using Squiggle.UI.Resources;
-using System.Diagnostics;
 using Squiggle.Utilities;
-using System.Threading.Tasks;
 
 namespace Messenger
 {

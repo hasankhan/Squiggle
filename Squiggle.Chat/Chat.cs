@@ -4,16 +4,16 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using Squiggle.Core;
 using System.Net;
-using Squiggle.Core.Chat;
-using Squiggle.Utilities;
-using Squiggle.History;
-using Squiggle.History.DAL;
+using System.Threading;
 using System.Windows.Threading;
+using Squiggle.Core;
+using Squiggle.Core.Chat;
 using Squiggle.Core.Chat.FileTransfer;
 using Squiggle.Core.Chat.Voice;
+using Squiggle.History;
+using Squiggle.History.DAL;
+using Squiggle.Utilities;
 
 namespace Squiggle.Chat
 {    

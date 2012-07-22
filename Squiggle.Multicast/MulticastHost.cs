@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Squiggle.Core.Presence.Transport.Broadcast.MultcastService;
-using Squiggle.Core.Presence.Transport;
-using System.ServiceModel;
-using Squiggle.Utilities;
 using System.Diagnostics;
+using System.Linq;
+using System.ServiceModel;
+using System.Text;
 using System.Threading.Tasks;
+using Squiggle.Core.Presence.Transport;
+using Squiggle.Core.Presence.Transport.Broadcast.MultcastService;
+using Squiggle.Utilities;
 
 namespace Squiggle.Multicast
 {

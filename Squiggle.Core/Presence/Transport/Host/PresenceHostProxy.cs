@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net;
-using Squiggle.Utilities;
 using System.Net.Sockets;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using Squiggle.Core.Chat;
+using Squiggle.Utilities;
 using Squiggle.Utilities.Net.Wcf;
 
 namespace Squiggle.Core.Presence.Transport.Host

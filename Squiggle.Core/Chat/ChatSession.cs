@@ -1,17 +1,17 @@
 ﻿using System;
-using System.IO;
-using System.Net;
-using Squiggle.Core.Chat.Transport.Host;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using System.Diagnostics;
-using Squiggle.Utilities;
-using Squiggle.Core.Chat.FileTransfer;
-using Squiggle.Core.Chat.Voice;
-using System.Windows.Threading;
 using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
+using Squiggle.Core.Chat.FileTransfer;
+using Squiggle.Core.Chat.Transport.Host;
+using Squiggle.Core.Chat.Voice;
+using Squiggle.Utilities;
 
 namespace Squiggle.Core.Chat
 {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -12,10 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Squiggle.Chat;
-using System.ComponentModel;
+using Squiggle.Core.Chat.Voice;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
-using Squiggle.Core.Chat.Voice;
 
 namespace Squiggle.UI.Controls
 {

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Squiggle.Core.Chat;
 using System.Windows.Threading;
+using Squiggle.Core.Chat;
 
 namespace Squiggle.Core.Chat.Voice
 {

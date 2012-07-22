@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -12,10 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Squiggle.History;
 using Squiggle.History.DAL;
-using System.Diagnostics;
+using Squiggle.UI.Resources;
 using Squiggle.UI.StickyWindows;
 using Squiggle.Utilities;
-using Squiggle.UI.Resources;
 
 namespace Squiggle.UI
 {

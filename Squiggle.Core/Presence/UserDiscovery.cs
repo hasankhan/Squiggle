@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using Squiggle.Core.Chat;
 using Squiggle.Core.Presence.Transport;
 using Squiggle.Core.Presence.Transport.Messages;
-using Squiggle.Core.Chat;
 using Squiggle.Utilities;
 
 namespace Squiggle.Core.Presence

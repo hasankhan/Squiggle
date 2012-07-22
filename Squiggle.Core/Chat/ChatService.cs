@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.ServiceModel;
-using System.Linq;
-using Squiggle.Core.Chat.Transport.Host;
 using System.Threading;
-using System.Diagnostics;
+using Squiggle.Core.Chat.Transport.Host;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Net.Wcf;
 

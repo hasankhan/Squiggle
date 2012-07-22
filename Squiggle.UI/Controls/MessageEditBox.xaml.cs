@@ -4,8 +4,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Squiggle.UI.Settings;
 using Squiggle.UI.Helpers;
+using Squiggle.UI.Settings;
 
 namespace Squiggle.UI.Controls
 {   

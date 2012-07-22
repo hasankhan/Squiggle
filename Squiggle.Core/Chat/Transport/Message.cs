@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using ProtoBuf;
-using System.Net;
 using Squiggle.Core.Chat.Transport.Messages;
-using System.IO;
 
 namespace Squiggle.Core.Chat.Transport
 {

@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Net;
 using System.ServiceProcess;
 using Squiggle.Bridge.Configuration;
-using System.Net;
-using System.Diagnostics;
 using Squiggle.Utilities;
 
 namespace Squiggle.Bridge

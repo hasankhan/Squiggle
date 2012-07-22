@@ -1,16 +1,16 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using Squiggle.Chat;
-using System.Diagnostics;
+using Squiggle.Core.Chat.FileTransfer;
 using Squiggle.UI.Helpers;
 using Squiggle.UI.Resources;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
-using Squiggle.Core.Chat.FileTransfer;
 
 namespace Squiggle.UI.Controls
 {

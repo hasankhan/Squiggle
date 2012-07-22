@@ -1,9 +1,9 @@
-﻿using System.Reflection;
+﻿using System.Globalization;
+using System.Reflection;
 using System.Windows;
 using Squiggle.UI.Helpers;
-using System.Globalization;
-using Squiggle.Utilities;
 using Squiggle.UI.StickyWindows;
+using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 
 namespace Squiggle.UI

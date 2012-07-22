@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Documents;
-using Squiggle.UI.Resources;
-using Squiggle.UI.MessageParsers;
 using System.Windows.Media;
+using Squiggle.UI.MessageParsers;
+using Squiggle.UI.Resources;
 
 namespace Squiggle.UI.Controls.ChatItems
 {

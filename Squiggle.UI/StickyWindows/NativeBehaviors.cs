@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Interop;
-using MessageMapping = System.Collections.Generic.KeyValuePair<Squiggle.UI.StickyWindows.NativeMethods.WindowMessage, Squiggle.UI.StickyWindows.NativeMethods.MessageHandler>;
+using MessageMapping = System.Collections.Generic.KeyValuePair<Squiggle.UI.StickyWindows.NativeMethods.WindowMessage,Squiggle.UI.StickyWindows.NativeMethods.MessageHandler>;
 
 namespace Squiggle.UI.StickyWindows
 {

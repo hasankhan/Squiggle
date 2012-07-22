@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Squiggle.Chat;
 using System.Net;
+using Squiggle.Chat;
 using Squiggle.Core.Chat.Voice;
 using Squiggle.Core.Presence;
 

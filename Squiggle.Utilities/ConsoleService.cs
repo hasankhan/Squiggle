@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ServiceProcess;
-using System.Diagnostics;
 using System.Configuration.Install;
+using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
+using System.ServiceProcess;
+using System.Text;
 
 namespace Squiggle.Utilities
 {

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using Squiggle.Core;
 using Squiggle.Core.Chat;
-using Squiggle.Core.Presence;
-using Squiggle.Utilities;
-using Squiggle.History;
-using System.Linq;
 using Squiggle.Core.Chat.Voice;
+using Squiggle.Core.Presence;
+using Squiggle.History;
+using Squiggle.Utilities;
 
 namespace Squiggle.Chat
 {

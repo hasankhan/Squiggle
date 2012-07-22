@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
 using System.Media;
 using System.Reflection;
-using System.IO;
+using System.Text;
 using Squiggle.Utilities;
 
 namespace Squiggle.UI

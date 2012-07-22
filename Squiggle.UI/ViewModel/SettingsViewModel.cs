@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Squiggle.UI.Settings;
 using System.Net;
+using Squiggle.UI.Settings;
 
 namespace Squiggle.UI.ViewModel
 {

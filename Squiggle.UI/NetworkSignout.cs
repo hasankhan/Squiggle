@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
+using System.Windows.Threading;
 using Squiggle.UI.Helpers;
 using Squiggle.Utilities;
-using System.Windows.Threading;
 using Squiggle.Utilities.Application;
 
 namespace Squiggle.UI

@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Linq;
 using Squiggle.Chat;
-using Squiggle.UI.MessageParsers;
-using Squiggle.UI.MessageFilters;
-using Squiggle.UI.Resources;
 using Squiggle.UI.Controls.ChatItems;
 using Squiggle.UI.Helpers;
+using Squiggle.UI.MessageFilters;
+using Squiggle.UI.MessageParsers;
+using Squiggle.UI.Resources;
 
 namespace Squiggle.UI.Controls
 {

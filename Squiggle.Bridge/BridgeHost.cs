@@ -1,14 +1,14 @@
 ﻿using System;
-using System.ServiceModel;
-using Squiggle.Core.Presence.Transport;
-using Squiggle.Core.Chat;
-using System.Net;
-using System.Linq;
-using Squiggle.Core;
-using Squiggle.Core.Presence;
-using System.ServiceModel.Dispatcher;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.ServiceModel;
+using System.ServiceModel.Dispatcher;
+using Squiggle.Core;
+using Squiggle.Core.Chat;
 using Squiggle.Core.Chat.Transport.Host;
+using Squiggle.Core.Presence;
+using Squiggle.Core.Presence.Transport;
 
 namespace Squiggle.Bridge
 {

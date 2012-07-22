@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Squiggle.Chat;
 using System.Windows.Documents;
+using Squiggle.Chat;
 using Squiggle.Core.Chat.FileTransfer;
 
 namespace Squiggle.UI.Controls.ChatItems

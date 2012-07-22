@@ -1,13 +1,13 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
 using Squiggle.Chat;
+using Squiggle.Core;
 using Squiggle.UI.Helpers;
 using Squiggle.Utilities;
-using System.Configuration;
-using Squiggle.Core;
 using Squiggle.Utilities.Application;
 using Squiggle.Utilities.Net;
 

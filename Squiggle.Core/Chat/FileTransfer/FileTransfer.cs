@@ -1,14 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Windows.Threading;
 using Squiggle.Core.Chat.Transport.Host;
 using Squiggle.Utilities;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Threading;
 
 namespace Squiggle.Core.Chat.FileTransfer
 {

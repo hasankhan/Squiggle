@@ -1,16 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.Net;
 using System.Net.Sockets;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using Squiggle.Core.Presence;
-using System.Net;
-using System.Drawing;
-using Squiggle.Utilities;
-using Squiggle.Core.Chat.Transport.Host;
-using Squiggle.Core.Chat;
 using Squiggle.Core;
-using System.Collections.Generic;
+using Squiggle.Core.Chat;
+using Squiggle.Core.Chat.Transport.Host;
+using Squiggle.Core.Presence;
+using Squiggle.Utilities;
 using Squiggle.Utilities.Net.Wcf;
 
 namespace Squiggle.Bridge

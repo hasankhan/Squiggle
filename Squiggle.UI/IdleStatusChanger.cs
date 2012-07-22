@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Squiggle.Chat;
-using Squiggle.Utilities;
 using Squiggle.Core.Presence;
+using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 
 namespace Squiggle.UI

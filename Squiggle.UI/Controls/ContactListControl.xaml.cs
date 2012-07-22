@@ -1,18 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using Squiggle.Chat;
+using Squiggle.Core.Presence;
 using Squiggle.UI.Settings;
 using Squiggle.UI.ViewModel;
-using System.Collections.Generic;
-using System.Diagnostics;
 using Squiggle.Utilities;
-using System.Windows.Controls.Primitives;
-using Squiggle.Core.Presence;
 
 namespace Squiggle.UI.Controls
 {

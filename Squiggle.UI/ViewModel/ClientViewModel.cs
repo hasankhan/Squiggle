@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Windows.Threading;
-using System.Linq;
-using Squiggle.Chat;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Input;
+using System.Windows.Threading;
+using Squiggle.Chat;
 
 namespace Squiggle.UI.ViewModel
 {

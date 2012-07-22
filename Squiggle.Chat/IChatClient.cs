@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using Squiggle.Core.Chat.Voice;
 using Squiggle.Core.Presence;
 

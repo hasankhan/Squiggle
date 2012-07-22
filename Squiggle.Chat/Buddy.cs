@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Net;
 using System.Diagnostics;
-using Squiggle.Core.Presence;
+using System.Net;
 using Squiggle.Core;
+using Squiggle.Core.Presence;
 
 namespace Squiggle.Chat
 {
