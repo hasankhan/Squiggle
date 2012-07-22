@@ -11,6 +11,7 @@ using Squiggle.Core.Chat.Transport.Host;
 using Squiggle.Core.Chat;
 using Squiggle.Core;
 using System.Collections.Generic;
+using Squiggle.Utilities.Net.Wcf;
 
 namespace Squiggle.Bridge
 {

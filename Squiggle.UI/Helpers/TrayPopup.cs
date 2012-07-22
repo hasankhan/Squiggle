@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Squiggle.Utilities;
+using Squiggle.Utilities.Application;
 
 namespace Squiggle.UI.Helpers
 {

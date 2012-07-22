@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Data;
 using Squiggle.Utilities;
 using Squiggle.UI.Resources;
+using Squiggle.Utilities.Application;
 
 namespace Squiggle.UI.Converters
 {

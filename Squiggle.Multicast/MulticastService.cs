@@ -7,6 +7,7 @@ using System.ServiceModel;
 using Squiggle.Core.Presence.Transport.Broadcast.MultcastService;
 using Squiggle.Core;
 using Squiggle.Utilities;
+using Squiggle.Utilities.Net.Wcf;
 
 namespace Squiggle.Multicast
 {

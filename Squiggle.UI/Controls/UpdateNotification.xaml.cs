@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Squiggle.Utilities;
+using Squiggle.Utilities.Application;
 
 namespace Squiggle.UI.Controls
 {

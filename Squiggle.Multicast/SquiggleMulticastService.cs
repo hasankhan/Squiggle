@@ -11,6 +11,8 @@ using System.Configuration;
 using System.Net;
 using System.Text.RegularExpressions;
 using Squiggle.Core;
+using Squiggle.Utilities.Net;
+using Squiggle.Utilities.Application;
 
 namespace Squiggle.Multicast
 {

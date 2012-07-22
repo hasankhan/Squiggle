@@ -73,25 +73,25 @@
     </Compile>
     <Compile Include="Async.cs" />
     <Compile Include="CoalesceExtensions.cs" />
-    <Compile Include="ConfigReader.cs" />
-    <Compile Include="DispatcherExtensions.cs" />
+    <Compile Include="Application\ConfigReader.cs" />
+    <Compile Include="Application\DispatcherExtensions.cs" />
     <Compile Include="SerializationSurrogate.cs" />
-    <Compile Include="StringValueAttribute.cs" />
-    <Compile Include="WcfConfig.cs" />
+    <Compile Include="Application\StringValueAttribute.cs" />
+    <Compile Include="Net\Wcf\WcfConfig.cs" />
     <Compile Include="ConsoleService.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ExceptionMonster.cs" />
-    <Compile Include="FlashWindow.cs" />
+    <Compile Include="Application\FlashWindow.cs" />
     <Compile Include="LinqExtensions.cs" />
-    <Compile Include="NetworkUtility.cs" />
+    <Compile Include="Net\NetworkUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProxyBase.cs" />
-    <Compile Include="Shell.cs" />
+    <Compile Include="Net\Wcf\ProxyBase.cs" />
+    <Compile Include="Application\Shell.cs" />
     <Compile Include="TimeExtensions.cs" />
-    <Compile Include="UserActivityMonitor.cs" />
-    <Compile Include="WcfHost.cs" />
-    <Compile Include="WinStartup.cs" />
+    <Compile Include="Application\UserActivityMonitor.cs" />
+    <Compile Include="Net\Wcf\WcfHost.cs" />
+    <Compile Include="Application\WinStartup.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

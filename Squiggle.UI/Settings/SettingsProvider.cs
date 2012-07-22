@@ -8,6 +8,8 @@ using Squiggle.UI.Helpers;
 using Squiggle.Utilities;
 using System.Configuration;
 using Squiggle.Core;
+using Squiggle.Utilities.Application;
+using Squiggle.Utilities.Net;
 
 namespace Squiggle.UI.Settings
 {

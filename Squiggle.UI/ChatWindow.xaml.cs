@@ -22,6 +22,7 @@ using System.Windows.Data;
 using Squiggle.UI.Controls.ChatItems;
 using Squiggle.Core.Chat.Voice;
 using Squiggle.Core.Chat.FileTransfer;
+using Squiggle.Utilities.Application;
 
 namespace Squiggle.UI
 {

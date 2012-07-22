@@ -5,6 +5,7 @@ using System.Text;
 using Squiggle.Utilities;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using Squiggle.Utilities.Net.Wcf;
 
 namespace Squiggle.Core.Presence.Transport.Broadcast.MultcastService
 {

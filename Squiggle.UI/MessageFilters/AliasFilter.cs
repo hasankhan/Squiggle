@@ -5,6 +5,7 @@ using System.Text;
 using Squiggle.Chat;
 using System.Net;
 using Squiggle.Utilities;
+using Squiggle.Utilities.Net;
 
 namespace Squiggle.UI.MessageFilters
 {

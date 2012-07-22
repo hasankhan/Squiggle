@@ -9,6 +9,7 @@ using System.Diagnostics;
 using Squiggle.UI.Helpers;
 using Squiggle.UI.Resources;
 using Squiggle.Utilities;
+using Squiggle.Utilities.Application;
 using Squiggle.Core.Chat.FileTransfer;
 
 namespace Squiggle.UI.Controls

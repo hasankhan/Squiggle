@@ -9,6 +9,7 @@ using Squiggle.Chat;
 using Squiggle.UI.Controls;
 using Squiggle.UI.ViewModel;
 using Squiggle.Utilities;
+using Squiggle.Utilities.Application;
 using System.Globalization;
 using Squiggle.UI.StickyWindows;
 using Squiggle.UI.Resources;

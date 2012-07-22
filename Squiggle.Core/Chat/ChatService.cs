@@ -7,6 +7,7 @@ using Squiggle.Core.Chat.Transport.Host;
 using System.Threading;
 using System.Diagnostics;
 using Squiggle.Utilities;
+using Squiggle.Utilities.Net.Wcf;
 
 namespace Squiggle.Core.Chat
 {

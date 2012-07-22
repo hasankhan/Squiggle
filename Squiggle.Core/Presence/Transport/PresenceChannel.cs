@@ -9,6 +9,8 @@ using Squiggle.Core.Presence.Transport.Host;
 using Squiggle.Core.Chat;
 using Squiggle.Utilities;
 using Squiggle.Core.Presence.Transport.Broadcast;
+using Squiggle.Utilities.Net.Wcf;
+using Squiggle.Utilities.Net;
 
 namespace Squiggle.Core.Presence.Transport
 {

@@ -16,6 +16,7 @@ using Squiggle.Utilities;
 using Squiggle.Chat;
 using Squiggle.History;
 using Squiggle.History.DAL;
+using Squiggle.Utilities.Application;
 using Squiggle.Core.Presence;
 
 namespace Squiggle.UI.Controls

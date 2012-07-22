@@ -12,6 +12,7 @@ using System.Diagnostics;
 using Squiggle.Utilities;
 using Squiggle.Core.Presence.Transport.Messages;
 using Squiggle.Core.Chat.Transport.Messages;
+using Squiggle.Utilities.Net.Wcf;
 
 namespace Squiggle.Bridge
 {

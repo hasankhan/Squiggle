@@ -7,6 +7,7 @@ using Squiggle.Utilities;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Collections.Generic;
+using Squiggle.Utilities.Net.Wcf;
 
 namespace Squiggle.Core.Chat.Transport.Host
 {

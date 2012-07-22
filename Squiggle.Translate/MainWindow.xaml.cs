@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using Squiggle.Utilities;
 using Squiggle.Translate.Properties;
+using Squiggle.Utilities.Application;
 
 namespace Squiggle.Translate
 {

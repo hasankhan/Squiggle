@@ -17,6 +17,8 @@ using Squiggle.Core;
 using System.IO;
 using System.Windows.Media.Imaging;
 using System.Drawing;
+using Squiggle.Utilities.Application;
+using Squiggle.Utilities.Net;
 
 namespace Squiggle.UI
 {

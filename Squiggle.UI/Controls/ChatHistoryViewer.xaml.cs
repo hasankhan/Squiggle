@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using Squiggle.UI;
 using Squiggle.UI.Resources;
 using Squiggle.Utilities;
+using Squiggle.Utilities.Application;
 using Squiggle.History;
 using Squiggle.History.DAL;
 

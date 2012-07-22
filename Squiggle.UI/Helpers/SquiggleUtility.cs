@@ -12,6 +12,7 @@ using Squiggle.UI.ViewModel;
 using Squiggle.Utilities;
 using Squiggle.UI.Controls;
 using Squiggle.Core.Presence;
+using Squiggle.Utilities.Application;
 
 namespace Squiggle.UI.Helpers
 {

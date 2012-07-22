@@ -7,6 +7,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using Squiggle.UI.Helpers;
 using Squiggle.Utilities;
+using Squiggle.Utilities.Application;
 
 namespace Squiggle.UI.MessageParsers
 {

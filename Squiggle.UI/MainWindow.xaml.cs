@@ -16,12 +16,14 @@ using Squiggle.Core.Chat;
 using System.Globalization;
 using Squiggle.Core;
 using Squiggle.Utilities;
+using Squiggle.Utilities.Application;
 using Squiggle.UI.StickyWindows;
 using Squiggle.UI.Resources;
 using System.Windows.Media.Animation;
 using System.Net.Sockets;
 using Squiggle.UI.Controls;
 using Squiggle.Core.Presence;
+using Squiggle.Utilities.Net;
 
 namespace Squiggle.UI
 {

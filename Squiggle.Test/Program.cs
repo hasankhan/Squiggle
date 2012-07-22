@@ -7,6 +7,7 @@ using System.Threading;
 using Squiggle.Utilities;
 using Squiggle.Core;
 using Squiggle.Core.Presence;
+using Squiggle.Utilities.Application;
 
 namespace Squiggle.Chat
 {
