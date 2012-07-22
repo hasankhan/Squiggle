@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.UI", "Squiggle.UI\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Chat", "Squiggle.Chat\Squiggle.Chat.csproj", "{CF28694A-887E-4118-874F-76F028DAB56E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Test", "Squiggle.Test\Squiggle.Test.csproj", "{CF4064C3-FA78-48C3-9846-D8837804C88C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Bridge", "Squiggle.Bridge\Squiggle.Bridge.csproj", "{D832B3DB-16CF-463A-8C80-1DBD581183A2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Translate", "Squiggle.Translate\Squiggle.Translate.csproj", "{1A80F613-0D26-4E0B-94B1-2B4F612D75F0}"
@@ -33,10 +31,6 @@ Global
 		{CF28694A-887E-4118-874F-76F028DAB56E}.Debug|x86.Build.0 = Debug|x86
 		{CF28694A-887E-4118-874F-76F028DAB56E}.Release|x86.ActiveCfg = Release|x86
 		{CF28694A-887E-4118-874F-76F028DAB56E}.Release|x86.Build.0 = Release|x86
-		{CF4064C3-FA78-48C3-9846-D8837804C88C}.Debug|x86.ActiveCfg = Debug|x86
-		{CF4064C3-FA78-48C3-9846-D8837804C88C}.Debug|x86.Build.0 = Debug|x86
-		{CF4064C3-FA78-48C3-9846-D8837804C88C}.Release|x86.ActiveCfg = Release|x86
-		{CF4064C3-FA78-48C3-9846-D8837804C88C}.Release|x86.Build.0 = Release|x86
 		{D832B3DB-16CF-463A-8C80-1DBD581183A2}.Debug|x86.ActiveCfg = Debug|x86
 		{D832B3DB-16CF-463A-8C80-1DBD581183A2}.Debug|x86.Build.0 = Debug|x86
 		{D832B3DB-16CF-463A-8C80-1DBD581183A2}.Release|x86.ActiveCfg = Release|x86
