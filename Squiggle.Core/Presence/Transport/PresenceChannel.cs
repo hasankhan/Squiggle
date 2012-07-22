@@ -27,7 +27,7 @@ namespace Squiggle.Core.Presence.Transport
     {
         IBroadcastService broadcastService;
         IPEndPoint serviceEndPoint;
-        MessagePipe pipe;
+        PresenceHost host;
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
 
@@ -49,9 +49,9 @@ namespace Squiggle.Core.Presence.Transport
 
         public void Start()
         {
-            pipe = new MessagePipe(serviceEndPoint);
-            pipe.MessageReceived += new EventHandler<Utilities.Net.Pipe.MessageReceivedEventArgs>(pipe_MessageReceived);
-            pipe.Open();
+            host = new PresenceHost(serviceEndPoint);
+            host.MessageReceived += new EventHandler<MessageReceivedEventArgs>(host_MessageReceived);
+            host.Start();
 
             broadcastService.MessageReceived += new EventHandler<MessageReceivedEventArgs>(broadcastService_MessageReceived);
             broadcastService.Start();
@@ -59,8 +59,8 @@ namespace Squiggle.Core.Presence.Transport
 
         public void Stop()
         {
-            pipe.Dispose();
-            pipe = null;
+            host.Dispose();
+            host = null;
 
             broadcastService.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(broadcastService_MessageReceived);
             broadcastService.Stop();
@@ -79,35 +79,27 @@ namespace Squiggle.Core.Presence.Transport
 
             ExceptionMonster.EatTheException(() =>
             {
-                byte[] data = message.Serialize();
-                pipe.Send(message.Recipient.Address, data);
+                host.Send(message);
             }, "sending presence message to " + message.Recipient);
         }
 
         void broadcastService_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            Async.Invoke(() =>
-            {
-                OnMessageReceived(e.Message);
-            });
+            OnMessageReceived(e);
         }
 
-        void pipe_MessageReceived(object sender, Utilities.Net.Pipe.MessageReceivedEventArgs e)
+        void host_MessageReceived(object sender, MessageReceivedEventArgs e)
+        {
+            OnMessageReceived(e);
+        }
+
+        void OnMessageReceived(MessageReceivedEventArgs e)
         {
             Async.Invoke(() =>
             {
-                var msg = Message.Deserialize(e.Message);
-                OnMessageReceived(msg);
+                if (!e.Message.ChannelID.Equals(ChannelID))
+                    MessageReceived(this, e);
             });
         }
-
-        void OnMessageReceived(Message message)
-        {
-            if (!message.ChannelID.Equals(ChannelID))
-            {
-                var args = new MessageReceivedEventArgs(){ Message = message };
-                MessageReceived(this, args);
-            }
-        }      
     }
 }
