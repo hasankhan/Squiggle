@@ -25,7 +25,7 @@ namespace Squiggle.Core.Presence
             get { return discovery.Users; }
         }
 
-        public PresenceService(SquiggleEndPoint chatEndPoint, IPEndPoint presenceEndPoint, IPEndPoint presenceServiceEndPoint, TimeSpan keepAliveTime)
+        public PresenceService(SquiggleEndPoint chatEndPoint, IPEndPoint multicastEndPoint, IPEndPoint presenceServiceEndPoint, TimeSpan keepAliveTime)
         {
             thisUser = new UserInfo()
             {
@@ -35,7 +35,7 @@ namespace Squiggle.Core.Presence
                 PresenceEndPoint = presenceServiceEndPoint
             };
 
-            channel = new PresenceChannel(presenceEndPoint, presenceServiceEndPoint);
+            channel = new PresenceChannel(multicastEndPoint, presenceServiceEndPoint);
 
             this.discovery = new UserDiscovery(channel);
             discovery.UserOnline += new EventHandler<UserEventArgs>(discovery_UserOnline);

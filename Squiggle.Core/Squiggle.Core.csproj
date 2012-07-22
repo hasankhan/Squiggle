@@ -126,9 +126,6 @@
     <Compile Include="Presence\Transport\Broadcast\MultcastService\MulticastServiceProxy.cs" />
     <Compile Include="Presence\Transport\Broadcast\UdpBroadcastService.cs" />
     <Compile Include="Presence\Transport\Broadcast\WcfBroadcastService.cs" />
-    <Compile Include="Presence\Transport\Host\IPresenceHost.cs" />
-    <Compile Include="Presence\Transport\Host\PresenceHost.cs" />
-    <Compile Include="Presence\Transport\Host\PresenceHostProxy.cs" />
     <Compile Include="Presence\Transport\Message.cs" />
     <Compile Include="Presence\Transport\Messages\HiMessage.cs" />
     <Compile Include="Presence\Transport\Messages\KeepAliveMessage.cs" />

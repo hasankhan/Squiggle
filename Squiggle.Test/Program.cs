@@ -32,9 +32,11 @@ namespace Squiggle.Chat
         {
             ChatClient client1 = new ChatClient(new SquiggleEndPoint(Guid.NewGuid().ToString(), new IPEndPoint(IPAddress.Loopback, 1234)),
                                                 new IPEndPoint(IPAddress.Parse(DefaultValues.PresenceAddress), 12345), 
+                                                 new IPEndPoint(IPAddress.Loopback, 1235),
                                                 2.Seconds());
             ChatClient client2 = new ChatClient(new SquiggleEndPoint(Guid.NewGuid().ToString(), new IPEndPoint(IPAddress.Loopback, 1236)),
                                                 new IPEndPoint(IPAddress.Parse(DefaultValues.PresenceAddress), 12345), 
+                                                 new IPEndPoint(IPAddress.Loopback, 1237),
                                                 2.Seconds());
             client1.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(client_BuddyOnline);
             //client2.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(client_BuddyOnline);

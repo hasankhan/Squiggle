@@ -2,7 +2,6 @@
 using System.ServiceModel;
 using Squiggle.Core;
 using Squiggle.Core.Chat.Transport.Host;
-using Squiggle.Core.Presence.Transport.Host;
 
 namespace Squiggle.Bridge
 {

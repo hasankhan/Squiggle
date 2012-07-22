@@ -332,14 +332,13 @@ namespace Squiggle.UI
             
             int presencePort = settings.ConnectionSettings.PresencePort;
 
-            var chatEndPoint = new IPEndPoint(localIP, chatPort);
-            if (!NetworkUtility.IsEndPointFree(chatEndPoint))
-                chatEndPoint.Port = NetworkUtility.GetFreePort();
+            var chatEndPoint = NetworkUtility.GetFreeEndPoint(new IPEndPoint(localIP, chatPort));
+            var multicastEndPoint = new IPEndPoint(presenceAddress, presencePort);
+            var presenceServiceEndPoint = NetworkUtility.GetFreeEndPoint(new IPEndPoint(localIP, presencePort));
 
-            var presenceEndPoint = new IPEndPoint(presenceAddress, presencePort);
             string clientID = settings.ConnectionSettings.ClientID;
 
-            var client = new ChatClient(new SquiggleEndPoint(clientID, chatEndPoint), presenceEndPoint, keepAliveTimeout);
+            var client = new ChatClient(new SquiggleEndPoint(clientID, chatEndPoint), multicastEndPoint, presenceServiceEndPoint, keepAliveTimeout);
             client.EnableLogging = settings.GeneralSettings.EnableStatusLogging;
             
             var properties = new BuddyProperties();

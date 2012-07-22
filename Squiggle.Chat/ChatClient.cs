@@ -15,7 +15,7 @@ namespace Squiggle.Chat
     {
         IChatService chatService;
         IPresenceService presenceService;
-        SquiggleEndPoint localEndPoint;
+        SquiggleEndPoint chatEndPoint;
         BuddyList buddies;
 
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
@@ -38,16 +38,17 @@ namespace Squiggle.Chat
 
         public bool EnableLogging { get; set; }
 
-        public ChatClient(SquiggleEndPoint localEndPoint, IPEndPoint presenceEndPoint, TimeSpan keepAliveTime)
+        public ChatClient(SquiggleEndPoint chatEndPoint, IPEndPoint multicastEndPoint, IPEndPoint presenceServiceEndPoint, TimeSpan keepAliveTime)
         {
-            chatService = new ChatService(localEndPoint);
+            chatService = new ChatService(chatEndPoint);
             buddies = new BuddyList();
             chatService.ChatStarted += new EventHandler<Squiggle.Core.Chat.ChatStartedEventArgs>(chatService_ChatStarted);
-            presenceService = new PresenceService(localEndPoint, presenceEndPoint, localEndPoint.Address, keepAliveTime);
+            
+            presenceService = new PresenceService(chatEndPoint, multicastEndPoint, presenceServiceEndPoint, keepAliveTime);
             presenceService.UserOffline += new EventHandler<UserEventArgs>(presenceService_UserOffline);
             presenceService.UserOnline += new EventHandler<UserOnlineEventArgs>(presenceService_UserOnline);
             presenceService.UserUpdated += new EventHandler<UserEventArgs>(presenceService_UserUpdated);
-            this.localEndPoint = localEndPoint;
+            this.chatEndPoint = chatEndPoint;
         }        
 
         public IChat StartChat(Buddy buddy)
@@ -64,7 +65,7 @@ namespace Squiggle.Chat
             chatService.Start();
             presenceService.Login(username, properties);
 
-            var self = new SelfBuddy(this, localEndPoint.ClientID, properties) 
+            var self = new SelfBuddy(this, chatEndPoint.ClientID, properties) 
             { 
                 DisplayName = username,
                 Status = UserStatus.Online,

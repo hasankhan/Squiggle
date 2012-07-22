@@ -28,6 +28,16 @@ namespace Squiggle.Utilities.Net
             return port;
         }
 
+        public static IPEndPoint GetFreeEndPoint(IPEndPoint endpoint)
+        {
+            if (!IsEndPointFree(endpoint))
+            {
+                int port = GetFreePort();
+                return new IPEndPoint(endpoint.Address, port);
+            }
+            return endpoint;
+        }
+
         public static bool IsEndPointFree(IPEndPoint endpoint)
         {
             var listener = new TcpListener(endpoint);
