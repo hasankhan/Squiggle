@@ -330,15 +330,14 @@ namespace Squiggle.UI
             if (!NetworkUtility.TryParseAddress(settings.ConnectionSettings.PresenceAddress, out presenceAddress))
                 throw new ApplicationException(Translation.Instance.SettingsWindow_Error_InvalidPresenceIP);
             
-            int presencePort = settings.ConnectionSettings.PresencePort;
-
             var chatEndPoint = NetworkUtility.GetFreeEndPoint(new IPEndPoint(localIP, chatPort));
-            var multicastEndPoint = new IPEndPoint(presenceAddress, presencePort);
-            var presenceServiceEndPoint = NetworkUtility.GetFreeEndPoint(new IPEndPoint(localIP, presencePort));
+            var presenceServiceEndPoint = NetworkUtility.GetFreeEndPoint(new IPEndPoint(localIP, settings.ConnectionSettings.PresencePort));
+            var broadcastEndPoint = new IPEndPoint(presenceAddress, settings.ConnectionSettings.BroadcastPort);
+            var broadcastReceiveEndPoint = NetworkUtility.GetFreeEndPoint(new IPEndPoint(localIP, settings.ConnectionSettings.BroadcastPort));
 
             string clientID = settings.ConnectionSettings.ClientID;
 
-            var client = new ChatClient(new SquiggleEndPoint(clientID, chatEndPoint), multicastEndPoint, presenceServiceEndPoint, keepAliveTimeout);
+            var client = new ChatClient(new SquiggleEndPoint(clientID, chatEndPoint), broadcastEndPoint, broadcastReceiveEndPoint, presenceServiceEndPoint, keepAliveTimeout);
             client.EnableLogging = settings.GeneralSettings.EnableStatusLogging;
             
             var properties = new BuddyProperties();

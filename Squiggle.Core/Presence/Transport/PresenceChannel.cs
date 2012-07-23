@@ -33,16 +33,14 @@ namespace Squiggle.Core.Presence.Transport
 
         public Guid ChannelID { get; private set; }
 
-        public PresenceChannel(IPEndPoint multicastEndPoint, IPEndPoint serviceEndPoint)
+        public PresenceChannel(IPEndPoint broadcastEndPoint, IPEndPoint broadcastReceiveEndPoint, IPEndPoint serviceEndPoint)
         {
             this.ChannelID = Guid.NewGuid();
-            if (NetworkUtility.IsMulticast(multicastEndPoint.Address))
-            {
-                var udpReceiveEndPoint = new IPEndPoint(serviceEndPoint.Address, multicastEndPoint.Port);
-                this.broadcastService = new UdpBroadcastService(udpReceiveEndPoint, multicastEndPoint);
-            }
+
+            if (NetworkUtility.IsMulticast(broadcastEndPoint.Address))
+                this.broadcastService = new UdpBroadcastService(broadcastReceiveEndPoint, broadcastEndPoint);
             else
-                this.broadcastService = new WcfBroadcastService(multicastEndPoint);
+                this.broadcastService = new TcpBroadcastService(broadcastReceiveEndPoint, broadcastEndPoint);
             
             this.serviceEndPoint = serviceEndPoint;
         }        

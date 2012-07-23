@@ -7,37 +7,90 @@ using System.Text;
 using Squiggle.Core;
 using Squiggle.Core.Presence.Transport.Broadcast.MultcastService;
 using Squiggle.Utilities;
-using Squiggle.Utilities.Net.Wcf;
+using Squiggle.Core.Presence.Transport.Broadcast.MultcastService.Messages;
 
 namespace Squiggle.Multicast
 {
-    class MulticastService: WcfHost
+    class MulticastService
     {
         MulticastHost mcastHost;
+        HashSet<IPEndPoint> clients;
         IPEndPoint endPoint;
 
         public MulticastService(IPEndPoint endPoint)
         {
             this.endPoint = endPoint;
-            mcastHost = new MulticastHost();
+            this.clients = new HashSet<IPEndPoint>();
         }
 
-        protected override void OnStop()
+        public void Start()
         {
-            base.OnStop();
-
-            mcastHost.Reset();
+            mcastHost = new MulticastHost(endPoint);
+            mcastHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(mcastHost_MessageReceived);
+            mcastHost.Start();
         }
 
-        protected override ServiceHost CreateHost()
+        void mcastHost_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            var serviceHost = new ServiceHost(mcastHost);
+            AddClient(e.Message.Sender);
+            if (e.Message is MulticastMessage)
+                OnMulticastMessage((MulticastMessage)e.Message);
+            else if (e.Message is RegisterMessage)
+                OnRegisterMessage(e.Message);
+            else if (e.Message is UnregisterMessage)
+                OnUnregisterMessage((UnregisterMessage)e.Message);
+        }
 
-            var address = new Uri("net.tcp://" + endPoint.ToString() + "/" + ServiceNames.MulticastService);
-            var binding = WcfConfig.CreateBinding();
-            serviceHost.AddServiceEndpoint(typeof(IMulticastService), binding, address);
+        void OnRegisterMessage(Message message)
+        {
+            AddClient(message.Sender);
+        }
 
-            return serviceHost;
+        void OnUnregisterMessage(UnregisterMessage message)
+        {
+            RemoveClient(message.Sender);
+        }
+
+        void OnMulticastMessage(MulticastMessage message)
+        {
+            AddClient(message.Sender);
+            ForwardMessage(message);
+        }
+
+        public void Stop()
+        {
+            lock (clients)
+                clients.Clear();
+
+            mcastHost.Dispose();
+        }
+
+        void ForwardMessage(MulticastMessage message)
+        {
+            AddClient(message.Sender);
+
+            IEnumerable<IPEndPoint> clientsList;
+
+            lock (clients)
+                clientsList = clients.ToList();
+
+            clients.ForEach(client =>
+            {
+                if (!client.Equals(message.Sender))
+                    mcastHost.Send(client, message);
+            });
+        }
+
+        void AddClient(IPEndPoint client)
+        {
+            lock (clients)
+                clients.Add(client);
+        }
+
+        void RemoveClient(IPEndPoint client)
+        {
+            lock (clients)
+                clients.Remove(client);
         }
     }
 }

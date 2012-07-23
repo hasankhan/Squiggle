@@ -38,13 +38,13 @@ namespace Squiggle.Chat
 
         public bool EnableLogging { get; set; }
 
-        public ChatClient(SquiggleEndPoint chatEndPoint, IPEndPoint multicastEndPoint, IPEndPoint presenceServiceEndPoint, TimeSpan keepAliveTime)
+        public ChatClient(SquiggleEndPoint chatEndPoint, IPEndPoint broadcastEndPoint, IPEndPoint broadcastReceiveEndPoint, IPEndPoint presenceServiceEndPoint, TimeSpan keepAliveTime)
         {
             chatService = new ChatService(chatEndPoint);
             buddies = new BuddyList();
             chatService.ChatStarted += new EventHandler<Squiggle.Core.Chat.ChatStartedEventArgs>(chatService_ChatStarted);
             
-            presenceService = new PresenceService(chatEndPoint, multicastEndPoint, presenceServiceEndPoint, keepAliveTime);
+            presenceService = new PresenceService(chatEndPoint, broadcastEndPoint, broadcastReceiveEndPoint, presenceServiceEndPoint, keepAliveTime);
             presenceService.UserOffline += new EventHandler<UserEventArgs>(presenceService_UserOffline);
             presenceService.UserOnline += new EventHandler<UserOnlineEventArgs>(presenceService_UserOnline);
             presenceService.UserUpdated += new EventHandler<UserEventArgs>(presenceService_UserUpdated);
