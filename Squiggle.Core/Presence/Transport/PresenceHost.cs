@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Squiggle.Utilities.Net.Pipe;
 using System.Net;
+using Squiggle.Utilities.Serialization;
+using Squiggle.Core.Presence.Transport.Messages;
 
 namespace Squiggle.Core.Presence.Transport
 {
@@ -28,13 +30,13 @@ namespace Squiggle.Core.Presence.Transport
 
         public void Send(Message message)
         {
-            byte[] data = message.Serialize();
+            byte[] data = SerializationHelper.Serialize(message);
             pipe.Send(message.Recipient.Address, data);
         }
 
         void pipe_MessageReceived(object sender, Utilities.Net.Pipe.MessageReceivedEventArgs e)
         {
-            var msg = Message.Deserialize(e.Message);
+            var msg = SerializationHelper.Deserialize<Message>(e.Message);
             MessageReceived(this, new MessageReceivedEventArgs() { Message = msg });
         }
 

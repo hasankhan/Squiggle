@@ -87,7 +87,6 @@
     <Compile Include="Net\Pipe\MessagePipe.cs" />
     <Compile Include="Net\Pipe\MessageReceivedEventArgs.cs" />
     <Compile Include="Serialization\SerializationHelper.cs" />
-    <Compile Include="Serialization\SerializationSurrogate.cs" />
     <Compile Include="Application\StringValueAttribute.cs" />
     <Compile Include="Net\Wcf\WcfConfig.cs" />
     <Compile Include="ConsoleService.cs">

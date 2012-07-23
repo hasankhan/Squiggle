@@ -22,20 +22,20 @@ namespace Squiggle.Bridge
             this.bridgeChatEndPoint = bridgeChatEndPoint;
         }
 
-        public void InspectForeignPresenceMessage(Message message, IPEndPoint bridge)
+        public void InspectForeignPresenceMessage(Squiggle.Core.Presence.Transport.Message message, IPEndPoint bridge)
         {
             routeTable.AddRemoteClient(message.Sender.ClientID, bridge);
             ReplaceSenderWithBridgeEndPoints(message);
         }
 
-        public void InspectLocalPresenceMessage(Message message)
+        public void InspectLocalPresenceMessage(Squiggle.Core.Presence.Transport.Message message)
         {
             routeTable.AddLocalPresenceEndPoint(message.Sender);
             if (message is PresenceMessage)
                 routeTable.AddLocalChatEndPoint(message.Sender.ClientID, ((PresenceMessage)message).ChatEndPoint);
         }
 
-        void ReplaceSenderWithBridgeEndPoints(Message message)
+        void ReplaceSenderWithBridgeEndPoints(Squiggle.Core.Presence.Transport.Message message)
         {
             message.Sender = new SquiggleEndPoint(message.Sender.ClientID, bridgePresenceEndPoint);
             if (message is PresenceMessage)

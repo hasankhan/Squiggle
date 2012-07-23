@@ -72,7 +72,7 @@ namespace Squiggle.Bridge
 
         void bridgePipe_MessageReceived(object sender, Utilities.Net.Pipe.MessageReceivedEventArgs e)
         {
-            var message = Message.Deserialize(e.Message);
+            var message = SerializationHelper.Deserialize<Message>(e.Message);
             if (message is ForwardPresenceMessage)
                 OnPresenceMessage((ForwardPresenceMessage)message);
             else if (message is ForwardChatMessage)
@@ -81,14 +81,14 @@ namespace Squiggle.Bridge
 
         void OnPresenceMessage(ForwardPresenceMessage message)
         {
-            var msg = Squiggle.Core.Presence.Transport.Message.Deserialize(message.Message);
+            var msg = SerializationHelper.Deserialize<Squiggle.Core.Presence.Transport.Message>(message.Message);
             var args = new PresenceMessageForwardedEventArgs(msg, message.BridgeEndPoint);
             PresenceMessageForwarded(this, args);
         }
 
         void OnChatMessage(byte[] message)
         {
-            var msg = Squiggle.Core.Chat.Transport.Message.Deserialize(message);
+            var msg = SerializationHelper.Deserialize<Squiggle.Core.Chat.Transport.Message>(message);
             var args = new ChatMessageReceivedEventArgs() { Message = msg};
             ChatMessageReceived(this, args);
         }
@@ -110,10 +110,11 @@ namespace Squiggle.Bridge
 
         public void SendChatMessage(bool local, IPEndPoint target, Core.Chat.Transport.Message message)
         {
+            byte[] data = SerializationHelper.Serialize(message);
             if (local)
-                chatPipe.Send(target, message.Serialize());
+                chatPipe.Send(target, data);
             else
-                Send(target, new ForwardChatMessage() { Message = message.Serialize() });
+                Send(target, new ForwardChatMessage() { Message = data });
         }
 
         public void SendPresenceMessage(IPEndPoint target, byte[] message)
@@ -123,7 +124,7 @@ namespace Squiggle.Bridge
 
         void Send(IPEndPoint target, Message message)
         {
-            bridgePipe.Send(target, message.Serialize());
+            bridgePipe.Send(target, SerializationHelper.Serialize(message));
         }
     }
 }

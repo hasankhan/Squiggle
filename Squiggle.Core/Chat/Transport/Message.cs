@@ -38,16 +38,5 @@ namespace Squiggle.Core.Chat.Transport
         /// </summary>
         [ProtoMember(3)]
         public SquiggleEndPoint Recipient { get; set; }
-
-        public byte[] Serialize()
-        {
-            return SerializationHelper.Serialize<MessageSurrogate>(new MessageSurrogate(this));
-        }
-
-        public static Message Deserialize(byte[] data)
-        {
-            Message message = SerializationHelper.Deserialize<MessageSurrogate>(data).GetObject();
-            return message;
-        }
     }
 }

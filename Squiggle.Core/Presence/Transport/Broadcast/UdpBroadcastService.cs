@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using Squiggle.Utilities;
+using Squiggle.Utilities.Serialization;
 
 namespace Squiggle.Core.Presence.Transport.Broadcast
 {
@@ -25,7 +26,7 @@ namespace Squiggle.Core.Presence.Transport.Broadcast
 
         public void SendMessage(Message message)
         {
-            byte[] data = message.Serialize();
+            byte[] data = SerializationHelper.Serialize(message);
 
             ExceptionMonster.EatTheException(() =>
             {
@@ -74,7 +75,7 @@ namespace Squiggle.Core.Presence.Transport.Broadcast
             if (data != null)
                 ExceptionMonster.EatTheException(() =>
                 {
-                    var message = Message.Deserialize(data);
+                    var message = SerializationHelper.Deserialize<Message>(data);
                     OnMessageReceived(message);
                 }, "deserializing a presence message");
 

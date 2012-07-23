@@ -9,6 +9,7 @@ using System.Threading;
 using Squiggle.Core.Chat.Transport.Messages;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Net.Pipe;
+using Squiggle.Utilities.Serialization;
 
 namespace Squiggle.Core.Chat.Transport.Host
 {
@@ -46,7 +47,7 @@ namespace Squiggle.Core.Chat.Transport.Host
 
         void pipe_MessageReceived(object sender, Utilities.Net.Pipe.MessageReceivedEventArgs e)
         {
-            Message msg = Message.Deserialize(e.Message);
+            Message msg = SerializationHelper.Deserialize<Message>(e.Message);
             if (msg is AppCancelMessage)
                 CancelAppSession((AppCancelMessage)msg);
             else if (msg is AppDataMessage)
@@ -75,7 +76,7 @@ namespace Squiggle.Core.Chat.Transport.Host
 
         public void Send(Message message)
         {
-            byte[] data = message.Serialize();
+            byte[] data = SerializationHelper.Serialize(message);
             pipe.Send(message.Recipient.Address, data);
         }
 

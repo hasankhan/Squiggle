@@ -38,17 +38,6 @@ namespace Squiggle.Core.Presence.Transport
             return message;
         }
 
-        public byte[] Serialize()
-        {
-            return SerializationHelper.Serialize(new MessageSurrogate(this));
-        }        
-
-        public static Message Deserialize(byte[] data)
-        {
-            Message message = SerializationHelper.Deserialize<MessageSurrogate>(data).GetObject();
-            return message;
-        }
-
         public override string ToString()
         {
             string output = String.Format("Sender: {0}, Message: {1}", Sender, base.ToString());

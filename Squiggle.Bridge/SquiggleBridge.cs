@@ -12,6 +12,7 @@ using Squiggle.Core.Presence.Transport;
 using Squiggle.Core.Presence.Transport.Messages;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Net.Wcf;
+using Squiggle.Utilities.Serialization;
 
 namespace Squiggle.Bridge
 {
@@ -126,7 +127,7 @@ namespace Squiggle.Bridge
             {
                 messageInspector.InspectLocalPresenceMessage(e.Message);
 
-                byte[] message = e.Message.Serialize();
+                byte[] message = SerializationHelper.Serialize(e.Message);
 
                 if (e.IsBroadcast)
                 {

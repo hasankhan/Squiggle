@@ -77,13 +77,11 @@
     <Compile Include="Chat\Transport\Messages\ChatLeaveMessage.cs" />
     <Compile Include="Chat\Transport\Messages\GiveSessionInfoMessage.cs" />
     <Compile Include="Chat\Transport\Messages\IMessageHasParticipants.cs" />
-    <Compile Include="Chat\Transport\Messages\MessageSurrogate.cs" />
     <Compile Include="Chat\Transport\Messages\SessionInfoMessage.cs" />
     <Compile Include="Chat\Transport\Messages\TextMessage.cs" />
     <Compile Include="Chat\Transport\Messages\UserTypingMessage.cs" />
     <Compile Include="Presence\Transport\Messages\GiveUserInfoMessage.cs" />
     <Compile Include="Presence\Transport\Messages\HelloMessage.cs" />
-    <Compile Include="Presence\Transport\Messages\MessageSurrogate.cs" />
     <Compile Include="Presence\Transport\Messages\UserInfoMessage.cs" />
     <Compile Include="Presence\Transport\PresenceHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

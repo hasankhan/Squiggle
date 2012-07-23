@@ -77,8 +77,7 @@
     <Compile Include="Configuration\TargetCollection.cs" />
     <Compile Include="Messages\ForwardChatMessage.cs" />
     <Compile Include="Messages\ForwardPresenceMessage.cs" />
-    <Compile Include="Messages\Message.cs" />
-    <Compile Include="Messages\MessageSurrogate.cs" />
+    <Compile Include="Message.cs" />
     <Compile Include="PresenceMessageInspector.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
