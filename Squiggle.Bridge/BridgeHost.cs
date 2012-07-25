@@ -11,6 +11,7 @@ using Squiggle.Core.Presence;
 using Squiggle.Utilities.Net.Pipe;
 using Squiggle.Utilities.Serialization;
 using Squiggle.Bridge.Messages;
+using Squiggle.Utilities;
 
 namespace Squiggle.Bridge
 {
@@ -72,7 +73,18 @@ namespace Squiggle.Bridge
 
         void bridgePipe_MessageReceived(object sender, Utilities.Net.Pipe.MessageReceivedEventArgs e)
         {
-            var message = SerializationHelper.Deserialize<Message>(e.Message);
+            Message message = null;
+            if (ExceptionMonster.EatTheException(() =>
+            {
+                message = SerializationHelper.Deserialize<Message>(e.Message);
+            }, "deserializing bridge message"))
+            {
+                OnMessageReceived(message);
+            }
+        }
+
+        void OnMessageReceived(Message message)
+        {
             if (message is ForwardPresenceMessage)
                 OnPresenceMessage((ForwardPresenceMessage)message);
             else if (message is ForwardChatMessage)
@@ -81,16 +93,28 @@ namespace Squiggle.Bridge
 
         void OnPresenceMessage(ForwardPresenceMessage message)
         {
-            var msg = SerializationHelper.Deserialize<Squiggle.Core.Presence.Transport.Message>(message.Message);
-            var args = new PresenceMessageForwardedEventArgs(msg, message.BridgeEndPoint);
-            PresenceMessageForwarded(this, args);
+            Squiggle.Core.Presence.Transport.Message msg = null;
+            if (ExceptionMonster.EatTheException(() =>
+            {
+                msg = SerializationHelper.Deserialize<Squiggle.Core.Presence.Transport.Message>(message.Message);
+            }, "deserializing presence message"))
+            {
+                var args = new PresenceMessageForwardedEventArgs(msg, message.BridgeEndPoint);
+                PresenceMessageForwarded(this, args);
+            }
         }
 
-        void OnChatMessage(byte[] message)
+        void OnChatMessage(byte[] data)
         {
-            var msg = SerializationHelper.Deserialize<Squiggle.Core.Chat.Transport.Message>(message);
-            var args = new ChatMessageReceivedEventArgs() { Message = msg};
-            ChatMessageReceived(this, args);
+            Squiggle.Core.Chat.Transport.Message msg = null;
+            if (ExceptionMonster.EatTheException(() =>
+            {
+                msg = SerializationHelper.Deserialize<Squiggle.Core.Chat.Transport.Message>(data);
+            }, "deserializing chat message"))
+            {
+                var args = new ChatMessageReceivedEventArgs() { Message = msg };
+                ChatMessageReceived(this, args);
+            }
         }
 
         public void Dispose()

@@ -88,7 +88,7 @@ namespace Squiggle.UI.Settings
             Settings.ConnectionSettings.ChatPort = reader.GetSetting(SettingKey.ChatPort, DefaultValues.ChatPort);
             Settings.ConnectionSettings.KeepAliveTime = reader.GetSetting(SettingKey.KeepAliveTime, DefaultValues.KeepAliveTime);
             Settings.ConnectionSettings.PresencePort = reader.GetSetting(SettingKey.PresencePort, DefaultValues.PresencePort);
-            Settings.ConnectionSettings.BroadcastPort = reader.GetSetting(SettingKey.BroadcastPort, DefaultValues.BroadcastPort);
+            Settings.ConnectionSettings.PresenceCallbackPort = reader.GetSetting(SettingKey.PresenceCallbackPort, DefaultValues.PresenceCallbackPort);
         }
 
         private void LoadGeneralSettings(ConfigReader reader)
@@ -169,7 +169,7 @@ namespace Squiggle.UI.Settings
             reader.SetSetting(SettingKey.ChatPort, Settings.ConnectionSettings.ChatPort);
             reader.SetSetting(SettingKey.KeepAliveTime, Settings.ConnectionSettings.KeepAliveTime);
             reader.SetSetting(SettingKey.PresencePort, Settings.ConnectionSettings.PresencePort);
-            reader.SetSetting(SettingKey.BroadcastPort, Settings.ConnectionSettings.BroadcastPort);
+            reader.SetSetting(SettingKey.PresenceCallbackPort, Settings.ConnectionSettings.PresenceCallbackPort);
             Properties.Settings.Default.ClientID = Settings.ConnectionSettings.ClientID;
         }
 

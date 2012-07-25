@@ -319,26 +319,6 @@ namespace Squiggle.UI
             SettingsProvider.Current.Load(); // reload settings
             var settings = SettingsProvider.Current.Settings;
 
-            int chatPort = settings.ConnectionSettings.ChatPort;
-            if (String.IsNullOrEmpty(settings.ConnectionSettings.BindToIP))
-                throw new OperationCanceledException(Translation.Instance.Error_NoNetwork);
-
-            var localIP = IPAddress.Parse(settings.ConnectionSettings.BindToIP);
-            TimeSpan keepAliveTimeout = settings.ConnectionSettings.KeepAliveTime.Seconds();
-
-            IPAddress presenceAddress;
-            if (!NetworkUtility.TryParseAddress(settings.ConnectionSettings.PresenceAddress, out presenceAddress))
-                throw new ApplicationException(Translation.Instance.SettingsWindow_Error_InvalidPresenceIP);
-            
-            var chatEndPoint = NetworkUtility.GetFreeEndPoint(new IPEndPoint(localIP, chatPort));
-            var presenceServiceEndPoint = NetworkUtility.GetFreeEndPoint(new IPEndPoint(localIP, settings.ConnectionSettings.PresencePort));
-            var broadcastEndPoint = new IPEndPoint(presenceAddress, settings.ConnectionSettings.BroadcastPort);
-            var broadcastReceiveEndPoint = NetworkUtility.GetFreeEndPoint(new IPEndPoint(localIP, settings.ConnectionSettings.BroadcastPort));
-
-            string clientID = settings.ConnectionSettings.ClientID;
-
-            var client = new ChatClient(new SquiggleEndPoint(clientID, chatEndPoint), broadcastEndPoint, broadcastReceiveEndPoint, presenceServiceEndPoint, keepAliveTimeout);
-            client.EnableLogging = settings.GeneralSettings.EnableStatusLogging;
             
             var properties = new BuddyProperties();
             properties.GroupName = groupName;
@@ -347,11 +327,14 @@ namespace Squiggle.UI
             properties.DisplayImage = settings.PersonalSettings.DisplayImage;
             properties.EmailAddress = settings.PersonalSettings.EmailAddress;
 
-            client.Login(displayName, properties);
+            IChatClient client = new ChatClientFactory(settings).CreateClient();
             client.ChatStarted += new EventHandler<Squiggle.Chat.ChatStartedEventArgs>(client_ChatStarted);
             client.BuddyUpdated += new EventHandler<BuddyEventArgs>(client_BuddyUpdated);
             client.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(client_BuddyOnline);
             client.BuddyOffline += new EventHandler<BuddyEventArgs>(client_BuddyOffline);
+
+            client.Login(displayName, properties);
+            
             return client;
         }
 

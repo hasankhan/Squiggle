@@ -388,6 +388,7 @@
       <DependentUpon>EmoticonSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\BoundedQueue.cs" />
+    <Compile Include="Helpers\ChatClientFactory.cs" />
     <Compile Include="Helpers\ImageFactory.cs" />
     <Compile Include="Helpers\ImageUtility.cs" />
     <Compile Include="HistoryViewer.xaml.cs">

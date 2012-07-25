@@ -7,7 +7,6 @@ using System.ServiceModel.Channels;
 using System.Text;
 using Squiggle.Core.Presence.Transport.Broadcast.MultcastService;
 using Squiggle.Utilities;
-using Squiggle.Utilities.Net.Wcf;
 using Squiggle.Utilities.Net.Pipe;
 using Squiggle.Core.Presence.Transport.Broadcast.MultcastService.Messages;
 using Squiggle.Utilities.Serialization;

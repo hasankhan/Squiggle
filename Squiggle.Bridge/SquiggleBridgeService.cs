@@ -20,14 +20,16 @@ namespace Squiggle.Bridge
         {
             var config = BridgeConfiguration.GetConfig();
 
-            var channelServiceEndPoint = new IPEndPoint(config.InternalServiceBinding.EndPoint.Address, config.PresenceBinding.ServicePort);
+            var presenceServiceEndPoint = new IPEndPoint(config.InternalServiceBinding.EndPoint.Address, config.PresenceBinding.ServicePort);
+            var broadcastReceiveEndPoint = new IPEndPoint(config.InternalServiceBinding.EndPoint.Address, config.PresenceBinding.PresenceCallbackPort);
 
-            DumpConfig(config, channelServiceEndPoint);
+            DumpConfig(config, presenceServiceEndPoint);
 
             bridge = new SquiggleBridge(config.InternalServiceBinding.EndPoint,
                                         config.ExternalServiceBinding.EndPoint,
                                         config.PresenceBinding.MulticastEndPoint,
-                                        channelServiceEndPoint);
+                                        broadcastReceiveEndPoint,
+                                        presenceServiceEndPoint);
 
             foreach (Target target in config.Targets)
                 bridge.AddTarget(target.EndPoint);

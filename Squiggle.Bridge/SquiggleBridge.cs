@@ -11,7 +11,6 @@ using Squiggle.Core.Chat.Transport.Messages;
 using Squiggle.Core.Presence.Transport;
 using Squiggle.Core.Presence.Transport.Messages;
 using Squiggle.Utilities;
-using Squiggle.Utilities.Net.Wcf;
 using Squiggle.Utilities.Serialization;
 
 namespace Squiggle.Bridge
@@ -29,7 +28,8 @@ namespace Squiggle.Bridge
         IPEndPoint presenceServiceEndPoint;
         IPEndPoint bridgeEndPointInternal;
         IPEndPoint bridgeEndPointExternal;
-        IPEndPoint multicastEndPoint;
+        IPEndPoint broadcastEndPoint;
+        IPEndPoint broadcastReceiveEndPoint;
         PresenceChannel presenceChannel;
         PresenceMessageInspector messageInspector;
 
@@ -39,13 +39,15 @@ namespace Squiggle.Bridge
 
         public SquiggleBridge(IPEndPoint bridgeEndPointInternal,
                               IPEndPoint bridgeEndPointExternal,
-                              IPEndPoint multicastEndPoint,
+                              IPEndPoint broadcastEndPoint,
+                              IPEndPoint broadcastReceiveEndPoint,
                               IPEndPoint presenceServiceEndPoint)
         {
             this.bridgeEndPointInternal = bridgeEndPointInternal;
             this.bridgeEndPointExternal = bridgeEndPointExternal;
+            this.broadcastEndPoint = broadcastEndPoint;
+            this.broadcastReceiveEndPoint = broadcastReceiveEndPoint; 
             this.presenceServiceEndPoint = presenceServiceEndPoint;
-            this.multicastEndPoint = multicastEndPoint;            
         }
 
         public void AddTarget(IPEndPoint target)
@@ -63,7 +65,7 @@ namespace Squiggle.Bridge
             routeTable = new RouteTable();
             messageInspector = new PresenceMessageInspector(routeTable, presenceServiceEndPoint, bridgeEndPointInternal);
 
-            presenceChannel = new PresenceChannel(multicastEndPoint, presenceServiceEndPoint);
+            presenceChannel = new PresenceChannel(broadcastEndPoint, broadcastReceiveEndPoint, presenceServiceEndPoint);
             presenceChannel.Start();
             presenceChannel.MessageReceived += new EventHandler<Squiggle.Core.Presence.Transport.MessageReceivedEventArgs>(presenceChannel_MessageReceived);
         }
