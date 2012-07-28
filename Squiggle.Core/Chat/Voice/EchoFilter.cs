@@ -8,13 +8,13 @@ namespace Squiggle.Core.Chat.Voice
 {
     class EchoFilter : IDisposable
     {
-        [DllImport("libspeex.dll")]
+        [DllImport("libspeexdsp.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern IntPtr speex_echo_state_init(int frame_size, int filter_length);
 
-        [DllImport("libspeex.dll")]
+        [DllImport("libspeexdsp.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern void speex_echo_cancellation(IntPtr state, byte[] recorded, byte[] played, byte[] output);
 
-        [DllImport("libspeex.dll")]
+        [DllImport("libspeexdsp.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern void speex_echo_state_destroy(IntPtr state);
 
         IntPtr state;

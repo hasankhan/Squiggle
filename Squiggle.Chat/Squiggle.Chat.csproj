@@ -131,8 +131,8 @@
       <Link>libspeex-license.txt</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="..\Libraries\Speex\libspeex.dll">
-      <Link>libspeex.dll</Link>
+    <None Include="..\Libraries\Speex\libspeexdsp.dll">
+      <Link>libspeexdsp.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
