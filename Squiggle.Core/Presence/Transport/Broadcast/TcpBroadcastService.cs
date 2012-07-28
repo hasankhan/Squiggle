@@ -47,8 +47,10 @@ namespace Squiggle.Core.Presence.Transport.Broadcast
             if (e.Message is MulticastMessage)
             {
                 var message = (MulticastMessage)e.Message;
-                var presenceMessage = SerializationHelper.Deserialize<Squiggle.Core.Presence.Transport.Message>(message.Data);
-                MessageReceived(this, new MessageReceivedEventArgs(){Message = presenceMessage});
+                SerializationHelper.Deserialize<Squiggle.Core.Presence.Transport.Message>(message.Data, presenceMessage =>
+                {
+                    MessageReceived(this, new MessageReceivedEventArgs() { Message = presenceMessage });
+                }, "multicast message");
             }
         }
 

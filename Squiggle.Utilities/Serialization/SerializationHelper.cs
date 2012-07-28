@@ -24,5 +24,17 @@ namespace Squiggle.Utilities.Serialization
             T item = ProtoBuf.Serializer.Deserialize<T>(stream);
             return item;
         }
+
+        public static void Deserialize<T>(byte[] data, Action<T> onDeserialize, string entityName) where T:class
+        {
+            T obj = null;
+            if (ExceptionMonster.EatTheException(() =>
+            {
+                obj = SerializationHelper.Deserialize<T>(data);
+            }, "deserializing " + entityName))
+            {
+                onDeserialize(obj);
+            }
+        }
     }
 }

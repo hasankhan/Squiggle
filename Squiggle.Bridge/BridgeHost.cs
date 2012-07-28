@@ -73,14 +73,10 @@ namespace Squiggle.Bridge
 
         void bridgePipe_MessageReceived(object sender, Utilities.Net.Pipe.MessageReceivedEventArgs e)
         {
-            Message message = null;
-            if (ExceptionMonster.EatTheException(() =>
+            SerializationHelper.Deserialize<Message>(e.Message, msg =>
             {
-                message = SerializationHelper.Deserialize<Message>(e.Message);
-            }, "deserializing bridge message"))
-            {
-                OnMessageReceived(message);
-            }
+                OnMessageReceived(msg);
+            }, "bridge message");
         }
 
         void OnMessageReceived(Message message)
@@ -93,28 +89,20 @@ namespace Squiggle.Bridge
 
         void OnPresenceMessage(ForwardPresenceMessage message)
         {
-            Squiggle.Core.Presence.Transport.Message msg = null;
-            if (ExceptionMonster.EatTheException(() =>
-            {
-                msg = SerializationHelper.Deserialize<Squiggle.Core.Presence.Transport.Message>(message.Message);
-            }, "deserializing presence message"))
+            SerializationHelper.Deserialize<Squiggle.Core.Presence.Transport.Message>(message.Message, msg =>
             {
                 var args = new PresenceMessageForwardedEventArgs(msg, message.BridgeEndPoint);
                 PresenceMessageForwarded(this, args);
-            }
+            }, "presence message");
         }
 
         void OnChatMessage(byte[] data)
         {
-            Squiggle.Core.Chat.Transport.Message msg = null;
-            if (ExceptionMonster.EatTheException(() =>
-            {
-                msg = SerializationHelper.Deserialize<Squiggle.Core.Chat.Transport.Message>(data);
-            }, "deserializing chat message"))
+            SerializationHelper.Deserialize<Squiggle.Core.Chat.Transport.Message>(data, msg =>
             {
                 var args = new ChatMessageReceivedEventArgs() { Message = msg };
                 ChatMessageReceived(this, args);
-            }
+            }, "chat message");
         }
 
         public void Dispose()

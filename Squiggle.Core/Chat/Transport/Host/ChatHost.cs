@@ -47,7 +47,11 @@ namespace Squiggle.Core.Chat.Transport.Host
 
         void pipe_MessageReceived(object sender, Utilities.Net.Pipe.MessageReceivedEventArgs e)
         {
-            Message msg = SerializationHelper.Deserialize<Message>(e.Message);
+            SerializationHelper.Deserialize<Message>(e.Message, msg => OnMessageReceived(msg), "chat message");            
+        }
+
+        void OnMessageReceived(Message msg)
+        {
             if (msg is AppCancelMessage)
                 CancelAppSession((AppCancelMessage)msg);
             else if (msg is AppDataMessage)

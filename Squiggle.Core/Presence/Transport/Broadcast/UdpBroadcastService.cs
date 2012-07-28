@@ -73,11 +73,10 @@ namespace Squiggle.Core.Presence.Transport.Broadcast
             }, "receiving mcast presence message");
 
             if (data != null)
-                ExceptionMonster.EatTheException(() =>
+                SerializationHelper.Deserialize<Message>(data, message=>
                 {
-                    var message = SerializationHelper.Deserialize<Message>(data);
                     OnMessageReceived(message);
-                }, "deserializing a presence message");
+                }, "presence message");
 
             BeginReceive();
         }

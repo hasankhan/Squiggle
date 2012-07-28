@@ -36,8 +36,11 @@ namespace Squiggle.Core.Presence.Transport
 
         void pipe_MessageReceived(object sender, Utilities.Net.Pipe.MessageReceivedEventArgs e)
         {
-            var msg = SerializationHelper.Deserialize<Message>(e.Message);
-            MessageReceived(this, new MessageReceivedEventArgs() { Message = msg });
+            SerializationHelper.Deserialize<Message>(e.Message, msg =>
+            {
+                MessageReceived(this, new MessageReceivedEventArgs() { Message = msg });
+
+            }, "presence message");
         }
 
         public void Dispose()

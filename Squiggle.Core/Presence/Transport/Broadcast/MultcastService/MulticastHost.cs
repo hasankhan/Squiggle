@@ -41,8 +41,11 @@ namespace Squiggle.Core.Presence.Transport.Broadcast.MultcastService
 
         void pipe_MessageReceived(object sender, Utilities.Net.Pipe.MessageReceivedEventArgs e)
         {
-            var message = SerializationHelper.Deserialize<Squiggle.Core.Presence.Transport.Broadcast.MultcastService.Message>(e.Message);
-            MessageReceived(this, new MessageReceivedEventArgs() { Message = message });
+            SerializationHelper.Deserialize<Squiggle.Core.Presence.Transport.Broadcast.MultcastService.Message>(e.Message, msg =>
+            {
+                MessageReceived(this, new MessageReceivedEventArgs() { Message = msg });
+            }
+            ,"multicast message");
         }
 
         public void Send(IPEndPoint target, Message message)
