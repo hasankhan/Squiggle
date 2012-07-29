@@ -60,7 +60,11 @@ namespace Squiggle.UI
             Instance = this;
             InitializeComponent();
 
-            PluginLoader = new PluginLoader(new DirectoryCatalog(Path.Combine(AppInfo.Location, "Plugins")));
+            var pluginPath = Path.Combine(AppInfo.Location, "Plugins");
+            if (!Directory.Exists(pluginPath))
+                Directory.CreateDirectory(pluginPath);
+            var catalog = new DirectoryCatalog(pluginPath);
+            PluginLoader = new PluginLoader(catalog);
 
             this.Height = Properties.Settings.Default.MainWindowHeight;
             this.Width = Properties.Settings.Default.MainWindowWidth;

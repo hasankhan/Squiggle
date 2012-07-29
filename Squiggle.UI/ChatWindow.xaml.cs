@@ -337,11 +337,13 @@ namespace Squiggle.UI
         void OnAppInvite(AppInvitationReceivedEventArgs e)
         {
             IAppHandler handler = MainWindow.PluginLoader.GetHandler(e.AppId, f => f.FromInvite(e.Session, e.Metadata));
-            if (handler is IVoiceChat)
-                OnVoiceInvite((IVoiceChat)handler);
-            else if (handler is IFileTransfer)
-                OnTransferInvite((IFileTransfer)handler);
-        }
+            if (e.AppId == ChatApps.VoiceChat)
+                OnVoiceInvite(handler as IVoiceChat);
+            else if (e.AppId == ChatApps.FileTransfer)
+                OnTransferInvite(handler as IFileTransfer);
+            else
+                OnUnknownAppInvite(handler);
+        }        
 
         void OnBuddyTyping(BuddyEventArgs e)
         {
@@ -485,22 +487,42 @@ namespace Squiggle.UI
         {
             Dispatcher.Invoke(() =>
             {
+                FlashWindow();
+                if (invitation == null)
+                {
+                    chatTextBox.AddInfo(Translation.Instance.ChatWindow_FileTransferInviteNotSupported);
+                    return;
+                }
                 string downloadsFolder = SettingsProvider.Current.Settings.GeneralSettings.DownloadsFolder;
                 chatTextBox.AddFileReceiveRequest(invitation, downloadsFolder);
                 fileTransfers.Add(invitation);
-                FlashWindow();
             });
             chatStarted = true;
+        }
+
+        void OnUnknownAppInvite(IAppHandler handler)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                FlashWindow();
+                if (handler == null)
+                    chatTextBox.AddInfo(Translation.Instance.ChatWindow_UnknownAppInvite);
+            });
         }
 
         void OnVoiceInvite(IVoiceChat invitation)
         {
             Dispatcher.Invoke(() =>
             {
+                FlashWindow();
+                if (invitation == null)
+                {
+                    chatTextBox.AddInfo(Translation.Instance.ChatWindow_VoiceChatInviteNotSupported);
+                    return;
+                }
                 chatTextBox.AddVoiceChatReceivedRequest(invitation, PrimaryBuddy.DisplayName, MainWindow.Instance.IsVoiceChatActive);
                 voiceController.VoiceChatContext = invitation;
                 invitation.Dispatcher = Dispatcher;
-                FlashWindow();
             });
             chatStarted = true;
         }
@@ -564,7 +586,7 @@ namespace Squiggle.UI
                 return null;
             }
             else if (!MainWindow.PluginLoader.VoiceChat)
-                throw new InvalidOperationException(); //TODO: show voice chat not available error
+                return null;
 
             AppSession session = chatSession.CreateAppSession();
             IVoiceChat voiceChat = MainWindow.PluginLoader.GetHandler(ChatApps.VoiceChat, f=>f.CreateInvite(session, null)) as IVoiceChat;
@@ -583,7 +605,10 @@ namespace Squiggle.UI
         public void SendFile()
         {
             if (chatSession.IsGroupChat)
+            {
+                chatTextBox.AddError(Translation.Instance.ChatWindow_FileTransferNotAllowedInGroup, String.Empty);
                 return;
+            }
 
             using (var dialog = new System.Windows.Forms.OpenFileDialog())
             {
@@ -602,10 +627,13 @@ namespace Squiggle.UI
         public void SendFile(string filePath)
         {
             if (chatSession.IsGroupChat)
+            {
+                chatTextBox.AddError(Translation.Instance.ChatWindow_FileTransferNotAllowedInGroup, String.Empty);
                 return;
+            }
 
             if (!MainWindow.PluginLoader.FileTransfer)
-                return; // TODO:show file transfer not available error
+                return;
 
             if (File.Exists(filePath))
             {
@@ -867,7 +895,9 @@ namespace Squiggle.UI
 
         void UpdateGroupChatControls()
         {
-            btnSendFile.IsEnabled = mnuSendFile.IsEnabled = chatSession == null || !chatSession.IsGroupChat;
+            bool singleSession = (chatSession == null || !chatSession.IsGroupChat);
+            btnSendFile.IsEnabled = mnuSendFile.IsEnabled = MainWindow.PluginLoader.FileTransfer && singleSession;
+            voiceController.IsEnabled = MainWindow.PluginLoader.VoiceChat && singleSession;
         }
 
         private void Window_Activated(object sender, EventArgs e)
