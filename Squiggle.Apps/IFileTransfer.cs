@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using Squiggle.Core.Chat;
 
-namespace Squiggle.Chat.Apps.FileTransfer
+namespace Squiggle.Apps
 {
     public interface IFileTransfer: IAppHandler
     {

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Squiggle.Core.Presence;
-using Squiggle.Chat.Apps.Voice;
 
 namespace Squiggle.Chat
 {

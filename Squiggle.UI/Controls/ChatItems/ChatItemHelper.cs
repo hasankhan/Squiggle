@@ -5,8 +5,7 @@ using System.Text;
 using Squiggle.Chat;
 using Squiggle.UI.Controls;
 using Squiggle.UI.Controls.ChatItems;
-using Squiggle.Chat.Apps.Voice;
-using Squiggle.Chat.Apps.FileTransfer;
+using Squiggle.Apps;
 
 namespace Squiggle.UI
 {

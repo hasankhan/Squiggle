@@ -6,11 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
-using System.Windows.Threading;
 using Squiggle.Utilities;
 using Squiggle.Core.Chat;
 
-namespace Squiggle.Chat.Apps.FileTransfer
+namespace Squiggle.Apps.FileTransfer
 {
     class FileTransfer: AppHandler, IFileTransfer
     {
@@ -24,7 +23,6 @@ namespace Squiggle.Chat.Apps.FileTransfer
         {
             get { return ChatApps.FileTransfer; }
         }
-
 
         public FileTransfer(AppSession session, string name, long size, Stream content)
             :base(session)

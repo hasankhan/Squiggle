@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Threading;
 using Squiggle.Core.Chat;
 
-namespace Squiggle.Chat.Apps.Voice
+namespace Squiggle.Apps
 {
     public interface IVoiceChat: IAppHandler
     {

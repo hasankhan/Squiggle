@@ -16,6 +16,7 @@ namespace Squiggle.Core.Chat
         event EventHandler<ProgressChangedEventArgs> ProgressChanged;
         event EventHandler<ErrorEventArgs> Error;
         Guid AppId { get; }
+        void Start();
         void Cancel();
     }
 }

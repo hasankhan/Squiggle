@@ -69,9 +69,6 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NAudio, Version=1.5.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\Libraries\NAudio\NAudio.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -101,25 +98,14 @@
     <Compile Include="..\Shared\AssemblyInfo.Version.cs">
       <Link>Properties\AssemblyInfo.VersionSafe.cs</Link>
     </Compile>
-    <Compile Include="Apps\FileTransfer\FileInviteData.cs" />
-    <Compile Include="Apps\FileTransfer\FileTransfer.cs" />
-    <Compile Include="Apps\FileTransfer\IFileTransfer.cs" />
-    <Compile Include="Apps\Voice\AcmChatCodec.cs" />
-    <Compile Include="Apps\Voice\EchoFilter.cs" />
-    <Compile Include="Apps\Voice\EchoFilterWaveProvider.cs" />
-    <Compile Include="Apps\Voice\Gsm610ChatCodec.cs" />
-    <Compile Include="Apps\Voice\IVoiceChat.cs" />
-    <Compile Include="Apps\Voice\VoiceChat.cs" />
     <Compile Include="BroadcastChat.cs" />
     <Compile Include="Buddy.cs" />
     <Compile Include="BuddyList.cs" />
     <Compile Include="BuddyEventArgs.cs" />
     <Compile Include="Chat.cs" />
-    <Compile Include="Apps\ChatApps.cs" />
     <Compile Include="ChatClient.cs" />
     <Compile Include="ActionQueue.cs" />
     <Compile Include="ChatBuddies.cs" />
-    <Compile Include="FileTransferCollection.cs" />
     <Compile Include="IChat.cs" />
     <Compile Include="IChatClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -137,22 +123,6 @@
       <Project>{8B57850B-FA7F-4F96-A4A0-BF81BF24E710}</Project>
       <Name>Squiggle.Utilities</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Libraries\Speex\libspeex-license.txt">
-      <Link>libspeex-license.txt</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Libraries\Speex\libspeexdsp.dll">
-      <Link>libspeexdsp.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Libraries\NAudio\NAudio-license.txt">
-      <Link>NAudio-license.txt</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

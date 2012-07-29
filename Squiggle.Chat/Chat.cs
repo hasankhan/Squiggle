@@ -12,9 +12,6 @@ using Squiggle.Core.Chat;
 using Squiggle.History;
 using Squiggle.History.DAL;
 using Squiggle.Utilities;
-using Squiggle.Chat.Apps;
-using Squiggle.Chat.Apps.FileTransfer;
-using Squiggle.Chat.Apps.Voice;
 
 namespace Squiggle.Chat
 {    
@@ -62,8 +59,7 @@ namespace Squiggle.Chat
         public event EventHandler<BuddyEventArgs> BuddyLeft = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyTyping = delegate { };
         public event EventHandler<BuddyEventArgs> BuzzReceived = delegate { };
-        public event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived = delegate { };
-        public event EventHandler<VoiceChatInviteEventArgs> VoiceChatInvitationReceived = delegate { };
+        public event EventHandler<AppInvitationReceivedEventArgs> AppInvitationReceived = delegate { };
         public event EventHandler GroupChatStarted = delegate { };
 
         public void SendMessage(string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
@@ -101,37 +97,13 @@ namespace Squiggle.Chat
             });
         }
 
-        public IFileTransfer SendFile(string name, Stream content)
+        public AppSession CreateAppSession()
         {
             if (IsGroupChat)
-                throw new InvalidOperationException("Can not send a file in a group chat session.");
+                throw new InvalidOperationException("Can not start app session in group chat.");
 
-            return ExceptionMonster.EatTheException(() =>
-            {
-                LogHistory(EventType.Transfer, self, name);
-
-                AppSession appSession = session.CreateAppSession();
-                var transfer = new FileTransfer(appSession, name, content.Length, content);
-                transfer.Start();
-                return transfer;
-            }, "sending file request");
-        }
-
-        public IVoiceChat StartVoiceChat(Dispatcher dispatcher)
-        {
-            if (IsGroupChat)
-                throw new InvalidOperationException("Can not start voice chat in group chat session.");
-
-            return ExceptionMonster.EatTheException(() =>
-            {
-                LogHistory(EventType.Voice, self);
-
-                AppSession appSession = session.CreateAppSession();
-                var voiceChat = new VoiceChat(appSession) { Dispatcher = dispatcher };
-                voiceChat.Start();
-                return voiceChat;
-            }, "sending voice chat invite");
-        }
+            return session.CreateAppSession();
+        }        
 
         public void Leave()
         {
@@ -158,36 +130,20 @@ namespace Squiggle.Chat
             GroupChatStarted(this, EventArgs.Empty);
         }
 
-        void OnFileTransferInvite(AppInivteReceivedEventArgs e)
-        {
-            Buddy buddy;
-            if (buddies.TryGet(e.Sender.ClientID, out buddy))
-            {
-                var inviteData = new FileInviteData(e.Metadata);
-                IFileTransfer invitation = new FileTransfer(e.Session, inviteData.Name, inviteData.Size);
-                TransferInvitationReceived(this, new FileTransferInviteEventArgs() { Sender = buddy, Invitation = invitation });
-                LogHistory(EventType.Transfer, buddy);
-            }
-        }
-
-
-        void OnVoiceChatInvite(AppInivteReceivedEventArgs e)
-        {
-            Buddy buddy;
-            if (buddies.TryGet(e.Sender.ClientID, out buddy))
-            {
-                var invitation = new VoiceChat(e.Session);
-                VoiceChatInvitationReceived(this, new VoiceChatInviteEventArgs() { Sender = buddy, Invitation = invitation });
-                LogHistory(EventType.Voice, buddy);
-            }
-        }
-
         void session_AppInviteReceived(object sender, AppInivteReceivedEventArgs e)
         {
-            if (e.AppId == ChatApps.FileTransfer)
-                OnFileTransferInvite(e);
-            else if (e.AppId == ChatApps.VoiceChat)
-                OnVoiceChatInvite(e);
+            Buddy buddy;
+            if (buddies.TryGet(e.Sender.ClientID, out buddy))
+            {
+                var args = new AppInvitationReceivedEventArgs(buddy)
+                {
+                    Session = e.Session,
+                    AppId = e.AppId,
+                    Metadata = e.Metadata
+                };
+                AppInvitationReceived(this, args);
+                LogHistory(EventType.App, buddy);
+            }
         }  
 
         void session_BuzzReceived(object sender, Squiggle.Core.Chat.Transport.Host.SessionEventArgs e)

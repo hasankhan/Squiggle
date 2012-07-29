@@ -11,7 +11,6 @@ namespace Squiggle.History.DAL
         Buzz,
         Joined,
         Left,
-        Transfer,
-        Voice,
+        App
     }
 }

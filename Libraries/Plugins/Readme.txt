@@ -1,0 +1,1 @@
+This is where plugins shipped with Squiggle are kept.

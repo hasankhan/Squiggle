@@ -21,8 +21,8 @@ using Squiggle.UI.Settings;
 using Squiggle.UI.StickyWindows;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
-using Squiggle.Chat.Apps.Voice;
-using Squiggle.Chat.Apps.FileTransfer;
+using Squiggle.Apps;
+using Squiggle.Core.Chat;
 
 namespace Squiggle.UI
 {
@@ -155,8 +155,7 @@ namespace Squiggle.UI
             chatSession.BuddyLeft += new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
             chatSession.MessageFailed += new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
             chatSession.BuddyTyping += new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
-            chatSession.TransferInvitationReceived += new EventHandler<FileTransferInviteEventArgs>(chatSession_TransferInvitationReceived);
-            chatSession.VoiceChatInvitationReceived += new EventHandler<VoiceChatInviteEventArgs>(chatSession_VoiceChatInvitationReceived);
+            chatSession.AppInvitationReceived += new EventHandler<AppInvitationReceivedEventArgs>(chatSession_AppInvitationReceived);
             chatSession.GroupChatStarted += new EventHandler(chatSession_GroupChatStarted);
             txtMessageEditBox.Enabled = true;
             mnuInviteContact.IsEnabled = !IsBroadcastChat;
@@ -274,16 +273,10 @@ namespace Squiggle.UI
             DeferIfNotLoaded(OnGroupChatStarted);
         }
 
-        void chatSession_TransferInvitationReceived(object sender, FileTransferInviteEventArgs e)
+        void chatSession_AppInvitationReceived(object sender, AppInvitationReceivedEventArgs e)
         {
-            DeferIfNotLoaded(() => OnTransferInvite(e));
-        }
-
-
-        void chatSession_VoiceChatInvitationReceived(object sender, VoiceChatInviteEventArgs e)
-        {
-            DeferIfNotLoaded(() => OnVoiceInvite(e));
-        }
+            DeferIfNotLoaded(() => OnAppInvite(e));
+        }        
 
         void chatSession_BuzzReceived(object sender, BuddyEventArgs e)
         {
@@ -339,6 +332,15 @@ namespace Squiggle.UI
                     buddyOfflineMessage.Visibility = Visibility.Visible;
                 }
             });
+        }
+
+        void OnAppInvite(AppInvitationReceivedEventArgs e)
+        {
+            IAppHandler handler = MainWindow.PluginLoader.GetHandler(e.AppId, f => f.FromInvite(e.Session, e.Metadata));
+            if (handler is IVoiceChat)
+                OnVoiceInvite((IVoiceChat)handler);
+            else if (handler is IFileTransfer)
+                OnTransferInvite((IFileTransfer)handler);
         }
 
         void OnBuddyTyping(BuddyEventArgs e)
@@ -479,25 +481,25 @@ namespace Squiggle.UI
             });
         }
 
-        void OnTransferInvite(FileTransferInviteEventArgs e)
+        void OnTransferInvite(IFileTransfer invitation)
         {
             Dispatcher.Invoke(() =>
             {
                 string downloadsFolder = SettingsProvider.Current.Settings.GeneralSettings.DownloadsFolder;
-                chatTextBox.AddFileReceiveRequest(e.Invitation, downloadsFolder);
-                fileTransfers.Add(e.Invitation);
+                chatTextBox.AddFileReceiveRequest(invitation, downloadsFolder);
+                fileTransfers.Add(invitation);
                 FlashWindow();
             });
             chatStarted = true;
         }
 
-        void OnVoiceInvite(VoiceChatInviteEventArgs e)
+        void OnVoiceInvite(IVoiceChat invitation)
         {
             Dispatcher.Invoke(() =>
             {
-                chatTextBox.AddVoiceChatReceivedRequest(e.Invitation, e.Sender.DisplayName, MainWindow.Instance.IsVoiceChatActive);
-                voiceController.VoiceChatContext = e.Invitation;
-                e.Invitation.Dispatcher = Dispatcher;
+                chatTextBox.AddVoiceChatReceivedRequest(invitation, PrimaryBuddy.DisplayName, MainWindow.Instance.IsVoiceChatActive);
+                voiceController.VoiceChatContext = invitation;
+                invitation.Dispatcher = Dispatcher;
                 FlashWindow();
             });
             chatStarted = true;
@@ -561,13 +563,20 @@ namespace Squiggle.UI
                 chatTextBox.AddError(Translation.Instance.ChatWindow_AlreadyInVoiceChat, String.Empty);
                 return null;
             }
+            else if (!MainWindow.PluginLoader.VoiceChat)
+                throw new InvalidOperationException(); //TODO: show voice chat not available error
 
-            IVoiceChat voiceChat = chatSession.StartVoiceChat(Dispatcher);
+            AppSession session = chatSession.CreateAppSession();
+            IVoiceChat voiceChat = MainWindow.PluginLoader.GetHandler(ChatApps.VoiceChat, f=>f.CreateInvite(session, null)) as IVoiceChat;
+
             if (voiceChat != null)
+            {
+                voiceChat.Dispatcher = Dispatcher;
+                voiceChat.Start();
                 chatTextBox.AddVoiceChatSentRequest(voiceChat, PrimaryBuddy.DisplayName);
+                chatStarted = true;
+            }
             
-            chatStarted = true;
-
             return voiceChat;
         }
 
@@ -595,6 +604,9 @@ namespace Squiggle.UI
             if (chatSession.IsGroupChat)
                 return;
 
+            if (!MainWindow.PluginLoader.FileTransfer)
+                return; // TODO:show file transfer not available error
+
             if (File.Exists(filePath))
             {
                 string fileName = Path.GetFileName(filePath);
@@ -609,10 +621,15 @@ namespace Squiggle.UI
                     return;
                 }
 
-                IFileTransfer fileTransfer = chatSession.SendFile(fileName, fileStream);
+                AppSession session = chatSession.CreateAppSession();
+                var args = new Dictionary<string, object>(){ { "name", fileName}, {"content", fileStream}, {"size", fileStream.Length}};
+                IFileTransfer fileTransfer = MainWindow.PluginLoader.GetHandler(ChatApps.FileTransfer, f=>f.CreateInvite(session, args)) as IFileTransfer;
+                if (fileTransfer == null)
+                    return;
+
+                fileTransfer.Start();
                 fileTransfers.Add(fileTransfer);
-                if (fileTransfer != null)
-                    chatTextBox.AddFileSentRequest(fileTransfer);
+                chatTextBox.AddFileSentRequest(fileTransfer);
 
                 chatStarted = true;
             }
@@ -690,7 +707,7 @@ namespace Squiggle.UI
                 chatSession.BuddyLeft -= new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
                 chatSession.MessageFailed -= new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
                 chatSession.BuddyTyping -= new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
-                chatSession.TransferInvitationReceived -= new EventHandler<FileTransferInviteEventArgs>(chatSession_TransferInvitationReceived);
+                chatSession.AppInvitationReceived -= new EventHandler<AppInvitationReceivedEventArgs>(chatSession_AppInvitationReceived);
                 chatSession.GroupChatStarted -= new EventHandler(chatSession_GroupChatStarted);
                 chatSession.Leave();
                 chatSession = null;

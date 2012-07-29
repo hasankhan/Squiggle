@@ -24,7 +24,9 @@ using Squiggle.UI.ViewModel;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 using Squiggle.Utilities.Net;
-using Squiggle.Chat.Apps.Voice;
+using Squiggle.Apps;
+using System.ComponentModel.Composition.Hosting;
+using System.IO;
 
 namespace Squiggle.UI
 {
@@ -41,7 +43,9 @@ namespace Squiggle.UI
         ManualResetEvent clientAvailable = new ManualResetEvent(true);
         IdleStatusChanger idleStatusChanger;
 
-        public static MainWindow Instance { get; private set; }
+        internal static MainWindow Instance { get; private set; }
+        internal static PluginLoader PluginLoader { get; private set; }
+
         public IChatClient ChatClient { get; private set; }
         public IVoiceChat ActiveVoiceChat { get; set; }
         public bool IsVoiceChatActive
@@ -55,6 +59,8 @@ namespace Squiggle.UI
         {
             Instance = this;
             InitializeComponent();
+
+            PluginLoader = new PluginLoader(new DirectoryCatalog(Path.Combine(AppInfo.Location, "Plugins")));
 
             this.Height = Properties.Settings.Default.MainWindowHeight;
             this.Width = Properties.Settings.Default.MainWindowWidth;

@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Threading;
-using Squiggle.Chat.Apps.FileTransfer;
-using Squiggle.Chat.Apps.Voice;
+using Squiggle.Core.Chat;
 
 namespace Squiggle.Chat
 {
@@ -63,8 +62,7 @@ namespace Squiggle.Chat
         public event EventHandler<BuddyEventArgs> BuzzReceived = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyTyping = delegate { };
         public event EventHandler<MessageFailedEventArgs> MessageFailed = delegate { };
-        public event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived = delegate { };
-        public event EventHandler<VoiceChatInviteEventArgs> VoiceChatInvitationReceived = delegate { };
+        public event EventHandler<AppInvitationReceivedEventArgs> AppInvitationReceived = delegate { };
         public event EventHandler GroupChatStarted = delegate { };
 
         public void NotifyTyping()
@@ -85,14 +83,9 @@ namespace Squiggle.Chat
                 chatSessions.ForEach(s => s.SendMessage(fontName, fontSize, color, style, message));
         }
 
-        public IFileTransfer SendFile(string name, System.IO.Stream content)
+        public AppSession CreateAppSession()
         {
-            throw new InvalidOperationException("Can not send a file in a broadcast chat session.");
-        }
-
-        public IVoiceChat StartVoiceChat(Dispatcher dispatcher)
-        {
-            throw new InvalidOperationException("Can not start voice chat in a broadcast chat session.");
+            throw new InvalidOperationException("Can not start app session in broadcast chat.");
         }
 
         public void Leave()
@@ -103,7 +96,7 @@ namespace Squiggle.Chat
 
         public void Invite(Buddy buddy)
         {
-            throw new InvalidOperationException("Can not invite buddies in a broadcast chat session.");
+            throw new InvalidOperationException("Can not invite buddies in a broadcast chat.");
         }
 
         public void AddSession(IChat session)

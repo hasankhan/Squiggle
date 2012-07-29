@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Threading;
-using Squiggle.Chat.Apps.FileTransfer;
-using Squiggle.Chat.Apps.Voice;
+using Squiggle.Core.Chat;
 
 namespace Squiggle.Chat
 {
@@ -24,16 +23,13 @@ namespace Squiggle.Chat
         public Exception Exception { get; set; }
     }
 
-    public class FileTransferInviteEventArgs : EventArgs
+    public class AppInvitationReceivedEventArgs : BuddyEventArgs
     {
-        public Buddy Sender { get; set; }
-        public IFileTransfer Invitation { get; set; }
-    }
+        public Guid AppId { get; set; }
+        public AppSession Session { get; set; }
+        public IDictionary<string, string> Metadata { get; set; }
 
-    public class VoiceChatInviteEventArgs: EventArgs
-    {
-        public Buddy Sender {get; set; }
-        public IVoiceChat Invitation {get; set; }
+        public AppInvitationReceivedEventArgs(Buddy buddy) : base(buddy) { }
     }
 
     public interface IChat
@@ -48,15 +44,13 @@ namespace Squiggle.Chat
         event EventHandler<BuddyEventArgs> BuzzReceived;
         event EventHandler<BuddyEventArgs> BuddyTyping;
         event EventHandler<MessageFailedEventArgs> MessageFailed;
-        event EventHandler<FileTransferInviteEventArgs> TransferInvitationReceived;
-        event EventHandler<VoiceChatInviteEventArgs> VoiceChatInvitationReceived;
+        event EventHandler<AppInvitationReceivedEventArgs> AppInvitationReceived;
         event EventHandler GroupChatStarted;
 
         void NotifyTyping();
         void SendBuzz();
         void SendMessage(string fontName, int fontSize, Color color, FontStyle style, string message);
-        IFileTransfer SendFile(string name, Stream content);
-        IVoiceChat StartVoiceChat(Dispatcher dispatcher);
+        AppSession CreateAppSession();
         void Leave();
 
         void Invite(Buddy buddy);

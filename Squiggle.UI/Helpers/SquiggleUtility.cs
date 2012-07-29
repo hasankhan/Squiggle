@@ -92,7 +92,6 @@ namespace Squiggle.UI.Helpers
             return Enumerable.Empty<Buddy>();
         }
 
-
         public static void ShowAboutDialog(Window owner)
         {
             var about = new About();

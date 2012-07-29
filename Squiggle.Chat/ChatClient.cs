@@ -7,7 +7,6 @@ using Squiggle.Core.Chat;
 using Squiggle.Core.Presence;
 using Squiggle.History;
 using Squiggle.Utilities;
-using Squiggle.Chat.Apps.Voice;
 
 namespace Squiggle.Chat
 {
