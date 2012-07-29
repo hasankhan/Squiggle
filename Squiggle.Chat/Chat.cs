@@ -88,7 +88,7 @@ namespace Squiggle.Chat
         {
             Async.Invoke(() => 
             {
-                L(() => session.NotifyTyping(), "sending typing message");
+                ExceptionMonster.EatTheException(() => session.NotifyTyping(), "sending typing message");
             });
         }
 
@@ -96,7 +96,7 @@ namespace Squiggle.Chat
         {
             Async.Invoke(() =>
             {
-                L(() => session.SendBuzz(), "sending buzz");
+                ExceptionMonster.EatTheException(() => session.SendBuzz(), "sending buzz");
                 LogHistory(EventType.Buzz, self);
             });
         }
@@ -137,7 +137,7 @@ namespace Squiggle.Chat
         {
             Async.Invoke(() =>
             {
-                L(() => session.End(), "leaving chat");
+                ExceptionMonster.EatTheException(() => session.End(), "leaving chat");
                 LogHistory(EventType.Left, self);
             });
         }
@@ -147,7 +147,7 @@ namespace Squiggle.Chat
             Async.Invoke(() =>
             {
                 var endpoint = new SquiggleEndPoint(buddy.Id, buddy.ChatEndPoint);
-                L(() => session.Invite(endpoint), "sending chat invite to " + endpoint);
+                ExceptionMonster.EatTheException(() => session.Invite(endpoint), "sending chat invite to " + endpoint);
             });
         }
 
@@ -262,12 +262,7 @@ namespace Squiggle.Chat
         void DoHistoryAction(Action<HistoryManager> action)
         {
             if (EnableLogging)
-                L(() => action(new HistoryManager()), "logging history.");
-        }
-
-        bool L(Action action, string description)
-        {
-            return ExceptionMonster.EatTheException(action, description);
-        }        
+                ExceptionMonster.EatTheException(() => action(new HistoryManager()), "logging history.");
+        }      
     }
 }
