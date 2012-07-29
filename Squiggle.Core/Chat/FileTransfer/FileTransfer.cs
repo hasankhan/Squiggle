@@ -15,7 +15,6 @@ namespace Squiggle.Core.Chat.FileTransfer
     class FileTransfer: AppHandler, IFileTransfer
     {
         Stream content;
-        string saveToFile;
         string filePath;
 
         public long Size { get; private set; }
@@ -56,7 +55,6 @@ namespace Squiggle.Core.Chat.FileTransfer
 
         protected override void OnAccept()
         {
-            saveToFile = filePath;
             content = File.OpenWrite(filePath);
 
             base.OnAccept();
@@ -65,7 +63,7 @@ namespace Squiggle.Core.Chat.FileTransfer
         protected override void OnTransferCancelled()
         {
             if (!SelfInitiated && content != null)
-                File.Delete(saveToFile);
+                File.Delete(filePath);
 
             base.OnTransferCancelled();
         }
