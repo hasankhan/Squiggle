@@ -44,7 +44,7 @@ namespace Squiggle.Core.Chat
 
         public void Start()
         {
-            session.ChatHost.AppInvitationAccepted += new EventHandler<AppSessionEventArgs>(localHost_AppInvitationAccepted);
+            session.ChatHost.AppInvitationAccepted += new EventHandler<AppSessionEventArgs>(chatHost_AppInvitationAccepted);
             session.ChatHost.AppSessionCancelled += new EventHandler<AppSessionEventArgs>(chatHost_AppSessionCancelled);
             Async.Invoke(() =>
             {
@@ -104,15 +104,6 @@ namespace Squiggle.Core.Chat
             }
         }  
 
-        void chatHost_AppSessionCancelled(object sender, AppSessionEventArgs e)
-        {
-            if (e.AppSessionId == session.Id)
-            {
-                Cancel(false);
-                OnTransferCancelled();
-            }
-        }
-
         void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             OnTransferFinished();
@@ -123,23 +114,6 @@ namespace Squiggle.Core.Chat
                 OnError(e.Error);
             else
                 OnTransferCompleted();
-        }
-
-        protected virtual void OnAccept() { }
- 
-        protected virtual void OnTransferCompleted() 
-        {
-            TransferCompleted(this, EventArgs.Empty);
-        }
-
-        protected void OnError(Exception error)
-        {
-            Error(this, new ErrorEventArgs(error));
-        }
-
-        protected virtual void OnTransferCancelled()
-        {
-            TransferCancelled(this, EventArgs.Empty);
         }
 
         void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -172,6 +146,15 @@ namespace Squiggle.Core.Chat
             session.SendData(chunk, OnError);
         }
 
+        void chatHost_AppSessionCancelled(object sender, AppSessionEventArgs e)
+        {
+            if (e.AppSessionId == session.Id)
+            {
+                Cancel(false);
+                OnTransferCancelled();
+            }
+        }
+
         void chatHost_AppDataReceived(object sender, AppDataReceivedEventArgs e)
         {
             if (e.AppSessionId == session.Id) 
@@ -181,9 +164,7 @@ namespace Squiggle.Core.Chat
             }
         }
 
-        protected abstract void OnDataReceived(byte[] chunk);
-
-        void localHost_AppInvitationAccepted(object sender, AppSessionEventArgs e)
+        void chatHost_AppInvitationAccepted(object sender, AppSessionEventArgs e)
         {
             if (e.AppSessionId == session.Id)
             {
@@ -197,6 +178,25 @@ namespace Squiggle.Core.Chat
             }
         }
 
+        protected virtual void OnAccept() { }
+
+        protected virtual void OnTransferCompleted()
+        {
+            TransferCompleted(this, EventArgs.Empty);
+        }
+
+        protected void OnError(Exception error)
+        {
+            Error(this, new ErrorEventArgs(error));
+        }
+
+        protected virtual void OnTransferCancelled()
+        {
+            TransferCancelled(this, EventArgs.Empty);
+        }
+        
+        protected abstract void OnDataReceived(byte[] chunk);
+
         protected virtual void OnTransferStarted() 
         {
             IsConnected = true;
@@ -208,7 +208,7 @@ namespace Squiggle.Core.Chat
         {
             IsConnected = false;
             session.ChatHost.AppDataReceived -= new EventHandler<AppDataReceivedEventArgs>(chatHost_AppDataReceived);
-            session.ChatHost.AppInvitationAccepted -= new EventHandler<AppSessionEventArgs>(localHost_AppInvitationAccepted);
+            session.ChatHost.AppInvitationAccepted -= new EventHandler<AppSessionEventArgs>(chatHost_AppInvitationAccepted);
             session.ChatHost.AppSessionCancelled -= new EventHandler<AppSessionEventArgs>(chatHost_AppSessionCancelled);
             TransferFinished(this, EventArgs.Empty);
         }
