@@ -9,11 +9,12 @@ using System.Threading;
 using System.Windows.Threading;
 using Squiggle.Core;
 using Squiggle.Core.Chat;
-using Squiggle.Core.Chat.FileTransfer;
-using Squiggle.Core.Chat.Voice;
 using Squiggle.History;
 using Squiggle.History.DAL;
 using Squiggle.Utilities;
+using Squiggle.Chat.Apps;
+using Squiggle.Chat.Apps.FileTransfer;
+using Squiggle.Chat.Apps.Voice;
 
 namespace Squiggle.Chat
 {    
@@ -38,9 +39,8 @@ namespace Squiggle.Chat
             session.MessageReceived += new EventHandler<Squiggle.Core.Chat.Transport.Host.MessageReceivedEventArgs>(session_MessageReceived);
             session.UserTyping += new EventHandler<Squiggle.Core.Chat.Transport.Host.SessionEventArgs>(session_UserTyping);
             session.BuzzReceived += new EventHandler<Squiggle.Core.Chat.Transport.Host.SessionEventArgs>(session_BuzzReceived);
-            session.TransferInvitationReceived += new EventHandler<Squiggle.Core.Chat.FileTransferInviteEventArgs>(session_TransferInvitationReceived);
-            session.VoiceChatInvitationReceived += new EventHandler<VoiceChatInvitationReceivedEventArgs>(session_VoiceChatInvitationReceived);
-        }        
+            session.AppInviteReceived += new EventHandler<AppInivteReceivedEventArgs>(session_AppInviteReceived);
+        }             
 
         #region IChat Members
 
@@ -108,8 +108,11 @@ namespace Squiggle.Chat
 
             return ExceptionMonster.EatTheException(() =>
             {
-                var transfer = session.SendFile(name, content);
                 LogHistory(EventType.Transfer, self, name);
+
+                AppSession appSession = session.CreateAppSession();
+                var transfer = new FileTransfer(appSession, name, content.Length, content);
+                transfer.Start();
                 return transfer;
             }, "sending file request");
         }
@@ -121,9 +124,12 @@ namespace Squiggle.Chat
 
             return ExceptionMonster.EatTheException(() =>
             {
-                var chat = session.StartVoiceChat(dispatcher);
                 LogHistory(EventType.Voice, self);
-                return chat;
+
+                AppSession appSession = session.CreateAppSession();
+                var voiceChat = new VoiceChat(appSession) { Dispatcher = dispatcher };
+                voiceChat.Start();
+                return voiceChat;
             }, "sending voice chat invite");
         }
 
@@ -152,26 +158,37 @@ namespace Squiggle.Chat
             GroupChatStarted(this, EventArgs.Empty);
         }
 
-        void session_TransferInvitationReceived(object sender, Squiggle.Core.Chat.FileTransferInviteEventArgs e)
+        void OnFileTransferInvite(AppInivteReceivedEventArgs e)
         {
             Buddy buddy;
             if (buddies.TryGet(e.Sender.ClientID, out buddy))
             {
-                TransferInvitationReceived(this, new FileTransferInviteEventArgs() { Sender = buddy, Invitation = e.Invitation });
+                var inviteData = new FileInviteData(e.Metadata);
+                IFileTransfer invitation = new FileTransfer(e.Session, inviteData.Name, inviteData.Size);
+                TransferInvitationReceived(this, new FileTransferInviteEventArgs() { Sender = buddy, Invitation = invitation });
                 LogHistory(EventType.Transfer, buddy);
             }
         }
 
 
-        void session_VoiceChatInvitationReceived(object sender, VoiceChatInvitationReceivedEventArgs e)
+        void OnVoiceChatInvite(AppInivteReceivedEventArgs e)
         {
             Buddy buddy;
             if (buddies.TryGet(e.Sender.ClientID, out buddy))
             {
-                VoiceChatInvitationReceived(this, new VoiceChatInviteEventArgs() { Sender = buddy, Invitation = e.Invitation });
+                var invitation = new VoiceChat(e.Session);
+                VoiceChatInvitationReceived(this, new VoiceChatInviteEventArgs() { Sender = buddy, Invitation = invitation });
                 LogHistory(EventType.Voice, buddy);
             }
-        }                  
+        }
+
+        void session_AppInviteReceived(object sender, AppInivteReceivedEventArgs e)
+        {
+            if (e.AppId == ChatApps.FileTransfer)
+                OnFileTransferInvite(e);
+            else if (e.AppId == ChatApps.VoiceChat)
+                OnVoiceChatInvite(e);
+        }  
 
         void session_BuzzReceived(object sender, Squiggle.Core.Chat.Transport.Host.SessionEventArgs e)
         {

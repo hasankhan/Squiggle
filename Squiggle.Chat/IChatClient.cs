@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Squiggle.Core.Chat.Voice;
 using Squiggle.Core.Presence;
+using Squiggle.Chat.Apps.Voice;
 
 namespace Squiggle.Chat
 {
@@ -31,7 +31,6 @@ namespace Squiggle.Chat
         Buddy CurrentUser {get; }
         IEnumerable<Buddy> Buddies { get; }
         bool LoggedIn { get; }
-        IVoiceChat ActiveVoiceChat { get; }
 
         IChat StartChat(Buddy buddy);
         void Login(string username, BuddyProperties properties);

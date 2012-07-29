@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Squiggle.Chat;
-using Squiggle.Core.Chat.FileTransfer;
-using Squiggle.Core.Chat.Voice;
 using Squiggle.UI.Controls;
 using Squiggle.UI.Controls.ChatItems;
+using Squiggle.Chat.Apps.Voice;
+using Squiggle.Chat.Apps.FileTransfer;
 
 namespace Squiggle.UI
 {

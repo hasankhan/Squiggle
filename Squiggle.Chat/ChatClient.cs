@@ -4,10 +4,10 @@ using System.Linq;
 using System.Net;
 using Squiggle.Core;
 using Squiggle.Core.Chat;
-using Squiggle.Core.Chat.Voice;
 using Squiggle.Core.Presence;
 using Squiggle.History;
 using Squiggle.Utilities;
+using Squiggle.Chat.Apps.Voice;
 
 namespace Squiggle.Chat
 {
@@ -31,10 +31,6 @@ namespace Squiggle.Chat
         }
 
         public bool LoggedIn { get; private set; }
-        public IVoiceChat ActiveVoiceChat
-        {
-            get { return chatService.Coalesce(service => service.Sessions.SelectMany(s => s.AppSessions.OfType<IVoiceChat>()).FirstOrDefault(), null); }
-        }
 
         public bool EnableLogging { get; set; }
 

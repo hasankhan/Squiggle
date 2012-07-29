@@ -12,11 +12,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Squiggle.Chat;
-using Squiggle.Core.Chat.Voice;
 using Squiggle.UI.Helpers;
 using Squiggle.UI.Resources;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
+using Squiggle.Chat.Apps.Voice;
 
 namespace Squiggle.UI.Controls
 {
@@ -57,6 +57,9 @@ namespace Squiggle.UI.Controls
         {
             Dispatcher.Invoke(() =>
             {
+                if (MainWindow.Instance.ActiveVoiceChat == voiceChat)
+                    MainWindow.Instance.ActiveVoiceChat = null;
+
                 ShowCompleted();
             });
         }
@@ -131,23 +134,25 @@ namespace Squiggle.UI.Controls
 
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.Instance.ChatClient.ActiveVoiceChat != voiceChat)
+            if (MainWindow.Instance.IsVoiceChatActive)
                 return;
+            else
+                MainWindow.Instance.ActiveVoiceChat = voiceChat;
 
             voiceChat.Accept();
             Dispatcher.Invoke(() =>
-                {
-                    ShowAccepted();
-                });
+            {
+                ShowAccepted();
+            });
         }
 
         private void Reject_Click(object sender, RoutedEventArgs e)
         {
             voiceChat.Cancel();
             Dispatcher.Invoke(() =>
-                {
-                    ShowCancelled();
-                });
+            {
+                ShowCancelled();
+            });
         }
 
         private void Finished_Click(object sender, RoutedEventArgs e)

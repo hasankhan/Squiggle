@@ -4,24 +4,18 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Threading;
 using Squiggle.Core.Chat.Transport.Host;
 using Squiggle.Utilities;
 
 namespace Squiggle.Core.Chat
 {
-    abstract class AppHandler: IAppHandler
+    public abstract class AppHandler: IAppHandler
     {
-        SquiggleEndPoint localUser;
-        SquiggleEndPoint remoteUser;
-        Guid appSessionId;
-        ChatHost chatHost;
         BackgroundWorker worker;
-        Guid sessionId;
+        AppSession session;
 
         protected const int bufferSize = 32768; // 32KB
 
-        protected bool SelfInitiated { get; private set; }
         protected long BytesReceived { get; private set; }
         protected bool SelfCancelled { get; private set; }
         public bool IsConnected { get; private set; }
@@ -35,35 +29,27 @@ namespace Squiggle.Core.Chat
 
         public abstract Guid AppId { get; }
 
-        protected AppHandler(Guid sessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser)
+        protected bool SelfInitiated
         {
-            this.sessionId = sessionId;
-            this.chatHost = chatHost;
-            this.localUser = localUser;
-            this.remoteUser = remoteUser;
-            appSessionId = Guid.NewGuid();
-            SelfInitiated = true;
+            get { return session.SelfInitiated; }
         }
 
-        protected AppHandler(Guid sessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, Guid appSessionId)
+        protected AppHandler(AppSession session)
         {
-            this.sessionId = sessionId;
-            this.chatHost = chatHost;
-            this.localUser = localUser;
-            this.remoteUser = remoteUser;
-            this.appSessionId = appSessionId;
-            SelfInitiated = false;
-            chatHost.AppSessionCancelled += new EventHandler<AppSessionEventArgs>(localHost_AppSessionCancelled);
+            this.session = session;
+
+            if (!session.SelfInitiated)
+                session.ChatHost.AppSessionCancelled += new EventHandler<AppSessionEventArgs>(chatHost_AppSessionCancelled);
         }
 
         public void Start()
         {
-            chatHost.AppInvitationAccepted += new EventHandler<AppSessionEventArgs>(localHost_AppInvitationAccepted);
-            chatHost.AppSessionCancelled += new EventHandler<AppSessionEventArgs>(localHost_AppSessionCancelled);
+            session.ChatHost.AppInvitationAccepted += new EventHandler<AppSessionEventArgs>(localHost_AppInvitationAccepted);
+            session.ChatHost.AppSessionCancelled += new EventHandler<AppSessionEventArgs>(chatHost_AppSessionCancelled);
             Async.Invoke(() =>
             {
-                IEnumerable<KeyValuePair<string, string>> data = CreateInviteMetadata();
-                bool success = ExceptionMonster.EatTheException(() => this.chatHost.ReceiveAppInvite(sessionId, localUser, remoteUser, AppId, appSessionId, data), "Sending app invite to " + remoteUser.ToString());
+                IEnumerable<KeyValuePair<string, string>> metadata = CreateInviteMetadata();
+                bool success = session.SendInvite(AppId, metadata);
                 if (!success)
                 {
                     OnTransferFinished();
@@ -72,18 +58,20 @@ namespace Squiggle.Core.Chat
             });
         }
 
+        public void Cancel()
+        {
+            Cancel(true);
+        }
+
         protected abstract IEnumerable<KeyValuePair<string, string>> CreateInviteMetadata();
 
         protected void Accept()
         {
-            if (SelfInitiated)
+            if (session.SelfInitiated)
                 throw new InvalidOperationException("This operation is only valid in context of an invitation.");
 
-            bool success = ExceptionMonster.EatTheException(() =>
-            {
-                OnAccept();
-                chatHost.AcceptAppInvite(appSessionId, localUser, remoteUser);
-            }, "accepting app invite from " + remoteUser);
+            OnAccept();
+            bool success = session.Accept();
 
             if (success)
                 OnTransferStarted();
@@ -92,13 +80,6 @@ namespace Squiggle.Core.Chat
                 OnTransferFinished();
                 OnError(new OperationFailedException());
             }
-        }
-
-        protected virtual void OnAccept() { }
-
-        public void Cancel()
-        {
-            Cancel(true);
         }
 
         protected void CompleteTransfer()
@@ -112,9 +93,9 @@ namespace Squiggle.Core.Chat
             SelfCancelled = selfCancel;
 
             if (selfCancel)
-                ExceptionMonster.EatTheException(() => this.chatHost.CancelAppSession(appSessionId, localUser, remoteUser), "cancelling file transfer with user" + remoteUser);
+                session.Cancel();
 
-            if (SelfInitiated && worker != null)
+            if (session.SelfInitiated && worker != null)
                 worker.CancelAsync();
             else
             {
@@ -123,9 +104,9 @@ namespace Squiggle.Core.Chat
             }
         }  
 
-        void localHost_AppSessionCancelled(object sender, AppSessionEventArgs e)
+        void chatHost_AppSessionCancelled(object sender, AppSessionEventArgs e)
         {
-            if (e.AppSessionId == appSessionId)
+            if (e.AppSessionId == session.Id)
             {
                 Cancel(false);
                 OnTransferCancelled();
@@ -144,6 +125,8 @@ namespace Squiggle.Core.Chat
                 OnTransferCompleted();
         }
 
+        protected virtual void OnAccept() { }
+ 
         protected virtual void OnTransferCompleted() 
         {
             TransferCompleted(this, EventArgs.Empty);
@@ -186,17 +169,12 @@ namespace Squiggle.Core.Chat
             if (!IsConnected)
                 return;
 
-            Exception ex;
-            if (!ExceptionMonster.EatTheException(() =>
-                {
-                    chatHost.ReceiveAppData(appSessionId, localUser, remoteUser, chunk);
-                }, "sending data to " + remoteUser.ToString(), out ex))
-                OnError(ex);
+            session.SendData(chunk, OnError);
         }
 
-        void localHost_AppDataReceived(object sender, AppDataReceivedEventArgs e)
+        void chatHost_AppDataReceived(object sender, AppDataReceivedEventArgs e)
         {
-            if (e.AppSessionId == appSessionId) 
+            if (e.AppSessionId == session.Id) 
             {
                 BytesReceived += e.Chunk.Length;
                 OnDataReceived(e.Chunk);
@@ -207,7 +185,7 @@ namespace Squiggle.Core.Chat
 
         void localHost_AppInvitationAccepted(object sender, AppSessionEventArgs e)
         {
-            if (e.AppSessionId == appSessionId)
+            if (e.AppSessionId == session.Id)
             {
                 worker = new BackgroundWorker();
                 worker.WorkerReportsProgress = true;
@@ -222,16 +200,16 @@ namespace Squiggle.Core.Chat
         protected virtual void OnTransferStarted() 
         {
             IsConnected = true;
-            chatHost.AppDataReceived += new EventHandler<AppDataReceivedEventArgs>(localHost_AppDataReceived);
+            session.ChatHost.AppDataReceived += new EventHandler<AppDataReceivedEventArgs>(chatHost_AppDataReceived);
             TransferStarted(this, EventArgs.Empty);
         }
 
         protected virtual void OnTransferFinished()
         {
             IsConnected = false;
-            chatHost.AppDataReceived -= new EventHandler<AppDataReceivedEventArgs>(localHost_AppDataReceived);
-            chatHost.AppInvitationAccepted -= new EventHandler<AppSessionEventArgs>(localHost_AppInvitationAccepted);
-            chatHost.AppSessionCancelled -= new EventHandler<AppSessionEventArgs>(localHost_AppSessionCancelled);
+            session.ChatHost.AppDataReceived -= new EventHandler<AppDataReceivedEventArgs>(chatHost_AppDataReceived);
+            session.ChatHost.AppInvitationAccepted -= new EventHandler<AppSessionEventArgs>(localHost_AppInvitationAccepted);
+            session.ChatHost.AppSessionCancelled -= new EventHandler<AppSessionEventArgs>(chatHost_AppSessionCancelled);
             TransferFinished(this, EventArgs.Empty);
         }
 

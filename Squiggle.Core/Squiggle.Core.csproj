@@ -46,9 +46,6 @@
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NAudio">
-      <HintPath>..\Libraries\NAudio\NAudio.dll</HintPath>
-    </Reference>
     <Reference Include="protobuf-net">
       <HintPath>..\Libraries\Protobuf-net\protobuf-net.dll</HintPath>
     </Reference>
@@ -62,9 +59,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Chat\AppSession.cs" />
+    <Compile Include="Chat\IAppHandler.cs" />
     <Compile Include="Chat\Transport\Host\ChatHostExtensions.cs" />
     <Compile Include="Chat\Transport\Message.cs" />
     <Compile Include="Chat\Transport\Messages\AppCancelMessage.cs" />
@@ -96,25 +94,13 @@
     <Compile Include="..\Shared\AssemblyInfo.Version.cs">
       <Link>Properties\AssemblyInfo.VersionSafe.cs</Link>
     </Compile>
-    <Compile Include="Chat\Voice\IVoiceChat.cs" />
-    <Compile Include="Chat\FileTransfer\IFileTransfer.cs" />
     <Compile Include="OperationFailedException.cs" />
     <Compile Include="Presence\BuddyProperties.cs" />
-    <Compile Include="ChatApps.cs" />
     <Compile Include="Chat\AppHandler.cs" />
-    <Compile Include="Chat\Voice\AcmChatCodec.cs" />
-    <Compile Include="Chat\Voice\EchoFilter.cs" />
-    <Compile Include="Chat\Voice\EchoFilterWaveProvider.cs" />
-    <Compile Include="Chat\Voice\Gsm610ChatCodec.cs" />
-    <Compile Include="Chat\Voice\VoiceChat.cs" />
-    <Compile Include="Chat\ChatExtensions.cs" />
     <Compile Include="Chat\ChatService.cs" />
     <Compile Include="Chat\ChatSession.cs" />
     <Compile Include="Chat\ChatSessionCollection.cs" />
-    <Compile Include="Chat\FileTransfer\FileInviteData.cs" />
-    <Compile Include="Chat\FileTransfer\FileTransfer.cs" />
     <Compile Include="Chat\Transport\Host\ChatHost.cs" />
-    <Compile Include="Chat\IAppHandler.cs" />
     <Compile Include="Chat\IChatService.cs" />
     <Compile Include="Chat\IChatSession.cs" />
     <Compile Include="DefaultValues.cs" />

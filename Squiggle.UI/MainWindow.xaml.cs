@@ -24,6 +24,7 @@ using Squiggle.UI.ViewModel;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 using Squiggle.Utilities.Net;
+using Squiggle.Chat.Apps.Voice;
 
 namespace Squiggle.UI
 {
@@ -42,6 +43,11 @@ namespace Squiggle.UI
 
         public static MainWindow Instance { get; private set; }
         public IChatClient ChatClient { get; private set; }
+        public IVoiceChat ActiveVoiceChat { get; set; }
+        public bool IsVoiceChatActive
+        {
+            get { return ActiveVoiceChat != null; }
+        }
 
         bool exiting;
 

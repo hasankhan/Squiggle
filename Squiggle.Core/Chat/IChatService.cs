@@ -14,7 +14,6 @@ namespace Squiggle.Core.Chat
     {
         void Start();
         void Stop();
-        IEnumerable<IChatSession> Sessions { get; }
         IChatSession CreateSession(SquiggleEndPoint endpoint);
         event EventHandler<ChatStartedEventArgs> ChatStarted;
     }

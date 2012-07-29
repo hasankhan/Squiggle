@@ -11,8 +11,6 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Squiggle.Chat;
-using Squiggle.Core.Chat.FileTransfer;
-using Squiggle.Core.Chat.Voice;
 using Squiggle.UI.Controls;
 using Squiggle.UI.Controls.ChatItems;
 using Squiggle.UI.Helpers;
@@ -23,6 +21,8 @@ using Squiggle.UI.Settings;
 using Squiggle.UI.StickyWindows;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
+using Squiggle.Chat.Apps.Voice;
+using Squiggle.Chat.Apps.FileTransfer;
 
 namespace Squiggle.UI
 {
@@ -495,7 +495,7 @@ namespace Squiggle.UI
         {
             Dispatcher.Invoke(() =>
             {
-                chatTextBox.AddVoiceChatReceivedRequest(e.Invitation, e.Sender.DisplayName, MainWindow.Instance.ChatClient.IsVoiceChatActive());
+                chatTextBox.AddVoiceChatReceivedRequest(e.Invitation, e.Sender.DisplayName, MainWindow.Instance.IsVoiceChatActive);
                 voiceController.VoiceChatContext = e.Invitation;
                 e.Invitation.Dispatcher = Dispatcher;
                 FlashWindow();
@@ -556,7 +556,7 @@ namespace Squiggle.UI
                 chatTextBox.AddError(Translation.Instance.ChatWindow_VoiceChatNotAllowedInGroup, String.Empty);
                 return null;
             }
-            else if (MainWindow.Instance.ChatClient.IsVoiceChatActive())
+            else if (MainWindow.Instance.IsVoiceChatActive)
             {
                 chatTextBox.AddError(Translation.Instance.ChatWindow_AlreadyInVoiceChat, String.Empty);
                 return null;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Documents;
 using Squiggle.Chat;
-using Squiggle.Core.Chat.FileTransfer;
+using Squiggle.Chat.Apps.FileTransfer;
 
 namespace Squiggle.UI.Controls.ChatItems
 {
