@@ -6,7 +6,7 @@ using System.ComponentModel.Composition;
 using Squiggle.Core.Chat;
 using System.IO;
 
-namespace Squiggle.Apps.FileTransfer
+namespace Squiggle.Activities.FileTransfer
 {
     [Export(typeof(IAppHandlerFactory))]
     public class FileTransferFactory: IAppHandlerFactory

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using NAudio.Wave;
 
-namespace Squiggle.Apps.VoiceChat
+namespace Squiggle.Activities.VoiceChat
 {
     class Gsm610ChatCodec : AcmChatCodec
     {

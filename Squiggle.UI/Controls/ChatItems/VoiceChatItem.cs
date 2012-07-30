@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Documents;
 using Squiggle.Chat;
-using Squiggle.Apps;
+using Squiggle.Activities;
 
 namespace Squiggle.UI.Controls.ChatItems
 {

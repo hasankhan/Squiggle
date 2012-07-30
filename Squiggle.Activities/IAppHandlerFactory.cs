@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Squiggle.Core.Chat;
 
-namespace Squiggle.Apps
+namespace Squiggle.Activities
 {
     public interface IAppHandlerFactory
     {

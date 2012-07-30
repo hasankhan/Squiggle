@@ -11,7 +11,7 @@ using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 using Squiggle.Core.Chat;
 
-namespace Squiggle.Apps.VoiceChat
+namespace Squiggle.Activities.VoiceChat
 {
     class VoiceChat: AppHandler, IVoiceChat
     {

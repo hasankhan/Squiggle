@@ -5,7 +5,7 @@ using System.Text;
 using System.ComponentModel.Composition;
 using Squiggle.Core.Chat;
 
-namespace Squiggle.Apps.VoiceChat
+namespace Squiggle.Activities.VoiceChat
 {
     [Export(typeof(IAppHandlerFactory))]
     public class VoiceChatFactory: IAppHandlerFactory

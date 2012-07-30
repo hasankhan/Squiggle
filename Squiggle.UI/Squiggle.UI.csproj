@@ -538,7 +538,7 @@
     <Resource Include="Images\man.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Squiggle.Apps\Squiggle.Apps.csproj">
+    <ProjectReference Include="..\Squiggle.Activities\Squiggle.Activities.csproj">
       <Project>{4B76F79B-8707-4163-AA3E-8307BC93C450}</Project>
       <Name>Squiggle.Apps</Name>
     </ProjectReference>

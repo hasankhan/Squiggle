@@ -24,7 +24,7 @@ using Squiggle.UI.ViewModel;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 using Squiggle.Utilities.Net;
-using Squiggle.Apps;
+using Squiggle.Activities;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Squiggle.Apps.VoiceChat
+namespace Squiggle.Activities.VoiceChat
 {
     class EchoFilter : IDisposable
     {

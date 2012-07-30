@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Squiggle.Apps;
+using Squiggle.Activities;
 
 namespace Squiggle.Chat
 {

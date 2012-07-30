@@ -9,7 +9,7 @@ using System.Threading;
 using Squiggle.Utilities;
 using Squiggle.Core.Chat;
 
-namespace Squiggle.Apps.FileTransfer
+namespace Squiggle.Activities.FileTransfer
 {
     class FileTransfer: AppHandler, IFileTransfer
     {

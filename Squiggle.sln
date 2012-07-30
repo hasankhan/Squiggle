@@ -17,11 +17,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.History", "Squiggl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Core", "Squiggle.Core\Squiggle.Core.csproj", "{CCC71193-64AA-4B92-80C9-7BC688C7FAE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Apps.VoiceChat", "Squiggle.Apps.VoiceChat\Squiggle.Apps.VoiceChat.csproj", "{09F3AAA3-DC48-4D7C-A665-96FDC23136BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Activities.VoiceChat", "Squiggle.Activities.VoiceChat\Squiggle.Activities.VoiceChat.csproj", "{09F3AAA3-DC48-4D7C-A665-96FDC23136BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Apps.FileTransfer", "Squiggle.Apps.FileTransfer\Squiggle.Apps.FileTransfer.csproj", "{D469D96B-8840-4645-B74C-A2B6F1ED78DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Activities.FileTransfer", "Squiggle.Activities.FileTransfer\Squiggle.Activities.FileTransfer.csproj", "{D469D96B-8840-4645-B74C-A2B6F1ED78DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Apps", "Squiggle.Apps\Squiggle.Apps.csproj", "{4B76F79B-8707-4163-AA3E-8307BC93C450}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Activities", "Squiggle.Activities\Squiggle.Activities.csproj", "{4B76F79B-8707-4163-AA3E-8307BC93C450}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
