@@ -6,7 +6,7 @@ using Squiggle.Core.Chat;
 
 namespace Squiggle.Activities
 {
-    public interface IAppHandlerFactory
+    public interface IActivityHandlerFactory
     {
         Guid AppId { get; }
         IAppHandler FromInvite(AppSession session, IDictionary<string, string> metadata);

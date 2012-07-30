@@ -7,12 +7,12 @@ using Squiggle.Core.Chat;
 
 namespace Squiggle.Activities.VoiceChat
 {
-    [Export(typeof(IAppHandlerFactory))]
-    public class VoiceChatFactory: IAppHandlerFactory
+    [Export(typeof(IActivityHandlerFactory))]
+    public class VoiceChatFactory: IActivityHandlerFactory
     {
         public Guid AppId
         {
-            get { return ChatApps.VoiceChat; }
+            get { return SquiggleActivities.VoiceChat; }
         }
 
         public IAppHandler FromInvite(AppSession session, IDictionary<string, string> metadata)

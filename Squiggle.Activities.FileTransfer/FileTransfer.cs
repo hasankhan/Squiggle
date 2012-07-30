@@ -21,7 +21,7 @@ namespace Squiggle.Activities.FileTransfer
 
         public override Guid AppId
         {
-            get { return ChatApps.FileTransfer; }
+            get { return SquiggleActivities.FileTransfer; }
         }
 
         public FileTransfer(AppSession session, string name, long size, Stream content)

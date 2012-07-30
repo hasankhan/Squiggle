@@ -22,7 +22,7 @@ namespace Squiggle.Activities.VoiceChat
 
         public override Guid AppId
         {
-            get { return ChatApps.VoiceChat; }
+            get { return SquiggleActivities.VoiceChat; }
         }
 
         public Dispatcher Dispatcher { get; set; }

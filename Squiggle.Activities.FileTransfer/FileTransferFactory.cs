@@ -8,12 +8,12 @@ using System.IO;
 
 namespace Squiggle.Activities.FileTransfer
 {
-    [Export(typeof(IAppHandlerFactory))]
-    public class FileTransferFactory: IAppHandlerFactory
+    [Export(typeof(IActivityHandlerFactory))]
+    public class FileTransferFactory: IActivityHandlerFactory
     {
         public Guid AppId
         {
-            get { return ChatApps.FileTransfer; }
+            get { return SquiggleActivities.FileTransfer; }
         }
 
         public IAppHandler FromInvite(Core.Chat.AppSession session, IDictionary<string, string> metadata)

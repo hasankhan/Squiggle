@@ -337,9 +337,9 @@ namespace Squiggle.UI
         void OnAppInvite(AppInvitationReceivedEventArgs e)
         {
             IAppHandler handler = MainWindow.PluginLoader.GetHandler(e.AppId, f => f.FromInvite(e.Session, e.Metadata));
-            if (e.AppId == ChatApps.VoiceChat)
+            if (e.AppId == SquiggleActivities.VoiceChat)
                 OnVoiceInvite(handler as IVoiceChat);
-            else if (e.AppId == ChatApps.FileTransfer)
+            else if (e.AppId == SquiggleActivities.FileTransfer)
                 OnTransferInvite(handler as IFileTransfer);
             else
                 OnUnknownAppInvite(handler);
@@ -589,7 +589,7 @@ namespace Squiggle.UI
                 return null;
 
             AppSession session = chatSession.CreateAppSession();
-            IVoiceChat voiceChat = MainWindow.PluginLoader.GetHandler(ChatApps.VoiceChat, f=>f.CreateInvite(session, null)) as IVoiceChat;
+            IVoiceChat voiceChat = MainWindow.PluginLoader.GetHandler(SquiggleActivities.VoiceChat, f=>f.CreateInvite(session, null)) as IVoiceChat;
 
             if (voiceChat != null)
             {
@@ -651,7 +651,7 @@ namespace Squiggle.UI
 
                 AppSession session = chatSession.CreateAppSession();
                 var args = new Dictionary<string, object>(){ { "name", fileName}, {"content", fileStream}, {"size", fileStream.Length}};
-                IFileTransfer fileTransfer = MainWindow.PluginLoader.GetHandler(ChatApps.FileTransfer, f=>f.CreateInvite(session, args)) as IFileTransfer;
+                IFileTransfer fileTransfer = MainWindow.PluginLoader.GetHandler(SquiggleActivities.FileTransfer, f=>f.CreateInvite(session, args)) as IFileTransfer;
                 if (fileTransfer == null)
                     return;
 
