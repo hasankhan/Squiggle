@@ -34,7 +34,7 @@ namespace Squiggle.UI.Resources
         public string ChatWindow_LastMessageAt { get; set; }
         public string ChatWindow_InviteContact { get; set; }
         public string ChatWindow_FileTransferInviteNotSupported { get; set; }
-        public string ChatWindow_UnknownAppInvite { get; set; }
+        public string ChatWindow_UnknownActivityInvite { get; set; }
         public string ChatWindow_VoiceChatInviteNotSupported { get; set; }
         public string ChatWindow_FileTransferNotAllowedInGroup { get; set; }
         public string FileTransfer_Waiting { get; set; }

@@ -130,7 +130,7 @@
     <sys:String x:Key="ChatWindow_VoiceChatNotAllowedInGroup">Voice chat can not be started in group conversation.</sys:String>
     <sys:String x:Key="ChatWindow_FileTransferNotAllowedInGroup">File transfer can not be started in group conversation.</sys:String>
     <sys:String x:Key="ChatWindow_FileTransferInviteNotSupported">You have received invitation for file transfer but your client does not support it.</sys:String>
-    <sys:String x:Key="ChatWindow_UnknownAppInvite">You have received invitation for an app that is not supported.</sys:String>
+    <sys:String x:Key="ChatWindow_UnknownActivityInvite">You have received invitation for an activity that is not supported.</sys:String>
     <sys:String x:Key="ChatWindow_VoiceChatInviteNotSupported">You have received invitation for voice chat but your client does not support it.</sys:String>
     <sys:String x:Key="Popup_NewMessage">New Message</sys:String>
     <sys:String x:Key="ContactList_SearchContacts">Search contacts...</sys:String>

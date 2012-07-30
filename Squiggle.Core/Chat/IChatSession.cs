@@ -7,10 +7,10 @@ using Squiggle.Core.Chat.Transport.Host;
 
 namespace Squiggle.Core.Chat
 {
-    public class AppInivteReceivedEventArgs: EventArgs
+    public class ActivityInivteReceivedEventArgs : EventArgs
     {
         public SquiggleEndPoint Sender { get; set; }
-        public Guid AppId { get; set; }
+        public Guid ActivityId { get; set; }
         public ActivitySession Session {get; set;}
         public IDictionary<string, string> Metadata { get; set; }
     }
@@ -22,7 +22,7 @@ namespace Squiggle.Core.Chat
         event EventHandler<SessionEventArgs> UserTyping;
         event EventHandler<SessionEventArgs> UserJoined;
         event EventHandler<SessionEventArgs> UserLeft;
-        event EventHandler<AppInivteReceivedEventArgs> AppInviteReceived;
+        event EventHandler<ActivityInivteReceivedEventArgs> ActivityInviteReceived;
         event EventHandler GroupChatStarted;
 
         IEnumerable<SquiggleEndPoint> RemoteUsers { get; }
@@ -32,7 +32,7 @@ namespace Squiggle.Core.Chat
         void SendBuzz();
         void SendMessage(string fontName, int fontSize, Color color, FontStyle fontStyle, string message);
         void NotifyTyping();
-        ActivitySession CreateAppSession();
+        ActivitySession CreateActivitySession();
         void End();
         void Invite(SquiggleEndPoint user);
         void UpdateUser(SquiggleEndPoint user);

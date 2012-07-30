@@ -44,13 +44,13 @@ namespace Squiggle.Chat
         event EventHandler<BuddyEventArgs> BuzzReceived;
         event EventHandler<BuddyEventArgs> BuddyTyping;
         event EventHandler<MessageFailedEventArgs> MessageFailed;
-        event EventHandler<ActivityInvitationReceivedEventArgs> AppInvitationReceived;
+        event EventHandler<ActivityInvitationReceivedEventArgs> ActivityInvitationReceived;
         event EventHandler GroupChatStarted;
 
         void NotifyTyping();
         void SendBuzz();
         void SendMessage(string fontName, int fontSize, Color color, FontStyle style, string message);
-        ActivitySession CreateAppSession();
+        ActivitySession CreateActivitySession();
         void Leave();
 
         void Invite(Buddy buddy);

@@ -36,7 +36,7 @@ namespace Squiggle.Chat
             session.MessageReceived += new EventHandler<Squiggle.Core.Chat.Transport.Host.MessageReceivedEventArgs>(session_MessageReceived);
             session.UserTyping += new EventHandler<Squiggle.Core.Chat.Transport.Host.SessionEventArgs>(session_UserTyping);
             session.BuzzReceived += new EventHandler<Squiggle.Core.Chat.Transport.Host.SessionEventArgs>(session_BuzzReceived);
-            session.AppInviteReceived += new EventHandler<AppInivteReceivedEventArgs>(session_AppInviteReceived);
+            session.ActivityInviteReceived += new EventHandler<ActivityInivteReceivedEventArgs>(session_ActivityInviteReceived);
         }             
 
         #region IChat Members
@@ -59,7 +59,7 @@ namespace Squiggle.Chat
         public event EventHandler<BuddyEventArgs> BuddyLeft = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyTyping = delegate { };
         public event EventHandler<BuddyEventArgs> BuzzReceived = delegate { };
-        public event EventHandler<ActivityInvitationReceivedEventArgs> AppInvitationReceived = delegate { };
+        public event EventHandler<ActivityInvitationReceivedEventArgs> ActivityInvitationReceived = delegate { };
         public event EventHandler GroupChatStarted = delegate { };
 
         public void SendMessage(string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
@@ -97,12 +97,12 @@ namespace Squiggle.Chat
             });
         }
 
-        public ActivitySession CreateAppSession()
+        public ActivitySession CreateActivitySession()
         {
             if (IsGroupChat)
-                throw new InvalidOperationException("Can not start app session in group chat.");
+                throw new InvalidOperationException("Can not start activity session in group chat.");
 
-            return session.CreateAppSession();
+            return session.CreateActivitySession();
         }        
 
         public void Leave()
@@ -130,7 +130,7 @@ namespace Squiggle.Chat
             GroupChatStarted(this, EventArgs.Empty);
         }
 
-        void session_AppInviteReceived(object sender, AppInivteReceivedEventArgs e)
+        void session_ActivityInviteReceived(object sender, ActivityInivteReceivedEventArgs e)
         {
             Buddy buddy;
             if (buddies.TryGet(e.Sender.ClientID, out buddy))
@@ -138,11 +138,11 @@ namespace Squiggle.Chat
                 var args = new ActivityInvitationReceivedEventArgs(buddy)
                 {
                     Session = e.Session,
-                    ActivityId = e.AppId,
+                    ActivityId = e.ActivityId,
                     Metadata = e.Metadata
                 };
-                AppInvitationReceived(this, args);
-                LogHistory(EventType.App, buddy);
+                ActivityInvitationReceived(this, args);
+                LogHistory(EventType.Activity, buddy);
             }
         }  
 

@@ -33,9 +33,9 @@ namespace Squiggle.Core.Chat
             return session;
         }
 
-        internal static ActivitySession FromInvite(Guid sessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, Guid appSessionId)
+        internal static ActivitySession FromInvite(Guid sessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, Guid activitySessionId)
         {
-            var session = new ActivitySession(sessionId, chatHost, localUser, remoteUser, appSessionId, false);
+            var session = new ActivitySession(sessionId, chatHost, localUser, remoteUser, activitySessionId, false);
             return session;
         }
 
@@ -44,13 +44,13 @@ namespace Squiggle.Core.Chat
             bool success = ExceptionMonster.EatTheException(() =>
             {
                 ChatHost.AcceptActivityInvite(Id, localUser, remoteUser);
-            }, "accepting app invite from " + remoteUser);
+            }, "accepting activity invite from " + remoteUser);
             return success;
         }
 
         internal void Cancel()
         {
-            ExceptionMonster.EatTheException(() => ChatHost.CancelActivitySession(Id, localUser, remoteUser), "cancelling app session with user" + remoteUser);
+            ExceptionMonster.EatTheException(() => ChatHost.CancelActivitySession(Id, localUser, remoteUser), "cancelling activity session with user" + remoteUser);
         }
 
         internal void SendData(byte[] chunk, Action<Exception> onError)
@@ -63,9 +63,9 @@ namespace Squiggle.Core.Chat
                 onError(ex);
         }
 
-        internal bool SendInvite(Guid appId, IEnumerable<KeyValuePair<string, string>> metadata)
+        internal bool SendInvite(Guid activityId, IEnumerable<KeyValuePair<string, string>> metadata)
         {
-            bool success = ExceptionMonster.EatTheException(() => ChatHost.ReceiveActivityInvite(chatSessionId, localUser, remoteUser, appId, Id, metadata), "Sending app invite to " + remoteUser.ToString());
+            bool success = ExceptionMonster.EatTheException(() => ChatHost.ReceiveActivityInvite(chatSessionId, localUser, remoteUser, activityId, Id, metadata), "Sending app invite to " + remoteUser.ToString());
             return success;
         }
     }

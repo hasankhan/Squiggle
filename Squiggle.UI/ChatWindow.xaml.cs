@@ -155,7 +155,7 @@ namespace Squiggle.UI
             chatSession.BuddyLeft += new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
             chatSession.MessageFailed += new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
             chatSession.BuddyTyping += new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
-            chatSession.AppInvitationReceived += new EventHandler<ActivityInvitationReceivedEventArgs>(chatSession_AppInvitationReceived);
+            chatSession.ActivityInvitationReceived += new EventHandler<ActivityInvitationReceivedEventArgs>(chatSession_ActivityInvitationReceived);
             chatSession.GroupChatStarted += new EventHandler(chatSession_GroupChatStarted);
             txtMessageEditBox.Enabled = true;
             mnuInviteContact.IsEnabled = !IsBroadcastChat;
@@ -273,9 +273,9 @@ namespace Squiggle.UI
             DeferIfNotLoaded(OnGroupChatStarted);
         }
 
-        void chatSession_AppInvitationReceived(object sender, ActivityInvitationReceivedEventArgs e)
+        void chatSession_ActivityInvitationReceived(object sender, ActivityInvitationReceivedEventArgs e)
         {
-            DeferIfNotLoaded(() => OnAppInvite(e));
+            DeferIfNotLoaded(() => OnActivityInvite(e));
         }        
 
         void chatSession_BuzzReceived(object sender, BuddyEventArgs e)
@@ -334,7 +334,7 @@ namespace Squiggle.UI
             });
         }
 
-        void OnAppInvite(ActivityInvitationReceivedEventArgs e)
+        void OnActivityInvite(ActivityInvitationReceivedEventArgs e)
         {
             IActivityHandler handler = MainWindow.PluginLoader.GetHandler(e.ActivityId, f => f.FromInvite(e.Session, e.Metadata));
             if (e.ActivityId == SquiggleActivities.VoiceChat)
@@ -506,7 +506,7 @@ namespace Squiggle.UI
             {
                 FlashWindow();
                 if (handler == null)
-                    chatTextBox.AddInfo(Translation.Instance.ChatWindow_UnknownAppInvite);
+                    chatTextBox.AddInfo(Translation.Instance.ChatWindow_UnknownActivityInvite);
             });
         }
 
@@ -588,7 +588,7 @@ namespace Squiggle.UI
             else if (!MainWindow.PluginLoader.VoiceChat)
                 return null;
 
-            ActivitySession session = chatSession.CreateAppSession();
+            ActivitySession session = chatSession.CreateActivitySession();
             IVoiceChat voiceChat = MainWindow.PluginLoader.GetHandler(SquiggleActivities.VoiceChat, f=>f.CreateInvite(session, null)) as IVoiceChat;
 
             if (voiceChat != null)
@@ -649,7 +649,7 @@ namespace Squiggle.UI
                     return;
                 }
 
-                ActivitySession session = chatSession.CreateAppSession();
+                ActivitySession session = chatSession.CreateActivitySession();
                 var args = new Dictionary<string, object>(){ { "name", fileName}, {"content", fileStream}, {"size", fileStream.Length}};
                 IFileTransfer fileTransfer = MainWindow.PluginLoader.GetHandler(SquiggleActivities.FileTransfer, f=>f.CreateInvite(session, args)) as IFileTransfer;
                 if (fileTransfer == null)
@@ -735,7 +735,7 @@ namespace Squiggle.UI
                 chatSession.BuddyLeft -= new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
                 chatSession.MessageFailed -= new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
                 chatSession.BuddyTyping -= new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
-                chatSession.AppInvitationReceived -= new EventHandler<ActivityInvitationReceivedEventArgs>(chatSession_AppInvitationReceived);
+                chatSession.ActivityInvitationReceived -= new EventHandler<ActivityInvitationReceivedEventArgs>(chatSession_ActivityInvitationReceived);
                 chatSession.GroupChatStarted -= new EventHandler(chatSession_GroupChatStarted);
                 chatSession.Leave();
                 chatSession = null;

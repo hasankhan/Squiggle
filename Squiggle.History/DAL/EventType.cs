@@ -11,6 +11,6 @@ namespace Squiggle.History.DAL
         Buzz,
         Joined,
         Left,
-        App
+        Activity
     }
 }

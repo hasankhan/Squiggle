@@ -24,7 +24,7 @@ namespace Squiggle.Core.Chat
         public event EventHandler<SessionEventArgs> UserJoined = delegate { };
         public event EventHandler<SessionEventArgs> UserLeft = delegate { };
         public event EventHandler<SessionEventArgs> BuzzReceived = delegate { };
-        public event EventHandler<AppInivteReceivedEventArgs> AppInviteReceived;
+        public event EventHandler<ActivityInivteReceivedEventArgs> ActivityInviteReceived;
         public event EventHandler SessionEnded = delegate { };
         public event EventHandler GroupChatStarted = delegate { };
         public event EventHandler Initialized = delegate { };
@@ -55,7 +55,7 @@ namespace Squiggle.Core.Chat
             this.localUser = localUser;
 
             localHost.ChatInviteReceived += new EventHandler<ChatInviteReceivedEventArgs>(chatHost_ChatInviteReceived);
-            localHost.ActivityInvitationReceived += new EventHandler<ActivityInvitationReceivedEventArgs>(chatHost_AppInvitationReceived);
+            localHost.ActivityInvitationReceived += new EventHandler<ActivityInvitationReceivedEventArgs>(chatHost_ActivityInvitationReceived);
             localHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(chatHost_MessageReceived);
             localHost.UserTyping += new EventHandler<SessionEventArgs>(chatHost_UserTyping);
             localHost.BuzzReceived += new EventHandler<SessionEventArgs>(chatHost_BuzzReceived);
@@ -100,7 +100,7 @@ namespace Squiggle.Core.Chat
             BroadCast(endpoint => chatHost.UserIsTyping(ID, localUser, endpoint));
         }
 
-        public ActivitySession CreateAppSession()
+        public ActivitySession CreateActivitySession()
         {
             if (IsGroupSession)
                 throw new InvalidOperationException("Cannot send files in a group chat session.");
@@ -116,7 +116,7 @@ namespace Squiggle.Core.Chat
         public void End()
         {
             chatHost.ChatInviteReceived -= new EventHandler<ChatInviteReceivedEventArgs>(chatHost_ChatInviteReceived);
-            chatHost.ActivityInvitationReceived -= new EventHandler<ActivityInvitationReceivedEventArgs>(chatHost_AppInvitationReceived);
+            chatHost.ActivityInvitationReceived -= new EventHandler<ActivityInvitationReceivedEventArgs>(chatHost_ActivityInvitationReceived);
             chatHost.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(chatHost_MessageReceived);
             chatHost.UserTyping -= new EventHandler<SessionEventArgs>(chatHost_UserTyping);
             chatHost.BuzzReceived -= new EventHandler<SessionEventArgs>(chatHost_BuzzReceived);
@@ -201,12 +201,12 @@ namespace Squiggle.Core.Chat
             }
         }
 
-        void chatHost_AppInvitationReceived(object sender, ActivityInvitationReceivedEventArgs e)
+        void chatHost_ActivityInvitationReceived(object sender, ActivityInvitationReceivedEventArgs e)
         {
             if (e.SessionID == ID && !IsGroupSession && IsRemoteUser(e.Sender))
             {
                 var session = ActivitySession.FromInvite(e.SessionID, chatHost, localUser, e.Sender, e.ActivitySessionId);
-                AppInviteReceived(this, new AppInivteReceivedEventArgs() { Sender = e.Sender, Session = session, AppId = e.ActivityId, Metadata = e.Metadata });
+                ActivityInviteReceived(this, new ActivityInivteReceivedEventArgs() { Sender = e.Sender, Session = session, ActivityId = e.ActivityId, Metadata = e.Metadata });
             }
         }
 
