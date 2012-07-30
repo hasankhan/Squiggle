@@ -10,9 +10,9 @@ namespace Squiggle.Core.Chat.Transport.Messages
     class ActivityInviteMessage : Message
     {
         [ProtoMember(1)]
-        public Guid AppId {get; set; }
+        public Guid ActivityId {get; set; }
         [ProtoMember(2)]
-        public Guid AppSessionId { get; set; }
+        public Guid ActivitySessionId { get; set; }
         [ProtoMember(3)]
         public Dictionary<string, string> Metadata { get; set; }
 

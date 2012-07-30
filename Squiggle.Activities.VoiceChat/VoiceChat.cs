@@ -20,7 +20,7 @@ namespace Squiggle.Activities.VoiceChat
         EchoFilterWaveProvider waveProvider;
         AcmChatCodec codec = new Gsm610ChatCodec();
 
-        public override Guid AppId
+        public override Guid ActivityId
         {
             get { return SquiggleActivities.VoiceChat; }
         }

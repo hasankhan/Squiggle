@@ -19,7 +19,7 @@ namespace Squiggle.Activities.FileTransfer
         public long Size { get; private set; }
         public string Name { get; private set; }
 
-        public override Guid AppId
+        public override Guid ActivityId
         {
             get { return SquiggleActivities.FileTransfer; }
         }

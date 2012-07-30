@@ -49,24 +49,24 @@ namespace Squiggle.Core.Chat.Transport.Host
             host.Send(new ChatLeaveMessage() { SessionId = sessionId, Sender = sender, Recipient = recipient });
         }
 
-        public static void ReceiveAppInvite(this ChatHost host, Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, Guid appId, Guid appSessionId, IEnumerable<KeyValuePair<string, string>> metadata)
+        public static void ReceiveActivityInvite(this ChatHost host, Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, Guid activityId, Guid activitySessionId, IEnumerable<KeyValuePair<string, string>> metadata)
         {
-            host.Send(new ActivityInviteMessage() { SessionId = sessionId, Sender = sender, Recipient = recipient, AppId = appId, AppSessionId = appSessionId, Metadata = metadata.ToDictionary(kv => kv.Key, kv => kv.Value) });
+            host.Send(new ActivityInviteMessage() { SessionId = sessionId, Sender = sender, Recipient = recipient, ActivityId = activityId, ActivitySessionId = activitySessionId, Metadata = metadata.ToDictionary(kv => kv.Key, kv => kv.Value) });
         }
 
-        public static void ReceiveAppData(this ChatHost host, Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, byte[] chunk)
+        public static void ReceiveActivityData(this ChatHost host, Guid activitySessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, byte[] chunk)
         {
-            host.Send(new ActivityDataMessage() { SessionId = appSessionId, Sender = sender, Recipient = recipient, Data = chunk });
+            host.Send(new ActivityDataMessage() { SessionId = activitySessionId, Sender = sender, Recipient = recipient, Data = chunk });
         }
 
-        public static void AcceptAppInvite(this ChatHost host, Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
+        public static void AcceptActivityInvite(this ChatHost host, Guid activitySessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
         {
-            host.Send(new ActivityInviteAcceptMessage() { SessionId = appSessionId, Sender = sender, Recipient = recipient });
+            host.Send(new ActivityInviteAcceptMessage() { SessionId = activitySessionId, Sender = sender, Recipient = recipient });
         }
 
-        public static void CancelAppSession(this ChatHost host, Guid appSessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
+        public static void CancelActivitySession(this ChatHost host, Guid activitySessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient)
         {
-            host.Send(new ActivityCancelMessage() { SessionId = appSessionId, Sender = sender, Recipient = recipient });
+            host.Send(new ActivityCancelMessage() { SessionId = activitySessionId, Sender = sender, Recipient = recipient });
         }
     }
 }

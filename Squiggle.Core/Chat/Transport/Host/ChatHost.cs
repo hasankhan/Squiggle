@@ -25,10 +25,10 @@ namespace Squiggle.Core.Chat.Transport.Host
         public event EventHandler<ChatInviteReceivedEventArgs> ChatInviteReceived = delegate { };
         public event EventHandler<SessionEventArgs> UserJoined = delegate { };
         public event EventHandler<SessionEventArgs> UserLeft = delegate { };
-        public event EventHandler<AppSessionEventArgs> AppInvitationAccepted = delegate { };
-        public event EventHandler<AppSessionEventArgs> AppSessionCancelled = delegate { };        
-        public event EventHandler<AppInvitationReceivedEventArgs> AppInvitationReceived = delegate { };
-        public event EventHandler<AppDataReceivedEventArgs> AppDataReceived = delegate { };
+        public event EventHandler<ActivitySessionEventArgs> ActivityInvitationAccepted = delegate { };
+        public event EventHandler<ActivitySessionEventArgs> ActivitySessionCancelled = delegate { };
+        public event EventHandler<ActivityInvitationReceivedEventArgs> ActivityInvitationReceived = delegate { };
+        public event EventHandler<ActivityDataReceivedEventArgs> ActivityDataReceived = delegate { };
         public event EventHandler<UserActivityEventArgs> UserActivity = delegate { };
         public event EventHandler<SessionEventArgs> SessionInfoRequested = delegate { };
         public event EventHandler<SessionInfoEventArgs> SessionInfoReceived = delegate { };
@@ -53,13 +53,13 @@ namespace Squiggle.Core.Chat.Transport.Host
         void OnMessageReceived(Message msg)
         {
             if (msg is ActivityCancelMessage)
-                CancelAppSession((ActivityCancelMessage)msg);
+                CancelActivitySession((ActivityCancelMessage)msg);
             else if (msg is ActivityDataMessage)
-                ReceiveAppData((ActivityDataMessage)msg);
+                ReceiveActivityData((ActivityDataMessage)msg);
             else if (msg is ActivityInviteAcceptMessage)
-                AcceptAppInvite((ActivityInviteAcceptMessage)msg);
+                AcceptActivityInvite((ActivityInviteAcceptMessage)msg);
             else if (msg is ActivityInviteMessage)
-                ReceiveAppInvite((ActivityInviteMessage)msg);
+                ReceiveActivityInvite((ActivityInviteMessage)msg);
             else if (msg is BuzzMessage)
                 Buzz((BuzzMessage)msg);
             else if (msg is ChatInviteMessage)
@@ -150,33 +150,33 @@ namespace Squiggle.Core.Chat.Transport.Host
             UserLeft(this, new UserActivityEventArgs() { SessionID = msg.SessionId, Sender = msg.Sender});
         }
 
-        void ReceiveAppInvite(ActivityInviteMessage msg)
+        void ReceiveActivityInvite(ActivityInviteMessage msg)
         {
             OnUserActivity(msg.SessionId, msg.Sender, ActivityType.TransferInvite);
             Trace.WriteLine(msg.Sender + " wants to send a file " + msg.Metadata.ToTraceString());
-            AppInvitationReceived(this, new AppInvitationReceivedEventArgs()
+            ActivityInvitationReceived(this, new ActivityInvitationReceivedEventArgs()
             {
                 SessionID = msg.SessionId,
                 Sender = msg.Sender,
-                AppId = msg.AppId,
-                AppSessionId = msg.AppSessionId,
+                ActivityId = msg.ActivityId,
+                ActivitySessionId = msg.ActivitySessionId,
                 Metadata = msg.Metadata.ToDictionary(i => i.Key, i => i.Value)
             });
         }
 
-        void ReceiveAppData(ActivityDataMessage msg)
+        void ReceiveActivityData(ActivityDataMessage msg)
         {
-            AppDataReceived(this, new AppDataReceivedEventArgs() { AppSessionId = msg.SessionId, Chunk = msg.Data });
+            ActivityDataReceived(this, new ActivityDataReceivedEventArgs() { ActivitySessionId = msg.SessionId, Chunk = msg.Data });
         }
 
-        void AcceptAppInvite(ActivityInviteAcceptMessage msg)
+        void AcceptActivityInvite(ActivityInviteAcceptMessage msg)
         {
-            AppInvitationAccepted(this, new AppSessionEventArgs() { AppSessionId = msg.SessionId });
+            ActivityInvitationAccepted(this, new ActivitySessionEventArgs() { ActivitySessionId = msg.SessionId });
         }
 
-        void CancelAppSession(ActivityCancelMessage msg)
+        void CancelActivitySession(ActivityCancelMessage msg)
         {
-            AppSessionCancelled(this, new AppSessionEventArgs() { AppSessionId = msg.SessionId });
+            ActivitySessionCancelled(this, new ActivitySessionEventArgs() { ActivitySessionId = msg.SessionId });
         }       
 
         void OnUserActivity(Guid sessionId, SquiggleEndPoint sender, ActivityType type)
@@ -221,21 +221,21 @@ namespace Squiggle.Core.Chat.Transport.Host
         public Color Color { get; set; }
         public FontStyle FontStyle { get; set; }
         public string Message { get; set; }
-    }    
-
-    public class AppSessionEventArgs : EventArgs
-    {
-        public Guid AppSessionId { get; set; }
     }
 
-    public class AppInvitationReceivedEventArgs : SessionEventArgs
+    public class ActivitySessionEventArgs : EventArgs
     {
-        public Guid AppSessionId { get; set; }
-        public Guid AppId { get; set; }
+        public Guid ActivitySessionId { get; set; }
+    }
+
+    public class ActivityInvitationReceivedEventArgs : SessionEventArgs
+    {
+        public Guid ActivitySessionId { get; set; }
+        public Guid ActivityId { get; set; }
         public IDictionary<string, string> Metadata { get; set; }
     }
 
-    public class AppDataReceivedEventArgs : AppSessionEventArgs
+    public class ActivityDataReceivedEventArgs : ActivitySessionEventArgs
     {
         public byte[] Chunk { get; set; }
     }

@@ -27,7 +27,7 @@ namespace Squiggle.Core.Chat
         public event EventHandler TransferFinished = delegate { };
         public event EventHandler<System.ComponentModel.ProgressChangedEventArgs> ProgressChanged = delegate { };
 
-        public abstract Guid AppId { get; }
+        public abstract Guid ActivityId { get; }
 
         protected bool SelfInitiated
         {
@@ -39,17 +39,17 @@ namespace Squiggle.Core.Chat
             this.session = session;
 
             if (!session.SelfInitiated)
-                session.ChatHost.AppSessionCancelled += new EventHandler<AppSessionEventArgs>(chatHost_AppSessionCancelled);
+                session.ChatHost.ActivitySessionCancelled += new EventHandler<ActivitySessionEventArgs>(chatHost_AppSessionCancelled);
         }
 
         public void Start()
         {
-            session.ChatHost.AppInvitationAccepted += new EventHandler<AppSessionEventArgs>(chatHost_AppInvitationAccepted);
-            session.ChatHost.AppSessionCancelled += new EventHandler<AppSessionEventArgs>(chatHost_AppSessionCancelled);
+            session.ChatHost.ActivityInvitationAccepted += new EventHandler<ActivitySessionEventArgs>(chatHost_AppInvitationAccepted);
+            session.ChatHost.ActivitySessionCancelled += new EventHandler<ActivitySessionEventArgs>(chatHost_AppSessionCancelled);
             Async.Invoke(() =>
             {
                 IEnumerable<KeyValuePair<string, string>> metadata = CreateInviteMetadata();
-                bool success = session.SendInvite(AppId, metadata);
+                bool success = session.SendInvite(ActivityId, metadata);
                 if (!success)
                 {
                     OnTransferFinished();
@@ -146,27 +146,27 @@ namespace Squiggle.Core.Chat
             session.SendData(chunk, OnError);
         }
 
-        void chatHost_AppSessionCancelled(object sender, AppSessionEventArgs e)
+        void chatHost_AppSessionCancelled(object sender, ActivitySessionEventArgs e)
         {
-            if (e.AppSessionId == session.Id)
+            if (e.ActivitySessionId == session.Id)
             {
                 Cancel(false);
                 OnTransferCancelled();
             }
         }
 
-        void chatHost_AppDataReceived(object sender, AppDataReceivedEventArgs e)
+        void chatHost_AppDataReceived(object sender, ActivityDataReceivedEventArgs e)
         {
-            if (e.AppSessionId == session.Id) 
+            if (e.ActivitySessionId == session.Id) 
             {
                 BytesReceived += e.Chunk.Length;
                 OnDataReceived(e.Chunk);
             }
         }
 
-        void chatHost_AppInvitationAccepted(object sender, AppSessionEventArgs e)
+        void chatHost_AppInvitationAccepted(object sender, ActivitySessionEventArgs e)
         {
-            if (e.AppSessionId == session.Id)
+            if (e.ActivitySessionId == session.Id)
             {
                 worker = new BackgroundWorker();
                 worker.WorkerReportsProgress = true;
@@ -200,16 +200,16 @@ namespace Squiggle.Core.Chat
         protected virtual void OnTransferStarted() 
         {
             IsConnected = true;
-            session.ChatHost.AppDataReceived += new EventHandler<AppDataReceivedEventArgs>(chatHost_AppDataReceived);
+            session.ChatHost.ActivityDataReceived += new EventHandler<ActivityDataReceivedEventArgs>(chatHost_AppDataReceived);
             TransferStarted(this, EventArgs.Empty);
         }
 
         protected virtual void OnTransferFinished()
         {
             IsConnected = false;
-            session.ChatHost.AppDataReceived -= new EventHandler<AppDataReceivedEventArgs>(chatHost_AppDataReceived);
-            session.ChatHost.AppInvitationAccepted -= new EventHandler<AppSessionEventArgs>(chatHost_AppInvitationAccepted);
-            session.ChatHost.AppSessionCancelled -= new EventHandler<AppSessionEventArgs>(chatHost_AppSessionCancelled);
+            session.ChatHost.ActivityDataReceived -= new EventHandler<ActivityDataReceivedEventArgs>(chatHost_AppDataReceived);
+            session.ChatHost.ActivityInvitationAccepted -= new EventHandler<ActivitySessionEventArgs>(chatHost_AppInvitationAccepted);
+            session.ChatHost.ActivitySessionCancelled -= new EventHandler<ActivitySessionEventArgs>(chatHost_AppSessionCancelled);
             TransferFinished(this, EventArgs.Empty);
         }
 

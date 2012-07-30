@@ -55,7 +55,7 @@ namespace Squiggle.Core.Chat
             this.localUser = localUser;
 
             localHost.ChatInviteReceived += new EventHandler<ChatInviteReceivedEventArgs>(chatHost_ChatInviteReceived);
-            localHost.AppInvitationReceived += new EventHandler<AppInvitationReceivedEventArgs>(chatHost_AppInvitationReceived);
+            localHost.ActivityInvitationReceived += new EventHandler<ActivityInvitationReceivedEventArgs>(chatHost_AppInvitationReceived);
             localHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(chatHost_MessageReceived);
             localHost.UserTyping += new EventHandler<SessionEventArgs>(chatHost_UserTyping);
             localHost.BuzzReceived += new EventHandler<SessionEventArgs>(chatHost_BuzzReceived);
@@ -116,7 +116,7 @@ namespace Squiggle.Core.Chat
         public void End()
         {
             chatHost.ChatInviteReceived -= new EventHandler<ChatInviteReceivedEventArgs>(chatHost_ChatInviteReceived);
-            chatHost.AppInvitationReceived -= new EventHandler<AppInvitationReceivedEventArgs>(chatHost_AppInvitationReceived);
+            chatHost.ActivityInvitationReceived -= new EventHandler<ActivityInvitationReceivedEventArgs>(chatHost_AppInvitationReceived);
             chatHost.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(chatHost_MessageReceived);
             chatHost.UserTyping -= new EventHandler<SessionEventArgs>(chatHost_UserTyping);
             chatHost.BuzzReceived -= new EventHandler<SessionEventArgs>(chatHost_BuzzReceived);
@@ -201,12 +201,12 @@ namespace Squiggle.Core.Chat
             }
         }
 
-        void chatHost_AppInvitationReceived(object sender, AppInvitationReceivedEventArgs e)
+        void chatHost_AppInvitationReceived(object sender, ActivityInvitationReceivedEventArgs e)
         {
             if (e.SessionID == ID && !IsGroupSession && IsRemoteUser(e.Sender))
             {
-                var session = ActivitySession.FromInvite(e.SessionID, chatHost, localUser, e.Sender, e.AppSessionId);
-                AppInviteReceived(this, new AppInivteReceivedEventArgs() { Sender = e.Sender, Session = session, AppId = e.AppId, Metadata = e.Metadata });
+                var session = ActivitySession.FromInvite(e.SessionID, chatHost, localUser, e.Sender, e.ActivitySessionId);
+                AppInviteReceived(this, new AppInivteReceivedEventArgs() { Sender = e.Sender, Session = session, AppId = e.ActivityId, Metadata = e.Metadata });
             }
         }
 
