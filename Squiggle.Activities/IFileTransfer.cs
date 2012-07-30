@@ -5,7 +5,7 @@ using Squiggle.Core.Chat;
 
 namespace Squiggle.Activities
 {
-    public interface IFileTransfer: IAppHandler
+    public interface IFileTransfer: IActivityHandler
     {
         long Size { get; }
         string Name { get; }

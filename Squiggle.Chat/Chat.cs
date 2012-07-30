@@ -59,7 +59,7 @@ namespace Squiggle.Chat
         public event EventHandler<BuddyEventArgs> BuddyLeft = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyTyping = delegate { };
         public event EventHandler<BuddyEventArgs> BuzzReceived = delegate { };
-        public event EventHandler<AppInvitationReceivedEventArgs> AppInvitationReceived = delegate { };
+        public event EventHandler<ActivityInvitationReceivedEventArgs> AppInvitationReceived = delegate { };
         public event EventHandler GroupChatStarted = delegate { };
 
         public void SendMessage(string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
@@ -97,7 +97,7 @@ namespace Squiggle.Chat
             });
         }
 
-        public AppSession CreateAppSession()
+        public ActivitySession CreateAppSession()
         {
             if (IsGroupChat)
                 throw new InvalidOperationException("Can not start app session in group chat.");
@@ -135,10 +135,10 @@ namespace Squiggle.Chat
             Buddy buddy;
             if (buddies.TryGet(e.Sender.ClientID, out buddy))
             {
-                var args = new AppInvitationReceivedEventArgs(buddy)
+                var args = new ActivityInvitationReceivedEventArgs(buddy)
                 {
                     Session = e.Session,
-                    AppId = e.AppId,
+                    ActivityId = e.AppId,
                     Metadata = e.Metadata
                 };
                 AppInvitationReceived(this, args);

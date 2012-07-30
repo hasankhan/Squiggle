@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Squiggle.Core.Chat
 {
-    public interface IAppHandler
+    public interface IActivityHandler
     {
         event EventHandler TransferCompleted;
         event EventHandler TransferStarted;

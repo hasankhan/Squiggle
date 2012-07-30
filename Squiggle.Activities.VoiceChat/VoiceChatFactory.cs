@@ -10,18 +10,18 @@ namespace Squiggle.Activities.VoiceChat
     [Export(typeof(IActivityHandlerFactory))]
     public class VoiceChatFactory: IActivityHandlerFactory
     {
-        public Guid AppId
+        public Guid ActivityId
         {
             get { return SquiggleActivities.VoiceChat; }
         }
 
-        public IAppHandler FromInvite(AppSession session, IDictionary<string, string> metadata)
+        public IActivityHandler FromInvite(ActivitySession session, IDictionary<string, string> metadata)
         {
             var invitation = new VoiceChat(session);
             return invitation;
         }
 
-        public IAppHandler CreateInvite(AppSession session, IDictionary<string, object> args)
+        public IActivityHandler CreateInvite(ActivitySession session, IDictionary<string, object> args)
         {
             var invitation = new VoiceChat(session);
             return invitation;

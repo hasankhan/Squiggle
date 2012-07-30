@@ -23,13 +23,13 @@ namespace Squiggle.Chat
         public Exception Exception { get; set; }
     }
 
-    public class AppInvitationReceivedEventArgs : BuddyEventArgs
+    public class ActivityInvitationReceivedEventArgs : BuddyEventArgs
     {
-        public Guid AppId { get; set; }
-        public AppSession Session { get; set; }
+        public Guid ActivityId { get; set; }
+        public ActivitySession Session { get; set; }
         public IDictionary<string, string> Metadata { get; set; }
 
-        public AppInvitationReceivedEventArgs(Buddy buddy) : base(buddy) { }
+        public ActivityInvitationReceivedEventArgs(Buddy buddy) : base(buddy) { }
     }
 
     public interface IChat
@@ -44,13 +44,13 @@ namespace Squiggle.Chat
         event EventHandler<BuddyEventArgs> BuzzReceived;
         event EventHandler<BuddyEventArgs> BuddyTyping;
         event EventHandler<MessageFailedEventArgs> MessageFailed;
-        event EventHandler<AppInvitationReceivedEventArgs> AppInvitationReceived;
+        event EventHandler<ActivityInvitationReceivedEventArgs> AppInvitationReceived;
         event EventHandler GroupChatStarted;
 
         void NotifyTyping();
         void SendBuzz();
         void SendMessage(string fontName, int fontSize, Color color, FontStyle style, string message);
-        AppSession CreateAppSession();
+        ActivitySession CreateAppSession();
         void Leave();
 
         void Invite(Buddy buddy);

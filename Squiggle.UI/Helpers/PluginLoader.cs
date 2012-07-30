@@ -27,18 +27,18 @@ namespace Squiggle.UI.Helpers
             FileTransfer = GetHandlerFactory(SquiggleActivities.FileTransfer) != null;
         }
 
-        public IAppHandler GetHandler(Guid appId, Func<IActivityHandlerFactory, IAppHandler> getAction)
+        public IActivityHandler GetHandler(Guid activityId, Func<IActivityHandlerFactory, IActivityHandler> getAction)
         {
-            IActivityHandlerFactory factory = GetHandlerFactory(appId);
+            IActivityHandlerFactory factory = GetHandlerFactory(activityId);
             if (factory == null)
                 return null;
-            IAppHandler handler = getAction(factory);
+            IActivityHandler handler = getAction(factory);
             return handler;
         }
 
-        IActivityHandlerFactory GetHandlerFactory(Guid appId)
+        IActivityHandlerFactory GetHandlerFactory(Guid activityId)
         {
-            IActivityHandlerFactory factory = AppHandlerFactories.FirstOrDefault(f => f.AppId.Equals(appId));
+            IActivityHandlerFactory factory = AppHandlerFactories.FirstOrDefault(f => f.ActivityId.Equals(activityId));
             return factory;
         }
     }

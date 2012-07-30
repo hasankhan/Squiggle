@@ -7,7 +7,7 @@ using ProtoBuf;
 namespace Squiggle.Core.Chat.Transport.Messages
 {
     [ProtoContract]
-    class AppInviteMessage : Message
+    class ActivityInviteMessage : Message
     {
         [ProtoMember(1)]
         public Guid AppId {get; set; }
@@ -16,7 +16,7 @@ namespace Squiggle.Core.Chat.Transport.Messages
         [ProtoMember(3)]
         public Dictionary<string, string> Metadata { get; set; }
 
-        public AppInviteMessage()
+        public ActivityInviteMessage()
         {
             Metadata = new Dictionary<string, string>();
         }

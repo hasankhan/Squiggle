@@ -19,7 +19,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Debug\Squiggle.Apps.FileTransfer.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisLogFile>bin\Debug\Squiggle.Activities.FileTransfer.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
@@ -34,7 +34,7 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Release\Squiggle.Apps.FileTransfer.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisLogFile>bin\Release\Squiggle.Activities.FileTransfer.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
@@ -68,7 +68,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Squiggle.Activities\Squiggle.Activities.csproj">
       <Project>{4B76F79B-8707-4163-AA3E-8307BC93C450}</Project>
-      <Name>Squiggle.Apps</Name>
+      <Name>Squiggle.Activities</Name>
     </ProjectReference>
     <ProjectReference Include="..\Squiggle.Core\Squiggle.Core.csproj">
       <Project>{CCC71193-64AA-4B92-80C9-7BC688C7FAE3}</Project>

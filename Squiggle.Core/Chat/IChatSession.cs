@@ -11,7 +11,7 @@ namespace Squiggle.Core.Chat
     {
         public SquiggleEndPoint Sender { get; set; }
         public Guid AppId { get; set; }
-        public AppSession Session {get; set;}
+        public ActivitySession Session {get; set;}
         public IDictionary<string, string> Metadata { get; set; }
     }
 
@@ -32,7 +32,7 @@ namespace Squiggle.Core.Chat
         void SendBuzz();
         void SendMessage(string fontName, int fontSize, Color color, FontStyle fontStyle, string message);
         void NotifyTyping();
-        AppSession CreateAppSession();
+        ActivitySession CreateAppSession();
         void End();
         void Invite(SquiggleEndPoint user);
         void UpdateUser(SquiggleEndPoint user);

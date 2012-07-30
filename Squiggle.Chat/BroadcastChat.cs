@@ -62,7 +62,7 @@ namespace Squiggle.Chat
         public event EventHandler<BuddyEventArgs> BuzzReceived = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyTyping = delegate { };
         public event EventHandler<MessageFailedEventArgs> MessageFailed = delegate { };
-        public event EventHandler<AppInvitationReceivedEventArgs> AppInvitationReceived = delegate { };
+        public event EventHandler<ActivityInvitationReceivedEventArgs> AppInvitationReceived = delegate { };
         public event EventHandler GroupChatStarted = delegate { };
 
         public void NotifyTyping()
@@ -83,7 +83,7 @@ namespace Squiggle.Chat
                 chatSessions.ForEach(s => s.SendMessage(fontName, fontSize, color, style, message));
         }
 
-        public AppSession CreateAppSession()
+        public ActivitySession CreateAppSession()
         {
             throw new InvalidOperationException("Can not start app session in broadcast chat.");
         }

@@ -8,8 +8,8 @@ namespace Squiggle.Activities
 {
     public interface IActivityHandlerFactory
     {
-        Guid AppId { get; }
-        IAppHandler FromInvite(AppSession session, IDictionary<string, string> metadata);
-        IAppHandler CreateInvite(AppSession session, IDictionary<string, object> args);
+        Guid ActivityId { get; }
+        IActivityHandler FromInvite(ActivitySession session, IDictionary<string, string> metadata);
+        IActivityHandler CreateInvite(ActivitySession session, IDictionary<string, object> args);
     }
 }

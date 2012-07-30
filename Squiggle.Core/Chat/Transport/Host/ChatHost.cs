@@ -52,14 +52,14 @@ namespace Squiggle.Core.Chat.Transport.Host
 
         void OnMessageReceived(Message msg)
         {
-            if (msg is AppCancelMessage)
-                CancelAppSession((AppCancelMessage)msg);
-            else if (msg is AppDataMessage)
-                ReceiveAppData((AppDataMessage)msg);
-            else if (msg is AppInviteAcceptMessage)
-                AcceptAppInvite((AppInviteAcceptMessage)msg);
-            else if (msg is AppInviteMessage)
-                ReceiveAppInvite((AppInviteMessage)msg);
+            if (msg is ActivityCancelMessage)
+                CancelAppSession((ActivityCancelMessage)msg);
+            else if (msg is ActivityDataMessage)
+                ReceiveAppData((ActivityDataMessage)msg);
+            else if (msg is ActivityInviteAcceptMessage)
+                AcceptAppInvite((ActivityInviteAcceptMessage)msg);
+            else if (msg is ActivityInviteMessage)
+                ReceiveAppInvite((ActivityInviteMessage)msg);
             else if (msg is BuzzMessage)
                 Buzz((BuzzMessage)msg);
             else if (msg is ChatInviteMessage)
@@ -150,7 +150,7 @@ namespace Squiggle.Core.Chat.Transport.Host
             UserLeft(this, new UserActivityEventArgs() { SessionID = msg.SessionId, Sender = msg.Sender});
         }
 
-        void ReceiveAppInvite(AppInviteMessage msg)
+        void ReceiveAppInvite(ActivityInviteMessage msg)
         {
             OnUserActivity(msg.SessionId, msg.Sender, ActivityType.TransferInvite);
             Trace.WriteLine(msg.Sender + " wants to send a file " + msg.Metadata.ToTraceString());
@@ -164,17 +164,17 @@ namespace Squiggle.Core.Chat.Transport.Host
             });
         }
 
-        void ReceiveAppData(AppDataMessage msg)
+        void ReceiveAppData(ActivityDataMessage msg)
         {
             AppDataReceived(this, new AppDataReceivedEventArgs() { AppSessionId = msg.SessionId, Chunk = msg.Data });
         }
 
-        void AcceptAppInvite(AppInviteAcceptMessage msg)
+        void AcceptAppInvite(ActivityInviteAcceptMessage msg)
         {
             AppInvitationAccepted(this, new AppSessionEventArgs() { AppSessionId = msg.SessionId });
         }
 
-        void CancelAppSession(AppCancelMessage msg)
+        void CancelAppSession(ActivityCancelMessage msg)
         {
             AppSessionCancelled(this, new AppSessionEventArgs() { AppSessionId = msg.SessionId });
         }       

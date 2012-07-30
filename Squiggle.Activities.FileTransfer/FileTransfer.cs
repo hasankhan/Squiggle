@@ -11,7 +11,7 @@ using Squiggle.Core.Chat;
 
 namespace Squiggle.Activities.FileTransfer
 {
-    class FileTransfer: AppHandler, IFileTransfer
+    class FileTransfer: ActivityHandler, IFileTransfer
     {
         Stream content;
         string filePath;
@@ -24,7 +24,7 @@ namespace Squiggle.Activities.FileTransfer
             get { return SquiggleActivities.FileTransfer; }
         }
 
-        public FileTransfer(AppSession session, string name, long size, Stream content)
+        public FileTransfer(ActivitySession session, string name, long size, Stream content)
             :base(session)
         {
             this.Name = name;
@@ -32,7 +32,7 @@ namespace Squiggle.Activities.FileTransfer
             this.content = content;
         }
 
-        public FileTransfer(AppSession session, string name, long size)
+        public FileTransfer(ActivitySession session, string name, long size)
             :base(session)
         {
             this.Name = name;

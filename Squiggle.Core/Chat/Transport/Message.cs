@@ -11,10 +11,10 @@ using Squiggle.Utilities.Serialization;
 namespace Squiggle.Core.Chat.Transport
 {
     [ProtoContract]
-    [ProtoInclude(50, typeof(AppCancelMessage))]
-    [ProtoInclude(51, typeof(AppDataMessage))]
-    [ProtoInclude(52, typeof(AppInviteAcceptMessage))]
-    [ProtoInclude(53, typeof(AppInviteMessage))]
+    [ProtoInclude(50, typeof(ActivityCancelMessage))]
+    [ProtoInclude(51, typeof(ActivityDataMessage))]
+    [ProtoInclude(52, typeof(ActivityInviteAcceptMessage))]
+    [ProtoInclude(53, typeof(ActivityInviteMessage))]
     [ProtoInclude(54, typeof(BuzzMessage))]
     [ProtoInclude(55, typeof(ChatInviteMessage))]
     [ProtoInclude(56, typeof(ChatJoinMessage))]

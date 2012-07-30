@@ -61,14 +61,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Chat\AppSession.cs" />
-    <Compile Include="Chat\IAppHandler.cs" />
+    <Compile Include="Chat\ActivitySession.cs" />
+    <Compile Include="Chat\IActivityHandler.cs" />
     <Compile Include="Chat\Transport\Host\ChatHostExtensions.cs" />
     <Compile Include="Chat\Transport\Message.cs" />
-    <Compile Include="Chat\Transport\Messages\AppCancelMessage.cs" />
-    <Compile Include="Chat\Transport\Messages\AppDataMessage.cs" />
-    <Compile Include="Chat\Transport\Messages\AppInviteAcceptMessage.cs" />
-    <Compile Include="Chat\Transport\Messages\AppInviteMessage.cs" />
+    <Compile Include="Chat\Transport\Messages\ActivityCancelMessage.cs" />
+    <Compile Include="Chat\Transport\Messages\ActivityDataMessage.cs" />
+    <Compile Include="Chat\Transport\Messages\ActivityInviteAcceptMessage.cs" />
+    <Compile Include="Chat\Transport\Messages\ActivityInviteMessage.cs" />
     <Compile Include="Chat\Transport\Messages\BuzzMessage.cs" />
     <Compile Include="Chat\Transport\Messages\ChatInviteMessage.cs" />
     <Compile Include="Chat\Transport\Messages\ChatJoinMessage.cs" />
@@ -96,7 +96,7 @@
     </Compile>
     <Compile Include="OperationFailedException.cs" />
     <Compile Include="Presence\BuddyProperties.cs" />
-    <Compile Include="Chat\AppHandler.cs" />
+    <Compile Include="Chat\ActivityHandler.cs" />
     <Compile Include="Chat\ChatService.cs" />
     <Compile Include="Chat\ChatSession.cs" />
     <Compile Include="Chat\ChatSessionCollection.cs" />

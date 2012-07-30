@@ -100,12 +100,12 @@ namespace Squiggle.Core.Chat
             BroadCast(endpoint => chatHost.UserIsTyping(ID, localUser, endpoint));
         }
 
-        public AppSession CreateAppSession()
+        public ActivitySession CreateAppSession()
         {
             if (IsGroupSession)
                 throw new InvalidOperationException("Cannot send files in a group chat session.");
 
-            return AppSession.Create(ID, chatHost, localUser, PrimaryUser);
+            return ActivitySession.Create(ID, chatHost, localUser, PrimaryUser);
         }
 
         public void SendMessage(string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
@@ -205,7 +205,7 @@ namespace Squiggle.Core.Chat
         {
             if (e.SessionID == ID && !IsGroupSession && IsRemoteUser(e.Sender))
             {
-                var session = AppSession.FromInvite(e.SessionID, chatHost, localUser, e.Sender, e.AppSessionId);
+                var session = ActivitySession.FromInvite(e.SessionID, chatHost, localUser, e.Sender, e.AppSessionId);
                 AppInviteReceived(this, new AppInivteReceivedEventArgs() { Sender = e.Sender, Session = session, AppId = e.AppId, Metadata = e.Metadata });
             }
         }

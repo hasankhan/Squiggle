@@ -7,7 +7,7 @@ using Squiggle.Core.Chat;
 
 namespace Squiggle.Activities
 {
-    public interface IVoiceChat: IAppHandler
+    public interface IVoiceChat: IActivityHandler
     {
         Dispatcher Dispatcher { get; set; }
         bool IsMuted { get; set; }

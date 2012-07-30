@@ -13,7 +13,7 @@ using Squiggle.Core.Chat;
 
 namespace Squiggle.Activities.VoiceChat
 {
-    class VoiceChat: AppHandler, IVoiceChat
+    class VoiceChat: ActivityHandler, IVoiceChat
     {
         WaveIn waveIn;
         WaveOut waveOut;
@@ -29,7 +29,7 @@ namespace Squiggle.Activities.VoiceChat
 
         public bool IsMuted { get; set; }
 
-        public VoiceChat(AppSession session) : base(session) { }
+        public VoiceChat(ActivitySession session) : base(session) { }
 
         protected override IEnumerable<KeyValuePair<string, string>> CreateInviteMetadata()
         {

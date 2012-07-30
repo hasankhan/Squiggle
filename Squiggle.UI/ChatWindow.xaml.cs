@@ -155,7 +155,7 @@ namespace Squiggle.UI
             chatSession.BuddyLeft += new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
             chatSession.MessageFailed += new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
             chatSession.BuddyTyping += new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
-            chatSession.AppInvitationReceived += new EventHandler<AppInvitationReceivedEventArgs>(chatSession_AppInvitationReceived);
+            chatSession.AppInvitationReceived += new EventHandler<ActivityInvitationReceivedEventArgs>(chatSession_AppInvitationReceived);
             chatSession.GroupChatStarted += new EventHandler(chatSession_GroupChatStarted);
             txtMessageEditBox.Enabled = true;
             mnuInviteContact.IsEnabled = !IsBroadcastChat;
@@ -273,7 +273,7 @@ namespace Squiggle.UI
             DeferIfNotLoaded(OnGroupChatStarted);
         }
 
-        void chatSession_AppInvitationReceived(object sender, AppInvitationReceivedEventArgs e)
+        void chatSession_AppInvitationReceived(object sender, ActivityInvitationReceivedEventArgs e)
         {
             DeferIfNotLoaded(() => OnAppInvite(e));
         }        
@@ -334,15 +334,15 @@ namespace Squiggle.UI
             });
         }
 
-        void OnAppInvite(AppInvitationReceivedEventArgs e)
+        void OnAppInvite(ActivityInvitationReceivedEventArgs e)
         {
-            IAppHandler handler = MainWindow.PluginLoader.GetHandler(e.AppId, f => f.FromInvite(e.Session, e.Metadata));
-            if (e.AppId == SquiggleActivities.VoiceChat)
+            IActivityHandler handler = MainWindow.PluginLoader.GetHandler(e.ActivityId, f => f.FromInvite(e.Session, e.Metadata));
+            if (e.ActivityId == SquiggleActivities.VoiceChat)
                 OnVoiceInvite(handler as IVoiceChat);
-            else if (e.AppId == SquiggleActivities.FileTransfer)
+            else if (e.ActivityId == SquiggleActivities.FileTransfer)
                 OnTransferInvite(handler as IFileTransfer);
             else
-                OnUnknownAppInvite(handler);
+                OnUnknownActivityInvite(handler);
         }        
 
         void OnBuddyTyping(BuddyEventArgs e)
@@ -500,7 +500,7 @@ namespace Squiggle.UI
             chatStarted = true;
         }
 
-        void OnUnknownAppInvite(IAppHandler handler)
+        void OnUnknownActivityInvite(IActivityHandler handler)
         {
             Dispatcher.Invoke(() =>
             {
@@ -588,7 +588,7 @@ namespace Squiggle.UI
             else if (!MainWindow.PluginLoader.VoiceChat)
                 return null;
 
-            AppSession session = chatSession.CreateAppSession();
+            ActivitySession session = chatSession.CreateAppSession();
             IVoiceChat voiceChat = MainWindow.PluginLoader.GetHandler(SquiggleActivities.VoiceChat, f=>f.CreateInvite(session, null)) as IVoiceChat;
 
             if (voiceChat != null)
@@ -649,7 +649,7 @@ namespace Squiggle.UI
                     return;
                 }
 
-                AppSession session = chatSession.CreateAppSession();
+                ActivitySession session = chatSession.CreateAppSession();
                 var args = new Dictionary<string, object>(){ { "name", fileName}, {"content", fileStream}, {"size", fileStream.Length}};
                 IFileTransfer fileTransfer = MainWindow.PluginLoader.GetHandler(SquiggleActivities.FileTransfer, f=>f.CreateInvite(session, args)) as IFileTransfer;
                 if (fileTransfer == null)
@@ -735,7 +735,7 @@ namespace Squiggle.UI
                 chatSession.BuddyLeft -= new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
                 chatSession.MessageFailed -= new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
                 chatSession.BuddyTyping -= new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
-                chatSession.AppInvitationReceived -= new EventHandler<AppInvitationReceivedEventArgs>(chatSession_AppInvitationReceived);
+                chatSession.AppInvitationReceived -= new EventHandler<ActivityInvitationReceivedEventArgs>(chatSession_AppInvitationReceived);
                 chatSession.GroupChatStarted -= new EventHandler(chatSession_GroupChatStarted);
                 chatSession.Leave();
                 chatSession = null;

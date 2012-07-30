@@ -7,7 +7,7 @@ using Squiggle.Utilities;
 
 namespace Squiggle.Core.Chat
 {
-    public class AppSession
+    public class ActivitySession
     {
         SquiggleEndPoint localUser;
         SquiggleEndPoint remoteUser;
@@ -17,7 +17,7 @@ namespace Squiggle.Core.Chat
         internal ChatHost ChatHost { get; private set; }
         internal bool SelfInitiated { get; private set; }
 
-        private AppSession(Guid chatSessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, Guid Id, bool selfInitiated)
+        private ActivitySession(Guid chatSessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, Guid Id, bool selfInitiated)
         {
             this.chatSessionId = chatSessionId;
             this.ChatHost = chatHost;
@@ -27,15 +27,15 @@ namespace Squiggle.Core.Chat
             this.SelfInitiated = selfInitiated;
         }
 
-        internal static AppSession Create(Guid sessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser)
+        internal static ActivitySession Create(Guid sessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser)
         {
-            var session = new AppSession(sessionId, chatHost, localUser, remoteUser, Guid.NewGuid(), true);
+            var session = new ActivitySession(sessionId, chatHost, localUser, remoteUser, Guid.NewGuid(), true);
             return session;
         }
 
-        internal static AppSession FromInvite(Guid sessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, Guid appSessionId)
+        internal static ActivitySession FromInvite(Guid sessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, Guid appSessionId)
         {
-            var session = new AppSession(sessionId, chatHost, localUser, remoteUser, appSessionId, false);
+            var session = new ActivitySession(sessionId, chatHost, localUser, remoteUser, appSessionId, false);
             return session;
         }
 

@@ -11,19 +11,19 @@ namespace Squiggle.Activities.FileTransfer
     [Export(typeof(IActivityHandlerFactory))]
     public class FileTransferFactory: IActivityHandlerFactory
     {
-        public Guid AppId
+        public Guid ActivityId
         {
             get { return SquiggleActivities.FileTransfer; }
         }
 
-        public IAppHandler FromInvite(Core.Chat.AppSession session, IDictionary<string, string> metadata)
+        public IActivityHandler FromInvite(Core.Chat.ActivitySession session, IDictionary<string, string> metadata)
         {
             var inviteData = new FileInviteData(metadata);
             IFileTransfer handler = new FileTransfer(session, inviteData.Name, inviteData.Size);
             return handler;
         }
 
-        public IAppHandler CreateInvite(AppSession session, IDictionary<string, object> args)
+        public IActivityHandler CreateInvite(ActivitySession session, IDictionary<string, object> args)
         {
             if (!args.ContainsKey("content") || !(args["content"] is Stream))
                 throw new ArgumentException("metadata must include content stream.", "metadata");

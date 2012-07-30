@@ -9,10 +9,10 @@ using Squiggle.Utilities;
 
 namespace Squiggle.Core.Chat
 {
-    public abstract class AppHandler: IAppHandler
+    public abstract class ActivityHandler: IActivityHandler
     {
         BackgroundWorker worker;
-        AppSession session;
+        ActivitySession session;
 
         protected const int bufferSize = 32768; // 32KB
 
@@ -34,7 +34,7 @@ namespace Squiggle.Core.Chat
             get { return session.SelfInitiated; }
         }
 
-        protected AppHandler(AppSession session)
+        protected ActivityHandler(ActivitySession session)
         {
             this.session = session;
 
