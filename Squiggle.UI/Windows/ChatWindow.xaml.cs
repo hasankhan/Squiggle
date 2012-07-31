@@ -494,6 +494,7 @@ namespace Squiggle.UI.Windows
                     return;
                 }
                 string downloadsFolder = SettingsProvider.Current.Settings.GeneralSettings.DownloadsFolder;
+                downloadsFolder = Path.Combine(downloadsFolder, PrimaryBuddy.DisplayName);
                 chatTextBox.AddFileReceiveRequest(invitation, downloadsFolder);
                 fileTransfers.Add(invitation);
             });

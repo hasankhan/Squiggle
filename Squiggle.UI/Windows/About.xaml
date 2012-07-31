@@ -19,7 +19,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Margin="10" Grid.ColumnSpan="2">
-            <Image Height="48" Source="Images/chat.png" Stretch="None" />
+            <Image Height="48" Source="/Images/chat.png" Stretch="None" />
             <TextBlock Text="Squiggle LAN Messenger" Margin="5" FontSize="18" FontWeight="Bold" FontFamily="Arial"  VerticalAlignment="Center"/>
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Row="1" Margin="10" Grid.ColumnSpan="2">
