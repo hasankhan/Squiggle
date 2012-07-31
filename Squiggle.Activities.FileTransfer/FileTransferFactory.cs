@@ -34,5 +34,10 @@ namespace Squiggle.Activities.FileTransfer
             IFileTransfer handler = new FileTransfer(session, inviteData.Name, inviteData.Size, stream);
             return handler;
         }
+
+        public IDictionary<string, object> LaunchInviteUI()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

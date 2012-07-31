@@ -26,5 +26,10 @@ namespace Squiggle.Activities.VoiceChat
             var invitation = new VoiceChat(session);
             return invitation;
         }
+
+        public IDictionary<string, object> LaunchInviteUI()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
