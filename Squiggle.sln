@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.UI", "Squiggle.UI\Squiggle.UI.csproj", "{F45A0E9A-5F9C-404E-BF72-4DDB8A5380E2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D469D96B-8840-4645-B74C-A2B6F1ED78DB} = {D469D96B-8840-4645-B74C-A2B6F1ED78DB}
+		{09F3AAA3-DC48-4D7C-A665-96FDC23136BD} = {09F3AAA3-DC48-4D7C-A665-96FDC23136BD}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Chat", "Squiggle.Chat\Squiggle.Chat.csproj", "{CF28694A-887E-4118-874F-76F028DAB56E}"
 EndProject
