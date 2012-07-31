@@ -20,7 +20,7 @@ using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 using Squiggle.Utilities.Net;
 
-namespace Squiggle.UI
+namespace Squiggle.UI.Windows
 {
     /// <summary>
     /// Interaction logic for SettingsWindow.xaml

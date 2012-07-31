@@ -1,5 +1,5 @@
 ﻿<sticky:StickyWindow xmlns:sticky="clr-namespace:Squiggle.UI.StickyWindows"
-    x:Class="Squiggle.UI.MainWindow"
+    x:Class="Squiggle.UI.Windows.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat"
     xmlns:controls="clr-namespace:Squiggle.UI.Controls"

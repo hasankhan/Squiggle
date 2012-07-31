@@ -51,7 +51,7 @@ namespace Messenger
         {
             // Subsequent launches
             base.OnStartupNextInstance(eventArgs);
-            ((Squiggle.UI.MainWindow)app.MainWindow).RestoreWindow();
+            ((Squiggle.UI.Windows.MainWindow)app.MainWindow).RestoreWindow();
         }
     }
 

@@ -17,7 +17,7 @@ using Squiggle.UI.Resources;
 using Squiggle.UI.StickyWindows;
 using Squiggle.Utilities;
 
-namespace Squiggle.UI
+namespace Squiggle.UI.Windows
 {
     /// <summary>
     /// Interaction logic for HistoryViewer.xaml

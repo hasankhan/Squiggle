@@ -14,7 +14,7 @@ using Squiggle.UI.ViewModel;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 
-namespace Squiggle.UI
+namespace Squiggle.UI.Windows
 {
     /// <summary>
     /// Interaction logic for ContactsWindow.xaml

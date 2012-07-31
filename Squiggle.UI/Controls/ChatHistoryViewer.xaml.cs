@@ -17,6 +17,7 @@ using Squiggle.UI;
 using Squiggle.UI.Resources;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
+using Squiggle.UI.Windows;
 
 namespace Squiggle.UI.Controls
 {

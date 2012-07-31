@@ -13,6 +13,7 @@ using Squiggle.UI.Settings;
 using Squiggle.UI.ViewModel;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
+using Squiggle.UI.Windows;
 
 namespace Squiggle.UI.Helpers
 {

@@ -24,7 +24,7 @@ using Squiggle.Utilities.Application;
 using Squiggle.Activities;
 using Squiggle.Core.Chat;
 
-namespace Squiggle.UI
+namespace Squiggle.UI.Windows
 {
     /// <summary>
     /// Interaction logic for ChatWindow.xaml

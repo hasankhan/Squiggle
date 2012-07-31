@@ -45,6 +45,7 @@ using System.Windows.Shapes;
 using System.Xml;
 using FluidKit.Helpers.DragDrop;
 using Squiggle.Chat;
+using Squiggle.UI.Windows;
 
 namespace Squiggle.UI.Controls
 {

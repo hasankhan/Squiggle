@@ -28,7 +28,7 @@ using Squiggle.Activities;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
 
-namespace Squiggle.UI
+namespace Squiggle.UI.Windows
 {
     /// <summary>
     /// Interaction logic for Window1.xaml

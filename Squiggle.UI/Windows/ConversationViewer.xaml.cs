@@ -13,7 +13,7 @@ using System.Windows.Shapes;
 using Squiggle.History;
 using Squiggle.UI.StickyWindows;
 
-namespace Squiggle.UI
+namespace Squiggle.UI.Windows
 {
     /// <summary>
     /// Interaction logic for Conversation.xaml
