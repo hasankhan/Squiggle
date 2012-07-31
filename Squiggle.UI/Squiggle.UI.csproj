@@ -143,7 +143,7 @@
     <Content Include="Sounds\VoiceChatRingingOut.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Page Include="About.xaml">
+    <Page Include="Windows\About.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -153,13 +153,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ChatWindow.xaml">
+    <Page Include="Windows\ChatWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ContactsSelectWindow.xaml">
+    <Page Include="Windows\ContactsSelectWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -245,11 +245,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ConversationViewer.xaml">
+    <Page Include="Windows\ConversationViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EmoticonSelector.xaml">
+    <Page Include="Windows\EmoticonSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -286,11 +286,11 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Page Include="HistoryViewer.xaml">
+    <Page Include="Windows\HistoryViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -316,13 +316,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SettingsWindow.xaml">
+    <Page Include="Windows\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="About.xaml.cs">
+    <Compile Include="Windows\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
@@ -333,7 +333,7 @@
     <Compile Include="AudioAlert.cs" />
     <Compile Include="ChatWindowCollection.cs" />
     <Compile Include="Controls\ChatDragDropAdvisor.cs" />
-    <Compile Include="ContactsSelectWindow.xaml.cs">
+    <Compile Include="Windows\ContactsSelectWindow.xaml.cs">
       <DependentUpon>ContactsSelectWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\BusyIndicator.xaml.cs">
@@ -375,7 +375,7 @@
     <Compile Include="Controls\VoiceChatToolbarControl.xaml.cs">
       <DependentUpon>VoiceChatToolbarControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ConversationViewer.xaml.cs">
+    <Compile Include="Windows\ConversationViewer.xaml.cs">
       <DependentUpon>ConversationViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\ContactListGroupConverter.cs" />
@@ -385,7 +385,7 @@
     <Compile Include="Converters\VoiceChatToVisibilityConverter.cs" />
     <Compile Include="Emoticon.cs" />
     <Compile Include="Emoticons.cs" />
-    <Compile Include="EmoticonSelector.xaml.cs">
+    <Compile Include="Windows\EmoticonSelector.xaml.cs">
       <DependentUpon>EmoticonSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\BoundedQueue.cs" />
@@ -394,7 +394,7 @@
     <Compile Include="Helpers\ImageFactory.cs" />
     <Compile Include="Helpers\ImageUtility.cs" />
     <Compile Include="Helpers\PluginLoader.cs" />
-    <Compile Include="HistoryViewer.xaml.cs">
+    <Compile Include="Windows\HistoryViewer.xaml.cs">
       <DependentUpon>HistoryViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="IdleStatusChanger.cs" />
@@ -410,7 +410,7 @@
     <Compile Include="MessageParsers\IMessageParser.cs" />
     <Compile Include="Converters\AllEqualConverter.cs" />
     <Compile Include="FontSetting.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -442,7 +442,7 @@
     <Compile Include="StickyWindows\WindowManager.cs" />
     <Compile Include="UpdateNotifier.cs" />
     <Compile Include="ViewModel\ClientViewModel.cs" />
-    <Compile Include="ChatWindow.xaml.cs">
+    <Compile Include="Windows\ChatWindow.xaml.cs">
       <DependentUpon>ChatWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ChatClientControl.xaml.cs">
@@ -510,7 +510,7 @@
     <Compile Include="Settings\SettingsProvider.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="Settings\SquiggleSettings.cs" />
-    <Compile Include="SettingsWindow.xaml.cs">
+    <Compile Include="Windows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\StatusConverter.cs" />

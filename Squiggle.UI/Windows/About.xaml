@@ -1,0 +1,44 @@
+﻿<sticky:StickyWindow xmlns:sticky="clr-namespace:Squiggle.UI.StickyWindows" x:Class="Squiggle.UI.About"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="About Squiggle Messenger" Height="308" Width="393" WindowStyle="ToolWindow" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+    <Grid x:Name="LayoutRoot">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="248*" />
+            <ColumnDefinition Width="123*" />
+        </Grid.ColumnDefinitions>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FFFCFCFC" Offset="0.085"/>
+                <GradientStop Color="#FFECECEC" Offset="0.483"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Margin="10" Grid.ColumnSpan="2">
+            <Image Height="48" Source="Images/chat.png" Stretch="None" />
+            <TextBlock Text="Squiggle LAN Messenger" Margin="5" FontSize="18" FontWeight="Bold" FontFamily="Arial"  VerticalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Row="1" Margin="10" Grid.ColumnSpan="2">
+            <TextBlock Text="Squiggle LAN Messenger"/>
+            <TextBlock x:Name="txtVersion" Margin="0,10,0,0"/>
+            <TextBlock Margin="0,10,0,0"> Copyright © 2010 Overroot Inc. All rights reserved.</TextBlock>
+            <StackPanel Margin="0,30,0,0" Orientation="Horizontal">
+                <TextBlock>Website:</TextBlock>
+                <TextBlock Margin="10,0,0,0">
+                    <Hyperlink NavigateUri="http://www.overroot.com" RequestNavigate="Link_RequestNavigate">www.overroot.com</Hyperlink>
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                <TextBlock>Support:</TextBlock>
+                <TextBlock Margin="10,0,0,0">
+                    <Hyperlink NavigateUri="mailto:hasan@overroot.com" RequestNavigate="Link_RequestNavigate">hasan@overroot.com</Hyperlink>
+                </TextBlock>
+            </StackPanel>
+        </StackPanel>
+        <Button Content="Close" IsCancel="True" IsDefault="True" HorizontalAlignment="Right" Grid.Row="2" Height="23" Width="60" Margin="0,10,10,10" Click="Button_Click" Grid.Column="1" />
+    </Grid>
+</sticky:StickyWindow>
