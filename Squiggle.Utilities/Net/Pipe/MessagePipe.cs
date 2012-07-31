@@ -29,7 +29,7 @@ namespace Squiggle.Utilities.Net.Pipe
             listenCancelToken = new CancellationTokenSource();
             listenTask = new Task(Listen, listenCancelToken.Token, TaskCreationOptions.LongRunning);
 
-            context = new Context(6);
+            context = new Context(2);
             string bindTo = CreateAddress(host, port);
             this.listener = context.Socket(SocketType.PULL);
             this.listener.Bind(bindTo);

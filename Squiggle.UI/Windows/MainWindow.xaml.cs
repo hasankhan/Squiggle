@@ -40,7 +40,7 @@ namespace Squiggle.UI.Windows
         ChatWindowCollection chatWindows;
         ClientViewModel dummyViewModel;
         NetworkSignout autoSignout;
-        ManualResetEvent clientAvailable = new ManualResetEvent(true);
+        TimeoutSignal clientAvailable = new TimeoutSignal(TimeSpan.FromSeconds(5));
         IdleStatusChanger idleStatusChanger;
 
         internal static MainWindow Instance { get; private set; }
@@ -218,7 +218,7 @@ namespace Squiggle.UI.Windows
 
             Async.Invoke(() =>
             {
-                clientAvailable.WaitOne(TimeSpan.FromSeconds(20));
+                clientAvailable.Wait();
                 ExceptionMonster.EatTheException(() => ChatClient = CreateClient(displayName, groupName), "creating chat client", out ex);
             },
             () =>
@@ -271,7 +271,7 @@ namespace Squiggle.UI.Windows
             if (ChatClient == null || !ChatClient.LoggedIn)
                 return;
 
-            clientAvailable.Reset();
+            clientAvailable.Begin();
 
             Dispatcher.Invoke((Action)(() =>
             {
@@ -285,7 +285,7 @@ namespace Squiggle.UI.Windows
                 Async.Invoke(() =>
                 {
                     ExceptionMonster.EatTheException(() => ChatClient.Logout(), "loging out client");
-                    clientAvailable.Set();
+                    clientAvailable.End();
                 });
 
                 chatControl.ContactList.ChatContext = null;
@@ -441,7 +441,7 @@ namespace Squiggle.UI.Windows
                     }
 
                 SignOut(true);
-                clientAvailable.WaitOne();
+                clientAvailable.Wait();
             }
         }
 
