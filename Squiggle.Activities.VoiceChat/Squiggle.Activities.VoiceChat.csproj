@@ -72,7 +72,7 @@
       <Link>Properties\AssemblyInfo.VersionSafe.cs</Link>
     </Compile>
     <Compile Include="VoiceChat.cs" />
-    <Compile Include="VoiceChatFactory.cs" />
+    <Compile Include="VoiceChatManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Libraries\NAudio\NAudio-license.txt">

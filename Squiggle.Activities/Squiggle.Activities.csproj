@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SquiggleActivities.cs" />
-    <Compile Include="IActivityHandlerFactory.cs" />
+    <Compile Include="IActivityManager.cs" />
     <Compile Include="IFileTransfer.cs" />
     <Compile Include="IVoiceChat.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

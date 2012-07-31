@@ -56,7 +56,7 @@
   <ItemGroup>
     <Compile Include="FileInviteData.cs" />
     <Compile Include="FileTransfer.cs" />
-    <Compile Include="FileTransferFactory.cs" />
+    <Compile Include="FileTransferManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\Shared\AssemblyInfo.Copyright.cs">
       <Link>Properties\AssemblyInfo.Copyright.cs</Link>

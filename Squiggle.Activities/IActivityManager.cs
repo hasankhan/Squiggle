@@ -6,9 +6,10 @@ using Squiggle.Core.Chat;
 
 namespace Squiggle.Activities
 {
-    public interface IActivityHandlerFactory
+    public interface IActivityManager
     {
         Guid ActivityId { get; }
+        string Title { get; }
         IActivityHandler FromInvite(ActivitySession session, IDictionary<string, string> metadata);
         IDictionary<string, object> LaunchInviteUI();
         IActivityHandler CreateInvite(ActivitySession session, IDictionary<string, object> args);

@@ -12,8 +12,8 @@ namespace Squiggle.UI.Helpers
 {
     class PluginLoader
     {
-        [ImportMany(typeof(IActivityHandlerFactory))]
-        public IEnumerable<IActivityHandlerFactory> ActivityHandlerFactories { get; set; }
+        [ImportMany(typeof(IActivityManager))]
+        public IEnumerable<IActivityManager> ActivityHandlerFactories { get; set; }
 
         public bool VoiceChat { get; private set; }
         public bool FileTransfer { get; private set; }
@@ -27,18 +27,18 @@ namespace Squiggle.UI.Helpers
             FileTransfer = GetHandlerFactory(SquiggleActivities.FileTransfer) != null;
         }
 
-        public IActivityHandler GetHandler(Guid activityId, Func<IActivityHandlerFactory, IActivityHandler> getAction)
+        public IActivityHandler GetHandler(Guid activityId, Func<IActivityManager, IActivityHandler> getAction)
         {
-            IActivityHandlerFactory factory = GetHandlerFactory(activityId);
+            IActivityManager factory = GetHandlerFactory(activityId);
             if (factory == null)
                 return null;
             IActivityHandler handler = getAction(factory);
             return handler;
         }
 
-        IActivityHandlerFactory GetHandlerFactory(Guid activityId)
+        IActivityManager GetHandlerFactory(Guid activityId)
         {
-            IActivityHandlerFactory factory = ActivityHandlerFactories.FirstOrDefault(f => f.ActivityId.Equals(activityId));
+            IActivityManager factory = ActivityHandlerFactories.FirstOrDefault(f => f.ActivityId.Equals(activityId));
             return factory;
         }
     }
