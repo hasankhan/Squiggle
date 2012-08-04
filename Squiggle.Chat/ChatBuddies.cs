@@ -4,22 +4,23 @@ using System.Linq;
 using System.Text;
 using Squiggle.Core;
 using Squiggle.Core.Chat;
+using BuddyResolver = System.Func<string, Squiggle.Chat.Buddy>;
 
 namespace Squiggle.Chat
 {
     class ChatBuddies: IEnumerable<Buddy>
     {
-        Dictionary<object, Buddy> buddies;
+        Dictionary<string, Buddy> buddies;
         IChatSession session;
-        Func<object, Buddy> buddyResolver;
+        BuddyResolver buddyResolver;
 
         public event EventHandler GroupChatStarted = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyJoined = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyLeft = delegate { };
 
-        public ChatBuddies(IChatSession session, Func<object, Buddy> buddyResolver, IEnumerable<Buddy> buddies)
+        public ChatBuddies(IChatSession session, BuddyResolver buddyResolver, IEnumerable<Buddy> buddies)
         {
-            this.buddies = new Dictionary<object, Buddy>();
+            this.buddies = new Dictionary<string, Buddy>();
             this.buddyResolver = buddyResolver;
             this.session = session;
 
@@ -77,6 +78,7 @@ namespace Squiggle.Chat
             Buddy buddy;
             if (TryGet(clientId, out buddy))
                 buddy.PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(buddy_PropertyChanged);
+            buddies.Remove(clientId);
             return buddy;
         }
 

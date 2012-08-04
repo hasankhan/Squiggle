@@ -33,7 +33,7 @@ namespace Squiggle.Chat
                 buddies.RemoveAt(index);
         }
 
-        public Buddy this[object id]
+        public Buddy this[string id]
         {
             get
             {

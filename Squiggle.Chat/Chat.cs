@@ -12,6 +12,7 @@ using Squiggle.Core.Chat;
 using Squiggle.History;
 using Squiggle.History.DAL;
 using Squiggle.Utilities;
+using BuddyResolver = System.Func<string, Squiggle.Chat.Buddy>;
 
 namespace Squiggle.Chat
 {    
@@ -21,9 +22,9 @@ namespace Squiggle.Chat
         ChatBuddies buddies;
         Buddy self;
 
-        public Chat(IChatSession session, Buddy self, Buddy buddy, Func<object, Buddy> buddyResolver) : this(session, self, Enumerable.Repeat(buddy, 1), buddyResolver) { }
+        public Chat(IChatSession session, Buddy self, Buddy buddy, BuddyResolver buddyResolver) : this(session, self, Enumerable.Repeat(buddy, 1), buddyResolver) { }
 
-        public Chat(IChatSession session, Buddy self, IEnumerable<Buddy> buddies, Func<object, Buddy> buddyResolver)
+        public Chat(IChatSession session, Buddy self, IEnumerable<Buddy> buddies, BuddyResolver buddyResolver)
         {
             this.self = self;
             
