@@ -27,10 +27,14 @@ namespace Squiggle.Core.Chat
 
         public IChatSession CreateSession(SquiggleEndPoint endPoint)
         {
-            IChatSession session = chatSessions.Find(s => !s.IsGroupSession && s.RemoteUsers.Contains(endPoint));
-            if (session == null)
-                session = CreateSession(Guid.NewGuid(), endPoint);
-            return session;
+            IChatSession result = chatSessions.Find(s => !s.IsGroupSession && s.RemoteUsers.Contains(endPoint));
+            if (result == null)
+            {
+                var session = CreateSession(Guid.NewGuid(), endPoint);
+                session.Initialize(false);
+                result = session;
+            }
+            return result;
         }       
 
         #endregion
@@ -86,7 +90,7 @@ namespace Squiggle.Core.Chat
             {
                 var session = CreateSession(sessionId, user);
                 ChatStarted(this, new ChatStartedEventArgs(){ Session = session});
-                session.Initialize();
+                session.Initialize(true);
             }
         }
     }

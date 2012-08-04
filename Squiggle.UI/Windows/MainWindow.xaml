@@ -7,7 +7,7 @@
     xmlns:tray="clr-namespace:Hardcodet.Wpf.TaskbarNotification"
     xmlns:local="clr-namespace:Squiggle.UI.Helpers"
     xmlns:converters="clr-namespace:Squiggle.UI.Converters"
-    Title="Squiggle Messenger" 
+    Title="{Binding Converter={x:Static converters:MainWindowTitleConverter.Instance}}" 
     SizeChanged="Window_SizeChanged"
     Icon="/Squiggle;component/Images/Chat.ico" 
     Loaded="Window_Loaded" 

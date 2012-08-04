@@ -17,6 +17,7 @@ namespace Squiggle.Core.Chat
         SquiggleEndPoint localUser;
         ChatHost chatHost;
         Dictionary<string, SquiggleEndPoint> remoteUsers;
+        ActionQueue eventQueue = new ActionQueue();
         bool initialized;
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
@@ -77,12 +78,15 @@ namespace Squiggle.Core.Chat
             }
         }
 
-        public void Initialize()
+        public void Initialize(bool needSessionInfo)
         {
-            ExceptionMonster.EatTheException(()=>
-            {
-                chatHost.GetSessionInfo(ID, localUser, PrimaryUser);                
-            },"requesting session info");
+            if (needSessionInfo)
+                ExceptionMonster.EatTheException(() =>
+                {
+                    chatHost.GetSessionInfo(ID, localUser, PrimaryUser);
+                }, "requesting session info");
+            else
+                OnInitialized();
         }
 
         public void SendBuzz()
@@ -139,47 +143,113 @@ namespace Squiggle.Core.Chat
 
         void chatHost_SessionInfoRequested(object sender, SessionEventArgs e)
         {
-            if (e.SessionID == ID)
-                Async.Invoke(() =>
+            if (e.SessionID != ID)
+                return;
+
+            Async.Invoke(() =>
+            {
+                ExceptionMonster.EatTheException(() =>
                 {
-                    ExceptionMonster.EatTheException(() =>
-                    {
-                        var participants = RemoteUsers.Except(Enumerable.Repeat(e.Sender, 1)).ToArray();
-                        chatHost.ReceiveSessionInfo(ID, localUser, e.Sender, participants);
-                    }, "sending session info");
-                });
+                    var participants = RemoteUsers.Except(Enumerable.Repeat(e.Sender, 1)).ToArray();
+                    chatHost.ReceiveSessionInfo(ID, localUser, e.Sender, participants);
+                }, "sending session info");
+            });
         }
 
         void chatHost_SessionInfoReceived(object sender, SessionInfoEventArgs e)
         {
-            if (e.SessionID == ID && e.Participants != null)
+            if (e.SessionID != ID)
+                return;
+
+            if (e.Participants != null)
             {
                 bool wasGroupSession = IsGroupSession;
+
                 CreateRemoteUsers(e.Participants);
                 if (!wasGroupSession && IsGroupSession)
                     GroupChatStarted(this, EventArgs.Empty);
 
-                if (!initialized)
-                    Initialized(this, EventArgs.Empty);
-                initialized = true;
+                OnInitialized();
             }
         }
 
         void chatHost_UserLeft(object sender, SessionEventArgs e)
         {
-            bool left = false;
-            if (e.SessionID == ID && IsGroupSession)
-                left = remoteUsers.Remove(e.Sender.ClientID);
+            if (e.SessionID != ID)
+                return;
 
-            if (left)
-                UserLeft(this, e);
+            eventQueue.Enqueue(() => OnUserLeft(e));
         }
 
         void chatHost_UserJoined(object sender, SessionEventArgs e)
         {
+            if (e.SessionID != ID)
+                return;
+
+             eventQueue.Enqueue(() => OnUserJoined(e));
+        }
+
+        void chatHost_ChatInviteReceived(object sender, ChatInviteReceivedEventArgs e)
+        {
+            if (e.SessionID != ID)
+                return;
+
+            OnInviteReceived(e);
+        }
+
+        void chatHost_ActivityInvitationReceived(object sender, ActivityInvitationReceivedEventArgs e)
+        {
+            if (e.SessionID != ID)
+                return;
+
+            eventQueue.Enqueue(() => OnActivityInvitationReceived(e));
+        }
+
+        void chatHost_UserTyping(object sender, SessionEventArgs e)
+        {
+            if (e.SessionID != ID)
+                return;
+
+            eventQueue.Enqueue(() => OnUserTyping(e));
+        }
+
+        void chatHost_BuzzReceived(object sender, SessionEventArgs e)
+        {
+            if (e.SessionID != ID)
+                return;
+
+            eventQueue.Enqueue(() => OnBuzzReceived(e));
+        }
+
+        void chatHost_MessageReceived(object sender, MessageReceivedEventArgs e)
+        {
+            if (e.SessionID != ID)
+                return;
+
+            eventQueue.Enqueue(() => OnMessageReceived(e));
+        }
+
+        void OnInitialized()
+        {
+            if (!initialized)
+                Initialized(this, EventArgs.Empty);
+            initialized = true;
+
+            eventQueue.Open();
+        }
+
+        void OnUserLeft(SessionEventArgs e)
+        {
+            bool left = IsGroupSession && remoteUsers.Remove(e.Sender.ClientID);
+            if (left)
+                UserLeft(this, e);
+        }
+
+        void OnUserJoined(SessionEventArgs e)
+        {
             bool joined = false;
             lock (remoteUsers)
-                if (e.SessionID == ID && !remoteUsers.ContainsKey(e.Sender.ClientID))
+                if (!remoteUsers.ContainsKey(e.Sender.ClientID))
                 {
                     AddRemoteUser(e.Sender);
                     joined = true;
@@ -188,43 +258,42 @@ namespace Squiggle.Core.Chat
                 UserJoined(this, e);
         }
 
-        void chatHost_ChatInviteReceived(object sender, ChatInviteReceivedEventArgs e)
+        void OnInviteReceived(ChatInviteReceivedEventArgs e)
         {
-            if (e.SessionID == ID)
+            CreateRemoteUsers(e.Participants);
+
+            ExceptionMonster.EatTheException(() =>
             {
-                ExceptionMonster.EatTheException(() =>
-                {
-                    CreateRemoteUsers(e.Participants);
-                    BroadCast(endpoint => chatHost.JoinChat(ID, localUser, endpoint));
-                }, "responding to chat invite");
-                GroupChatStarted(this, EventArgs.Empty);
-            }
+                BroadCast(endpoint => chatHost.JoinChat(ID, localUser, endpoint));
+            }, "responding to chat invite");
+
+            GroupChatStarted(this, EventArgs.Empty);
         }
 
-        void chatHost_ActivityInvitationReceived(object sender, ActivityInvitationReceivedEventArgs e)
+        void OnActivityInvitationReceived(ActivityInvitationReceivedEventArgs e)
         {
-            if (e.SessionID == ID && !IsGroupSession && IsRemoteUser(e.Sender))
+            if (!IsGroupSession && IsRemoteUser(e.Sender))
             {
                 var session = ActivitySession.FromInvite(e.SessionID, chatHost, localUser, e.Sender, e.ActivitySessionId);
                 ActivityInviteReceived(this, new ActivityInivteReceivedEventArgs() { Sender = e.Sender, Session = session, ActivityId = e.ActivityId, Metadata = e.Metadata });
             }
         }
 
-        void chatHost_UserTyping(object sender, SessionEventArgs e)
+        void OnUserTyping(SessionEventArgs e)
         {
-            if (e.SessionID == ID && IsRemoteUser(e.Sender))
+            if (IsRemoteUser(e.Sender))
                 UserTyping(this, e);
         }
 
-        void chatHost_BuzzReceived(object sender, SessionEventArgs e)
+        void OnBuzzReceived(SessionEventArgs e)
         {
-            if (e.SessionID == ID && IsRemoteUser(e.Sender))
+            if (IsRemoteUser(e.Sender))
                 BuzzReceived(this, e);
         }
 
-        void chatHost_MessageReceived(object sender, MessageReceivedEventArgs e)
+        void OnMessageReceived(MessageReceivedEventArgs e)
         {
-            if (e.SessionID == ID && IsRemoteUser(e.Sender))
+            if (IsRemoteUser(e.Sender))
                 MessageReceived(this, e);
         }
 

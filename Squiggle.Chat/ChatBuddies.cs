@@ -55,6 +55,7 @@ namespace Squiggle.Chat
         {
             foreach (SquiggleEndPoint user in session.RemoteUsers)
                 AddBuddy(user);
+            GroupChatStarted(this, EventArgs.Empty);
         }
 
         Buddy AddBuddy(SquiggleEndPoint user)

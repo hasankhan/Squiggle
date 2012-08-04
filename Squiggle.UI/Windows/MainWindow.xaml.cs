@@ -83,7 +83,7 @@ namespace Squiggle.UI.Windows
             chatControl.ContactList.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(ContactList_StartChat);
             chatControl.ContactList.SignOut += new EventHandler(ContactList_SignOut);
             dummyViewModel = new ClientViewModel(new DummyChatClient());
-            autoSignout = new NetworkSignout(this.Dispatcher, u => SignIn(u.DisplayName, u.GroupName, false, () => { }), () => SignOut(false));
+            autoSignout = new NetworkSignout(this.Dispatcher, u => SignIn(u.DisplayName, u.GroupName, false), () => SignOut(false));
             chatControl.ContactList.OpenAbout += (sender, e) => SquiggleUtility.ShowAboutDialog(this);
         }
 
@@ -102,7 +102,7 @@ namespace Squiggle.UI.Windows
             chatControl.SignIn.LoadSettings(settings);           
 
             if (!String.IsNullOrEmpty(name) && settings.PersonalSettings.AutoSignMeIn)
-                Dispatcher.Delay(() => SignIn(name, groupName, false, () => { }),
+                Dispatcher.Delay(() => SignIn(name, groupName, false),
                              TimeSpan.FromSeconds(5));
             else if (!String.IsNullOrEmpty(name))
                 chatControl.SignIn.chkRememberName.IsChecked = true;
@@ -116,7 +116,7 @@ namespace Squiggle.UI.Windows
 
         void ContactList_LoginInitiated(object sender, Squiggle.UI.Controls.LogInEventArgs e)
         {
-            SignIn(e.UserName, e.GroupName, true, () => { });
+            SignIn(e.UserName, e.GroupName, true);
         }
 
         void client_ChatStarted(object sender, Squiggle.Chat.ChatStartedEventArgs e)
@@ -207,7 +207,7 @@ namespace Squiggle.UI.Windows
             SignOut(true);
         }
 
-        void SignIn(string displayName, string groupName, bool byUser, Action onSignIn)
+        void SignIn(string displayName, string groupName, bool byUser)
         {
             if (ChatClient != null && ChatClient.LoggedIn)
                 return;
@@ -219,7 +219,7 @@ namespace Squiggle.UI.Windows
             Async.Invoke(() =>
             {
                 clientAvailable.Wait();
-                ExceptionMonster.EatTheException(() => ChatClient = CreateClient(displayName, groupName), "creating chat client", out ex);
+                ExceptionMonster.EatTheException(() => ChatClient = CreateAndLoginClient(displayName, groupName), "creating chat client", out ex);
             },
             () =>
             {
@@ -231,22 +231,25 @@ namespace Squiggle.UI.Windows
                     return;
                 }
 
-                CreateMonitor();
-                clientViewModel = new ClientViewModel(ChatClient);
-                this.DataContext = clientViewModel;
-                chatControl.ChatContext = clientViewModel;
-                clientViewModel.CancelUpdateCommand = new RelayCommand(CancelUpdateCommand_Execute);
-                
-                VisualStateManager.GoToState(chatControl, "OnlineState", true);
-                autoSignout.OnSignIn(displayName, groupName);
-
-                foreach (var window in chatWindows)
-                    window.Enabled = true;
-
-                CheckForUpdates();
-
-                onSignIn();
+                OnSignIn(displayName, groupName);
             });
+        }
+
+        void OnSignIn(string displayName, string groupName)
+        {
+            CreateMonitor();
+            clientViewModel = new ClientViewModel(ChatClient);
+            this.DataContext = clientViewModel;
+            chatControl.ChatContext = clientViewModel;
+            clientViewModel.CancelUpdateCommand = new RelayCommand(CancelUpdateCommand_Execute);
+
+            VisualStateManager.GoToState(chatControl, "OnlineState", true);
+            autoSignout.OnSignIn(displayName, groupName);
+
+            foreach (var window in chatWindows)
+                window.Enabled = true;
+
+            CheckForUpdates();
         }
 
         void CheckForUpdates()
@@ -288,14 +291,19 @@ namespace Squiggle.UI.Windows
                     clientAvailable.End();
                 });
 
-                chatControl.ContactList.ChatContext = null;
-                clientViewModel = null;
-                this.DataContext = dummyViewModel;
-                VisualStateManager.GoToState(chatControl, "OfflineState", true);
-
-                if (byUser)
-                    autoSignout.OnSignOut();
+                OnSignout(byUser);
             }));
+        }
+
+        void OnSignout(bool byUser)
+        {
+            chatControl.ContactList.ChatContext = null;
+            clientViewModel = null;
+            this.DataContext = dummyViewModel;
+            VisualStateManager.GoToState(chatControl, "OfflineState", true);
+
+            if (byUser)
+                autoSignout.OnSignOut();
         }
 
         static void AddGroupName(string groupName)
@@ -330,7 +338,7 @@ namespace Squiggle.UI.Windows
             idleStatusChanger = null;
         }
 
-        IChatClient CreateClient(string displayName, string groupName)
+        IChatClient CreateAndLoginClient(string displayName, string groupName)
         {
             SettingsProvider.Current.Load(); // reload settings
             var settings = SettingsProvider.Current.Settings;
