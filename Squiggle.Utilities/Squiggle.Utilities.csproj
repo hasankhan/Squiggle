@@ -80,6 +80,7 @@
     <Compile Include="..\Shared\AssemblyInfo.Version.cs">
       <Link>Properties\AssemblyInfo.Versione.cs</Link>
     </Compile>
+    <Compile Include="ActionQueue.cs" />
     <Compile Include="Async.cs" />
     <Compile Include="CoalesceExtensions.cs" />
     <Compile Include="Application\ConfigReader.cs" />

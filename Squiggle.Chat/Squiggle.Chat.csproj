@@ -104,7 +104,6 @@
     <Compile Include="BuddyEventArgs.cs" />
     <Compile Include="Chat.cs" />
     <Compile Include="ChatClient.cs" />
-    <Compile Include="ActionQueue.cs" />
     <Compile Include="ChatBuddies.cs" />
     <Compile Include="IChat.cs" />
     <Compile Include="IChatClient.cs" />

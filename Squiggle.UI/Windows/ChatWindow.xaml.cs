@@ -38,7 +38,6 @@ namespace Squiggle.UI.Windows
         ActionQueue eventQueue = new ActionQueue();
         DateTime? lastBuzzSent;
         DateTime? lastBuzzReceived;
-        bool loaded;
         string lastSavedFile;
         string lastSavedFormat;
         bool buzzPending;
@@ -83,7 +82,7 @@ namespace Squiggle.UI.Windows
 
             chatTextBox.KeepHistory = !SettingsProvider.Current.Settings.ChatSettings.ClearChatOnWindowClose;
 
-            DeferIfNotLoaded(() =>
+            eventQueue.Enqueue(() =>
             {
                 if (!IsGroupChat && chatTextBox.KeepHistory)
                 {
@@ -169,11 +168,7 @@ namespace Squiggle.UI.Windows
             flash = new FlashWindow(this);
 
             OnParticipantsChanged();
-            lock (eventQueue)
-            {
-                loaded = true;
-                eventQueue.DequeueAll();
-            }
+            eventQueue.Open();
         }
 
         void ChatWindow_StateChanged(object sender, EventArgs e)
@@ -270,42 +265,42 @@ namespace Squiggle.UI.Windows
 
         void chatSession_GroupChatStarted(object sender, EventArgs e)
         {
-            DeferIfNotLoaded(OnGroupChatStarted);
+            eventQueue.Enqueue(OnGroupChatStarted);
         }
 
         void chatSession_ActivityInvitationReceived(object sender, ActivityInvitationReceivedEventArgs e)
         {
-            DeferIfNotLoaded(() => OnActivityInvite(e));
+            eventQueue.Enqueue(() => OnActivityInvite(e));
         }        
 
         void chatSession_BuzzReceived(object sender, BuddyEventArgs e)
         {
-            DeferIfNotLoaded(() => OnBuzzReceived(e.Buddy));
+            eventQueue.Enqueue(() => OnBuzzReceived(e.Buddy));
         }
 
         void chatSession_MessageReceived(object sender, ChatMessageReceivedEventArgs e)
         {
-            DeferIfNotLoaded(() => OnMessageReceived(e.Sender, e.Message, e.FontName, e.Color, e.FontSize, e.FontStyle));
+            eventQueue.Enqueue(() => OnMessageReceived(e.Sender, e.Message, e.FontName, e.Color, e.FontSize, e.FontStyle));
         }
 
         void chatSession_BuddyTyping(object sender, BuddyEventArgs e)
         {
-            DeferIfNotLoaded(() => OnBuddyTyping(e));
+            eventQueue.Enqueue(() => OnBuddyTyping(e));
         }
 
         void chatSession_MessageFailed(object sender, MessageFailedEventArgs e)
         {
-            DeferIfNotLoaded(() => OnMessageFailed(e));
+            eventQueue.Enqueue(() => OnMessageFailed(e));
         }
 
         void chatSession_BuddyLeft(object sender, BuddyEventArgs e)
         {
-            DeferIfNotLoaded(() => OnBuddyLeft(e.Buddy));
+            eventQueue.Enqueue(() => OnBuddyLeft(e.Buddy));
         }
 
         void chatSession_BuddyJoined(object sender, BuddyEventArgs e)
         {
-            DeferIfNotLoaded(() => OnBuddyJoined(e.Buddy));
+            eventQueue.Enqueue(() => OnBuddyJoined(e.Buddy));
         }
 
         void buddy_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -883,15 +878,6 @@ namespace Squiggle.UI.Windows
             txtMessageEditBox.txtMessage.SelectedText = code;
             txtMessageEditBox.txtMessage.SelectionStart += code.Length;
             txtMessageEditBox.txtMessage.SelectionLength = 0;
-        }
-
-        void DeferIfNotLoaded(Action action)
-        {
-            lock (eventQueue)
-                if (!loaded)
-                    eventQueue.Enqueue(action);
-                else
-                    action();
         }
 
         void UpdateGroupChatControls()
