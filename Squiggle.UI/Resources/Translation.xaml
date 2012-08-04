@@ -108,6 +108,7 @@
     <sys:String x:Key="ChatWindow_MainMenu_SelectAll">Select _all</sys:String>
     <sys:String x:Key="ChatWindow_MainMenu_Actions">_Actions</sys:String>
     <sys:String x:Key="ChatWindow_MainMenu_InviteContact">_Invite a contact to join this conversation...</sys:String>
+    <sys:String x:Key="ChatWindow_MainMenu_StartActivity">_Start Activity</sys:String>
     <sys:String x:Key="ChatWindow_MainMenu_Tools">_Tools</sys:String>
     <sys:String x:Key="ChatWindow_MainMenu_Settings">_Settings...</sys:String>
     <sys:String x:Key="ChatWindow_MainMenu_Help">_Help</sys:String>

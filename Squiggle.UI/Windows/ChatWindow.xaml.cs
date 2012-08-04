@@ -91,6 +91,8 @@ namespace Squiggle.UI.Windows
                         chatTextBox.AddItems(history);
                 }
             });
+
+            LoadActivities();
         }
 
         public IEnumerable<Buddy> Buddies
@@ -395,6 +397,18 @@ namespace Squiggle.UI.Windows
         {
             var itemsView = CollectionViewSource.GetDefaultView(displayPicsItemControl.ItemsSource);
             itemsView.Refresh();
+        }
+
+        void LoadActivities()
+        {
+            foreach (IActivityManager activityManager in MainWindow.PluginLoader.ActivityManagers)
+            {
+                var item = new MenuItem();
+                item.Header = activityManager.Title;
+                item.Tag = activityManager;
+                item.Click += new RoutedEventHandler(StartActivityMenuItem_Click);
+                mnuStartActivity.Items.Add(item);
+            }
         }
 
         void Monitor(Buddy buddy)
@@ -855,6 +869,12 @@ namespace Squiggle.UI.Windows
         {
             IEnumerable<Buddy> buddies = SquiggleUtility.SelectContacts(Translation.Instance.ChatWindow_InviteContact, this, b => Buddies.Contains(b));
             Invite(buddies);
+        }
+
+        private void StartActivityMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var activity = ((MenuItem)sender).Tag as IActivityManager;
+            MessageBox.Show("Launching activity " + activity.Title);
         }
 
         private void SendEmoticon_Click(object sender, RoutedEventArgs e)

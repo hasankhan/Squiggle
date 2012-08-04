@@ -13,7 +13,7 @@ namespace Squiggle.UI.Helpers
     class PluginLoader
     {
         [ImportMany(typeof(IActivityManager))]
-        public IEnumerable<IActivityManager> ActivityHandlerFactories { get; set; }
+        public IEnumerable<IActivityManager> ActivityManagers { get; set; }
 
         public bool VoiceChat { get; private set; }
         public bool FileTransfer { get; private set; }
@@ -38,7 +38,7 @@ namespace Squiggle.UI.Helpers
 
         IActivityManager GetHandlerFactory(Guid activityId)
         {
-            IActivityManager factory = ActivityHandlerFactories.FirstOrDefault(f => f.ActivityId.Equals(activityId));
+            IActivityManager factory = ActivityManagers.FirstOrDefault(f => f.ActivityId.Equals(activityId));
             return factory;
         }
     }
