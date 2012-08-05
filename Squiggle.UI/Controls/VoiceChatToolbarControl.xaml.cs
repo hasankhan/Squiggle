@@ -24,7 +24,7 @@ namespace Squiggle.UI.Controls
     /// </summary>
     public partial class VoiceChatToolbarControl : UserControl, INotifyPropertyChanged
     {
-        IVoiceChat voiceChatContext;
+        IVoiceChatHandler voiceChatContext;
 
         public event EventHandler StartChat = delegate { };
 
@@ -34,7 +34,7 @@ namespace Squiggle.UI.Controls
             this.DataContext = this;
         }
 
-        public IVoiceChat VoiceChatContext 
+        public IVoiceChatHandler VoiceChatContext 
         {
             get { return voiceChatContext; }
             set 

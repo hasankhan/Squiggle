@@ -6,9 +6,9 @@ using Squiggle.Activities;
 
 namespace Squiggle.UI.Helpers.Collections
 {
-    public class FileTransferCollection: System.Collections.Generic.SynchronizedCollection<IFileTransfer>
+    public class FileTransferCollection: System.Collections.Generic.SynchronizedCollection<IFileTransferHandler>
     {
-        protected override void InsertItem(int index, IFileTransfer item)
+        protected override void InsertItem(int index, IFileTransferHandler item)
         {
             base.InsertItem(index, item);
             item.TransferFinished += new EventHandler(item_TransferFinished);
@@ -16,20 +16,20 @@ namespace Squiggle.UI.Helpers.Collections
 
         protected override void RemoveItem(int index)
         {
-            IFileTransfer item = this[index];
+            IFileTransferHandler item = this[index];
             base.RemoveItem(index);
             item.TransferFinished -= new EventHandler(item_TransferFinished);
         }
 
         void item_TransferFinished(object sender, EventArgs e)
         {
-            Remove((IFileTransfer)sender);
+            Remove((IFileTransferHandler)sender);
         }
 
         public void CancelAll()
         {
             lock (SyncRoot)
-                foreach (IFileTransfer item in this.ToList())
+                foreach (IFileTransferHandler item in this.ToList())
                     item.Cancel();
         }
     }

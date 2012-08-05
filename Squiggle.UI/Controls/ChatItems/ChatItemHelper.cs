@@ -43,25 +43,25 @@ namespace Squiggle.UI
             textbox.AddItem(item);
         }
 
-        public static void AddVoiceChatSentRequest(this ChatTextBox textbox, SquiggleContext context, IVoiceChat session, string buddyName)
+        public static void AddVoiceChatSentRequest(this ChatTextBox textbox, SquiggleContext context, IVoiceChatHandler session, string buddyName)
         {
             var item = new VoiceChatItem(context, session, buddyName, true, false);
             textbox.AddItem(item);
         }
 
-        public static void AddVoiceChatReceivedRequest(this ChatTextBox textbox, SquiggleContext context, IVoiceChat session, string buddyName, bool alreadyInChat)
+        public static void AddVoiceChatReceivedRequest(this ChatTextBox textbox, SquiggleContext context, IVoiceChatHandler session, string buddyName, bool alreadyInChat)
         {
             var item = new VoiceChatItem(context, session, buddyName, false, alreadyInChat);
             textbox.AddItem(item);
         }
 
-        public static void AddFileReceiveRequest(this ChatTextBox textbox, IFileTransfer session, string downloadsFolder)
+        public static void AddFileReceiveRequest(this ChatTextBox textbox, IFileTransferHandler session, string downloadsFolder)
         {
             var item = new FileTransferItem(session, downloadsFolder);
             textbox.AddItem(item);
         }
 
-        public static void AddFileSentRequest(this ChatTextBox textbox, IFileTransfer session)
+        public static void AddFileSentRequest(this ChatTextBox textbox, IFileTransferHandler session)
         {
             var item = new FileTransferItem(session);
             textbox.AddItem(item);

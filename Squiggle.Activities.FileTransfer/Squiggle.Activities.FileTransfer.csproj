@@ -62,8 +62,8 @@
       <Link>Properties\AssemblyInfo.Version</Link>
     </Compile>
     <Compile Include="FileInviteData.cs" />
+    <Compile Include="FileTransferHandler.cs" />
     <Compile Include="FileTransfer.cs" />
-    <Compile Include="FileTransferManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Squiggle.Activities\Squiggle.Activities.csproj">

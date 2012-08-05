@@ -48,7 +48,7 @@
     <Compile Include="..\Shared\AssemblyInfo.Copyright.cs">
       <Link>Properties\AssemblyInfo.Copyright</Link>
     </Compile>
-    <Compile Include="Activity\IActivityManager.cs" />
+    <Compile Include="Activity\IActivity.cs" />
     <Compile Include="IChatWindow.cs" />
     <Compile Include="MessageFilter\FilterDirection.cs" />
     <Compile Include="MessageFilter\IMessageFilter.cs" />

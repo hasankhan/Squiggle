@@ -27,7 +27,7 @@ namespace Squiggle.UI.Controls
     /// </summary>
     public partial class VoiceChatControl : UserControl
     {
-        IVoiceChat voiceChat;
+        IVoiceChatHandler voiceChat;
         bool sending;
         string buddyName;
         bool alreadyInChat;
@@ -40,7 +40,7 @@ namespace Squiggle.UI.Controls
             InitializeComponent();
         }
 
-        internal VoiceChatControl(SquiggleContext context, IVoiceChat voiceChat, string buddyName, bool sending, bool alreadyInChat) : this()
+        internal VoiceChatControl(SquiggleContext context, IVoiceChatHandler voiceChat, string buddyName, bool sending, bool alreadyInChat) : this()
         {
             this.voiceChat = voiceChat;
             this.sending = sending;

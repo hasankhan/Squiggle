@@ -63,8 +63,8 @@
     <Compile Include="..\Shared\AssemblyInfo.Version.cs">
       <Link>Properties\AssemblyInfo.Version</Link>
     </Compile>
-    <Compile Include="IFileTransfer.cs" />
-    <Compile Include="IVoiceChat.cs" />
+    <Compile Include="IFileTransferHandler.cs" />
+    <Compile Include="IVoiceChatHandler.cs" />
     <Compile Include="SquiggleActivities.cs" />
   </ItemGroup>
   <ItemGroup>

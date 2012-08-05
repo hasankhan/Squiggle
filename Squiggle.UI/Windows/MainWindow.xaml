@@ -1,4 +1,4 @@
-﻿<sticky:StickyWindow xmlns:sticky="clr-namespace:Squiggle.UI.StickyWindows"
+﻿<sticky:StickyWindowBase xmlns:sticky="clr-namespace:Squiggle.UI.StickyWindow"
     x:Class="Squiggle.UI.Windows.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat"
@@ -131,4 +131,4 @@
         <controls:ChatClientControl Grid.Row="1" Width="Auto" Height="Auto" x:Name="chatControl" />
         <controls:BusyIndicator x:Name="busyIndicator" Grid.Row="1" Message="{StaticResource MainWindow_PleaseWait}" />
     </Grid>
-</sticky:StickyWindow>
+</sticky:StickyWindowBase>

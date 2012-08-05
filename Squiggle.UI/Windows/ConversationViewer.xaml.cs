@@ -11,14 +11,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Squiggle.History;
-using Squiggle.UI.StickyWindows;
+using Squiggle.UI.StickyWindow;
 
 namespace Squiggle.UI.Windows
 {
     /// <summary>
     /// Interaction logic for Conversation.xaml
     /// </summary>
-    public partial class ConversationViewer : StickyWindow
+    public partial class ConversationViewer : StickyWindowBase
     {
         public Guid SessionId { get; private set; }
 

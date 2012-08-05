@@ -1,110 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Threading;
-using Squiggle.Utilities;
+using System.Text;
+using System.ComponentModel.Composition;
 using Squiggle.Core.Chat;
+using System.IO;
+using Squiggle.UI.Plugins.Activity;
 
 namespace Squiggle.Activities.FileTransfer
 {
-    class FileTransfer: ActivityHandler, IFileTransfer
+    [Export(typeof(IActivity))]
+    public class FileTransfer: IActivity
     {
-        Stream content;
-        string filePath;
-
-        public long Size { get; private set; }
-        public string Name { get; private set; }
-
-        public override Guid ActivityId
+        public Guid Id
         {
             get { return SquiggleActivities.FileTransfer; }
         }
 
-        public FileTransfer(ActivitySession session, string name, long size, Stream content)
-            :base(session)
+        public string Title
         {
-            this.Name = name;
-            this.Size = size;
-            this.content = content;
+            get { return "File Transfer"; }
         }
 
-        public FileTransfer(ActivitySession session, string name, long size)
-            :base(session)
+        public IActivityHandler FromInvite(Core.Chat.ActivitySession session, IDictionary<string, string> metadata)
         {
-            this.Name = name;
-            this.Size = size;
+            var inviteData = new FileInviteData(metadata);
+            IFileTransferHandler handler = new FileTransferHandler(session, inviteData.Name, inviteData.Size);
+            return handler;
         }
 
-        protected override IEnumerable<KeyValuePair<string, string>> CreateInviteMetadata()
+        public IActivityHandler CreateInvite(ActivitySession session, IDictionary<string, object> args)
         {
-            IEnumerable<KeyValuePair<string, string>> data = new FileInviteData() { Name = Name, Size = Size };
-            return data;
+            if (!args.ContainsKey("content") || !(args["content"] is Stream))
+                throw new ArgumentException("metadata must include content stream.", "metadata");
+
+            var stream = (Stream)args["content"];
+
+            var inviteData = new FileInviteData(args.ToDictionary(x=>x.Key, x=>x.Value.ToString()));
+            IFileTransferHandler handler = new FileTransferHandler(session, inviteData.Name, inviteData.Size, stream);
+            return handler;
         }
 
-        public void Accept(string fileName)
+        public IDictionary<string, object> LaunchInviteUI()
         {
-            filePath = fileName;
-            this.Accept();
-        }
-
-        protected override void OnAccept()
-        {
-            content = File.OpenWrite(filePath);
-
-            base.OnAccept();
-        }
-
-        protected override void OnTransferCancelled()
-        {
-            if (!SelfInitiated && content != null)
-                File.Delete(filePath);
-
-            base.OnTransferCancelled();
-        }
-
-        protected override void OnTransferFinished()
-        {
-            if (content != null)
-            {
-                content.Dispose();
-                content = null;
-            }
-
-            base.OnTransferFinished();
-        }
-
-        protected override void OnDataReceived(byte[] chunk)
-        {
-            if (!SelfInitiated && content != null)
-            {
-                content.Write(chunk, 0, chunk.Length);
-
-                float progress = BytesReceived / (float)Size * 100;
-                OnProgressChanged((int)progress);
-
-                if (BytesReceived >= Size)
-                    CompleteTransfer();
-            }
-        }
-
-        protected override void TransferData(Func<bool> cancelPending)
-        {
-            byte[] buffer = new byte[bufferSize];
-            long bytesRemaining = Size;
-            while (bytesRemaining > 0 && !cancelPending())
-            {
-                int bytesRead = content.Read(buffer, 0, buffer.Length);
-                byte[] temp = new byte[bytesRead];
-                Buffer.BlockCopy(buffer, 0, temp, 0, temp.Length);
-                SendData(temp);
-                bytesRemaining -= bytesRead;
-                float progress = (Size - bytesRemaining) / (float)Size * 100;
-                UpdateProgress((int)progress);
-            }
+            throw new NotImplementedException();
         }
     }
 }

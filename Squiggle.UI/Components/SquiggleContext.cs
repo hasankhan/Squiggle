@@ -13,7 +13,7 @@ namespace Squiggle.UI.Components
         public MainWindow MainWindow { get; set; }
         public PluginLoader PluginLoader { get; set; }
         public IChatClient ChatClient { get; set; }
-        public IVoiceChat ActiveVoiceChat { get; set; }
+        public IVoiceChatHandler ActiveVoiceChat { get; set; }
         public bool IsVoiceChatActive
         {
             get { return ActiveVoiceChat != null; }

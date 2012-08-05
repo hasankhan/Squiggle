@@ -20,7 +20,7 @@ namespace Squiggle.UI.Controls
     /// </summary>
     public partial class FileTransferControl : UserControl, INotifyPropertyChanged
     {
-        IFileTransfer fileTransfer;
+        IFileTransferHandler fileTransfer;
         bool sending;
 
         string downloadFolder;
@@ -49,7 +49,7 @@ namespace Squiggle.UI.Controls
             InitializeComponent();
         }
 
-        public FileTransferControl(IFileTransfer fileTransfer, bool sending) : this()
+        public FileTransferControl(IFileTransferHandler fileTransfer, bool sending) : this()
         {
             this.fileTransfer = fileTransfer;
             this.sending = sending;

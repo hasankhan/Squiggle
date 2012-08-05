@@ -110,6 +110,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\ActivitiesMenuHelper.cs" />
     <Compile Include="MessageParsers\RegexParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\Shared\AssemblyInfo.Copyright.cs">
@@ -437,13 +438,13 @@
     <Compile Include="Settings\ContactListView.cs" />
     <Compile Include="Settings\ContactSettings.cs" />
     <Compile Include="Settings\SettingKey.cs" />
-    <Compile Include="StickyWindows\DpiHelper.cs" />
-    <Compile Include="StickyWindows\NativeBehaviors.cs" />
-    <Compile Include="StickyWindows\NativeBehaviour.cs" />
-    <Compile Include="StickyWindows\NativeMethods.cs" />
-    <Compile Include="StickyWindows\SnapToBehavior.cs" />
-    <Compile Include="StickyWindows\StickyWindow.cs" />
-    <Compile Include="StickyWindows\WindowManager.cs" />
+    <Compile Include="StickyWindow\DpiHelper.cs" />
+    <Compile Include="StickyWindow\NativeBehaviors.cs" />
+    <Compile Include="StickyWindow\NativeBehaviour.cs" />
+    <Compile Include="StickyWindow\NativeMethods.cs" />
+    <Compile Include="StickyWindow\SnapToBehavior.cs" />
+    <Compile Include="StickyWindow\StickyWindowBase.cs" />
+    <Compile Include="StickyWindow\WindowManager.cs" />
     <Compile Include="Components\UpdateNotifier.cs" />
     <Compile Include="ViewModel\ClientViewModel.cs" />
     <Compile Include="Windows\ChatWindow.xaml.cs">

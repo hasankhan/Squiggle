@@ -40,7 +40,7 @@ namespace Squiggle.UI.ViewModel
             get { return false; }
         }
 
-        public IVoiceChat ActiveVoiceChat
+        public IVoiceChatHandler ActiveVoiceChat
         {
             get { return null; }
         }

@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Windows;
 using Squiggle.UI.Helpers;
-using Squiggle.UI.StickyWindows;
+using Squiggle.UI.StickyWindow;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 using Squiggle.UI.Components;
@@ -12,7 +12,7 @@ namespace Squiggle.UI.Windows
     /// <summary>
     /// Interaction logic for About.xaml
     /// </summary>
-    public partial class About : StickyWindow
+    public partial class About : StickyWindowBase
     {
         public About()
         {

@@ -1,16 +1,16 @@
-﻿<sticky:StickyWindow xmlns:sticky="clr-namespace:Squiggle.UI.StickyWindows"
+﻿<sticky:StickyWindowBase xmlns:sticky="clr-namespace:Squiggle.UI.StickyWindow"
                      x:Class="Squiggle.UI.Windows.HistoryViewer"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:Squiggle.UI.Controls"
         Icon="/Squiggle;component/Images/Chat.ico" FocusManager.FocusedElement="{Binding ElementName=chatHistory}"
         Title="HistoryViewer" Height="300" Width="586" WindowStartupLocation="CenterOwner" KeyDown="StickyWindow_KeyDown">
-    <sticky:StickyWindow.Resources>
+    <sticky:StickyWindowBase.Resources>
         <Style TargetType="DatePicker">
             <Setter Property="Width" Value="200" />
             <Setter Property="HorizontalAlignment" Value="Left" />
         </Style>
-    </sticky:StickyWindow.Resources>
+    </sticky:StickyWindowBase.Resources>
     <Grid>
         <TabControl>
             <TabItem Header="{StaticResource HistoryViewer_ChatHistoryTab}">
@@ -21,4 +21,4 @@
             </TabItem>
         </TabControl>
     </Grid>
-</sticky:StickyWindow>
+</sticky:StickyWindowBase>

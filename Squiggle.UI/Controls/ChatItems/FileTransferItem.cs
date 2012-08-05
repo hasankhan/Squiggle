@@ -12,16 +12,16 @@ namespace Squiggle.UI.Controls.ChatItems
     {
         public bool Sending { get; private set; }
         public string DownloadsFolder { get; private set; }
-        public IFileTransfer Session { get; private set; }
+        public IFileTransferHandler Session { get; private set; }
 
-        public FileTransferItem(IFileTransfer session, string downloadsFolder)
+        public FileTransferItem(IFileTransferHandler session, string downloadsFolder)
         {
             this.Session = session;
             this.DownloadsFolder = downloadsFolder;
             this.Sending = false;
         }
 
-        public FileTransferItem(IFileTransfer session)
+        public FileTransferItem(IFileTransferHandler session)
         {
             this.Session = session;
             this.Sending = true;

@@ -13,12 +13,12 @@ namespace Squiggle.UI.Controls.ChatItems
     {
         SquiggleContext context;
 
-        public IVoiceChat Session { get; private set; }
+        public IVoiceChatHandler Session { get; private set; }
         public string BuddyName { get; private set; }
         public bool Sending { get; private set; }
         public bool AlreadyInChat { get; private set; }
 
-        public VoiceChatItem(SquiggleContext context, IVoiceChat session, string buddyName, bool sending, bool alreadyInChat)
+        public VoiceChatItem(SquiggleContext context, IVoiceChatHandler session, string buddyName, bool sending, bool alreadyInChat)
         {
             this.Session = session;
             this.BuddyName = buddyName;

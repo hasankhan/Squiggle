@@ -9,7 +9,7 @@ using System.Windows.Input;
 using Squiggle.Chat;
 using Squiggle.UI.Controls;
 using Squiggle.UI.Resources;
-using Squiggle.UI.StickyWindows;
+using Squiggle.UI.StickyWindow;
 using Squiggle.UI.ViewModel;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
@@ -19,7 +19,7 @@ namespace Squiggle.UI.Windows
     /// <summary>
     /// Interaction logic for ContactsWindow.xaml
     /// </summary>
-    public partial class ContactsSelectWindow : StickyWindow
+    public partial class ContactsSelectWindow : StickyWindowBase
     {
         private ClientViewModel clientViewModel;
         private List<Buddy> selectedContacts;

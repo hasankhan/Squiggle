@@ -14,7 +14,7 @@ using Squiggle.Core;
 using Squiggle.UI.Helpers;
 using Squiggle.UI.Resources;
 using Squiggle.UI.Settings;
-using Squiggle.UI.StickyWindows;
+using Squiggle.UI.StickyWindow;
 using Squiggle.UI.ViewModel;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
@@ -26,7 +26,7 @@ namespace Squiggle.UI.Windows
     /// <summary>
     /// Interaction logic for SettingsWindow.xaml
     /// </summary>
-    public partial class SettingsWindow : StickyWindow
+    public partial class SettingsWindow : StickyWindowBase
     {
         SettingsViewModel settingsVm;
         Buddy user;

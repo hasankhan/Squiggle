@@ -1,4 +1,4 @@
-﻿<sticky:StickyWindow xmlns:sticky="clr-namespace:Squiggle.UI.StickyWindows" 
+﻿<sticky:StickyWindowBase xmlns:sticky="clr-namespace:Squiggle.UI.StickyWindow" 
                      x:Class="Squiggle.UI.Windows.ChatWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:controls="clr-namespace:Squiggle.UI.Controls"
@@ -8,18 +8,16 @@
     xmlns:dragdrop="clr-namespace:FluidKit.Helpers.DragDrop;assembly=FluidKit"     
     Loaded="Window_Loaded" Activated="Window_Activated" KeyDown="Window_KeyDown"
     SizeChanged="Window_SizeChanged" Icon="/Squiggle;component/Images/chat.ico">
-    <Window.Resources>
+    <sticky:StickyWindowBase.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Expanders.xaml" />
                 <ResourceDictionary>
                     <controls:ChatDragDropAdvisor x:Key="contactDragDrop" />
-
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-
-    </Window.Resources>
+    </sticky:StickyWindowBase.Resources>
     <Grid Background="#FFF3F3F3" x:Name="LayoutRoot" 
           dragdrop:DragDropManager.DropTargetAdvisor="{DynamicResource contactDragDrop}"          
           FlowDirection="{StaticResource flowDirection}">
@@ -56,7 +54,9 @@
             </MenuItem>
             <MenuItem Header="{StaticResource ChatWindow_MainMenu_Actions}">
                 <MenuItem x:Name="mnuInviteContact" Header="{StaticResource ChatWindow_MainMenu_InviteContact}" MenuItem.Click="InviteContactMenu_Click" />
-                <MenuItem x:Name="mnuStartActivity" Header="{StaticResource ChatWindow_MainMenu_StartActivity}" />
+                <MenuItem x:Name="mnuStartActivity" Header="{StaticResource ChatWindow_MainMenu_StartActivity}">
+                    <MenuItem x:Name="mnuNoActivity" Header="{StaticResource ChatWindow_MainMenu_StartActivity_NoActivity}" IsEnabled="False" />
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="{StaticResource ChatWindow_MainMenu_Tools}">
                 <MenuItem Header="{StaticResource ChatWindow_MainMenu_Settings}" MenuItem.Click="SettingsMenu_Click" />
@@ -183,4 +183,4 @@
                       Height="5" DragCompleted="GridSplitter_DragCompleted" />
         </Grid>
     </Grid>
-</sticky:StickyWindow>
+</sticky:StickyWindowBase>

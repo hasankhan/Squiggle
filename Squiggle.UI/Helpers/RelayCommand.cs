@@ -7,23 +7,19 @@ using System.Windows.Input;
 
 namespace Squiggle.UI.Helpers
 {
-    public class RelayCommand : ICommand
+    public class RelayCommand<T> : ICommand
     {
-        #region Fields
-
-        readonly Action<object> _execute;
-        readonly Predicate<object> _canExecute;
-
-        #endregion // Fields
+        Action<T> _execute;
+        Predicate<T> _canExecute;
 
         #region Constructors
 
-        public RelayCommand(Action<object> execute)
+        public RelayCommand(Action<T> execute)
             : this(execute, null)
         {
         }
 
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+        public RelayCommand(Action<T> execute, Predicate<T> canExecute)
         {
             if (execute == null)
                 throw new ArgumentNullException("execute");
@@ -38,7 +34,7 @@ namespace Squiggle.UI.Helpers
         [DebuggerStepThrough]
         public bool CanExecute(object parameter)
         {
-            return _canExecute == null ? true : _canExecute(parameter);
+            return _canExecute == null ? true : _canExecute((T)parameter);
         }
 
         public event EventHandler CanExecuteChanged
@@ -49,7 +45,7 @@ namespace Squiggle.UI.Helpers
 
         public void Execute(object parameter)
         {
-            _execute(parameter);
+            _execute((T)parameter);
         }
 
         #endregion // ICommand Members

@@ -14,7 +14,7 @@ using System.Windows.Shapes;
 using Squiggle.History;
 using Squiggle.History.DAL;
 using Squiggle.UI.Resources;
-using Squiggle.UI.StickyWindows;
+using Squiggle.UI.StickyWindow;
 using Squiggle.Utilities;
 
 namespace Squiggle.UI.Windows
@@ -22,7 +22,7 @@ namespace Squiggle.UI.Windows
     /// <summary>
     /// Interaction logic for HistoryViewer.xaml
     /// </summary>
-    public partial class HistoryViewer : StickyWindow
+    public partial class HistoryViewer : StickyWindowBase
     {
         public HistoryViewer()
         {

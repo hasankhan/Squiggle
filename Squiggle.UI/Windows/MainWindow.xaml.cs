@@ -11,11 +11,10 @@ using Squiggle.UI.Controls;
 using Squiggle.UI.Helpers;
 using Squiggle.UI.Resources;
 using Squiggle.UI.Settings;
-using Squiggle.UI.StickyWindows;
+using Squiggle.UI.StickyWindow;
 using Squiggle.UI.ViewModel;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
-using Squiggle.Activities;
 using Squiggle.UI.Factories;
 using Squiggle.UI.Helpers.Collections;
 using Squiggle.UI.Components;
@@ -25,7 +24,7 @@ namespace Squiggle.UI.Windows
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class MainWindow : StickyWindow
+    public partial class MainWindow : StickyWindowBase
     {
         WindowState lastState;
         ClientViewModel clientViewModel;
@@ -232,7 +231,7 @@ namespace Squiggle.UI.Windows
             clientViewModel = new ClientViewModel(context.ChatClient);
             this.DataContext = clientViewModel;
             chatControl.ChatContext = clientViewModel;
-            clientViewModel.CancelUpdateCommand = new RelayCommand(CancelUpdateCommand_Execute);
+            clientViewModel.CancelUpdateCommand = new RelayCommand<object>(CancelUpdateCommand_Execute);
 
             VisualStateManager.GoToState(chatControl, "OnlineState", true);
             autoSignout.OnSignIn(displayName, groupName);

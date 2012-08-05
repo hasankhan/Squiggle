@@ -17,8 +17,8 @@ namespace Squiggle.UI.Components
 {
     class PluginLoader
     {
-        [ImportMany(typeof(IActivityManager))]
-        public IEnumerable<IActivityManager> ActivityManagers { get; set; }
+        [ImportMany(typeof(IActivity))]
+        public IEnumerable<IActivity> Activities { get; set; }
 
         [ImportMany(typeof(IMessageFilter))]
         public IEnumerable<IMessageFilter> MessageFilters { get; set; }
@@ -26,31 +26,30 @@ namespace Squiggle.UI.Components
         [ImportMany(typeof(IMessageParser))]
         public IEnumerable<IMessageParser> MessageParsers { get; set; }
 
-        public bool VoiceChat { get; private set; }
-        public bool FileTransfer { get; private set; }
-
         public PluginLoader(ComposablePartCatalog catalog)
         {
             var container = new CompositionContainer(catalog);
             container.SatisfyImportsOnce(this);
-
-            VoiceChat = GetHandlerFactory(SquiggleActivities.VoiceChat) != null;
-            FileTransfer = GetHandlerFactory(SquiggleActivities.FileTransfer) != null;
         }
 
-        public IActivityHandler GetHandler(Guid activityId, Func<IActivityManager, IActivityHandler> getAction)
+        public bool HasActivity(Guid id)
         {
-            IActivityManager factory = GetHandlerFactory(activityId);
+            return GetActivity(id) != null;
+        }
+
+        public IActivityHandler GetActivityHandler(Guid activityId, Func<IActivity, IActivityHandler> getAction)
+        {
+            IActivity factory = GetActivity(activityId);
             if (factory == null)
                 return null;
             IActivityHandler handler = getAction(factory);
             return handler;
         }
 
-        IActivityManager GetHandlerFactory(Guid activityId)
+        IActivity GetActivity(Guid activityId)
         {
-            IActivityManager factory = ActivityManagers.FirstOrDefault(f => f.ActivityId.Equals(activityId));
-            return factory;
+            IActivity activity = Activities.FirstOrDefault(f => f.Id.Equals(activityId));
+            return activity;
         }
     }
 }
