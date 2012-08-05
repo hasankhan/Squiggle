@@ -43,11 +43,10 @@ namespace Squiggle.UI.Windows
             InitializeComponent();
 
             var pluginLoader = new PluginLoaderFactory().CreateInstance();
-            context = new SquiggleContext()
-            {
-                MainWindow = this,
-                PluginLoader = pluginLoader,
-            };
+
+            context = SquiggleContext.Current;
+            context.MainWindow = this;
+            context.PluginLoader = pluginLoader;
 
             LoadPosition();
 
