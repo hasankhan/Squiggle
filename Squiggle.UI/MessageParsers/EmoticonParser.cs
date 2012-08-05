@@ -8,6 +8,7 @@ using System.Windows.Documents;
 using System.Windows.Media.Imaging;
 using Squiggle.UI.Helpers;
 using System.ComponentModel.Composition;
+using Squiggle.UI.Plugins.MessageParser;
 
 namespace Squiggle.UI.MessageParsers
 {

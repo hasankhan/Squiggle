@@ -9,6 +9,7 @@ using Squiggle.UI.Helpers;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 using System.ComponentModel.Composition;
+using Squiggle.UI.Plugins.MessageParser;
 
 namespace Squiggle.UI.MessageParsers
 {

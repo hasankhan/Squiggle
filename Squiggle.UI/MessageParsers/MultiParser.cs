@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Documents;
+using Squiggle.UI.Plugins.MessageParser;
 
 namespace Squiggle.UI.MessageParsers
 {

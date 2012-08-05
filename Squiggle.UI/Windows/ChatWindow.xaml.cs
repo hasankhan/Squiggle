@@ -25,13 +25,16 @@ using Squiggle.Activities;
 using Squiggle.Core.Chat;
 using Squiggle.UI.Helpers.Collections;
 using Squiggle.UI.Components;
+using Squiggle.UI.Plugins;
+using Squiggle.UI.Plugins.Activity;
+using Squiggle.UI.Plugins.MessageFilter;
 
 namespace Squiggle.UI.Windows
 {
     /// <summary>
     /// Interaction logic for ChatWindow.xaml
     /// </summary>
-    public partial class ChatWindow : StickyWindow
+    public partial class ChatWindow : StickyWindow, IChatWindow
     {
         IChat chatSession;
         FlashWindow flash;

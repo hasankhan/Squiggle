@@ -327,6 +327,12 @@
     <Compile Include="Factories\IInstanceFactory.cs" />
     <Compile Include="Factories\PluginLoaderFactory.cs" />
     <Compile Include="Helpers\TimeoutSignal.cs" />
+    <Compile Include="MessageFilters\AliasFilter.cs" />
+    <Compile Include="MessageFilters\CommandsFilter.cs" />
+    <Compile Include="MessageFilters\MultiFilter.cs" />
+    <Compile Include="MessageParsers\EmoticonParser.cs" />
+    <Compile Include="MessageParsers\HyperlinkParser.cs" />
+    <Compile Include="MessageParsers\MultiParser.cs" />
     <Compile Include="Windows\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
@@ -403,16 +409,9 @@
       <DependentUpon>HistoryViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\IdleStatusChanger.cs" />
-    <Compile Include="MessageFilters\AliasFilter.cs" />
-    <Compile Include="MessageFilters\CommandsFilter.cs" />
-    <Compile Include="MessageFilters\IMessageFilter.cs" />
-    <Compile Include="MessageFilters\MultiFilter.cs" />
-    <Compile Include="MessageParsers\EmoticonParser.cs" />
     <Compile Include="Controls\FilterTextBox.xaml.cs">
       <DependentUpon>FilterTextBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MessageParsers\HyperlinkParser.cs" />
-    <Compile Include="MessageParsers\IMessageParser.cs" />
     <Compile Include="Converters\AllEqualConverter.cs" />
     <Compile Include="FontSetting.cs" />
     <Compile Include="Windows\MainWindow.xaml.cs">
@@ -421,8 +420,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MessageParsers\MultiParser.cs" />
-    <Compile Include="MessageParsers\RegexParser.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -558,6 +555,10 @@
     <ProjectReference Include="..\Squiggle.History\Squiggle.History.csproj">
       <Project>{C3214C5A-4B20-415E-A62E-F13229264072}</Project>
       <Name>Squiggle.History</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Squiggle.UI.Plugins\Squiggle.UI.Plugins.csproj">
+      <Project>{96855AB0-6FBA-4E3A-AE84-F5942CC59339}</Project>
+      <Name>Squiggle.UI.Plugins</Name>
     </ProjectReference>
     <ProjectReference Include="..\Squiggle.Utilities\Squiggle.Utilities.csproj">
       <Project>{8B57850B-FA7F-4F96-A4A0-BF81BF24E710}</Project>

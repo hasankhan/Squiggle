@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Squiggle.Core.Chat;
 
-namespace Squiggle.Activities
+namespace Squiggle.UI.Plugins.Activity
 {
     public interface IActivityManager
     {

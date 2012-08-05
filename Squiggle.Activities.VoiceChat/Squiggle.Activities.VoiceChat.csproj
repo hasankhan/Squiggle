@@ -97,6 +97,10 @@
       <Project>{CCC71193-64AA-4B92-80C9-7BC688C7FAE3}</Project>
       <Name>Squiggle.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Squiggle.UI.Plugins\Squiggle.UI.Plugins.csproj">
+      <Project>{96855AB0-6FBA-4E3A-AE84-F5942CC59339}</Project>
+      <Name>Squiggle.UI.Plugins</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Squiggle.Utilities\Squiggle.Utilities.csproj">
       <Project>{8B57850B-FA7F-4F96-A4A0-BF81BF24E710}</Project>
       <Name>Squiggle.Utilities</Name>

@@ -6,6 +6,8 @@ using Squiggle.Chat;
 using Squiggle.UI.Windows;
 using System.ComponentModel.Composition;
 using Squiggle.UI.Components;
+using Squiggle.UI.Plugins.MessageFilter;
+using Squiggle.UI.Plugins;
 
 namespace Squiggle.UI.MessageFilters
 {
@@ -17,13 +19,13 @@ namespace Squiggle.UI.MessageFilters
             get { return FilterDirection.Out; }
         }
 
-        static Dictionary<string, Action<ChatWindow>> simpleCommands = new Dictionary<string, Action<ChatWindow>>();
+        static Dictionary<string, Action<IChatWindow>> simpleCommands = new Dictionary<string, Action<IChatWindow>>();
 
         static CommandsFilter()
         {
             var context = SquiggleContext.Current;
 
-            simpleCommands["CLS"] = window => window.chatTextBox.Clear();
+            simpleCommands["CLS"] = window => ((ChatWindow)window).chatTextBox.Clear();
             simpleCommands["/QUIT"] = window => context.MainWindow.Quit();
             simpleCommands["/ONLINE"] = window => context.ChatClient.CurrentUser.Status = Core.Presence.UserStatus.Online;
             simpleCommands["/OFFLINE"] = window => context.ChatClient.CurrentUser.Status = Core.Presence.UserStatus.Offline;
@@ -34,11 +36,11 @@ namespace Squiggle.UI.MessageFilters
             simpleCommands["/MAIN"] = window => context.MainWindow.RestoreWindow();
         }
 
-        public bool Filter(StringBuilder message, ChatWindow window)
+        public bool Filter(StringBuilder message, IChatWindow window)
         {
             string command = message.ToString().Trim().ToUpperInvariant();
 
-            Action<ChatWindow> action;
+            Action<IChatWindow> action;
             if (simpleCommands.TryGetValue(command, out action))
             {
                 action(window);

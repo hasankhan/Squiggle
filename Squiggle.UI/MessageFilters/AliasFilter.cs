@@ -9,6 +9,8 @@ using Squiggle.Utilities.Net;
 using Squiggle.UI.Windows;
 using System.ComponentModel.Composition;
 using Squiggle.UI.Components;
+using Squiggle.UI.Plugins.MessageFilter;
+using Squiggle.UI.Plugins;
 
 namespace Squiggle.UI.MessageFilters
 {
@@ -20,7 +22,7 @@ namespace Squiggle.UI.MessageFilters
             get { return FilterDirection.Out; }
         }
 
-        public bool Filter(StringBuilder message, ChatWindow window)
+        public bool Filter(StringBuilder message, IChatWindow window)
         {
             message.Replace("(you)", window.PrimaryBuddy.DisplayName)
                    .Replace("(me)", SquiggleContext.Current.ChatClient.CurrentUser.DisplayName)
