@@ -333,9 +333,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AppInfo.cs" />
-    <Compile Include="AudioAlert.cs" />
-    <Compile Include="ChatWindowCollection.cs" />
+    <Compile Include="Components\AppInfo.cs" />
+    <Compile Include="Helpers\AudioAlert.cs" />
+    <Compile Include="Helpers\Collections\ChatWindowCollection.cs" />
     <Compile Include="Controls\ChatDragDropAdvisor.cs" />
     <Compile Include="Windows\ContactsSelectWindow.xaml.cs">
       <DependentUpon>ContactsSelectWindow.xaml</DependentUpon>
@@ -392,16 +392,16 @@
     <Compile Include="Windows\EmoticonSelector.xaml.cs">
       <DependentUpon>EmoticonSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\BoundedQueue.cs" />
+    <Compile Include="Helpers\Collections\BoundedQueue.cs" />
     <Compile Include="Factories\ChatClientFactory.cs" />
-    <Compile Include="Helpers\FileTransferCollection.cs" />
+    <Compile Include="Helpers\Collections\FileTransferCollection.cs" />
     <Compile Include="Helpers\ImageFactory.cs" />
     <Compile Include="Helpers\ImageUtility.cs" />
-    <Compile Include="Helpers\PluginLoader.cs" />
+    <Compile Include="Components\PluginLoader.cs" />
     <Compile Include="Windows\HistoryViewer.xaml.cs">
       <DependentUpon>HistoryViewer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IdleStatusChanger.cs" />
+    <Compile Include="Components\IdleStatusChanger.cs" />
     <Compile Include="MessageFilters\AliasFilter.cs" />
     <Compile Include="MessageFilters\CommandsFilter.cs" />
     <Compile Include="MessageFilters\IMessageFilter.cs" />
@@ -427,7 +427,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="RelayCommand.cs" />
+    <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Resources\BrushFactory.cs" />
     <Compile Include="Resources\Translation.cs" />
     <Compile Include="Settings\ChatSettings.cs" />
@@ -444,7 +444,7 @@
     <Compile Include="StickyWindows\SnapToBehavior.cs" />
     <Compile Include="StickyWindows\StickyWindow.cs" />
     <Compile Include="StickyWindows\WindowManager.cs" />
-    <Compile Include="UpdateNotifier.cs" />
+    <Compile Include="Components\UpdateNotifier.cs" />
     <Compile Include="ViewModel\ClientViewModel.cs" />
     <Compile Include="Windows\ChatWindow.xaml.cs">
       <DependentUpon>ChatWindow.xaml</DependentUpon>
@@ -473,12 +473,12 @@
     <Compile Include="Converters\DisplayMessageConverter.cs" />
     <Compile Include="ViewModel\DummyChatClient.cs" />
     <Compile Include="Converters\FileToIconConverter.cs" />
-    <Compile Include="NetworkSignout.cs" />
+    <Compile Include="Components\NetworkSignout.cs" />
     <Compile Include="Converters\PathToNameConverter.cs" />
     <Compile Include="Helpers\SquiggleUtility.cs" />
     <Compile Include="Converters\SysImageList.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
-    <Compile Include="WPFExtensions.cs" />
+    <Compile Include="Helpers\WPFExtensions.cs" />
     <Compile Include="FancyBalloon.xaml.cs">
       <DependentUpon>FancyBalloon.xaml</DependentUpon>
     </Compile>

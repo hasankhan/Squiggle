@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Squiggle.Activities;
 
-namespace Squiggle.Chat
+namespace Squiggle.UI.Helpers.Collections
 {
     public class FileTransferCollection: System.Collections.Generic.SynchronizedCollection<IFileTransfer>
     {

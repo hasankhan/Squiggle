@@ -10,7 +10,7 @@ using Squiggle.Core.Chat;
 using Squiggle.UI.MessageFilters;
 using Squiggle.UI.MessageParsers;
 
-namespace Squiggle.UI.Helpers
+namespace Squiggle.UI.Components
 {
     class PluginLoader
     {

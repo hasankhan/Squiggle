@@ -23,6 +23,7 @@ using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 using Squiggle.Activities;
 using Squiggle.Core.Chat;
+using Squiggle.UI.Helpers.Collections;
 
 namespace Squiggle.UI.Windows
 {

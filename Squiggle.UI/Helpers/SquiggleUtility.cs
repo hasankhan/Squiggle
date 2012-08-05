@@ -120,13 +120,5 @@ namespace Squiggle.UI.Helpers
                 window.Left = left;
             }
         }
-
-        public static FontSetting GetFontSettings()
-        {
-            var settings = SettingsProvider.Current.Settings.PersonalSettings;
-            var fontSettings = new FontSetting(settings.FontColor, settings.FontName, settings.FontSize, settings.FontStyle);
-
-            return fontSettings;
-        }
     }
 }

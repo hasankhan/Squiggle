@@ -14,6 +14,7 @@ using Squiggle.UI.Helpers;
 using Squiggle.UI.MessageFilters;
 using Squiggle.UI.MessageParsers;
 using Squiggle.UI.Resources;
+using Squiggle.UI.Helpers.Collections;
 
 namespace Squiggle.UI.Controls
 {

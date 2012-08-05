@@ -63,14 +63,15 @@ namespace Squiggle.UI.Controls
             SetFont();
         }
 
-        private void SetFont()
+        void SetFont()
         {
-            var settings = SquiggleUtility.GetFontSettings();
-            txtMessage.FontFamily = settings.Family;
-            txtMessage.FontSize = settings.Size;
-            txtMessage.Foreground = settings.Foreground;
-            txtMessage.FontWeight = settings.Weight;
-            txtMessage.FontStyle = settings.Style;
+            var settings = SettingsProvider.Current.Settings.PersonalSettings;
+            var result = new FontSetting(settings.FontColor, settings.FontName, settings.FontSize, settings.FontStyle);
+            txtMessage.FontFamily = result.Family;
+            txtMessage.FontSize = result.Size;
+            txtMessage.Foreground = result.Foreground;
+            txtMessage.FontWeight = result.Weight;
+            txtMessage.FontStyle = result.Style;
         }
 
         private void btnSend_Click(object sender, RoutedEventArgs e)

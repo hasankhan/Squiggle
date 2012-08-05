@@ -1,23 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Squiggle.History;
 using Squiggle.History.DAL;
-using Squiggle.UI;
+using Squiggle.UI.Helpers;
 using Squiggle.UI.Resources;
+using Squiggle.UI.Windows;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
-using Squiggle.UI.Windows;
 
 namespace Squiggle.UI.Controls
 {

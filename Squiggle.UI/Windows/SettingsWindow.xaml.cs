@@ -19,6 +19,7 @@ using Squiggle.UI.ViewModel;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 using Squiggle.Utilities.Net;
+using Squiggle.UI.Components;
 
 namespace Squiggle.UI.Windows
 {

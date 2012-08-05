@@ -6,6 +6,8 @@ using Squiggle.UI.Helpers;
 using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
 using System.IO;
+using Squiggle.Utilities.Application;
+using Squiggle.UI.Components;
 
 namespace Squiggle.UI.Factories
 {
@@ -29,8 +31,7 @@ namespace Squiggle.UI.Factories
         static DirectoryCatalog CreatePluginDirCatalog()
         {
             var pluginPath = Path.Combine(AppInfo.Location, "Plugins");
-            if (!Directory.Exists(pluginPath))
-                Directory.CreateDirectory(pluginPath);
+            Shell.CreateDirectoryIfNotExists(pluginPath);
             var catalog = new DirectoryCatalog(pluginPath);
             return catalog;
         }

@@ -8,6 +8,7 @@ using Squiggle.Utilities;
 using Squiggle.Utilities.Net;
 using Squiggle.UI.Windows;
 using System.ComponentModel.Composition;
+using Squiggle.UI.Components;
 
 namespace Squiggle.UI.MessageFilters
 {

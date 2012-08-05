@@ -5,6 +5,7 @@ using Squiggle.UI.Helpers;
 using Squiggle.UI.StickyWindows;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
+using Squiggle.UI.Components;
 
 namespace Squiggle.UI.Windows
 {
