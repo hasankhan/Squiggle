@@ -60,11 +60,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\Shared\AssemblyInfo.Copyright.cs">
-      <Link>Properties\AssemblyInfo.Copyright.cs</Link>
+      <Link>Properties\AssemblyInfo.Copyright</Link>
     </Compile>
     <Compile Include="..\Shared\AssemblyInfo.Version.cs">
-      <Link>Properties\AssemblyInfo.Version.cs</Link>
+      <Link>Properties\AssemblyInfo.Version</Link>
     </Compile>
     <Compile Include="MulticastService.cs" />
     <Compile Include="ProjectInstaller.cs">
@@ -80,7 +81,6 @@
       <DependentUpon>SquiggleMulticastService.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ProjectInstaller.resx">

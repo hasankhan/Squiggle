@@ -110,11 +110,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\Shared\AssemblyInfo.Copyright.cs">
-      <Link>Properties\AssemblyInfo.Copyright.cs</Link>
+      <Link>Properties\AssemblyInfo.Copyright</Link>
     </Compile>
     <Compile Include="..\Shared\AssemblyInfo.Version.cs">
-      <Link>Properties\AssemblyInfo.Version.cs</Link>
+      <Link>Properties\AssemblyInfo.Version</Link>
     </Compile>
     <Content Include="Images\Emoticons\blushing.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -498,9 +499,6 @@
     <Compile Include="NotifyIcon\TaskbarIcon.cs" />
     <Compile Include="NotifyIcon\TaskbarIcon.Declarations.cs" />
     <Compile Include="NotifyIcon\Util.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
