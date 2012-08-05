@@ -146,7 +146,7 @@ namespace Squiggle.UI.Windows
                 chatSession.EnableLogging = SettingsProvider.Current.Settings.ChatSettings.EnableLogging;
         }
 
-        public void SetChatSession(IChat chat)
+        internal void SetChatSession(IChat chat)
         {
             if (chat == null)
                 return;
@@ -732,7 +732,7 @@ namespace Squiggle.UI.Windows
             this.Activate();
         }
 
-        public void DestroySession()
+        internal void DestroySession()
         {
             if (voiceController.VoiceChatContext != null)
                 voiceController.VoiceChatContext.Cancel();
@@ -793,7 +793,7 @@ namespace Squiggle.UI.Windows
             flash.Start();
         }
 
-        public void Show(bool initiatedByUser)
+        internal void Show(bool initiatedByUser)
         {
             if (!initiatedByUser)
             {
@@ -916,7 +916,7 @@ namespace Squiggle.UI.Windows
         }
 
         bool forceClose;
-        public void ForceClose()
+        internal void ForceClose()
         {
             forceClose = true;
             Close();
