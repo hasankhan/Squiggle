@@ -14,6 +14,7 @@ using Squiggle.UI.ViewModel;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 using Squiggle.UI.Windows;
+using Squiggle.UI.Components;
 
 namespace Squiggle.UI.Helpers
 {
@@ -21,7 +22,7 @@ namespace Squiggle.UI.Helpers
     {
         public static bool Confirm(ConfirmationDialogType dialogType, Window parent)
         {
-            string username = MainWindow.Instance.ChatClient.Coalesce(c=>c.CurrentUser.DisplayName, String.Empty);
+            string username = SquiggleContext.Current.ChatClient.Coalesce(c=>c.CurrentUser.DisplayName, String.Empty);
             return ConfirmationDialog.Show(username, dialogType, parent);
         }
 
@@ -65,13 +66,14 @@ namespace Squiggle.UI.Helpers
 
         public static void ShowSettingsDialog(Window owner)
         {
+            var context = SquiggleContext.Current;
             Buddy user = null;
-            if (MainWindow.Instance.chatControl.ContactList.ChatContext != null && MainWindow.Instance.chatControl.ContactList.ChatContext.IsLoggedIn)
-                user = MainWindow.Instance.chatControl.ContactList.ChatContext.LoggedInUser;
+            if (context.MainWindow.chatControl.ContactList.ChatContext != null && context.MainWindow.chatControl.ContactList.ChatContext.IsLoggedIn)
+                user = context.MainWindow.chatControl.ContactList.ChatContext.LoggedInUser;
             var settings = new SettingsWindow(user);
             settings.Owner = owner;
             if (settings.ShowDialog().GetValueOrDefault())
-                MainWindow.Instance.chatControl.SignIn.LoadSettings(SettingsProvider.Current.Settings);
+                context.MainWindow.chatControl.SignIn.LoadSettings(SettingsProvider.Current.Settings);
         }
 
         public static Buddy SelectContact(string title, Window owner, Predicate<Buddy> exclusionFilter = null)
@@ -81,7 +83,7 @@ namespace Squiggle.UI.Helpers
 
         public static IEnumerable<Buddy> SelectContacts(string title, Window owner, Predicate<Buddy> exclusionFilter = null, bool multiple = true)
         {
-            var clientViewModel = (ClientViewModel)MainWindow.Instance.DataContext;
+            var clientViewModel = (ClientViewModel)SquiggleContext.Current.MainWindow.DataContext;
             var selectContactDialog = new ContactsSelectWindow(clientViewModel, false);
             selectContactDialog.ExcludeCriterea = exclusionFilter;
             selectContactDialog.AllowMultiSelect = multiple;

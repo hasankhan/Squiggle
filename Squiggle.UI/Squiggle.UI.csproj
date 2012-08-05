@@ -322,6 +322,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Components\SquiggleContext.cs" />
     <Compile Include="Converters\MainWindowTitleConverter.cs" />
     <Compile Include="Factories\IInstanceFactory.cs" />
     <Compile Include="Factories\PluginLoaderFactory.cs" />

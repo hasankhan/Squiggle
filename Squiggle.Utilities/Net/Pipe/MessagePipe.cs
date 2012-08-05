@@ -16,7 +16,7 @@ namespace Squiggle.Utilities.Net.Pipe
         Dictionary<string, Socket> sockets;
         Task listenTask;
         CancellationTokenSource listenCancelToken;
-        int listenTimeout = (int)TimeSpan.FromSeconds(1).TotalMilliseconds;
+        int listenTimeout = (int)1.Seconds().TotalMilliseconds;
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
 

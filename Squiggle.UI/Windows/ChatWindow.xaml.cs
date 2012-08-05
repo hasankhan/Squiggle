@@ -24,6 +24,7 @@ using Squiggle.Utilities.Application;
 using Squiggle.Activities;
 using Squiggle.Core.Chat;
 using Squiggle.UI.Helpers.Collections;
+using Squiggle.UI.Components;
 
 namespace Squiggle.UI.Windows
 {
@@ -44,8 +45,8 @@ namespace Squiggle.UI.Windows
         bool buzzPending;
         WindowState lastState;
         FileTransferCollection fileTransfers = new FileTransferCollection();
-        static Dictionary<Buddy, IEnumerable<ChatItem>> chatHistory = new Dictionary<Buddy, IEnumerable<ChatItem>>(); 
-
+        static Dictionary<Buddy, IEnumerable<ChatItem>> chatHistory = new Dictionary<Buddy, IEnumerable<ChatItem>>();
+        SquiggleContext context;
         MultiFilter filters = new MultiFilter();
         MultiParser parsers = new MultiParser();
         bool chatStarted;
@@ -55,9 +56,14 @@ namespace Squiggle.UI.Windows
         public ChatWindow()
         {
             InitializeComponent();
+        }
 
-            filters.AddRange(MainWindow.PluginLoader.MessageFilters);
-            parsers.AddRange(MainWindow.PluginLoader.MessageParsers);
+        internal ChatWindow(Buddy buddy, SquiggleContext context) : this()
+        {
+            this.context = context;
+
+            filters.AddRange(context.PluginLoader.MessageFilters);
+            parsers.AddRange(context.PluginLoader.MessageParsers);
 
             this.Height = Properties.Settings.Default.ChatWindowHeight;
             this.Width = Properties.Settings.Default.ChatWindowWidth;
@@ -65,18 +71,14 @@ namespace Squiggle.UI.Windows
             expanderDisplayPics.IsExpanded = Properties.Settings.Default.ChatWindowShowDisplayPictures;
 
             statusResetTimer = new DispatcherTimer();
-            statusResetTimer.Interval = TimeSpan.FromSeconds(5);
+            statusResetTimer.Interval = 5.Seconds();
             statusResetTimer.Tick += (sender, e) => ResetStatus();
             this.StateChanged += new EventHandler(ChatWindow_StateChanged);
 
             SettingsProvider.Current.SettingsUpdated += (sender, e) => LoadSettings();
             LoadSettings();
             this.DataContext = this;
-        }
 
-        public ChatWindow(Buddy buddy)
-            : this()
-        {
             this.PrimaryBuddy = buddy;
             this.PrimaryBuddy.Online += new EventHandler(buddy_Online);
             this.PrimaryBuddy.Offline += new EventHandler(buddy_Offline);
@@ -136,7 +138,7 @@ namespace Squiggle.UI.Windows
 
             parsers.Remove(parsers.OfType<EmoticonParser>().First());
             if (SettingsProvider.Current.Settings.ChatSettings.ShowEmoticons)
-                parsers.Add(MainWindow.PluginLoader.MessageParsers.OfType<EmoticonParser>().First());
+                parsers.Add(context.PluginLoader.MessageParsers.OfType<EmoticonParser>().First());
 
             txtMessageEditBox.txtMessage.SpellCheck.IsEnabled = SettingsProvider.Current.Settings.ChatSettings.SpellCheck;
 
@@ -334,7 +336,7 @@ namespace Squiggle.UI.Windows
 
         void OnActivityInvite(ActivityInvitationReceivedEventArgs e)
         {
-            IActivityHandler handler = MainWindow.PluginLoader.GetHandler(e.ActivityId, f => f.FromInvite(e.Session, e.Metadata));
+            IActivityHandler handler = context.PluginLoader.GetHandler(e.ActivityId, f => f.FromInvite(e.Session, e.Metadata));
             if (e.ActivityId == SquiggleActivities.VoiceChat)
                 OnVoiceInvite(handler as IVoiceChat);
             else if (e.ActivityId == SquiggleActivities.FileTransfer)
@@ -402,7 +404,7 @@ namespace Squiggle.UI.Windows
 
         void LoadActivities()
         {
-            foreach (IActivityManager activityManager in MainWindow.PluginLoader.ActivityManagers)
+            foreach (IActivityManager activityManager in context.PluginLoader.ActivityManagers)
             {
                 var item = new MenuItem();
                 item.Header = activityManager.Title;
@@ -531,7 +533,7 @@ namespace Squiggle.UI.Windows
                     chatTextBox.AddInfo(Translation.Instance.ChatWindow_VoiceChatInviteNotSupported);
                     return;
                 }
-                chatTextBox.AddVoiceChatReceivedRequest(invitation, PrimaryBuddy.DisplayName, MainWindow.Instance.IsVoiceChatActive);
+                chatTextBox.AddVoiceChatReceivedRequest(context, invitation, PrimaryBuddy.DisplayName, context.IsVoiceChatActive);
                 voiceController.VoiceChatContext = invitation;
                 invitation.Dispatcher = Dispatcher;
             });
@@ -543,7 +545,7 @@ namespace Squiggle.UI.Windows
             chatStarted = true;
             if (chatSession == null)
             {
-                var buddyInList = MainWindow.Instance.ChatClient.Buddies.FirstOrDefault(b => b.Equals(PrimaryBuddy));
+                var buddyInList = context.ChatClient.Buddies.FirstOrDefault(b => b.Equals(PrimaryBuddy));
                 if (buddyInList == null)
                 {
                     OnMessageFailed(new MessageFailedEventArgs() { Message = message, Exception = null });
@@ -556,7 +558,7 @@ namespace Squiggle.UI.Windows
                 }
             }
 
-            string displayName = MainWindow.Instance.ChatClient == null ? Translation.Instance.Global_You : MainWindow.Instance.ChatClient.CurrentUser.DisplayName;
+            string displayName = context.ChatClient == null ? Translation.Instance.Global_You : context.ChatClient.CurrentUser.DisplayName;
             var settings = SettingsProvider.Current.Settings.PersonalSettings;
 
             var temp = new StringBuilder(message);
@@ -591,22 +593,22 @@ namespace Squiggle.UI.Windows
                 chatTextBox.AddError(Translation.Instance.ChatWindow_VoiceChatNotAllowedInGroup, String.Empty);
                 return null;
             }
-            else if (MainWindow.Instance.IsVoiceChatActive)
+            else if (context.IsVoiceChatActive)
             {
                 chatTextBox.AddError(Translation.Instance.ChatWindow_AlreadyInVoiceChat, String.Empty);
                 return null;
             }
-            else if (!MainWindow.PluginLoader.VoiceChat)
+            else if (!context.PluginLoader.VoiceChat)
                 return null;
 
             ActivitySession session = chatSession.CreateActivitySession();
-            IVoiceChat voiceChat = MainWindow.PluginLoader.GetHandler(SquiggleActivities.VoiceChat, f=>f.CreateInvite(session, null)) as IVoiceChat;
+            IVoiceChat voiceChat = context.PluginLoader.GetHandler(SquiggleActivities.VoiceChat, f => f.CreateInvite(session, null)) as IVoiceChat;
 
             if (voiceChat != null)
             {
                 voiceChat.Dispatcher = Dispatcher;
                 voiceChat.Start();
-                chatTextBox.AddVoiceChatSentRequest(voiceChat, PrimaryBuddy.DisplayName);
+                chatTextBox.AddVoiceChatSentRequest(context, voiceChat, PrimaryBuddy.DisplayName);
                 chatStarted = true;
             }
             
@@ -643,7 +645,7 @@ namespace Squiggle.UI.Windows
                 return;
             }
 
-            if (!MainWindow.PluginLoader.FileTransfer)
+            if (!context.PluginLoader.FileTransfer)
                 return;
 
             if (File.Exists(filePath))
@@ -662,7 +664,7 @@ namespace Squiggle.UI.Windows
 
                 ActivitySession session = chatSession.CreateActivitySession();
                 var args = new Dictionary<string, object>(){ { "name", fileName}, {"content", fileStream}, {"size", fileStream.Length}};
-                IFileTransfer fileTransfer = MainWindow.PluginLoader.GetHandler(SquiggleActivities.FileTransfer, f=>f.CreateInvite(session, args)) as IFileTransfer;
+                IFileTransfer fileTransfer = context.PluginLoader.GetHandler(SquiggleActivities.FileTransfer, f => f.CreateInvite(session, args)) as IFileTransfer;
                 if (fileTransfer == null)
                     return;
 
@@ -904,8 +906,8 @@ namespace Squiggle.UI.Windows
         void UpdateGroupChatControls()
         {
             bool singleSession = (chatSession == null || !chatSession.IsGroupChat);
-            btnSendFile.IsEnabled = mnuSendFile.IsEnabled = MainWindow.PluginLoader.FileTransfer && singleSession;
-            voiceController.IsEnabled = MainWindow.PluginLoader.VoiceChat && singleSession;
+            btnSendFile.IsEnabled = mnuSendFile.IsEnabled = context.PluginLoader.FileTransfer && singleSession;
+            voiceController.IsEnabled = context.PluginLoader.VoiceChat && singleSession;
         }
 
         private void Window_Activated(object sender, EventArgs e)

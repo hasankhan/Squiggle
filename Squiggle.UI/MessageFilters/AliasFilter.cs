@@ -23,7 +23,7 @@ namespace Squiggle.UI.MessageFilters
         public bool Filter(StringBuilder message, ChatWindow window)
         {
             message.Replace("(you)", window.PrimaryBuddy.DisplayName)
-                   .Replace("(me)", MainWindow.Instance.ChatClient.CurrentUser.DisplayName)
+                   .Replace("(me)", SquiggleContext.Current.ChatClient.CurrentUser.DisplayName)
                    .Replace("(now)", DateTime.Now.ToString())
                    .Replace("(time)", DateTime.Now.ToLongTimeString())
                    .Replace("(stime)", DateTime.Now.ToShortTimeString())

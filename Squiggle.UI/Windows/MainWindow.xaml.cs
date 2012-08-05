@@ -32,34 +32,29 @@ namespace Squiggle.UI.Windows
         ChatWindowCollection chatWindows;
         ClientViewModel dummyViewModel;
         NetworkSignout autoSignout;
-        TimeoutSignal clientAvailable = new TimeoutSignal(TimeSpan.FromSeconds(5));
+        TimeoutSignal clientAvailable = new TimeoutSignal(5.Seconds());
         IdleStatusChanger idleStatusChanger;
-
-        internal static MainWindow Instance { get; private set; }
-        internal static PluginLoader PluginLoader { get; private set; }
-
-        public IChatClient ChatClient { get; private set; }
-        public IVoiceChat ActiveVoiceChat { get; set; }
-        public bool IsVoiceChatActive
-        {
-            get { return ActiveVoiceChat != null; }
-        }
+        SquiggleContext context;
 
         bool exiting;
 
         public MainWindow()
         {
-            Instance = this;
             InitializeComponent();
 
-            PluginLoader = new PluginLoaderFactory().CreateInstance();
+            var pluginLoader = new PluginLoaderFactory().CreateInstance();
+            context = new SquiggleContext()
+            {
+                MainWindow = this,
+                PluginLoader = pluginLoader,
+            };
 
             LoadPosition();
 
             TrayPopup.Instance.Enabled = SettingsProvider.Current.Settings.GeneralSettings.ShowPopups;
             AudioAlert.Instance.Enabled = SettingsProvider.Current.Settings.GeneralSettings.AudioAlerts;
 
-            chatWindows = new ChatWindowCollection();
+            chatWindows = new ChatWindowCollection();            
 
             SetupControls();
         }
@@ -100,8 +95,7 @@ namespace Squiggle.UI.Windows
             chatControl.SignIn.LoadSettings(settings);           
 
             if (!String.IsNullOrEmpty(name) && settings.PersonalSettings.AutoSignMeIn)
-                Dispatcher.Delay(() => SignIn(name, groupName, false),
-                             TimeSpan.FromSeconds(5));
+                Dispatcher.Delay(() => SignIn(name, groupName, false), 5.Seconds());
             else if (!String.IsNullOrEmpty(name))
                 chatControl.SignIn.chkRememberName.IsChecked = true;
 
@@ -207,7 +201,7 @@ namespace Squiggle.UI.Windows
 
         void SignIn(string displayName, string groupName, bool byUser)
         {
-            if (ChatClient != null && ChatClient.LoggedIn)
+            if (context.ChatClient != null && context.ChatClient.LoggedIn)
                 return;
 
             busyIndicator.IsBusy = true;
@@ -217,7 +211,7 @@ namespace Squiggle.UI.Windows
             Async.Invoke(() =>
             {
                 clientAvailable.Wait();
-                ExceptionMonster.EatTheException(() => ChatClient = CreateAndLoginClient(displayName, groupName), "creating chat client", out ex);
+                ExceptionMonster.EatTheException(() => context.ChatClient = CreateAndLoginClient(displayName, groupName), "creating chat client", out ex);
             },
             () =>
             {
@@ -236,7 +230,7 @@ namespace Squiggle.UI.Windows
         void OnSignIn(string displayName, string groupName)
         {
             CreateMonitor();
-            clientViewModel = new ClientViewModel(ChatClient);
+            clientViewModel = new ClientViewModel(context.ChatClient);
             this.DataContext = clientViewModel;
             chatControl.ChatContext = clientViewModel;
             clientViewModel.CancelUpdateCommand = new RelayCommand(CancelUpdateCommand_Execute);
@@ -269,7 +263,7 @@ namespace Squiggle.UI.Windows
 
         void SignOut(bool byUser)
         {
-            if (ChatClient == null || !ChatClient.LoggedIn)
+            if (context.ChatClient == null || !context.ChatClient.LoggedIn)
                 return;
 
             clientAvailable.Begin();
@@ -281,11 +275,11 @@ namespace Squiggle.UI.Windows
 
                 DestroyMonitor();
 
-                chatControl.SignIn.SetDisplayName(ChatClient.CurrentUser.DisplayName);
+                chatControl.SignIn.SetDisplayName(context.ChatClient.CurrentUser.DisplayName);
 
                 Async.Invoke(() =>
                 {
-                    ExceptionMonster.EatTheException(() => ChatClient.Logout(), "loging out client");
+                    ExceptionMonster.EatTheException(() => context.ChatClient.Logout(), "loging out client");
                     clientAvailable.End();
                 });
 
@@ -327,7 +321,7 @@ namespace Squiggle.UI.Windows
         void CreateMonitor()
         {
             TimeSpan timeout = SettingsProvider.Current.Settings.PersonalSettings.IdleTimeout.Minutes();
-            idleStatusChanger = new IdleStatusChanger(ChatClient, timeout);
+            idleStatusChanger = new IdleStatusChanger(context.ChatClient, timeout);
         }
 
         private void DestroyMonitor()
@@ -410,7 +404,7 @@ namespace Squiggle.UI.Windows
 
             if (window == null)
             {
-                window = new ChatWindow(buddy);
+                window = new ChatWindow(buddy, context);
                 window.Closed += (sender, e) => chatWindows.Remove(window);
                 window.SetChatSession(chatSession ?? buddy.StartChat());
                 chatWindows.Add(window);
@@ -506,7 +500,7 @@ namespace Squiggle.UI.Windows
 
         void StartBroadcastChat()
         {
-            var onlineBuddies = ChatClient.Buddies.Where(b => b.IsOnline);
+            var onlineBuddies = context.ChatClient.Buddies.Where(b => b.IsOnline);
             if (onlineBuddies.Any())
                 StartBroadcastChat(onlineBuddies);
         }
@@ -516,8 +510,8 @@ namespace Squiggle.UI.Windows
             var chatSessions = buddies.Select(b => b.StartChat()).ToList();
             var groupChat = new BroadcastChat(chatSessions);
             CreateChatWindow(groupChat.Buddies.First(), groupChat, true);
-            ChatClient.BuddyOnline += (s, b) => groupChat.AddSession(b.Buddy.StartChat());
-            ChatClient.BuddyOffline += (s, b) =>
+            context.ChatClient.BuddyOnline += (s, b) => groupChat.AddSession(b.Buddy.StartChat());
+            context.ChatClient.BuddyOffline += (s, b) =>
             {
                 var session = groupChat.ChatSessions.FirstOrDefault(c => c.Buddies.Contains(b.Buddy) && !c.IsGroupChat);
                 groupChat.RemoveSession(session);

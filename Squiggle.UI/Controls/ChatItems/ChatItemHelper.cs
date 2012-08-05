@@ -7,6 +7,7 @@ using Squiggle.UI.Controls;
 using Squiggle.UI.Controls.ChatItems;
 using Squiggle.Activities;
 using Squiggle.UI.MessageParsers;
+using Squiggle.UI.Components;
 
 namespace Squiggle.UI
 {
@@ -42,15 +43,15 @@ namespace Squiggle.UI
             textbox.AddItem(item);
         }
 
-        public static void AddVoiceChatSentRequest(this ChatTextBox textbox, IVoiceChat session, string buddyName)
+        public static void AddVoiceChatSentRequest(this ChatTextBox textbox, SquiggleContext context, IVoiceChat session, string buddyName)
         {
-            var item = new VoiceChatItem(session, buddyName, true, false);
+            var item = new VoiceChatItem(context, session, buddyName, true, false);
             textbox.AddItem(item);
         }
 
-        public static void AddVoiceChatReceivedRequest(this ChatTextBox textbox, IVoiceChat session, string buddyName, bool alreadyInChat)
+        public static void AddVoiceChatReceivedRequest(this ChatTextBox textbox, SquiggleContext context, IVoiceChat session, string buddyName, bool alreadyInChat)
         {
-            var item = new VoiceChatItem(session, buddyName, false, alreadyInChat);
+            var item = new VoiceChatItem(context, session, buddyName, false, alreadyInChat);
             textbox.AddItem(item);
         }
 

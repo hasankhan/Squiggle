@@ -54,7 +54,7 @@ namespace Squiggle.UI.Components
                 {
                     if (autoSignout && !String.IsNullOrEmpty(userName) && !loggedIn)
                         signinFunction(new NetworkSinginInfo() { DisplayName = userName, GroupName = groupName });
-                }, TimeSpan.FromSeconds(10));
+                }, 10.Seconds());
             }
             else
             {

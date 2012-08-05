@@ -18,6 +18,7 @@ using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 using Squiggle.Activities;
 using Squiggle.UI.Windows;
+using Squiggle.UI.Components;
 
 namespace Squiggle.UI.Controls
 {
@@ -30,6 +31,7 @@ namespace Squiggle.UI.Controls
         bool sending;
         string buddyName;
         bool alreadyInChat;
+        SquiggleContext context;
 
         public string Status { get; private set; }
 
@@ -38,12 +40,13 @@ namespace Squiggle.UI.Controls
             InitializeComponent();
         }
 
-        public VoiceChatControl(IVoiceChat voiceChat, string buddyName, bool sending, bool alreadyInChat) : this()
+        internal VoiceChatControl(SquiggleContext context, IVoiceChat voiceChat, string buddyName, bool sending, bool alreadyInChat) : this()
         {
             this.voiceChat = voiceChat;
             this.sending = sending;
             this.buddyName = buddyName;
             this.alreadyInChat = alreadyInChat;
+            this.context = context;
 
             this.voiceChat.TransferCancelled += new EventHandler(voiceChat_TransferCancelled);
             this.voiceChat.TransferCompleted += new EventHandler(voiceChat_TransferCompleted);
@@ -58,8 +61,8 @@ namespace Squiggle.UI.Controls
         {
             Dispatcher.Invoke(() =>
             {
-                if (MainWindow.Instance.ActiveVoiceChat == voiceChat)
-                    MainWindow.Instance.ActiveVoiceChat = null;
+                if (context.ActiveVoiceChat == voiceChat)
+                    context.ActiveVoiceChat = null;
 
                 ShowCompleted();
             });
@@ -135,10 +138,10 @@ namespace Squiggle.UI.Controls
 
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.Instance.IsVoiceChatActive)
+            if (context.IsVoiceChatActive)
                 return;
             else
-                MainWindow.Instance.ActiveVoiceChat = voiceChat;
+                context.ActiveVoiceChat = voiceChat;
 
             voiceChat.Accept();
             Dispatcher.Invoke(() =>
