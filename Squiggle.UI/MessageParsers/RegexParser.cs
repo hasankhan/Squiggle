@@ -7,7 +7,7 @@ using System.Windows.Documents;
 
 namespace Squiggle.UI.MessageParsers
 {
-    abstract class RegexParser: IMessageParser
+    public abstract class RegexParser: IMessageParser
     {
         protected abstract Regex Pattern { get; }
 

@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using Squiggle.Chat;
 using Squiggle.UI.Windows;
+using System.ComponentModel.Composition;
 
 namespace Squiggle.UI.MessageFilters
 {
-    class CommandsFilter: IMessageFilter
+    [Export(typeof(IMessageFilter))]
+    class CommandsFilter : IMessageFilter
     {
-        public static CommandsFilter Instance = new CommandsFilter();
-
         public FilterDirection Direction
         {
             get { return FilterDirection.Out; }

@@ -10,9 +10,9 @@ using Squiggle.UI.Resources;
 using Squiggle.Utilities.Net;
 using Squiggle.Core;
 
-namespace Squiggle.UI.Helpers
+namespace Squiggle.UI.Factories
 {
-    class ChatClientFactory
+    class ChatClientFactory: IInstanceFactory<IChatClient>
     {
         SquiggleSettings settings;
 
@@ -21,7 +21,7 @@ namespace Squiggle.UI.Helpers
             this.settings = settings;
         }
 
-        public IChatClient CreateClient()
+        public IChatClient CreateInstance()
         {
             int chatPort = settings.ConnectionSettings.ChatPort;
             if (String.IsNullOrEmpty(settings.ConnectionSettings.BindToIP))
@@ -41,10 +41,10 @@ namespace Squiggle.UI.Helpers
 
             string clientID = settings.ConnectionSettings.ClientID;
 
-            var client = new ChatClient(new SquiggleEndPoint(clientID, chatEndPoint), broadcastEndPoint, broadcastReceiveEndPoint, presenceServiceEndPoint, keepAliveTimeout);
-            client.EnableLogging = settings.GeneralSettings.EnableStatusLogging;
+            var instance = new ChatClient(new SquiggleEndPoint(clientID, chatEndPoint), broadcastEndPoint, broadcastReceiveEndPoint, presenceServiceEndPoint, keepAliveTimeout);
+            instance.EnableLogging = settings.GeneralSettings.EnableStatusLogging;
 
-            return client;
+            return instance;
         }
     }
 }

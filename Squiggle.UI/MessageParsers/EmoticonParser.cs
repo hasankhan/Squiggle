@@ -7,13 +7,13 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media.Imaging;
 using Squiggle.UI.Helpers;
+using System.ComponentModel.Composition;
 
 namespace Squiggle.UI.MessageParsers
 {
-    class EmoticonParser: RegexParser
+    [Export(typeof(IMessageParser))]
+    class EmoticonParser : RegexParser
     {
-        public static EmoticonParser Instance = new EmoticonParser();
-
         class EmoticonEntry
         {
             public BitmapImage Image { get; set; }

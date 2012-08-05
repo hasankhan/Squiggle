@@ -323,6 +323,8 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Converters\MainWindowTitleConverter.cs" />
+    <Compile Include="Factories\IInstanceFactory.cs" />
+    <Compile Include="Factories\PluginLoaderFactory.cs" />
     <Compile Include="Helpers\TimeoutSignal.cs" />
     <Compile Include="Windows\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
@@ -391,7 +393,7 @@
       <DependentUpon>EmoticonSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\BoundedQueue.cs" />
-    <Compile Include="Helpers\ChatClientFactory.cs" />
+    <Compile Include="Factories\ChatClientFactory.cs" />
     <Compile Include="Helpers\FileTransferCollection.cs" />
     <Compile Include="Helpers\ImageFactory.cs" />
     <Compile Include="Helpers\ImageUtility.cs" />

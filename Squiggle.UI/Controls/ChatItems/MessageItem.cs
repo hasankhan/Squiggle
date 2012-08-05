@@ -9,7 +9,7 @@ using Squiggle.UI.Resources;
 
 namespace Squiggle.UI.Controls.ChatItems
 {
-    public class MessageItem: ChatItem
+    class MessageItem: ChatItem
     {
         public string User { get; private set; }
         public string Message { get; private set; }

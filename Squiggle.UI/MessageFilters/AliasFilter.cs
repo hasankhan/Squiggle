@@ -7,13 +7,13 @@ using Squiggle.Chat;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Net;
 using Squiggle.UI.Windows;
+using System.ComponentModel.Composition;
 
 namespace Squiggle.UI.MessageFilters
 {
+    [Export(typeof(IMessageFilter))]
     class AliasFilter: IMessageFilter
     {
-        public static AliasFilter Instance = new AliasFilter();
-
         public FilterDirection Direction
         {
             get { return FilterDirection.Out; }

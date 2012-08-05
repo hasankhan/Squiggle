@@ -7,6 +7,8 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Primitives;
 using System.ComponentModel.Composition.Hosting;
 using Squiggle.Core.Chat;
+using Squiggle.UI.MessageFilters;
+using Squiggle.UI.MessageParsers;
 
 namespace Squiggle.UI.Helpers
 {
@@ -14,6 +16,12 @@ namespace Squiggle.UI.Helpers
     {
         [ImportMany(typeof(IActivityManager))]
         public IEnumerable<IActivityManager> ActivityManagers { get; set; }
+
+        [ImportMany(typeof(IMessageFilter))]
+        public IEnumerable<IMessageFilter> MessageFilters { get; set; }
+
+        [ImportMany(typeof(IMessageParser))]
+        public IEnumerable<IMessageParser> MessageParsers { get; set; }
 
         public bool VoiceChat { get; private set; }
         public bool FileTransfer { get; private set; }

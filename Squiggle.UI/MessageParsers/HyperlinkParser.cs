@@ -8,13 +8,13 @@ using System.Windows.Input;
 using Squiggle.UI.Helpers;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
+using System.ComponentModel.Composition;
 
 namespace Squiggle.UI.MessageParsers
 {
-    class HyperlinkParser: RegexParser
+    [Export(typeof(IMessageParser))]
+    class HyperlinkParser : RegexParser
     {
-        public static HyperlinkParser Instance = new HyperlinkParser();
-
         static Regex urlRegex = new Regex(@"(((ht|f)tp(s?)\:\/\/)|([w|W]{3}\.))[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9=:\-\.\?\,\'\/\\\+&%\$#_]*)?", RegexOptions.Compiled);
 
         protected override Regex Pattern

@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using Messenger;
 using Squiggle.Chat;
-using Squiggle.Core;
-using Squiggle.Core.Chat;
 using Squiggle.Core.Presence;
 using Squiggle.UI.Controls;
 using Squiggle.UI.Helpers;
@@ -23,10 +15,8 @@ using Squiggle.UI.StickyWindows;
 using Squiggle.UI.ViewModel;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
-using Squiggle.Utilities.Net;
 using Squiggle.Activities;
-using System.ComponentModel.Composition.Hosting;
-using System.IO;
+using Squiggle.UI.Factories;
 
 namespace Squiggle.UI.Windows
 {
@@ -60,23 +50,20 @@ namespace Squiggle.UI.Windows
             Instance = this;
             InitializeComponent();
 
-            var pluginPath = Path.Combine(AppInfo.Location, "Plugins");
-            if (!Directory.Exists(pluginPath))
-                Directory.CreateDirectory(pluginPath);
-            var catalog = new DirectoryCatalog(pluginPath);
-            PluginLoader = new PluginLoader(catalog);
+            PluginLoader = new PluginLoaderFactory().CreateInstance();
 
-            this.Height = Properties.Settings.Default.MainWindowHeight;
-            this.Width = Properties.Settings.Default.MainWindowWidth;
-
-            this.Top = Properties.Settings.Default.MainWindowTop > 0 ? Properties.Settings.Default.MainWindowTop : System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height / 2 - this.Height / 2;
-            this.Left = Properties.Settings.Default.MainWindowLeft > 0 ? Properties.Settings.Default.MainWindowLeft : System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width / 2 - this.Width / 2;
+            LoadPosition();
 
             TrayPopup.Instance.Enabled = SettingsProvider.Current.Settings.GeneralSettings.ShowPopups;
             AudioAlert.Instance.Enabled = SettingsProvider.Current.Settings.GeneralSettings.AudioAlerts;
 
             chatWindows = new ChatWindowCollection();
 
+            SetupControls();
+        }
+
+        void SetupControls()
+        {
             chatControl.SignIn.LoginInitiated += new EventHandler<Squiggle.UI.Controls.LogInEventArgs>(ContactList_LoginInitiated);
             chatControl.ContactList.BroadcastChatStart += new EventHandler<Controls.BuddiesActionEventArgs>(ContactList_BroadcastChatStart);
             chatControl.ContactList.GroupChatStart += new EventHandler<BuddiesActionEventArgs>(ContactList_GroupChatStart);
@@ -86,6 +73,15 @@ namespace Squiggle.UI.Windows
             autoSignout = new NetworkSignout(this.Dispatcher, u => SignIn(u.DisplayName, u.GroupName, false), () => SignOut(false));
             chatControl.ContactList.OpenAbout += (sender, e) => SquiggleUtility.ShowAboutDialog(this);
         }
+
+        void LoadPosition()
+        {
+            this.Height = Properties.Settings.Default.MainWindowHeight;
+            this.Width = Properties.Settings.Default.MainWindowWidth;
+
+            this.Top = Properties.Settings.Default.MainWindowTop > 0 ? Properties.Settings.Default.MainWindowTop : System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height / 2 - this.Height / 2;
+            this.Left = Properties.Settings.Default.MainWindowLeft > 0 ? Properties.Settings.Default.MainWindowLeft : System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width / 2 - this.Width / 2;
+        }        
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -351,7 +347,7 @@ namespace Squiggle.UI.Windows
             properties.DisplayImage = settings.PersonalSettings.DisplayImage;
             properties.EmailAddress = settings.PersonalSettings.EmailAddress;
 
-            IChatClient client = new ChatClientFactory(settings).CreateClient();
+            IChatClient client = new ChatClientFactory(settings).CreateInstance();
             client.ChatStarted += new EventHandler<Squiggle.Chat.ChatStartedEventArgs>(client_ChatStarted);
             client.BuddyUpdated += new EventHandler<BuddyEventArgs>(client_BuddyUpdated);
             client.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(client_BuddyOnline);

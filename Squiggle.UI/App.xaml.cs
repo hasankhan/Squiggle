@@ -6,7 +6,7 @@ using Microsoft.VisualBasic.ApplicationServices;
 using Squiggle.UI.Resources;
 using Squiggle.Utilities;
 
-namespace Messenger
+namespace Squiggle.UI
 {
     public class EntryPoint
     {

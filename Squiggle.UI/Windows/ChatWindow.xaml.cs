@@ -46,6 +46,7 @@ namespace Squiggle.UI.Windows
         static Dictionary<Buddy, IEnumerable<ChatItem>> chatHistory = new Dictionary<Buddy, IEnumerable<ChatItem>>(); 
 
         MultiFilter filters = new MultiFilter();
+        MultiParser parsers = new MultiParser();
         bool chatStarted;
 
         public Buddy PrimaryBuddy { get; private set; }
@@ -53,6 +54,9 @@ namespace Squiggle.UI.Windows
         public ChatWindow()
         {
             InitializeComponent();
+
+            filters.AddRange(MainWindow.PluginLoader.MessageFilters);
+            parsers.AddRange(MainWindow.PluginLoader.MessageParsers);
 
             this.Height = Properties.Settings.Default.ChatWindowHeight;
             this.Width = Properties.Settings.Default.ChatWindowWidth;
@@ -66,10 +70,6 @@ namespace Squiggle.UI.Windows
 
             SettingsProvider.Current.SettingsUpdated += (sender, e) => LoadSettings();
             LoadSettings();
-
-            filters.Add(AliasFilter.Instance);
-            filters.Add(CommandsFilter.Instance);
-
             this.DataContext = this;
         }
 
@@ -133,9 +133,9 @@ namespace Squiggle.UI.Windows
             if (SettingsProvider.Current.Settings.ChatSettings.ClearChatOnWindowClose)
                 chatHistory.Clear();
 
-            chatTextBox.MessageParsers.Remove(EmoticonParser.Instance);
+            parsers.Remove(parsers.OfType<EmoticonParser>().First());
             if (SettingsProvider.Current.Settings.ChatSettings.ShowEmoticons)
-                chatTextBox.MessageParsers.Add(EmoticonParser.Instance);
+                parsers.Add(MainWindow.PluginLoader.MessageParsers.OfType<EmoticonParser>().First());
 
             txtMessageEditBox.txtMessage.SpellCheck.IsEnabled = SettingsProvider.Current.Settings.ChatSettings.SpellCheck;
 
@@ -472,7 +472,7 @@ namespace Squiggle.UI.Windows
                 {
                     message = temp.ToString();
                     lastMessageReceived = DateTime.Now;
-                    chatTextBox.AddMessage(buddy.DisplayName, message, fontName, fontSize, fontStyle, color);
+                    chatTextBox.AddMessage(buddy.DisplayName, message, fontName, fontSize, fontStyle, color, parsers);
                     ResetStatus();
                     FlashWindow();
                     if (!chatStarted && !IsActive)
@@ -563,7 +563,7 @@ namespace Squiggle.UI.Windows
             {
                 message = temp.ToString();
                 chatSession.SendMessage(settings.FontName, settings.FontSize, settings.FontColor, settings.FontStyle, message);
-                chatTextBox.AddMessage(displayName, message, settings.FontName, settings.FontSize, settings.FontStyle, settings.FontColor);
+                chatTextBox.AddMessage(displayName, message, settings.FontName, settings.FontSize, settings.FontStyle, settings.FontColor, parsers);
             }
         }
 

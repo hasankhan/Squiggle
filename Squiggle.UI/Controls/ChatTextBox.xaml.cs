@@ -24,20 +24,11 @@ namespace Squiggle.UI.Controls
     {
         BoundedQueue<ChatItem> history = new BoundedQueue<ChatItem>(100);
 
-        MultiParser parsers;
-        public MultiParser MessageParsers
-        {
-            get { return parsers; }
-        }
-
         public bool KeepHistory { get; set; }
 
         public ChatTextBox()
         {
-            InitializeComponent();
-            
-            parsers = new MultiParser();
-            MessageParsers.Add(HyperlinkParser.Instance);
+            InitializeComponent();                      
         }        
 
         public void AddItem(ChatItem item)

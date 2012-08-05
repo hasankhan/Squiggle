@@ -6,6 +6,7 @@ using Squiggle.Chat;
 using Squiggle.UI.Controls;
 using Squiggle.UI.Controls.ChatItems;
 using Squiggle.Activities;
+using Squiggle.UI.MessageParsers;
 
 namespace Squiggle.UI
 {
@@ -29,9 +30,9 @@ namespace Squiggle.UI
             textbox.AddItem(item);
         }
 
-        public static void AddMessage(this ChatTextBox textbox, string user, string message, string fontName, int fontSize, System.Drawing.FontStyle fontStyle, System.Drawing.Color color)
+        public static void AddMessage(this ChatTextBox textbox, string user, string message, string fontName, int fontSize, System.Drawing.FontStyle fontStyle, System.Drawing.Color color, MultiParser parsers)
         {
-            var item = new MessageItem(user, message, fontName, fontSize, fontStyle, color, textbox.MessageParsers);
+            var item = new MessageItem(user, message, fontName, fontSize, fontStyle, color, parsers);
             textbox.AddItem(item);
         }
 
