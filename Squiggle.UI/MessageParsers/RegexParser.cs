@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Documents;
+using Squiggle.UI.Plugins.MessageParser;
 
-namespace Squiggle.UI.Plugins.MessageParser
+namespace Squiggle.UI.MessageParsers
 {
     public abstract class RegexParser: IMessageParser
     {

@@ -54,8 +54,6 @@
     <Compile Include="MessageFilter\IMessageFilter.cs" />
     <Compile Include="MessageParser\IMessageParser.cs" />
     <Compile Include="MessageParser\MessageParseResult.cs" />
-    <Compile Include="MessageParser\RegexParser.cs" />
-    
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Squiggle.Chat\Squiggle.Chat.csproj">
