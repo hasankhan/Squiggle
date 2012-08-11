@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
-namespace Squiggle.Activities
+namespace Squiggle.Activity
 {
     public abstract class ActivityHandler: IActivityHandler
     {

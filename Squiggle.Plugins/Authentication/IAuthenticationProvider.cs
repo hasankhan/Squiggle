@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Squiggle.UI.Plugins.Authentication
+namespace Squiggle.Plugins.Authentication
 {
     public interface IAuthenticationProvider
     {

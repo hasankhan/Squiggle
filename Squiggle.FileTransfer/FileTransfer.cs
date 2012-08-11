@@ -5,8 +5,9 @@ using System.Text;
 using System.ComponentModel.Composition;
 using System.IO;
 using Squiggle.Chat.Activities;
+using Squiggle.Activity;
 
-namespace Squiggle.Activities.FileTransfer
+namespace Squiggle.FileTransfer
 {
     [Export(typeof(IActivity))]
     public class FileTransfer: IActivity

@@ -8,8 +8,9 @@ using System.Net;
 using System.Threading;
 using Squiggle.Utilities;
 using Squiggle.Chat.Activities;
+using Squiggle.Activity;
 
-namespace Squiggle.Activities.FileTransfer
+namespace Squiggle.FileTransfer
 {
     class FileTransferHandler: ActivityHandler, IFileTransferHandler
     {

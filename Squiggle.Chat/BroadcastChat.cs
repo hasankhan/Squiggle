@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Threading;
 using Squiggle.Core.Chat;
 using Squiggle.Core.Chat.Activity;
-using Squiggle.Activities;
+using Squiggle.Activity;
 
 namespace Squiggle.Chat
 {

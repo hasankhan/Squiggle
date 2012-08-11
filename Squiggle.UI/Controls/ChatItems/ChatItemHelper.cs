@@ -5,7 +5,7 @@ using System.Text;
 using Squiggle.Chat;
 using Squiggle.UI.Controls;
 using Squiggle.UI.Controls.ChatItems;
-using Squiggle.Activities;
+using Squiggle.Activity;
 using Squiggle.UI.MessageParsers;
 using Squiggle.UI.Components;
 using Squiggle.Chat.Activities;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
-using Squiggle.Activities;
+using Squiggle.Activity;
 
 namespace Squiggle.Chat.Activities
 {

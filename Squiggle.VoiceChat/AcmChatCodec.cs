@@ -6,7 +6,7 @@ using NAudio;
 using NAudio.Wave;
 using NAudio.Wave.Compression;
 
-namespace Squiggle.Activities.VoiceChat
+namespace Squiggle.VoiceChat
 {
     abstract class AcmChatCodec
     {

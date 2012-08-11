@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using Squiggle.Core.Chat.Transport.Host;
 using Squiggle.Utilities;
-using Squiggle.Activities;
+using Squiggle.Activity;
 
 namespace Squiggle.Core.Chat.Activity
 {

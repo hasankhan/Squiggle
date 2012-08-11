@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using Squiggle.Chat;
 using Squiggle.Core.Presence;
-using Squiggle.Activities;
+using Squiggle.Activity;
 using Squiggle.Chat.Activities;
 
 namespace Squiggle.UI.ViewModel

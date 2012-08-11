@@ -126,9 +126,9 @@
     <Compile Include="Presence\UserStatus.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Squiggle.Activities\Squiggle.Activities.csproj">
+    <ProjectReference Include="..\Squiggle.Activity\Squiggle.Activity.csproj">
       <Project>{4B76F79B-8707-4163-AA3E-8307BC93C450}</Project>
-      <Name>Squiggle.Activities</Name>
+      <Name>Squiggle.Activity</Name>
     </ProjectReference>
     <ProjectReference Include="..\Squiggle.Utilities\Squiggle.Utilities.csproj">
       <Project>{8B57850B-FA7F-4F96-A4A0-BF81BF24E710}</Project>

@@ -14,7 +14,7 @@ using Squiggle.History.DAL;
 using Squiggle.Utilities;
 using BuddyResolver = System.Func<string, Squiggle.Chat.Buddy>;
 using Squiggle.Core.Chat.Activity;
-using Squiggle.Activities;
+using Squiggle.Activity;
 
 namespace Squiggle.Chat
 {    

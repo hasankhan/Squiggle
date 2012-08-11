@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using NAudio.Wave;
 
-namespace Squiggle.Activities.VoiceChat
+namespace Squiggle.VoiceChat
 {
     class EchoFilterWaveProvider : IWaveProvider, IDisposable
     {

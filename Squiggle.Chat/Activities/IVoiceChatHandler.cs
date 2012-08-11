@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Threading;
-using Squiggle.Activities;
+using Squiggle.Activity;
 
 namespace Squiggle.Chat.Activities
 {
