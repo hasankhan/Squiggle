@@ -6,8 +6,8 @@ using System.Windows.Controls;
 using System.Windows;
 using Squiggle.UI.Components;
 using Squiggle.Activities;
-using Squiggle.Plugins.Activity;
 using System.Windows.Input;
+using Squiggle.Chat.Activities;
 
 namespace Squiggle.UI.Helpers
 {

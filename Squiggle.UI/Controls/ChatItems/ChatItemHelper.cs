@@ -8,6 +8,7 @@ using Squiggle.UI.Controls.ChatItems;
 using Squiggle.Activities;
 using Squiggle.UI.MessageParsers;
 using Squiggle.UI.Components;
+using Squiggle.Chat.Activities;
 
 namespace Squiggle.UI
 {

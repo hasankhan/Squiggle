@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel.Composition;
-using Squiggle.Core.Chat;
 using System.IO;
-using Squiggle.Plugins.Activity;
-using Squiggle.Core.Chat.Activity;
+using Squiggle.Chat.Activities;
 
 namespace Squiggle.Activities.FileTransfer
 {

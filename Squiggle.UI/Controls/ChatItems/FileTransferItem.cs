@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Documents;
 using Squiggle.Chat;
 using Squiggle.Activities;
+using Squiggle.Chat.Activities;
 
 namespace Squiggle.UI.Controls.ChatItems
 {

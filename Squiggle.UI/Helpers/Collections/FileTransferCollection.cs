@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Squiggle.Activities;
+using Squiggle.Chat.Activities;
 
 namespace Squiggle.UI.Helpers.Collections
 {

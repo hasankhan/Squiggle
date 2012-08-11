@@ -5,6 +5,7 @@ using System.Net;
 using Squiggle.Chat;
 using Squiggle.Core.Presence;
 using Squiggle.Activities;
+using Squiggle.Chat.Activities;
 
 namespace Squiggle.UI.ViewModel
 {

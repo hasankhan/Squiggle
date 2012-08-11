@@ -6,11 +6,9 @@ using System.Text;
 using System.Threading;
 using System.Windows.Threading;
 using NAudio.Wave;
-using Squiggle.Core.Chat.Transport.Host;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
-using Squiggle.Core.Chat;
-using Squiggle.Core.Chat.Activity;
+using Squiggle.Chat.Activities;
 
 namespace Squiggle.Activities.VoiceChat
 {

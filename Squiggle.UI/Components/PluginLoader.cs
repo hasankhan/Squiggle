@@ -9,7 +9,6 @@ using System.ComponentModel.Composition.Hosting;
 using Squiggle.Core.Chat;
 using Squiggle.UI.MessageFilters;
 using Squiggle.UI.MessageParsers;
-using Squiggle.Plugins.Activity;
 using Squiggle.Plugins.MessageFilter;
 using Squiggle.Plugins.MessageParser;
 using Squiggle.Core.Chat.Activity;

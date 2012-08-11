@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Squiggle.Core.Chat;
-using Squiggle.Core.Chat.Activity;
-using Squiggle.Activities;
 
-namespace Squiggle.Plugins.Activity
+namespace Squiggle.Activities
 {
     public interface IActivity
     {

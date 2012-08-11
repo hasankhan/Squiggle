@@ -1,8 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using Squiggle.Activities;
 
-namespace Squiggle.Activities
+namespace Squiggle.Chat.Activities
 {
     public interface IFileTransferHandler: IActivityHandler
     {

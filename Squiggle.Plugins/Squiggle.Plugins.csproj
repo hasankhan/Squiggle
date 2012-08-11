@@ -53,8 +53,7 @@
     </Compile>
     <Compile Include="Authentication\AuthenticationResult.cs" />
     <Compile Include="Authentication\IAuthenticationProvider.cs" />
-    <Compile Include="IExtension.cs" />    
-    <Compile Include="Activity\IActivity.cs" />
+    <Compile Include="IExtension.cs" />
     <Compile Include="IChatWindow.cs" />
     <Compile Include="MessageFilter\FilterDirection.cs" />
     <Compile Include="MessageFilter\IMessageFilter.cs" />

@@ -16,6 +16,7 @@ using Squiggle.Chat;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 using Squiggle.Activities;
+using Squiggle.Chat.Activities;
 
 namespace Squiggle.UI.Controls
 {

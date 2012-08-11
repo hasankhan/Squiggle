@@ -7,8 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using Squiggle.Utilities;
-using Squiggle.Core.Chat;
-using Squiggle.Core.Chat.Activity;
+using Squiggle.Chat.Activities;
 
 namespace Squiggle.Activities.FileTransfer
 {

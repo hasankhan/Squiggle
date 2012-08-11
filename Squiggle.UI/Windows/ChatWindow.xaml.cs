@@ -4,13 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Squiggle.Activities;
 using Squiggle.Chat;
-using Squiggle.Core.Chat;
+using Squiggle.Plugins;
+using Squiggle.Plugins.MessageFilter;
 using Squiggle.UI.Components;
 using Squiggle.UI.Controls;
 using Squiggle.UI.Controls.ChatItems;
@@ -18,15 +18,12 @@ using Squiggle.UI.Helpers;
 using Squiggle.UI.Helpers.Collections;
 using Squiggle.UI.MessageFilters;
 using Squiggle.UI.MessageParsers;
-using Squiggle.Plugins;
-using Squiggle.Plugins.Activity;
-using Squiggle.Plugins.MessageFilter;
 using Squiggle.UI.Resources;
 using Squiggle.UI.Settings;
 using Squiggle.UI.StickyWindow;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
-using Squiggle.Core.Chat.Activity;
+using Squiggle.Chat.Activities;
 
 namespace Squiggle.UI.Windows
 {
