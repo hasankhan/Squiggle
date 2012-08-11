@@ -25,17 +25,17 @@ namespace Squiggle.Core.Presence
             get { return discovery.Users; }
         }
 
-        public PresenceService(SquiggleEndPoint chatEndPoint, IPEndPoint broadcastEndPoint, IPEndPoint broadcastReceiveEndPoint, IPEndPoint presenceServiceEndPoint, TimeSpan keepAliveTime)
+        public PresenceService(PresenceServiceOptions options)
         {
             thisUser = new UserInfo()
             {
-                ID = chatEndPoint.ClientID,
-                ChatEndPoint = chatEndPoint.Address,
-                KeepAliveSyncTime = keepAliveTime,
-                PresenceEndPoint = presenceServiceEndPoint
+                ID = options.ChatEndPoint.ClientID,
+                ChatEndPoint = options.ChatEndPoint.Address,
+                KeepAliveSyncTime = options.KeepAliveTime,
+                PresenceEndPoint = options.PresenceServiceEndPoint
             };
 
-            channel = new PresenceChannel(broadcastEndPoint, broadcastReceiveEndPoint, presenceServiceEndPoint);
+            channel = new PresenceChannel(options.BroadcastEndPoint, options.BroadcastReceiveEndPoint, options.PresenceServiceEndPoint);
 
             this.discovery = new UserDiscovery(channel);
             discovery.UserOnline += new EventHandler<UserEventArgs>(discovery_UserOnline);
@@ -43,7 +43,7 @@ namespace Squiggle.Core.Presence
             discovery.UserUpdated += new EventHandler<UserEventArgs>(discovery_UserUpdated);
             discovery.UserDiscovered += new EventHandler<UserEventArgs>(discovery_UserDiscovered);
 
-            this.keepAlive = new KeepAliveService(channel, thisUser, keepAliveTime);
+            this.keepAlive = new KeepAliveService(channel, thisUser, options.KeepAliveTime);
             this.keepAlive.UserLost += new EventHandler<UserEventArgs>(keepAlive_UserLost);
             this.keepAlive.UserDiscovered += new EventHandler<UserEventArgs>(keepAlive_UserDiscovered);
         }        

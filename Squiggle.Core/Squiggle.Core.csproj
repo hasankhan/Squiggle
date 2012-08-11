@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Presence\PresenceServiceOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\Shared\AssemblyInfo.Copyright.cs">
       <Link>Properties\AssemblyInfo.Copyright</Link>
@@ -123,7 +124,7 @@
     <Compile Include="Presence\UserInfo.cs" />
     <Compile Include="ServiceNames.cs" />
     <Compile Include="SquiggleEndPoint.cs" />
-    <Compile Include="Presence\UserStatus.cs" />    
+    <Compile Include="Presence\UserStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Squiggle.Utilities\Squiggle.Utilities.csproj">

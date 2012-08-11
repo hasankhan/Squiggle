@@ -41,7 +41,15 @@ namespace Squiggle.UI.Factories
 
             string clientID = settings.ConnectionSettings.ClientID;
 
-            var instance = new ChatClient(new SquiggleEndPoint(clientID, chatEndPoint), broadcastEndPoint, broadcastReceiveEndPoint, presenceServiceEndPoint, keepAliveTimeout);
+            var options = new ChatClientOptions()
+            {
+                ChatEndPoint = new SquiggleEndPoint(clientID, chatEndPoint),
+                BroadcastEndPoint = broadcastEndPoint,
+                BroadcastReceiveEndPoint = broadcastReceiveEndPoint,
+                PresenceServiceEndPoint = presenceServiceEndPoint,
+                KeepAliveTime = keepAliveTimeout
+            };
+            var instance = new ChatClient(options);
             instance.EnableLogging = settings.GeneralSettings.EnableStatusLogging;
 
             return instance;
