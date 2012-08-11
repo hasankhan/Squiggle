@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Windows;
 using Squiggle.UI.Components;
 using Squiggle.Activities;
-using Squiggle.UI.Plugins.Activity;
+using Squiggle.Plugins.Activity;
 using System.Windows.Input;
 
 namespace Squiggle.UI.Helpers

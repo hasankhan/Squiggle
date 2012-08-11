@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Documents;
 
-namespace Squiggle.UI.Plugins.MessageParser
+namespace Squiggle.Plugins.MessageParser
 {
 	public interface IMessageParser
 	{

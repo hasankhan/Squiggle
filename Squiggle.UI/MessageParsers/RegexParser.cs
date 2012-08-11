@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Documents;
-using Squiggle.UI.Plugins.MessageParser;
+using Squiggle.Plugins.MessageParser;
 
 namespace Squiggle.UI.MessageParsers
 {

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Squiggle.UI.Windows;
-using Squiggle.UI.Plugins.MessageFilter;
-using Squiggle.UI.Plugins;
+using Squiggle.Plugins.MessageFilter;
+using Squiggle.Plugins;
 
 namespace Squiggle.UI.MessageFilters
 {

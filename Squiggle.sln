@@ -25,7 +25,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Activities.VoiceCh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Activities.FileTransfer", "Squiggle.Activities.FileTransfer\Squiggle.Activities.FileTransfer.csproj", "{D469D96B-8840-4645-B74C-A2B6F1ED78DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.UI.Plugins", "Squiggle.UI.Plugins\Squiggle.UI.Plugins.csproj", "{96855AB0-6FBA-4E3A-AE84-F5942CC59339}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Plugins", "Squiggle.Plugins\Squiggle.Plugins.csproj", "{96855AB0-6FBA-4E3A-AE84-F5942CC59339}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Activities", "Squiggle.Activities\Squiggle.Activities.csproj", "{4B76F79B-8707-4163-AA3E-8307BC93C450}"
 EndProject

@@ -9,8 +9,8 @@ using Squiggle.Utilities.Net;
 using Squiggle.UI.Windows;
 using System.ComponentModel.Composition;
 using Squiggle.UI.Components;
-using Squiggle.UI.Plugins.MessageFilter;
-using Squiggle.UI.Plugins;
+using Squiggle.Plugins.MessageFilter;
+using Squiggle.Plugins;
 
 namespace Squiggle.UI.MessageFilters
 {

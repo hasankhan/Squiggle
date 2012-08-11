@@ -30,8 +30,8 @@
 /Squiggle.Activities.VoiceChat/obj
 /Squiggle.Activities.FileTransfer/bin
 /Squiggle.Activities.FileTransfer/obj
-/Squiggle.UI.Plugins/bin
-/Squiggle.UI.Plugins/obj
+/Squiggle.Plugins/bin
+/Squiggle.Plugins/obj
 /Squiggle.Activities.FileTransfer/*.user
 /Squiggle.Bridge/*.user
 /Squiggle.UI/*.user

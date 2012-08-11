@@ -556,9 +556,9 @@
       <Project>{C3214C5A-4B20-415E-A62E-F13229264072}</Project>
       <Name>Squiggle.History</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Squiggle.UI.Plugins\Squiggle.UI.Plugins.csproj">
+    <ProjectReference Include="..\Squiggle.Plugins\Squiggle.Plugins.csproj">
       <Project>{96855AB0-6FBA-4E3A-AE84-F5942CC59339}</Project>
-      <Name>Squiggle.UI.Plugins</Name>
+      <Name>Squiggle.Plugins</Name>
     </ProjectReference>
     <ProjectReference Include="..\Squiggle.Utilities\Squiggle.Utilities.csproj">
       <Project>{8B57850B-FA7F-4F96-A4A0-BF81BF24E710}</Project>

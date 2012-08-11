@@ -5,7 +5,7 @@ using System.Text;
 using System.ComponentModel.Composition;
 using Squiggle.Core.Chat;
 using System.IO;
-using Squiggle.UI.Plugins.Activity;
+using Squiggle.Plugins.Activity;
 
 namespace Squiggle.Activities.FileTransfer
 {
