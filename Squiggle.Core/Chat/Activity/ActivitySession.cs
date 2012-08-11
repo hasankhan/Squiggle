@@ -5,7 +5,7 @@ using System.Text;
 using Squiggle.Core.Chat.Transport.Host;
 using Squiggle.Utilities;
 
-namespace Squiggle.Core.Chat
+namespace Squiggle.Core.Chat.Activity
 {
     public class ActivitySession: IActivitySession
     {

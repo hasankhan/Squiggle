@@ -26,6 +26,7 @@ using Squiggle.UI.Settings;
 using Squiggle.UI.StickyWindow;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
+using Squiggle.Core.Chat.Activity;
 
 namespace Squiggle.UI.Windows
 {

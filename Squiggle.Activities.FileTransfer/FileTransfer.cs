@@ -6,6 +6,7 @@ using System.ComponentModel.Composition;
 using Squiggle.Core.Chat;
 using System.IO;
 using Squiggle.Plugins.Activity;
+using Squiggle.Core.Chat.Activity;
 
 namespace Squiggle.Activities.FileTransfer
 {

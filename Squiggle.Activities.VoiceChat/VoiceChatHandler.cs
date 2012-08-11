@@ -10,6 +10,7 @@ using Squiggle.Core.Chat.Transport.Host;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 using Squiggle.Core.Chat;
+using Squiggle.Core.Chat.Activity;
 
 namespace Squiggle.Activities.VoiceChat
 {

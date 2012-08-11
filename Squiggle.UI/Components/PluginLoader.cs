@@ -12,6 +12,7 @@ using Squiggle.UI.MessageParsers;
 using Squiggle.Plugins.Activity;
 using Squiggle.Plugins.MessageFilter;
 using Squiggle.Plugins.MessageParser;
+using Squiggle.Core.Chat.Activity;
 
 namespace Squiggle.UI.Components
 {

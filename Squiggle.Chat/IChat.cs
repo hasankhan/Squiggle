@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Threading;
 using Squiggle.Core.Chat;
+using Squiggle.Core.Chat.Activity;
 
 namespace Squiggle.Chat
 {

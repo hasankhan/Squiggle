@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Net;
 using Squiggle.Core.Chat.Transport.Host;
+using Squiggle.Core.Chat.Activity;
 
 namespace Squiggle.Core.Chat
 {

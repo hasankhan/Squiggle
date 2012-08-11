@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Squiggle.Core.Chat.Transport.Host;
 using Squiggle.Utilities;
+using Squiggle.Core.Chat.Activity;
 
 namespace Squiggle.Core.Chat
 {
