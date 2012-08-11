@@ -29,7 +29,7 @@ namespace Squiggle.Activities.VoiceChat
 
         public bool IsMuted { get; set; }
 
-        public VoiceChatHandler(ActivitySession session) : base(session) { }
+        public VoiceChatHandler(IActivitySession session) : base(session) { }
 
         protected override IEnumerable<KeyValuePair<string, string>> CreateInviteMetadata()
         {

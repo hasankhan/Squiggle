@@ -22,14 +22,14 @@ namespace Squiggle.Activities.FileTransfer
             get { return "File Transfer"; }
         }
 
-        public IActivityHandler FromInvite(Core.Chat.ActivitySession session, IDictionary<string, string> metadata)
+        public IActivityHandler FromInvite(IActivitySession session, IDictionary<string, string> metadata)
         {
             var inviteData = new FileInviteData(metadata);
             IFileTransferHandler handler = new FileTransferHandler(session, inviteData.Name, inviteData.Size);
             return handler;
         }
 
-        public IActivityHandler CreateInvite(ActivitySession session, IDictionary<string, object> args)
+        public IActivityHandler CreateInvite(IActivitySession session, IDictionary<string, object> args)
         {
             if (!args.ContainsKey("content") || !(args["content"] is Stream))
                 throw new ArgumentException("metadata must include content stream.", "metadata");

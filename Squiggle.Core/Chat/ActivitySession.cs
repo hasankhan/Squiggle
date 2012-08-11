@@ -7,7 +7,7 @@ using Squiggle.Utilities;
 
 namespace Squiggle.Core.Chat
 {
-    public class ActivitySession
+    public class ActivitySession: IActivitySession
     {
         SquiggleEndPoint localUser;
         SquiggleEndPoint remoteUser;

@@ -10,8 +10,8 @@ namespace Squiggle.Plugins.Activity
     {
         Guid Id { get; }
         string Title { get; }
-        IActivityHandler FromInvite(ActivitySession session, IDictionary<string, string> metadata);
+        IActivityHandler FromInvite(IActivitySession session, IDictionary<string, string> metadata);
         IDictionary<string, object> LaunchInviteUI();
-        IActivityHandler CreateInvite(ActivitySession session, IDictionary<string, object> args);
+        IActivityHandler CreateInvite(IActivitySession session, IDictionary<string, object> args);
     }
 }

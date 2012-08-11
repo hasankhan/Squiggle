@@ -24,7 +24,7 @@ namespace Squiggle.Activities.FileTransfer
             get { return SquiggleActivities.FileTransfer; }
         }
 
-        public FileTransferHandler(ActivitySession session, string name, long size, Stream content)
+        public FileTransferHandler(IActivitySession session, string name, long size, Stream content)
             :base(session)
         {
             this.Name = name;
@@ -32,7 +32,7 @@ namespace Squiggle.Activities.FileTransfer
             this.content = content;
         }
 
-        public FileTransferHandler(ActivitySession session, string name, long size)
+        public FileTransferHandler(IActivitySession session, string name, long size)
             :base(session)
         {
             this.Name = name;

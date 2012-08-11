@@ -21,13 +21,13 @@ namespace Squiggle.Activities.VoiceChat
             get { return "Voice Chat"; }
         }
 
-        public IActivityHandler FromInvite(ActivitySession session, IDictionary<string, string> metadata)
+        public IActivityHandler FromInvite(IActivitySession session, IDictionary<string, string> metadata)
         {
             var invitation = new VoiceChatHandler(session);
             return invitation;
         }
 
-        public IActivityHandler CreateInvite(ActivitySession session, IDictionary<string, object> args)
+        public IActivityHandler CreateInvite(IActivitySession session, IDictionary<string, object> args)
         {
             var invitation = new VoiceChatHandler(session);
             return invitation;

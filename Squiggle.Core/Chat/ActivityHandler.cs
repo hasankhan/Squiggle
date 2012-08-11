@@ -34,12 +34,14 @@ namespace Squiggle.Core.Chat
             get { return session.SelfInitiated; }
         }
 
-        protected ActivityHandler(ActivitySession session)
+        protected ActivityHandler(IActivitySession session)
         {
-            this.session = session;
+            this.session = session as ActivitySession;
+            if (this.session == null)
+                throw new ArgumentException("Invalid session object", "session");
 
-            if (!session.SelfInitiated)
-                session.ChatHost.ActivitySessionCancelled += new EventHandler<ActivitySessionEventArgs>(chatHost_ActivitySessionCancelled);
+            if (!this.session.SelfInitiated)
+                this.session.ChatHost.ActivitySessionCancelled += new EventHandler<ActivitySessionEventArgs>(chatHost_ActivitySessionCancelled);
         }
 
         public void Start()
