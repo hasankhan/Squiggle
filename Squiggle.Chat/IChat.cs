@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows.Threading;
 using Squiggle.Core.Chat;
 using Squiggle.Core.Chat.Activity;
+using Squiggle.Activities;
 
 namespace Squiggle.Chat
 {
@@ -27,7 +28,7 @@ namespace Squiggle.Chat
     public class ActivityInvitationReceivedEventArgs : BuddyEventArgs
     {
         public Guid ActivityId { get; set; }
-        public ActivitySession Session { get; set; }
+        public IActivityExecutor Executor { get; set; }
         public IDictionary<string, string> Metadata { get; set; }
 
         public ActivityInvitationReceivedEventArgs(Buddy buddy) : base(buddy) { }
@@ -51,7 +52,7 @@ namespace Squiggle.Chat
         void NotifyTyping();
         void SendBuzz();
         void SendMessage(string fontName, int fontSize, Color color, FontStyle style, string message);
-        ActivitySession CreateActivitySession();
+        IActivityExecutor CreateActivity();
         void Leave();
 
         void Invite(Buddy buddy);

@@ -30,9 +30,9 @@ namespace Squiggle.Activities.VoiceChat
 
         public bool IsMuted { get; set; }
 
-        public VoiceChatHandler(IActivitySession session) : base(session) { }
+        public VoiceChatHandler(IActivityExecutor executor) : base(executor) { }
 
-        protected override IEnumerable<KeyValuePair<string, string>> CreateInviteMetadata()
+        public override IEnumerable<KeyValuePair<string, string>> CreateInviteMetadata()
         {
             return Enumerable.Empty<KeyValuePair<string, string>>();
         }
@@ -47,19 +47,19 @@ namespace Squiggle.Activities.VoiceChat
             }
         }
 
-        protected override void TransferData(Func<bool> cancelPending)
+        public override void TransferData(Func<bool> cancelPending)
         {
             while (!cancelPending())
                 Thread.Sleep(100);
         }
 
-        protected override void OnDataReceived(byte[] chunk)
+        public override void OnDataReceived(byte[] chunk)
         {
             byte[] decoded = codec.Decode(chunk, 0, chunk.Length);
             waveProvider.AddRemoteSamples(decoded, 0, decoded.Length);
         }
 
-        protected override void OnTransferStarted()
+        public override void OnTransferStarted()
         {
             Dispatcher.Invoke(() =>
             {
@@ -86,7 +86,7 @@ namespace Squiggle.Activities.VoiceChat
             base.Accept();
         }
 
-        protected override void OnTransferFinished()
+        public override void OnTransferFinished()
         {
             Dispatcher.Invoke(() =>
             {

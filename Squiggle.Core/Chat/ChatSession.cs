@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Squiggle.Core.Chat.Transport.Host;
 using Squiggle.Utilities;
 using Squiggle.Core.Chat.Activity;
+using Squiggle.Activities;
 
 namespace Squiggle.Core.Chat
 {
@@ -105,12 +106,14 @@ namespace Squiggle.Core.Chat
             BroadCast(endpoint => chatHost.UserIsTyping(ID, localUser, endpoint));
         }
 
-        public ActivitySession CreateActivitySession()
+        public IActivityExecutor CreateActivity()
         {
             if (IsGroupSession)
                 throw new InvalidOperationException("Cannot send files in a group chat session.");
 
-            return ActivitySession.Create(ID, chatHost, localUser, PrimaryUser);
+            var session = ActivitySession.Create(ID, chatHost, localUser, PrimaryUser);
+            var executor = new ActivityExecutor(session);
+            return executor;
         }
 
         public void SendMessage(string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
@@ -276,7 +279,8 @@ namespace Squiggle.Core.Chat
             if (!IsGroupSession && IsRemoteUser(e.Sender))
             {
                 var session = ActivitySession.FromInvite(e.SessionID, chatHost, localUser, e.Sender, e.ActivitySessionId);
-                ActivityInviteReceived(this, new ActivityInivteReceivedEventArgs() { Sender = e.Sender, Session = session, ActivityId = e.ActivityId, Metadata = e.Metadata });
+                var executor = new ActivityExecutor(session);
+                ActivityInviteReceived(this, new ActivityInivteReceivedEventArgs() { Sender = e.Sender, Executor = executor, ActivityId = e.ActivityId, Metadata = e.Metadata });
             }
         }
 

@@ -60,18 +60,12 @@
     <Compile Include="..\Shared\AssemblyInfo.Copyright.cs">
       <Link>Properties\AssemblyInfo.Copyright</Link>
     </Compile>
-    <Compile Include="..\Shared\AssemblyInfo.Version.cs">
-      <Link>Properties\AssemblyInfo.Version</Link>
+    <Compile Include="..\Shared\AssemblyInfo.PluginVersion.cs">
+      <Link>Properties\AssemblyInfo.PluginVersion</Link>
     </Compile>
-    <Compile Include="IFileTransferHandler.cs" />
-    <Compile Include="IVoiceChatHandler.cs" />
-    <Compile Include="SquiggleActivities.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Squiggle.Core\Squiggle.Core.csproj">
-      <Project>{CCC71193-64AA-4B92-80C9-7BC688C7FAE3}</Project>
-      <Name>Squiggle.Core</Name>
-    </ProjectReference>
+    <Compile Include="ActivityHandler.cs" />
+    <Compile Include="IActivityExecutor.cs" />
+    <Compile Include="IActivityHandler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Squiggle.Core.Chat.Activity
+namespace Squiggle.Activities
 {
     public interface IActivityHandler
     {

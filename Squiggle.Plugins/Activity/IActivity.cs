@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Squiggle.Core.Chat;
 using Squiggle.Core.Chat.Activity;
+using Squiggle.Activities;
 
 namespace Squiggle.Plugins.Activity
 {
@@ -11,8 +12,8 @@ namespace Squiggle.Plugins.Activity
     {
         Guid Id { get; }
         string Title { get; }
-        IActivityHandler FromInvite(IActivitySession session, IDictionary<string, string> metadata);
+        IActivityHandler FromInvite(IActivityExecutor executor, IDictionary<string, string> metadata);
         IDictionary<string, object> LaunchInviteUI();
-        IActivityHandler CreateInvite(IActivitySession session, IDictionary<string, object> args);
+        IActivityHandler CreateInvite(IActivityExecutor executor, IDictionary<string, object> args);
     }
 }

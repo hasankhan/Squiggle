@@ -25,22 +25,22 @@ namespace Squiggle.Activities.FileTransfer
             get { return SquiggleActivities.FileTransfer; }
         }
 
-        public FileTransferHandler(IActivitySession session, string name, long size, Stream content)
-            :base(session)
+        public FileTransferHandler(IActivityExecutor executor, string name, long size, Stream content)
+            :base(executor)
         {
             this.Name = name;
             this.Size = size;
             this.content = content;
         }
 
-        public FileTransferHandler(IActivitySession session, string name, long size)
-            :base(session)
+        public FileTransferHandler(IActivityExecutor executor, string name, long size)
+            :base(executor)
         {
             this.Name = name;
             this.Size = size;
         }
 
-        protected override IEnumerable<KeyValuePair<string, string>> CreateInviteMetadata()
+        public override IEnumerable<KeyValuePair<string, string>> CreateInviteMetadata()
         {
             IEnumerable<KeyValuePair<string, string>> data = new FileInviteData() { Name = Name, Size = Size };
             return data;
@@ -52,14 +52,12 @@ namespace Squiggle.Activities.FileTransfer
             this.Accept();
         }
 
-        protected override void OnAccept()
+        public override void OnAccept()
         {
             content = File.OpenWrite(filePath);
-
-            base.OnAccept();
         }
 
-        protected override void OnTransferCancelled()
+        public override void OnTransferCancelled()
         {
             if (!SelfInitiated && content != null)
                 File.Delete(filePath);
@@ -67,7 +65,7 @@ namespace Squiggle.Activities.FileTransfer
             base.OnTransferCancelled();
         }
 
-        protected override void OnTransferFinished()
+        public override void OnTransferFinished()
         {
             if (content != null)
             {
@@ -78,7 +76,7 @@ namespace Squiggle.Activities.FileTransfer
             base.OnTransferFinished();
         }
 
-        protected override void OnDataReceived(byte[] chunk)
+        public override void OnDataReceived(byte[] chunk)
         {
             if (!SelfInitiated && content != null)
             {
@@ -92,9 +90,9 @@ namespace Squiggle.Activities.FileTransfer
             }
         }
 
-        protected override void TransferData(Func<bool> cancelPending)
+        public override void TransferData(Func<bool> cancelPending)
         {
-            byte[] buffer = new byte[bufferSize];
+            byte[] buffer = new byte[BUFFER_SIZE];
             long bytesRemaining = Size;
             while (bytesRemaining > 0 && !cancelPending())
             {

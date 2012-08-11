@@ -22,15 +22,15 @@ namespace Squiggle.Activities.VoiceChat
             get { return "Voice Chat"; }
         }
 
-        public IActivityHandler FromInvite(IActivitySession session, IDictionary<string, string> metadata)
+        public IActivityHandler FromInvite(IActivityExecutor executor, IDictionary<string, string> metadata)
         {
-            var invitation = new VoiceChatHandler(session);
+            var invitation = new VoiceChatHandler(executor);
             return invitation;
         }
 
-        public IActivityHandler CreateInvite(IActivitySession session, IDictionary<string, object> args)
+        public IActivityHandler CreateInvite(IActivityExecutor executor, IDictionary<string, object> args)
         {
-            var invitation = new VoiceChatHandler(session);
+            var invitation = new VoiceChatHandler(executor);
             return invitation;
         }
 

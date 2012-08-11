@@ -7,7 +7,7 @@ using Squiggle.Utilities;
 
 namespace Squiggle.Core.Chat.Activity
 {
-    public class ActivitySession: IActivitySession
+    class ActivitySession
     {
         SquiggleEndPoint localUser;
         SquiggleEndPoint remoteUser;
@@ -27,19 +27,19 @@ namespace Squiggle.Core.Chat.Activity
             this.SelfInitiated = selfInitiated;
         }
 
-        internal static ActivitySession Create(Guid sessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser)
+        public static ActivitySession Create(Guid sessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser)
         {
             var session = new ActivitySession(sessionId, chatHost, localUser, remoteUser, Guid.NewGuid(), true);
             return session;
         }
 
-        internal static ActivitySession FromInvite(Guid sessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, Guid activitySessionId)
+        public static ActivitySession FromInvite(Guid sessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, Guid activitySessionId)
         {
             var session = new ActivitySession(sessionId, chatHost, localUser, remoteUser, activitySessionId, false);
             return session;
         }
 
-        internal bool Accept()
+        public bool Accept()
         {
             bool success = ExceptionMonster.EatTheException(() =>
             {
@@ -48,12 +48,12 @@ namespace Squiggle.Core.Chat.Activity
             return success;
         }
 
-        internal void Cancel()
+        public void Cancel()
         {
             ExceptionMonster.EatTheException(() => ChatHost.CancelActivitySession(Id, localUser, remoteUser), "cancelling activity session with user" + remoteUser);
         }
 
-        internal void SendData(byte[] chunk, Action<Exception> onError)
+        public void SendData(byte[] chunk, Action<Exception> onError)
         {
             Exception ex;
             if (!ExceptionMonster.EatTheException(() =>
@@ -63,7 +63,7 @@ namespace Squiggle.Core.Chat.Activity
                 onError(ex);
         }
 
-        internal bool SendInvite(Guid activityId, IEnumerable<KeyValuePair<string, string>> metadata)
+        public bool SendInvite(Guid activityId, IEnumerable<KeyValuePair<string, string>> metadata)
         {
             bool success = ExceptionMonster.EatTheException(() => ChatHost.ReceiveActivityInvite(chatSessionId, localUser, remoteUser, activityId, Id, metadata), "Sending app invite to " + remoteUser.ToString());
             return success;

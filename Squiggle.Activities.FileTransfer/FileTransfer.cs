@@ -23,14 +23,14 @@ namespace Squiggle.Activities.FileTransfer
             get { return "File Transfer"; }
         }
 
-        public IActivityHandler FromInvite(IActivitySession session, IDictionary<string, string> metadata)
+        public IActivityHandler FromInvite(IActivityExecutor executor, IDictionary<string, string> metadata)
         {
             var inviteData = new FileInviteData(metadata);
-            IFileTransferHandler handler = new FileTransferHandler(session, inviteData.Name, inviteData.Size);
+            IFileTransferHandler handler = new FileTransferHandler(executor, inviteData.Name, inviteData.Size);
             return handler;
         }
 
-        public IActivityHandler CreateInvite(IActivitySession session, IDictionary<string, object> args)
+        public IActivityHandler CreateInvite(IActivityExecutor executor, IDictionary<string, object> args)
         {
             if (!args.ContainsKey("content") || !(args["content"] is Stream))
                 throw new ArgumentException("metadata must include content stream.", "metadata");
@@ -38,7 +38,7 @@ namespace Squiggle.Activities.FileTransfer
             var stream = (Stream)args["content"];
 
             var inviteData = new FileInviteData(args.ToDictionary(x=>x.Key, x=>x.Value.ToString()));
-            IFileTransferHandler handler = new FileTransferHandler(session, inviteData.Name, inviteData.Size, stream);
+            IFileTransferHandler handler = new FileTransferHandler(executor, inviteData.Name, inviteData.Size, stream);
             return handler;
         }
 

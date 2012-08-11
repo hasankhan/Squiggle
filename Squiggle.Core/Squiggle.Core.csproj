@@ -61,7 +61,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Chat\Activity\IActivitySession.cs" />
     <Compile Include="Presence\PresenceServiceOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\Shared\AssemblyInfo.Copyright.cs">
@@ -71,7 +70,6 @@
       <Link>Properties\AssemblyInfo.Version</Link>
     </Compile>
     <Compile Include="Chat\Activity\ActivitySession.cs" />
-    <Compile Include="Chat\Activity\IActivityHandler.cs" />
     <Compile Include="Chat\Transport\Host\ChatHostExtensions.cs" />
     <Compile Include="Chat\Transport\Message.cs" />
     <Compile Include="Chat\Transport\Messages\ActivityCancelMessage.cs" />
@@ -98,7 +96,7 @@
     <Compile Include="Presence\Transport\PresenceHost.cs" />
     <Compile Include="OperationFailedException.cs" />
     <Compile Include="Presence\BuddyProperties.cs" />
-    <Compile Include="Chat\Activity\ActivityHandler.cs" />
+    <Compile Include="Chat\Activity\ActivityExecutor.cs" />
     <Compile Include="Chat\ChatService.cs" />
     <Compile Include="Chat\ChatSession.cs" />
     <Compile Include="Chat\ChatSessionCollection.cs" />
@@ -128,6 +126,10 @@
     <Compile Include="Presence\UserStatus.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Squiggle.Activities\Squiggle.Activities.csproj">
+      <Project>{4B76F79B-8707-4163-AA3E-8307BC93C450}</Project>
+      <Name>Squiggle.Activities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Squiggle.Utilities\Squiggle.Utilities.csproj">
       <Project>{8B57850B-FA7F-4F96-A4A0-BF81BF24E710}</Project>
       <Name>Squiggle.Utilities</Name>

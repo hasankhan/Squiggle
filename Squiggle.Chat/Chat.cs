@@ -14,6 +14,7 @@ using Squiggle.History.DAL;
 using Squiggle.Utilities;
 using BuddyResolver = System.Func<string, Squiggle.Chat.Buddy>;
 using Squiggle.Core.Chat.Activity;
+using Squiggle.Activities;
 
 namespace Squiggle.Chat
 {    
@@ -99,12 +100,12 @@ namespace Squiggle.Chat
             });
         }
 
-        public ActivitySession CreateActivitySession()
+        public IActivityExecutor CreateActivity()
         {
             if (IsGroupChat)
                 throw new InvalidOperationException("Can not start activity session in group chat.");
 
-            return session.CreateActivitySession();
+            return session.CreateActivity();
         }        
 
         public void Leave()
@@ -139,7 +140,7 @@ namespace Squiggle.Chat
             {
                 var args = new ActivityInvitationReceivedEventArgs(buddy)
                 {
-                    Session = e.Session,
+                    Executor = e.Executor,
                     ActivityId = e.ActivityId,
                     Metadata = e.Metadata
                 };

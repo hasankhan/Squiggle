@@ -6,35 +6,26 @@ using System.Linq;
 using System.Text;
 using Squiggle.Core.Chat.Transport.Host;
 using Squiggle.Utilities;
+using Squiggle.Activities;
 
 namespace Squiggle.Core.Chat.Activity
 {
-    public abstract class ActivityHandler: IActivityHandler
+    class ActivityExecutor: IActivityExecutor
     {
         BackgroundWorker worker;
         ActivitySession session;
+        ActivityHandler handler;
 
-        protected const int bufferSize = 32768; // 32KB
-
-        protected long BytesReceived { get; private set; }
-        protected bool SelfCancelled { get; private set; }
+        public long BytesReceived { get; private set; }
+        public bool SelfCancelled { get; private set; }
         public bool IsConnected { get; private set; }
 
-        public event EventHandler<ErrorEventArgs> Error = delegate { };
-        public event EventHandler TransferCompleted = delegate { };
-        public event EventHandler TransferStarted = delegate { };
-        public event EventHandler TransferCancelled = delegate { };
-        public event EventHandler TransferFinished = delegate { };
-        public event EventHandler<System.ComponentModel.ProgressChangedEventArgs> ProgressChanged = delegate { };
-
-        public abstract Guid ActivityId { get; }
-
-        protected bool SelfInitiated
+        public bool SelfInitiated
         {
             get { return session.SelfInitiated; }
         }
 
-        protected ActivityHandler(IActivitySession session)
+        public ActivityExecutor(ActivitySession session)
         {
             this.session = session as ActivitySession;
             if (this.session == null)
@@ -44,30 +35,33 @@ namespace Squiggle.Core.Chat.Activity
                 this.session.ChatHost.ActivitySessionCancelled += new EventHandler<ActivitySessionEventArgs>(chatHost_ActivitySessionCancelled);
         }
 
+        public void SetHandler(ActivityHandler handler)
+        {
+            this.handler = handler;
+        }
+
         public void Start()
         {
             session.ChatHost.ActivityInvitationAccepted += new EventHandler<ActivitySessionEventArgs>(chatHost_ActivityInvitationAccepted);
             session.ChatHost.ActivitySessionCancelled += new EventHandler<ActivitySessionEventArgs>(chatHost_ActivitySessionCancelled);
             Async.Invoke(() =>
             {
-                IEnumerable<KeyValuePair<string, string>> metadata = CreateInviteMetadata();
-                bool success = session.SendInvite(ActivityId, metadata);
+                IEnumerable<KeyValuePair<string, string>> metadata = handler.CreateInviteMetadata();
+                bool success = session.SendInvite(handler.ActivityId, metadata);
                 if (!success)
                 {
                     OnTransferFinished();
                     OnError(new OperationFailedException());
                 }
             });
-        }
+        }        
 
         public void Cancel()
         {
             Cancel(true);
         }
 
-        protected abstract IEnumerable<KeyValuePair<string, string>> CreateInviteMetadata();
-
-        protected void Accept()
+        public void Accept()
         {
             if (session.SelfInitiated)
                 throw new InvalidOperationException("This operation is only valid in context of an invitation.");
@@ -82,13 +76,13 @@ namespace Squiggle.Core.Chat.Activity
                 OnTransferFinished();
                 OnError(new OperationFailedException());
             }
-        }
+        }        
 
-        protected void CompleteTransfer()
+        public void CompleteTransfer()
         {
             OnTransferFinished();
             OnTransferCompleted();
-        }
+        }        
 
         protected void Cancel(bool selfCancel)
         {
@@ -121,26 +115,24 @@ namespace Squiggle.Core.Chat.Activity
         void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             OnProgressChanged(e.ProgressPercentage);
-        }
+        }        
 
         void worker_DoWork(object sender, DoWorkEventArgs e)
         {
             OnTransferStarted();
 
-            TransferData(() => worker.CancellationPending);
+            handler.TransferData(() => worker.CancellationPending);
 
             if (worker.CancellationPending)
                 e.Cancel = true;
         }
 
-        protected void UpdateProgress(int progress)
+        public void UpdateProgress(int progress)
         {
             worker.ReportProgress(progress);
         }
 
-        protected abstract void TransferData(Func<bool> cancelPending);
-
-        protected void SendData(byte[] chunk)
+        public void SendData(byte[] chunk)
         {
             if (!IsConnected)
                 return;
@@ -155,7 +147,7 @@ namespace Squiggle.Core.Chat.Activity
                 Cancel(false);
                 OnTransferCancelled();
             }
-        }
+        }        
 
         void chatHost_ActivityDataReceived(object sender, ActivityDataReceivedEventArgs e)
         {
@@ -164,7 +156,7 @@ namespace Squiggle.Core.Chat.Activity
                 BytesReceived += e.Chunk.Length;
                 OnDataReceived(e.Chunk);
             }
-        }
+        }        
 
         void chatHost_ActivityInvitationAccepted(object sender, ActivitySessionEventArgs e)
         {
@@ -180,44 +172,50 @@ namespace Squiggle.Core.Chat.Activity
             }
         }
 
-        protected virtual void OnAccept() { }
-
-        protected virtual void OnTransferCompleted()
-        {
-            TransferCompleted(this, EventArgs.Empty);
-        }
-
-        protected void OnError(Exception error)
-        {
-            Error(this, new ErrorEventArgs(error));
-        }
-
-        protected virtual void OnTransferCancelled()
-        {
-            TransferCancelled(this, EventArgs.Empty);
-        }
-        
-        protected abstract void OnDataReceived(byte[] chunk);
-
-        protected virtual void OnTransferStarted() 
+        void OnTransferStarted() 
         {
             IsConnected = true;
             session.ChatHost.ActivityDataReceived += new EventHandler<ActivityDataReceivedEventArgs>(chatHost_ActivityDataReceived);
-            TransferStarted(this, EventArgs.Empty);
+            handler.OnTransferStarted();
         }
 
-        protected virtual void OnTransferFinished()
+        void OnTransferFinished()
         {
             IsConnected = false;
             session.ChatHost.ActivityDataReceived -= new EventHandler<ActivityDataReceivedEventArgs>(chatHost_ActivityDataReceived);
             session.ChatHost.ActivityInvitationAccepted -= new EventHandler<ActivitySessionEventArgs>(chatHost_ActivityInvitationAccepted);
             session.ChatHost.ActivitySessionCancelled -= new EventHandler<ActivitySessionEventArgs>(chatHost_ActivitySessionCancelled);
-            TransferFinished(this, EventArgs.Empty);
+            handler.OnTransferFinished();
         }
 
-        protected virtual void OnProgressChanged(int percentage) 
+        void OnDataReceived(byte[] chunk)
         {
-            ProgressChanged(this, new ProgressChangedEventArgs(percentage, null)); 
+            handler.OnDataReceived(chunk);
+        }
+
+        void OnTransferCancelled()
+        {
+            handler.OnTransferCancelled();
+        }
+
+        void OnTransferCompleted()
+        {
+            handler.OnTransferCompleted();
+        }
+
+        void OnError(Exception ex)
+        {
+            handler.OnError(ex);
+        }
+
+        void OnProgressChanged(int percentage)
+        {
+            handler.OnProgressChanged(percentage);
+        }
+
+        void OnAccept()
+        {
+            handler.OnAccept();
         }
     }
 }

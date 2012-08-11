@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Threading;
 using Squiggle.Core.Chat;
 using Squiggle.Core.Chat.Activity;
+using Squiggle.Activities;
 
 namespace Squiggle.Chat
 {
@@ -84,7 +85,7 @@ namespace Squiggle.Chat
                 chatSessions.ForEach(s => s.SendMessage(fontName, fontSize, color, style, message));
         }
 
-        public ActivitySession CreateActivitySession()
+        public IActivityExecutor CreateActivity()
         {
             throw new InvalidOperationException("Can not start activity session in broadcast chat.");
         }

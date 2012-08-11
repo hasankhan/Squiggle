@@ -338,7 +338,7 @@ namespace Squiggle.UI.Windows
 
         void OnActivityInvite(ActivityInvitationReceivedEventArgs e)
         {
-            IActivityHandler handler = context.PluginLoader.GetActivityHandler(e.ActivityId, f => f.FromInvite(e.Session, e.Metadata));
+            IActivityHandler handler = context.PluginLoader.GetActivityHandler(e.ActivityId, f => f.FromInvite(e.Executor, e.Metadata));
             if (e.ActivityId == SquiggleActivities.VoiceChat)
                 OnVoiceInvite(handler as IVoiceChatHandler);
             else if (e.ActivityId == SquiggleActivities.FileTransfer)
@@ -591,8 +591,8 @@ namespace Squiggle.UI.Windows
             else if (!context.PluginLoader.HasActivity(SquiggleActivities.VoiceChat))
                 return null;
 
-            ActivitySession session = chatSession.CreateActivitySession();
-            IVoiceChatHandler voiceChat = context.PluginLoader.GetActivityHandler(SquiggleActivities.VoiceChat, f => f.CreateInvite(session, null)) as IVoiceChatHandler;
+            IActivityExecutor executor = chatSession.CreateActivity();
+            IVoiceChatHandler voiceChat = context.PluginLoader.GetActivityHandler(SquiggleActivities.VoiceChat, f => f.CreateInvite(executor, null)) as IVoiceChatHandler;
 
             if (voiceChat != null)
             {
@@ -652,9 +652,9 @@ namespace Squiggle.UI.Windows
                     return;
                 }
 
-                ActivitySession session = chatSession.CreateActivitySession();
+                IActivityExecutor executor = chatSession.CreateActivity();
                 var args = new Dictionary<string, object>(){ { "name", fileName}, {"content", fileStream}, {"size", fileStream.Length}};
-                IFileTransferHandler fileTransfer = context.PluginLoader.GetActivityHandler(SquiggleActivities.FileTransfer, f => f.CreateInvite(session, args)) as IFileTransferHandler;
+                IFileTransferHandler fileTransfer = context.PluginLoader.GetActivityHandler(SquiggleActivities.FileTransfer, f => f.CreateInvite(executor, args)) as IFileTransferHandler;
                 if (fileTransfer == null)
                     return;
 

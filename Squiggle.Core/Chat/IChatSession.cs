@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using Squiggle.Core.Chat.Transport.Host;
 using Squiggle.Core.Chat.Activity;
+using Squiggle.Activities;
 
 namespace Squiggle.Core.Chat
 {
@@ -12,7 +13,7 @@ namespace Squiggle.Core.Chat
     {
         public SquiggleEndPoint Sender { get; set; }
         public Guid ActivityId { get; set; }
-        public ActivitySession Session {get; set;}
+        public IActivityExecutor Executor {get; set;}
         public IDictionary<string, string> Metadata { get; set; }
     }
 
@@ -33,7 +34,7 @@ namespace Squiggle.Core.Chat
         void SendBuzz();
         void SendMessage(string fontName, int fontSize, Color color, FontStyle fontStyle, string message);
         void NotifyTyping();
-        ActivitySession CreateActivitySession();
+        IActivityExecutor CreateActivity();
         void End();
         void Invite(SquiggleEndPoint user);
         void UpdateUser(SquiggleEndPoint user);
