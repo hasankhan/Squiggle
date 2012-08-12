@@ -61,8 +61,8 @@
     <Compile Include="..\Shared\AssemblyInfo.Copyright.cs">
       <Link>Properties\AssemblyInfo.Copyright</Link>
     </Compile>
-    <Compile Include="..\Shared\AssemblyInfo.PluginVersion.cs">
-      <Link>Properties\AssemblyInfo.PluginVersion</Link>
+    <Compile Include="..\Shared\AssemblyInfo.ApiVersion.cs">
+      <Link>Properties\AssemblyInfo.ApiVersion</Link>
     </Compile>
     <Compile Include="ActivityHandler.cs" />
     <Compile Include="IActivityExecutor.cs" />
