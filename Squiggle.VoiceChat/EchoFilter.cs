@@ -12,21 +12,29 @@ namespace Squiggle.VoiceChat
         static extern IntPtr speex_echo_state_init(int frame_size, int filter_length);
 
         [DllImport("libspeexdsp.dll", CallingConvention = CallingConvention.Cdecl)]
-        static extern void speex_echo_cancellation(IntPtr state, byte[] recorded, byte[] played, byte[] output);
+        static extern void speex_echo_cancellation(IntPtr state, byte[] inputFrame, byte[] echoFrame, byte[] outputFrame);
 
         [DllImport("libspeexdsp.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern void speex_echo_state_destroy(IntPtr state);
 
         IntPtr state;
 
+        /// <param name="frameSize">frameSize is the amount of data (in samples) you want to process at once.</param>
+        /// <param name="filterLength">filterLength is the length (in samples) of the echo cancelling filter you want to use (also known as tail length).</param>
         public EchoFilter(int frameSize, int filterLength)
         {
             state = speex_echo_state_init(frameSize, filterLength);
         }
 
-        public void Filter(byte[] remoteSoundAndEcho, byte[] localVoice, byte[] output)
+        /// <summary>
+        /// Method for echo cancellation
+        /// </summary>
+        /// <param name="inputFrame">Frame obtained from local microphone (Signal that contains echo)</param>
+        /// <param name="echoFrame">Frame obtained from remote source (Source of echo)</param>
+        /// <param name="outputFrame">Filtered output</param>
+        public void Filter(byte[] inputFrame, byte[] echoFrame, byte[] outputFrame)
         {
-            speex_echo_cancellation(state, remoteSoundAndEcho, localVoice, output);
+            speex_echo_cancellation(state, inputFrame, echoFrame, outputFrame);
         }
 
         public void Dispose()

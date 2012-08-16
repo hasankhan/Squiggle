@@ -17,7 +17,8 @@ namespace Squiggle.VoiceChat
     {
         WaveIn waveIn;
         WaveOut waveOut;
-        EchoFilterWaveProvider waveProvider;
+        BufferedWaveProvider waveOutProvider;
+        EchoFilterWaveProvider echoFilter;
         AcmChatCodec codec = new Gsm610ChatCodec();
 
         public override Guid ActivityId
@@ -55,13 +56,16 @@ namespace Squiggle.VoiceChat
         public override void OnDataReceived(byte[] chunk)
         {
             byte[] decoded = codec.Decode(chunk, 0, chunk.Length);
-            waveProvider.AddRemoteSamples(decoded, 0, decoded.Length);
+            waveOutProvider.AddSamples(decoded, 0, decoded.Length);
+            echoFilter.AddRemoteSamples(decoded, 0, decoded.Length);
         }
 
         public override void OnTransferStarted()
         {
             Dispatcher.Invoke(() =>
             {
+                CreateEchoFilter();
+
                 waveIn = new WaveIn();
                 waveIn.BufferMilliseconds = 50;
                 waveIn.DeviceNumber = -1;
@@ -70,14 +74,30 @@ namespace Squiggle.VoiceChat
                 waveIn.StartRecording();
 
                 waveOut = new WaveOut();
-                int frameSize = 128;
-                int filterLength = frameSize * 10;
-                waveProvider = new EchoFilterWaveProvider(codec.RecordFormat, frameSize, filterLength);
-                waveOut.Init(waveProvider);
+                waveOutProvider = new BufferedWaveProvider(codec.RecordFormat) { DiscardOnBufferOverflow = true };
+                waveOut.Init(waveOutProvider);
                 waveOut.Play();
             });
 
             base.OnTransferStarted();
+        }
+
+        void CreateEchoFilter()
+        {
+            /* Source: http://www.speex.org/docs/manual/speex-manual/node7.html
+             * It is recommended to use a frame size in the order of 20 ms (or equal to the codec frame size) and make sure it is easy to perform an FFT of that size (powers of two are better than prime sizes).            
+             */
+            TimeSpan frameSizeTime = TimeSpan.FromMilliseconds(20);
+            int frameSize = (int)Math.Ceiling(frameSizeTime.TotalSeconds * codec.RecordFormat.SampleRate);
+
+            /* Source: http://www.speex.org/docs/manual/speex-manual/node7.html
+             * The recommended tail length is approximately the third of the room reverberation time. 
+             * For example, in a small room, reverberation time is in the order of 300 ms, so a tail length of 100 ms is a good choice (800 samples at 8000 Hz sampling rate).
+             */
+            TimeSpan tailLengthTime = TimeSpan.FromMilliseconds(100);
+            int filterLength = (int)Math.Ceiling(tailLengthTime.TotalSeconds * codec.RecordFormat.SampleRate);
+            
+            echoFilter = new EchoFilterWaveProvider(codec.RecordFormat, frameSize, filterLength);
         }
 
         public new void Accept()
@@ -96,7 +116,7 @@ namespace Squiggle.VoiceChat
                     waveOut.Stop();
 
                     codec.Dispose();                   
-                    waveProvider.Dispose();
+                    echoFilter.Dispose();
                     waveIn.Dispose();
                     waveOut.Dispose();
                 }
@@ -108,9 +128,11 @@ namespace Squiggle.VoiceChat
         void waveIn_DataAvailable(object sender, WaveInEventArgs e)
         {
             byte[] buffer = IsMuted ? GetEmptyBuffer(e.BytesRecorded) : e.Buffer;
-         
-            waveProvider.AddLocalSamples(buffer, 0, e.BytesRecorded);
-            byte[] encoded = codec.Encode(buffer, 0, e.BytesRecorded);
+
+            echoFilter.AddLocalSamples(buffer, 0, e.BytesRecorded);
+            int filteredBytes = echoFilter.Read(buffer, 0, buffer.Length);
+
+            byte[] encoded = codec.Encode(buffer, 0, filteredBytes);
             SendData(encoded);
         }
 
