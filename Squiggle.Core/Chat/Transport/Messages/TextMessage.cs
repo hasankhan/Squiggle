@@ -11,14 +11,16 @@ namespace Squiggle.Core.Chat.Transport.Messages
     class TextMessage : Message
     {
         [ProtoMember(1)]
-        public string FontName { get; set; }
+        public string Id { get; set; }
         [ProtoMember(2)]
-        public int FontSize { get; set; }
+        public string FontName { get; set; }
         [ProtoMember(3)]
-        int ColorR { get; set; }
+        public int FontSize { get; set; }
         [ProtoMember(4)]
-        int ColorG { get; set; }
+        int ColorR { get; set; }
         [ProtoMember(5)]
+        int ColorG { get; set; }
+        [ProtoMember(6)]
         int ColorB { get; set; }
         public Color Color
         {
@@ -30,9 +32,9 @@ namespace Squiggle.Core.Chat.Transport.Messages
                 ColorB = value.B;
             }
         }
-        [ProtoMember(6)]
-        public FontStyle FontStyle { get; set; }
         [ProtoMember(7)]
+        public FontStyle FontStyle { get; set; }
+        [ProtoMember(8)]
         public string Message { get; set; }
     }
 }

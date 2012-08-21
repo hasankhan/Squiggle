@@ -22,7 +22,7 @@ namespace Squiggle.Core.Chat
         ActionQueue eventQueue = new ActionQueue();
         bool initialized;
 
-        public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
+        public event EventHandler<TextMessageReceivedEventArgs> MessageReceived = delegate { };
         public event EventHandler<SessionEventArgs> UserTyping = delegate { };
         public event EventHandler<SessionEventArgs> UserJoined = delegate { };
         public event EventHandler<SessionEventArgs> UserLeft = delegate { };
@@ -59,7 +59,7 @@ namespace Squiggle.Core.Chat
 
             localHost.ChatInviteReceived += new EventHandler<ChatInviteReceivedEventArgs>(chatHost_ChatInviteReceived);
             localHost.ActivityInvitationReceived += new EventHandler<ActivityInvitationReceivedEventArgs>(chatHost_ActivityInvitationReceived);
-            localHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(chatHost_MessageReceived);
+            localHost.TextMessageReceived += new EventHandler<TextMessageReceivedEventArgs>(chatHost_MessageReceived);
             localHost.UserTyping += new EventHandler<SessionEventArgs>(chatHost_UserTyping);
             localHost.BuzzReceived += new EventHandler<SessionEventArgs>(chatHost_BuzzReceived);
             localHost.UserJoined += new EventHandler<SessionEventArgs>(chatHost_UserJoined);
@@ -125,7 +125,7 @@ namespace Squiggle.Core.Chat
         {
             chatHost.ChatInviteReceived -= new EventHandler<ChatInviteReceivedEventArgs>(chatHost_ChatInviteReceived);
             chatHost.ActivityInvitationReceived -= new EventHandler<ActivityInvitationReceivedEventArgs>(chatHost_ActivityInvitationReceived);
-            chatHost.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(chatHost_MessageReceived);
+            chatHost.TextMessageReceived -= new EventHandler<TextMessageReceivedEventArgs>(chatHost_MessageReceived);
             chatHost.UserTyping -= new EventHandler<SessionEventArgs>(chatHost_UserTyping);
             chatHost.BuzzReceived -= new EventHandler<SessionEventArgs>(chatHost_BuzzReceived);
             chatHost.UserJoined -= new EventHandler<SessionEventArgs>(chatHost_UserJoined);
@@ -225,7 +225,7 @@ namespace Squiggle.Core.Chat
             eventQueue.Enqueue(() => OnBuzzReceived(e));
         }
 
-        void chatHost_MessageReceived(object sender, MessageReceivedEventArgs e)
+        void chatHost_MessageReceived(object sender, TextMessageReceivedEventArgs e)
         {
             if (e.SessionID != ID)
                 return;
@@ -296,7 +296,7 @@ namespace Squiggle.Core.Chat
                 BuzzReceived(this, e);
         }
 
-        void OnMessageReceived(MessageReceivedEventArgs e)
+        void OnMessageReceived(TextMessageReceivedEventArgs e)
         {
             if (IsRemoteUser(e.Sender))
                 MessageReceived(this, e);

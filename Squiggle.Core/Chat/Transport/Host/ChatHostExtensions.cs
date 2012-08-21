@@ -31,7 +31,18 @@ namespace Squiggle.Core.Chat.Transport.Host
 
         public static void ReceiveMessage(this ChatHost host, Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
         {
-            host.Send(new TextMessage() { SessionId = sessionId, Sender = sender, Recipient = recipient, FontName = fontName, FontSize = fontSize, Color = color, FontStyle = fontStyle, Message = message });
+            host.Send(new TextMessage() 
+            { 
+                Id = Guid.NewGuid().ToString(),
+                SessionId = sessionId, 
+                Sender = sender, 
+                Recipient = recipient, 
+                FontName = fontName, 
+                FontSize = fontSize, 
+                Color = color, 
+                FontStyle = fontStyle, 
+                Message = message 
+            });
         }
 
         public static void ReceiveChatInvite(this ChatHost host, Guid sessionId, SquiggleEndPoint sender, SquiggleEndPoint recipient, IEnumerable<SquiggleEndPoint> participants)

@@ -36,7 +36,7 @@ namespace Squiggle.Chat
             this.buddies.GroupChatStarted += new EventHandler(buddies_GroupChatStarted);
 
             this.session = session;
-            session.MessageReceived += new EventHandler<Squiggle.Core.Chat.Transport.Host.MessageReceivedEventArgs>(session_MessageReceived);
+            session.MessageReceived += new EventHandler<Squiggle.Core.Chat.Transport.Host.TextMessageReceivedEventArgs>(session_MessageReceived);
             session.UserTyping += new EventHandler<Squiggle.Core.Chat.Transport.Host.SessionEventArgs>(session_UserTyping);
             session.BuzzReceived += new EventHandler<Squiggle.Core.Chat.Transport.Host.SessionEventArgs>(session_BuzzReceived);
             session.ActivityInviteReceived += new EventHandler<ActivityInivteReceivedEventArgs>(session_ActivityInviteReceived);
@@ -178,7 +178,7 @@ namespace Squiggle.Chat
             LogHistory(EventType.Joined, e.Buddy);
         }
 
-        void session_MessageReceived(object sender, Squiggle.Core.Chat.Transport.Host.MessageReceivedEventArgs e)
+        void session_MessageReceived(object sender, Squiggle.Core.Chat.Transport.Host.TextMessageReceivedEventArgs e)
         {
             Buddy buddy;
             if (buddies.TryGet(e.Sender.ClientID, out buddy))

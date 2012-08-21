@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Chat\Transport\Messages\UpdateTextMessage.cs" />
     <Compile Include="Presence\PresenceServiceOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\Shared\AssemblyInfo.Copyright.cs">

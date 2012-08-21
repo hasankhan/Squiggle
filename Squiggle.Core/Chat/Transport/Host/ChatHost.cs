@@ -20,7 +20,8 @@ namespace Squiggle.Core.Chat.Transport.Host
         MessagePipe pipe;
 
         public event EventHandler<SessionEventArgs> BuzzReceived = delegate { };
-        public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
+        public event EventHandler<TextMessageReceivedEventArgs> TextMessageReceived = delegate { };
+        public event EventHandler<TextMessageUpdatedEventArgs> TextMessageUpdated = delegate { };
         public event EventHandler<SessionEventArgs> UserTyping = delegate { };
         public event EventHandler<ChatInviteReceivedEventArgs> ChatInviteReceived = delegate { };
         public event EventHandler<SessionEventArgs> UserJoined = delegate { };
@@ -29,7 +30,7 @@ namespace Squiggle.Core.Chat.Transport.Host
         public event EventHandler<ActivitySessionEventArgs> ActivitySessionCancelled = delegate { };
         public event EventHandler<ActivityInvitationReceivedEventArgs> ActivityInvitationReceived = delegate { };
         public event EventHandler<ActivityDataReceivedEventArgs> ActivityDataReceived = delegate { };
-        public event EventHandler<UserActivityEventArgs> UserActivity = delegate { };
+        public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
         public event EventHandler<SessionEventArgs> SessionInfoRequested = delegate { };
         public event EventHandler<SessionInfoEventArgs> SessionInfoReceived = delegate { };
 
@@ -52,30 +53,34 @@ namespace Squiggle.Core.Chat.Transport.Host
 
         void OnMessageReceived(Message msg)
         {
+            OnMessageReceived(msg.SessionId, msg.Sender, msg.GetType());
+
             if (msg is ActivityCancelMessage)
-                CancelActivitySession((ActivityCancelMessage)msg);
+                OnActivitySessionCancelled((ActivityCancelMessage)msg);
             else if (msg is ActivityDataMessage)
-                ReceiveActivityData((ActivityDataMessage)msg);
+                OnActivityDataReceived((ActivityDataMessage)msg);
             else if (msg is ActivityInviteAcceptMessage)
-                AcceptActivityInvite((ActivityInviteAcceptMessage)msg);
+                OnActivityInvitationAccepted((ActivityInviteAcceptMessage)msg);
             else if (msg is ActivityInviteMessage)
-                ReceiveActivityInvite((ActivityInviteMessage)msg);
+                OnActivityInvitationReceived((ActivityInviteMessage)msg);
             else if (msg is BuzzMessage)
-                Buzz((BuzzMessage)msg);
+                OnBuzzReceived((BuzzMessage)msg);
             else if (msg is ChatInviteMessage)
-                ReceiveChatInvite((ChatInviteMessage)msg);
+                OnChatInviteReceived((ChatInviteMessage)msg);
             else if (msg is ChatJoinMessage)
-                JoinChat((ChatJoinMessage)msg);
+                OnUserJoined((ChatJoinMessage)msg);
             else if (msg is ChatLeaveMessage)
-                LeaveChat((ChatLeaveMessage)msg);
+                OnUserLeft((ChatLeaveMessage)msg);
             else if (msg is GiveSessionInfoMessage)
-                GetSessionInfo((GiveSessionInfoMessage)msg);
+                OnSessionInfoRequested((GiveSessionInfoMessage)msg);
             else if (msg is SessionInfoMessage)
-                ReceiveSessionInfo((SessionInfoMessage)msg);
+                OnSessionInfoReceived((SessionInfoMessage)msg);
             else if (msg is TextMessage)
-                ReceiveMessage((TextMessage)msg);
+                OnTextMessageReceived((TextMessage)msg);
+            else if (msg is UpdateTextMessage)
+                OnTextMessageUpdated((UpdateTextMessage)msg);
             else if (msg is UserTypingMessage)
-                UserIsTyping((UserTypingMessage)msg);
+                OnUserTyping((UserTypingMessage)msg);
         }
 
         public void Send(Message message)
@@ -84,37 +89,35 @@ namespace Squiggle.Core.Chat.Transport.Host
             pipe.Send(message.Recipient.Address, data);
         }
 
-        void GetSessionInfo(GiveSessionInfoMessage msg)
+        void OnSessionInfoRequested(GiveSessionInfoMessage msg)
         {
             SessionInfoRequested(this, new SessionEventArgs(msg.SessionId, msg.Sender));
             Trace.WriteLine(msg.Sender + " is requesting session info.");
         }
 
-        void ReceiveSessionInfo(SessionInfoMessage msg)
+        void OnSessionInfoReceived(SessionInfoMessage msg)
         {
             SessionInfoReceived(this, new SessionInfoEventArgs() { Participants = msg.Participants.ToArray(), Sender = msg.Sender, SessionID = msg.SessionId });
             Trace.WriteLine(msg.Sender + " is sent session info.");
         }
 
-        void Buzz(BuzzMessage msg)
+        void OnBuzzReceived(BuzzMessage msg)
         {
-            OnUserActivity(msg.SessionId, msg.Sender, ActivityType.Buzz);
             BuzzReceived(this, new SessionEventArgs(msg.SessionId, msg.Sender));
             Trace.WriteLine(msg.Sender + " is buzzing.");
         }
 
-        void UserIsTyping(UserTypingMessage msg)
+        void OnUserTyping(UserTypingMessage msg)
         {
-            OnUserActivity(msg.SessionId, msg.Sender, ActivityType.Typing);
             UserTyping(this, new SessionEventArgs(msg.SessionId, msg.Sender ));
             Trace.WriteLine(msg.Sender + " is typing.");
         }
 
-        void ReceiveMessage(TextMessage msg)
+        void OnTextMessageReceived(TextMessage msg)
         {
-            OnUserActivity(msg.SessionId, msg.Sender, ActivityType.Message);
-            MessageReceived(this, new MessageReceivedEventArgs()
+            TextMessageReceived(this, new TextMessageReceivedEventArgs()
             {
+                Id = msg.Id,
                 SessionID = msg.SessionId, 
                 Sender = msg.Sender,
                 FontName = msg.FontName,
@@ -126,9 +129,18 @@ namespace Squiggle.Core.Chat.Transport.Host
             Trace.WriteLine("Message received from: " + msg.Sender + ", sessionId= " + msg.SessionId);
         }
 
-        void ReceiveChatInvite(ChatInviteMessage msg)
+        void OnTextMessageUpdated(UpdateTextMessage msg)
         {
-            OnUserActivity(msg.SessionId, msg.Sender, ActivityType.ChatInvite);
+            TextMessageUpdated(this, new TextMessageUpdatedEventArgs()
+            {
+                Id = msg.Id,
+                Message = msg.Message
+            });
+            Trace.WriteLine("Message updated by: " + msg.Sender + ", sessionId= " + msg.SessionId);
+        }
+
+        void OnChatInviteReceived(ChatInviteMessage msg)
+        {
             Trace.WriteLine(msg.Sender + " invited you to group chat.");
             ChatInviteReceived(this, new ChatInviteReceivedEventArgs() 
             { 
@@ -138,21 +150,20 @@ namespace Squiggle.Core.Chat.Transport.Host
             });
         }
 
-        void JoinChat(ChatJoinMessage msg)
+        void OnUserJoined(ChatJoinMessage msg)
         {
             Trace.WriteLine(msg.Sender + " has joined the chat.");
-            UserJoined(this, new UserActivityEventArgs() { SessionID = msg.SessionId, Sender = msg.Sender});
+            UserJoined(this, new MessageReceivedEventArgs() { SessionID = msg.SessionId, Sender = msg.Sender});
         }
 
-        void LeaveChat(ChatLeaveMessage msg)
+        void OnUserLeft(ChatLeaveMessage msg)
         {
             Trace.WriteLine(msg.Sender + " has left the chat.");
-            UserLeft(this, new UserActivityEventArgs() { SessionID = msg.SessionId, Sender = msg.Sender});
+            UserLeft(this, new MessageReceivedEventArgs() { SessionID = msg.SessionId, Sender = msg.Sender});
         }
 
-        void ReceiveActivityInvite(ActivityInviteMessage msg)
+        void OnActivityInvitationReceived(ActivityInviteMessage msg)
         {
-            OnUserActivity(msg.SessionId, msg.Sender, ActivityType.TransferInvite);
             Trace.WriteLine(msg.Sender + " wants to send a file " + msg.Metadata.ToTraceString());
             ActivityInvitationReceived(this, new ActivityInvitationReceivedEventArgs()
             {
@@ -164,24 +175,24 @@ namespace Squiggle.Core.Chat.Transport.Host
             });
         }
 
-        void ReceiveActivityData(ActivityDataMessage msg)
+        void OnActivityDataReceived(ActivityDataMessage msg)
         {
             ActivityDataReceived(this, new ActivityDataReceivedEventArgs() { ActivitySessionId = msg.SessionId, Chunk = msg.Data });
         }
 
-        void AcceptActivityInvite(ActivityInviteAcceptMessage msg)
+        void OnActivityInvitationAccepted(ActivityInviteAcceptMessage msg)
         {
             ActivityInvitationAccepted(this, new ActivitySessionEventArgs() { ActivitySessionId = msg.SessionId });
         }
 
-        void CancelActivitySession(ActivityCancelMessage msg)
+        void OnActivitySessionCancelled(ActivityCancelMessage msg)
         {
             ActivitySessionCancelled(this, new ActivitySessionEventArgs() { ActivitySessionId = msg.SessionId });
-        }       
+        }
 
-        void OnUserActivity(Guid sessionId, SquiggleEndPoint sender, ActivityType type)
+        void OnMessageReceived(Guid sessionId, SquiggleEndPoint sender, Type messageType)
         {
-            UserActivity(this, new UserActivityEventArgs(){Sender = sender, SessionID = sessionId, Type = type});
+            MessageReceived(this, new MessageReceivedEventArgs(){Sender = sender, SessionID = sessionId, Type = messageType});
         }
 
         public void Dispose()
@@ -214,12 +225,19 @@ namespace Squiggle.Core.Chat.Transport.Host
         public SquiggleEndPoint[] Participants { get; set; }
     }
 
-    public class MessageReceivedEventArgs : SessionEventArgs
+    public class TextMessageReceivedEventArgs : SessionEventArgs
     {
+        public string Id { get; set; }
         public string FontName { get; set; }
         public int FontSize { get; set; }
         public Color Color { get; set; }
         public FontStyle FontStyle { get; set; }
+        public string Message { get; set; }
+    }
+
+    public class TextMessageUpdatedEventArgs: SessionEventArgs
+    {
+        public string Id { get; set; }
         public string Message { get; set; }
     }
 
@@ -240,18 +258,9 @@ namespace Squiggle.Core.Chat.Transport.Host
         public byte[] Chunk { get; set; }
     }
 
-    public enum ActivityType
+    public class MessageReceivedEventArgs : SessionEventArgs
     {
-        Message,
-        Typing,
-        Buzz,
-        TransferInvite,
-        ChatInvite
-    }
-
-    public class UserActivityEventArgs : SessionEventArgs
-    {
-        public ActivityType Type { get; set; }
+        public Type Type { get; set; }
     }
 
     public class SessionInfoEventArgs : SessionEventArgs

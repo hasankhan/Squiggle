@@ -22,7 +22,8 @@ namespace Squiggle.Core.Chat.Transport
     [ProtoInclude(58, typeof(GiveSessionInfoMessage))]
     [ProtoInclude(59, typeof(SessionInfoMessage))]
     [ProtoInclude(60, typeof(TextMessage))]
-    [ProtoInclude(61, typeof(UserTypingMessage))]
+    [ProtoInclude(61, typeof(UpdateTextMessage))]
+    [ProtoInclude(62, typeof(UserTypingMessage))]
     public abstract class Message
     {
         [ProtoMember(1)]

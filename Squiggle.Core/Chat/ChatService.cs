@@ -7,6 +7,7 @@ using System.ServiceModel;
 using System.Threading;
 using Squiggle.Core.Chat.Transport.Host;
 using Squiggle.Utilities;
+using Squiggle.Core.Chat.Transport.Messages;
 
 namespace Squiggle.Core.Chat
 {
@@ -43,7 +44,7 @@ namespace Squiggle.Core.Chat
         {
             chatHost = new ChatHost(localEndPoint.Address);
             chatHost.Start();
-            chatHost.UserActivity += new EventHandler<UserActivityEventArgs>(chatHost_UserActivity);
+            chatHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(chatHost_MessageReceived);
             chatSessions = new ChatSessionCollection();
         }
 
@@ -51,17 +52,17 @@ namespace Squiggle.Core.Chat
         {
             if (chatHost != null)
             {
-                chatHost.UserActivity -= new EventHandler<UserActivityEventArgs>(chatHost_UserActivity);
+                chatHost.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(chatHost_MessageReceived);
                 chatHost.Dispose();
                 chatHost = null;
                 chatSessions.Clear();
             }
         }
 
-        void chatHost_UserActivity(object sender, UserActivityEventArgs e)
+        void chatHost_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
             Trace.WriteLine("Ensuring chat session=" + e.SessionID);
-            if (e.Type.In(ActivityType.Message, ActivityType.TransferInvite, ActivityType.Buzz, ActivityType.ChatInvite))
+            if (e.Type.In(typeof(TextMessage), typeof(ActivityInviteMessage), typeof(BuzzMessage), typeof(ChatInviteMessage)))
                 EnsureChatSession(e.SessionID, e.Sender);
         }
 

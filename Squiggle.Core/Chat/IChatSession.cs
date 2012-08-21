@@ -19,7 +19,7 @@ namespace Squiggle.Core.Chat
 
     public interface IChatSession
     {
-        event EventHandler<MessageReceivedEventArgs> MessageReceived;
+        event EventHandler<TextMessageReceivedEventArgs> MessageReceived;
         event EventHandler<SessionEventArgs> BuzzReceived;
         event EventHandler<SessionEventArgs> UserTyping;
         event EventHandler<SessionEventArgs> UserJoined;
