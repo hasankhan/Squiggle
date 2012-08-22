@@ -544,9 +544,9 @@
       <Project>{4B76F79B-8707-4163-AA3E-8307BC93C450}</Project>
       <Name>Squiggle.Activity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Squiggle.Chat\Squiggle.Chat.csproj">
+    <ProjectReference Include="..\Squiggle.Chat\Squiggle.Client.csproj">
       <Project>{CF28694A-887E-4118-874F-76F028DAB56E}</Project>
-      <Name>Squiggle.Chat</Name>
+      <Name>Squiggle.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\Squiggle.Core\Squiggle.Core.csproj">
       <Project>{CCC71193-64AA-4B92-80C9-7BC688C7FAE3}</Project>
