@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using Squiggle.Chat;
+using Squiggle.Client;
 using Squiggle.Core.Presence;
 using Squiggle.Activity;
-using Squiggle.Chat.Activities;
+using Squiggle.Client.Activities;
 
 namespace Squiggle.UI.ViewModel
 {

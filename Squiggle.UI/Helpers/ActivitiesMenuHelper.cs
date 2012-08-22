@@ -7,7 +7,7 @@ using System.Windows;
 using Squiggle.UI.Components;
 using Squiggle.Activity;
 using System.Windows.Input;
-using Squiggle.Chat.Activities;
+using Squiggle.Client.Activities;
 
 namespace Squiggle.UI.Helpers
 {

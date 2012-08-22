@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Squiggle.Chat;
+using Squiggle.Client;
 
 namespace Squiggle.UI.ViewModel
 {

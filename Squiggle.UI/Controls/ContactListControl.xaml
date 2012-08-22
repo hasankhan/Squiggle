@@ -7,7 +7,7 @@
     xmlns:converters="clr-namespace:Squiggle.UI.Converters"
     xmlns:helpers="clr-namespace:Squiggle.UI.Helpers"    
     xmlns:local="clr-namespace:Squiggle.UI.Controls"
-    xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat"
+    xmlns:chat="clr-namespace:Squiggle.Client;assembly=Squiggle.Client"
     xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"             
     Width="200" Height="400" Loaded="UserControl_Loaded" >
     <UserControl.Resources>

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using Squiggle.Core;
 using Squiggle.Core.Chat;
-using BuddyResolver = System.Func<string, Squiggle.Chat.Buddy>;
+using BuddyResolver = System.Func<string, Squiggle.Client.Buddy>;
 
-namespace Squiggle.Chat
+namespace Squiggle.Client
 {
     class ChatBuddies: IEnumerable<IBuddy>
     {

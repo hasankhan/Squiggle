@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Squiggle.Chat;
+using Squiggle.Client;
 using Squiggle.Core.Presence;
 using Squiggle.History;
 using Squiggle.History.DAL;

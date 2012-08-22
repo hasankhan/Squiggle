@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Squiggle.Chat;
+using Squiggle.Client;
 using Squiggle.UI.Helpers;
 using Squiggle.UI.Resources;
 using Squiggle.Utilities;
@@ -19,7 +19,7 @@ using Squiggle.Utilities.Application;
 using Squiggle.Activity;
 using Squiggle.UI.Windows;
 using Squiggle.UI.Components;
-using Squiggle.Chat.Activities;
+using Squiggle.Client.Activities;
 
 namespace Squiggle.UI.Controls
 {

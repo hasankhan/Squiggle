@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Data;
-using Squiggle.Chat;
+using Squiggle.Client;
 
 namespace Squiggle.UI.Converters
 {

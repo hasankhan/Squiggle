@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Squiggle.Chat;
+using Squiggle.Client;
 using Squiggle.UI.Controls;
 using Squiggle.UI.Controls.ChatItems;
 using Squiggle.Activity;
 using Squiggle.UI.MessageParsers;
 using Squiggle.UI.Components;
-using Squiggle.Chat.Activities;
+using Squiggle.Client.Activities;
 
 namespace Squiggle.UI
 {

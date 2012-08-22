@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Squiggle.UI.Windows;
-using Squiggle.Chat;
+using Squiggle.Client;
 using Squiggle.Activity;
-using Squiggle.Chat.Activities;
+using Squiggle.Client.Activities;
 
 namespace Squiggle.UI.Components
 {

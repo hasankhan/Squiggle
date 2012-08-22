@@ -7,7 +7,7 @@ using Squiggle.Core.Chat;
 using Squiggle.Core.Chat.Activity;
 using Squiggle.Activity;
 
-namespace Squiggle.Chat
+namespace Squiggle.Client
 {
     public class BroadcastChat: IChat
     {

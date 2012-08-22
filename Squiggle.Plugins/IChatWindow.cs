@@ -1,5 +1,5 @@
 ﻿using System;
-using Squiggle.Chat;
+using Squiggle.Client;
 namespace Squiggle.Plugins
 {
     public interface IChatWindow

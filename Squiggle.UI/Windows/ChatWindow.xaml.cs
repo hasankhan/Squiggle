@@ -8,7 +8,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Squiggle.Activity;
-using Squiggle.Chat;
+using Squiggle.Client;
 using Squiggle.Plugins;
 using Squiggle.Plugins.MessageFilter;
 using Squiggle.UI.Components;
@@ -23,7 +23,7 @@ using Squiggle.UI.Settings;
 using Squiggle.UI.StickyWindow;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
-using Squiggle.Chat.Activities;
+using Squiggle.Client.Activities;
 
 namespace Squiggle.UI.Windows
 {

@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
-using Squiggle.Chat;
+using Squiggle.Client;
 using Squiggle.Core.Presence;
 using Squiggle.UI.Settings;
 using Squiggle.UI.ViewModel;

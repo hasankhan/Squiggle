@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Squiggle.Chat
+namespace Squiggle.Client
 {
     public interface IBuddy
     {

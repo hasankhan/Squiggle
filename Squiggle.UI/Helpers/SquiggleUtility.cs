@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
-using Squiggle.Chat;
+using Squiggle.Client;
 using Squiggle.Core.Presence;
 using Squiggle.UI.Controls;
 using Squiggle.UI.Settings;

@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using Squiggle.Chat;
+using Squiggle.Client;
 using Squiggle.UI.Controls.ChatItems;
 using Squiggle.UI.Helpers;
 using Squiggle.UI.MessageFilters;

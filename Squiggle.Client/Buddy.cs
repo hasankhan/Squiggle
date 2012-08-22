@@ -6,9 +6,9 @@ using System.Net;
 using Squiggle.Core;
 using Squiggle.Core.Presence;
 
-namespace Squiggle.Chat
+namespace Squiggle.Client
 {
-    public class Buddy: INotifyPropertyChanged, IDisposable, Squiggle.Chat.IBuddy
+    public class Buddy: INotifyPropertyChanged, IDisposable, Squiggle.Client.IBuddy
     {
         string displayName;
         UserStatus status;

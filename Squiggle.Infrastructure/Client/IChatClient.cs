@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Squiggle.Core.Presence;
 
-namespace Squiggle.Chat
+namespace Squiggle.Client
 {
     public class ChatStartedEventArgs : EventArgs
     {

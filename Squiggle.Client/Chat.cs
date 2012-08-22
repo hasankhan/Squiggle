@@ -12,11 +12,11 @@ using Squiggle.Core.Chat;
 using Squiggle.History;
 using Squiggle.History.DAL;
 using Squiggle.Utilities;
-using BuddyResolver = System.Func<string, Squiggle.Chat.Buddy>;
+using BuddyResolver = System.Func<string, Squiggle.Client.Buddy>;
 using Squiggle.Core.Chat.Activity;
 using Squiggle.Activity;
 
-namespace Squiggle.Chat
+namespace Squiggle.Client
 {    
     class Chat: IChat
     {

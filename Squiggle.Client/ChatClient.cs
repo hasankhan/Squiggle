@@ -8,7 +8,7 @@ using Squiggle.Core.Presence;
 using Squiggle.History;
 using Squiggle.Utilities;
 
-namespace Squiggle.Chat
+namespace Squiggle.Client
 {
     public class ChatClient: IChatClient
     {

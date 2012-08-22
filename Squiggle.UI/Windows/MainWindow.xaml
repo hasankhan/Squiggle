@@ -1,7 +1,7 @@
 ﻿<sticky:StickyWindowBase xmlns:sticky="clr-namespace:Squiggle.UI.StickyWindow"
     x:Class="Squiggle.UI.Windows.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat"
+    xmlns:chat="clr-namespace:Squiggle.Client;assembly=Squiggle.Client"
     xmlns:controls="clr-namespace:Squiggle.UI.Controls"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
     xmlns:tray="clr-namespace:Hardcodet.Wpf.TaskbarNotification"

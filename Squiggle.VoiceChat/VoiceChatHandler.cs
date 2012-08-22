@@ -8,7 +8,7 @@ using System.Windows.Threading;
 using NAudio.Wave;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
-using Squiggle.Chat.Activities;
+using Squiggle.Client.Activities;
 using Squiggle.Activity;
 
 namespace Squiggle.VoiceChat

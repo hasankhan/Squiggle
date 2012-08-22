@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using Squiggle.Chat;
+using Squiggle.Client;
 using Squiggle.Core;
 using Squiggle.UI.Helpers;
 using Squiggle.Utilities;

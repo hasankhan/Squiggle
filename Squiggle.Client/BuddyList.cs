@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Squiggle.Chat
+namespace Squiggle.Client
 {
     class BuddyList: IList<Buddy>
     {

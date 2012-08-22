@@ -5,7 +5,7 @@ using System.Text;
 using Squiggle.Core;
 using System.Net;
 
-namespace Squiggle.Chat
+namespace Squiggle.Client
 {
     public class ChatClientOptions
     {

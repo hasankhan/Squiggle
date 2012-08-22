@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using Squiggle.Activity;
 
-namespace Squiggle.Chat.Activities
+namespace Squiggle.Client.Activities
 {
     public interface IFileTransferHandler: IActivityHandler
     {

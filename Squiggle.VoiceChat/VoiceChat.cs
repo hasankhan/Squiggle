@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel.Composition;
-using Squiggle.Chat.Activities;
+using Squiggle.Client.Activities;
 using Squiggle.Activity;
 
 namespace Squiggle.VoiceChat

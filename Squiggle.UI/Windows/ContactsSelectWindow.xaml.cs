@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using Squiggle.Chat;
+using Squiggle.Client;
 using Squiggle.UI.Controls;
 using Squiggle.UI.Resources;
 using Squiggle.UI.StickyWindow;

@@ -44,7 +44,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Xml;
 using FluidKit.Helpers.DragDrop;
-using Squiggle.Chat;
+using Squiggle.Client;
 using Squiggle.UI.Windows;
 using Squiggle.UI.Helpers;
 

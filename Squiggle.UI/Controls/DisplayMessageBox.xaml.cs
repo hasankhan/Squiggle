@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using Squiggle.Chat;
+using Squiggle.Client;
 using Squiggle.UI.Settings;
 
 namespace Squiggle.UI.Controls

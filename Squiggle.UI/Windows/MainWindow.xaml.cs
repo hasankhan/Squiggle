@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using Squiggle.Chat;
+using Squiggle.Client;
 using Squiggle.Core.Presence;
 using Squiggle.UI.Controls;
 using Squiggle.UI.Helpers;
@@ -109,7 +109,7 @@ namespace Squiggle.UI.Windows
             SignIn(e.UserName, e.GroupName, true);
         }
 
-        void client_ChatStarted(object sender, Squiggle.Chat.ChatStartedEventArgs e)
+        void client_ChatStarted(object sender, Squiggle.Client.ChatStartedEventArgs e)
         {
             Dispatcher.Invoke(() => CreateChatWindow(e.Buddy, e.Chat, false));
         }
@@ -342,7 +342,7 @@ namespace Squiggle.UI.Windows
             properties.EmailAddress = settings.PersonalSettings.EmailAddress;
 
             IChatClient client = new ChatClientFactory(settings).CreateInstance();
-            client.ChatStarted += new EventHandler<Squiggle.Chat.ChatStartedEventArgs>(client_ChatStarted);
+            client.ChatStarted += new EventHandler<Squiggle.Client.ChatStartedEventArgs>(client_ChatStarted);
             client.BuddyUpdated += new EventHandler<BuddyEventArgs>(client_BuddyUpdated);
             client.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(client_BuddyOnline);
             client.BuddyOffline += new EventHandler<BuddyEventArgs>(client_BuddyOffline);

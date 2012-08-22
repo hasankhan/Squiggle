@@ -5,7 +5,7 @@ using System.IO;
 using Squiggle.Core.Chat;
 using Squiggle.Activity;
 
-namespace Squiggle.Chat
+namespace Squiggle.Client
 {
     public class ChatMessageReceivedEventArgs : EventArgs
     {

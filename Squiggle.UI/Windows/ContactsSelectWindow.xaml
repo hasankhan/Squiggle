@@ -3,7 +3,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:converters="clr-namespace:Squiggle.UI.Converters"
-        xmlns:chat="clr-namespace:Squiggle.Chat;assembly=Squiggle.Chat"
+        xmlns:chat="clr-namespace:Squiggle.Client;assembly=Squiggle.Client"
         xmlns:controls="clr-namespace:Squiggle.UI.Controls" KeyDown="Window_KeyDown"
         Icon="/Squiggle;component/Images/Chat.ico"                      
         Height="500" Width="360" x:Name="contactSelectControl" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
