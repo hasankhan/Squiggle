@@ -20,7 +20,7 @@ namespace Squiggle.Chat
                 AddSession(session);
         }        
 
-        public IEnumerable<Buddy> Buddies
+        public IEnumerable<IBuddy> Buddies
         {
             get 
             { 
@@ -96,7 +96,7 @@ namespace Squiggle.Chat
                 chatSessions.ForEach(s=>s.Leave());
         }
 
-        public void Invite(Buddy buddy)
+        public void Invite(IBuddy buddy)
         {
             throw new InvalidOperationException("Can not invite buddies in a broadcast chat.");
         }

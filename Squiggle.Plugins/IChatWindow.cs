@@ -1,13 +1,14 @@
 ﻿using System;
+using Squiggle.Chat;
 namespace Squiggle.Plugins
 {
     public interface IChatWindow
     {
-        System.Collections.Generic.IEnumerable<Squiggle.Chat.Buddy> Buddies { get; }
-        void Invite(Squiggle.Chat.Buddy buddy);
-        void Invite(System.Collections.Generic.IEnumerable<Squiggle.Chat.Buddy> buddies);
+        System.Collections.Generic.IEnumerable<IBuddy> Buddies { get; }
+        void Invite(IBuddy buddy);
+        void Invite(System.Collections.Generic.IEnumerable<IBuddy> buddies);
         bool IsGroupChat { get; }
-        Squiggle.Chat.Buddy PrimaryBuddy { get; }
+        IBuddy PrimaryBuddy { get; }
         void Restore();
         void SaveTo(string fileName, string format);
         void SendBuzz();

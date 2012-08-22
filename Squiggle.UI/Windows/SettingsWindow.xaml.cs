@@ -29,23 +29,23 @@ namespace Squiggle.UI.Windows
     public partial class SettingsWindow : StickyWindowBase
     {
         SettingsViewModel settingsVm;
-        Buddy user;
+        IBuddy buddy;
 
         public SettingsWindow()
         {
             InitializeComponent();
         }
 
-        public SettingsWindow(Buddy user) : this()
+        public SettingsWindow(IBuddy user) : this()
         {
-            this.user = user;
+            this.buddy = user;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             LoadSettings();
 
-            if (user != null)
+            if (buddy != null)
                 personalTab.IsSelected = true;
 
             this.DataContext = settingsVm;
@@ -69,7 +69,7 @@ namespace Squiggle.UI.Windows
             cmbSortField.SelectedItem = settingsVm.ContactSettings.ContactListSortField;
             cmbContactsView.SelectedItem = settingsVm.ContactSettings.ContactListView;
 
-            if (user == null)
+            if (buddy == null)
             {
                 settingsVm.PersonalSettings.DisplayName = SettingsProvider.Current.Settings.PersonalSettings.DisplayName;
                 settingsVm.PersonalSettings.GroupName = SettingsProvider.Current.Settings.PersonalSettings.GroupName;
@@ -79,11 +79,11 @@ namespace Squiggle.UI.Windows
             }
             else
             {
-                settingsVm.PersonalSettings.DisplayName = user.DisplayName;
-                settingsVm.PersonalSettings.GroupName = user.Properties.GroupName;
-                settingsVm.PersonalSettings.DisplayMessage = user.Properties.DisplayMessage;
-                settingsVm.PersonalSettings.DisplayImage = user.Properties.DisplayImage;
-                settingsVm.PersonalSettings.EmailAddress = user.Properties.EmailAddress;
+                settingsVm.PersonalSettings.DisplayName = buddy.DisplayName;
+                settingsVm.PersonalSettings.GroupName = buddy.Properties.GroupName;
+                settingsVm.PersonalSettings.DisplayMessage = buddy.Properties.DisplayMessage;
+                settingsVm.PersonalSettings.DisplayImage = buddy.Properties.DisplayImage;
+                settingsVm.PersonalSettings.EmailAddress = buddy.Properties.EmailAddress;
             }
         }
 
@@ -100,12 +100,12 @@ namespace Squiggle.UI.Windows
             settingsVm.ContactSettings.ContactListView = (ContactListView)cmbContactsView.SelectedItem;
             settingsVm.Update();
 
-            if (user != null)
+            if (buddy != null)
             {
-                user.DisplayName = settingsVm.PersonalSettings.DisplayName;
-                user.Properties.DisplayMessage = settingsVm.PersonalSettings.DisplayMessage;
-                user.Properties.DisplayImage = settingsVm.PersonalSettings.DisplayImage;
-                user.Properties.EmailAddress = settingsVm.PersonalSettings.EmailAddress;
+                buddy.DisplayName = settingsVm.PersonalSettings.DisplayName;
+                buddy.Properties.DisplayMessage = settingsVm.PersonalSettings.DisplayMessage;
+                buddy.Properties.DisplayImage = settingsVm.PersonalSettings.DisplayImage;
+                buddy.Properties.EmailAddress = settingsVm.PersonalSettings.EmailAddress;
             }
 
             TrayPopup.Instance.Enabled = settingsVm.GeneralSettings.ShowPopups;

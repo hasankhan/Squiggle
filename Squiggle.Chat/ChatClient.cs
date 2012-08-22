@@ -22,9 +22,9 @@ namespace Squiggle.Chat
         public event EventHandler<BuddyEventArgs> BuddyOffline = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyUpdated = delegate { };
 
-        public Buddy CurrentUser { get; private set; }
+        public IBuddy CurrentUser { get; private set; }
 
-        public IEnumerable<Buddy> Buddies 
+        public IEnumerable<IBuddy> Buddies 
         {
             get { return buddies; }
         }
@@ -54,14 +54,14 @@ namespace Squiggle.Chat
             this.chatEndPoint = options.ChatEndPoint;
         }        
 
-        public IChat StartChat(Buddy buddy)
+        public IChat StartChat(IBuddy buddy)
         {
             IChatSession session = chatService.CreateSession(new SquiggleEndPoint(buddy.Id, buddy.ChatEndPoint));
             var chat = new Chat(session, CurrentUser, buddy, id=>buddies[id]);
             return chat;
         }        
 
-        public void Login(string username, BuddyProperties properties)
+        public void Login(string username, IBuddyProperties properties)
         {
             username = username.Trim();
 
@@ -102,7 +102,7 @@ namespace Squiggle.Chat
 
         void chatService_ChatStarted(object sender, Squiggle.Core.Chat.ChatStartedEventArgs e)
         {
-            var buddyList = new List<Buddy>();
+            var buddyList = new List<IBuddy>();
             foreach (SquiggleEndPoint user in e.Session.RemoteUsers)
             {
                 Buddy buddy = buddies[user.ClientID];
@@ -169,27 +169,27 @@ namespace Squiggle.Chat
             BuddyUpdated(this, new BuddyEventArgs( buddy ));
         } 
 
-        void OnBuddyOnline(Buddy buddy, bool discovered)
+        void OnBuddyOnline(IBuddy buddy, bool discovered)
         {
             if (!discovered)
                 LogStatus(buddy);
             BuddyOnline(this, new BuddyOnlineEventArgs() { Buddy = buddy, Discovered = discovered });
         }
 
-        void OnBuddyOffline(Buddy buddy)
+        void OnBuddyOffline(IBuddy buddy)
         {
             LogStatus(buddy);
             BuddyOffline(this, new BuddyEventArgs( buddy ));
         }
 
-        void UpdateBuddy(Buddy buddy, UserInfo user)
+        void UpdateBuddy(IBuddy buddy, IUserInfo user)
         {
             buddy.Status = user.Status;
             buddy.DisplayName = user.DisplayName;
             buddy.Update(user.ChatEndPoint, user.Properties);
         }
 
-        void LogStatus(Buddy buddy)
+        void LogStatus(IBuddy buddy)
         {
             if (EnableLogging)
                 ExceptionMonster.EatTheException(() =>
@@ -212,7 +212,7 @@ namespace Squiggle.Chat
         {
             public bool EnableUpdates { get; set; }
 
-            public SelfBuddy(IChatClient client, string id, BuddyProperties properties) : base(client, id, null, properties) { }
+            public SelfBuddy(IChatClient client, string id, IBuddyProperties properties) : base(client, id, null, properties) { }
 
             public override string DisplayName
             {

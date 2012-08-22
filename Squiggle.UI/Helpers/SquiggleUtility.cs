@@ -67,10 +67,10 @@ namespace Squiggle.UI.Helpers
         public static void ShowSettingsDialog(Window owner)
         {
             var context = SquiggleContext.Current;
-            Buddy user = null;
+            IBuddy buddy = null;
             if (context.MainWindow.chatControl.ContactList.ChatContext != null && context.MainWindow.chatControl.ContactList.ChatContext.IsLoggedIn)
-                user = context.MainWindow.chatControl.ContactList.ChatContext.LoggedInUser;
-            var settings = new SettingsWindow(user);
+                buddy = context.MainWindow.chatControl.ContactList.ChatContext.LoggedInUser;
+            var settings = new SettingsWindow(buddy);
             settings.Owner = owner;
             if (settings.ShowDialog().GetValueOrDefault())
                 context.MainWindow.chatControl.SignIn.LoadSettings(SettingsProvider.Current.Settings);

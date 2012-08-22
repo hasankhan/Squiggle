@@ -94,7 +94,7 @@
     <Compile Include="SquiggleBridgeService.Designer.cs">
       <DependentUpon>SquiggleBridgeService.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />   
+    <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -111,6 +111,10 @@
     <ProjectReference Include="..\Squiggle.Core\Squiggle.Core.csproj">
       <Project>{CCC71193-64AA-4B92-80C9-7BC688C7FAE3}</Project>
       <Name>Squiggle.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Squiggle.Infrastructure\Squiggle.Infrastructure.csproj">
+      <Project>{CC6D9F53-D00B-4554-8642-218AEA987D20}</Project>
+      <Name>Squiggle.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Squiggle.Utilities\Squiggle.Utilities.csproj">
       <Project>{8B57850B-FA7F-4F96-A4A0-BF81BF24E710}</Project>

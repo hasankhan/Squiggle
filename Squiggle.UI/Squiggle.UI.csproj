@@ -556,6 +556,10 @@
       <Project>{C3214C5A-4B20-415E-A62E-F13229264072}</Project>
       <Name>Squiggle.History</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Squiggle.Infrastructure\Squiggle.Infrastructure.csproj">
+      <Project>{CC6D9F53-D00B-4554-8642-218AEA987D20}</Project>
+      <Name>Squiggle.Infrastructure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Squiggle.Plugins\Squiggle.Plugins.csproj">
       <Project>{96855AB0-6FBA-4E3A-AE84-F5942CC59339}</Project>
       <Name>Squiggle.Plugins</Name>

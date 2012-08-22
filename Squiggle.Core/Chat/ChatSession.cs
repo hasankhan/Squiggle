@@ -16,9 +16,9 @@ namespace Squiggle.Core.Chat
 {
     class ChatSession: IChatSession
     {
-        SquiggleEndPoint localUser;
+        ISquiggleEndPoint localUser;
         ChatHost chatHost;
-        Dictionary<string, SquiggleEndPoint> remoteUsers;
+        Dictionary<string, ISquiggleEndPoint> remoteUsers;
         ActionQueue eventQueue = new ActionQueue();
         bool initialized;
 
@@ -33,7 +33,7 @@ namespace Squiggle.Core.Chat
         public event EventHandler Initialized = delegate { };
 
         public Guid ID { get; private set; }
-        public IEnumerable<SquiggleEndPoint> RemoteUsers
+        public IEnumerable<ISquiggleEndPoint> RemoteUsers
         {
             get 
             {
@@ -51,7 +51,7 @@ namespace Squiggle.Core.Chat
             }
         }
 
-        public ChatSession(Guid sessionID, ChatHost localHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser)
+        public ChatSession(Guid sessionID, ChatHost localHost, ISquiggleEndPoint localUser, ISquiggleEndPoint remoteUser)
         {
             this.ID = sessionID;
             this.chatHost = localHost;
@@ -67,11 +67,11 @@ namespace Squiggle.Core.Chat
             localHost.SessionInfoRequested += new EventHandler<SessionEventArgs>(chatHost_SessionInfoRequested);
             localHost.SessionInfoReceived += new EventHandler<SessionInfoEventArgs>(chatHost_SessionInfoReceived);
 
-            remoteUsers = new Dictionary<string, SquiggleEndPoint>();
+            remoteUsers = new Dictionary<string, ISquiggleEndPoint>();
             CreateRemoteUsers(Enumerable.Repeat(remoteUser, 1));
         }
 
-        public SquiggleEndPoint PrimaryUser
+        public ISquiggleEndPoint PrimaryUser
         {
             get 
             { 
@@ -96,7 +96,7 @@ namespace Squiggle.Core.Chat
             BroadCast(endpoint => chatHost.Buzz(ID, localUser, endpoint));
         }
 
-        public void UpdateUser(SquiggleEndPoint user)
+        public void UpdateUser(ISquiggleEndPoint user)
         {
             AddRemoteUser(user);
         }
@@ -140,7 +140,7 @@ namespace Squiggle.Core.Chat
             SessionEnded(this, EventArgs.Empty);
         }
 
-        public void Invite(SquiggleEndPoint user)
+        public void Invite(ISquiggleEndPoint user)
         {
             chatHost.ReceiveChatInvite(ID, localUser, user, RemoteUsers);
         }
@@ -302,25 +302,25 @@ namespace Squiggle.Core.Chat
                 MessageReceived(this, e);
         }
 
-        bool IsRemoteUser(SquiggleEndPoint user)
+        bool IsRemoteUser(ISquiggleEndPoint user)
         {
             lock (remoteUsers)
                 return remoteUsers.ContainsKey(user.ClientID);
         }
 
-        void CreateRemoteUsers(IEnumerable<SquiggleEndPoint> users)
+        void CreateRemoteUsers(IEnumerable<ISquiggleEndPoint> users)
         {
-            foreach (SquiggleEndPoint user in users)
+            foreach (ISquiggleEndPoint user in users)
                 AddRemoteUser(user);
         }
 
-        void AddRemoteUser(SquiggleEndPoint endpoint)
+        void AddRemoteUser(ISquiggleEndPoint endpoint)
         {
             lock (remoteUsers)
                 remoteUsers[endpoint.ClientID] = endpoint;
         }
 
-        void BroadCast(Action<SquiggleEndPoint> userAction)
+        void BroadCast(Action<ISquiggleEndPoint> userAction)
         {
             bool allSuccess = true;
 

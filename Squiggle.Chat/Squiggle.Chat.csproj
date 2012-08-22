@@ -106,12 +106,9 @@
     <Compile Include="BroadcastChat.cs" />
     <Compile Include="Buddy.cs" />
     <Compile Include="BuddyList.cs" />
-    <Compile Include="BuddyEventArgs.cs" />
     <Compile Include="Chat.cs" />
     <Compile Include="ChatClient.cs" />
     <Compile Include="ChatBuddies.cs" />
-    <Compile Include="IChat.cs" />
-    <Compile Include="IChatClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Squiggle.Activity\Squiggle.Activity.csproj">
@@ -125,6 +122,10 @@
     <ProjectReference Include="..\Squiggle.History\Squiggle.History.csproj">
       <Project>{C3214C5A-4B20-415E-A62E-F13229264072}</Project>
       <Name>Squiggle.History</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Squiggle.Infrastructure\Squiggle.Infrastructure.csproj">
+      <Project>{CC6D9F53-D00B-4554-8642-218AEA987D20}</Project>
+      <Name>Squiggle.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Squiggle.Utilities\Squiggle.Utilities.csproj">
       <Project>{8B57850B-FA7F-4F96-A4A0-BF81BF24E710}</Project>

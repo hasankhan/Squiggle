@@ -190,7 +190,7 @@ namespace Squiggle.Core.Chat.Transport.Host
             ActivitySessionCancelled(this, new ActivitySessionEventArgs() { ActivitySessionId = msg.SessionId });
         }
 
-        void OnMessageReceived(Guid sessionId, SquiggleEndPoint sender, Type messageType)
+        void OnMessageReceived(Guid sessionId, ISquiggleEndPoint sender, Type messageType)
         {
             MessageReceived(this, new MessageReceivedEventArgs(){Sender = sender, SessionID = sessionId, Type = messageType});
         }
@@ -205,40 +205,9 @@ namespace Squiggle.Core.Chat.Transport.Host
         }
     }
 
-
-    public class SessionEventArgs : EventArgs
-    {
-        public Guid SessionID { get; set; }
-        public SquiggleEndPoint Sender { get; set; }
-
-        public SessionEventArgs(){}
-
-        public SessionEventArgs(Guid sessionId, SquiggleEndPoint user)
-        {
-            this.SessionID = sessionId;
-            this.Sender = user;
-        }        
-    }
-
     public class ChatInviteReceivedEventArgs : SessionEventArgs
     {
-        public SquiggleEndPoint[] Participants { get; set; }
-    }
-
-    public class TextMessageReceivedEventArgs : SessionEventArgs
-    {
-        public string Id { get; set; }
-        public string FontName { get; set; }
-        public int FontSize { get; set; }
-        public Color Color { get; set; }
-        public FontStyle FontStyle { get; set; }
-        public string Message { get; set; }
-    }
-
-    public class TextMessageUpdatedEventArgs: SessionEventArgs
-    {
-        public string Id { get; set; }
-        public string Message { get; set; }
+        public ISquiggleEndPoint[] Participants { get; set; }
     }
 
     public class ActivitySessionEventArgs : EventArgs
@@ -265,6 +234,6 @@ namespace Squiggle.Core.Chat.Transport.Host
 
     public class SessionInfoEventArgs : SessionEventArgs
     {
-        public SquiggleEndPoint[] Participants { get; set; }
+        public ISquiggleEndPoint[] Participants { get; set; }
     }
 }

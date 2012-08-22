@@ -16,7 +16,7 @@ namespace Squiggle.Core.Presence.Transport.Messages
         [ProtoMember(2)]        
         public UserStatus Status { get; set; }
         [ProtoMember(3)]
-        public Dictionary<string, string> Properties { get; set; }
+        public IDictionary<string, string> Properties { get; set; }
         [ProtoMember(4)]
         public TimeSpan KeepAliveSyncTime { get; set; }
         [ProtoMember(5)]
@@ -39,7 +39,7 @@ namespace Squiggle.Core.Presence.Transport.Messages
             }
         }
 
-        public static TMessage FromUserInfo<TMessage>(UserInfo user) where TMessage: PresenceMessage, new ()
+        public static TMessage FromUserInfo<TMessage>(IUserInfo user) where TMessage: PresenceMessage, new ()
         {
             var message = new TMessage()            
             {   

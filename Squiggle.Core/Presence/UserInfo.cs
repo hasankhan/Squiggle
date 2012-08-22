@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Squiggle.Core.Presence
 {
     [Serializable, DataContract]
-    public class UserInfo
+    public class UserInfo: IUserInfo
     {
         [DataMember]
         public string ID { get; set; }
@@ -22,9 +22,9 @@ namespace Squiggle.Core.Presence
         [DataMember]
         public UserStatus Status { get; set; }
         [DataMember]
-        public Dictionary<string, string> Properties { get; set;  }
+        public IDictionary<string, string> Properties { get; set;  }
 
-        public void Update(UserInfo user)
+        public void Update(IUserInfo user)
         {
             this.DisplayName = user.DisplayName;
             this.Properties = user.Properties;

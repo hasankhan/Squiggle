@@ -26,12 +26,12 @@ namespace Squiggle.UI.ViewModel
         public event EventHandler<BuddyEventArgs> BuddyOffline = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyUpdated = delegate { };
 
-        public Buddy CurrentUser
+        public IBuddy CurrentUser
         {
             get { return self; }
         }
 
-        public IEnumerable<Buddy> Buddies
+        public IEnumerable<IBuddy> Buddies
         {
             get { return Enumerable.Empty<Buddy>(); }
         }
@@ -46,12 +46,12 @@ namespace Squiggle.UI.ViewModel
             get { return null; }
         }
 
-        public IChat StartChat(Buddy buddy)
+        public IChat StartChat(IBuddy buddy)
         {
             throw new NotImplementedException();
         }
 
-        public void Login(string username, BuddyProperties properties)
+        public void Login(string username, IBuddyProperties properties)
         {
             throw new NotImplementedException();
         }

@@ -15,8 +15,8 @@ namespace Squiggle.UI.ViewModel
         IChatClient chatClient;
         Dispatcher currentDispatcher;
 
-        public Buddy LoggedInUser { get; set; }
-        public ObservableCollection<Buddy> Buddies { get; private set; }
+        public IBuddy LoggedInUser { get; set; }
+        public ObservableCollection<IBuddy> Buddies { get; private set; }
 
         public bool IsLoggedIn
         {
@@ -50,7 +50,7 @@ namespace Squiggle.UI.ViewModel
             this.chatClient.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);
             this.chatClient.BuddyOffline += new EventHandler<BuddyEventArgs>(chatClient_BuddyOffline);
             this.chatClient.BuddyUpdated += new EventHandler<BuddyEventArgs>(chatClient_BuddyUpdated);
-            Buddies = new ObservableCollection<Buddy>(chatClient.Buddies);
+            Buddies = new ObservableCollection<IBuddy>(chatClient.Buddies);
             Buddies.CollectionChanged += (sender, e)=>OnPropertyChanged("AnyoneOnline");
         }
 

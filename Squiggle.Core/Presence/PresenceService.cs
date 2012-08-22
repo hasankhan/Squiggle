@@ -20,7 +20,7 @@ namespace Squiggle.Core.Presence
         public event EventHandler<UserEventArgs> UserOffline = delegate { };
         public event EventHandler<UserEventArgs> UserUpdated = delegate { };
 
-        public IEnumerable<UserInfo> Users
+        public IEnumerable<IUserInfo> Users
         {
             get { return discovery.Users; }
         }
@@ -48,7 +48,7 @@ namespace Squiggle.Core.Presence
             this.keepAlive.UserDiscovered += new EventHandler<UserEventArgs>(keepAlive_UserDiscovered);
         }        
 
-        public void Login(string name, BuddyProperties properties)
+        public void Login(string name, IBuddyProperties properties)
         {
             thisUser.DisplayName = name;
             thisUser.Status = UserStatus.Online;
@@ -59,7 +59,7 @@ namespace Squiggle.Core.Presence
             keepAlive.Start();
         }
 
-        public void Update(string name, BuddyProperties properties, UserStatus status)
+        public void Update(string name, IBuddyProperties properties, UserStatus status)
         {
             UserStatus lastStatus = thisUser.Status;
 
@@ -156,7 +156,7 @@ namespace Squiggle.Core.Presence
         bool ResolveUser(UserEventArgs e)
         {
             // userinfo coming from keepaliveservice only has presenceendpoint. Complete information is with discovery service.
-            UserInfo user = discovery.Users.FirstOrDefault(u => u.Equals(e.User));
+            IUserInfo user = discovery.Users.FirstOrDefault(u => u.Equals(e.User));
             if (user != null)
                 e.User = user;
             return user != null;

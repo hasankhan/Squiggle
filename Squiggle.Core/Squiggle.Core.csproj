@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Chat\Transport\Messages\UpdateTextMessage.cs" />
     <Compile Include="Presence\PresenceServiceOptions.cs" />
+    <Compile Include="Presence\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\Shared\AssemblyInfo.Copyright.cs">
       <Link>Properties\AssemblyInfo.Copyright</Link>
@@ -102,10 +103,7 @@
     <Compile Include="Chat\ChatSession.cs" />
     <Compile Include="Chat\ChatSessionCollection.cs" />
     <Compile Include="Chat\Transport\Host\ChatHost.cs" />
-    <Compile Include="Chat\IChatService.cs" />
-    <Compile Include="Chat\IChatSession.cs" />
     <Compile Include="DefaultValues.cs" />
-    <Compile Include="Presence\IPresenceService.cs" />
     <Compile Include="Presence\KeepAliveService.cs" />
     <Compile Include="Presence\PresenceService.cs" />
     <Compile Include="Presence\Transport\Broadcast\IBroadcastService.cs" />
@@ -120,16 +118,17 @@
     <Compile Include="Presence\Transport\Messages\UserUpdateMessage.cs" />
     <Compile Include="Presence\Transport\PresenceChannel.cs" />
     <Compile Include="Presence\UserDiscovery.cs" />
-    <Compile Include="Presence\UserEventArgs.cs" />
-    <Compile Include="Presence\UserInfo.cs" />
     <Compile Include="ServiceNames.cs" />
     <Compile Include="SquiggleEndPoint.cs" />
-    <Compile Include="Presence\UserStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Squiggle.Activity\Squiggle.Activity.csproj">
       <Project>{4B76F79B-8707-4163-AA3E-8307BC93C450}</Project>
       <Name>Squiggle.Activity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Squiggle.Infrastructure\Squiggle.Infrastructure.csproj">
+      <Project>{CC6D9F53-D00B-4554-8642-218AEA987D20}</Project>
+      <Name>Squiggle.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Squiggle.Utilities\Squiggle.Utilities.csproj">
       <Project>{8B57850B-FA7F-4F96-A4A0-BF81BF24E710}</Project>

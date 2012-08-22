@@ -129,7 +129,7 @@ namespace Squiggle.UI.Windows
             StartGroupChat(e.Buddies);
         }
 
-        ChatWindow StartChat(Buddy buddy, bool sendFile, params string[] filePaths)
+        ChatWindow StartChat(IBuddy buddy, bool sendFile, params string[] filePaths)
         {
             ChatWindow window = StartChat(buddy);
             if (sendFile)
@@ -141,7 +141,7 @@ namespace Squiggle.UI.Windows
             return window;
         }
 
-        ChatWindow StartChat(Buddy buddy)
+        ChatWindow StartChat(IBuddy buddy)
         {
             var window = CreateChatWindow(buddy, null, true);
             return window;
@@ -393,7 +393,7 @@ namespace Squiggle.UI.Windows
             this.Activate();
         }
 
-        ChatWindow CreateChatWindow(Buddy buddy, IChat chatSession, bool initiatedByUser)
+        ChatWindow CreateChatWindow(IBuddy buddy, IChat chatSession, bool initiatedByUser)
         {
             ChatWindow window = null;
 
@@ -503,7 +503,7 @@ namespace Squiggle.UI.Windows
                 StartBroadcastChat(onlineBuddies);
         }
 
-        void StartBroadcastChat(IEnumerable<Buddy> buddies)
+        void StartBroadcastChat(IEnumerable<IBuddy> buddies)
         {
             var chatSessions = buddies.Select(b => b.StartChat()).ToList();
             var groupChat = new BroadcastChat(chatSessions);
@@ -516,7 +516,7 @@ namespace Squiggle.UI.Windows
             };
         }
 
-        void StartGroupChat(IEnumerable<Buddy> buddies)
+        void StartGroupChat(IEnumerable<IBuddy> buddies)
         {
             if (!buddies.Any())
                 return;

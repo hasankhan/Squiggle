@@ -44,20 +44,20 @@ namespace Squiggle.UI.Windows
         bool buzzPending;
         WindowState lastState;
         FileTransferCollection fileTransfers = new FileTransferCollection();
-        static Dictionary<Buddy, IEnumerable<ChatItem>> chatHistory = new Dictionary<Buddy, IEnumerable<ChatItem>>();
+        static Dictionary<IBuddy, IEnumerable<ChatItem>> chatHistory = new Dictionary<IBuddy, IEnumerable<ChatItem>>();
         SquiggleContext context;
         MultiFilter filters = new MultiFilter();
         MultiParser parsers = new MultiParser();
         bool chatStarted;
 
-        public Buddy PrimaryBuddy { get; private set; }
+        public IBuddy PrimaryBuddy { get; private set; }
 
         public ChatWindow()
         {
             InitializeComponent();
         }
 
-        internal ChatWindow(Buddy buddy, SquiggleContext context) : this()
+        internal ChatWindow(IBuddy buddy, SquiggleContext context) : this()
         {
             this.context = context;
 
@@ -97,7 +97,7 @@ namespace Squiggle.UI.Windows
             new ActivitiesMenuHelper(context).LoadActivities(mnuStartActivity, mnuNoActivity, new RelayCommand<IActivity>(StartActivityMenuItem_Click));
         }
 
-        public IEnumerable<Buddy> Buddies
+        public IEnumerable<IBuddy> Buddies
         {
             get
             {
@@ -368,7 +368,7 @@ namespace Squiggle.UI.Windows
             });
         }
 
-        void OnBuddyJoined(Buddy buddy)
+        void OnBuddyJoined(IBuddy buddy)
         {
             Monitor(buddy);
             Dispatcher.Invoke(() =>
@@ -378,7 +378,7 @@ namespace Squiggle.UI.Windows
             });
         }
 
-        void OnBuddyLeft(Buddy buddy)
+        void OnBuddyLeft(IBuddy buddy)
         {
             StopMonitoring(buddy);
             Dispatcher.Invoke(() =>
@@ -401,7 +401,7 @@ namespace Squiggle.UI.Windows
             itemsView.Refresh();
         }
 
-        void Monitor(Buddy buddy)
+        void Monitor(IBuddy buddy)
         {
             StopMonitoring(buddy);
             buddy.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(buddy_PropertyChanged);
@@ -413,7 +413,7 @@ namespace Squiggle.UI.Windows
                 Monitor(buddy);
         }
 
-        void StopMonitoring(Buddy buddy)
+        void StopMonitoring(IBuddy buddy)
         {
             buddy.PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(buddy_PropertyChanged);
         }
@@ -424,7 +424,7 @@ namespace Squiggle.UI.Windows
                 StopMonitoring(buddy);
         }
 
-        void OnBuzzReceived(Buddy buddy)
+        void OnBuzzReceived(IBuddy buddy)
         {
             Dispatcher.Invoke(() =>
             {
@@ -453,7 +453,7 @@ namespace Squiggle.UI.Windows
                 AudioAlert.Instance.Play(alertType);
         }
 
-        void OnMessageReceived(Buddy buddy, string message, string fontName, System.Drawing.Color color, int fontSize, System.Drawing.FontStyle fontStyle)
+        void OnMessageReceived(IBuddy buddy, string message, string fontName, System.Drawing.Color color, int fontSize, System.Drawing.FontStyle fontStyle)
         {
             Dispatcher.Invoke(() =>
             {
@@ -696,13 +696,13 @@ namespace Squiggle.UI.Windows
             }
         }
 
-        public void Invite(IEnumerable<Buddy> buddies)
+        public void Invite(IEnumerable<IBuddy> buddies)
         {
             foreach (Buddy buddy in buddies)
                 Invite(buddy);
         }
 
-        public void Invite(Buddy buddy)
+        public void Invite(IBuddy buddy)
         {
             if (buddy != null && chatSession != null && !Buddies.Contains(buddy))
                 chatSession.Invite(buddy);

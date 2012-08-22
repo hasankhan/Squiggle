@@ -12,11 +12,11 @@ namespace Squiggle.Core.Presence
 {    
     class UserDiscovery
     {
-        UserInfo thisUser;
+        IUserInfo thisUser;
         PresenceChannel channel;
-        HashSet<UserInfo> onlineUsers;
+        HashSet<IUserInfo> onlineUsers;
 
-        public IEnumerable<UserInfo> Users
+        public IEnumerable<IUserInfo> Users
         {
             get { return onlineUsers; }
         }
@@ -29,10 +29,10 @@ namespace Squiggle.Core.Presence
         public UserDiscovery(PresenceChannel channel)
         {
             this.channel = channel;
-            this.onlineUsers = new HashSet<UserInfo>();
+            this.onlineUsers = new HashSet<IUserInfo>();
         }
         
-        public void Login(UserInfo me)
+        public void Login(IUserInfo me)
         {
             thisUser = me;
 
@@ -44,14 +44,14 @@ namespace Squiggle.Core.Presence
             channel.BroadcastMessage(message);
         }        
 
-        public void Update(UserInfo me)
+        public void Update(IUserInfo me)
         {
             thisUser = me;
             var message = Message.FromSender<UserUpdateMessage>(me);
             channel.BroadcastMessage(message);
         }
 
-        public void FakeLogout(UserInfo me)
+        public void FakeLogout(IUserInfo me)
         {
             thisUser = me;
             var message = Message.FromSender<LogoutMessage>(me);
@@ -66,7 +66,7 @@ namespace Squiggle.Core.Presence
             channel.BroadcastMessage(message);
         }        
 
-        public void DiscoverUser(SquiggleEndPoint user)
+        public void DiscoverUser(ISquiggleEndPoint user)
         {
             AskForUserInfo(user, UserInfoState.PresenceDiscovered);
         }
@@ -143,7 +143,7 @@ namespace Squiggle.Core.Presence
             channel.SendMessage(reply);
         }        
 
-        void OnPresenceMessage(UserInfo user, bool discovered)
+        void OnPresenceMessage(IUserInfo user, bool discovered)
         {
             if (user.Status != UserStatus.Offline)
             {
@@ -171,7 +171,7 @@ namespace Squiggle.Core.Presence
             }
         }  
 
-        void OnUserUpdated(UserInfo newUser)
+        void OnUserUpdated(IUserInfo newUser)
         {
             var oldUser = onlineUsers.FirstOrDefault(u => u.Equals(newUser));
             if (oldUser == null)
@@ -183,11 +183,11 @@ namespace Squiggle.Core.Presence
             }
         }
 
-        void AskForUserInfo(SquiggleEndPoint user, UserInfoState state)
+        void AskForUserInfo(ISquiggleEndPoint user, UserInfoState state)
         {
             var reply = Message.FromSender<GiveUserInfoMessage>(thisUser);
             reply.State = (int)state;
-            reply.Recipient = user;
+            reply.Recipient = new SquiggleEndPoint(user);
             channel.SendMessage(reply);
         }
 

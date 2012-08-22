@@ -32,6 +32,8 @@
 /Squiggle.FileTransfer/obj
 /Squiggle.Plugins/bin
 /Squiggle.Plugins/obj
+/Squiggle.Infrastructure/bin
+/Squiggle.Infrastructure/obj
 /Squiggle.FileTransfer/*.user
 /Squiggle.Bridge/*.user
 /Squiggle.UI/*.user

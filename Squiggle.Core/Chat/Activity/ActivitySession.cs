@@ -9,15 +9,15 @@ namespace Squiggle.Core.Chat.Activity
 {
     class ActivitySession
     {
-        SquiggleEndPoint localUser;
-        SquiggleEndPoint remoteUser;
+        ISquiggleEndPoint localUser;
+        ISquiggleEndPoint remoteUser;
         Guid chatSessionId;
 
         internal Guid Id { get; private set; }
         internal ChatHost ChatHost { get; private set; }
         internal bool SelfInitiated { get; private set; }
 
-        private ActivitySession(Guid chatSessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, Guid Id, bool selfInitiated)
+        private ActivitySession(Guid chatSessionId, ChatHost chatHost, ISquiggleEndPoint localUser, ISquiggleEndPoint remoteUser, Guid Id, bool selfInitiated)
         {
             this.chatSessionId = chatSessionId;
             this.ChatHost = chatHost;
@@ -27,13 +27,13 @@ namespace Squiggle.Core.Chat.Activity
             this.SelfInitiated = selfInitiated;
         }
 
-        public static ActivitySession Create(Guid sessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser)
+        public static ActivitySession Create(Guid sessionId, ChatHost chatHost, ISquiggleEndPoint localUser, ISquiggleEndPoint remoteUser)
         {
             var session = new ActivitySession(sessionId, chatHost, localUser, remoteUser, Guid.NewGuid(), true);
             return session;
         }
 
-        public static ActivitySession FromInvite(Guid sessionId, ChatHost chatHost, SquiggleEndPoint localUser, SquiggleEndPoint remoteUser, Guid activitySessionId)
+        public static ActivitySession FromInvite(Guid sessionId, ChatHost chatHost, ISquiggleEndPoint localUser, ISquiggleEndPoint remoteUser, Guid activitySessionId)
         {
             var session = new ActivitySession(sessionId, chatHost, localUser, remoteUser, activitySessionId, false);
             return session;

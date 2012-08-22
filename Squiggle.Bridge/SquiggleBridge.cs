@@ -160,7 +160,7 @@ namespace Squiggle.Bridge
             return endpoints;
         }
 
-        bool IsLocalChatEndpoint(SquiggleEndPoint recipient)
+        bool IsLocalChatEndpoint(ISquiggleEndPoint recipient)
         {
             return routeTable.GetLocalChatEndPoint(recipient.ClientID) != null;
         }

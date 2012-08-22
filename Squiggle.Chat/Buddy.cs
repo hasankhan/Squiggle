@@ -8,11 +8,11 @@ using Squiggle.Core.Presence;
 
 namespace Squiggle.Chat
 {
-    public class Buddy: INotifyPropertyChanged, IDisposable
+    public class Buddy: INotifyPropertyChanged, IDisposable, Squiggle.Chat.IBuddy
     {
         string displayName;
         UserStatus status;
-        BuddyProperties properties;
+        IBuddyProperties properties;
         bool initialized;
 
         protected IChatClient ChatClient { get; private set; }
@@ -28,7 +28,7 @@ namespace Squiggle.Chat
         {
         }
 
-        public Buddy(IChatClient chatClient, string id, IPEndPoint chatEndPoint, BuddyProperties properties)
+        public Buddy(IChatClient chatClient, string id, IPEndPoint chatEndPoint, IBuddyProperties properties)
         {
             this.Id = id;
             this.ChatEndPoint = chatEndPoint;
@@ -70,7 +70,7 @@ namespace Squiggle.Chat
             get { return Status != UserStatus.Offline; }
         }
         
-        public BuddyProperties Properties
+        public IBuddyProperties Properties
         {
             get { return properties; }
         }
@@ -80,7 +80,7 @@ namespace Squiggle.Chat
             OnPropertyChanged("Properties");
         }
 
-        public void Update(IPEndPoint chatEndPoint, Dictionary<string, string> properties)
+        public void Update(IPEndPoint chatEndPoint, IDictionary<string, string> properties)
         {
             this.ChatEndPoint = chatEndPoint;
             this.properties = new BuddyProperties(properties ?? new Dictionary<string, string>());

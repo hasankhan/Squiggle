@@ -8,9 +8,9 @@ using BuddyResolver = System.Func<string, Squiggle.Chat.Buddy>;
 
 namespace Squiggle.Chat
 {
-    class ChatBuddies: IEnumerable<Buddy>
+    class ChatBuddies: IEnumerable<IBuddy>
     {
-        Dictionary<string, Buddy> buddies;
+        Dictionary<string, IBuddy> buddies;
         IChatSession session;
         BuddyResolver buddyResolver;
 
@@ -18,9 +18,9 @@ namespace Squiggle.Chat
         public event EventHandler<BuddyEventArgs> BuddyJoined = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyLeft = delegate { };
 
-        public ChatBuddies(IChatSession session, BuddyResolver buddyResolver, IEnumerable<Buddy> buddies)
+        public ChatBuddies(IChatSession session, BuddyResolver buddyResolver, IEnumerable<IBuddy> buddies)
         {
-            this.buddies = new Dictionary<string, Buddy>();
+            this.buddies = new Dictionary<string, IBuddy>();
             this.buddyResolver = buddyResolver;
             this.session = session;
 
@@ -28,23 +28,23 @@ namespace Squiggle.Chat
                 AddBuddy(buddy);
 
             this.session.GroupChatStarted += new EventHandler(session_GroupChatStarted);
-            this.session.UserJoined += new EventHandler<Core.Chat.Transport.Host.SessionEventArgs>(session_UserJoined);
-            this.session.UserLeft += new EventHandler<Core.Chat.Transport.Host.SessionEventArgs>(session_UserLeft);
+            this.session.UserJoined += new EventHandler<Core.Chat.SessionEventArgs>(session_UserJoined);
+            this.session.UserLeft += new EventHandler<Core.Chat.SessionEventArgs>(session_UserLeft);
         }
 
-        public bool TryGet(string clientId, out Buddy buddy)
+        public bool TryGet(string clientId, out IBuddy buddy)
         {
             return buddies.TryGetValue(clientId, out buddy);
         }
 
-        void session_UserLeft(object sender, Core.Chat.Transport.Host.SessionEventArgs e)
+        void session_UserLeft(object sender, Core.Chat.SessionEventArgs e)
         {
-            Buddy buddy = RemoveBuddy(e.Sender.ClientID);
+            IBuddy buddy = RemoveBuddy(e.Sender.ClientID);
             if (buddy != null)
                 BuddyLeft(this, new BuddyEventArgs(buddy));
         }
 
-        void session_UserJoined(object sender, Core.Chat.Transport.Host.SessionEventArgs e)
+        void session_UserJoined(object sender, Core.Chat.SessionEventArgs e)
         {
             Buddy buddy = AddBuddy(e.Sender);
             if (buddy != null)
@@ -58,14 +58,14 @@ namespace Squiggle.Chat
             GroupChatStarted(this, EventArgs.Empty);
         }
 
-        Buddy AddBuddy(SquiggleEndPoint user)
+        Buddy AddBuddy(ISquiggleEndPoint user)
         {
             Buddy buddy = buddyResolver(user.ClientID);
             AddBuddy(buddy);
             return buddy;
         }
 
-        void AddBuddy(Buddy buddy)
+        void AddBuddy(IBuddy buddy)
         {
             if (buddy == null || buddies.ContainsKey(buddy.Id))
                 return;
@@ -74,9 +74,9 @@ namespace Squiggle.Chat
             buddies[buddy.Id] = buddy;
         }
 
-        Buddy RemoveBuddy(string clientId)
+        IBuddy RemoveBuddy(string clientId)
         {
-            Buddy buddy;
+            IBuddy buddy;
             if (TryGet(clientId, out buddy))
                 buddy.PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(buddy_PropertyChanged);
             buddies.Remove(clientId);
@@ -92,7 +92,7 @@ namespace Squiggle.Chat
             }
         }
 
-        public IEnumerator<Buddy> GetEnumerator()
+        public IEnumerator<IBuddy> GetEnumerator()
         {
             return buddies.Values.ToList().GetEnumerator();
         }

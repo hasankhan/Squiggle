@@ -15,19 +15,19 @@ namespace Squiggle.Core.Presence
         PresenceChannel channel;
         TimeSpan keepAliveSyncTime;
         Message keepAliveMessage;
-        Dictionary<UserInfo, DateTime> aliveUsers;
+        Dictionary<IUserInfo, DateTime> aliveUsers;
         DateTime lastKeepAliveMessage;
 
         public event EventHandler<UserEventArgs> UserLost = delegate { };
         public event EventHandler<UserEventArgs> UserLosing = delegate { };
         public event EventHandler<UserEventArgs> UserDiscovered = delegate { };
 
-        public KeepAliveService(PresenceChannel channel, UserInfo user, TimeSpan keepAliveSyncTime)
+        public KeepAliveService(PresenceChannel channel, IUserInfo user, TimeSpan keepAliveSyncTime)
         {
             this.channel = channel;
             this.keepAliveSyncTime = keepAliveSyncTime;
             keepAliveMessage = Message.FromSender<KeepAliveMessage>(user);
-            aliveUsers = new Dictionary<UserInfo, DateTime>();
+            aliveUsers = new Dictionary<IUserInfo, DateTime>();
         }
 
         public void Start()
@@ -45,23 +45,23 @@ namespace Squiggle.Core.Presence
                 OnKeepAliveMessage((KeepAliveMessage)e.Message);
         }        
 
-        public void MonitorUser(UserInfo user)
+        public void MonitorUser(IUserInfo user)
         {
             HeIsAlive(user);
         }
 
-        public void LeaveUser(UserInfo user)
+        public void LeaveUser(IUserInfo user)
         {
             HeIsGone(user);
         }
 
-        public void HeIsGone(UserInfo user)
+        public void HeIsGone(IUserInfo user)
         {
             lock (aliveUsers)
                 aliveUsers.Remove(user);
         }
 
-        public void HeIsAlive(UserInfo user)
+        public void HeIsAlive(IUserInfo user)
         {
             lock (aliveUsers)
                 aliveUsers[user] = DateTime.Now;   
@@ -91,14 +91,14 @@ namespace Squiggle.Core.Presence
             lastKeepAliveMessage = DateTime.UtcNow;
             ImAlive();
 
-            List<UserInfo> gone = GetInactiveUsers(keepAliveTime => (keepAliveTime + keepAliveTime) + 10.Seconds());
+            List<IUserInfo> gone = GetInactiveUsers(keepAliveTime => (keepAliveTime + keepAliveTime) + 10.Seconds());
             gone.ForEach(user =>
             {
                 HeIsGone(user);
                 UserLost(this, new UserEventArgs() { User = user });
             });
 
-            List<UserInfo> going = GetInactiveUsers(keepAliveTime =>keepAliveTime + 5.Seconds()).Except(gone).ToList();
+            List<IUserInfo> going = GetInactiveUsers(keepAliveTime =>keepAliveTime + 5.Seconds()).Except(gone).ToList();
             going.ForEach(user=>UserLosing(this, new UserEventArgs(){User = user }));
 
             
@@ -118,7 +118,7 @@ namespace Squiggle.Core.Presence
                 UserDiscovered(this, new UserEventArgs() { User = user });
         }
 
-        List<UserInfo> GetInactiveUsers(Func<TimeSpan, TimeSpan> waitTimeSelector)
+        List<IUserInfo> GetInactiveUsers(Func<TimeSpan, TimeSpan> waitTimeSelector)
         {
             var now = DateTime.Now;
 

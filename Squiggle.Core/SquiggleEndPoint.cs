@@ -9,7 +9,7 @@ using ProtoBuf;
 namespace Squiggle.Core
 {
     [DataContract]
-    public class SquiggleEndPoint
+    public class SquiggleEndPoint: ISquiggleEndPoint
     {
         [ProtoMember(1)]
         [DataMember]
@@ -31,6 +31,12 @@ namespace Squiggle.Core
         }
 
         public SquiggleEndPoint() { }
+
+        public SquiggleEndPoint(ISquiggleEndPoint other) 
+        {
+            Address = other.Address;
+            ClientID = other.ClientID;
+        }
 
         public SquiggleEndPoint(string id, IPEndPoint address)
         {

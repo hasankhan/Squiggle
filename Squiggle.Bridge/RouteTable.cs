@@ -27,7 +27,7 @@ namespace Squiggle.Bridge
             return endpoint;
         }
 
-        public void AddLocalPresenceEndPoint(SquiggleEndPoint localPresenceEndPoint)
+        public void AddLocalPresenceEndPoint(ISquiggleEndPoint localPresenceEndPoint)
         {
             lock (localPresenceEndPoints)
                 localPresenceEndPoints[localPresenceEndPoint.ClientID] = localPresenceEndPoint.Address;

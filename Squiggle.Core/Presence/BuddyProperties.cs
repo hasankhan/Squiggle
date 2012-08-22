@@ -4,14 +4,14 @@ using System.ComponentModel;
 
 namespace Squiggle.Core.Presence
 {
-    public class BuddyProperties: INotifyPropertyChanged
+    public class BuddyProperties: INotifyPropertyChanged, Squiggle.Core.Presence.IBuddyProperties
     {
-        Dictionary<string, string> dictionary;
+        IDictionary<string, string> dictionary;
 
         public static readonly string DefaultGroupName = "Others";
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
-        public BuddyProperties(Dictionary<string, string> properties)
+        public BuddyProperties(IDictionary<string, string> properties)
         {
             this.dictionary = properties;
         }
@@ -90,22 +90,22 @@ namespace Squiggle.Core.Presence
             set { this["EmailAddress"] = value; }
         }
 
-        public Dictionary<string,string>.KeyCollection Keys
+        public ICollection<string> Keys
         {
             get { return dictionary.Keys; }
         }
 
-        public Dictionary<string, string>.ValueCollection Values
+        public ICollection<string> Values
         {
             get { return dictionary.Values; }
         }
 
-        public BuddyProperties Clone()
+        public IBuddyProperties Clone()
         {
             return new BuddyProperties(ToDictionary());
         }
 
-        public Dictionary<string, string> ToDictionary()
+        public IDictionary<string, string> ToDictionary()
         {
             return new Dictionary<string, string>(dictionary);
         }
