@@ -122,10 +122,6 @@
     <Compile Include="SquiggleEndPoint.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Squiggle.Activity\Squiggle.Activity.csproj">
-      <Project>{4B76F79B-8707-4163-AA3E-8307BC93C450}</Project>
-      <Name>Squiggle.Activity</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Squiggle.Infrastructure\Squiggle.Infrastructure.csproj">
       <Project>{CC6D9F53-D00B-4554-8642-218AEA987D20}</Project>
       <Name>Squiggle.Infrastructure</Name>

@@ -89,13 +89,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Squiggle.Activity\Squiggle.Activity.csproj">
-      <Project>{4B76F79B-8707-4163-AA3E-8307BC93C450}</Project>
-      <Name>Squiggle.Activity</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Squiggle.Client\Squiggle.Client.csproj">
       <Project>{CF28694A-887E-4118-874F-76F028DAB56E}</Project>
       <Name>Squiggle.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Squiggle.Infrastructure\Squiggle.Infrastructure.csproj">
+      <Project>{CC6D9F53-D00B-4554-8642-218AEA987D20}</Project>
+      <Name>Squiggle.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Squiggle.Utilities\Squiggle.Utilities.csproj">
       <Project>{8B57850B-FA7F-4F96-A4A0-BF81BF24E710}</Project>

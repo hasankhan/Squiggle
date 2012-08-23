@@ -45,16 +45,24 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Chat\Activity\ActivityHandler.cs" />
+    <Compile Include="Core\Chat\Activity\IActivity.cs" />
+    <Compile Include="Core\Chat\Activity\IActivityExecutor.cs" />
+    <Compile Include="Core\Chat\Activity\IActivityHandler.cs" />
     <Compile Include="Client\BuddyEventArgs.cs" />
     <Compile Include="Client\IBuddy.cs" />
     <Compile Include="Client\IChat.cs" />
@@ -77,13 +85,6 @@
     <Compile Include="..\Shared\AssemblyInfo.ApiVersion.cs">
       <Link>Properties\AssemblyInfo.ApiVersion</Link>
     </Compile>
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <ProjectReference Include="..\Squiggle.Activity\Squiggle.Activity.csproj">
-      <Project>{4B76F79B-8707-4163-AA3E-8307BC93C450}</Project>
-      <Name>Squiggle.Activity</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
