@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 namespace Squiggle.Core.Presence
 {
+    public class UserEventArgs : EventArgs
+    {
+        public IUserInfo User { get; set; }
+    }
+
     public class UserOnlineEventArgs : UserEventArgs
     {
         public bool Discovered { get; set; }
