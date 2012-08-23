@@ -8,7 +8,7 @@ using System.Net;
 using System.Threading;
 using Squiggle.Utilities;
 using Squiggle.Client.Activities;
-using Squiggle.Activity;
+using Squiggle.Core.Chat.Activity;
 
 namespace Squiggle.FileTransfer
 {

@@ -9,7 +9,7 @@ using NAudio.Wave;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 using Squiggle.Client.Activities;
-using Squiggle.Activity;
+using Squiggle.Core.Chat.Activity;
 
 namespace Squiggle.VoiceChat
 {

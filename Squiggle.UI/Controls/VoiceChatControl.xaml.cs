@@ -16,7 +16,7 @@ using Squiggle.UI.Helpers;
 using Squiggle.UI.Resources;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
-using Squiggle.Activity;
+using Squiggle.Core.Chat.Activity;
 using Squiggle.UI.Windows;
 using Squiggle.UI.Components;
 using Squiggle.Client.Activities;

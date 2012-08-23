@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel.Composition;
 using Squiggle.Client.Activities;
-using Squiggle.Activity;
+using Squiggle.Core.Chat.Activity;
 
 namespace Squiggle.VoiceChat
 {

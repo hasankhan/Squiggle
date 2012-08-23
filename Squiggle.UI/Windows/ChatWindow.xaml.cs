@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Squiggle.Activity;
+using Squiggle.Core.Chat.Activity;
 using Squiggle.Client;
 using Squiggle.Plugins;
 using Squiggle.Plugins.MessageFilter;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Squiggle.Activity;
+using Squiggle.Core.Chat.Activity;
 using Squiggle.Client.Activities;
 
 namespace Squiggle.UI.Helpers.Collections

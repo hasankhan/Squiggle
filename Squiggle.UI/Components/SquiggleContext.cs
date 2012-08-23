@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Squiggle.UI.Windows;
 using Squiggle.Client;
-using Squiggle.Activity;
+using Squiggle.Core.Chat.Activity;
 using Squiggle.Client.Activities;
 
 namespace Squiggle.UI.Components
