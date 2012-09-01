@@ -21,11 +21,19 @@ namespace Squiggle.Client
 
     public class ChatMessageReceivedEventArgs : EventArgs
     {
+        public Guid Id { get; set; }
         public IBuddy Sender { get; set; }
         public string FontName { get; set; }
         public int FontSize { get; set; }
         public Color Color { get; set; }
         public FontStyle FontStyle { get; set; }
+        public string Message { get; set; }
+    }
+
+    public class ChatMessageUpdatedEventArgs: EventArgs
+    {
+        public Guid Id { get; set; }
+        public IBuddy Sender { get; set; }
         public string Message { get; set; }
     }
 
@@ -51,6 +59,7 @@ namespace Squiggle.Client
         bool EnableLogging { get; set; }
         
         event EventHandler<ChatMessageReceivedEventArgs> MessageReceived;
+        event EventHandler<ChatMessageUpdatedEventArgs> MessageUpdated;
         event EventHandler<BuddyEventArgs> BuddyJoined;        
         event EventHandler<BuddyEventArgs> BuddyLeft;
         event EventHandler<BuddyEventArgs> BuzzReceived;
@@ -61,7 +70,7 @@ namespace Squiggle.Client
 
         void NotifyTyping();
         void SendBuzz();
-        void SendMessage(string fontName, int fontSize, Color color, FontStyle style, string message);
+        void SendMessage(Guid id, string fontName, int fontSize, Color color, FontStyle style, string message);
         IActivityExecutor CreateActivity();
         void Leave();
 

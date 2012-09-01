@@ -31,7 +31,7 @@ namespace Squiggle.Core.Chat
 
     public class TextMessageReceivedEventArgs : SessionEventArgs
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string FontName { get; set; }
         public int FontSize { get; set; }
         public Color Color { get; set; }
@@ -41,13 +41,14 @@ namespace Squiggle.Core.Chat
 
     public class TextMessageUpdatedEventArgs : SessionEventArgs
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string Message { get; set; }
     }
 
     public interface IChatSession
     {
         event EventHandler<TextMessageReceivedEventArgs> MessageReceived;
+        event EventHandler<TextMessageUpdatedEventArgs> MessageUpdated;
         event EventHandler<SessionEventArgs> BuzzReceived;
         event EventHandler<SessionEventArgs> UserTyping;
         event EventHandler<SessionEventArgs> UserJoined;
@@ -56,11 +57,12 @@ namespace Squiggle.Core.Chat
         event EventHandler GroupChatStarted;
 
         IEnumerable<ISquiggleEndPoint> RemoteUsers { get; }
-        Guid ID { get; }
+        Guid Id { get; }
         bool IsGroupSession { get; }
 
         void SendBuzz();
-        void SendMessage(string fontName, int fontSize, Color color, FontStyle fontStyle, string message);
+        void SendMessage(Guid id, string fontName, int fontSize, Color color, FontStyle fontStyle, string message);
+        void UpdateMessage(Guid id, string message);
         void NotifyTyping();
         IActivityExecutor CreateActivity();
         void End();

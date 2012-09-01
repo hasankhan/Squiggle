@@ -32,9 +32,9 @@ namespace Squiggle.UI
             textbox.AddItem(item);
         }
 
-        public static void AddMessage(this ChatTextBox textbox, string user, string message, string fontName, int fontSize, System.Drawing.FontStyle fontStyle, System.Drawing.Color color, MultiParser parsers)
+        public static void AddMessage(this ChatTextBox textbox, Guid id, string user, string message, string fontName, int fontSize, System.Drawing.FontStyle fontStyle, System.Drawing.Color color, MultiParser parsers)
         {
-            var item = new MessageItem(user, message, fontName, fontSize, fontStyle, color, parsers);
+            var item = new MessageItem(user, id, message, fontName, fontSize, fontStyle, color, parsers);
             textbox.AddItem(item);
         }
 

@@ -58,6 +58,7 @@ namespace Squiggle.Client
         }
 
         public event EventHandler<ChatMessageReceivedEventArgs> MessageReceived = delegate { };
+        public event EventHandler<ChatMessageUpdatedEventArgs> MessageUpdated = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyJoined = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyLeft = delegate { };
         public event EventHandler<BuddyEventArgs> BuzzReceived = delegate { };
@@ -78,10 +79,10 @@ namespace Squiggle.Client
                 chatSessions.ForEach(s => s.SendBuzz());
         }
 
-        public void SendMessage(string fontName, int fontSize, System.Drawing.Color color, System.Drawing.FontStyle style, string message)
+        public void SendMessage(Guid id, string fontName, int fontSize, System.Drawing.Color color, System.Drawing.FontStyle style, string message)
         {
             lock (chatSessions)
-                chatSessions.ForEach(s => s.SendMessage(fontName, fontSize, color, style, message));
+                chatSessions.ForEach(s => s.SendMessage(id, fontName, fontSize, color, style, message));
         }
 
         public IActivityExecutor CreateActivity()

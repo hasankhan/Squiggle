@@ -29,11 +29,11 @@ namespace Squiggle.Core.Chat.Transport.Host
             host.Send(new UserTypingMessage() { SessionId = sessionId, Sender = new SquiggleEndPoint(sender), Recipient = new SquiggleEndPoint(recipient) });
         }
 
-        public static void ReceiveMessage(this ChatHost host, Guid sessionId, ISquiggleEndPoint sender, ISquiggleEndPoint recipient, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
+        public static void ReceiveMessage(this ChatHost host, Guid messageId, Guid sessionId, ISquiggleEndPoint sender, ISquiggleEndPoint recipient, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
         {
             host.Send(new TextMessage() 
             { 
-                Id = Guid.NewGuid().ToString(),
+                Id = messageId,
                 SessionId = sessionId, 
                 Sender = new SquiggleEndPoint(sender), 
                 Recipient = new SquiggleEndPoint(recipient), 
@@ -42,6 +42,18 @@ namespace Squiggle.Core.Chat.Transport.Host
                 Color = color, 
                 FontStyle = fontStyle, 
                 Message = message 
+            });
+        }
+
+        public static void UpdateMessage(this ChatHost host, Guid messageId, Guid sessionId, ISquiggleEndPoint sender, ISquiggleEndPoint recipient, string message)
+        {
+            host.Send(new UpdateTextMessage()
+            {
+                Id = messageId,
+                SessionId = sessionId,
+                Sender = new SquiggleEndPoint(sender),
+                Recipient = new SquiggleEndPoint(recipient),
+                Message = message
             });
         }
 

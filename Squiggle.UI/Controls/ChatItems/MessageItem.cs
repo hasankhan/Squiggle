@@ -11,6 +11,7 @@ namespace Squiggle.UI.Controls.ChatItems
 {
     class MessageItem: ChatItem
     {
+        public Guid Id { get; private set; }
         public string User { get; private set; }
         public string Message { get; private set; }
         public string FontName { get; private set; }
@@ -19,9 +20,10 @@ namespace Squiggle.UI.Controls.ChatItems
         public System.Drawing.Color Color { get; private set; }
         public MultiParser Parsers { get; private set; }
 
-        public MessageItem(string user, string message, string fontName, int fontSize, System.Drawing.FontStyle fontStyle, System.Drawing.Color color, MultiParser parsers)
+        public MessageItem(string user, Guid id, string message, string fontName, int fontSize, System.Drawing.FontStyle fontStyle, System.Drawing.Color color, MultiParser parsers)
         {
             this.User = user;
+            this.Id = id;
             this.Message = message;
             this.FontName = fontName;
             this.FontSize = fontSize;
@@ -32,11 +34,14 @@ namespace Squiggle.UI.Controls.ChatItems
 
         public override void AddTo(InlineCollection inlines)
         {
-            AddContactSays(inlines);
+            var span = new Span();
+            span.Tag = this;
 
-            inlines.Add(new LineBreak());
+            AddContactSays(span.Inlines);
+            span.Inlines.Add(new LineBreak());
+            AddMessage(span.Inlines);
 
-            AddMessage(inlines);
+            inlines.Add(span);
         }
 
         void AddMessage(InlineCollection inlines)

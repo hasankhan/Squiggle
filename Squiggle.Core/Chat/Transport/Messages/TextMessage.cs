@@ -11,7 +11,7 @@ namespace Squiggle.Core.Chat.Transport.Messages
     class TextMessage : Message
     {
         [ProtoMember(1)]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         [ProtoMember(2)]
         public string FontName { get; set; }
         [ProtoMember(3)]

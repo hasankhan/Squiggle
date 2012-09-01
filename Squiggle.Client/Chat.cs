@@ -36,6 +36,7 @@ namespace Squiggle.Client
 
             this.session = session;
             session.MessageReceived += new EventHandler<Squiggle.Core.Chat.TextMessageReceivedEventArgs>(session_MessageReceived);
+            session.MessageUpdated += new EventHandler<Squiggle.Core.Chat.TextMessageUpdatedEventArgs>(session_MessageUpdated);
             session.UserTyping += new EventHandler<Squiggle.Core.Chat.SessionEventArgs>(session_UserTyping);
             session.BuzzReceived += new EventHandler<Squiggle.Core.Chat.SessionEventArgs>(session_BuzzReceived);
             session.ActivityInviteReceived += new EventHandler<ActivityInivteReceivedEventArgs>(session_ActivityInviteReceived);
@@ -56,6 +57,7 @@ namespace Squiggle.Client
         public bool EnableLogging { get; set; }
 
         public event EventHandler<ChatMessageReceivedEventArgs> MessageReceived = delegate { };
+        public event EventHandler<ChatMessageUpdatedEventArgs> MessageUpdated = delegate { };
         public event EventHandler<MessageFailedEventArgs> MessageFailed = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyJoined = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyLeft = delegate { };
@@ -64,15 +66,33 @@ namespace Squiggle.Client
         public event EventHandler<ActivityInvitationReceivedEventArgs> ActivityInvitationReceived = delegate { };
         public event EventHandler GroupChatStarted = delegate { };
 
-        public void SendMessage(string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
+        public void SendMessage(Guid id, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
         {
             Async.Invoke(() =>
             {
                 Exception ex;
                 if (!ExceptionMonster.EatTheException(()=>
                                     {
-                                        session.SendMessage(fontName, fontSize, color, fontStyle, message);                    
+                                        session.SendMessage(id, fontName, fontSize, color, fontStyle, message);                    
                                     }, "sending chat message", out ex))
+                    MessageFailed(this, new MessageFailedEventArgs()
+                    {
+                        Message = message,
+                        Exception = ex
+                    });
+                LogHistory(EventType.Message, self, message);
+            });
+        }
+
+        public void UpdateMessage(Guid id, string message)
+        {
+            Async.Invoke(() =>
+            {
+                Exception ex;
+                if (!ExceptionMonster.EatTheException(() =>
+                    {
+                        session.UpdateMessage(id, message);
+                    }, "sending chat message update", out ex))
                     MessageFailed(this, new MessageFailedEventArgs()
                     {
                         Message = message,
@@ -184,11 +204,27 @@ namespace Squiggle.Client
             {
                 MessageReceived(this, new ChatMessageReceivedEventArgs()
                 {
+                    Id = e.Id,
                     Sender = buddy,
                     FontName = e.FontName,
                     FontSize = e.FontSize,
                     Color = e.Color,
                     FontStyle = e.FontStyle,
+                    Message = e.Message
+                });
+                LogHistory(EventType.Message, buddy, e.Message);
+            }
+        }
+
+        void session_MessageUpdated(object sende, Squiggle.Core.Chat.TextMessageUpdatedEventArgs e)
+        {
+            IBuddy buddy;
+            if (buddies.TryGet(e.Sender.ClientID, out buddy))
+            {
+                MessageUpdated(this, new ChatMessageUpdatedEventArgs()
+                {
+                    Id = e.Id,
+                    Sender = buddy,
                     Message = e.Message
                 });
                 LogHistory(EventType.Message, buddy, e.Message);
@@ -202,7 +238,7 @@ namespace Squiggle.Client
             {
                 if (!sessionLogged)
                     LogSessionStart();
-                manager.AddSessionEvent(session.ID, DateTime.Now, eventType, new Guid(sender.Id), sender.DisplayName, buddies.Select(b => new Guid(b.Id)), data);
+                manager.AddSessionEvent(session.Id, DateTime.Now, eventType, new Guid(sender.Id), sender.DisplayName, buddies.Select(b => new Guid(b.Id)), data);
             });
         }
 
@@ -212,7 +248,7 @@ namespace Squiggle.Client
             {
                 sessionLogged = true;
                 IBuddy primaryBuddy = Buddies.FirstOrDefault();
-                var newSession = Session.CreateSession(session.ID, new Guid(primaryBuddy.Id), primaryBuddy.DisplayName, DateTime.Now);
+                var newSession = Session.CreateSession(session.Id, new Guid(primaryBuddy.Id), primaryBuddy.DisplayName, DateTime.Now);
                 manager.AddSession(newSession, Buddies.Select(b => Participant.CreateParticipant(Guid.NewGuid(), new Guid(b.Id), b.DisplayName)));
             });
         }

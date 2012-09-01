@@ -22,6 +22,7 @@ namespace Squiggle.Core.Chat
         bool initialized;
 
         public event EventHandler<TextMessageReceivedEventArgs> MessageReceived = delegate { };
+        public event EventHandler<TextMessageUpdatedEventArgs> MessageUpdated = delegate { };
         public event EventHandler<SessionEventArgs> UserTyping = delegate { };
         public event EventHandler<SessionEventArgs> UserJoined = delegate { };
         public event EventHandler<SessionEventArgs> UserLeft = delegate { };
@@ -31,7 +32,7 @@ namespace Squiggle.Core.Chat
         public event EventHandler GroupChatStarted = delegate { };
         public event EventHandler Initialized = delegate { };
 
-        public Guid ID { get; private set; }
+        public Guid Id { get; private set; }
         public IEnumerable<ISquiggleEndPoint> RemoteUsers
         {
             get 
@@ -52,13 +53,14 @@ namespace Squiggle.Core.Chat
 
         public ChatSession(Guid sessionID, ChatHost localHost, ISquiggleEndPoint localUser, ISquiggleEndPoint remoteUser)
         {
-            this.ID = sessionID;
+            this.Id = sessionID;
             this.chatHost = localHost;
             this.localUser = localUser;
 
             localHost.ChatInviteReceived += new EventHandler<ChatInviteReceivedEventArgs>(chatHost_ChatInviteReceived);
             localHost.ActivityInvitationReceived += new EventHandler<ActivityInvitationReceivedEventArgs>(chatHost_ActivityInvitationReceived);
             localHost.TextMessageReceived += new EventHandler<TextMessageReceivedEventArgs>(chatHost_MessageReceived);
+            localHost.TextMessageUpdated += new EventHandler<TextMessageUpdatedEventArgs>(chatHost_MessageUpdated);
             localHost.UserTyping += new EventHandler<SessionEventArgs>(chatHost_UserTyping);
             localHost.BuzzReceived += new EventHandler<SessionEventArgs>(chatHost_BuzzReceived);
             localHost.UserJoined += new EventHandler<SessionEventArgs>(chatHost_UserJoined);
@@ -84,7 +86,7 @@ namespace Squiggle.Core.Chat
             if (needSessionInfo)
                 ExceptionMonster.EatTheException(() =>
                 {
-                    chatHost.GetSessionInfo(ID, localUser, PrimaryUser);
+                    chatHost.GetSessionInfo(Id, localUser, PrimaryUser);
                 }, "requesting session info");
             else
                 OnInitialized();
@@ -92,7 +94,7 @@ namespace Squiggle.Core.Chat
 
         public void SendBuzz()
         {
-            BroadCast(endpoint => chatHost.Buzz(ID, localUser, endpoint));
+            BroadCast(endpoint => chatHost.Buzz(Id, localUser, endpoint));
         }
 
         public void UpdateUser(ISquiggleEndPoint user)
@@ -102,7 +104,7 @@ namespace Squiggle.Core.Chat
 
         public void NotifyTyping()
         {
-            BroadCast(endpoint => chatHost.UserIsTyping(ID, localUser, endpoint));
+            BroadCast(endpoint => chatHost.UserIsTyping(Id, localUser, endpoint));
         }
 
         public IActivityExecutor CreateActivity()
@@ -110,14 +112,19 @@ namespace Squiggle.Core.Chat
             if (IsGroupSession)
                 throw new InvalidOperationException("Cannot send files in a group chat session.");
 
-            var session = ActivitySession.Create(ID, chatHost, localUser, PrimaryUser);
+            var session = ActivitySession.Create(Id, chatHost, localUser, PrimaryUser);
             var executor = new ActivityExecutor(session);
             return executor;
         }
 
-        public void SendMessage(string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
+        public void SendMessage(Guid messageId, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
         {
-            BroadCast(endpoint => chatHost.ReceiveMessage(ID, localUser, endpoint, fontName, fontSize, color, fontStyle, message));
+            BroadCast(recipient => chatHost.ReceiveMessage(messageId, Id, localUser, recipient, fontName, fontSize, color, fontStyle, message));
+        }
+
+        public void UpdateMessage(Guid messageId, string message)
+        {
+            BroadCast(recipient => chatHost.UpdateMessage(messageId, Id, localUser, recipient, message));
         }
 
         public void End()
@@ -125,6 +132,7 @@ namespace Squiggle.Core.Chat
             chatHost.ChatInviteReceived -= new EventHandler<ChatInviteReceivedEventArgs>(chatHost_ChatInviteReceived);
             chatHost.ActivityInvitationReceived -= new EventHandler<ActivityInvitationReceivedEventArgs>(chatHost_ActivityInvitationReceived);
             chatHost.TextMessageReceived -= new EventHandler<TextMessageReceivedEventArgs>(chatHost_MessageReceived);
+            chatHost.TextMessageUpdated -= new EventHandler<TextMessageUpdatedEventArgs>(chatHost_MessageUpdated);
             chatHost.UserTyping -= new EventHandler<SessionEventArgs>(chatHost_UserTyping);
             chatHost.BuzzReceived -= new EventHandler<SessionEventArgs>(chatHost_BuzzReceived);
             chatHost.UserJoined -= new EventHandler<SessionEventArgs>(chatHost_UserJoined);
@@ -134,19 +142,19 @@ namespace Squiggle.Core.Chat
 
             ExceptionMonster.EatTheException(() =>
             {
-                BroadCast(endpoint => chatHost.LeaveChat(ID, localUser, endpoint));
+                BroadCast(endpoint => chatHost.LeaveChat(Id, localUser, endpoint));
             }, "sending leave message");
             SessionEnded(this, EventArgs.Empty);
         }
 
         public void Invite(ISquiggleEndPoint user)
         {
-            chatHost.ReceiveChatInvite(ID, localUser, user, RemoteUsers);
+            chatHost.ReceiveChatInvite(Id, localUser, user, RemoteUsers);
         }
 
         void chatHost_SessionInfoRequested(object sender, SessionEventArgs e)
         {
-            if (e.SessionID != ID)
+            if (e.SessionID != Id)
                 return;
 
             Async.Invoke(() =>
@@ -154,14 +162,14 @@ namespace Squiggle.Core.Chat
                 ExceptionMonster.EatTheException(() =>
                 {
                     var participants = RemoteUsers.Except(Enumerable.Repeat(e.Sender, 1)).ToArray();
-                    chatHost.ReceiveSessionInfo(ID, localUser, e.Sender, participants);
+                    chatHost.ReceiveSessionInfo(Id, localUser, e.Sender, participants);
                 }, "sending session info");
             });
         }
 
         void chatHost_SessionInfoReceived(object sender, SessionInfoEventArgs e)
         {
-            if (e.SessionID != ID)
+            if (e.SessionID != Id)
                 return;
 
             if (e.Participants != null)
@@ -178,7 +186,7 @@ namespace Squiggle.Core.Chat
 
         void chatHost_UserLeft(object sender, SessionEventArgs e)
         {
-            if (e.SessionID != ID)
+            if (e.SessionID != Id)
                 return;
 
             eventQueue.Enqueue(() => OnUserLeft(e));
@@ -186,7 +194,7 @@ namespace Squiggle.Core.Chat
 
         void chatHost_UserJoined(object sender, SessionEventArgs e)
         {
-            if (e.SessionID != ID)
+            if (e.SessionID != Id)
                 return;
 
              eventQueue.Enqueue(() => OnUserJoined(e));
@@ -194,7 +202,7 @@ namespace Squiggle.Core.Chat
 
         void chatHost_ChatInviteReceived(object sender, ChatInviteReceivedEventArgs e)
         {
-            if (e.SessionID != ID)
+            if (e.SessionID != Id)
                 return;
 
             OnInviteReceived(e);
@@ -202,7 +210,7 @@ namespace Squiggle.Core.Chat
 
         void chatHost_ActivityInvitationReceived(object sender, ActivityInvitationReceivedEventArgs e)
         {
-            if (e.SessionID != ID)
+            if (e.SessionID != Id)
                 return;
 
             eventQueue.Enqueue(() => OnActivityInvitationReceived(e));
@@ -210,7 +218,7 @@ namespace Squiggle.Core.Chat
 
         void chatHost_UserTyping(object sender, SessionEventArgs e)
         {
-            if (e.SessionID != ID)
+            if (e.SessionID != Id)
                 return;
 
             eventQueue.Enqueue(() => OnUserTyping(e));
@@ -218,7 +226,7 @@ namespace Squiggle.Core.Chat
 
         void chatHost_BuzzReceived(object sender, SessionEventArgs e)
         {
-            if (e.SessionID != ID)
+            if (e.SessionID != Id)
                 return;
 
             eventQueue.Enqueue(() => OnBuzzReceived(e));
@@ -226,10 +234,18 @@ namespace Squiggle.Core.Chat
 
         void chatHost_MessageReceived(object sender, TextMessageReceivedEventArgs e)
         {
-            if (e.SessionID != ID)
+            if (e.SessionID != Id)
                 return;
 
             eventQueue.Enqueue(() => OnMessageReceived(e));
+        }
+
+        void chatHost_MessageUpdated(object sender, TextMessageUpdatedEventArgs e)
+        {
+            if (e.SessionID != Id)
+                return;
+
+            eventQueue.Enqueue(() => OnMessageUpdated(e));
         }
 
         void OnInitialized()
@@ -267,7 +283,7 @@ namespace Squiggle.Core.Chat
 
             ExceptionMonster.EatTheException(() =>
             {
-                BroadCast(endpoint => chatHost.JoinChat(ID, localUser, endpoint));
+                BroadCast(endpoint => chatHost.JoinChat(Id, localUser, endpoint));
             }, "responding to chat invite");
 
             GroupChatStarted(this, EventArgs.Empty);
@@ -299,6 +315,12 @@ namespace Squiggle.Core.Chat
         {
             if (IsRemoteUser(e.Sender))
                 MessageReceived(this, e);
+        }
+
+        void OnMessageUpdated(TextMessageUpdatedEventArgs e)
+        {
+            if (IsRemoteUser(e.Sender))
+                MessageUpdated(this, e);
         }
 
         bool IsRemoteUser(ISquiggleEndPoint user)
@@ -346,14 +368,14 @@ namespace Squiggle.Core.Chat
                 return false;
 
             if (obj is ChatSession)
-                return ID.Equals(((ChatSession)obj).ID);
+                return Id.Equals(((ChatSession)obj).Id);
             else
                 return base.Equals(obj);
         }
 
         public override int GetHashCode()
         {
-            return ID.GetHashCode();
+            return Id.GetHashCode();
         }        
     }
 }

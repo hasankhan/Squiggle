@@ -13,7 +13,7 @@ namespace Squiggle.Core.Chat
         public void Add(IChatSession item)
         {
             lock (chatSessions)
-                chatSessions[item.ID] = item;
+                chatSessions[item.Id] = item;
         }
 
         public void Clear()
@@ -24,7 +24,7 @@ namespace Squiggle.Core.Chat
 
         public bool Contains(IChatSession item)
         {
-            return Contains(item.ID);
+            return Contains(item.Id);
         }
 
         public bool Contains(Guid sessionId)
@@ -59,7 +59,7 @@ namespace Squiggle.Core.Chat
         {
             lock (chatSessions)
             {
-                bool removed = chatSessions.Remove(item.ID);
+                bool removed = chatSessions.Remove(item.Id);
                 return removed;
             }
         }

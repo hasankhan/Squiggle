@@ -284,7 +284,7 @@ namespace Squiggle.UI.Windows
 
         void chatSession_MessageReceived(object sender, ChatMessageReceivedEventArgs e)
         {
-            eventQueue.Enqueue(() => OnMessageReceived(e.Sender, e.Message, e.FontName, e.Color, e.FontSize, e.FontStyle));
+            eventQueue.Enqueue(() => OnMessageReceived(e.Sender, e.Id, e.Message, e.FontName, e.Color, e.FontSize, e.FontStyle));
         }
 
         void chatSession_BuddyTyping(object sender, BuddyEventArgs e)
@@ -453,16 +453,16 @@ namespace Squiggle.UI.Windows
                 AudioAlert.Instance.Play(alertType);
         }
 
-        void OnMessageReceived(IBuddy buddy, string message, string fontName, System.Drawing.Color color, int fontSize, System.Drawing.FontStyle fontStyle)
+        void OnMessageReceived(IBuddy buddy, Guid id, string message, string fontName, System.Drawing.Color color, int fontSize, System.Drawing.FontStyle fontStyle)
         {
             Dispatcher.Invoke(() =>
             {
-                var temp = new StringBuilder(message);
-                if (filters.Filter(temp, this, FilterDirection.In))
+                var filteredMessage = new StringBuilder(message);
+                if (filters.Filter(filteredMessage, this, FilterDirection.In))
                 {
-                    message = temp.ToString();
+                    message = filteredMessage.ToString();
                     lastMessageReceived = DateTime.Now;
-                    chatTextBox.AddMessage(buddy.DisplayName, message, fontName, fontSize, fontStyle, color, parsers);
+                    chatTextBox.AddMessage(id, buddy.DisplayName, message, fontName, fontSize, fontStyle, color, parsers);
                     ResetStatus();
                     FlashWindow();
                     if (!chatStarted && !IsActive)
@@ -548,12 +548,13 @@ namespace Squiggle.UI.Windows
             string displayName = context.ChatClient == null ? Translation.Instance.Global_You : context.ChatClient.CurrentUser.DisplayName;
             var settings = SettingsProvider.Current.Settings.PersonalSettings;
 
-            var temp = new StringBuilder(message);
-            if (filters.Filter(temp, this, FilterDirection.Out))
+            var messageId = Guid.NewGuid();
+            var filteredMessage = new StringBuilder(message);
+            if (filters.Filter(filteredMessage, this, FilterDirection.Out))
             {
-                message = temp.ToString();
-                chatSession.SendMessage(settings.FontName, settings.FontSize, settings.FontColor, settings.FontStyle, message);
-                chatTextBox.AddMessage(displayName, message, settings.FontName, settings.FontSize, settings.FontStyle, settings.FontColor, parsers);
+                message = filteredMessage.ToString();
+                chatSession.SendMessage(messageId, settings.FontName, settings.FontSize, settings.FontColor, settings.FontStyle, message);
+                chatTextBox.AddMessage(messageId, displayName, message, settings.FontName, settings.FontSize, settings.FontStyle, settings.FontColor, parsers);
             }
         }
 
