@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Squiggle.Utilities
+namespace Squiggle.Utilities.Threading
 {
     public class ActionQueue
     {
@@ -19,6 +19,11 @@ namespace Squiggle.Utilities
                         return;
                     }
 
+            Execute(action);
+        }
+
+        protected virtual void Execute(Action action)
+        {
             action();
         }
 
@@ -27,7 +32,7 @@ namespace Squiggle.Utilities
             lock (syncRoot)
             {
                 while (actions.Count > 0)
-                    actions.Dequeue()();
+                    Execute(actions.Dequeue());
                 open = true;
             }
         }

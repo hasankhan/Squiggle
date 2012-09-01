@@ -3,7 +3,7 @@ using System.Threading;
 using System.Windows.Threading;
 using Squiggle.UI.Helpers;
 using Squiggle.Utilities;
-using Squiggle.Utilities.Application;
+using Squiggle.Utilities.Threading;
 
 namespace Squiggle.UI.Components
 {

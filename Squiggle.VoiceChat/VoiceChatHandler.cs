@@ -7,7 +7,7 @@ using System.Threading;
 using System.Windows.Threading;
 using NAudio.Wave;
 using Squiggle.Utilities;
-using Squiggle.Utilities.Application;
+using Squiggle.Utilities.Threading;
 using Squiggle.Client.Activities;
 using Squiggle.Core.Chat.Activity;
 

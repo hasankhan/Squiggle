@@ -22,8 +22,9 @@ using Squiggle.UI.Resources;
 using Squiggle.UI.Settings;
 using Squiggle.UI.StickyWindow;
 using Squiggle.Utilities;
-using Squiggle.Utilities.Application;
+using Squiggle.Utilities.Threading;
 using Squiggle.Client.Activities;
+using Squiggle.Utilities.Application;
 
 namespace Squiggle.UI.Windows
 {
@@ -36,7 +37,7 @@ namespace Squiggle.UI.Windows
         FlashWindow flash;
         DateTime? lastMessageReceived;
         DispatcherTimer statusResetTimer;
-        ActionQueue eventQueue = new ActionQueue();
+        UIActionQueue eventQueue;
         DateTime? lastBuzzSent;
         DateTime? lastBuzzReceived;
         string lastSavedFile;
@@ -55,6 +56,7 @@ namespace Squiggle.UI.Windows
         public ChatWindow()
         {
             InitializeComponent();
+            eventQueue = new UIActionQueue(Dispatcher);
         }
 
         internal ChatWindow(IBuddy buddy, SquiggleContext context) : this()
@@ -154,6 +156,7 @@ namespace Squiggle.UI.Windows
             chatSession = chat;
             chatSession.BuzzReceived += new EventHandler<BuddyEventArgs>(chatSession_BuzzReceived);
             chatSession.MessageReceived += new EventHandler<ChatMessageReceivedEventArgs>(chatSession_MessageReceived);
+            chatSession.MessageUpdated += new EventHandler<ChatMessageUpdatedEventArgs>(chatSession_MessageUpdated);
             chatSession.BuddyJoined += new EventHandler<BuddyEventArgs>(chatSession_BuddyJoined);
             chatSession.BuddyLeft += new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
             chatSession.MessageFailed += new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
@@ -287,6 +290,11 @@ namespace Squiggle.UI.Windows
             eventQueue.Enqueue(() => OnMessageReceived(e.Sender, e.Id, e.Message, e.FontName, e.Color, e.FontSize, e.FontStyle));
         }
 
+        void chatSession_MessageUpdated(object sender, ChatMessageUpdatedEventArgs e)
+        {
+            eventQueue.Enqueue(() => OnMessageUpdated(e.Sender, e.Id, e.Message));
+        }
+
         void chatSession_BuddyTyping(object sender, BuddyEventArgs e)
         {
             eventQueue.Enqueue(() => OnBuddyTyping(e));
@@ -346,46 +354,34 @@ namespace Squiggle.UI.Windows
 
         void OnBuddyTyping(BuddyEventArgs e)
         {
-            Dispatcher.Invoke(() =>
-            {
-                ChangeStatus(String.Format("{0} " + Translation.Instance.ChatWindow_IsTyping, e.Buddy.DisplayName));
-                statusResetTimer.Stop();
-                statusResetTimer.Start();
-            });
+            ChangeStatus(String.Format("{0} " + Translation.Instance.ChatWindow_IsTyping, e.Buddy.DisplayName));
+            statusResetTimer.Stop();
+            statusResetTimer.Start();
         }
 
         void OnMessageFailed(MessageFailedEventArgs e)
         {
-            Dispatcher.Invoke(() =>
-            {
 #if DEBUG
-                string message = "Following message could not be delivered due to error: " + e.Exception.Message;
+            string message = "Following message could not be delivered due to error: " + e.Exception.Message;
 #else
-                string message = Translation.Instance.ChatWindow_MessageCouldNotBeDelivered;
+            string message = Translation.Instance.ChatWindow_MessageCouldNotBeDelivered;
 #endif
-                string detail = e.Message;
-                chatTextBox.AddError(message, detail);
-            });
+            string detail = e.Message;
+            chatTextBox.AddError(message, detail);
         }
 
         void OnBuddyJoined(IBuddy buddy)
         {
             Monitor(buddy);
-            Dispatcher.Invoke(() =>
-            {
-                chatTextBox.AddInfo(String.Format("{0} " + Translation.Instance.ChatWindow_HasJoinedConversation, buddy.DisplayName));
-                OnParticipantsChanged();
-            });
+            chatTextBox.AddInfo(String.Format("{0} " + Translation.Instance.ChatWindow_HasJoinedConversation, buddy.DisplayName));
+            OnParticipantsChanged();
         }
 
         void OnBuddyLeft(IBuddy buddy)
         {
             StopMonitoring(buddy);
-            Dispatcher.Invoke(() =>
-            {
-                chatTextBox.AddInfo(String.Format("{0} " + Translation.Instance.ChatWindow_HasLeftConversation, buddy.DisplayName));
-                OnParticipantsChanged();
-            });
+            chatTextBox.AddInfo(String.Format("{0} " + Translation.Instance.ChatWindow_HasLeftConversation, buddy.DisplayName));
+            OnParticipantsChanged();
         }
 
         void OnParticipantsChanged()
@@ -426,19 +422,16 @@ namespace Squiggle.UI.Windows
 
         void OnBuzzReceived(IBuddy buddy)
         {
-            Dispatcher.Invoke(() =>
+            if (lastBuzzReceived == null || DateTime.Now.Subtract(lastBuzzReceived.Value).TotalSeconds > 5)
             {
-                if (lastBuzzReceived == null || DateTime.Now.Subtract(lastBuzzReceived.Value).TotalSeconds > 5)
-                {
-                    chatTextBox.AddInfo(String.Format("{0} " + Translation.Instance.ChatWindow_HasSentYouBuzz, buddy.DisplayName));
-                    if (this.WindowState != System.Windows.WindowState.Minimized)
-                        DoBuzzAction();
-                    else
-                        buzzPending = true;
-                    FlashWindow();
-                    lastBuzzReceived = DateTime.Now;
-                }
-            });
+                chatTextBox.AddInfo(String.Format("{0} " + Translation.Instance.ChatWindow_HasSentYouBuzz, buddy.DisplayName));
+                if (this.WindowState != System.Windows.WindowState.Minimized)
+                    DoBuzzAction();
+                else
+                    buzzPending = true;
+                FlashWindow();
+                lastBuzzReceived = DateTime.Now;
+            }
         }
 
         void DoBuzzAction()
@@ -455,31 +448,31 @@ namespace Squiggle.UI.Windows
 
         void OnMessageReceived(IBuddy buddy, Guid id, string message, string fontName, System.Drawing.Color color, int fontSize, System.Drawing.FontStyle fontStyle)
         {
-            Dispatcher.Invoke(() =>
+            lastMessageReceived = DateTime.Now;
+            filters.Filter(message, this, FilterDirection.In, filteredMessage =>
             {
-                lastMessageReceived = DateTime.Now;
+                chatTextBox.AddMessage(id, buddy.DisplayName, filteredMessage, fontName, fontSize, fontStyle, color, parsers);
 
-                filters.Filter(message, this, FilterDirection.In, filteredMessage =>
-                {
-                    chatTextBox.AddMessage(id, buddy.DisplayName, filteredMessage, fontName, fontSize, fontStyle, color, parsers);
-
-                    FlashWindow();
-                    PlayAlert(AudioAlertType.MessageReceived);
-                    if (!chatStarted && !IsActive)
-                        TrayPopup.Instance.Show(Translation.Instance.Popup_NewMessage, String.Format("{0} " + Translation.Instance.Global_ContactSays + ": {1}", buddy.DisplayName, filteredMessage), args => this.Restore());
-                });
-                ResetStatus();
+                FlashWindow();
+                PlayAlert(AudioAlertType.MessageReceived);
+                if (!chatStarted && !IsActive)
+                    TrayPopup.Instance.Show(Translation.Instance.Popup_NewMessage, String.Format("{0} " + Translation.Instance.Global_ContactSays + ": {1}", buddy.DisplayName, filteredMessage), args => this.Restore());
             });
+            ResetStatus();
             chatStarted = true;
+        }
+
+        void OnMessageUpdated(IBuddy buddy, Guid id, string message)
+        {
+            lastMessageReceived = DateTime.Now;
+            chatTextBox.UpdateMessage(id, message);
+            ResetStatus();
         }
 
         void OnGroupChatStarted()
         {
-            Dispatcher.Invoke(() =>
-            {
-                MonitorAll();
-                OnParticipantsChanged();
-            });
+            MonitorAll();
+            OnParticipantsChanged();
         }
 
         void OnTransferInvite(IFileTransferHandler invitation)
@@ -730,6 +723,7 @@ namespace Squiggle.UI.Windows
 
                 chatSession.BuzzReceived -= new EventHandler<BuddyEventArgs>(chatSession_BuzzReceived);
                 chatSession.MessageReceived -= new EventHandler<ChatMessageReceivedEventArgs>(chatSession_MessageReceived);
+                chatSession.MessageUpdated -= new EventHandler<ChatMessageUpdatedEventArgs>(chatSession_MessageUpdated);
                 chatSession.BuddyJoined -= new EventHandler<BuddyEventArgs>(chatSession_BuddyJoined);
                 chatSession.BuddyLeft -= new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
                 chatSession.MessageFailed -= new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);

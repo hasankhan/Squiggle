@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Threading;
 
-namespace Squiggle.Utilities.Application
+namespace Squiggle.Utilities.Threading
 {
     public static class DispatcherExtensions
     {

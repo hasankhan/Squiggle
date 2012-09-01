@@ -12,7 +12,7 @@ using Squiggle.UI.Resources;
 using Squiggle.UI.StickyWindow;
 using Squiggle.UI.ViewModel;
 using Squiggle.Utilities;
-using Squiggle.Utilities.Application;
+using Squiggle.Utilities.Threading;
 
 namespace Squiggle.UI.Windows
 {

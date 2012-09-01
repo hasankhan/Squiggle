@@ -81,11 +81,11 @@
     <Compile Include="..\Shared\AssemblyInfo.Version.cs">
       <Link>Properties\AssemblyInfo.Version</Link>
     </Compile>
-    <Compile Include="ActionQueue.cs" />
-    <Compile Include="Async.cs" />
+    <Compile Include="Threading\ActionQueue.cs" />
+    <Compile Include="Threading\Async.cs" />
     <Compile Include="CoalesceExtensions.cs" />
     <Compile Include="Application\ConfigReader.cs" />
-    <Compile Include="Application\DispatcherExtensions.cs" />
+    <Compile Include="Threading\DispatcherExtensions.cs" />
     <Compile Include="Net\Pipe\MessagePipe.cs" />
     <Compile Include="Net\Pipe\MessageReceivedEventArgs.cs" />
     <Compile Include="Serialization\SerializationHelper.cs" />
@@ -98,6 +98,7 @@
     <Compile Include="LinqExtensions.cs" />
     <Compile Include="Net\NetworkUtility.cs" />
     <Compile Include="Application\Shell.cs" />
+    <Compile Include="Threading\UIActionQueue.cs" />
     <Compile Include="TimeExtensions.cs" />
     <Compile Include="Application\UserActivityMonitor.cs" />
     <Compile Include="Application\WinStartup.cs" />

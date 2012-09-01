@@ -13,7 +13,7 @@
     <Border Style="{StaticResource BorderStyle}">
         <FlowDocumentScrollViewer Background="White" x:Name="sentMessages" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <FlowDocument>
-                <Paragraph TextAlignment="Left" x:Name="para" FontSize="12" LineHeight="20" />
+                <Paragraph TextAlignment="Left" x:Name="Root" FontSize="12" LineHeight="20" />
             </FlowDocument>
         </FlowDocumentScrollViewer>
     </Border>

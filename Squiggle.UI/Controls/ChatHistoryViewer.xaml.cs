@@ -10,7 +10,7 @@ using Squiggle.UI.Helpers;
 using Squiggle.UI.Resources;
 using Squiggle.UI.Windows;
 using Squiggle.Utilities;
-using Squiggle.Utilities.Application;
+using Squiggle.Utilities.Threading;
 
 namespace Squiggle.UI.Controls
 {

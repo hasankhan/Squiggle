@@ -34,12 +34,12 @@ namespace Squiggle.UI.Controls
 
         public void AddItem(ChatItem item)
         {
-            item.AddTo(para.Inlines);
+            item.AddTo(Root.Inlines);
 
             if (KeepHistory)
                 history.Enqueue(item);
 
-            para.Inlines.Add(new LineBreak());
+            Root.Inlines.Add(new LineBreak());
             sentMessages.FindScrollViewer().ScrollToBottom();
         }
 
@@ -58,7 +58,7 @@ namespace Squiggle.UI.Controls
         public void Clear()
         {
             history.Clear();
-            para.Inlines.Clear();
+            Root.Inlines.Clear();
         }        
     }
 }

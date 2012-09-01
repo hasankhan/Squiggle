@@ -5,6 +5,7 @@ using System.Net;
 using Squiggle.Core.Chat;
 using Squiggle.Core.Presence.Transport;
 using Squiggle.Utilities;
+using Squiggle.Utilities.Threading;
 
 namespace Squiggle.Core.Presence
 {

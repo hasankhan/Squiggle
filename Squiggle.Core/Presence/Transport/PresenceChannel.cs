@@ -10,6 +10,7 @@ using Squiggle.Core.Presence.Transport.Broadcast;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Net;
 using Squiggle.Utilities.Net.Pipe;
+using Squiggle.Utilities.Threading;
 
 namespace Squiggle.Core.Presence.Transport
 {

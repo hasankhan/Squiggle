@@ -37,11 +37,29 @@ namespace Squiggle.UI.Controls.ChatItems
             var span = new Span();
             span.Tag = this;
 
+            UpdateMessage(span, Message);
+
+            inlines.Add(span);
+        }
+
+        public void UpdateMessage(Inline item, string message)
+        {
+            var span = (Span)item;
+            span.Inlines.Clear();
+            Message = message;
+
             AddContactSays(span.Inlines);
             span.Inlines.Add(new LineBreak());
             AddMessage(span.Inlines);
+        }
 
-            inlines.Add(span);
+        void AddContactSays(InlineCollection inlines)
+        {
+            string text = String.Format("{0} " + Translation.Instance.Global_ContactSaid + " ({1}): ", this.User, Stamp.ToShortTimeString());
+            var items = Parsers.ParseText(text);
+            foreach (var item in items)
+                item.Foreground = Brushes.Gray;
+            inlines.AddRange(items);
         }
 
         void AddMessage(InlineCollection inlines)
@@ -58,15 +76,6 @@ namespace Squiggle.UI.Controls.ChatItems
                 item.FontWeight = fontsettings.Weight;
             }
 
-            inlines.AddRange(items);
-        }
-
-        void AddContactSays(InlineCollection inlines)
-        {
-            string text = String.Format("{0} " + Translation.Instance.Global_ContactSaid + " ({1}): ", this.User, Stamp.ToShortTimeString());
-            var items = Parsers.ParseText(text);
-            foreach (var item in items)
-                item.Foreground = Brushes.Gray;
             inlines.AddRange(items);
         }
     }

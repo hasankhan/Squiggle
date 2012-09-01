@@ -9,10 +9,11 @@ using Squiggle.Client;
 using Squiggle.UI.Helpers;
 using Squiggle.UI.Resources;
 using Squiggle.Utilities;
-using Squiggle.Utilities.Application;
+using Squiggle.Utilities.Threading;
 using Squiggle.Core.Chat.Activity;
 using Squiggle.UI.Components;
 using Squiggle.Client.Activities;
+using Squiggle.Utilities.Application;
 
 namespace Squiggle.UI.Controls
 {

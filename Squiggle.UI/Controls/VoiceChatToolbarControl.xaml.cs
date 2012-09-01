@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Squiggle.Client;
 using Squiggle.Utilities;
-using Squiggle.Utilities.Application;
+using Squiggle.Utilities.Threading;
 using Squiggle.Core.Chat.Activity;
 using Squiggle.Client.Activities;
 

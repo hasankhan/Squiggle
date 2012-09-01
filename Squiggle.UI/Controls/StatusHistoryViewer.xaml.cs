@@ -17,7 +17,7 @@ using Squiggle.History;
 using Squiggle.History.DAL;
 using Squiggle.UI.Resources;
 using Squiggle.Utilities;
-using Squiggle.Utilities.Application;
+using Squiggle.Utilities.Threading;
 
 namespace Squiggle.UI.Controls
 {

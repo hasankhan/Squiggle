@@ -5,6 +5,7 @@ using System.Windows;
 using Microsoft.VisualBasic.ApplicationServices;
 using Squiggle.UI.Resources;
 using Squiggle.Utilities;
+using Squiggle.Utilities.Threading;
 
 namespace Squiggle.UI
 {
