@@ -36,6 +36,7 @@ namespace Squiggle.UI.Windows
         IChat chatSession;
         FlashWindow flash;
         DateTime? lastMessageReceived;
+        Guid? lastSentMessageId;
         DispatcherTimer statusResetTimer;
         UIActionQueue eventQueue;
         DateTime? lastBuzzSent;
@@ -541,12 +542,21 @@ namespace Squiggle.UI.Windows
             string displayName = context.ChatClient == null ? Translation.Instance.Global_You : context.ChatClient.CurrentUser.DisplayName;
             var settings = SettingsProvider.Current.Settings.PersonalSettings;
 
-            var messageId = Guid.NewGuid();
             filters.Filter(message, this, FilterDirection.Out, filteredMessage =>
             {
-                chatSession.SendMessage(messageId, settings.FontName, settings.FontSize, settings.FontColor, settings.FontStyle, filteredMessage);
-                chatTextBox.AddMessage(messageId, displayName, filteredMessage, settings.FontName, settings.FontSize, settings.FontStyle, settings.FontColor, parsers);
+                lastSentMessageId = Guid.NewGuid();
+                chatSession.SendMessage(lastSentMessageId.Value, settings.FontName, settings.FontSize, settings.FontColor, settings.FontStyle, filteredMessage);
+                chatTextBox.AddMessage(lastSentMessageId.Value, displayName, filteredMessage, settings.FontName, settings.FontSize, settings.FontStyle, settings.FontColor, parsers);
             });
+        }
+
+        public void UpdateLastMessage(string message)
+        {
+            if (!lastSentMessageId.HasValue)
+                return;
+
+            chatSession.UpdateMessage(lastSentMessageId.Value, message);
+            chatTextBox.UpdateMessage(lastSentMessageId.Value, message);
         }
 
         public void SendBuzz()
