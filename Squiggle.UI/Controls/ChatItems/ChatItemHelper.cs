@@ -41,7 +41,7 @@ namespace Squiggle.UI
 
         public static void UpdateMessage(this ChatTextBox textbox, Guid id, string message)
         {
-            textbox.UpdateItem<MessageItem>(item => item.Id == id, item => item.Message = message);
+            textbox.UpdateItem<MessageItem>(item => item.Id == id, item => item.Update(message));
         }
 
         public static void AddError(this ChatTextBox textbox, string error, string detail)

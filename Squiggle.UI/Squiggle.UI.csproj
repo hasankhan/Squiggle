@@ -141,6 +141,7 @@
     <Content Include="Images\Emoticons\slobber.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\msg-edit.png" />
     <Content Include="Sounds\VoiceChatDisconnected.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

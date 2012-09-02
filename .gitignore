@@ -23,8 +23,6 @@
 /Squiggle.Plugins/obj
 /Squiggle.Infrastructure/bin
 /Squiggle.Infrastructure/obj
-/Squiggle.suo
-/Squiggle.sln.docstates.suo
 /Libraries/Plugins/NAudio.dll
 /Libraries/Plugins/Squiggle.FileTransfer.dll
 /Libraries/Plugins/Squiggle.VoiceChat.dll
@@ -33,3 +31,4 @@
 /Squiggle.FileTransfer/*.user
 /Squiggle.Bridge/*.user
 /Squiggle.UI/*.user
+/*.suo

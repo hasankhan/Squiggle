@@ -6,6 +6,8 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using Squiggle.UI.MessageParsers;
 using Squiggle.UI.Resources;
+using System.Windows.Controls;
+using Squiggle.UI.Helpers;
 
 namespace Squiggle.UI.Controls.ChatItems
 {
@@ -13,12 +15,13 @@ namespace Squiggle.UI.Controls.ChatItems
     {
         public Guid Id { get; private set; }
         public string User { get; private set; }
-        public string Message { get; set; }
+        public string Message { get; private set; }
         public string FontName { get; private set; }
         public int FontSize { get; private set; }
         public System.Drawing.FontStyle FontStyle { get; private set; }
         public System.Drawing.Color Color { get; private set; }
         public MultiParser Parsers { get; private set; }
+        public bool Updated { get; private set; }
 
         public MessageItem(string user, Guid id, string message, string fontName, int fontSize, System.Drawing.FontStyle fontStyle, System.Drawing.Color color, MultiParser parsers)
         {
@@ -34,9 +37,45 @@ namespace Squiggle.UI.Controls.ChatItems
 
         public override void AddTo(InlineCollection inlines)
         {
+            if (Updated)
+                AddUpdatedImage(inlines);
+
             AddContactSays(inlines);
             inlines.Add(new LineBreak());
             AddMessage(inlines);
+        }
+
+        public void Update(string message)
+        {
+            Message = message;
+            Updated = true;
+        }
+
+        void AddUpdatedImage(InlineCollection inlines)
+        {
+            var image = new Image() 
+            { 
+                Margin = new System.Windows.Thickness(0),
+                Width = 10,
+                Height = 10
+            };
+            image.Source = ImageFactory.Instance.Load(new Uri("pack://application:,,,/Images/msg-edit.png", UriKind.Absolute));
+            
+            var container = new BlockUIContainer(image) 
+            { 
+                Margin = new System.Windows.Thickness(0),
+                Padding = new System.Windows.Thickness(0)
+            };
+
+            var floater = new Floater(container)
+            {
+                Width = 20,
+                HorizontalAlignment = System.Windows.HorizontalAlignment.Right,
+                BaselineAlignment = System.Windows.BaselineAlignment.Top,
+                Margin = new System.Windows.Thickness(0),
+                Padding = new System.Windows.Thickness(0)
+            };
+            inlines.Add(floater);
         }
 
         void AddContactSays(InlineCollection inlines)
