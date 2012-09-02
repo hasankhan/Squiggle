@@ -13,7 +13,7 @@ namespace Squiggle.UI.Controls.ChatItems
     {
         public Guid Id { get; private set; }
         public string User { get; private set; }
-        public string Message { get; private set; }
+        public string Message { get; set; }
         public string FontName { get; private set; }
         public int FontSize { get; private set; }
         public System.Drawing.FontStyle FontStyle { get; private set; }
@@ -34,23 +34,9 @@ namespace Squiggle.UI.Controls.ChatItems
 
         public override void AddTo(InlineCollection inlines)
         {
-            var span = new Span();
-            span.Tag = this;
-
-            UpdateMessage(span, Message);
-
-            inlines.Add(span);
-        }
-
-        public void UpdateMessage(Inline item, string message)
-        {
-            var span = (Span)item;
-            span.Inlines.Clear();
-            Message = message;
-
-            AddContactSays(span.Inlines);
-            span.Inlines.Add(new LineBreak());
-            AddMessage(span.Inlines);
+            AddContactSays(inlines);
+            inlines.Add(new LineBreak());
+            AddMessage(inlines);
         }
 
         void AddContactSays(InlineCollection inlines)

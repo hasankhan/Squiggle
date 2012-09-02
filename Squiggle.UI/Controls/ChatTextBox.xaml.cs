@@ -34,13 +34,28 @@ namespace Squiggle.UI.Controls
 
         public void AddItem(ChatItem item)
         {
-            item.AddTo(Root.Inlines);
+            var span = new Span();
+            span.Tag = item;
+            item.AddTo(span.Inlines);
 
             if (KeepHistory)
                 history.Enqueue(item);
 
+            Root.Inlines.Add(span);
             Root.Inlines.Add(new LineBreak());
             sentMessages.FindScrollViewer().ScrollToBottom();
+        }
+
+        public void UpdateItem<TITem>(Predicate<TITem> criteria, Action<TITem> updateAction) where TITem:ChatItem
+        {
+            Span result = Root.Inlines.OfType<Span>().Where(span => span.Tag is TITem && criteria((TITem)span.Tag)).FirstOrDefault();
+            if (result != null)
+            {
+                var item = (TITem)result.Tag;
+                updateAction(item);
+                result.Inlines.Clear();
+                item.AddTo(result.Inlines);
+            }
         }
 
         public IEnumerable<ChatItem> GetHistory()

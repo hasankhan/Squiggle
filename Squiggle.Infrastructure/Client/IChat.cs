@@ -71,6 +71,7 @@ namespace Squiggle.Client
         void NotifyTyping();
         void SendBuzz();
         void SendMessage(Guid id, string fontName, int fontSize, Color color, FontStyle style, string message);
+        void UpdateMessage(Guid id, string message);
         IActivityExecutor CreateActivity();
         void Leave();
 

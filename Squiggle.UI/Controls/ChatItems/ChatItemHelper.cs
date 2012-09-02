@@ -41,8 +41,7 @@ namespace Squiggle.UI
 
         public static void UpdateMessage(this ChatTextBox textbox, Guid id, string message)
         {
-            Inline item = textbox.Root.Inlines.Where(i => i.Tag is MessageItem && ((MessageItem)i.Tag).Id == id).FirstOrDefault();
-            ((MessageItem)item.Tag).UpdateMessage(item, message);
+            textbox.UpdateItem<MessageItem>(item => item.Id == id, item => item.Message = message);
         }
 
         public static void AddError(this ChatTextBox textbox, string error, string detail)
