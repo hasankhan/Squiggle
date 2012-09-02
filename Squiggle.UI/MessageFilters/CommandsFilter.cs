@@ -8,46 +8,40 @@ using System.ComponentModel.Composition;
 using Squiggle.UI.Components;
 using Squiggle.Plugins.MessageFilter;
 using Squiggle.Plugins;
+using Squiggle.UI.MessageFilters.Commands;
 
 namespace Squiggle.UI.MessageFilters
 {
     [Export(typeof(IMessageFilter))]
     class CommandsFilter : IMessageFilter
     {
+        static List<IChatCommand> commands;
+
         public FilterDirection Direction
         {
             get { return FilterDirection.Out; }
         }
 
-        static Dictionary<string, Action<IChatWindow>> simpleCommands = new Dictionary<string, Action<IChatWindow>>();
-
         static CommandsFilter()
         {
             var context = SquiggleContext.Current;
-
-            simpleCommands["CLS"] = window => ((ChatWindow)window).chatTextBox.Clear();
-            simpleCommands["/QUIT"] = window => context.MainWindow.Quit();
-            simpleCommands["/ONLINE"] = window => context.ChatClient.CurrentUser.Status = Core.Presence.UserStatus.Online;
-            simpleCommands["/OFFLINE"] = window => context.ChatClient.CurrentUser.Status = Core.Presence.UserStatus.Offline;
-            simpleCommands["/AWAY"] = window => context.ChatClient.CurrentUser.Status = Core.Presence.UserStatus.Away;
-            simpleCommands["/BRB"] = window => context.ChatClient.CurrentUser.Status = Core.Presence.UserStatus.BeRightBack;
-            simpleCommands["/BUSY"] = window => context.ChatClient.CurrentUser.Status = Core.Presence.UserStatus.Busy;
-            simpleCommands["/BUZZ"] = window => window.SendBuzz();
-            simpleCommands["/MAIN"] = window => context.MainWindow.RestoreWindow();
+            commands = new List<IChatCommand>()
+            { 
+                new SimpleCommands(), 
+                new UpdateMessageCommand() 
+            };
         }
 
         public bool Filter(StringBuilder message, IChatWindow window)
         {
-            string command = message.ToString().Trim().ToUpperInvariant();
+            string text = message.ToString();
+            IChatCommand command = commands.FirstOrDefault(cmd => cmd.IsMatch(text));
+            if (command == null)
+                return true;
 
-            Action<IChatWindow> action;
-            if (simpleCommands.TryGetValue(command, out action))
-            {
-                action(window);
-                return false;
-            }
+            command.Execute(text, window, SquiggleContext.Current);
 
-            return true;
+            return false;
         }
     }
 }

@@ -134,6 +134,8 @@ namespace Squiggle.Core.Chat.Transport.Host
             TextMessageUpdated(this, new TextMessageUpdatedEventArgs()
             {
                 Id = msg.Id,
+                SessionID = msg.SessionId,
+                Sender = msg.Sender,
                 Message = msg.Message
             });
             Trace.WriteLine("Message updated by: " + msg.Sender + ", sessionId= " + msg.SessionId);

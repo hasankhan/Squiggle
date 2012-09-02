@@ -111,6 +111,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\ActivitiesMenuHelper.cs" />
+    <Compile Include="MessageFilters\Commands\IChatCommand.cs" />
+    <Compile Include="MessageFilters\Commands\PrefixCommand.cs" />
+    <Compile Include="MessageFilters\Commands\SimpleCommands.cs" />
+    <Compile Include="MessageFilters\Commands\UpdateMessageCommand.cs" />
     <Compile Include="MessageParsers\RegexParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\Shared\AssemblyInfo.Copyright.cs">
