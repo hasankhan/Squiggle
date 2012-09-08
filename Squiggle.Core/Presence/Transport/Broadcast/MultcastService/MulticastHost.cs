@@ -23,7 +23,7 @@ namespace Squiggle.Core.Presence.Transport.Broadcast.MultcastService
     public class MulticastHost: IDisposable
     {
         IPEndPoint endpoint;
-        MessagePipe pipe;
+        UnicastMessagePipe pipe;
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
         
@@ -34,7 +34,7 @@ namespace Squiggle.Core.Presence.Transport.Broadcast.MultcastService
 
         public void Start()
         {
-            pipe = new MessagePipe(endpoint);
+            pipe = new UnicastMessagePipe(endpoint);
             pipe.MessageReceived += new EventHandler<Utilities.Net.Pipe.MessageReceivedEventArgs>(pipe_MessageReceived);
             pipe.Open();
         }

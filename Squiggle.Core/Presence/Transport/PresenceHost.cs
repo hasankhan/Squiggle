@@ -11,7 +11,7 @@ namespace Squiggle.Core.Presence.Transport
 {
     class PresenceHost: IDisposable
     {
-        MessagePipe pipe;
+        UnicastMessagePipe pipe;
         IPEndPoint endpoint;
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
@@ -23,7 +23,7 @@ namespace Squiggle.Core.Presence.Transport
 
         public void Start()
         {
-            pipe = new MessagePipe(endpoint);
+            pipe = new UnicastMessagePipe(endpoint);
             pipe.MessageReceived += new EventHandler<Utilities.Net.Pipe.MessageReceivedEventArgs>(pipe_MessageReceived);
             pipe.Open();
         }

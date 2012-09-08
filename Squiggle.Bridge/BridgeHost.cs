@@ -41,9 +41,9 @@ namespace Squiggle.Bridge
     {
         IPEndPoint externalEndPoint;
         IPEndPoint internalEndPoint;
-        MessagePipe bridgePipe;
+        UnicastMessagePipe bridgePipe;
         SquiggleBridge bridge;
-        MessagePipe chatPipe;
+        UnicastMessagePipe chatPipe;
 
         public event EventHandler<PresenceMessageForwardedEventArgs> PresenceMessageForwarded = delegate { };
         public event EventHandler<ChatMessageReceivedEventArgs> ChatMessageReceived = delegate { };
@@ -57,11 +57,11 @@ namespace Squiggle.Bridge
 
         public void Start()
         {
-            bridgePipe = new MessagePipe(externalEndPoint);
+            bridgePipe = new UnicastMessagePipe(externalEndPoint);
             bridgePipe.MessageReceived += new EventHandler<Utilities.Net.Pipe.MessageReceivedEventArgs>(bridgePipe_MessageReceived);
             bridgePipe.Open();
 
-            chatPipe = new MessagePipe(internalEndPoint);
+            chatPipe = new UnicastMessagePipe(internalEndPoint);
             chatPipe.MessageReceived += new EventHandler<Utilities.Net.Pipe.MessageReceivedEventArgs>(chatPipe_MessageReceived);
             chatPipe.Open();
         }

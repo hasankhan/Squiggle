@@ -17,7 +17,7 @@ namespace Squiggle.Core.Chat.Transport.Host
     public class ChatHost: IDisposable
     {
         IPEndPoint endpoint;
-        MessagePipe pipe;
+        UnicastMessagePipe pipe;
 
         public event EventHandler<SessionEventArgs> BuzzReceived = delegate { };
         public event EventHandler<TextMessageReceivedEventArgs> TextMessageReceived = delegate { };
@@ -41,7 +41,7 @@ namespace Squiggle.Core.Chat.Transport.Host
 
         public void Start()
         {
-            this.pipe = new MessagePipe(endpoint);
+            this.pipe = new UnicastMessagePipe(endpoint);
             pipe.MessageReceived += new EventHandler<Utilities.Net.Pipe.MessageReceivedEventArgs>(pipe_MessageReceived);
             pipe.Open();
         }

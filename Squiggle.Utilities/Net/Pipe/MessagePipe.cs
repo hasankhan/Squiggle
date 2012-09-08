@@ -9,14 +9,17 @@ using System.Net;
 
 namespace Squiggle.Utilities.Net.Pipe
 {
-    public class MessagePipe : IDisposable
+    public abstract class MessagePipe : IDisposable
     {
-        Socket listener;
         Context context;
-        Dictionary<string, Socket> sockets;
+
+        Socket listener;
         Task listenTask;
         CancellationTokenSource listenCancelToken;
         int listenTimeout = (int)1.Seconds().TotalMilliseconds;
+
+        protected string Host { get; private set; }
+        protected int Port { get; private set; }
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
 
@@ -24,41 +27,28 @@ namespace Squiggle.Utilities.Net.Pipe
         public MessagePipe(IPEndPoint localEndpoint) : this(localEndpoint.Address.ToString(), localEndpoint.Port) { }
         public MessagePipe(string host, int port)
         {
-            this.sockets = new Dictionary<string, Socket>();
+            this.Host = host;
+            this.Port = port;
 
             listenCancelToken = new CancellationTokenSource();
             listenTask = new Task(Listen, listenCancelToken.Token, TaskCreationOptions.LongRunning);
-
-            context = new Context(2);
-            string bindTo = CreateAddress(host, port);
-            this.listener = context.Socket(SocketType.PULL);
-            this.listener.Bind(bindTo);
         }
 
         public void Open()
         {
+            context = new Context(2);
+            this.listener = CreateListener();
+
             listenTask.Start(TaskScheduler.Default);
         }
 
-        public void Send(IPEndPoint target, byte[] message)
+        protected Socket GetSocket(SocketType type)
         {
-            Send(target.Address.ToString(), target.Port, message);
+            return context.Socket(type);
         }
 
-        public void Send(string host, int port, byte[] message)
-        {
-            string target = CreateAddress(host, port);
-            Socket socket;
-            lock (sockets)
-                if (!sockets.TryGetValue(target, out socket))
-                {
-                    sockets[target] = socket = context.Socket(SocketType.PUSH);
-                    socket.Connect(target);
-                }
-
-            socket.Send(message);
-        }
-
+        protected abstract Socket CreateListener();
+        
         void Listen()
         {
             while (!listenCancelToken.Token.IsCancellationRequested)
@@ -69,9 +59,9 @@ namespace Squiggle.Utilities.Net.Pipe
             }
         }
 
-        static string CreateAddress(string host, int port)
+        protected static string CreateAddress(string protocol, string host, int port)
         {
-            string bindTo = String.Format("tcp://{0}:{1}", host, port);
+            string bindTo = String.Format("{0}://{1}:{2}", protocol, host, port);
             return bindTo;
         }
 
@@ -81,7 +71,7 @@ namespace Squiggle.Utilities.Net.Pipe
             GC.SuppressFinalize(this);
         }
 
-        void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (!listenTask.IsCompleted)
             {
@@ -91,10 +81,7 @@ namespace Squiggle.Utilities.Net.Pipe
                     listenTask.Wait();
                 }
                 catch { }
-            }
-
-            foreach (Socket socket in sockets.Values)
-                socket.Dispose();
+            }            
 
             listener.Dispose();
             context.Dispose();
