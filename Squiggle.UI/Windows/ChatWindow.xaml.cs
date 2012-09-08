@@ -452,7 +452,7 @@ namespace Squiggle.UI.Windows
             lastMessageReceived = DateTime.Now;
             filters.Filter(message, this, FilterDirection.In, filteredMessage =>
             {
-                chatTextBox.AddMessage(id, buddy.DisplayName, filteredMessage, fontName, fontSize, fontStyle, color, parsers);
+                chatTextBox.AddMessage(id, buddy.DisplayName, filteredMessage, fontName, fontSize, fontStyle, color, parsers, false);
 
                 FlashWindow();
                 PlayAlert(AudioAlertType.MessageReceived);
@@ -546,7 +546,7 @@ namespace Squiggle.UI.Windows
             {
                 lastSentMessageId = Guid.NewGuid();
                 chatSession.SendMessage(lastSentMessageId.Value, settings.FontName, settings.FontSize, settings.FontColor, settings.FontStyle, filteredMessage);
-                chatTextBox.AddMessage(lastSentMessageId.Value, displayName, filteredMessage, settings.FontName, settings.FontSize, settings.FontStyle, settings.FontColor, parsers);
+                chatTextBox.AddMessage(lastSentMessageId.Value, displayName, filteredMessage, settings.FontName, settings.FontSize, settings.FontStyle, settings.FontColor, parsers, true);
             });
         }
 

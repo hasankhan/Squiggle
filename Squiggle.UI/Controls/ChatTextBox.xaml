@@ -12,7 +12,14 @@
     </UserControl.Resources>
     <Border Style="{StaticResource BorderStyle}">
         <FlowDocumentScrollViewer Background="White" x:Name="sentMessages" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <FlowDocument>
+            <FlowDocument ContextMenuOpening="FlowDocument_ContextMenuOpening">
+                <FlowDocument.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Copy" Command="Copy" />
+                        <MenuItem Header="Select All" Command="SelectAll" />
+                        <MenuItem x:Name="mnuEdit" Header="Edit" Click="mnuEdit_Click" />
+                    </ContextMenu>
+                </FlowDocument.ContextMenu>
                 <Paragraph TextAlignment="Left" x:Name="Root" FontSize="12" LineHeight="20" />
             </FlowDocument>
         </FlowDocumentScrollViewer>

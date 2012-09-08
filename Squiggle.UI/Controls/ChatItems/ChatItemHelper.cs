@@ -24,19 +24,19 @@ namespace Squiggle.UI
         public static void AddItems(this ChatTextBox textbox, IEnumerable<ChatItem> items)
         {
             foreach (var item in items)
-                textbox.AddItem(item);
+                textbox.AddItem(item, false);
         }
 
         public static void AddInfo(this ChatTextBox textbox, string info)
         {
             var item = new InfoItem(info);
-            textbox.AddItem(item);
+            textbox.AddItem(item, false);
         }
 
-        public static void AddMessage(this ChatTextBox textbox, Guid id, string user, string message, string fontName, int fontSize, System.Drawing.FontStyle fontStyle, System.Drawing.Color color, MultiParser parsers)
+        public static void AddMessage(this ChatTextBox textbox, Guid id, string user, string message, string fontName, int fontSize, System.Drawing.FontStyle fontStyle, System.Drawing.Color color, MultiParser parsers, bool allowEdit)
         {
             var item = new MessageItem(user, id, message, fontName, fontSize, fontStyle, color, parsers);
-            textbox.AddItem(item);
+            textbox.AddItem(item, allowEdit);
         }
 
         public static void UpdateMessage(this ChatTextBox textbox, Guid id, string message)
@@ -47,31 +47,31 @@ namespace Squiggle.UI
         public static void AddError(this ChatTextBox textbox, string error, string detail)
         {
             var item = new ErrorItem(error, detail);
-            textbox.AddItem(item);
+            textbox.AddItem(item, false);
         }
 
         public static void AddVoiceChatSentRequest(this ChatTextBox textbox, SquiggleContext context, IVoiceChatHandler session, string buddyName)
         {
             var item = new VoiceChatItem(context, session, buddyName, true, false);
-            textbox.AddItem(item);
+            textbox.AddItem(item, false);
         }
 
         public static void AddVoiceChatReceivedRequest(this ChatTextBox textbox, SquiggleContext context, IVoiceChatHandler session, string buddyName, bool alreadyInChat)
         {
             var item = new VoiceChatItem(context, session, buddyName, false, alreadyInChat);
-            textbox.AddItem(item);
+            textbox.AddItem(item, false);
         }
 
         public static void AddFileReceiveRequest(this ChatTextBox textbox, IFileTransferHandler session, string downloadsFolder)
         {
             var item = new FileTransferItem(session, downloadsFolder);
-            textbox.AddItem(item);
+            textbox.AddItem(item, false);
         }
 
         public static void AddFileSentRequest(this ChatTextBox textbox, IFileTransferHandler session)
         {
             var item = new FileTransferItem(session);
-            textbox.AddItem(item);
+            textbox.AddItem(item, false);
         }
     }
 }

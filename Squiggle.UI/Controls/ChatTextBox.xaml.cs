@@ -23,7 +23,10 @@ namespace Squiggle.UI.Controls
     /// </summary>
     public partial class ChatTextBox : UserControl
     {
+        Span selectedItem;
         BoundedQueue<ChatItem> history = new BoundedQueue<ChatItem>(100);
+
+        public event EventHandler<ItemEditEventArgs> ItemEdit = delegate { };
 
         public bool KeepHistory { get; set; }
 
@@ -32,9 +35,16 @@ namespace Squiggle.UI.Controls
             InitializeComponent();                      
         }        
 
-        public void AddItem(ChatItem item)
+        public void AddItem(ChatItem item, bool allowEdit)
         {
             var span = new Span();
+
+            if (allowEdit)
+            {
+                span.MouseEnter += new MouseEventHandler(span_MouseEnter);
+                span.MouseLeave += new MouseEventHandler(span_MouseLeave);
+            }
+            
             span.Tag = item;
             item.AddTo(span.Inlines);
 
@@ -44,6 +54,17 @@ namespace Squiggle.UI.Controls
             Root.Inlines.Add(span);
             Root.Inlines.Add(new LineBreak());
             sentMessages.FindScrollViewer().ScrollToBottom();
+        }
+
+        void span_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (selectedItem == sender)
+                selectedItem = null;
+        }
+
+        void span_MouseEnter(object sender, MouseEventArgs e)
+        {
+            selectedItem = (Span)sender;
         }
 
         public void UpdateItem<TITem>(Predicate<TITem> criteria, Action<TITem> updateAction) where TITem:ChatItem
@@ -74,6 +95,27 @@ namespace Squiggle.UI.Controls
         {
             history.Clear();
             Root.Inlines.Clear();
+        }
+
+        private void FlowDocument_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            if (selectedItem == null)
+                mnuEdit.Visibility = System.Windows.Visibility.Collapsed;
+            else
+            {
+                mnuEdit.Tag = selectedItem.Tag;
+                mnuEdit.Visibility = System.Windows.Visibility.Visible;
+            }
+        }
+
+        private void mnuEdit_Click(object sender, RoutedEventArgs e)
+        {
+            ItemEdit(this, new ItemEditEventArgs() { Item = (ChatItem)mnuEdit.Tag });
         }        
+    }
+
+    public class ItemEditEventArgs: EventArgs
+    {
+        public ChatItem Item { get; set; }
     }
 }
