@@ -209,7 +209,11 @@ namespace Squiggle.UI.Windows
 
         private void txtMessageEditBox_MessageSend(object sender, MessageSendEventArgs e)
         {
-            SendMessage(e.Message);
+            var item = (MessageItem)e.Context;
+            if (!e.Updated)
+                SendMessage(e.Message);
+            else if (item.Message != e.Message)
+                UpdateMessage(item.Id, e.Message);
         }
 
         private void txtMessageEditBox_MessageTyping(object sender, EventArgs e)
@@ -555,8 +559,13 @@ namespace Squiggle.UI.Windows
             if (!lastSentMessageId.HasValue)
                 return;
 
-            chatSession.UpdateMessage(lastSentMessageId.Value, message);
-            chatTextBox.UpdateMessage(lastSentMessageId.Value, message);
+            UpdateMessage(lastSentMessageId.Value, message);
+        }
+
+        void UpdateMessage(Guid id, string message)
+        {
+            chatSession.UpdateMessage(id, message);
+            chatTextBox.UpdateMessage(id, message);
         }
 
         public void SendBuzz()
@@ -964,6 +973,15 @@ namespace Squiggle.UI.Windows
         {
             IVoiceChatHandler voiceChat = StartVoiceChat();
             ((VoiceChatToolbarControl)sender).VoiceChatContext = voiceChat;
+        }
+
+        private void chatTextBox_ItemEdit(object sender, ItemEditEventArgs e)
+        {
+            if (e.Item is MessageItem)
+            {
+                txtMessageEditBox.BeginEdit(((MessageItem)e.Item).Message, e.Item);
+                txtMessageEditBox.GetFocus();
+            }
         }
     }
 }

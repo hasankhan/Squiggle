@@ -8,6 +8,11 @@
             <Setter Property="CornerRadius" Value="3" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding EditMode}" Value="True">
+                    <Setter Property="Background" Value="LightYellow" />
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
 
         <Style x:Key="TextStyle" TargetType="{x:Type TextBox}">
@@ -17,6 +22,11 @@
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding EditMode}" Value="True">
+                    <Setter Property="Background" Value="LightYellow" />
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
 
         <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
@@ -35,7 +45,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="80" />
             </Grid.ColumnDefinitions>
-            <TextBox AllowDrop="True" x:Name="txtMessage"
+            <TextBox AllowDrop="True" x:Name="txtMessage" Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}"
                     TabIndex="0"  Style="{StaticResource TextStyle}" 
                     AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
                     TextChanged="txtMessage_TextChanged" PreviewKeyDown="txtMessage_PreviewKeyDown" TextWrapping="Wrap" />

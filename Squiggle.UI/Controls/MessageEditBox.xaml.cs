@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Squiggle.UI.Helpers;
 using Squiggle.UI.Settings;
+using Squiggle.UI.ViewModel;
 
 namespace Squiggle.UI.Controls
 {   
@@ -17,6 +18,8 @@ namespace Squiggle.UI.Controls
         const int maxMessages = 10;
         int messageIndex = 0;
         List<string> messages = new List<string>();
+        object editContext;
+        EditViewModel editModel;
 
         public event EventHandler<MessageSendEventArgs> MessageSend = delegate { };
         public event EventHandler MessageTyping = delegate { };
@@ -25,10 +28,7 @@ namespace Squiggle.UI.Controls
 
         public string Text 
         {
-            get
-            {
-                return txtMessage.Text;
-            }
+            get { return editModel.Message; }
         }
 
         public bool CanUndo
@@ -36,9 +36,7 @@ namespace Squiggle.UI.Controls
             get { return (bool)GetValue(CanUndoProperty); }
             set { SetValue(CanUndoProperty, value); }
         }
-
-        public static readonly DependencyProperty CanUndoProperty =
-            DependencyProperty.Register("CanUndo", typeof(bool), typeof(MessageEditBox), new UIPropertyMetadata(false));
+        public static readonly DependencyProperty CanUndoProperty = DependencyProperty.Register("CanUndo", typeof(bool), typeof(MessageEditBox), new UIPropertyMetadata(false));
 
         public bool Enabled
         {
@@ -54,8 +52,17 @@ namespace Squiggle.UI.Controls
         {
             InitializeComponent();
             SetFont();
+            DataContext = editModel = new EditViewModel();
 
             SettingsProvider.Current.SettingsUpdated += new EventHandler(Current_SettingsUpdated);
+        }
+
+
+        public void BeginEdit(string message, object context)
+        {
+            editModel.Message = message;
+            editModel.EditMode = true;
+            editContext = context;
         }
 
         void Current_SettingsUpdated(object sender, EventArgs e)
@@ -76,37 +83,45 @@ namespace Squiggle.UI.Controls
 
         private void btnSend_Click(object sender, RoutedEventArgs e)
         {
-            RaiseMessageSendEvent();            
+            OnMessageSent();            
         }
 
-        private void RaiseMessageSendEvent()
+        void OnMessageSent()
         {
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                messages.Add(txtMessage.Text);
-                if (messages.Count > maxMessages)
-                    messages.RemoveAt(0);
-                messageIndex = messages.Count - 1;
+            messages.Add(editModel.Message);
+            if (messages.Count > maxMessages)
+                messages.RemoveAt(0);
+            messageIndex = messages.Count - 1;
 
-                string message = txtMessage.Text;
-                txtMessage.Text = String.Empty;
-                txtMessage.Focus();
+            string message = editModel.Message;
+            object context = this.editContext;
 
-                MessageSend(this, new MessageSendEventArgs() { Message = message });
-            }));            
+            editModel.Message = String.Empty;
+            txtMessage.Focus();
+            ResetEditState();
+
+            MessageSend(this, new MessageSendEventArgs() { Message = message, Context = context });
         }
 
         private void txtMessage_TextChanged(object sender, TextChangedEventArgs e)
         {
             CanUndo = txtMessage.CanUndo;
-            if (txtMessage.Text != String.Empty)
-                NotifyTyping();
+            if (editModel.Message == String.Empty)
+                ResetEditState();
+            else
+                OnMessageTyping();
             UpdateButtonState();
+        }
+
+        void ResetEditState()
+        {
+            editContext = null;
+            editModel.EditMode = false;
         }
 
         private void UpdateButtonState()
         {
-            btnSend.IsEnabled = Enabled && txtMessage.Text != String.Empty;
+            btnSend.IsEnabled = Enabled && editModel.Message != String.Empty;
         }        
 
         private void txtMessage_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -129,7 +144,7 @@ namespace Squiggle.UI.Controls
                 {
 
                     if (btnSend.IsEnabled)
-                        RaiseMessageSendEvent();
+                        OnMessageSent();
                     e.Handled = true;
                 }
             }
@@ -143,10 +158,10 @@ namespace Squiggle.UI.Controls
                 messageIndex = messages.Count - 1;
 
             if (messages.Any())
-                txtMessage.Text = messages[messageIndex];
+                editModel.Message = messages[messageIndex];
         }
 
-        void NotifyTyping()
+        void OnMessageTyping()
         {
             if (!lastTypingNotificationSent.HasValue || DateTime.Now.Subtract(lastTypingNotificationSent.Value).TotalSeconds > 5)
             {
@@ -161,8 +176,31 @@ namespace Squiggle.UI.Controls
         }
     }
 
+    class EditViewModel : ViewModelBase
+    {
+        string message;
+        bool editMode;
+
+        public string Message
+        {
+            get { return message; }
+            set { Set(() => Message, ref message, value); }
+        }
+
+        public bool EditMode
+        {
+            get { return editMode; }
+            set { Set(() => EditMode, ref editMode, value); }
+        }
+    }
+
     public class MessageSendEventArgs : EventArgs
     {
+        public bool Updated
+        {
+            get { return Context != null; }
+        }
+        public object Context { get; set; }
         public string Message { get; set; }
     }
 

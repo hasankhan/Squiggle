@@ -38,10 +38,7 @@ namespace Squiggle.UI
 
         protected override bool OnStartup(Microsoft.VisualBasic.ApplicationServices.StartupEventArgs e)
         {
-            // First time app is launched
             app = new App();
-            // You have	to add this	line to	the	MSDN sample
-            // to make it work here...
             app.InitializeComponent();
             app.Run();
 

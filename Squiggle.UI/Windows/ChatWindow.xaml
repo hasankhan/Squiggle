@@ -80,7 +80,7 @@
                 <TextBlock Margin="5" Focusable="False" Text="{Binding StringFormat='{}{0} appears to be offline.'}" />
             </Border>
             <controls:ChatTextBox Grid.Row="1" x:Name="chatTextBox" 
-                                  Focusable="False" Height="Auto" Width="Auto" />
+                                  Focusable="False" Height="Auto" Width="Auto" ItemEdit="chatTextBox_ItemEdit" />
             <Expander x:Name="expanderDisplayPics" Style="{DynamicResource displayPicsExpanderStyle}" Grid.Column="1" Grid.Row="1" 
                       ExpandDirection="Right" Expanded="Expander_Expanded" Collapsed="Expander_Collapsed">
                 <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" Width="115">
