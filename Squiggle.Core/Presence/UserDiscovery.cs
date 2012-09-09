@@ -74,29 +74,28 @@ namespace Squiggle.Core.Presence
         void channel_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
             ExceptionMonster.EatTheException(() =>
-                {
-                    if (e.Message is LoginMessage)
-                        OnLoginMessage(e.Message);
-                    else if (e.Message is HiMessage)
-                        OnHiMessage((HiMessage)e.Message);
-                    else if (e.Message is HelloMessage)
-                        OnHelloMessage((HelloMessage)e.Message);
-                    else if (e.Message is UserUpdateMessage)
-                        OnUpdateMessage((UserUpdateMessage)e.Message);
-                    else if (e.Message is GiveUserInfoMessage)
-                        OnGiveUserInfoMessage((GiveUserInfoMessage)e.Message);
-                    else if (e.Message is UserInfoMessage)
-                        OnUserInfoMessage((UserInfoMessage)e.Message);
-                    else if (e.Message is LogoutMessage)
-                        OnLogoutMessage((LogoutMessage)e.Message);
+            {
+                if (e.Message is LoginMessage)
+                    OnLoginMessage(e.Message);
+                else if (e.Message is HiMessage)
+                    OnHiMessage((HiMessage)e.Message);
+                else if (e.Message is HelloMessage)
+                    OnHelloMessage((HelloMessage)e.Message);
+                else if (e.Message is UserUpdateMessage)
+                    OnUpdateMessage((UserUpdateMessage)e.Message);
+                else if (e.Message is GiveUserInfoMessage)
+                    OnGiveUserInfoMessage((GiveUserInfoMessage)e.Message);
+                else if (e.Message is UserInfoMessage)
+                    OnUserInfoMessage((UserInfoMessage)e.Message);
+                else if (e.Message is LogoutMessage)
+                    OnLogoutMessage((LogoutMessage)e.Message);
                     
-                }, "handling presence message in userdiscovery class");
+            }, "handling presence message in userdiscovery class");
         }       
 
         void OnLogoutMessage(LogoutMessage message)
         {
-            IPEndPoint presenceEndPoint = message.Sender.Address;
-            OnUserOffline(presenceEndPoint);
+            OnUserOffline(message.Sender.ClientID);
         }      
 
         void OnLoginMessage(Message message)
@@ -158,12 +157,12 @@ namespace Squiggle.Core.Presence
                     OnUserUpdated(user);
             }
             else
-                OnUserOffline(user.PresenceEndPoint);
+                OnUserOffline(user.ID);
         }
 
-        void OnUserOffline(IPEndPoint endPoint)
+        void OnUserOffline(string id)
         {
-            var user = onlineUsers.FirstOrDefault(u => u.PresenceEndPoint.Equals(endPoint));
+            var user = onlineUsers.FirstOrDefault(u => u.ID.Equals(id));
             if (user != null)
             {
                 onlineUsers.Remove(user);
@@ -173,7 +172,7 @@ namespace Squiggle.Core.Presence
 
         void OnUserUpdated(IUserInfo newUser)
         {
-            var oldUser = onlineUsers.FirstOrDefault(u => u.Equals(newUser));
+            var oldUser = onlineUsers.FirstOrDefault(u => u.ID.Equals(newUser.ID));
             if (oldUser == null)
                 OnPresenceMessage(newUser, true);
             else

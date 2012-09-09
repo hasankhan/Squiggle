@@ -270,7 +270,7 @@ namespace Squiggle.UI.Windows
             Dispatcher.Invoke((Action)(() =>
             {
                 foreach (var window in chatWindows)
-                    window.DestroySession();
+                    window.EndChat();
 
                 DestroyMonitor();
 

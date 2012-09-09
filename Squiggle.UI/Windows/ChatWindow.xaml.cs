@@ -82,8 +82,8 @@ namespace Squiggle.UI.Windows
             this.DataContext = this;
 
             this.PrimaryBuddy = buddy;
-            this.PrimaryBuddy.Online += new EventHandler(buddy_Online);
-            this.PrimaryBuddy.Offline += new EventHandler(buddy_Offline);
+            this.PrimaryBuddy.Online += new EventHandler(PrimaryBuddy_Online);
+            this.PrimaryBuddy.Offline += new EventHandler(PrimaryBuddy_Offline);
 
             chatTextBox.KeepHistory = !SettingsProvider.Current.Settings.ChatSettings.ClearChatOnWindowClose;
 
@@ -105,7 +105,7 @@ namespace Squiggle.UI.Windows
             get
             {
                 if (chatSession == null)
-                    return Enumerable.Empty<Buddy>();
+                    return Enumerable.Repeat(PrimaryBuddy, 1);
                 else
                     return chatSession.Buddies;
             }
@@ -164,7 +164,6 @@ namespace Squiggle.UI.Windows
             chatSession.BuddyTyping += new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
             chatSession.ActivityInvitationReceived += new EventHandler<ActivityInvitationReceivedEventArgs>(chatSession_ActivityInvitationReceived);
             chatSession.GroupChatStarted += new EventHandler(chatSession_GroupChatStarted);
-            txtMessageEditBox.Enabled = true;
             mnuInviteContact.IsEnabled = !IsBroadcastChat;
             chatSession.EnableLogging = SettingsProvider.Current.Settings.ChatSettings.EnableLogging;
             MonitorAll();
@@ -325,7 +324,7 @@ namespace Squiggle.UI.Windows
             Dispatcher.Invoke(OnParticipantsChanged);
         }
 
-        void buddy_Online(object sender, EventArgs e)
+        void PrimaryBuddy_Online(object sender, EventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -334,7 +333,7 @@ namespace Squiggle.UI.Windows
             });
         }
 
-        void buddy_Offline(object sender, EventArgs e)
+        void PrimaryBuddy_Offline(object sender, EventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -342,6 +341,9 @@ namespace Squiggle.UI.Windows
                 {
                     buddyOfflineMessage.DataContext = PrimaryBuddy.DisplayName;
                     buddyOfflineMessage.Visibility = Visibility.Visible;
+                    /* since ZeroMQ doesn't report failure and if the user comes online with new ip/port then existing 
+                     * session will continue to talk to old endpoint. Therefore destroy the session */
+                    DestroySession(); 
                 }
             });
         }
@@ -730,10 +732,19 @@ namespace Squiggle.UI.Windows
             this.Activate();
         }
 
-        internal void DestroySession()
+        public void EndChat()
         {
-            if (voiceController.VoiceChatContext != null)
-                voiceController.VoiceChatContext.Cancel();
+            DestroySession();
+        }
+
+        void DestroySession()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (voiceController.VoiceChatContext != null)
+                    voiceController.VoiceChatContext.Cancel();
+            });
+            
 
             fileTransfers.CancelAll();
             if (chatSession != null)
@@ -754,7 +765,6 @@ namespace Squiggle.UI.Windows
                 Dispatcher.Invoke(() =>
                 {
                     OnParticipantsChanged();
-                    txtMessageEditBox.Enabled = false;
                 });
             }
         }
