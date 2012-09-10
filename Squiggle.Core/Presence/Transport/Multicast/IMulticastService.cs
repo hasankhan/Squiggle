@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Squiggle.Core.Presence.Transport.Broadcast
+namespace Squiggle.Core.Presence.Transport.Multicast
 {
-    interface IBroadcastService
+    interface IMulticastService
     {
         event EventHandler<MessageReceivedEventArgs> MessageReceived;
         void SendMessage(Message message);

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using ProtoBuf;
 
-namespace Squiggle.Core.Presence.Transport.Broadcast.MultcastService.Messages
+namespace Squiggle.Core.Presence.Transport.Multicast.Tcp.Messages
 {
     [ProtoContract]
     public class RegisterMessage: Message

@@ -67,7 +67,7 @@
     <Compile Include="..\Shared\AssemblyInfo.Version.cs">
       <Link>Properties\AssemblyInfo.Version</Link>
     </Compile>
-    <Compile Include="MulticastService.cs" />
+    <Compile Include="MulticastServer.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>

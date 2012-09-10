@@ -6,18 +6,18 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using Squiggle.Core.Presence.Transport;
-using Squiggle.Core.Presence.Transport.Broadcast.MultcastService;
+using Squiggle.Core.Presence.Transport.Multicast.Tcp;
 using Squiggle.Utilities;
 using System.Net;
 using Squiggle.Utilities.Net.Pipe;
 using Squiggle.Utilities.Serialization;
-using Squiggle.Core.Presence.Transport.Broadcast.MultcastService.Messages;
+using Squiggle.Core.Presence.Transport.Multicast.Tcp.Messages;
 
-namespace Squiggle.Core.Presence.Transport.Broadcast.MultcastService
+namespace Squiggle.Core.Presence.Transport.Multicast.Tcp
 {
     public class MessageReceivedEventArgs: EventArgs
     {
-        public Squiggle.Core.Presence.Transport.Broadcast.MultcastService.Message Message { get; set; }
+        public Squiggle.Core.Presence.Transport.Multicast.Tcp.Message Message { get; set; }
     }
 
     public class MulticastHost: IDisposable
@@ -41,7 +41,7 @@ namespace Squiggle.Core.Presence.Transport.Broadcast.MultcastService
 
         void pipe_MessageReceived(object sender, Utilities.Net.Pipe.MessageReceivedEventArgs e)
         {
-            SerializationHelper.Deserialize<Squiggle.Core.Presence.Transport.Broadcast.MultcastService.Message>(e.Message, msg =>
+            SerializationHelper.Deserialize<Squiggle.Core.Presence.Transport.Multicast.Tcp.Message>(e.Message, msg =>
             {
                 MessageReceived(this, new MessageReceivedEventArgs() { Message = msg });
             }

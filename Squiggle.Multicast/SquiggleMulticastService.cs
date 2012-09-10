@@ -18,7 +18,7 @@ namespace Squiggle.Multicast
 {
     public partial class SquiggleMulticastService : ConsoleService
     {
-        MulticastService service;
+        MulticastServer service;
 
         public SquiggleMulticastService()
         {
@@ -31,7 +31,7 @@ namespace Squiggle.Multicast
 
             DumpConfig(endPoint);
 
-            service = new MulticastService(endPoint);
+            service = new MulticastServer(endPoint);
             service.Start();
         }
 

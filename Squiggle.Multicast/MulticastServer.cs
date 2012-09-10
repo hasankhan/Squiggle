@@ -5,19 +5,19 @@ using System.Net;
 using System.ServiceModel;
 using System.Text;
 using Squiggle.Core;
-using Squiggle.Core.Presence.Transport.Broadcast.MultcastService;
+using Squiggle.Core.Presence.Transport.Multicast.Tcp;
 using Squiggle.Utilities;
-using Squiggle.Core.Presence.Transport.Broadcast.MultcastService.Messages;
+using Squiggle.Core.Presence.Transport.Multicast.Tcp.Messages;
 
 namespace Squiggle.Multicast
 {
-    class MulticastService
+    class MulticastServer
     {
         MulticastHost mcastHost;
         HashSet<IPEndPoint> clients;
         IPEndPoint endPoint;
 
-        public MulticastService(IPEndPoint endPoint)
+        public MulticastServer(IPEndPoint endPoint)
         {
             this.endPoint = endPoint;
             this.clients = new HashSet<IPEndPoint>();

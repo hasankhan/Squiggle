@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ProtoBuf;
-using Squiggle.Core.Presence.Transport.Broadcast.MultcastService.Messages;
+using Squiggle.Core.Presence.Transport.Multicast.Tcp.Messages;
 using System.Net;
 
-namespace Squiggle.Core.Presence.Transport.Broadcast.MultcastService
+namespace Squiggle.Core.Presence.Transport.Multicast.Tcp
 {
     [ProtoContract]
     [ProtoInclude(50, typeof(MulticastMessage))]

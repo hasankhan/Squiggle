@@ -42,8 +42,8 @@ namespace Squiggle.Client
             var presenceOptions = new PresenceServiceOptions()
             {
                 ChatEndPoint = options.ChatEndPoint,
-                BroadcastEndPoint = options.BroadcastEndPoint,
-                BroadcastReceiveEndPoint = options.BroadcastReceiveEndPoint,
+                MulticastEndPoint = options.MulticastEndPoint,
+                MulticastReceiveEndPoint = options.MulticastReceiveEndPoint,
                 PresenceServiceEndPoint = options.PresenceServiceEndPoint,
                 KeepAliveTime = options.KeepAliveTime
             };

@@ -7,9 +7,9 @@ using System.Text;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Serialization;
 
-namespace Squiggle.Core.Presence.Transport.Broadcast
+namespace Squiggle.Core.Presence.Transport.Multicast
 {
-    class UdpBroadcastService: IBroadcastService
+    class UdpMulticastService : IMulticastService
     {
         bool started;
         UdpClient client;
@@ -18,7 +18,7 @@ namespace Squiggle.Core.Presence.Transport.Broadcast
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
 
-        public UdpBroadcastService(IPEndPoint bindToIP, IPEndPoint multicastEndPoint)
+        public UdpMulticastService(IPEndPoint bindToIP, IPEndPoint multicastEndPoint)
         {
             this.bindToIP = bindToIP;
             this.multicastEndPoint = multicastEndPoint;

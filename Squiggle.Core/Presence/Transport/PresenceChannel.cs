@@ -6,11 +6,12 @@ using System.Net.Sockets;
 using System.ServiceModel;
 using System.Threading;
 using Squiggle.Core.Chat;
-using Squiggle.Core.Presence.Transport.Broadcast;
+using Squiggle.Core.Presence.Transport.Multicast;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Net;
 using Squiggle.Utilities.Net.Pipe;
 using Squiggle.Utilities.Threading;
+using Squiggle.Core.Presence.Transport.Multicast.Tcp;
 
 namespace Squiggle.Core.Presence.Transport
 {
@@ -26,7 +27,7 @@ namespace Squiggle.Core.Presence.Transport
 
     public class PresenceChannel
     {
-        IBroadcastService broadcastService;
+        IMulticastService multicastService;
         IPEndPoint serviceEndPoint;
         PresenceHost host;
 
@@ -34,14 +35,14 @@ namespace Squiggle.Core.Presence.Transport
 
         public Guid ChannelID { get; private set; }
 
-        public PresenceChannel(IPEndPoint broadcastEndPoint, IPEndPoint broadcastReceiveEndPoint, IPEndPoint serviceEndPoint)
+        public PresenceChannel(IPEndPoint multicastEndPoint, IPEndPoint multicastReceiveEndPoint, IPEndPoint serviceEndPoint)
         {
             this.ChannelID = Guid.NewGuid();
 
-            if (NetworkUtility.IsMulticast(broadcastEndPoint.Address))
-                this.broadcastService = new UdpBroadcastService(broadcastReceiveEndPoint, broadcastEndPoint);
+            if (NetworkUtility.IsMulticast(multicastEndPoint.Address))
+                this.multicastService = new UdpMulticastService(multicastReceiveEndPoint, multicastEndPoint);
             else
-                this.broadcastService = new TcpBroadcastService(broadcastReceiveEndPoint, broadcastEndPoint);
+                this.multicastService = new TcpMulticastService(multicastReceiveEndPoint, multicastEndPoint);
             
             this.serviceEndPoint = serviceEndPoint;
         }        
@@ -52,8 +53,8 @@ namespace Squiggle.Core.Presence.Transport
             host.MessageReceived += new EventHandler<MessageReceivedEventArgs>(host_MessageReceived);
             host.Start();
 
-            broadcastService.MessageReceived += new EventHandler<MessageReceivedEventArgs>(broadcastService_MessageReceived);
-            broadcastService.Start();
+            multicastService.MessageReceived += new EventHandler<MessageReceivedEventArgs>(multicastService_MessageReceived);
+            multicastService.Start();
         }
 
         public void Stop()
@@ -61,15 +62,15 @@ namespace Squiggle.Core.Presence.Transport
             host.Dispose();
             host = null;
 
-            broadcastService.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(broadcastService_MessageReceived);
-            broadcastService.Stop();
+            multicastService.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(multicastService_MessageReceived);
+            multicastService.Stop();
         }
 
-        public void BroadcastMessage(Message message)
+        public void MulticastMessage(Message message)
         {
             message.Recipient = null;
             message.ChannelID = ChannelID;
-            broadcastService.SendMessage(message);
+            multicastService.SendMessage(message);
         }
 
         public void SendMessage(Message message)
@@ -82,7 +83,7 @@ namespace Squiggle.Core.Presence.Transport
             }, "sending presence message to " + message.Recipient);
         }
 
-        void broadcastService_MessageReceived(object sender, MessageReceivedEventArgs e)
+        void multicastService_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
             OnMessageReceived(e);
         }

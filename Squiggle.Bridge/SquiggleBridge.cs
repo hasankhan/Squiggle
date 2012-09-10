@@ -28,8 +28,8 @@ namespace Squiggle.Bridge
         IPEndPoint presenceServiceEndPoint;
         IPEndPoint bridgeEndPointInternal;
         IPEndPoint bridgeEndPointExternal;
-        IPEndPoint broadcastEndPoint;
-        IPEndPoint broadcastReceiveEndPoint;
+        IPEndPoint multicastEndPoint;
+        IPEndPoint multicastReceiveEndPoint;
         PresenceChannel presenceChannel;
         PresenceMessageInspector messageInspector;
 
@@ -39,14 +39,14 @@ namespace Squiggle.Bridge
 
         public SquiggleBridge(IPEndPoint bridgeEndPointInternal,
                               IPEndPoint bridgeEndPointExternal,
-                              IPEndPoint broadcastEndPoint,
-                              IPEndPoint broadcastReceiveEndPoint,
+                              IPEndPoint multicastEndPoint,
+                              IPEndPoint multicastReceiveEndPoint,
                               IPEndPoint presenceServiceEndPoint)
         {
             this.bridgeEndPointInternal = bridgeEndPointInternal;
             this.bridgeEndPointExternal = bridgeEndPointExternal;
-            this.broadcastEndPoint = broadcastEndPoint;
-            this.broadcastReceiveEndPoint = broadcastReceiveEndPoint; 
+            this.multicastEndPoint = multicastEndPoint;
+            this.multicastReceiveEndPoint = multicastReceiveEndPoint; 
             this.presenceServiceEndPoint = presenceServiceEndPoint;
         }
 
@@ -65,7 +65,7 @@ namespace Squiggle.Bridge
             routeTable = new RouteTable();
             messageInspector = new PresenceMessageInspector(routeTable, presenceServiceEndPoint, bridgeEndPointInternal);
 
-            presenceChannel = new PresenceChannel(broadcastEndPoint, broadcastReceiveEndPoint, presenceServiceEndPoint);
+            presenceChannel = new PresenceChannel(multicastEndPoint, multicastReceiveEndPoint, presenceServiceEndPoint);
             presenceChannel.Start();
             presenceChannel.MessageReceived += new EventHandler<Squiggle.Core.Presence.Transport.MessageReceivedEventArgs>(presenceChannel_MessageReceived);
         }
@@ -92,7 +92,7 @@ namespace Squiggle.Bridge
             if (e.IsBroadcast)
                 ExceptionMonster.EatTheException(() =>
                 {
-                    presenceChannel.BroadcastMessage(e.Message);
+                    presenceChannel.MulticastMessage(e.Message);
                 }, "replaying presence message to local clients");
             else
                 ExceptionMonster.EatTheException(() =>

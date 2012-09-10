@@ -36,16 +36,16 @@ namespace Squiggle.UI.Factories
 
             var chatEndPoint = NetworkUtility.GetFreeEndPoint(new IPEndPoint(localIP, chatPort));
             var presenceServiceEndPoint = NetworkUtility.GetFreeEndPoint(new IPEndPoint(localIP, settings.ConnectionSettings.PresencePort));
-            var broadcastEndPoint = new IPEndPoint(presenceAddress, settings.ConnectionSettings.PresenceCallbackPort);
-            var broadcastReceiveEndPoint = NetworkUtility.GetFreeEndPoint(new IPEndPoint(localIP, settings.ConnectionSettings.PresenceCallbackPort));
+            var multicastEndPoint = new IPEndPoint(presenceAddress, settings.ConnectionSettings.PresenceCallbackPort);
+            var multicastReceiveEndPoint = NetworkUtility.GetFreeEndPoint(new IPEndPoint(localIP, settings.ConnectionSettings.PresenceCallbackPort));
 
             string clientID = settings.ConnectionSettings.ClientID;
 
             var options = new ChatClientOptions()
             {
                 ChatEndPoint = new SquiggleEndPoint(clientID, chatEndPoint),
-                BroadcastEndPoint = broadcastEndPoint,
-                BroadcastReceiveEndPoint = broadcastReceiveEndPoint,
+                MulticastEndPoint = multicastEndPoint,
+                MulticastReceiveEndPoint = multicastReceiveEndPoint,
                 PresenceServiceEndPoint = presenceServiceEndPoint,
                 KeepAliveTime = keepAliveTimeout
             };
