@@ -405,7 +405,7 @@ namespace Squiggle.UI.Windows
             {
                 window = new ChatWindow(buddy, context);
                 window.Closed += (sender, e) => chatWindows.Remove(window);
-                window.SetChatSession(chatSession ?? buddy.StartChat());
+                window.SetChatSession(chatSession ?? context.ChatClient.StartChat(buddy));
                 chatWindows.Add(window);
             }
             else if (chatSession != null)
@@ -506,13 +506,13 @@ namespace Squiggle.UI.Windows
 
         void StartBroadcastChat(IEnumerable<IBuddy> buddies)
         {
-            var chatSessions = buddies.Select(b => b.StartChat()).ToList();
+            var chatSessions = buddies.Select(b => context.ChatClient.StartChat(b)).ToList();
             var groupChat = new BroadcastChat(chatSessions);
             CreateChatWindow(groupChat.Buddies.First(), groupChat, true);
-            context.ChatClient.BuddyOnline += (s, b) => groupChat.AddSession(b.Buddy.StartChat());
-            context.ChatClient.BuddyOffline += (s, b) =>
+            context.ChatClient.BuddyOnline += (s, e) => groupChat.AddSession(context.ChatClient.StartChat(e.Buddy));
+            context.ChatClient.BuddyOffline += (s, e) =>
             {
-                var session = groupChat.ChatSessions.FirstOrDefault(c => c.Buddies.Contains(b.Buddy) && !c.IsGroupChat);
+                var session = groupChat.ChatSessions.FirstOrDefault(c => c.Buddies.Contains(e.Buddy) && !c.IsGroupChat);
                 groupChat.RemoveSession(session);
             };
         }

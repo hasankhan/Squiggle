@@ -541,7 +541,7 @@ namespace Squiggle.UI.Windows
                 else
                 {
                     PrimaryBuddy = buddyInList;
-                    SetChatSession(buddyInList.StartChat());
+                    SetChatSession(context.ChatClient.StartChat(PrimaryBuddy));
                 }
             }
 

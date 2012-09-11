@@ -85,11 +85,6 @@ namespace Squiggle.Client
             OnPropertyChanged("ChatEndPoint");
         }
         
-        public IChat StartChat()
-        {
-            return ChatClient.StartChat(this);
-        }
-
         void chatClient_ChatStarted(object sender, ChatStartedEventArgs e)
         {
             if (e.Buddy.Equals(this))

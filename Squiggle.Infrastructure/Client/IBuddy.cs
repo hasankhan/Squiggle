@@ -13,7 +13,6 @@ namespace Squiggle.Client
         event EventHandler Online;
         Squiggle.Core.Presence.IBuddyProperties Properties { get; }
         event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        IChat StartChat();
         Squiggle.Core.Presence.UserStatus Status { get; set; }
         void Update(System.Net.IPEndPoint chatEndPoint, System.Collections.Generic.IDictionary<string, string> properties);
     }
