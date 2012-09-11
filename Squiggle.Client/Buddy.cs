@@ -24,10 +24,6 @@ namespace Squiggle.Client
         public event EventHandler Offline = delegate { };
         public event EventHandler Online = delegate { };
 
-        public Buddy()
-        {
-        }
-
         public Buddy(IChatClient chatClient, string id, IPEndPoint chatEndPoint, IBuddyProperties properties)
         {
             this.Id = id;

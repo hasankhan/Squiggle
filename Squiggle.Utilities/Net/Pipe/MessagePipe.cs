@@ -44,7 +44,9 @@ namespace Squiggle.Utilities.Net.Pipe
 
         protected Socket GetSocket(SocketType type)
         {
-            return context.Socket(type);
+            var socket = context.Socket(type);
+            socket.Linger = 0;
+            return socket;
         }
 
         protected abstract Socket CreateListener();
