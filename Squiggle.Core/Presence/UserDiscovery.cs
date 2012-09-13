@@ -112,7 +112,7 @@ namespace Squiggle.Core.Presence
             channel.SendMessage(reply);
 
             UserInfo user = message.GetUser();
-            OnPresenceMessage(user, true);
+            OnPresenceMessage(user, discovered: true);
         }
 
         void OnHelloMessage(HelloMessage message)
@@ -144,20 +144,17 @@ namespace Squiggle.Core.Presence
 
         void OnPresenceMessage(IUserInfo user, bool discovered)
         {
-            if (user.Status != UserStatus.Offline)
+            if (user.Status == UserStatus.Offline)
+                OnUserOffline(user.ID);
+            else if (onlineUsers.Add(user))
             {
-                if (onlineUsers.Add(user))
-                {
-                    if (discovered)
-                        UserDiscovered(this, new UserEventArgs() { User = user });
-                    else
-                        UserOnline(this, new UserEventArgs() { User = user });
-                }
+                if (discovered)
+                    UserDiscovered(this, new UserEventArgs() { User = user });
                 else
-                    OnUserUpdated(user);
+                    UserOnline(this, new UserEventArgs() { User = user });
             }
             else
-                OnUserOffline(user.ID);
+                OnUserUpdated(user);
         }
 
         void OnUserOffline(string id)
@@ -174,7 +171,7 @@ namespace Squiggle.Core.Presence
         {
             var oldUser = onlineUsers.FirstOrDefault(u => u.ID.Equals(newUser.ID));
             if (oldUser == null)
-                OnPresenceMessage(newUser, true);
+                OnPresenceMessage(newUser, discovered: true);
             else
             {
                 oldUser.Update(newUser);
