@@ -66,9 +66,14 @@ namespace Squiggle.Core.Presence
             channel.MulticastMessage(message);
         }        
 
-        public void DiscoverUser(ISquiggleEndPoint user)
+        /// <summary>
+        /// Asks user to return his presence information. Can be used to get latest update about user presence or to inquire details about discovered users.
+        /// </summary>
+        /// <param name="user">The presence endpoint of user.</param>
+        /// <param name="discovered">If True, UserUpdated event is fired on completion, otherwise UserDiscovered.</param>
+        public void UpdateUser(ISquiggleEndPoint user, bool discovered)
         {
-            AskForUserInfo(user, UserInfoState.PresenceDiscovered);
+            AskForUserInfo(user, discovered ? UserInfoState.PresenceDiscovered : UserInfoState.Update);
         }
 
         void channel_MessageReceived(object sender, MessageReceivedEventArgs e)

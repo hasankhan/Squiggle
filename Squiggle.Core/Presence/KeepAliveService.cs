@@ -9,6 +9,11 @@ using Squiggle.Utilities;
 
 namespace Squiggle.Core.Presence
 {
+    class KeepAliveEventArgs: EventArgs
+    {
+        public SquiggleEndPoint User { get; set; }
+    }
+
     class KeepAliveService : IDisposable
     {
         Timer timer;
@@ -18,9 +23,9 @@ namespace Squiggle.Core.Presence
         Dictionary<IUserInfo, DateTime> aliveUsers;
         DateTime lastKeepAliveMessage;
 
-        public event EventHandler<UserEventArgs> UserLost = delegate { };
-        public event EventHandler<UserEventArgs> UserLosing = delegate { };
-        public event EventHandler<UserEventArgs> UserDiscovered = delegate { };
+        public event EventHandler<KeepAliveEventArgs> UserLost = delegate { };
+        public event EventHandler<KeepAliveEventArgs> UserLosing = delegate { };
+        public event EventHandler<KeepAliveEventArgs> UserDiscovered = delegate { };
 
         public KeepAliveService(PresenceChannel channel, IUserInfo user, TimeSpan keepAliveSyncTime)
         {
@@ -95,19 +100,18 @@ namespace Squiggle.Core.Presence
             gone.ForEach(user =>
             {
                 HeIsGone(user);
-                UserLost(this, new UserEventArgs() { User = user });
+                UserLost(this, new KeepAliveEventArgs() { User = new SquiggleEndPoint(user.ID, user.PresenceEndPoint) });
             });
 
             List<IUserInfo> going = GetInactiveUsers(keepAliveTime =>keepAliveTime + 5.Seconds()).Except(gone).ToList();
-            going.ForEach(user=>UserLosing(this, new UserEventArgs(){User = user }));
-
-            
+            going.ForEach(user => UserLosing(this, new KeepAliveEventArgs() { User = new SquiggleEndPoint(user.ID, user.PresenceEndPoint) }));
         }        
 
         void OnKeepAliveMessage(KeepAliveMessage message)
         {
             var user = new UserInfo() { ID = message.Sender.ClientID,
-                                        PresenceEndPoint = message.Sender.Address };
+                                        PresenceEndPoint = message.Sender.Address 
+                                       };
             bool existingUser;
             lock (aliveUsers)
                 existingUser = aliveUsers.ContainsKey(user);
@@ -115,7 +119,7 @@ namespace Squiggle.Core.Presence
             if (existingUser)
                 HeIsAlive(user);
             else
-                UserDiscovered(this, new UserEventArgs() { User = user });
+                UserDiscovered(this, new KeepAliveEventArgs() { User = new SquiggleEndPoint(user.ID, user.PresenceEndPoint) });
         }
 
         List<IUserInfo> GetInactiveUsers(Func<TimeSpan, TimeSpan> waitTimeSelector)

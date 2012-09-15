@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using Squiggle.Core.Chat;
 using Squiggle.Core.Presence.Transport;
-using Squiggle.Utilities;
 using Squiggle.Utilities.Threading;
 
 namespace Squiggle.Core.Presence
@@ -45,8 +42,9 @@ namespace Squiggle.Core.Presence
             discovery.UserDiscovered += new EventHandler<UserEventArgs>(discovery_UserDiscovered);
 
             this.keepAlive = new KeepAliveService(channel, thisUser, options.KeepAliveTime);
-            this.keepAlive.UserLost += new EventHandler<UserEventArgs>(keepAlive_UserLost);
-            this.keepAlive.UserDiscovered += new EventHandler<UserEventArgs>(keepAlive_UserDiscovered);
+            this.keepAlive.UserLost += new EventHandler<KeepAliveEventArgs>(keepAlive_UserLost);
+            this.keepAlive.UserLosing += new EventHandler<KeepAliveEventArgs>(keepAlive_UserLosing);
+            this.keepAlive.UserDiscovered += new EventHandler<KeepAliveEventArgs>(keepAlive_UserDiscovered);
         }        
 
         public void Login(string name, IBuddyProperties properties)
@@ -94,30 +92,21 @@ namespace Squiggle.Core.Presence
             channel.Stop();
         }    
 
-        void keepAlive_UserDiscovered(object sender, UserEventArgs e)
+        void keepAlive_UserDiscovered(object sender, KeepAliveEventArgs e)
         {
-            if (ResolveUser(e))
-            {
-                keepAlive.MonitorUser(e.User);
-                OnUserOnline(e, true);
-            }
-            else
-                discovery.DiscoverUser(new SquiggleEndPoint(e.User.ID, e.User.PresenceEndPoint));
+            discovery.UpdateUser(e.User, discovered: true);
         }
 
-        void keepAlive_UserLosing(object sender, UserEventArgs e)
+        void keepAlive_UserLosing(object sender, KeepAliveEventArgs e)
         {
-            if (ResolveUser(e))
-                Async.Invoke(() =>
-                {
-                    discovery.DiscoverUser(new SquiggleEndPoint(e.User.ID, e.User.PresenceEndPoint));
-                });
+            discovery.UpdateUser(e.User, discovered: false);
         }
 
-        void keepAlive_UserLost(object sender, UserEventArgs e)
+        void keepAlive_UserLost(object sender, KeepAliveEventArgs e)
         {
-            if (ResolveUser(e))
-                OnUserOffline(e);
+            IUserInfo user = Users.FirstOrDefault(u => u.ID.Equals(e.User.ClientID));
+            if (user != null)
+                OnUserOffline(user);
         }        
 
         void discovery_UserUpdated(object sender, UserEventArgs e)
@@ -141,7 +130,7 @@ namespace Squiggle.Core.Presence
         void discovery_UserOffline(object sender, UserEventArgs e)
         {
             keepAlive.LeaveUser(e.User);
-            OnUserOffline(e);
+            OnUserOffline(e.User);
         }
 
         void OnUserOnline(UserEventArgs e, bool discovered)
@@ -149,18 +138,9 @@ namespace Squiggle.Core.Presence
             UserOnline(this, new UserOnlineEventArgs() { User = e.User, Discovered = discovered });
         }
 
-        void OnUserOffline(UserEventArgs e)
+        void OnUserOffline(IUserInfo user)
         {
-            UserOffline(this, e);
-        }
-
-        bool ResolveUser(UserEventArgs e)
-        {
-            // userinfo coming from keepaliveservice only has presenceendpoint. Complete information is with discovery service.
-            IUserInfo user = discovery.Users.FirstOrDefault(u => u.Equals(e.User));
-            if (user != null)
-                e.User = user;
-            return user != null;
+            UserOffline(this, new UserEventArgs() { User = user });
         }
 
         #region IDisposable Members
