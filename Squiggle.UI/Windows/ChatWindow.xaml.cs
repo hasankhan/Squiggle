@@ -144,14 +144,11 @@ namespace Squiggle.UI.Windows
                 chatSession.EnableLogging = SettingsProvider.Current.Settings.ChatSettings.EnableLogging;
         }
 
-        internal void SetContext(SquiggleContext context)
+        void SetContext(SquiggleContext context)
         {
             this.context = context;
 
-            filters.Clear();
             filters.AddRange(context.PluginLoader.MessageFilters);
-
-            parsers.Clear();
             parsers.AddRange(context.PluginLoader.MessageParsers);
         }
 
@@ -537,19 +534,10 @@ namespace Squiggle.UI.Windows
         public void SendMessage(string message)
         {
             chatState.ChatStarted = true;
-            if (chatSession == null)
+            if (!EnsureChatSession())
             {
-                var buddyInList = context.ChatClient.Buddies.FirstOrDefault(b => b.Equals(PrimaryBuddy));
-                if (buddyInList == null)
-                {
-                    OnMessageFailed(new MessageFailedEventArgs() { Message = message, Exception = new Exception("User not in buddy list.") });
-                    return;
-                }
-                else
-                {
-                    PrimaryBuddy = buddyInList;
-                    SetChatSession(context.ChatClient.StartChat(PrimaryBuddy));
-                }
+                OnMessageFailed(new MessageFailedEventArgs() { Message = message, Exception = new Exception("User not in buddy list.") });
+                return;
             }
 
             string displayName = context.ChatClient == null ? Translation.Instance.Global_You : context.ChatClient.CurrentUser.DisplayName;
@@ -579,7 +567,7 @@ namespace Squiggle.UI.Windows
 
         public void SendBuzz()
         {
-            if (chatSession == null)
+            if (!EnsureChatSession())
                 return;
 
             if (chatState.CanSendBuzz)
@@ -595,17 +583,19 @@ namespace Squiggle.UI.Windows
 
         public IVoiceChatHandler StartVoiceChat()
         {
+            if (!EnsureChatSession())
+                return null;
             if (chatSession.IsGroupChat)
             {
                 chatTextBox.AddError(Translation.Instance.ChatWindow_VoiceChatNotAllowedInGroup, String.Empty);
                 return null;
             }
-            else if (context.IsVoiceChatActive)
+            if (context.IsVoiceChatActive)
             {
                 chatTextBox.AddError(Translation.Instance.ChatWindow_AlreadyInVoiceChat, String.Empty);
                 return null;
             }
-            else if (!context.PluginLoader.HasActivity(SquiggleActivities.VoiceChat))
+            if (!context.PluginLoader.HasActivity(SquiggleActivities.VoiceChat))
                 return null;
 
             IActivityExecutor executor = chatSession.CreateActivity();
@@ -624,11 +614,8 @@ namespace Squiggle.UI.Windows
 
         public void SendFile()
         {
-            if (chatSession.IsGroupChat)
-            {
-                chatTextBox.AddError(Translation.Instance.ChatWindow_FileTransferNotAllowedInGroup, String.Empty);
+            if (!EnsureFileTransferCapibility())
                 return;
-            }
 
             using (var dialog = new System.Windows.Forms.OpenFileDialog())
             {
@@ -640,47 +627,58 @@ namespace Squiggle.UI.Windows
 
         public void SendFiles(params string[] filePaths)
         {
+            if (!EnsureFileTransferCapibility())
+                return;
+
             foreach (var filePath in filePaths)
                 SendFile(filePath);
         }
 
-        public void SendFile(string filePath)
+        bool EnsureFileTransferCapibility()
         {
+            if (!context.PluginLoader.HasActivity(SquiggleActivities.FileTransfer))
+                return false;
+
+            if (!EnsureChatSession())
+                return false;
+
             if (chatSession.IsGroupChat)
             {
                 chatTextBox.AddError(Translation.Instance.ChatWindow_FileTransferNotAllowedInGroup, String.Empty);
-                return;
+                return false;
             }
 
-            if (!context.PluginLoader.HasActivity(SquiggleActivities.FileTransfer))
+            return true;
+        }
+
+        void SendFile(string filePath)
+        {
+            if (!File.Exists(filePath))
                 return;
 
-            if (File.Exists(filePath))
+            string fileName = Path.GetFileName(filePath);
+            FileStream fileStream = null;
+
+            if (!ExceptionMonster.EatTheException(() =>
             {
-                string fileName = Path.GetFileName(filePath);
-                FileStream fileStream = null;
-
-                if (!ExceptionMonster.EatTheException(() =>
-                                                        {
-                                                            fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete);
-                                                        }, "opening the file for transfer"))
-                {
-                    chatTextBox.AddError(String.Format(Translation.Instance.ChatWindow_CouldNotReadFile + "'{0}'" + Translation.Instance.ChatWindow_MakeSureFileNotInUse, fileName), null);
-                    return;
-                }
-
-                IActivityExecutor executor = chatSession.CreateActivity();
-                var args = new Dictionary<string, object>(){ { "name", fileName}, {"content", fileStream}, {"size", fileStream.Length}};
-                IFileTransferHandler fileTransfer = context.PluginLoader.GetActivityHandler(SquiggleActivities.FileTransfer, f => f.CreateInvite(executor, args)) as IFileTransferHandler;
-                if (fileTransfer == null)
-                    return;
-
-                fileTransfer.Start();
-                fileTransfers.Add(fileTransfer);
-                chatTextBox.AddFileSentRequest(fileTransfer);
-
-                chatState.ChatStarted = true;
+                fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete);
+            }, "opening the file for transfer"))
+            {
+                chatTextBox.AddError(String.Format(Translation.Instance.ChatWindow_CouldNotReadFile + "'{0}'" + Translation.Instance.ChatWindow_MakeSureFileNotInUse, fileName), null);
+                return;
             }
+
+            IActivityExecutor executor = chatSession.CreateActivity();
+            var args = new Dictionary<string, object>() { { "name", fileName }, { "content", fileStream }, { "size", fileStream.Length } };
+            IFileTransferHandler fileTransfer = context.PluginLoader.GetActivityHandler(SquiggleActivities.FileTransfer, f => f.CreateInvite(executor, args)) as IFileTransferHandler;
+            if (fileTransfer == null)
+                return;
+
+            fileTransfer.Start();
+            fileTransfers.Add(fileTransfer);
+            chatTextBox.AddFileSentRequest(fileTransfer);
+
+            chatState.ChatStarted = true;
         }
 
         public void SaveAs()
@@ -711,15 +709,15 @@ namespace Squiggle.UI.Windows
         {
             chatTextBox.SaveTo(fileName);
 
-            if (format != DataFormats.Rtf)
-            {
-                var richTextBox = new System.Windows.Forms.RichTextBox();
-                richTextBox.LoadFile(fileName);
-                if (format == DataFormats.UnicodeText)
-                    richTextBox.SaveFile(fileName, System.Windows.Forms.RichTextBoxStreamType.UnicodePlainText);
-                else
-                    richTextBox.SaveFile(fileName, System.Windows.Forms.RichTextBoxStreamType.PlainText);
-            }
+            if (format == DataFormats.Rtf)
+                return;
+
+            var richTextBox = new System.Windows.Forms.RichTextBox();
+            richTextBox.LoadFile(fileName);
+            if (format == DataFormats.UnicodeText)
+                richTextBox.SaveFile(fileName, System.Windows.Forms.RichTextBoxStreamType.UnicodePlainText);
+            else
+                richTextBox.SaveFile(fileName, System.Windows.Forms.RichTextBoxStreamType.PlainText);
         }
 
         public void Invite(IEnumerable<IBuddy> buddies)
@@ -748,6 +746,25 @@ namespace Squiggle.UI.Windows
         public void EndChat()
         {
             DestroySession();
+        }
+
+        bool EnsureChatSession()
+        {
+            if (chatSession != null)
+                return true;
+
+            bool sessionReady = false;
+
+            var buddyInList = context.ChatClient.Buddies.FirstOrDefault(b => b.Equals(PrimaryBuddy));
+            if (buddyInList != null)
+            {
+                PrimaryBuddy = buddyInList;
+                IChat newSession = context.ChatClient.StartChat(PrimaryBuddy);
+                SetChatSession(newSession);
+                sessionReady = true;
+            }
+            
+            return sessionReady;
         }
 
         void DestroySession()
