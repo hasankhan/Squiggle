@@ -834,15 +834,15 @@ namespace Squiggle.UI.Windows
 
         internal void Show(bool initiatedByUser)
         {
-            if (!initiatedByUser)
-            {
-                if (!SettingsProvider.Current.Settings.ChatSettings.StealFocusOnNewMessage)
-                    WindowState = WindowState.Minimized;
-            }
+            if (!initiatedByUser && Visibility == System.Windows.Visibility.Visible)
+                return;
 
+            bool activateWindow = initiatedByUser || SettingsProvider.Current.Settings.ChatSettings.StealFocusOnNewMessage;
+            
+            if (!activateWindow)
+                WindowState = WindowState.Minimized;
             Show();
-
-            if (initiatedByUser || SettingsProvider.Current.Settings.ChatSettings.StealFocusOnNewMessage)
+            if (activateWindow)
                 Restore();
         }
 
