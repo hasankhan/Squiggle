@@ -352,6 +352,9 @@
     <Compile Include="Helpers\AudioAlert.cs" />
     <Compile Include="Helpers\Collections\ChatWindowCollection.cs" />
     <Compile Include="Controls\ChatDragDropAdvisor.cs" />
+    <Compile Include="Windows\ChatWindow.ChatState.cs">
+      <DependentUpon>ChatWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\ContactsSelectWindow.xaml.cs">
       <DependentUpon>ContactsSelectWindow.xaml</DependentUpon>
     </Compile>

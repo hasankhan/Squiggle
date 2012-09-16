@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Squiggle.Core.Chat.Activity;
 using Squiggle.Client;
+using Squiggle.Client.Activities;
+using Squiggle.Core.Chat.Activity;
 using Squiggle.Plugins;
 using Squiggle.Plugins.MessageFilter;
 using Squiggle.UI.Components;
@@ -22,9 +22,8 @@ using Squiggle.UI.Resources;
 using Squiggle.UI.Settings;
 using Squiggle.UI.StickyWindow;
 using Squiggle.Utilities;
-using Squiggle.Utilities.Threading;
-using Squiggle.Client.Activities;
 using Squiggle.Utilities.Application;
+using Squiggle.Utilities.Threading;
 
 namespace Squiggle.UI.Windows
 {
@@ -33,40 +32,35 @@ namespace Squiggle.UI.Windows
     /// </summary>
     public partial class ChatWindow : StickyWindowBase, IChatWindow
     {
-        IChat chatSession;
+        static Dictionary<IBuddy, IEnumerable<ChatItem>> chatHistory = new Dictionary<IBuddy, IEnumerable<ChatItem>>();
+        
         FlashWindow flash;
-        DateTime? lastMessageReceived;
-        Guid? lastSentMessageId;
         DispatcherTimer statusResetTimer;
         UIActionQueue eventQueue;
-        DateTime? lastBuzzSent;
-        DateTime? lastBuzzReceived;
-        string lastSavedFile;
-        string lastSavedFormat;
-        bool buzzPending;
-        WindowState lastState;
+
         FileTransferCollection fileTransfers = new FileTransferCollection();
-        static Dictionary<IBuddy, IEnumerable<ChatItem>> chatHistory = new Dictionary<IBuddy, IEnumerable<ChatItem>>();
-        SquiggleContext context;
         MultiFilter filters = new MultiFilter();
         MultiParser parsers = new MultiParser();
-        bool chatStarted;
+
+        IChat chatSession;
+        ChatState chatState;
+        WindowState lastWindowState;
+        SquiggleContext context;
 
         public IBuddy PrimaryBuddy { get; private set; }
 
         public ChatWindow()
         {
             InitializeComponent();
+
+            chatState = new ChatState();
             eventQueue = new UIActionQueue(Dispatcher);
         }
 
         internal ChatWindow(IBuddy buddy, SquiggleContext context) : this()
         {
-            this.context = context;
-
-            filters.AddRange(context.PluginLoader.MessageFilters);
-            parsers.AddRange(context.PluginLoader.MessageParsers);
-
+            SetContext(context);
+            
             this.Height = Properties.Settings.Default.ChatWindowHeight;
             this.Width = Properties.Settings.Default.ChatWindowWidth;
 
@@ -87,18 +81,10 @@ namespace Squiggle.UI.Windows
 
             chatTextBox.KeepHistory = !SettingsProvider.Current.Settings.ChatSettings.ClearChatOnWindowClose;
 
-            eventQueue.Enqueue(() =>
-            {
-                if (!IsGroupChat && chatTextBox.KeepHistory)
-                {
-                    IEnumerable<ChatItem> history;
-                    if (chatHistory.TryGetValue(buddy, out history))
-                        chatTextBox.AddItems(history);
-                }
-            });
+            eventQueue.Enqueue(LoadHistory);
 
             new ActivitiesMenuHelper(context).LoadActivities(mnuStartActivity, mnuNoActivity, new RelayCommand<IActivity>(StartActivityMenuItem_Click));
-        }
+        }        
 
         public IEnumerable<IBuddy> Buddies
         {
@@ -133,6 +119,16 @@ namespace Squiggle.UI.Windows
             get { return (chatSession is BroadcastChat); }
         }
 
+        void LoadHistory()
+        {
+            if (IsGroupChat || !chatTextBox.KeepHistory)
+                return;
+
+            IEnumerable<ChatItem> history;
+            if (chatHistory.TryGetValue(PrimaryBuddy, out history))
+                chatTextBox.AddItems(history);
+        }
+
         void LoadSettings()
         {
             if (SettingsProvider.Current.Settings.ChatSettings.ClearChatOnWindowClose)
@@ -146,6 +142,17 @@ namespace Squiggle.UI.Windows
 
             if (chatSession != null)
                 chatSession.EnableLogging = SettingsProvider.Current.Settings.ChatSettings.EnableLogging;
+        }
+
+        internal void SetContext(SquiggleContext context)
+        {
+            this.context = context;
+
+            filters.Clear();
+            filters.AddRange(context.PluginLoader.MessageFilters);
+
+            parsers.Clear();
+            parsers.AddRange(context.PluginLoader.MessageParsers);
         }
 
         internal void SetChatSession(IChat chat)
@@ -181,19 +188,19 @@ namespace Squiggle.UI.Windows
         void ChatWindow_StateChanged(object sender, EventArgs e)
         {
             if (this.WindowState != System.Windows.WindowState.Minimized)
-                lastState = this.WindowState;
+                lastWindowState = this.WindowState;
 
             Dispatcher.Invoke(() =>
             {
                 if (this.WindowState != System.Windows.WindowState.Minimized)
                 {
-                    if (buzzPending)
+                    if (chatState.BuzzPending)
                     {
                         Dispatcher.Delay(() =>
                         {
                             DoBuzzAction();
                         }, TimeSpan.FromSeconds(.5));
-                        buzzPending = false;
+                        chatState.BuzzPending = false;
                     }
                 }
             });
@@ -429,15 +436,15 @@ namespace Squiggle.UI.Windows
 
         void OnBuzzReceived(IBuddy buddy)
         {
-            if (lastBuzzReceived == null || DateTime.Now.Subtract(lastBuzzReceived.Value).TotalSeconds > 5)
+            if (chatState.CanReceiveBuzz)
             {
                 chatTextBox.AddInfo(String.Format("{0} " + Translation.Instance.ChatWindow_HasSentYouBuzz, buddy.DisplayName));
                 if (this.WindowState != System.Windows.WindowState.Minimized)
                     DoBuzzAction();
                 else
-                    buzzPending = true;
+                    chatState.BuzzPending = true;
                 FlashWindow();
-                lastBuzzReceived = DateTime.Now;
+                chatState.BuzzReceived();
             }
         }
 
@@ -455,23 +462,23 @@ namespace Squiggle.UI.Windows
 
         void OnMessageReceived(IBuddy buddy, Guid id, string message, string fontName, System.Drawing.Color color, int fontSize, System.Drawing.FontStyle fontStyle)
         {
-            lastMessageReceived = DateTime.Now;
+            chatState.MessageReceived();
             filters.Filter(message, this, FilterDirection.In, filteredMessage =>
             {
                 chatTextBox.AddMessage(id, buddy.DisplayName, filteredMessage, fontName, fontSize, fontStyle, color, parsers, false);
 
                 FlashWindow();
                 PlayAlert(AudioAlertType.MessageReceived);
-                if (!chatStarted && !IsActive)
+                if (!chatState.ChatStarted && !IsActive)
                     TrayPopup.Instance.Show(Translation.Instance.Popup_NewMessage, String.Format("{0} " + Translation.Instance.Global_ContactSays + ": {1}", buddy.DisplayName, filteredMessage), args => this.Restore());
             });
             ResetStatus();
-            chatStarted = true;
+            chatState.ChatStarted = true;
         }
 
         void OnMessageUpdated(IBuddy buddy, Guid id, string message)
         {
-            lastMessageReceived = DateTime.Now;
+            chatState.MessageReceived();
             chatTextBox.UpdateMessage(id, message);
             ResetStatus();
         }
@@ -497,7 +504,7 @@ namespace Squiggle.UI.Windows
                 chatTextBox.AddFileReceiveRequest(invitation, downloadsFolder);
                 fileTransfers.Add(invitation);
             });
-            chatStarted = true;
+            chatState.ChatStarted = true;
         }
 
         void OnUnknownActivityInvite(IActivityHandler handler)
@@ -524,12 +531,12 @@ namespace Squiggle.UI.Windows
                 voiceController.VoiceChatContext = invitation;
                 invitation.Dispatcher = Dispatcher;
             });
-            chatStarted = true;
+            chatState.ChatStarted = true;
         }
 
         public void SendMessage(string message)
         {
-            chatStarted = true;
+            chatState.ChatStarted = true;
             if (chatSession == null)
             {
                 var buddyInList = context.ChatClient.Buddies.FirstOrDefault(b => b.Equals(PrimaryBuddy));
@@ -550,18 +557,18 @@ namespace Squiggle.UI.Windows
 
             filters.Filter(message, this, FilterDirection.Out, filteredMessage =>
             {
-                lastSentMessageId = Guid.NewGuid();
-                chatSession.SendMessage(lastSentMessageId.Value, settings.FontName, settings.FontSize, settings.FontColor, settings.FontStyle, filteredMessage);
-                chatTextBox.AddMessage(lastSentMessageId.Value, displayName, filteredMessage, settings.FontName, settings.FontSize, settings.FontStyle, settings.FontColor, parsers, true);
+                chatState.LastSentMessageId = Guid.NewGuid();
+                chatSession.SendMessage(chatState.LastSentMessageId.Value, settings.FontName, settings.FontSize, settings.FontColor, settings.FontStyle, filteredMessage);
+                chatTextBox.AddMessage(chatState.LastSentMessageId.Value, displayName, filteredMessage, settings.FontName, settings.FontSize, settings.FontStyle, settings.FontColor, parsers, true);
             });
         }
 
         public void UpdateLastMessage(string message)
         {
-            if (!lastSentMessageId.HasValue)
+            if (!chatState.LastSentMessageId.HasValue)
                 return;
 
-            UpdateMessage(lastSentMessageId.Value, message);
+            UpdateMessage(chatState.LastSentMessageId.Value, message);
         }
 
         void UpdateMessage(Guid id, string message)
@@ -575,11 +582,11 @@ namespace Squiggle.UI.Windows
             if (chatSession == null)
                 return;
 
-            if (lastBuzzSent == null || DateTime.Now.Subtract(lastBuzzSent.Value).TotalSeconds > 5)
+            if (chatState.CanSendBuzz)
             {
                 chatTextBox.AddInfo(Translation.Instance.ChatWindow_YouSentBuzz);
                 chatSession.SendBuzz();
-                lastBuzzSent = DateTime.Now;
+                chatState.BuzzSent();
                 DoBuzzAction();
             }
             else
@@ -609,7 +616,7 @@ namespace Squiggle.UI.Windows
                 voiceChat.Dispatcher = Dispatcher;
                 voiceChat.Start();
                 chatTextBox.AddVoiceChatSentRequest(context, voiceChat, PrimaryBuddy.DisplayName);
-                chatStarted = true;
+                chatState.ChatStarted = true;
             }
             
             return voiceChat;
@@ -672,7 +679,7 @@ namespace Squiggle.UI.Windows
                 fileTransfers.Add(fileTransfer);
                 chatTextBox.AddFileSentRequest(fileTransfer);
 
-                chatStarted = true;
+                chatState.ChatStarted = true;
             }
         }
 
@@ -685,13 +692,19 @@ namespace Squiggle.UI.Windows
 
         public void Save()
         {
-            if (String.IsNullOrEmpty(lastSavedFile))
+            if (String.IsNullOrEmpty(chatState.LastSavedFile))
             {
+                string lastSavedFile = chatState.LastSavedFile;
+                string lastSavedFormat = chatState.LastSavedFormat;
+                
                 if (ShowSaveDialog(out lastSavedFile, out lastSavedFormat))
                     Save();
+
+                chatState.LastSavedFormat = lastSavedFormat;
+                chatState.LastSavedFile = lastSavedFile;
             }
             else
-                SaveTo(lastSavedFile, lastSavedFormat);
+                SaveTo(chatState.LastSavedFile, chatState.LastSavedFormat);
         }
 
         public void SaveTo(string fileName, string format)
@@ -727,7 +740,7 @@ namespace Squiggle.UI.Windows
                 Visibility = System.Windows.Visibility.Visible;
 
             if (WindowState == System.Windows.WindowState.Minimized)
-                WindowState = lastState;
+                WindowState = lastWindowState;
 
             this.Activate();
         }
@@ -788,10 +801,10 @@ namespace Squiggle.UI.Windows
         void ResetStatus()
         {
             statusResetTimer.Stop();
-            if (!lastMessageReceived.HasValue)
+            if (!chatState.LastMessageReceived.HasValue)
                 ChangeStatus(String.Empty);
             else
-                ChangeStatus(Translation.Instance.ChatWindow_LastMessageAt + String.Format(" {0:T} on {0:d}", lastMessageReceived));
+                ChangeStatus(Translation.Instance.ChatWindow_LastMessageAt + String.Format(" {0:T} on {0:d}", chatState.LastMessageReceived));
         }
 
         void FlashWindow()
