@@ -27,7 +27,7 @@ namespace Squiggle.Client
         event EventHandler<BuddyEventArgs> BuddyOffline;
         event EventHandler<BuddyEventArgs> BuddyUpdated;
 
-        IBuddy CurrentUser {get; }
+        ISelfBuddy CurrentUser {get; }
         IEnumerable<IBuddy> Buddies { get; }
         bool LoggedIn { get; }
 

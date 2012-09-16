@@ -7,17 +7,16 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using Squiggle.Client;
 using Squiggle.Core.Presence;
+using Squiggle.UI.Components;
 using Squiggle.UI.Controls;
+using Squiggle.UI.Factories;
 using Squiggle.UI.Helpers;
+using Squiggle.UI.Helpers.Collections;
 using Squiggle.UI.Resources;
 using Squiggle.UI.Settings;
 using Squiggle.UI.StickyWindow;
 using Squiggle.UI.ViewModel;
 using Squiggle.Utilities;
-using Squiggle.Utilities.Application;
-using Squiggle.UI.Factories;
-using Squiggle.UI.Helpers.Collections;
-using Squiggle.UI.Components;
 using Squiggle.Utilities.Threading;
 
 namespace Squiggle.UI.Windows
@@ -499,7 +498,7 @@ namespace Squiggle.UI.Windows
 
         void StartBroadcastChat()
         {
-            var onlineBuddies = context.ChatClient.Buddies.Where(b => b.IsOnline);
+            var onlineBuddies = context.ChatClient.Buddies.Where(b => b.IsOnline());
             if (onlineBuddies.Any())
                 StartBroadcastChat(onlineBuddies);
         }

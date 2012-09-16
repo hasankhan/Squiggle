@@ -8,30 +8,26 @@ using Squiggle.Core.Presence;
 
 namespace Squiggle.Client
 {
-    public class Buddy: INotifyPropertyChanged, IDisposable, Squiggle.Client.IBuddy
+    public class Buddy: INotifyPropertyChanged, Squiggle.Client.IBuddy
     {
         string displayName;
         UserStatus status;
         IBuddyProperties properties;
         bool initialized;
 
-        protected IChatClient ChatClient { get; private set; }
         public string Id { get; private set; }
         public IPEndPoint ChatEndPoint { get; private set; }
-        public DateTime LastUpdated { get; set; }
+        public DateTime LastUpdated { get; private set; }
 
-        public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
         public event EventHandler Offline = delegate { };
         public event EventHandler Online = delegate { };
 
-        public Buddy(IChatClient chatClient, string id, IPEndPoint chatEndPoint, IBuddyProperties properties)
+        public Buddy(string id, string displayName, UserStatus status, IPEndPoint chatEndPoint, IBuddyProperties properties)
         {
             this.Id = id;
+            this.DisplayName = displayName;
+            this.Status = status;
             this.ChatEndPoint = chatEndPoint;
-            this.ChatClient = chatClient;
-            this.ChatClient.BuddyOffline += new EventHandler<BuddyEventArgs>(chatClient_BuddyOffline);
-            this.ChatClient.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);
-            this.ChatClient.ChatStarted += new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
 
             this.properties = properties;
             this.properties.PropertyChanged += (sender, e) => OnBuddyPropertiesChanged();
@@ -43,7 +39,7 @@ namespace Squiggle.Client
         public virtual string DisplayName
         {
             get { return displayName; }
-            set
+            protected set
             {
                 displayName = value;
                 OnPropertyChanged("DisplayName");
@@ -53,11 +49,18 @@ namespace Squiggle.Client
         public virtual UserStatus Status
         {
             get { return status; }
-            set
+            protected set
             {
+                var lastStatus = status;
                 status = value;
+
                 OnPropertyChanged("Status");
                 OnPropertyChanged("IsOnline");
+
+                if (lastStatus == UserStatus.Offline && status != UserStatus.Offline)
+                    Online(this, EventArgs.Empty);
+                else if (lastStatus != UserStatus.Offline && status == UserStatus.Offline)
+                    Offline(this, EventArgs.Empty);
             }
         }
 
@@ -76,42 +79,15 @@ namespace Squiggle.Client
             OnPropertyChanged("Properties");
         }
 
-        public void Update(IPEndPoint chatEndPoint, IDictionary<string, string> properties)
+        internal void Update(UserStatus status, string displayName, IPEndPoint chatEndPoint, IDictionary<string, string> properties)
         {
+            this.Status = status;
+            this.DisplayName = displayName;
             this.ChatEndPoint = chatEndPoint;
             this.properties = new BuddyProperties(properties ?? new Dictionary<string, string>());
             this.properties.PropertyChanged += (sender, e) => OnBuddyPropertiesChanged();
             OnBuddyPropertiesChanged();
             OnPropertyChanged("ChatEndPoint");
-        }
-        
-        void chatClient_ChatStarted(object sender, ChatStartedEventArgs e)
-        {
-            if (e.Buddy.Equals(this))
-                OnChatStarted(e);
-        }
-
-        protected void OnChatStarted(ChatStartedEventArgs e)
-        {
-            ChatStarted(this, e);
-        }
-
-        void chatClient_BuddyOnline(object sender, BuddyEventArgs e)
-        {
-            if (e.Buddy.Equals(this))
-            {
-                Status = e.Buddy.Status;
-                Online(this, EventArgs.Empty);
-            }
-        }
-
-        void chatClient_BuddyOffline(object sender, BuddyEventArgs e)
-        {
-            if (e.Buddy.Equals(this))
-            {
-                Status = e.Buddy.Status;
-                Offline(this, EventArgs.Empty);
-            }
         }
 
         public override bool Equals(object obj)
@@ -130,17 +106,6 @@ namespace Squiggle.Client
         {
             return this.Id.GetHashCode();
         }
-
-        #region IDisposable Members
-
-        public void Dispose()
-        {
-            this.ChatClient.BuddyOffline -= new EventHandler<BuddyEventArgs>(chatClient_BuddyOffline);
-            this.ChatClient.BuddyOnline -= new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);
-            this.ChatClient.ChatStarted -= new EventHandler<ChatStartedEventArgs>(chatClient_ChatStarted);
-        }
-
-        #endregion
 
         #region INotifyPropertyChanged Members
 

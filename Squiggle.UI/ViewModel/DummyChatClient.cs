@@ -11,11 +11,11 @@ namespace Squiggle.UI.ViewModel
 {
     class DummyChatClient: IChatClient
     {
-        Buddy self;
+        DummySelfBuddy self;
 
         public DummyChatClient()
         {
-            self = new Buddy(this, String.Empty, null, new BuddyProperties());
+            self = new DummySelfBuddy();
             self.Status = UserStatus.Offline;
         }
 
@@ -26,7 +26,7 @@ namespace Squiggle.UI.ViewModel
         public event EventHandler<BuddyEventArgs> BuddyOffline = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyUpdated = delegate { };
 
-        public IBuddy CurrentUser
+        public ISelfBuddy CurrentUser
         {
             get { return self; }
         }
@@ -62,6 +62,17 @@ namespace Squiggle.UI.ViewModel
         }
 
         #endregion
+
+        class DummySelfBuddy: Buddy, ISelfBuddy
+        {
+            public new string DisplayName { get; set; }
+            public new UserStatus Status { get; set; }
+
+            public DummySelfBuddy():base(String.Empty, String.Empty, UserStatus.Offline, null, new BuddyProperties())
+            {
+
+            }
+        }
 
         #region IDisposable Members
 

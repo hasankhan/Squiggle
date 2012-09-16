@@ -22,7 +22,7 @@ namespace Squiggle.Client
         public event EventHandler<BuddyEventArgs> BuddyOffline = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyUpdated = delegate { };
 
-        public IBuddy CurrentUser { get; private set; }
+        public ISelfBuddy CurrentUser { get; private set; }
 
         public IEnumerable<IBuddy> Buddies 
         {
@@ -56,7 +56,7 @@ namespace Squiggle.Client
 
         public IChat StartChat(IBuddy buddy)
         {
-            IChatSession session = chatService.CreateSession(new SquiggleEndPoint(buddy.Id, buddy.ChatEndPoint));
+            IChatSession session = chatService.CreateSession(new SquiggleEndPoint(buddy.Id, ((Buddy)buddy).ChatEndPoint));
             var chat = new Chat(session, CurrentUser, buddy, id=>buddies[id]);
             return chat;
         }        
@@ -68,11 +68,7 @@ namespace Squiggle.Client
             chatService.Start();
             presenceService.Login(username, properties);
 
-            var self = new SelfBuddy(this, chatEndPoint.ClientID, properties) 
-            { 
-                DisplayName = username,
-                Status = UserStatus.Online,
-            };
+            var self = new SelfBuddy(this, chatEndPoint.ClientID, username, UserStatus.Online, properties); 
             self.EnableUpdates = true;
             CurrentUser = self;
             LogStatus(self);
@@ -82,14 +78,14 @@ namespace Squiggle.Client
         public void Logout()
         {
             LoggedIn = false;
-            foreach (Buddy buddy in buddies)
-                buddy.Dispose();
             buddies.Clear();
             chatService.Stop();
             presenceService.Logout();
 
-            ((SelfBuddy)CurrentUser).EnableUpdates = false;
-            CurrentUser.Status = UserStatus.Offline;
+            var self = (SelfBuddy)CurrentUser;
+            self.EnableUpdates = false;
+            self.Status = UserStatus.Offline;
+
             LogStatus(CurrentUser);
         }
         
@@ -138,17 +134,11 @@ namespace Squiggle.Client
             var buddy = buddies[e.User.ID];
             if (buddy == null)
             {
-                buddy = new Buddy(this, e.User.ID, e.User.ChatEndPoint, new BuddyProperties(e.User.Properties))
-                {
-                    DisplayName = e.User.DisplayName,
-                    Status = e.User.Status,
-                };
+                buddy = new Buddy(e.User.ID, e.User.DisplayName, e.User.Status, e.User.ChatEndPoint, new BuddyProperties(e.User.Properties));
                 buddies.Add(buddy);
             }
-            else if (!e.Discovered) // when user is discovered the properties are not available
-                UpdateBuddy(buddy, e.User);
             else
-                buddy.Status = e.User.Status;
+                UpdateBuddy(buddy, e.User);
             
             OnBuddyOnline(buddy, e.Discovered);
         }        
@@ -158,7 +148,7 @@ namespace Squiggle.Client
             var buddy = buddies[e.User.ID];
             if (buddy != null)
             {
-                buddy.Status = UserStatus.Offline;
+                buddy.Update(e.User.Status, e.User.DisplayName, e.User.ChatEndPoint, e.User.Properties);
                 OnBuddyOffline(buddy);
             }
         }
@@ -184,9 +174,7 @@ namespace Squiggle.Client
 
         void UpdateBuddy(IBuddy buddy, IUserInfo user)
         {
-            buddy.Status = user.Status;
-            buddy.DisplayName = user.DisplayName;
-            buddy.Update(user.ChatEndPoint, user.Properties);
+            ((Buddy)buddy).Update(user.Status, user.DisplayName, user.ChatEndPoint, user.Properties);
         }
 
         void LogStatus(IBuddy buddy)
@@ -208,18 +196,20 @@ namespace Squiggle.Client
 
         #endregion
 
-        class SelfBuddy : Buddy
+        class SelfBuddy : Buddy, ISelfBuddy
         {
+            IChatClient client;
+
             public bool EnableUpdates { get; set; }
 
-            public SelfBuddy(IChatClient client, string id, IBuddyProperties properties) : base(client, id, null, properties) { }
-
-            public override string DisplayName
+            public SelfBuddy(IChatClient client, string id, string displayName, UserStatus status, IBuddyProperties properties) : base(id, displayName, status, null, properties)
             {
-                get
-                {
-                    return base.DisplayName;
-                }
+                this.client = client;
+            }
+
+            public new string DisplayName
+            {
+                get { return base.DisplayName; }
                 set
                 {
                     base.DisplayName = value;
@@ -227,12 +217,9 @@ namespace Squiggle.Client
                 }
             }
             
-            public override UserStatus Status
+            public new UserStatus Status
             {
-                get
-                {
-                    return base.Status;
-                }
+                get { return base.Status; }
                 set
                 {
                     base.Status = value;
@@ -249,7 +236,7 @@ namespace Squiggle.Client
             void Update()
             {
                 if (EnableUpdates)
-                    ((ChatClient)base.ChatClient).Update();
+                    ((ChatClient)client).Update();
             }
         }
     }

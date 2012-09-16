@@ -29,14 +29,14 @@ namespace Squiggle.UI.Windows
     public partial class SettingsWindow : StickyWindowBase
     {
         SettingsViewModel settingsVm;
-        IBuddy buddy;
+        ISelfBuddy buddy;
 
         public SettingsWindow()
         {
             InitializeComponent();
         }
 
-        public SettingsWindow(IBuddy user) : this()
+        public SettingsWindow(ISelfBuddy user) : this()
         {
             this.buddy = user;
         }

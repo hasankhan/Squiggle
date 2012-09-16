@@ -15,7 +15,7 @@ namespace Squiggle.UI.ViewModel
         IChatClient chatClient;
         Dispatcher currentDispatcher;
 
-        public IBuddy LoggedInUser { get; set; }
+        public ISelfBuddy LoggedInUser { get; set; }
         public ObservableCollection<IBuddy> Buddies { get; private set; }
 
         public bool IsLoggedIn
@@ -25,7 +25,7 @@ namespace Squiggle.UI.ViewModel
 
         public bool AnyoneOnline
         {
-            get { return Buddies.Any(b => b.IsOnline); }
+            get { return Buddies.Any(b => !b.IsOnline()); }
         }
 
         string updateLink;

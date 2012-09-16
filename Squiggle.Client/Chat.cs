@@ -141,7 +141,7 @@ namespace Squiggle.Client
         {
             Async.Invoke(() =>
             {
-                var endpoint = new SquiggleEndPoint(buddy.Id, buddy.ChatEndPoint);
+                var endpoint = new SquiggleEndPoint(buddy.Id, ((Buddy)buddy).ChatEndPoint);
                 ExceptionMonster.EatTheException(() => session.Invite(endpoint), "sending chat invite to " + endpoint);
             });
         }

@@ -59,6 +59,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client\ClientExtensions.cs" />
+    <Compile Include="Client\ISelfBuddy.cs" />
     <Compile Include="Core\Chat\Activity\ActivityHandler.cs" />
     <Compile Include="Core\Chat\Activity\IActivity.cs" />
     <Compile Include="Core\Chat\Activity\IActivityExecutor.cs" />
