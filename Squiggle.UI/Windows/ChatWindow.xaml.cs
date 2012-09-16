@@ -376,7 +376,7 @@ namespace Squiggle.UI.Windows
         void OnMessageFailed(MessageFailedEventArgs e)
         {
 #if DEBUG
-            string message = "Following message could not be delivered due to error: " + e.Exception.Message;
+            string message = "Following message could not be delivered due to error: " + e.Exception.Coalesce(x=>x.Message, "Unknown");
 #else
             string message = Translation.Instance.ChatWindow_MessageCouldNotBeDelivered;
 #endif
@@ -542,7 +542,7 @@ namespace Squiggle.UI.Windows
                 var buddyInList = context.ChatClient.Buddies.FirstOrDefault(b => b.Equals(PrimaryBuddy));
                 if (buddyInList == null)
                 {
-                    OnMessageFailed(new MessageFailedEventArgs() { Message = message, Exception = null });
+                    OnMessageFailed(new MessageFailedEventArgs() { Message = message, Exception = new Exception("User not in buddy list.") });
                     return;
                 }
                 else
