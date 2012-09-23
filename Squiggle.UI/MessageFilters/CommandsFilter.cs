@@ -28,7 +28,8 @@ namespace Squiggle.UI.MessageFilters
             commands = new List<IChatCommand>()
             { 
                 new SimpleCommands(), 
-                new UpdateMessageCommand() 
+                new UpdateMessageCommand(), 
+                new InviteCommand(),
             };
         }
 

@@ -113,6 +113,7 @@
     <Compile Include="Factories\ChatClientOptionsFactory.cs" />
     <Compile Include="Helpers\ActivitiesMenuHelper.cs" />
     <Compile Include="MessageFilters\Commands\IChatCommand.cs" />
+    <Compile Include="MessageFilters\Commands\InviteCommand.cs" />
     <Compile Include="MessageFilters\Commands\PrefixCommand.cs" />
     <Compile Include="MessageFilters\Commands\SimpleCommands.cs" />
     <Compile Include="MessageFilters\Commands\UpdateMessageCommand.cs" />

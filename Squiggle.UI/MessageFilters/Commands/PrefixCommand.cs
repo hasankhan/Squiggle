@@ -20,6 +20,6 @@ namespace Squiggle.UI.MessageFilters.Commands
             OnExecute(command, window, context);
         }
 
-        protected abstract void OnExecute(string command, Plugins.IChatWindow window, Components.SquiggleContext context);
+        protected abstract void OnExecute(string argument, Plugins.IChatWindow window, Components.SquiggleContext context);
     }
 }

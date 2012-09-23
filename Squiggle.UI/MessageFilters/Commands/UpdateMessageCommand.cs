@@ -14,9 +14,9 @@ namespace Squiggle.UI.MessageFilters.Commands
             get { return "/UPDATE "; }
         }
 
-        protected override void OnExecute(string command, Plugins.IChatWindow window, Components.SquiggleContext context)
+        protected override void OnExecute(string argument, Plugins.IChatWindow window, Components.SquiggleContext context)
         {
-            ((ChatWindow)window).UpdateLastMessage(command);
+            ((ChatWindow)window).UpdateLastMessage(argument);
         }
     }
 }

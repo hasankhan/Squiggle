@@ -11,16 +11,22 @@ namespace Squiggle.UI.Resources
     {
         public string Confirmation_FileTransferWindowClose_Title { get; set; }
         public string Confirmation_FileTransferWindowClose_Message { get; set; }
+        
         public string Global_ContactSays { get; set; }
         public string Global_You { get; set; }
         public string Global_ContactSaid { get; set; }
         public string Global_ImageFilter { get; set; }        
+        
         public string Popup_NewMessage { get; set; }
+        
         public string ContactList_SearchContacts { get; set; }
+        
         public string MainWindow_ShareAMessage { get; set; }
+        
         public string ContactSelectWindow_MultiSelect { get; set; }
         public string ContactSelectWindow_Heading_InstantMessage { get; set; }
         public string ContactSelectWindow_Heading_File { get; set; }
+        
         public string ChatWindow_IsTyping { get; set; }
         public string ChatWindow_MessageCouldNotBeDelivered { get; set; }
         public string ChatWindow_HasJoinedConversation { get; set; }
@@ -37,6 +43,10 @@ namespace Squiggle.UI.Resources
         public string ChatWindow_UnknownActivityInvite { get; set; }
         public string ChatWindow_VoiceChatInviteNotSupported { get; set; }
         public string ChatWindow_FileTransferNotAllowedInGroup { get; set; }
+        public string ChatWindow_AlreadyInVoiceChat { get; set; }
+        public string ChatWindow_VoiceChatNotAllowedInGroup { get; set; }
+        public string ChatWindow_NoBuddyWithName { get; set; }
+
         public string FileTransfer_Waiting { get; set; }
         public string FileTransfer_Cancel { get; set; }
         public string FileTransfer_Reject { get; set; }
@@ -46,12 +56,14 @@ namespace Squiggle.UI.Resources
         public string FileTransfer_Cancelled { get; set; }
         public string FileTransfer_Sending { get; set; }
         public string FileTransfer_Receiving { get; set; }
+        
         public string BuddyStatus_Online { get; set; }
         public string BuddyStatus_Busy { get; set; }
         public string BuddyStatus_BeRightBack { get; set; }
         public string BuddyStatus_Away { get; set; }
         public string BuddyStatus_Idle { get; set; }
         public string BuddyStatus_Offline { get; set; }
+        
         public string Emoticon_Angry { get; set; }
         public string Emoticon_Crying { get; set; }
         public string Emoticon_Disappointed { get; set; }
@@ -70,16 +82,18 @@ namespace Squiggle.UI.Resources
         public string Emoticon_Shout { get; set; }
         public string Emoticon_Slobber { get; set; }
         public string Emoticon_Question { get; set; }
+        
         public string VoiceChat_ReceivedWaiting { get; set; }
         public string VoiceChat_SentWaiting { get; set; }
+        
         public string SettingsWindow_Error_InvalidPresenceIP { get; set; }
+        
         public string Error { get; set; }
         public string Error_InvalidImage { get; set; }
         public string Error_NoNetwork { get; set; }
+        
         public string HistoryViewer_ConfirmClear { get; set; }
-        public string HistoryViewer_ConfirmDelete { get; set; }
-        public string ChatWindow_AlreadyInVoiceChat { get; set; }
-        public string ChatWindow_VoiceChatNotAllowedInGroup { get; set; }
+        public string HistoryViewer_ConfirmDelete { get; set; }        
         
         public static Translation Instance { get; set; }
 
@@ -103,6 +117,5 @@ namespace Squiggle.UI.Resources
             var translation = Application.Current.TryFindResource(key) as String;
             return translation;
         }
-
     }
 }
