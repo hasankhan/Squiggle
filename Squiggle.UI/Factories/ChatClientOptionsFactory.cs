@@ -12,16 +12,16 @@ using Squiggle.Core;
 
 namespace Squiggle.UI.Factories
 {
-    class ChatClientFactory: IInstanceFactory<IChatClient>
+    class ChatClientOptionsFactory: IInstanceFactory<ChatClientOptions>
     {
         SquiggleSettings settings;
 
-        public ChatClientFactory(SquiggleSettings settings)
+        public ChatClientOptionsFactory(SquiggleSettings settings)
         {
             this.settings = settings;
         }
 
-        public IChatClient CreateInstance()
+        public ChatClientOptions CreateInstance()
         {
             int chatPort = settings.ConnectionSettings.ChatPort;
             if (String.IsNullOrEmpty(settings.ConnectionSettings.BindToIP))
@@ -49,10 +49,8 @@ namespace Squiggle.UI.Factories
                 PresenceServiceEndPoint = presenceServiceEndPoint,
                 KeepAliveTime = keepAliveTimeout
             };
-            var instance = new ChatClient(options);
-            instance.EnableLogging = settings.GeneralSettings.EnableStatusLogging;
-
-            return instance;
+            
+            return options;
         }
     }
 }

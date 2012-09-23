@@ -165,6 +165,7 @@ namespace Squiggle.Core.Presence
         void OnUserOffline(string id)
         {
             var user = onlineUsers.FirstOrDefault(u => u.ID.Equals(id));
+            user.Status = UserStatus.Offline;
             if (user != null)
             {
                 onlineUsers.Remove(user);

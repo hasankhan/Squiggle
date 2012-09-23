@@ -33,52 +33,50 @@ namespace Squiggle.Client
 
         public bool EnableLogging { get; set; }
 
-        public ChatClient(ChatClientOptions options)
+        public ChatClient()
         {
-            chatService = new ChatService(options.ChatEndPoint);
             buddies = new BuddyList();
-            chatService.ChatStarted += new EventHandler<Squiggle.Core.Chat.ChatStartedEventArgs>(chatService_ChatStarted);
-
-            var presenceOptions = new PresenceServiceOptions()
-            {
-                ChatEndPoint = options.ChatEndPoint,
-                MulticastEndPoint = options.MulticastEndPoint,
-                MulticastReceiveEndPoint = options.MulticastReceiveEndPoint,
-                PresenceServiceEndPoint = options.PresenceServiceEndPoint,
-                KeepAliveTime = options.KeepAliveTime
-            };
-            presenceService = new PresenceService(presenceOptions);
-            presenceService.UserOffline += new EventHandler<UserEventArgs>(presenceService_UserOffline);
-            presenceService.UserOnline += new EventHandler<UserOnlineEventArgs>(presenceService_UserOnline);
-            presenceService.UserUpdated += new EventHandler<UserEventArgs>(presenceService_UserUpdated);
-            this.chatEndPoint = options.ChatEndPoint;
+            CurrentUser = new SelfBuddy(this, String.Empty, String.Empty, UserStatus.Offline, new BuddyProperties());
         }        
 
         public IChat StartChat(IBuddy buddy)
         {
+            if (!LoggedIn)
+                throw new InvalidOperationException("Not logged in.");
+
             IChatSession session = chatService.CreateSession(new SquiggleEndPoint(buddy.Id, ((Buddy)buddy).ChatEndPoint));
             var chat = new Chat(session, CurrentUser, buddy, id=>buddies[id]);
             return chat;
         }        
 
-        public void Login(string username, IBuddyProperties properties)
+        public void Login(ChatClientOptions options)
         {
-            username = username.Trim();
+            string username = options.Username.Trim();
 
-            chatService.Start();
-            presenceService.Login(username, properties);
+            this.chatEndPoint = (SquiggleEndPoint)options.ChatEndPoint;
+            StartChatService();
 
-            var self = new SelfBuddy(this, chatEndPoint.ClientID, username, UserStatus.Online, properties); 
+            var presenceOptions = new PresenceServiceOptions()
+            {
+                ChatEndPoint = (SquiggleEndPoint)options.ChatEndPoint,
+                MulticastEndPoint = options.MulticastEndPoint,
+                MulticastReceiveEndPoint = options.MulticastReceiveEndPoint,
+                PresenceServiceEndPoint = options.PresenceServiceEndPoint,
+                KeepAliveTime = options.KeepAliveTime
+            };
+            StartPresenceService(username, options.UserProperties, presenceOptions);
+
+            var self = (SelfBuddy)CurrentUser;
+            self.Update(UserStatus.Online, options.Username, chatEndPoint.Address, options.UserProperties.ToDictionary());
             self.EnableUpdates = true;
-            CurrentUser = self;
-            LogStatus(self);
+            LogStatus(CurrentUser);
+
             LoggedIn = true;
         }        
 
         public void Logout()
         {
             LoggedIn = false;
-            buddies.Clear();
             chatService.Stop();
             presenceService.Logout();
 
@@ -185,6 +183,22 @@ namespace Squiggle.Client
                     var manager = new HistoryManager();
                     manager.AddStatusUpdate(DateTime.Now, new Guid(buddy.Id), buddy.DisplayName, (int)buddy.Status);
                 }, "logging history.");
+        }
+
+        void StartPresenceService(string username, IBuddyProperties properties, PresenceServiceOptions presenceOptions)
+        {
+            presenceService = new PresenceService(presenceOptions);
+            presenceService.UserOffline += new EventHandler<UserEventArgs>(presenceService_UserOffline);
+            presenceService.UserOnline += new EventHandler<UserOnlineEventArgs>(presenceService_UserOnline);
+            presenceService.UserUpdated += new EventHandler<UserEventArgs>(presenceService_UserUpdated);
+            presenceService.Login(username, properties);
+        }
+
+        void StartChatService()
+        {
+            chatService = new ChatService(chatEndPoint);
+            chatService.ChatStarted += new EventHandler<Squiggle.Core.Chat.ChatStartedEventArgs>(chatService_ChatStarted);
+            chatService.Start();
         }
 
         #region IDisposable Members

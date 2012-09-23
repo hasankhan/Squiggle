@@ -95,7 +95,6 @@
     <Compile Include="Activities\IFileTransferHandler.cs" />
     <Compile Include="Activities\IVoiceChatHandler.cs" />
     <Compile Include="Activities\SquiggleActivities.cs" />
-    <Compile Include="ChatClientOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\Shared\AssemblyInfo.Copyright.cs">
       <Link>Properties\AssemblyInfo.Copyright</Link>

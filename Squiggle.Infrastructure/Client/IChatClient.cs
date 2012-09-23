@@ -32,7 +32,7 @@ namespace Squiggle.Client
         bool LoggedIn { get; }
 
         IChat StartChat(IBuddy buddy);
-        void Login(string username, IBuddyProperties properties);
+        void Login(ChatClientOptions options);
         void Logout();
     }
 }

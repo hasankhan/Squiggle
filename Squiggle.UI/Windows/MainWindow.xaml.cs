@@ -29,7 +29,6 @@ namespace Squiggle.UI.Windows
         WindowState lastState;
         ClientViewModel clientViewModel;
         ChatWindowCollection chatWindows;
-        ClientViewModel dummyViewModel;
         NetworkSignout autoSignout;
         TimeoutSignal clientAvailable = new TimeoutSignal(5.Seconds());
         IdleStatusChanger idleStatusChanger;
@@ -64,7 +63,7 @@ namespace Squiggle.UI.Windows
             chatControl.ContactList.GroupChatStart += new EventHandler<BuddiesActionEventArgs>(ContactList_GroupChatStart);
             chatControl.ContactList.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(ContactList_StartChat);
             chatControl.ContactList.SignOut += new EventHandler(ContactList_SignOut);
-            dummyViewModel = new ClientViewModel(new DummyChatClient());
+            
             autoSignout = new NetworkSignout(this.Dispatcher, u => SignIn(u.DisplayName, u.GroupName, false), () => SignOut(false));
             chatControl.ContactList.OpenAbout += (sender, e) => SquiggleUtility.ShowAboutDialog(this);
         }
@@ -80,7 +79,6 @@ namespace Squiggle.UI.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.DataContext = dummyViewModel;
             this.StateChanged += new EventHandler(Window_StateChanged);
 
             var settings = SettingsProvider.Current.Settings;
@@ -90,7 +88,13 @@ namespace Squiggle.UI.Windows
             string name = settings.PersonalSettings.DisplayName;
             string groupName = settings.PersonalSettings.GroupName;
 
-            chatControl.SignIn.LoadSettings(settings);           
+            chatControl.SignIn.LoadSettings(settings);
+
+            var client = context.ChatClient = new ChatClient();
+            client.ChatStarted += new EventHandler<Squiggle.Client.ChatStartedEventArgs>(client_ChatStarted);
+            client.BuddyUpdated += new EventHandler<BuddyEventArgs>(client_BuddyUpdated);
+            client.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(client_BuddyOnline);
+            client.BuddyOffline += new EventHandler<BuddyEventArgs>(client_BuddyOffline);
 
             if (!String.IsNullOrEmpty(name) && settings.PersonalSettings.AutoSignMeIn)
                 Dispatcher.Delay(() => SignIn(name, groupName, false), 5.Seconds());
@@ -209,7 +213,7 @@ namespace Squiggle.UI.Windows
             Async.Invoke(() =>
             {
                 clientAvailable.Wait();
-                ExceptionMonster.EatTheException(() => context.ChatClient = CreateAndLoginClient(displayName, groupName), "creating chat client", out ex);
+                ExceptionMonster.EatTheException(() => LoginClient(displayName, groupName), "creating chat client", out ex);
             },
             () =>
             {
@@ -268,6 +272,7 @@ namespace Squiggle.UI.Windows
 
             Dispatcher.Invoke((Action)(() =>
             {
+                // Can't chat with chat service stopped. End all sessions.
                 foreach (var window in chatWindows)
                     window.EndChat();
 
@@ -277,7 +282,7 @@ namespace Squiggle.UI.Windows
 
                 Async.Invoke(() =>
                 {
-                    ExceptionMonster.EatTheException(() => context.ChatClient.Logout(), "loging out client");
+                    ExceptionMonster.EatTheException(() => context.ChatClient.Logout(), "logging out client");
                     clientAvailable.End();
                 });
 
@@ -288,8 +293,6 @@ namespace Squiggle.UI.Windows
         void OnSignout(bool byUser)
         {
             chatControl.ContactList.ChatContext = null;
-            clientViewModel = null;
-            this.DataContext = dummyViewModel;
             VisualStateManager.GoToState(chatControl, "OfflineState", true);
 
             if (byUser)
@@ -328,11 +331,10 @@ namespace Squiggle.UI.Windows
             idleStatusChanger = null;
         }
 
-        IChatClient CreateAndLoginClient(string displayName, string groupName)
+        void LoginClient(string displayName, string groupName)
         {
             SettingsProvider.Current.Load(); // reload settings
             var settings = SettingsProvider.Current.Settings;
-
             
             var properties = new BuddyProperties();
             properties.GroupName = groupName;
@@ -341,15 +343,11 @@ namespace Squiggle.UI.Windows
             properties.DisplayImage = settings.PersonalSettings.DisplayImage;
             properties.EmailAddress = settings.PersonalSettings.EmailAddress;
 
-            IChatClient client = new ChatClientFactory(settings).CreateInstance();
-            client.ChatStarted += new EventHandler<Squiggle.Client.ChatStartedEventArgs>(client_ChatStarted);
-            client.BuddyUpdated += new EventHandler<BuddyEventArgs>(client_BuddyUpdated);
-            client.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(client_BuddyOnline);
-            client.BuddyOffline += new EventHandler<BuddyEventArgs>(client_BuddyOffline);
+            ChatClientOptions options = new ChatClientOptionsFactory(settings).CreateInstance();
+            options.Username = displayName;
+            options.UserProperties = properties;
 
-            client.Login(displayName, properties);
-            
-            return client;
+            context.ChatClient.Login(options);
         }
 
         void client_BuddyOnline(object sender, BuddyOnlineEventArgs e)
