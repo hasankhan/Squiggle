@@ -47,7 +47,22 @@ namespace Squiggle.UI.Windows
         WindowState lastWindowState;
         SquiggleContext context;
 
-        public IBuddy PrimaryBuddy { get; private set; }
+        IBuddy _primaryBuddy;
+        public IBuddy PrimaryBuddy
+        {
+            get { return _primaryBuddy;  }
+            private set
+            {
+                if (_primaryBuddy != null)
+                {
+                    _primaryBuddy.Online -= new EventHandler(PrimaryBuddy_Online);
+                    _primaryBuddy.Offline -= new EventHandler(PrimaryBuddy_Offline);
+                }
+                _primaryBuddy = value;
+                _primaryBuddy.Online += new EventHandler(PrimaryBuddy_Online);
+                _primaryBuddy.Offline += new EventHandler(PrimaryBuddy_Offline);
+            }
+        }
 
         public ChatWindow()
         {
@@ -76,8 +91,6 @@ namespace Squiggle.UI.Windows
             this.DataContext = this;
 
             this.PrimaryBuddy = buddy;
-            this.PrimaryBuddy.Online += new EventHandler(PrimaryBuddy_Online);
-            this.PrimaryBuddy.Offline += new EventHandler(PrimaryBuddy_Offline);
 
             chatTextBox.KeepHistory = !SettingsProvider.Current.Settings.ChatSettings.ClearChatOnWindowClose;
 
@@ -390,6 +403,9 @@ namespace Squiggle.UI.Windows
 
         void OnBuddyLeft(IBuddy buddy)
         {
+            if (buddy == PrimaryBuddy && Buddies.Any())
+                PrimaryBuddy = Buddies.FirstOrDefault();
+
             StopMonitoring(buddy);
             chatTextBox.AddInfo(String.Format("{0} " + Translation.Instance.ChatWindow_HasLeftConversation, buddy.DisplayName));
             OnParticipantsChanged();
