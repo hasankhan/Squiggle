@@ -32,3 +32,6 @@
 /Squiggle.Bridge/*.user
 /Squiggle.UI/*.user
 /*.suo
+/Build/*.zip
+/Build/*.log
+/*.ncrunch*
