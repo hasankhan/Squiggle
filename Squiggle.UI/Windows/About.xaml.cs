@@ -6,6 +6,7 @@ using Squiggle.UI.StickyWindow;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 using Squiggle.UI.Components;
+using System;
 
 namespace Squiggle.UI.Windows
 {
@@ -19,6 +20,9 @@ namespace Squiggle.UI.Windows
             InitializeComponent();            
 
             txtVersion.Text = "Version " + AppInfo.Version.ToString();
+            string hash = AppInfo.Hash.Substring(0, Math.Min(AppInfo.Hash.Length, 12));
+            lnkGitHash.NavigateUri = new Uri("http://squiggle.codeplex.com/SourceControl/changeset/" + hash);
+            lnkGitHash.Inlines.Add(hash);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

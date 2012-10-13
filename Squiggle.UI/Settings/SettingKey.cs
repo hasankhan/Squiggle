@@ -18,5 +18,6 @@ namespace Squiggle.UI.Settings
         public static readonly string MaxMessagesToPreserve = "MaxMessagesToPreserve";
         public static readonly string CheckForUpdates = "CheckForUpdates";
         public static readonly string PresenceCallbackPort = "PresenceCallbackPort";
+        public static readonly string GitHash = "GitHash";
     }
 }

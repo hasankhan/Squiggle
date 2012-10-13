@@ -105,6 +105,7 @@ namespace Squiggle.UI.Settings
             Settings.GeneralSettings.AudioAlerts = Properties.Settings.Default.AudioAlerts;
             Settings.GeneralSettings.EnableStatusLogging = reader.GetSetting(SettingKey.EnableStatusLogging, false);
             Settings.GeneralSettings.CheckForUpdates = reader.GetSetting(SettingKey.CheckForUpdates, true);
+            Settings.GeneralSettings.GitHash = reader.GetSetting(SettingKey.GitHash, String.Empty);
 
             if (String.IsNullOrEmpty(Properties.Settings.Default.DownloadsFolder) || !Shell.CreateDirectoryIfNotExists(Properties.Settings.Default.DownloadsFolder))
                 Settings.GeneralSettings.DownloadsFolder = Path.Combine(AppInfo.Location, "Downloads");

@@ -34,10 +34,14 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                 <TextBlock>Support:</TextBlock>
-                <TextBlock Margin="10,0,0,0">
-                    <Hyperlink NavigateUri="mailto:hasan@overroot.com" RequestNavigate="Link_RequestNavigate">hasan@overroot.com</Hyperlink>
-                </TextBlock>
-            </StackPanel>
+                <TextBlock Margin="10,0,0,0"><Hyperlink NavigateUri="mailto:hasan@overroot.com" RequestNavigate="Link_RequestNavigate"><Run Text="hasan@overroot.com"/></Hyperlink></TextBlock>
+            </StackPanel>            
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="10,10,10,10">
+            <TextBlock>Built from:</TextBlock>
+            <TextBlock Margin="10,0,0,0">
+                    <Hyperlink x:Name="lnkGitHash" NavigateUri="" RequestNavigate="Link_RequestNavigate"></Hyperlink>
+            </TextBlock>
         </StackPanel>
         <Button Content="Close" IsCancel="True" IsDefault="True" HorizontalAlignment="Right" Grid.Row="2" Height="23" Width="60" Margin="0,10,10,10" Click="Button_Click" Grid.Column="1" />
     </Grid>
