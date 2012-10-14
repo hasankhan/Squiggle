@@ -96,6 +96,11 @@ namespace Squiggle.UI.Windows
             client.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(client_BuddyOnline);
             client.BuddyOffline += new EventHandler<BuddyEventArgs>(client_BuddyOffline);
 
+            clientViewModel = new ClientViewModel(context.ChatClient);
+            this.DataContext = clientViewModel;
+            chatControl.ChatContext = clientViewModel;
+            clientViewModel.CancelUpdateCommand = new RelayCommand<object>(CancelUpdateCommand_Execute);
+
             if (!String.IsNullOrEmpty(name) && settings.PersonalSettings.AutoSignMeIn)
                 Dispatcher.Delay(() => SignIn(name, groupName, false), 5.Seconds());
             else if (!String.IsNullOrEmpty(name))
@@ -231,11 +236,7 @@ namespace Squiggle.UI.Windows
 
         void OnSignIn(string displayName, string groupName)
         {
-            CreateMonitor();
-            clientViewModel = new ClientViewModel(context.ChatClient);
-            this.DataContext = clientViewModel;
-            chatControl.ChatContext = clientViewModel;
-            clientViewModel.CancelUpdateCommand = new RelayCommand<object>(CancelUpdateCommand_Execute);
+            CreateMonitor();            
 
             VisualStateManager.GoToState(chatControl, "OnlineState", true);
             autoSignout.OnSignIn(displayName, groupName);
