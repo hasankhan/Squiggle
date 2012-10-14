@@ -6,6 +6,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Overroot")]
 [assembly: AssemblyProduct("Squiggle Messenger")]
-[assembly: AssemblyCopyright("Copyright © Overroot 2011")]
+[assembly: AssemblyCopyright("Copyright © 2010 Overroot")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
