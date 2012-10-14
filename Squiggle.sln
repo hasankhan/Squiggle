@@ -39,6 +39,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Infrastructure", "
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Squiggle.Setup", "Squiggle.Setup\Squiggle.Setup.wixproj", "{C8179A48-949C-4CCF-A5BC-30834AC43BA8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{40B7134A-3034-48AF-B4E8-9A0183F4C7CF}"
+	ProjectSection(SolutionItems) = preProject
+		Build\Build-Package.ps1 = Build\Build-Package.ps1
+		Build\Build.cmd = Build\Build.cmd
+		Build\Package.cmd = Build\Package.cmd
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86

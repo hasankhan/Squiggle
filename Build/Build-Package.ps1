@@ -14,8 +14,10 @@ $gitHash = git rev-parse HEAD
 $configPath = "$myDir\..\Squiggle.UI\$releasePath\Squiggle.exe.config"
 (get-content $configPath) -replace "GitHash`" value=`"`"", "GitHash`" value=`"$gitHash`"" | set-content $configPath
 
-write-host ------------- Zipping flies ---------------------------
+write-host ------------- Packaging ---------------------------
 & "$myDir\Package.cmd" Squiggle.UI\$releasePath Client $version
+copy "$myDir\..\Squiggle.Setup\bin\Release\Squiggle.Setup.msi" "$myDir\Squiggle-$version Client.msi"
+
 & "$myDir\Package.cmd" Squiggle.Bridge\$releasePath Bridge $version
 & "$myDir\Package.cmd" Squiggle.Multicast\$releasePath Multicast $version
 & "$myDir\Package.cmd" Scripts Scripts $version
