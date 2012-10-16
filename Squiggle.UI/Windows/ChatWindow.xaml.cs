@@ -772,7 +772,7 @@ namespace Squiggle.UI.Windows
             bool sessionReady = false;
 
             var buddyInList = context.ChatClient.Buddies.FirstOrDefault(b => b.Equals(PrimaryBuddy));
-            if (buddyInList != null && context.ChatClient.LoggedIn)
+            if (buddyInList != null && context.ChatClient.IsLoggedIn)
             {
                 PrimaryBuddy = buddyInList;
                 IChat newSession = context.ChatClient.StartChat(PrimaryBuddy);

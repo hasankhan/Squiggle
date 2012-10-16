@@ -21,7 +21,7 @@ namespace Squiggle.UI.Components
             this.monitor = new UserActivityMonitor(timeout);
             monitor.Idle += (sender, e) =>
             {
-                if (client.LoggedIn && client.CurrentUser.Status.In(UserStatus.Online, UserStatus.Busy))
+                if (client.IsLoggedIn && client.CurrentUser.Status.In(UserStatus.Online, UserStatus.Busy))
                 {
                     lastStatus = client.CurrentUser.Status;
                     client.CurrentUser.Status = UserStatus.Idle;
@@ -29,7 +29,7 @@ namespace Squiggle.UI.Components
             };
             monitor.Active += (sender, e) =>
             {
-                if (client.LoggedIn && lastStatus.HasValue)
+                if (client.IsLoggedIn && lastStatus.HasValue)
                     client.CurrentUser.Status = lastStatus.Value;
                 lastStatus = null;
             };

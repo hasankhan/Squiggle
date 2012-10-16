@@ -21,6 +21,8 @@ namespace Squiggle.Client
         public event EventHandler<BuddyOnlineEventArgs> BuddyOnline = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyOffline = delegate { };
         public event EventHandler<BuddyEventArgs> BuddyUpdated = delegate { };
+        public event EventHandler LoggedIn = delegate { };
+        public event EventHandler LoggedOut = delegate { };
 
         public ISelfBuddy CurrentUser { get; private set; }
 
@@ -29,7 +31,19 @@ namespace Squiggle.Client
             get { return buddies; }
         }
 
-        public bool LoggedIn { get; private set; }
+        bool _isLoggedIn;
+        public bool IsLoggedIn
+        {
+            get { return _isLoggedIn; }
+            set
+            {
+                _isLoggedIn = value;
+                if (_isLoggedIn)
+                    LoggedIn(this, EventArgs.Empty);
+                else
+                    LoggedOut(this, EventArgs.Empty);
+            }
+        }
 
         public bool EnableLogging { get; set; }
 
@@ -41,7 +55,7 @@ namespace Squiggle.Client
 
         public IChat StartChat(IBuddy buddy)
         {
-            if (!LoggedIn)
+            if (!IsLoggedIn)
                 throw new InvalidOperationException("Not logged in.");
 
             IChatSession session = chatService.CreateSession(new SquiggleEndPoint(buddy.Id, ((Buddy)buddy).ChatEndPoint));
@@ -71,12 +85,12 @@ namespace Squiggle.Client
             self.EnableUpdates = true;
             LogStatus(CurrentUser);
 
-            LoggedIn = true;
+            IsLoggedIn = true;
         }        
 
         public void Logout()
         {
-            LoggedIn = false;
+            IsLoggedIn = false;
             chatService.Stop();
             presenceService.Logout();
 

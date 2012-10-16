@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Squiggle.Utilities;
 
 namespace Squiggle.UI.Components
 {
@@ -21,7 +22,8 @@ namespace Squiggle.UI.Components
             FilePath = assembly.Location;
             Location = Path.GetDirectoryName(FilePath);
             Version = assembly.GetName().Version;
-            Hash = SettingsProvider.Current.Settings.GeneralSettings.GitHash;
+
+            Hash = SettingsProvider.Current.Coalesce(provider => provider.Settings.GeneralSettings.GitHash, String.Empty);
         }
     }
 }

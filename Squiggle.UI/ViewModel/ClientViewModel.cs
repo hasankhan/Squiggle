@@ -20,7 +20,7 @@ namespace Squiggle.UI.ViewModel
 
         public bool IsLoggedIn
         {
-            get { return chatClient.LoggedIn; }
+            get { return chatClient.IsLoggedIn; }
         }
 
         public bool AnyoneOnline
@@ -44,14 +44,24 @@ namespace Squiggle.UI.ViewModel
 
         public ClientViewModel(IChatClient chatClient)
         {
-            currentDispatcher = Dispatcher.CurrentDispatcher;
             this.chatClient = chatClient;
+
+            currentDispatcher = Dispatcher.CurrentDispatcher;
             LoggedInUser = chatClient.CurrentUser;
-            this.chatClient.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);
-            this.chatClient.BuddyOffline += new EventHandler<BuddyEventArgs>(chatClient_BuddyOffline);
-            this.chatClient.BuddyUpdated += new EventHandler<BuddyEventArgs>(chatClient_BuddyUpdated);
+
+            chatClient.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);
+            chatClient.BuddyOffline += new EventHandler<BuddyEventArgs>(chatClient_BuddyOffline);
+            chatClient.BuddyUpdated += new EventHandler<BuddyEventArgs>(chatClient_BuddyUpdated);
+            chatClient.LoggedIn += chatClient_LoggedInOut;
+            chatClient.LoggedOut += chatClient_LoggedInOut;
+
             Buddies = new ObservableCollection<IBuddy>(chatClient.Buddies);
             Buddies.CollectionChanged += (sender, e)=>OnPropertyChanged("AnyoneOnline");
+        }
+
+        void chatClient_LoggedInOut(object sender, EventArgs e)
+        {
+            OnPropertyChanged("IsLoggedIn");
         }
 
         void chatClient_BuddyOffline(object sender, BuddyEventArgs e)

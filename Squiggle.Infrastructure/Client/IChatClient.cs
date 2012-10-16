@@ -26,10 +26,12 @@ namespace Squiggle.Client
         event EventHandler<BuddyOnlineEventArgs> BuddyOnline;
         event EventHandler<BuddyEventArgs> BuddyOffline;
         event EventHandler<BuddyEventArgs> BuddyUpdated;
+        event EventHandler LoggedIn;
+        event EventHandler LoggedOut;
 
         ISelfBuddy CurrentUser {get; }
         IEnumerable<IBuddy> Buddies { get; }
-        bool LoggedIn { get; }
+        bool IsLoggedIn { get; }
 
         IChat StartChat(IBuddy buddy);
         void Login(ChatClientOptions options);

@@ -208,7 +208,7 @@ namespace Squiggle.UI.Windows
 
         void SignIn(string displayName, string groupName, bool byUser)
         {
-            if (context.ChatClient != null && context.ChatClient.LoggedIn)
+            if (context.ChatClient != null && context.ChatClient.IsLoggedIn)
                 return;
 
             busyIndicator.IsBusy = true;
@@ -266,7 +266,7 @@ namespace Squiggle.UI.Windows
 
         void SignOut(bool byUser)
         {
-            if (context.ChatClient == null || !context.ChatClient.LoggedIn)
+            if (context.ChatClient == null || !context.ChatClient.IsLoggedIn)
                 return;
 
             clientAvailable.Begin();

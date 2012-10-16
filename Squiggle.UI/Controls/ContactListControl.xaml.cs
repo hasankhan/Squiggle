@@ -44,10 +44,6 @@ namespace Squiggle.UI.Controls
         public ContactListControl()
         {
             InitializeComponent();
-
-            showOfflineContacts = SettingsProvider.Current.Settings.ContactSettings.ShowOfflineContatcs;
-            contactListView = SettingsProvider.Current.Settings.ContactSettings.ContactListView;
-            SettingsProvider.Current.SettingsUpdated += new EventHandler(Current_SettingsUpdated);
         }
 
         public void Refresh()
@@ -129,6 +125,10 @@ namespace Squiggle.UI.Controls
 
         void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            showOfflineContacts = SettingsProvider.Current.Settings.ContactSettings.ShowOfflineContatcs;
+            contactListView = SettingsProvider.Current.Settings.ContactSettings.ContactListView;
+            SettingsProvider.Current.SettingsUpdated += new EventHandler(Current_SettingsUpdated);
+
             var cvs = (CollectionViewSource)this.FindResource("buddiesCollection");
             ConfigureCollectionView(cvs);
         }
