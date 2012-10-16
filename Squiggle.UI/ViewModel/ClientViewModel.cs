@@ -49,9 +49,9 @@ namespace Squiggle.UI.ViewModel
             currentDispatcher = Dispatcher.CurrentDispatcher;
             LoggedInUser = chatClient.CurrentUser;
 
-            chatClient.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(chatClient_BuddyOnline);
-            chatClient.BuddyOffline += new EventHandler<BuddyEventArgs>(chatClient_BuddyOffline);
-            chatClient.BuddyUpdated += new EventHandler<BuddyEventArgs>(chatClient_BuddyUpdated);
+            chatClient.BuddyOnline += chatClient_BuddyOnline;
+            chatClient.BuddyOffline += chatClient_BuddyOffline;
+            chatClient.BuddyUpdated += chatClient_BuddyUpdated;
             chatClient.LoggedIn += chatClient_LoggedInOut;
             chatClient.LoggedOut += chatClient_LoggedInOut;
 

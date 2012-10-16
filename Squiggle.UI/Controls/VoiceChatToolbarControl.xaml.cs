@@ -42,18 +42,18 @@ namespace Squiggle.UI.Controls
             {
                 if (voiceChatContext != null)
                 {
-                    voiceChatContext.TransferCancelled -= new EventHandler(voiceChatContext_TransferCancelled);
-                    voiceChatContext.TransferCompleted -= new EventHandler(voiceChatContext_TransferCompleted);
-                    voiceChatContext.TransferFinished -= new EventHandler(voiceChatContext_TransferFinished);
-                    voiceChatContext.TransferStarted -= new EventHandler(voiceChatContext_TransferStarted);
+                    voiceChatContext.TransferCancelled -= voiceChatContext_TransferCancelled;
+                    voiceChatContext.TransferCompleted -= voiceChatContext_TransferCompleted;
+                    voiceChatContext.TransferFinished -= voiceChatContext_TransferFinished;
+                    voiceChatContext.TransferStarted -= voiceChatContext_TransferStarted;
                 }
                 voiceChatContext = value;
                 if (voiceChatContext != null)
                 {
-                    voiceChatContext.TransferCancelled += new EventHandler(voiceChatContext_TransferCancelled);
-                    voiceChatContext.TransferCompleted += new EventHandler(voiceChatContext_TransferCompleted);
-                    voiceChatContext.TransferFinished += new EventHandler(voiceChatContext_TransferFinished);
-                    voiceChatContext.TransferStarted += new EventHandler(voiceChatContext_TransferStarted);
+                    voiceChatContext.TransferCancelled += voiceChatContext_TransferCancelled;
+                    voiceChatContext.TransferCompleted += voiceChatContext_TransferCompleted;
+                    voiceChatContext.TransferFinished += voiceChatContext_TransferFinished;
+                    voiceChatContext.TransferStarted += voiceChatContext_TransferStarted;
                 }
 
                 OnPropertyChanged("VoiceChatContext"); 

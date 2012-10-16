@@ -52,7 +52,7 @@ namespace Squiggle.UI.Windows
             if (allowMultiSelect)
                 txtMessage.Text = Translation.Instance.ContactSelectWindow_MultiSelect;
 
-            this.clientViewModel.ContactListUpdated += new EventHandler(clientViewModel_ContactListUpdated);
+            this.clientViewModel.ContactListUpdated += clientViewModel_ContactListUpdated;
 
             selectedContacts = new List<Buddy>();
             this.DataContext = this.clientViewModel;

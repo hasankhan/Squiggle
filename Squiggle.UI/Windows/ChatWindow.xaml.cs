@@ -55,12 +55,12 @@ namespace Squiggle.UI.Windows
             {
                 if (_primaryBuddy != null)
                 {
-                    _primaryBuddy.Online -= new EventHandler(PrimaryBuddy_Online);
-                    _primaryBuddy.Offline -= new EventHandler(PrimaryBuddy_Offline);
+                    _primaryBuddy.Online -= PrimaryBuddy_Online;
+                    _primaryBuddy.Offline -= PrimaryBuddy_Offline;
                 }
                 _primaryBuddy = value;
-                _primaryBuddy.Online += new EventHandler(PrimaryBuddy_Online);
-                _primaryBuddy.Offline += new EventHandler(PrimaryBuddy_Offline);
+                _primaryBuddy.Online += PrimaryBuddy_Online;
+                _primaryBuddy.Offline += PrimaryBuddy_Offline;
             }
         }
 
@@ -84,7 +84,7 @@ namespace Squiggle.UI.Windows
             statusResetTimer = new DispatcherTimer();
             statusResetTimer.Interval = 5.Seconds();
             statusResetTimer.Tick += (sender, e) => ResetStatus();
-            this.StateChanged += new EventHandler(ChatWindow_StateChanged);
+            this.StateChanged += ChatWindow_StateChanged;
 
             SettingsProvider.Current.SettingsUpdated += (sender, e) => LoadSettings();
             LoadSettings();
@@ -172,15 +172,15 @@ namespace Squiggle.UI.Windows
 
             DestroySession();
             chatSession = chat;
-            chatSession.BuzzReceived += new EventHandler<BuddyEventArgs>(chatSession_BuzzReceived);
-            chatSession.MessageReceived += new EventHandler<ChatMessageReceivedEventArgs>(chatSession_MessageReceived);
-            chatSession.MessageUpdated += new EventHandler<ChatMessageUpdatedEventArgs>(chatSession_MessageUpdated);
-            chatSession.BuddyJoined += new EventHandler<BuddyEventArgs>(chatSession_BuddyJoined);
-            chatSession.BuddyLeft += new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
-            chatSession.MessageFailed += new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
-            chatSession.BuddyTyping += new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
-            chatSession.ActivityInvitationReceived += new EventHandler<ActivityInvitationReceivedEventArgs>(chatSession_ActivityInvitationReceived);
-            chatSession.GroupChatStarted += new EventHandler(chatSession_GroupChatStarted);
+            chatSession.BuzzReceived += chatSession_BuzzReceived;
+            chatSession.MessageReceived += chatSession_MessageReceived;
+            chatSession.MessageUpdated += chatSession_MessageUpdated;
+            chatSession.BuddyJoined += chatSession_BuddyJoined;
+            chatSession.BuddyLeft += chatSession_BuddyLeft;
+            chatSession.MessageFailed += chatSession_MessageFailed;
+            chatSession.BuddyTyping += chatSession_BuddyTyping;
+            chatSession.ActivityInvitationReceived += chatSession_ActivityInvitationReceived;
+            chatSession.GroupChatStarted += chatSession_GroupChatStarted;
             mnuInviteContact.IsEnabled = !IsBroadcastChat;
             chatSession.EnableLogging = SettingsProvider.Current.Settings.ChatSettings.EnableLogging;
             MonitorAll();
@@ -797,15 +797,15 @@ namespace Squiggle.UI.Windows
             {
                 StopMonitoringAll();
 
-                chatSession.BuzzReceived -= new EventHandler<BuddyEventArgs>(chatSession_BuzzReceived);
-                chatSession.MessageReceived -= new EventHandler<ChatMessageReceivedEventArgs>(chatSession_MessageReceived);
-                chatSession.MessageUpdated -= new EventHandler<ChatMessageUpdatedEventArgs>(chatSession_MessageUpdated);
-                chatSession.BuddyJoined -= new EventHandler<BuddyEventArgs>(chatSession_BuddyJoined);
-                chatSession.BuddyLeft -= new EventHandler<BuddyEventArgs>(chatSession_BuddyLeft);
-                chatSession.MessageFailed -= new EventHandler<MessageFailedEventArgs>(chatSession_MessageFailed);
-                chatSession.BuddyTyping -= new EventHandler<BuddyEventArgs>(chatSession_BuddyTyping);
-                chatSession.ActivityInvitationReceived -= new EventHandler<ActivityInvitationReceivedEventArgs>(chatSession_ActivityInvitationReceived);
-                chatSession.GroupChatStarted -= new EventHandler(chatSession_GroupChatStarted);
+                chatSession.BuzzReceived -= chatSession_BuzzReceived;
+                chatSession.MessageReceived -= chatSession_MessageReceived;
+                chatSession.MessageUpdated -= chatSession_MessageUpdated;
+                chatSession.BuddyJoined -= chatSession_BuddyJoined;
+                chatSession.BuddyLeft -= chatSession_BuddyLeft;
+                chatSession.MessageFailed -= chatSession_MessageFailed;
+                chatSession.BuddyTyping -= chatSession_BuddyTyping;
+                chatSession.ActivityInvitationReceived -= chatSession_ActivityInvitationReceived;
+                chatSession.GroupChatStarted -= chatSession_GroupChatStarted;
                 chatSession.Leave();
                 chatSession = null;
                 Dispatcher.Invoke(() =>

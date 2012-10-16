@@ -127,7 +127,7 @@ namespace Squiggle.UI.Controls
         {
             showOfflineContacts = SettingsProvider.Current.Settings.ContactSettings.ShowOfflineContatcs;
             contactListView = SettingsProvider.Current.Settings.ContactSettings.ContactListView;
-            SettingsProvider.Current.SettingsUpdated += new EventHandler(Current_SettingsUpdated);
+            SettingsProvider.Current.SettingsUpdated += Current_SettingsUpdated;
 
             var cvs = (CollectionViewSource)this.FindResource("buddiesCollection");
             ConfigureCollectionView(cvs);

@@ -202,16 +202,16 @@ namespace Squiggle.Client
         void StartPresenceService(string username, IBuddyProperties properties, PresenceServiceOptions presenceOptions)
         {
             presenceService = new PresenceService(presenceOptions);
-            presenceService.UserOffline += new EventHandler<UserEventArgs>(presenceService_UserOffline);
-            presenceService.UserOnline += new EventHandler<UserOnlineEventArgs>(presenceService_UserOnline);
-            presenceService.UserUpdated += new EventHandler<UserEventArgs>(presenceService_UserUpdated);
+            presenceService.UserOffline += presenceService_UserOffline;
+            presenceService.UserOnline += presenceService_UserOnline;
+            presenceService.UserUpdated += presenceService_UserUpdated;
             presenceService.Login(username, properties);
         }
 
         void StartChatService()
         {
             chatService = new ChatService(chatEndPoint);
-            chatService.ChatStarted += new EventHandler<Squiggle.Core.Chat.ChatStartedEventArgs>(chatService_ChatStarted);
+            chatService.ChatStarted += chatService_ChatStarted;
             chatService.Start();
         }
 

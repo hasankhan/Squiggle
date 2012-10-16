@@ -54,7 +54,7 @@ namespace Squiggle.UI.Controls
             SetFont();
             DataContext = editModel = new EditViewModel();
 
-            SettingsProvider.Current.SettingsUpdated += new EventHandler(Current_SettingsUpdated);
+            SettingsProvider.Current.SettingsUpdated += Current_SettingsUpdated;
         }
 
 

@@ -49,10 +49,10 @@ namespace Squiggle.UI.Controls
             this.alreadyInChat = alreadyInChat;
             this.context = context;
 
-            this.voiceChat.TransferCancelled += new EventHandler(voiceChat_TransferCancelled);
-            this.voiceChat.TransferCompleted += new EventHandler(voiceChat_TransferCompleted);
-            this.voiceChat.TransferStarted += new EventHandler(voiceChat_TransferStarted);
-            this.voiceChat.TransferFinished += new EventHandler(voiceChat_TransferFinished);
+            this.voiceChat.TransferCancelled += voiceChat_TransferCancelled;
+            this.voiceChat.TransferCompleted += voiceChat_TransferCompleted;
+            this.voiceChat.TransferStarted += voiceChat_TransferStarted;
+            this.voiceChat.TransferFinished += voiceChat_TransferFinished;
 
 
             ShowWaiting();

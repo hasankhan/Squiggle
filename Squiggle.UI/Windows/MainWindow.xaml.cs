@@ -58,11 +58,11 @@ namespace Squiggle.UI.Windows
 
         void SetupControls()
         {
-            chatControl.SignIn.LoginInitiated += new EventHandler<Squiggle.UI.Controls.LogInEventArgs>(ContactList_LoginInitiated);
-            chatControl.ContactList.BroadcastChatStart += new EventHandler<Controls.BuddiesActionEventArgs>(ContactList_BroadcastChatStart);
-            chatControl.ContactList.GroupChatStart += new EventHandler<BuddiesActionEventArgs>(ContactList_GroupChatStart);
-            chatControl.ContactList.ChatStart += new EventHandler<Squiggle.UI.Controls.ChatStartEventArgs>(ContactList_StartChat);
-            chatControl.ContactList.SignOut += new EventHandler(ContactList_SignOut);
+            chatControl.SignIn.LoginInitiated += ContactList_LoginInitiated;
+            chatControl.ContactList.BroadcastChatStart += ContactList_BroadcastChatStart;
+            chatControl.ContactList.GroupChatStart += ContactList_GroupChatStart;
+            chatControl.ContactList.ChatStart += ContactList_StartChat;
+            chatControl.ContactList.SignOut += ContactList_SignOut;
             
             autoSignout = new NetworkSignout(this.Dispatcher, u => SignIn(u.DisplayName, u.GroupName, false), () => SignOut(false));
             chatControl.ContactList.OpenAbout += (sender, e) => SquiggleUtility.ShowAboutDialog(this);
@@ -79,7 +79,7 @@ namespace Squiggle.UI.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.StateChanged += new EventHandler(Window_StateChanged);
+            this.StateChanged += Window_StateChanged;
 
             var settings = SettingsProvider.Current.Settings;
             settings.ContactSettings.ContactGroups.FlushItems();
@@ -91,10 +91,10 @@ namespace Squiggle.UI.Windows
             chatControl.SignIn.LoadSettings(settings);
 
             var client = context.ChatClient = new ChatClient();
-            client.ChatStarted += new EventHandler<Squiggle.Client.ChatStartedEventArgs>(client_ChatStarted);
-            client.BuddyUpdated += new EventHandler<BuddyEventArgs>(client_BuddyUpdated);
-            client.BuddyOnline += new EventHandler<BuddyOnlineEventArgs>(client_BuddyOnline);
-            client.BuddyOffline += new EventHandler<BuddyEventArgs>(client_BuddyOffline);
+            client.ChatStarted += client_ChatStarted;
+            client.BuddyUpdated += client_BuddyUpdated;
+            client.BuddyOnline += client_BuddyOnline;
+            client.BuddyOffline += client_BuddyOffline;
 
             clientViewModel = new ClientViewModel(context.ChatClient);
             this.DataContext = clientViewModel;

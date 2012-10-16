@@ -12,14 +12,14 @@ namespace Squiggle.UI.Helpers.Collections
         protected override void InsertItem(int index, IFileTransferHandler item)
         {
             base.InsertItem(index, item);
-            item.TransferFinished += new EventHandler(item_TransferFinished);
+            item.TransferFinished += item_TransferFinished;
         }
 
         protected override void RemoveItem(int index)
         {
             IFileTransferHandler item = this[index];
             base.RemoveItem(index);
-            item.TransferFinished -= new EventHandler(item_TransferFinished);
+            item.TransferFinished -= item_TransferFinished;
         }
 
         void item_TransferFinished(object sender, EventArgs e)

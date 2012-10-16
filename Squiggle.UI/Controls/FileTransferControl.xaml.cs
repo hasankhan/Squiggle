@@ -63,10 +63,10 @@ namespace Squiggle.UI.Controls
 
             NotifyPropertyChanged();
 
-            this.fileTransfer.ProgressChanged += new EventHandler<System.ComponentModel.ProgressChangedEventArgs>(fileTransfer_ProgressChanged);
-            this.fileTransfer.TransferStarted += new EventHandler(fileTransfer_TransferStarted); 
-            this.fileTransfer.TransferCancelled += new EventHandler(fileTransfer_TransferCancelled);
-            this.fileTransfer.TransferCompleted += new EventHandler(fileTransfer_TransferCompleted);
+            this.fileTransfer.ProgressChanged += fileTransfer_ProgressChanged;
+            this.fileTransfer.TransferStarted += fileTransfer_TransferStarted; 
+            this.fileTransfer.TransferCancelled += fileTransfer_TransferCancelled;
+            this.fileTransfer.TransferCompleted += fileTransfer_TransferCompleted;
 
             ShowWaiting();
         }
