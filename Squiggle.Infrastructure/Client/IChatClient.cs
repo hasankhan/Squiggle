@@ -11,7 +11,7 @@ namespace Squiggle.Client
         {
             get { return Buddies.FirstOrDefault(); }
         }
-        public List<IBuddy> Buddies { get; set; }
+        public IEnumerable<IBuddy> Buddies { get; set; }
         public IChat Chat { get; set; }
     }
 

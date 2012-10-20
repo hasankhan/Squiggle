@@ -110,14 +110,12 @@ namespace Squiggle.Client
 
         void chatService_ChatStarted(object sender, Squiggle.Core.Chat.ChatStartedEventArgs e)
         {
-            var buddyList = new List<IBuddy>();
-            foreach (SquiggleEndPoint user in e.Session.RemoteUsers)
-            {
-                Buddy buddy = buddies[user.ClientID];
-                if (buddy != null)
-                    buddyList.Add(buddy);
-            }
-            if (buddyList.Count > 0)
+            IEnumerable<IBuddy> buddyList = e.Session.RemoteUsers
+                                                   .Select(u => buddies[u.ClientID])
+                                                   .Where(b => b != null)
+                                                   .ToList();
+            
+            if (buddyList.Any())
             {
                 var chat = new Chat(e.Session, CurrentUser, buddyList, id=>buddies[id]);
                 ChatStarted(this, new ChatStartedEventArgs() { Chat = chat, Buddies = buddyList });
