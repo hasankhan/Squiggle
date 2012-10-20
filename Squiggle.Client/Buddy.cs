@@ -49,7 +49,7 @@ namespace Squiggle.Client
         public virtual UserStatus Status
         {
             get { return status; }
-            protected set
+            protected internal set
             {
                 var lastStatus = status;
                 status = value;

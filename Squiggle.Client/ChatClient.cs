@@ -70,6 +70,10 @@ namespace Squiggle.Client
             this.chatEndPoint = (SquiggleEndPoint)options.ChatEndPoint;
             StartChatService();
 
+            // Some of the users may have gone offline. Lets try to re-discover all the buddies.
+            foreach (Buddy buddy in buddies)
+                buddy.Status = UserStatus.Offline;
+
             var presenceOptions = new PresenceServiceOptions()
             {
                 ChatEndPoint = (SquiggleEndPoint)options.ChatEndPoint,
@@ -111,9 +115,9 @@ namespace Squiggle.Client
         void chatService_ChatStarted(object sender, Squiggle.Core.Chat.ChatStartedEventArgs e)
         {
             IEnumerable<IBuddy> buddyList = e.Session.RemoteUsers
-                                                   .Select(u => buddies[u.ClientID])
-                                                   .Where(b => b != null)
-                                                   .ToList();
+                                                     .Select(u => buddies[u.ClientID])
+                                                     .Where(b => b != null)
+                                                     .ToList();
             
             if (buddyList.Any())
             {
