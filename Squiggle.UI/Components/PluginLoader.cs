@@ -11,6 +11,7 @@ using Squiggle.UI.MessageParsers;
 using Squiggle.Plugins.MessageFilter;
 using Squiggle.Plugins.MessageParser;
 using Squiggle.Core.Chat.Activity;
+using Squiggle.Plugins;
 
 namespace Squiggle.UI.Components
 {
@@ -24,6 +25,9 @@ namespace Squiggle.UI.Components
 
         [ImportMany(typeof(IMessageParser))]
         public IEnumerable<IMessageParser> MessageParsers { get; set; }
+
+        [ImportMany(typeof(IExtension))]
+        public IEnumerable<IExtension> Extensions { get; set; }
 
         public PluginLoader(ComposablePartCatalog catalog)
         {
