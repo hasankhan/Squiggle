@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Squiggle.Utilities.Threading;
 using Squiggle.Client;
 
 namespace Squiggle.UI.ViewModel
@@ -13,7 +14,7 @@ namespace Squiggle.UI.ViewModel
         public event EventHandler ContactListUpdated = delegate { };
 
         IChatClient chatClient;
-        Dispatcher currentDispatcher;
+        Dispatcher dispatcher;
 
         public ISelfBuddy LoggedInUser { get; set; }
         public ObservableCollection<IBuddy> Buddies { get; private set; }
@@ -25,7 +26,7 @@ namespace Squiggle.UI.ViewModel
 
         public bool AnyoneOnline
         {
-            get { return Buddies.Any(b => !b.IsOnline()); }
+            get { return Buddies.Any(b => b.IsOnline()); }
         }
 
         string updateLink;
@@ -46,7 +47,7 @@ namespace Squiggle.UI.ViewModel
         {
             this.chatClient = chatClient;
 
-            currentDispatcher = Dispatcher.CurrentDispatcher;
+            dispatcher = Dispatcher.CurrentDispatcher;
             LoggedInUser = chatClient.CurrentUser;
 
             chatClient.BuddyOnline += chatClient_BuddyOnline;
@@ -56,7 +57,7 @@ namespace Squiggle.UI.ViewModel
             chatClient.LoggedOut += chatClient_LoggedInOut;
 
             Buddies = new ObservableCollection<IBuddy>(chatClient.Buddies);
-            Buddies.CollectionChanged += (sender, e)=>OnPropertyChanged("AnyoneOnline");
+            Buddies.CollectionChanged += (sender, e) => OnContactListUpdated();
         }
 
         void chatClient_LoggedInOut(object sender, EventArgs e)
@@ -66,19 +67,26 @@ namespace Squiggle.UI.ViewModel
 
         void chatClient_BuddyOffline(object sender, BuddyEventArgs e)
         {
-            ContactListUpdated(this, EventArgs.Empty);
+            OnContactListUpdated();
         }
 
         void chatClient_BuddyUpdated(object sender, BuddyEventArgs e)
         {
-            ContactListUpdated(this, EventArgs.Empty);
+            OnContactListUpdated();
         }
 
         void chatClient_BuddyOnline(object sender, BuddyOnlineEventArgs e)
         {
-            if (!Buddies.Contains(e.Buddy))
-                currentDispatcher.Invoke(new Action(delegate() { Buddies.Add(e.Buddy); }));
+            if (Buddies.Contains(e.Buddy))
+                OnContactListUpdated();
+            else
+                dispatcher.Invoke(()=> Buddies.Add(e.Buddy));
+        }
+
+        void OnContactListUpdated()
+        {
             ContactListUpdated(this, EventArgs.Empty);
+            OnPropertyChanged("AnyoneOnline");
         }
     }
 }
