@@ -22,7 +22,7 @@ namespace Squiggle.Core.Presence
         IEnumerable<IUserInfo> Users { get; }
         
         void Login(string displayName, IBuddyProperties properties);
-        void Update(string displayName, IBuddyProperties properties, UserStatus status);
+        void SendUpdate(string displayName, IBuddyProperties properties, UserStatus status);
         void Logout();
     }
 }

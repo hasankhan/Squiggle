@@ -58,7 +58,7 @@ namespace Squiggle.Core.Presence
             keepAlive.Start();
         }
 
-        public void Update(string name, IBuddyProperties properties, UserStatus status)
+        public void SendUpdate(string name, IBuddyProperties properties, UserStatus status)
         {
             UserStatus lastStatus = thisUser.Status;
 
@@ -74,9 +74,7 @@ namespace Squiggle.Core.Presence
 
             if (lastStatus == UserStatus.Offline)
             {
-                if (status == UserStatus.Offline)
-                    return;
-                else
+                if (status != UserStatus.Offline)
                     discovery.Login(userInfo);
             }
             else if (status == UserStatus.Offline)
@@ -143,13 +141,9 @@ namespace Squiggle.Core.Presence
             UserOffline(this, new UserEventArgs() { User = user });
         }
 
-        #region IDisposable Members
-
         public void Dispose()
         {
             Logout();
         }
-
-        #endregion
     }    
 }

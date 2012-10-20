@@ -105,7 +105,7 @@ namespace Squiggle.Client
         {
             LogStatus(CurrentUser);
             var properties = CurrentUser.Properties.Clone();
-            presenceService.Update(CurrentUser.DisplayName, properties, CurrentUser.Status);
+            presenceService.SendUpdate(CurrentUser.DisplayName, properties, CurrentUser.Status);
         }
 
         void chatService_ChatStarted(object sender, Squiggle.Core.Chat.ChatStartedEventArgs e)
