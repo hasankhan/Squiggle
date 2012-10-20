@@ -2,6 +2,8 @@ $myDir = Split-Path $script:MyInvocation.MyCommand.Path
 $releasePath = "bin\x86\Release"
 $version = (Select-String $myDir\..\Shared\AssemblyInfo.Version.cs -pattern 'AssemblyVersion[(]"(\d\.\d)').Matches[0].Groups[1].Value
 
+rm *.zip,*.msi
+
 write-host ------------- Building Squiggle $version -----------------------
 & "$myDir\Build.cmd" Squiggle.sln
 if (!$?) { 
