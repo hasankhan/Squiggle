@@ -18,13 +18,14 @@ using Squiggle.UI.StickyWindow;
 using Squiggle.UI.ViewModel;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Threading;
+using Squiggle.Plugins;
 
 namespace Squiggle.UI.Windows
 {
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class MainWindow : StickyWindowBase
+    public partial class MainWindow : StickyWindowBase, IMainWindow
     {
         WindowState lastState;
         ClientViewModel clientViewModel;
@@ -111,6 +112,8 @@ namespace Squiggle.UI.Windows
 
             if (App.RunInBackground)
                 this.Hide();
+
+            StartExtensions();
         }
 
         void ContactList_LoginInitiated(object sender, Squiggle.UI.Controls.LogInEventArgs e)
@@ -138,9 +141,9 @@ namespace Squiggle.UI.Windows
             StartGroupChat(e.Buddies);
         }
 
-        ChatWindow StartChat(IBuddy buddy, bool sendFile, params string[] filePaths)
+        IChatWindow StartChat(IBuddy buddy, bool sendFile, params string[] filePaths)
         {
-            ChatWindow window = StartChat(buddy);
+            IChatWindow window = StartChat(buddy);
             if (sendFile)
                 if (filePaths == null || filePaths.Length == 0)
                     window.SendFile();
@@ -150,10 +153,101 @@ namespace Squiggle.UI.Windows
             return window;
         }
 
-        ChatWindow StartChat(IBuddy buddy)
+        public IChatWindow StartChat(IBuddy buddy)
         {
             var window = CreateChatWindow(buddy, null, true);
             return window;
+        }
+
+        public void SignOut()
+        {
+            SignOut(true);
+        }
+
+        public void ToggleMainWindow()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (this.Visibility == Visibility.Visible)
+                    this.Hide();
+                else
+                    RestoreWindow();
+            });
+        }
+
+        public void RestoreWindow()
+        {
+            this.Show();
+            this.WindowState = lastState;
+            this.Activate();
+        }
+
+        public void StartBroadcastChat()
+        {
+            var onlineBuddies = context.ChatClient.Buddies.Where(b => b.IsOnline());
+            if (onlineBuddies.Any())
+                StartBroadcastChat(onlineBuddies);
+        }
+
+        public void StartBroadcastChat(IEnumerable<IBuddy> buddies)
+        {
+            var chatSessions = buddies.Select(b => context.ChatClient.StartChat(b)).ToList();
+            var groupChat = new BroadcastChat(chatSessions);
+            CreateChatWindow(groupChat.Buddies.First(), groupChat, true);
+            context.ChatClient.BuddyOnline += (s, e) => groupChat.AddSession(context.ChatClient.StartChat(e.Buddy));
+            context.ChatClient.BuddyOffline += (s, e) =>
+            {
+                var session = groupChat.ChatSessions.FirstOrDefault(c => c.Buddies.Contains(e.Buddy) && !c.IsGroupChat);
+                groupChat.RemoveSession(session);
+            };
+        }
+
+        public void StartGroupChat(IEnumerable<IBuddy> buddies)
+        {
+            if (!buddies.Any())
+                return;
+
+            var chat = StartChat(buddies.FirstOrDefault());
+            chat.Invite(buddies.Skip(1));
+        }
+
+        public void BlinkTrayIcon()
+        {
+            ((Storyboard)this.FindResource("blinkTrayIcon")).Begin();
+        }
+
+        public void Quit()
+        {
+            exiting = true;
+            Close();
+        }
+
+        public void SignIn(string displayName, string groupName, bool byUser)
+        {
+            if (context.ChatClient != null && context.ChatClient.IsLoggedIn)
+                return;
+
+            busyIndicator.IsBusy = true;
+
+            Exception ex = null;
+
+            Async.Invoke(() =>
+            {
+                clientAvailable.Wait();
+                ExceptionMonster.EatTheException(() => LoginClient(displayName, groupName), "creating chat client", out ex);
+            },
+            () =>
+            {
+                busyIndicator.IsBusy = false;
+
+                if (ex != null && byUser)
+                {
+                    MessageBox.Show(ex.Message, Translation.Instance.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                OnSignIn(displayName, groupName);
+            });
         }
 
         private void trayIcon_TrayLeftMouseDown(object sender, RoutedEventArgs e)
@@ -190,12 +284,6 @@ namespace Squiggle.UI.Windows
             Quit();
         }
 
-        public void Quit()
-        {
-            exiting = true;
-            Close();
-        }
-
         void ContactList_SignOut(object sender, EventArgs e)
         {
             SignOut(true);
@@ -204,34 +292,6 @@ namespace Squiggle.UI.Windows
         private void SignOutMenu_Click(object sender, RoutedEventArgs e)
         {
             SignOut(true);
-        }
-
-        void SignIn(string displayName, string groupName, bool byUser)
-        {
-            if (context.ChatClient != null && context.ChatClient.IsLoggedIn)
-                return;
-
-            busyIndicator.IsBusy = true;
-
-            Exception ex = null;
-
-            Async.Invoke(() =>
-            {
-                clientAvailable.Wait();
-                ExceptionMonster.EatTheException(() => LoginClient(displayName, groupName), "creating chat client", out ex);
-            },
-            () =>
-            {
-                busyIndicator.IsBusy = false;
-
-                if (ex != null && byUser)
-                {
-                    MessageBox.Show(ex.Message, Translation.Instance.Error, MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-
-                OnSignIn(displayName, groupName);
-            });
         }
 
         void OnSignIn(string displayName, string groupName)
@@ -309,17 +369,6 @@ namespace Squiggle.UI.Windows
             }
         }
 
-        void ToggleMainWindow()
-        {
-            Dispatcher.Invoke(() =>
-            {
-                if (this.Visibility == Visibility.Visible)
-                    this.Hide();
-                else
-                    RestoreWindow();
-            });
-        }
-
         void CreateMonitor()
         {
             TimeSpan timeout = SettingsProvider.Current.Settings.PersonalSettings.IdleTimeout.Minutes();
@@ -383,13 +432,6 @@ namespace Squiggle.UI.Windows
                 AddGroupName(e.Buddy.Properties.GroupName);
                 chatControl.ContactList.Refresh();
             });
-        }
-
-        public void RestoreWindow()
-        {
-            this.Show();
-            this.WindowState = lastState;
-            this.Activate();
         }
 
         ChatWindow CreateChatWindow(IBuddy buddy, IChat chatSession, bool initiatedByUser)
@@ -475,7 +517,7 @@ namespace Squiggle.UI.Windows
             if (buddies.Any())
             {
                 Buddy buddy = buddies.First();
-                ChatWindow chatWindow = StartChat(buddy);
+                IChatWindow chatWindow = StartChat(buddy);
                 chatWindow.Invite(buddies.Except(new[] { buddy }));
             }
         }
@@ -495,41 +537,18 @@ namespace Squiggle.UI.Windows
             StartBroadcastChat();
         }
 
-        void StartBroadcastChat()
-        {
-            var onlineBuddies = context.ChatClient.Buddies.Where(b => b.IsOnline());
-            if (onlineBuddies.Any())
-                StartBroadcastChat(onlineBuddies);
-        }
-
-        void StartBroadcastChat(IEnumerable<IBuddy> buddies)
-        {
-            var chatSessions = buddies.Select(b => context.ChatClient.StartChat(b)).ToList();
-            var groupChat = new BroadcastChat(chatSessions);
-            CreateChatWindow(groupChat.Buddies.First(), groupChat, true);
-            context.ChatClient.BuddyOnline += (s, e) => groupChat.AddSession(context.ChatClient.StartChat(e.Buddy));
-            context.ChatClient.BuddyOffline += (s, e) =>
-            {
-                var session = groupChat.ChatSessions.FirstOrDefault(c => c.Buddies.Contains(e.Buddy) && !c.IsGroupChat);
-                groupChat.RemoveSession(session);
-            };
-        }
-
-        void StartGroupChat(IEnumerable<IBuddy> buddies)
-        {
-            if (!buddies.Any())
-                return;
-
-            var chat = StartChat(buddies.FirstOrDefault());
-            chat.Invite(buddies.Skip(1));
-        }
-
         private void SortMenu_Click(object sender, RoutedEventArgs e)
         {
             var sortBy = (ContactListSortField)((MenuItem)sender).Tag;
             SettingsProvider.Current.Settings.ContactSettings.ContactListSortField = sortBy;
             SettingsProvider.Current.Save();
             UpdateSortMenu();
+        }
+
+        void StartExtensions()
+        {
+            foreach (IExtension extension in context.PluginLoader.Extensions)
+                extension.Start(context);
         }
 
         void UpdateSortMenu()
@@ -554,11 +573,6 @@ namespace Squiggle.UI.Windows
         {
             if (result != null && result.IsUpdated)
                 clientViewModel.UpdateLink = result.UpdateLink;
-        }
-
-        void BlinkTrayIcon()
-        {
-            ((Storyboard)this.FindResource("blinkTrayIcon")).Begin();
         }
 
         private void StickyWindow_LocationChanged(object sender, EventArgs e)

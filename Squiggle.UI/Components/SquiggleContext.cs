@@ -6,13 +6,14 @@ using Squiggle.UI.Windows;
 using Squiggle.Client;
 using Squiggle.Core.Chat.Activity;
 using Squiggle.Client.Activities;
+using Squiggle.Plugins;
 
 namespace Squiggle.UI.Components
 {
-    class SquiggleContext
+    class SquiggleContext : ISquiggleContext
     {
-        public MainWindow MainWindow { get; set; }
         public PluginLoader PluginLoader { get; set; }
+        public IMainWindow MainWindow { get; set; }
         public IChatClient ChatClient { get; set; }
         public IVoiceChatHandler ActiveVoiceChat { get; set; }
         public bool IsVoiceChatActive

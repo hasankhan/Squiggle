@@ -7,5 +7,6 @@ namespace Squiggle.Plugins
 {
     public interface IExtension
     {
+        void Start(ISquiggleContext context);
     }
 }

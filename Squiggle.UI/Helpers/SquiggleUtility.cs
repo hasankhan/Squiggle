@@ -66,14 +66,14 @@ namespace Squiggle.UI.Helpers
 
         public static void ShowSettingsDialog(Window owner)
         {
-            var context = SquiggleContext.Current;
+            ChatClientControl chatControl = ((MainWindow)SquiggleContext.Current.MainWindow).chatControl;
             ISelfBuddy buddy = null;
-            if (context.MainWindow.chatControl.ContactList.ChatContext != null && context.MainWindow.chatControl.ContactList.ChatContext.IsLoggedIn)
-                buddy = context.MainWindow.chatControl.ContactList.ChatContext.LoggedInUser;
+            if (chatControl.ContactList.ChatContext.Coalesce(context=>context.IsLoggedIn, false))
+                buddy = chatControl.ContactList.ChatContext.LoggedInUser;
             var settings = new SettingsWindow(buddy);
             settings.Owner = owner;
             if (settings.ShowDialog().GetValueOrDefault())
-                context.MainWindow.chatControl.SignIn.LoadSettings(SettingsProvider.Current.Settings);
+                chatControl.SignIn.LoadSettings(SettingsProvider.Current.Settings);
         }
 
         public static Buddy SelectContact(string title, Window owner, Predicate<Buddy> exclusionFilter = null)
@@ -83,7 +83,7 @@ namespace Squiggle.UI.Helpers
 
         public static IEnumerable<Buddy> SelectContacts(string title, Window owner, Predicate<Buddy> exclusionFilter = null, bool multiple = true)
         {
-            var clientViewModel = (ClientViewModel)SquiggleContext.Current.MainWindow.DataContext;
+            var clientViewModel = (ClientViewModel)((MainWindow)SquiggleContext.Current.MainWindow).DataContext;
             var selectContactDialog = new ContactsSelectWindow(clientViewModel, false);
             selectContactDialog.ExcludeCriterea = exclusionFilter;
             selectContactDialog.AllowMultiSelect = multiple;

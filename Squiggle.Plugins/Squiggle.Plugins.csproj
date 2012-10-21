@@ -61,6 +61,8 @@
     <Compile Include="Authentication\IAuthenticationProvider.cs" />
     <Compile Include="IChatWindow.cs" />
     <Compile Include="IExtension.cs" />
+    <Compile Include="IMainWindow.cs" />
+    <Compile Include="ISquiggleContext.cs" />
     <Compile Include="MessageFilter\FilterDirection.cs" />
     <Compile Include="MessageFilter\IMessageFilter.cs" />
     <Compile Include="MessageParser\IMessageParser.cs" />
