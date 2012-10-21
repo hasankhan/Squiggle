@@ -12,6 +12,7 @@ using Squiggle.Plugins.MessageFilter;
 using Squiggle.Plugins.MessageParser;
 using Squiggle.Core.Chat.Activity;
 using Squiggle.Plugins;
+using Squiggle.Plugins.Authentication;
 
 namespace Squiggle.UI.Components
 {
@@ -28,6 +29,9 @@ namespace Squiggle.UI.Components
 
         [ImportMany(typeof(IExtension))]
         public IEnumerable<IExtension> Extensions { get; set; }
+
+        [Import(AllowDefault=true)]
+        public IAuthenticationProvider AuthenticationProvider { get; set; }
 
         public PluginLoader(ComposablePartCatalog catalog)
         {

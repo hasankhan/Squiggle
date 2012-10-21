@@ -58,7 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\AuthenticationResult.cs" />
+    <Compile Include="Authentication\AuthenticationStatus.cs" />
     <Compile Include="Authentication\IAuthenticationProvider.cs" />
+    <Compile Include="Authentication\UserDetails.cs" />
     <Compile Include="IChatWindow.cs" />
     <Compile Include="IExtension.cs" />
     <Compile Include="IMainWindow.cs" />
