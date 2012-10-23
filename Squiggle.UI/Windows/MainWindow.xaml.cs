@@ -40,21 +40,6 @@ namespace Squiggle.UI.Windows
         public MainWindow()
         {
             InitializeComponent();
-
-            var pluginLoader = new PluginLoaderFactory().CreateInstance();
-
-            context = SquiggleContext.Current;
-            context.MainWindow = this;
-            context.PluginLoader = pluginLoader;
-
-            LoadPosition();
-
-            TrayPopup.Instance.Enabled = SettingsProvider.Current.Settings.GeneralSettings.ShowPopups;
-            AudioAlert.Instance.Enabled = SettingsProvider.Current.Settings.GeneralSettings.AudioAlerts;
-
-            chatWindows = new ChatWindowCollection();            
-
-            SetupControls();
         }
 
         void SetupControls()
@@ -80,6 +65,20 @@ namespace Squiggle.UI.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            var pluginLoader = new PluginLoaderFactory().CreateInstance();
+
+            context = SquiggleContext.Current;
+            context.MainWindow = this;
+            context.PluginLoader = pluginLoader;
+
+            LoadPosition();
+
+            TrayPopup.Instance.Enabled = SettingsProvider.Current.Settings.GeneralSettings.ShowPopups;
+            AudioAlert.Instance.Enabled = SettingsProvider.Current.Settings.GeneralSettings.AudioAlerts;
+
+            chatWindows = new ChatWindowCollection();
+            SetupControls();
+
             this.StateChanged += Window_StateChanged;
 
             var settings = SettingsProvider.Current.Settings;
@@ -113,7 +112,7 @@ namespace Squiggle.UI.Windows
             if (App.RunInBackground)
                 this.Hide();
 
-            StartExtensions();
+            context.PluginLoader.LoadAll(context);
         }
 
         void ContactList_LoginInitiated(object sender, Squiggle.UI.Controls.LogInEventArgs e)
@@ -543,12 +542,6 @@ namespace Squiggle.UI.Windows
             SettingsProvider.Current.Settings.ContactSettings.ContactListSortField = sortBy;
             SettingsProvider.Current.Save();
             UpdateSortMenu();
-        }
-
-        void StartExtensions()
-        {
-            foreach (IExtension extension in context.PluginLoader.Extensions)
-                extension.Start(context);
         }
 
         void UpdateSortMenu()

@@ -9,5 +9,10 @@ namespace Squiggle.Plugins.Authentication
     {
         public AuthenticationStatus Status { get; set; }
         public UserDetails UserDetails { get; set; }
+
+        public AuthenticationResult(AuthenticationStatus status)
+        {
+            this.Status = status;
+        }
     }
 }

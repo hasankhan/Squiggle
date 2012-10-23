@@ -39,6 +39,13 @@ namespace Squiggle.UI.Components
             container.SatisfyImportsOnce(this);
         }
 
+        public void LoadAll(ISquiggleContext context)
+        {
+            AuthenticationProvider = AuthenticationProvider ?? new DefaultAuthenticationProvider();
+
+            StartExtensions(context);
+        }        
+
         public bool HasActivity(Guid id)
         {
             return GetActivity(id) != null;
@@ -57,6 +64,12 @@ namespace Squiggle.UI.Components
         {
             IActivity activity = Activities.FirstOrDefault(f => f.Id.Equals(activityId));
             return activity;
+        }
+
+        void StartExtensions(ISquiggleContext context)
+        {
+            foreach (IExtension extension in Extensions)
+                extension.Start(context);
         }
     }
 }

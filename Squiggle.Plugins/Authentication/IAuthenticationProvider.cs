@@ -8,10 +8,10 @@ namespace Squiggle.Plugins.Authentication
 {
     public interface IAuthenticationProvider
     {
-        bool RequiresUsername { get; set; }
-        bool RequiresPassword { get; set; }
-        bool RequiresDomain { get; set; }
-        bool RequiresGroupName { get; set; }
+        bool RequiresUsername { get; }
+        bool RequiresPassword { get; }
+        bool RequiresDomain { get; }
+        bool ReturnsGroupName { get; }
 
         AuthenticationResult Authenticate(NetworkCredential credential);
     }
