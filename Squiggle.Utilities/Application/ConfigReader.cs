@@ -16,6 +16,8 @@ namespace Squiggle.Utilities.Application
             config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
         }
 
+        public bool ReadOnly { get; set; }
+
         public void SetSetting<T>(string name, T value)
         {
             string strValue = Cast<string>(value);
@@ -56,7 +58,7 @@ namespace Squiggle.Utilities.Application
 
         public void Save()
         {
-            if (!modified)
+            if (ReadOnly || !modified)
                 return;
 
             config.Save(ConfigurationSaveMode.Modified);

@@ -344,6 +344,7 @@
     <Compile Include="MessageParsers\EmoticonParser.cs" />
     <Compile Include="MessageParsers\HyperlinkParser.cs" />
     <Compile Include="MessageParsers\MultiParser.cs" />
+    <Compile Include="Settings\ISettingsGroup.cs" />
     <Compile Include="Windows\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
