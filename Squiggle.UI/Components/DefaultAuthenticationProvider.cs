@@ -10,7 +10,7 @@ namespace Squiggle.UI.Components
     {
         public bool RequiresUsername
         {
-            get { return true; }
+            get { return false; }
         }
 
         public bool RequiresPassword
@@ -24,6 +24,11 @@ namespace Squiggle.UI.Components
         }
 
         public bool ReturnsGroupName
+        {
+            get { return false; }
+        }
+
+        public bool ReturnsDisplayName
         {
             get { return false; }
         }

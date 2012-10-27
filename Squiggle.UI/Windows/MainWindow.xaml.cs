@@ -46,14 +46,12 @@ namespace Squiggle.UI.Windows
         {
             chatWindows = new ChatWindowCollection();
 
-            SetupContext();
-            SetupControls();
             LoadPosition();
 
-            if (App.RunInBackground)
-                this.Hide();
-
+            SetupContext();
             context.PluginLoader.LoadAll(context);
+
+            SetupControls();
 
             TrayPopup.Instance.Enabled = SettingsProvider.Current.Settings.GeneralSettings.ShowPopups;
             AudioAlert.Instance.Enabled = SettingsProvider.Current.Settings.GeneralSettings.AudioAlerts;
@@ -85,7 +83,7 @@ namespace Squiggle.UI.Windows
                 chatControl.SignIn.chkRememberName.IsChecked = true;
         }
 
-        private void ContactList_LoginInitiated(object sender, Squiggle.UI.Controls.LogInEventArgs e)
+        private void SignInControl_LoginInitiated(object sender, Squiggle.UI.Controls.LogInEventArgs e)
         {
             SignIn(e.UserName, e.GroupName, true);
         }
@@ -439,7 +437,7 @@ namespace Squiggle.UI.Windows
 
                 DestroyMonitor();
 
-                chatControl.SignIn.SetDisplayName(context.ChatClient.CurrentUser.DisplayName);
+                chatControl.SignIn.DisplayName = context.ChatClient.CurrentUser.DisplayName;
 
                 Async.Invoke(() =>
                 {
@@ -559,7 +557,8 @@ namespace Squiggle.UI.Windows
         {
             StateChanged += Window_StateChanged;
 
-            chatControl.SignIn.LoginInitiated += ContactList_LoginInitiated;
+            chatControl.SignIn.Configure(context.PluginLoader.AuthenticationProvider);
+            chatControl.SignIn.LoginInitiated += SignInControl_LoginInitiated;
             chatControl.ContactList.BroadcastChatStart += ContactList_BroadcastChatStart;
             chatControl.ContactList.GroupChatStart += ContactList_GroupChatStart;
             chatControl.ContactList.ChatStart += ContactList_StartChat;
@@ -577,6 +576,9 @@ namespace Squiggle.UI.Windows
 
             this.Top = Properties.Settings.Default.MainWindowTop > 0 ? Properties.Settings.Default.MainWindowTop : System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height / 2 - this.Height / 2;
             this.Left = Properties.Settings.Default.MainWindowLeft > 0 ? Properties.Settings.Default.MainWindowLeft : System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width / 2 - this.Width / 2;
+
+            if (App.RunInBackground)
+                this.Hide();
         } 
     }
 }

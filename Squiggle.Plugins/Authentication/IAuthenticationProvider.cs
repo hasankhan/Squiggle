@@ -11,6 +11,8 @@ namespace Squiggle.Plugins.Authentication
         bool RequiresUsername { get; }
         bool RequiresPassword { get; }
         bool RequiresDomain { get; }
+
+        bool ReturnsDisplayName { get; }
         bool ReturnsGroupName { get; }
 
         AuthenticationResult Authenticate(NetworkCredential credential);

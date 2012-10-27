@@ -1,8 +1,7 @@
 ﻿<UserControl x:Class="Squiggle.UI.Controls.SignInControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:controls="clr-namespace:Squiggle.UI.Controls"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Loaded="UserControl_Loaded"
-    Width="200" Height="400">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Loaded="UserControl_Loaded">
     <UserControl.Resources>
         <LinearGradientBrush x:Key="SignedOffBackground1" EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FF3DB3EA" Offset="0.012"/>
@@ -23,6 +22,7 @@
             <GradientStop Color="#FFE6E7EE" Offset="0.397"/>
             <GradientStop Color="#FFF0F0F0" Offset="0.983"/>
         </LinearGradientBrush>
+        <BooleanToVisibilityConverter x:Key="visibilityConverter" />
     </UserControl.Resources>
     <Grid Background="{StaticResource SignedOffBackground}">        
         <Grid>
@@ -34,15 +34,30 @@
             <StackPanel Grid.Row="1" Orientation="Vertical">
                 <TextBlock Text="{DynamicResource MainWindow_SignIn_SignIn}"  FontSize="18" Foreground="#FF355A88" HorizontalAlignment="Center"/>
                 <Border CornerRadius="5" BorderBrush="#FFD8E8F0" BorderThickness="1" Margin="20,5,20,5">
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="{DynamicResource MainWindow_SignIn_DisplayName}" TextWrapping="Wrap" />
-                        <TextBox Margin="5,10,5,0" x:Name="txtdisplayName" MaxLength="50"
-                                 BorderBrush="{x:Null}" />
-                        <TextBlock Margin="0,5,0,0" Text="{DynamicResource MainWindow_SignIn_GroupName}" TextWrapping="Wrap" />
-                        <ComboBox Margin="5,10,5,0" x:Name="txtGroupName"
+                    <StackPanel>
+                        <StackPanel Visibility="{Binding AskDisplayName, Converter={StaticResource visibilityConverter}}">
+                            <TextBlock Text="{DynamicResource MainWindow_SignIn_DisplayName}" TextWrapping="Wrap" />
+                            <TextBox x:Name="txtdisplayName" Margin="5,10,5,0" Text="{Binding DisplayName}" MaxLength="50" BorderBrush="{x:Null}" />
+                        </StackPanel>
+                        <StackPanel Visibility="{Binding AskUsername, Converter={StaticResource visibilityConverter}}">
+                            <TextBlock Text="{DynamicResource MainWindow_SignIn_Username}" TextWrapping="Wrap" />
+                            <TextBox Margin="5,10,5,0" Text="{Binding Username}" MaxLength="50" BorderBrush="{x:Null}" />
+                        </StackPanel>
+                        <StackPanel Visibility="{Binding AskDomain, Converter={StaticResource visibilityConverter}}">
+                            <TextBlock Text="{DynamicResource MainWindow_SignIn_Domain}" TextWrapping="Wrap" />
+                            <TextBox Margin="5,10,5,0" Text="{Binding Domain}" MaxLength="50" BorderBrush="{x:Null}" />
+                        </StackPanel>
+                        <StackPanel Visibility="{Binding AskPassword, Converter={StaticResource visibilityConverter}}">
+                            <TextBlock Text="{DynamicResource MainWindow_SignIn_Password}" TextWrapping="Wrap" />
+                            <PasswordBox Margin="5,10,5,0" x:Name="txtPassword" MaxLength="50" BorderBrush="{x:Null}" />
+                        </StackPanel>
+                        <StackPanel Visibility="{Binding AskGroupName, Converter={StaticResource visibilityConverter}}">
+                            <TextBlock Margin="0,5,0,0" Text="{DynamicResource MainWindow_SignIn_GroupName}" TextWrapping="Wrap" />
+                            <ComboBox Margin="5,10,5,0" x:Name="txtGroupName"
                                   IsEditable="True" controls:EditableComboBox.MaxLength="25"
                                   PreviewKeyDown="txtGroupName_PreviewKeyDown" DisplayMemberPath="GroupName" 
                                   SelectedValuePath="GroupName" />
+                        </StackPanel>
                         <CheckBox x:Name="chkRememberName" Margin="5,10,0,0" Content="{DynamicResource MainWindow_SignIn_RememberMe}" HorizontalAlignment="Left"/>
                         <CheckBox x:Name="chkAutoSignIn" Margin="5,10,0,5" Content="{DynamicResource MainWindow_SignIn_AutoSignIn}" HorizontalAlignment="Left"/>
                     </StackPanel>
