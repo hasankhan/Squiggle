@@ -111,7 +111,6 @@ namespace Squiggle.UI.Controls
 
         internal void Configure(Plugins.Authentication.IAuthenticationProvider authProvider)
         {
-
             viewModel.AskDisplayName = !authProvider.ReturnsDisplayName;
             viewModel.AskGroupName = !authProvider.ReturnsDisplayName;
 

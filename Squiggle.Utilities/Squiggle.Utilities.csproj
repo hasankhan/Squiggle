@@ -63,6 +63,7 @@
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Web" />
@@ -83,6 +84,7 @@
     <Compile Include="..\Shared\AssemblyInfo.Version.cs">
       <Link>Properties\AssemblyInfo.Version</Link>
     </Compile>
+    <Compile Include="Security\ProtectedData.cs" />
     <Compile Include="Threading\ActionQueue.cs" />
     <Compile Include="Threading\Async.cs" />
     <Compile Include="CoalesceExtensions.cs" />

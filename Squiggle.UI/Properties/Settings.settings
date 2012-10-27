@@ -35,7 +35,9 @@
     <Setting Name="SpellCheck" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ConfirmDialogs" Type="System.Collections.Generic.List&lt;System.String&gt;" Scope="User" />
+    <Setting Name="ConfirmDialogs" Type="System.Collections.Generic.List&lt;System.String&gt;" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
     <Setting Name="ContactListSortField" Type="Squiggle.UI.Settings.ContactListSortField" Scope="User">
       <Value Profile="(Default)">DisplayName</Value>
     </Setting>
@@ -101,6 +103,15 @@
     </Setting>
     <Setting Name="ClearChatOnWindowClose" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Username" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Password" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Domain" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

@@ -11,6 +11,8 @@ using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 using Squiggle.Utilities.Net;
 using Squiggle.UI.Components;
+using System.Text;
+using Squiggle.Utilities.Security;
 
 namespace Squiggle.UI.Settings
 {
@@ -121,6 +123,9 @@ namespace Squiggle.UI.Settings
             Settings.PersonalSettings.DisplayImage = Properties.Settings.Default.DisplayImage;
             Settings.PersonalSettings.EmailAddress = Properties.Settings.Default.EmailAddress;
             Settings.PersonalSettings.GroupName = Properties.Settings.Default.GroupName;
+            Settings.PersonalSettings.Username = Properties.Settings.Default.Username;
+            Settings.PersonalSettings.Password = ProtectedData.Unprotect(Properties.Settings.Default.Password);
+            Settings.PersonalSettings.Domain = Properties.Settings.Default.Domain;
             Settings.PersonalSettings.AutoSignMeIn = reader.GetSetting(SettingKey.AutoSignIn, false);
             Settings.PersonalSettings.IdleTimeout = reader.GetSetting(SettingKey.IdleTimeout, 5);
             Settings.PersonalSettings.FontColor = Properties.Settings.Default.FontColor;
@@ -150,18 +155,23 @@ namespace Squiggle.UI.Settings
 
         private void SavePersonalSettings(ConfigReader reader)
         {
-            Properties.Settings.Default.DisplayName = Settings.PersonalSettings.RememberMe ? Settings.PersonalSettings.DisplayName : String.Empty;
-            Properties.Settings.Default.DisplayMessage = Settings.PersonalSettings.RememberMe ? Settings.PersonalSettings.DisplayMessage : String.Empty;
-            Properties.Settings.Default.DisplayImage = Settings.PersonalSettings.RememberMe ? Settings.PersonalSettings.DisplayImage : null;
-            Properties.Settings.Default.GroupName = Settings.PersonalSettings.RememberMe ? Settings.PersonalSettings.GroupName : String.Empty;
-            Properties.Settings.Default.EmailAddress = Settings.PersonalSettings.RememberMe ? Settings.PersonalSettings.EmailAddress : String.Empty;
+            var personalSettings = Settings.PersonalSettings;
 
-            reader.SetSetting(SettingKey.AutoSignIn, Settings.PersonalSettings.AutoSignMeIn);
-            reader.SetSetting(SettingKey.IdleTimeout, Settings.PersonalSettings.IdleTimeout);
-            Properties.Settings.Default.FontColor = Settings.PersonalSettings.FontColor;
-            Properties.Settings.Default.FontStyle = Settings.PersonalSettings.FontStyle;
-            Properties.Settings.Default.FontSize = Settings.PersonalSettings.FontSize;
-            Properties.Settings.Default.FontName = Settings.PersonalSettings.FontName;
+            Properties.Settings.Default.DisplayName = personalSettings.RememberMe ? personalSettings.DisplayName : String.Empty;
+            Properties.Settings.Default.DisplayMessage = personalSettings.RememberMe ? personalSettings.DisplayMessage : String.Empty;
+            Properties.Settings.Default.DisplayImage = personalSettings.RememberMe ? personalSettings.DisplayImage : null;
+            Properties.Settings.Default.GroupName = personalSettings.RememberMe ? personalSettings.GroupName : String.Empty;
+            Properties.Settings.Default.EmailAddress = personalSettings.RememberMe ? personalSettings.EmailAddress : String.Empty;
+            Properties.Settings.Default.Username = personalSettings.RememberMe ? personalSettings.Username : String.Empty;
+            Properties.Settings.Default.Password = ProtectedData.Protect(personalSettings.RememberMe ? personalSettings.Password : String.Empty);
+            Properties.Settings.Default.Domain = personalSettings.RememberMe ? personalSettings.Domain : String.Empty;
+
+            reader.SetSetting(SettingKey.AutoSignIn, personalSettings.AutoSignMeIn);
+            reader.SetSetting(SettingKey.IdleTimeout, personalSettings.IdleTimeout);
+            Properties.Settings.Default.FontColor = personalSettings.FontColor;
+            Properties.Settings.Default.FontStyle = personalSettings.FontStyle;
+            Properties.Settings.Default.FontSize = personalSettings.FontSize;
+            Properties.Settings.Default.FontName = personalSettings.FontName;
         }
 
         private void SaveConnectionSettings(ConfigReader reader)
