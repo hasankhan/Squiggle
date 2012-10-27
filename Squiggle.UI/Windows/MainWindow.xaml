@@ -11,7 +11,7 @@
     SizeChanged="Window_SizeChanged"
     Icon="/Squiggle;component/Images/Chat.ico" 
     Loaded="Window_Loaded" 
-    Closing="Window_Closing" LocationChanged="StickyWindow_LocationChanged" Width="303">
+    Closing="Window_Closing" LocationChanged="Window_LocationChanged" Width="303">
     <Window.Resources>
         <converters:AllEqualConverter x:Key="equalConverter" />
         <converters:StatusConverter x:Key="statusConverter" />
