@@ -9,6 +9,7 @@ namespace Squiggle.Utilities.Application
     public class ConfigReader
     {
         Configuration config;
+        bool modified;
 
         public ConfigReader()
         {
@@ -18,6 +19,11 @@ namespace Squiggle.Utilities.Application
         public void SetSetting<T>(string name, T value)
         {
             string strValue = Cast<string>(value);
+            string oldValue = config.AppSettings.Settings[name].Coalesce(kv=>kv.Value, null);
+            if (oldValue == strValue)
+                return;
+
+            modified = true;
             config.AppSettings.Settings.Remove(name);
             config.AppSettings.Settings.Add(name, strValue);
         }
@@ -50,7 +56,11 @@ namespace Squiggle.Utilities.Application
 
         public void Save()
         {
+            if (!modified)
+                return;
+
             config.Save(ConfigurationSaveMode.Modified);
+            modified = false;
         }
 
         static T Cast<T>(object value)
