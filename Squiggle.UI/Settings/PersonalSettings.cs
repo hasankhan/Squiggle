@@ -2,6 +2,7 @@
 using Squiggle.Utilities.Security;
 using System;
 using System.Drawing;
+using System.Security;
 
 namespace Squiggle.UI.Settings
 {

@@ -84,7 +84,7 @@ namespace Squiggle.UI.Windows
             if (settings.PersonalSettings.RememberMe && settings.PersonalSettings.AutoSignMeIn)
                 Dispatcher.Delay(() => SignIn(signInOptions, false), 5.Seconds());
             else if (settings.PersonalSettings.RememberMe)
-                chatControl.SignIn.chkRememberName.IsChecked = true;
+                chatControl.SignIn.RememberMe = true;
         }
 
         private void SignInControl_LoginInitiated(object sender, Squiggle.UI.Controls.LogInEventArgs e)

@@ -58,8 +58,8 @@
                                   PreviewKeyDown="txtGroupName_PreviewKeyDown" DisplayMemberPath="GroupName" 
                                   SelectedValuePath="GroupName" />
                         </StackPanel>
-                        <CheckBox x:Name="chkRememberName" Margin="5,10,0,0" Content="{DynamicResource MainWindow_SignIn_RememberMe}" HorizontalAlignment="Left"/>
-                        <CheckBox x:Name="chkAutoSignIn" Margin="5,10,0,5" Content="{DynamicResource MainWindow_SignIn_AutoSignIn}" HorizontalAlignment="Left"/>
+                        <CheckBox IsChecked="{Binding RememberMe}" Margin="5,10,0,0" Content="{DynamicResource MainWindow_SignIn_RememberMe}" HorizontalAlignment="Left"/>
+                        <CheckBox IsChecked="{Binding AutoSignIn}" Margin="5,10,0,5" Content="{DynamicResource MainWindow_SignIn_AutoSignIn}" HorizontalAlignment="Left"/>
                     </StackPanel>
                 </Border>
                 <Button HorizontalAlignment="Center" IsDefault="True" Width="60" Height="25" Content="{DynamicResource MainWindow_SignIn_SignInButton}" Click="SignIn"
