@@ -5,9 +5,12 @@ namespace Squiggle.Plugins
 
     public class SignInOptions
     {
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string Domain { get; set; }
+        
         public string DisplayName { get; set; }
         public string GroupName { get; set; }
-        public string Email { get; set; }
     }
 
     public interface IMainWindow

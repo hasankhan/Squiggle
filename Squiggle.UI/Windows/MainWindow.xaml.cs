@@ -19,6 +19,9 @@ using Squiggle.UI.ViewModel;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Threading;
 using Squiggle.Plugins;
+using System.Net;
+using Squiggle.Plugins.Authentication;
+using Squiggle.UI.Components.Authentication;
 
 namespace Squiggle.UI.Windows
 {
@@ -71,18 +74,19 @@ namespace Squiggle.UI.Windows
             clientViewModel = new ClientViewModel(client);
             clientViewModel.CancelUpdateCommand = new RelayCommand<object>(CancelUpdateCommand_Execute);
             DataContext = chatControl.ChatContext = clientViewModel;
-
-            var signInOptions = new SignInOptions()
-            {
-                DisplayName = settings.PersonalSettings.DisplayName,
-                GroupName = settings.PersonalSettings.GroupName,
-                Email = settings.PersonalSettings.EmailAddress
-            };
-
+           
             autoSignout = new NetworkSignout(this.Dispatcher, options => SignIn(options, byUser: false), () => SignOut(byUser: false));
 
             if (settings.PersonalSettings.RememberMe && settings.PersonalSettings.AutoSignMeIn)
+            {
+                var signInOptions = new SignInOptions()
+                {
+                    Username = settings.PersonalSettings.Username,
+                    Password = settings.PersonalSettings.Password,
+                    Domain = settings.PersonalSettings.Domain
+                };
                 Dispatcher.Delay(() => SignIn(signInOptions, false), 5.Seconds());
+            }
             else if (settings.PersonalSettings.RememberMe)
                 chatControl.SignIn.RememberMe = true;
         }
@@ -91,6 +95,9 @@ namespace Squiggle.UI.Windows
         {
             var signInOptions = new SignInOptions()
             {
+                Username = e.Username,
+                Password = e.Password,
+                Domain = e.Domain,
                 DisplayName = e.DisplayName,
                 GroupName = e.GroupName
             };
@@ -373,7 +380,7 @@ namespace Squiggle.UI.Windows
 
         void SignIn(SignInOptions options, bool byUser)
         {
-            if (context.ChatClient != null && context.ChatClient.IsLoggedIn)
+            if (context.ChatClient.IsLoggedIn)
                 return;
 
             busyIndicator.IsBusy = true;
@@ -383,7 +390,7 @@ namespace Squiggle.UI.Windows
             Async.Invoke(() =>
             {
                 clientAvailable.Wait();
-                ExceptionMonster.EatTheException(() => LoginClient(options), "creating chat client", out ex);
+                ExceptionMonster.EatTheException(() => LoginClient(options), "logging in", out ex);
             },
             () =>
             {
@@ -504,24 +511,23 @@ namespace Squiggle.UI.Windows
         {
             idleStatusChanger.Dispose();
             idleStatusChanger = null;
-        }
+        }        
 
         void LoginClient(SignInOptions signInOptions)
         {
+            var credential = new NetworkCredential(signInOptions.Username, signInOptions.Password, signInOptions.Domain);
+
+            AuthenticationResult result = context.PluginLoader.AuthenticationProvider.Authenticate(credential);
+            if (result.Status == AuthenticationStatus.Failure)
+                throw new AuthenticationException(result.Status, Translation.Instance.Authentication_Failed);
+            if (result.Status == AuthenticationStatus.ServiceUnavailable)
+                throw new AuthenticationException(result.Status, Translation.Instance.Authentication_ServiceUnavailable);
+
             SettingsProvider.Current.Load(); // reload settings
-            var settings = SettingsProvider.Current.Settings;
-
-            var properties = new BuddyProperties();
-            properties.GroupName = signInOptions.GroupName;
-            properties.MachineName = Environment.MachineName;
-            properties.DisplayMessage = settings.PersonalSettings.DisplayMessage;
-            properties.DisplayImage = settings.PersonalSettings.DisplayImage;
-            properties.EmailAddress = signInOptions.Email;
-
-            ChatClientOptions clientOptions = new ChatClientOptionsFactory(settings).CreateInstance();
-            clientOptions.DisplayName = signInOptions.DisplayName;
-            clientOptions.UserProperties = properties;
-
+            
+            var optionsFactory = new ChatClientOptionsFactory(SettingsProvider.Current.Settings, result.UserDetails, signInOptions);
+            ChatClientOptions clientOptions = optionsFactory.CreateInstance();
+            
             context.ChatClient.Login(clientOptions);
         }
 

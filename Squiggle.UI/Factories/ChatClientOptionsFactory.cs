@@ -9,16 +9,23 @@ using Squiggle.Utilities;
 using Squiggle.UI.Resources;
 using Squiggle.Utilities.Net;
 using Squiggle.Core;
+using Squiggle.Plugins.Authentication;
+using Squiggle.Plugins;
+using Squiggle.Core.Presence;
 
 namespace Squiggle.UI.Factories
 {
     class ChatClientOptionsFactory: IInstanceFactory<ChatClientOptions>
     {
         SquiggleSettings settings;
+        UserDetails userInfo;
+        SignInOptions signInOptions;
 
-        public ChatClientOptionsFactory(SquiggleSettings settings)
+        public ChatClientOptionsFactory(SquiggleSettings settings, UserDetails userInfo, SignInOptions signInOptions)
         {
             this.settings = settings;
+            this.userInfo = userInfo;
+            this.signInOptions = signInOptions;
         }
 
         public ChatClientOptions CreateInstance()
@@ -47,10 +54,24 @@ namespace Squiggle.UI.Factories
                 MulticastEndPoint = multicastEndPoint,
                 MulticastReceiveEndPoint = multicastReceiveEndPoint,
                 PresenceServiceEndPoint = presenceServiceEndPoint,
-                KeepAliveTime = keepAliveTimeout
+                KeepAliveTime = keepAliveTimeout,
+                UserProperties = CreateProperties(),
+                DisplayName = userInfo.DisplayName.NullIfEmpty() ?? signInOptions.DisplayName.NullIfEmpty() ?? settings.PersonalSettings.DisplayName
             };
-            
+
             return options;
+        }
+
+        IBuddyProperties CreateProperties()
+        {
+            var properties = new BuddyProperties();
+            properties.GroupName = userInfo.GroupName.NullIfEmpty() ?? signInOptions.GroupName.NullIfEmpty() ?? settings.PersonalSettings.GroupName;
+            properties.EmailAddress = userInfo.Email.NullIfEmpty() ?? settings.PersonalSettings.EmailAddress;
+            properties.DisplayImage = userInfo.Image ?? settings.PersonalSettings.DisplayImage;
+            properties.DisplayMessage = settings.PersonalSettings.DisplayMessage;
+            properties.MachineName = Environment.MachineName;
+
+            return properties;
         }
     }
 }

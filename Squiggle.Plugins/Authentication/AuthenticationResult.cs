@@ -13,6 +13,7 @@ namespace Squiggle.Plugins.Authentication
         public AuthenticationResult(AuthenticationStatus status)
         {
             this.Status = status;
+            this.UserDetails = new UserDetails();
         }
     }
 }

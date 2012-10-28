@@ -93,8 +93,11 @@ namespace Squiggle.UI.Resources
         public string Error_NoNetwork { get; set; }
         
         public string HistoryViewer_ConfirmClear { get; set; }
-        public string HistoryViewer_ConfirmDelete { get; set; }        
-        
+        public string HistoryViewer_ConfirmDelete { get; set; }
+
+        public string Authentication_Failed { get; set; }
+        public string Authentication_ServiceUnavailable { get; set; }
+
         public static Translation Instance { get; set; }
 
         static Translation()
@@ -116,6 +119,6 @@ namespace Squiggle.UI.Resources
         {
             var translation = Application.Current.TryFindResource(key) as String;
             return translation;
-        }
+        }        
     }
 }

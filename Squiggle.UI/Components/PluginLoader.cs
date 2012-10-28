@@ -13,6 +13,7 @@ using Squiggle.Plugins.MessageParser;
 using Squiggle.Core.Chat.Activity;
 using Squiggle.Plugins;
 using Squiggle.Plugins.Authentication;
+using Squiggle.UI.Components.Authentication;
 
 namespace Squiggle.UI.Components
 {

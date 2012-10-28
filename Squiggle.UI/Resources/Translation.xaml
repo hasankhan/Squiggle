@@ -219,4 +219,6 @@
     <sys:String x:Key="VoiceChat_SentWaiting">Waiting for {0} to accept voice chat request</sys:String>
     <sys:String x:Key="VoiceChat_Accept">Accept</sys:String>
     <sys:String x:Key="VoiceChat_Reject">Reject</sys:String>
+    <sys:String x:Key="Authentication_ServiceUnavailable">Unable to connect to authentication service</sys:String>
+    <sys:String x:Key="Authentication_Failed">Authentication failed. Please check your credential are correct.</sys:String>
 </ResourceDictionary>

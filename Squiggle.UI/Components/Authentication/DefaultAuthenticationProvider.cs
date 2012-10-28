@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Squiggle.UI.Components
+namespace Squiggle.UI.Components.Authentication
 {
     class DefaultAuthenticationProvider: IAuthenticationProvider
     {
