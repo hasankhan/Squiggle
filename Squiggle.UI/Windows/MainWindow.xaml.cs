@@ -390,7 +390,9 @@ namespace Squiggle.UI.Windows
             Async.Invoke(() =>
             {
                 clientAvailable.Wait();
-                ExceptionMonster.EatTheException(() => LoginClient(options), "logging in", out ex);
+                SettingsProvider.Current.Load();
+                var loginHelper = new LoginHelper(context.PluginLoader.AuthenticationProvider, SettingsProvider.Current.Settings, context.ChatClient); 
+                ExceptionMonster.EatTheException(() => loginHelper.Login(options), "logging in", out ex);
             },
             () =>
             {
@@ -512,24 +514,6 @@ namespace Squiggle.UI.Windows
             idleStatusChanger.Dispose();
             idleStatusChanger = null;
         }        
-
-        void LoginClient(SignInOptions signInOptions)
-        {
-            var credential = new NetworkCredential(signInOptions.Username, signInOptions.Password, signInOptions.Domain);
-
-            AuthenticationResult result = context.PluginLoader.AuthenticationProvider.Authenticate(credential);
-            if (result.Status == AuthenticationStatus.Failure)
-                throw new AuthenticationException(result.Status, Translation.Instance.Authentication_Failed);
-            if (result.Status == AuthenticationStatus.ServiceUnavailable)
-                throw new AuthenticationException(result.Status, Translation.Instance.Authentication_ServiceUnavailable);
-
-            SettingsProvider.Current.Load(); // reload settings
-            
-            var optionsFactory = new ChatClientOptionsFactory(SettingsProvider.Current.Settings, result.UserDetails, signInOptions);
-            ChatClientOptions clientOptions = optionsFactory.CreateInstance();
-            
-            context.ChatClient.Login(clientOptions);
-        }
 
         IChatWindow StartChat(IBuddy buddy, bool sendFile, params string[] filePaths)
         {

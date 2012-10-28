@@ -112,6 +112,7 @@
   <ItemGroup>
     <Compile Include="Components\Authentication\AuthenticationException.cs" />
     <Compile Include="Components\Authentication\DefaultAuthenticationProvider.cs" />
+    <Compile Include="Components\LoginHelper.cs" />
     <Compile Include="Factories\ChatClientOptionsFactory.cs" />
     <Compile Include="Helpers\ActivitiesMenuHelper.cs" />
     <Compile Include="MessageFilters\Commands\IChatCommand.cs" />
