@@ -65,7 +65,7 @@ namespace Squiggle.Client
 
         public void Login(ChatClientOptions options)
         {
-            string username = options.Username.Trim();
+            string username = options.DisplayName.Trim();
 
             this.chatEndPoint = (SquiggleEndPoint)options.ChatEndPoint;
             StartChatService();
@@ -85,7 +85,7 @@ namespace Squiggle.Client
             StartPresenceService(username, options.UserProperties, presenceOptions);
 
             var self = (SelfBuddy)CurrentUser;
-            self.Update(UserStatus.Online, options.Username, chatEndPoint.Address, options.UserProperties.ToDictionary());
+            self.Update(UserStatus.Online, options.DisplayName, chatEndPoint.Address, options.UserProperties.ToDictionary());
             self.EnableUpdates = true;
             LogStatus(CurrentUser);
 

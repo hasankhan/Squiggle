@@ -72,20 +72,29 @@ namespace Squiggle.UI.Windows
             clientViewModel.CancelUpdateCommand = new RelayCommand<object>(CancelUpdateCommand_Execute);
             DataContext = chatControl.ChatContext = clientViewModel;
 
-            string name = settings.PersonalSettings.DisplayName;
-            string groupName = settings.PersonalSettings.GroupName;
+            var signInOptions = new SignInOptions()
+            {
+                DisplayName = settings.PersonalSettings.DisplayName,
+                GroupName = settings.PersonalSettings.GroupName,
+                Email = settings.PersonalSettings.EmailAddress
+            };
 
-            autoSignout = new NetworkSignout(this.Dispatcher, u => SignIn(u.DisplayName, u.GroupName, false), () => SignOut(false));
+            autoSignout = new NetworkSignout(this.Dispatcher, options => SignIn(options, byUser: false), () => SignOut(byUser: false));
 
-            if (!String.IsNullOrEmpty(name) && settings.PersonalSettings.AutoSignMeIn)
-                Dispatcher.Delay(() => SignIn(name, groupName, false), 5.Seconds());
-            else if (!String.IsNullOrEmpty(name))
+            if (settings.PersonalSettings.RememberMe && settings.PersonalSettings.AutoSignMeIn)
+                Dispatcher.Delay(() => SignIn(signInOptions, false), 5.Seconds());
+            else if (settings.PersonalSettings.RememberMe)
                 chatControl.SignIn.chkRememberName.IsChecked = true;
         }
 
         private void SignInControl_LoginInitiated(object sender, Squiggle.UI.Controls.LogInEventArgs e)
         {
-            SignIn(e.UserName, e.GroupName, true);
+            var signInOptions = new SignInOptions()
+            {
+                DisplayName = e.DisplayName,
+                GroupName = e.GroupName
+            };
+            SignIn(signInOptions, true);
         }
 
         private void client_ChatStarted(object sender, Squiggle.Client.ChatStartedEventArgs e)
@@ -294,11 +303,6 @@ namespace Squiggle.UI.Windows
             return window;
         }
 
-        public void SignOut()
-        {
-            SignOut(true);
-        }
-
         public void ToggleMainWindow()
         {
             Dispatcher.Invoke(() =>
@@ -357,7 +361,17 @@ namespace Squiggle.UI.Windows
             Close();
         }
 
-        public void SignIn(string displayName, string groupName, bool byUser)
+        public void SignOut()
+        {
+            SignOut(true);
+        }
+
+        public void SignIn(SignInOptions options)
+        {
+            SignIn(options, true);
+        }
+
+        void SignIn(SignInOptions options, bool byUser)
         {
             if (context.ChatClient != null && context.ChatClient.IsLoggedIn)
                 return;
@@ -369,7 +383,7 @@ namespace Squiggle.UI.Windows
             Async.Invoke(() =>
             {
                 clientAvailable.Wait();
-                ExceptionMonster.EatTheException(() => LoginClient(displayName, groupName), "creating chat client", out ex);
+                ExceptionMonster.EatTheException(() => LoginClient(options), "creating chat client", out ex);
             },
             () =>
             {
@@ -381,7 +395,7 @@ namespace Squiggle.UI.Windows
                     return;
                 }
 
-                OnSignIn(displayName, groupName);
+                OnSignIn(options);
             });
         }
 
@@ -409,12 +423,12 @@ namespace Squiggle.UI.Windows
                 autoSignout.OnSignOut();
         }
 
-        void OnSignIn(string displayName, string groupName)
+        void OnSignIn(SignInOptions signInOptions)
         {
             CreateMonitor();
 
             VisualStateManager.GoToState(chatControl, "OnlineState", true);
-            autoSignout.OnSignIn(displayName, groupName);
+            autoSignout.OnSignIn(signInOptions);
 
             foreach (var window in chatWindows)
                 window.Enabled = true;
@@ -438,6 +452,7 @@ namespace Squiggle.UI.Windows
                 DestroyMonitor();
 
                 chatControl.SignIn.DisplayName = context.ChatClient.CurrentUser.DisplayName;
+                chatControl.SignIn.GroupName = context.ChatClient.CurrentUser.Properties.GroupName;
 
                 Async.Invoke(() =>
                 {
@@ -491,23 +506,23 @@ namespace Squiggle.UI.Windows
             idleStatusChanger = null;
         }
 
-        void LoginClient(string displayName, string groupName)
+        void LoginClient(SignInOptions signInOptions)
         {
             SettingsProvider.Current.Load(); // reload settings
             var settings = SettingsProvider.Current.Settings;
 
             var properties = new BuddyProperties();
-            properties.GroupName = groupName;
+            properties.GroupName = signInOptions.GroupName;
             properties.MachineName = Environment.MachineName;
             properties.DisplayMessage = settings.PersonalSettings.DisplayMessage;
             properties.DisplayImage = settings.PersonalSettings.DisplayImage;
-            properties.EmailAddress = settings.PersonalSettings.EmailAddress;
+            properties.EmailAddress = signInOptions.Email;
 
-            ChatClientOptions options = new ChatClientOptionsFactory(settings).CreateInstance();
-            options.Username = displayName;
-            options.UserProperties = properties;
+            ChatClientOptions clientOptions = new ChatClientOptionsFactory(settings).CreateInstance();
+            clientOptions.DisplayName = signInOptions.DisplayName;
+            clientOptions.UserProperties = properties;
 
-            context.ChatClient.Login(options);
+            context.ChatClient.Login(clientOptions);
         }
 
         IChatWindow StartChat(IBuddy buddy, bool sendFile, params string[] filePaths)

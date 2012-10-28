@@ -37,15 +37,15 @@
                     <StackPanel>
                         <StackPanel Visibility="{Binding AskDisplayName, Converter={StaticResource visibilityConverter}}">
                             <TextBlock Text="{DynamicResource MainWindow_SignIn_DisplayName}" TextWrapping="Wrap" />
-                            <TextBox x:Name="txtdisplayName" Margin="5,10,5,0" Text="{Binding DisplayName}" MaxLength="50" BorderBrush="{x:Null}" />
+                            <TextBox x:Name="txtDisplayName" Margin="5,10,5,0" Text="{Binding DisplayName, UpdateSourceTrigger=PropertyChanged}" MaxLength="50" BorderBrush="{x:Null}" />
                         </StackPanel>
                         <StackPanel Visibility="{Binding AskUsername, Converter={StaticResource visibilityConverter}}">
                             <TextBlock Text="{DynamicResource MainWindow_SignIn_Username}" TextWrapping="Wrap" />
-                            <TextBox Margin="5,10,5,0" Text="{Binding Username}" MaxLength="50" BorderBrush="{x:Null}" />
+                            <TextBox Margin="5,10,5,0" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" MaxLength="50" BorderBrush="{x:Null}" />
                         </StackPanel>
                         <StackPanel Visibility="{Binding AskDomain, Converter={StaticResource visibilityConverter}}">
                             <TextBlock Text="{DynamicResource MainWindow_SignIn_Domain}" TextWrapping="Wrap" />
-                            <TextBox Margin="5,10,5,0" Text="{Binding Domain}" MaxLength="50" BorderBrush="{x:Null}" />
+                            <TextBox Margin="5,10,5,0" Text="{Binding Domain, UpdateSourceTrigger=PropertyChanged}" MaxLength="50" BorderBrush="{x:Null}" />
                         </StackPanel>
                         <StackPanel Visibility="{Binding AskPassword, Converter={StaticResource visibilityConverter}}">
                             <TextBlock Text="{DynamicResource MainWindow_SignIn_Password}" TextWrapping="Wrap" />
@@ -53,7 +53,7 @@
                         </StackPanel>
                         <StackPanel Visibility="{Binding AskGroupName, Converter={StaticResource visibilityConverter}}">
                             <TextBlock Margin="0,5,0,0" Text="{DynamicResource MainWindow_SignIn_GroupName}" TextWrapping="Wrap" />
-                            <ComboBox Margin="5,10,5,0" x:Name="txtGroupName"
+                            <ComboBox Margin="5,10,5,0" x:Name="txtGroupName" Text="{Binding GroupName, UpdateSourceTrigger=PropertyChanged}"
                                   IsEditable="True" controls:EditableComboBox.MaxLength="25"
                                   PreviewKeyDown="txtGroupName_PreviewKeyDown" DisplayMemberPath="GroupName" 
                                   SelectedValuePath="GroupName" />

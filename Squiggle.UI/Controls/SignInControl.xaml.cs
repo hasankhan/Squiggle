@@ -27,7 +27,7 @@ namespace Squiggle.UI.Controls
             set 
             { 
                 viewModel.DisplayName = value.Trim();
-                txtdisplayName.SelectAll();
+                txtDisplayName.SelectAll();
             }
         }
 
@@ -44,7 +44,11 @@ namespace Squiggle.UI.Controls
 
         private void SignIn(object sender, RoutedEventArgs e)
         {
-            if (String.IsNullOrEmpty(DisplayName))
+            if (viewModel.AskDisplayName && String.IsNullOrEmpty(DisplayName))
+                return;
+            if (viewModel.AskDomain && String.IsNullOrEmpty(viewModel.Domain))
+                return;
+            if (viewModel.AskUsername && String.IsNullOrEmpty(viewModel.Username))
                 return;
 
             var settings = SettingsProvider.Current.Settings;
@@ -71,8 +75,11 @@ namespace Squiggle.UI.Controls
 
             LoginInitiated(this, new LogInEventArgs()
             {
-                UserName = DisplayName,
-                GroupName = GroupName
+                DisplayName = DisplayName,
+                GroupName = GroupName,
+                Domain = (viewModel.Domain ?? String.Empty).Trim(),
+                Username = (viewModel.Username ?? String.Empty).Trim(),
+                Password = txtPassword.Password
             });
         }
 
@@ -87,7 +94,7 @@ namespace Squiggle.UI.Controls
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            txtdisplayName.Focus();
+            txtDisplayName.Focus();
         }
 
         private void txtGroupName_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
@@ -122,8 +129,11 @@ namespace Squiggle.UI.Controls
 
     public class LogInEventArgs : EventArgs
     {
-        public string UserName { get; set; }
+        public string DisplayName { get; set; }
         public string GroupName { get; set; }
+        public string Domain { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 
     public class SignInViewModel : ViewModelBase
@@ -147,13 +157,6 @@ namespace Squiggle.UI.Controls
         {
             get { return _askPassword; }
             set { Set(()=>AskPassword, ref _askPassword, value); }
-        }
-
-        string _Password;
-        public string Password
-        {
-            get { return _Password; }
-            set { Set(()=>Password, ref _Password, value); }
         }
 
         bool _askDisplayName;

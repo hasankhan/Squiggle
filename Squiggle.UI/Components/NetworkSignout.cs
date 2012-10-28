@@ -4,39 +4,32 @@ using System.Windows.Threading;
 using Squiggle.UI.Helpers;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Threading;
+using Squiggle.Plugins;
 
 namespace Squiggle.UI.Components
 {
-    class NetworkSinginInfo
-    {
-        public string DisplayName { get; set; }
-        public string GroupName { get; set; }
-    }
-
     class NetworkSignout: IDisposable
     {
         bool autoSignout;
-        
-        string userName;
-        string groupName;
 
-        Action<NetworkSinginInfo> signinFunction;
+        SignInOptions signInOptions;
+
+        Action<SignInOptions> signInFunction;
         Action signoutFunction;
         bool loggedIn;
         Dispatcher dispatcher;
 
-        public NetworkSignout(Dispatcher dispatcher, Action<NetworkSinginInfo> signinFunction, Action signoutFunction)
+        public NetworkSignout(Dispatcher dispatcher, Action<SignInOptions> signInFunction, Action signoutFunction)
         {
             this.dispatcher = dispatcher;
-            this.signinFunction = signinFunction;
+            this.signInFunction = signInFunction;
             this.signoutFunction = signoutFunction;
             System.Net.NetworkInformation.NetworkChange.NetworkAvailabilityChanged += new System.Net.NetworkInformation.NetworkAvailabilityChangedEventHandler(NetworkChange_NetworkAvailabilityChanged);
         }
 
-        public void OnSignIn(string userName, string groupName)
+        public void OnSignIn(SignInOptions signInOptions)
         {
-            this.userName = userName;
-            this.groupName = groupName;
+            this.signInOptions = signInOptions;
             loggedIn = true;
         }
 
@@ -52,8 +45,8 @@ namespace Squiggle.UI.Components
             {
                 dispatcher.Delay(()=>
                 {
-                    if (autoSignout && !String.IsNullOrEmpty(userName) && !loggedIn)
-                        signinFunction(new NetworkSinginInfo() { DisplayName = userName, GroupName = groupName });
+                    if (autoSignout && signInOptions!=null && !loggedIn)
+                        signInFunction(signInOptions);
                 }, 10.Seconds());
             }
             else

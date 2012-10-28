@@ -16,7 +16,7 @@ namespace Squiggle.Client
         public IPEndPoint PresenceServiceEndPoint { get; set; }
         public TimeSpan KeepAliveTime { get; set; }
         
-        public string Username { get;set; }
+        public string DisplayName { get;set; }
         public IBuddyProperties UserProperties {get; set; } 
     }
 }
