@@ -6,18 +6,13 @@
         <Directory Id="INSTALLDIR" Name="Squiggle">
           <Component Id="CoreFiles" DiskId="1" Guid="91906336-C57B-46C3-816B-A9FA02AE53F3">
             <File Id="CLRZMQ.DLL" Name="clrzmq.dll" Source="..\Squiggle.UI\bin\x86\Release\clrzmq.dll" />
-            <File Id="CLRZMQ.PDB" Name="clrzmq.pdb" Source="..\Squiggle.UI\bin\x86\Release\clrzmq.pdb" />
-            <File Id="CLRZMQ.XML" Name="clrzmq.xml" Source="..\Squiggle.UI\bin\x86\Release\clrzmq.xml" />
             <File Id="FLUIDKIT.DLL" Name="FluidKit.dll" Source="..\Squiggle.UI\bin\x86\Release\FluidKit.dll" />
-            <File Id="FLUIDKIT.PDB" Name="FluidKit.pdb" Source="..\Squiggle.UI\bin\x86\Release\FluidKit.pdb" />
             <File Id="HISTORY.SDF" Name="History.sdf" Source="..\Squiggle.UI\bin\x86\Release\History.sdf" />
             <File Id="LIBSPEEX_LICENSE.TXT" Name="libspeex-license.txt" Source="..\Squiggle.UI\bin\x86\Release\libspeex-license.txt" />
             <File Id="LIBSPEEXDSP.DLL" Name="libspeexdsp.dll" Source="..\Squiggle.UI\bin\x86\Release\libspeexdsp.dll" />
             <File Id="LIBZMQ.DLL" Name="libzmq.dll" Source="..\Squiggle.UI\bin\x86\Release\libzmq.dll" />
             <File Id="NAUDIO_LICENSE.TXT" Name="NAudio-license.txt" Source="..\Squiggle.UI\bin\x86\Release\NAudio-license.txt" />
             <File Id="PROTOBUF_NET.DLL" Name="protobuf-net.dll" Source="..\Squiggle.UI\bin\x86\Release\protobuf-net.dll" />
-            <File Id="PROTOBUF_NET.PDB" Name="protobuf-net.pdb" Source="..\Squiggle.UI\bin\x86\Release\protobuf-net.pdb" />
-            <File Id="PROTOBUF_NET.XML" Name="protobuf-net.xml" Source="..\Squiggle.UI\bin\x86\Release\protobuf-net.xml" />
             <File Id="SQLCECA40.DLL" Name="sqlceca40.dll" Source="..\Squiggle.UI\bin\x86\Release\sqlceca40.dll" />
             <File Id="SQLCECOMPACT40.DLL" Name="sqlcecompact40.dll" Source="..\Squiggle.UI\bin\x86\Release\sqlcecompact40.dll" />
             <File Id="SQLCEER40EN.DLL" Name="sqlceer40EN.dll" Source="..\Squiggle.UI\bin\x86\Release\sqlceer40EN.dll" />
@@ -25,20 +20,13 @@
             <File Id="SQLCEQP40.DLL" Name="sqlceqp40.dll" Source="..\Squiggle.UI\bin\x86\Release\sqlceqp40.dll" />
             <File Id="SQLCESE40.DLL" Name="sqlcese40.dll" Source="..\Squiggle.UI\bin\x86\Release\sqlcese40.dll" />
             <File Id="SQUIGGLE.CLIENT.DLL" Name="Squiggle.Client.dll" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.Client.dll" />
-            <File Id="SQUIGGLE.CLIENT.PDB" Name="Squiggle.Client.pdb" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.Client.pdb" />
             <File Id="SQUIGGLE.CORE.DLL" Name="Squiggle.Core.dll" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.Core.dll" />
-            <File Id="SQUIGGLE.CORE.PDB" Name="Squiggle.Core.pdb" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.Core.pdb" />
             <File Id="SQUIGGLE.EXE" Name="Squiggle.exe" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.exe" />
             <File Id="SQUIGGLE.EXE.CONFIG" Name="Squiggle.exe.config" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.exe.config" />
             <File Id="SQUIGGLE.HISTORY.DLL" Name="Squiggle.History.dll" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.History.dll" />
-            <File Id="SQUIGGLE.HISTORY.PDB" Name="Squiggle.History.pdb" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.History.pdb" />
             <File Id="SQUIGGLE.INFRASTRUCTURE.DLL" Name="Squiggle.Infrastructure.dll" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.Infrastructure.dll" />
-            <File Id="SQUIGGLE.INFRASTRUCTURE.PDB" Name="Squiggle.Infrastructure.pdb" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.Infrastructure.pdb" />
-            <File Id="SQUIGGLE.PDB" Name="Squiggle.pdb" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.pdb" />
             <File Id="SQUIGGLE.PLUGINS.DLL" Name="Squiggle.Plugins.dll" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.Plugins.dll" />
-            <File Id="SQUIGGLE.PLUGINS.PDB" Name="Squiggle.Plugins.pdb" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.Plugins.pdb" />
             <File Id="SQUIGGLE.UTILITIES.DLL" Name="Squiggle.Utilities.dll" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.Utilities.dll" />
-            <File Id="SQUIGGLE.UTILITIES.PDB" Name="Squiggle.Utilities.pdb" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.Utilities.pdb" />
             <File Id="SYSTEM.DATA.SQLSERVERCE.DLL" Name="System.Data.SqlServerCe.dll" Source="..\Squiggle.UI\bin\x86\Release\System.Data.SqlServerCe.dll" />
             <File Id="SYSTEM.DATA.SQLSERVERCE.ENTITY.DLL" Name="System.Data.SqlServerCe.Entity.dll" Source="..\Squiggle.UI\bin\x86\Release\System.Data.SqlServerCe.Entity.dll" />
           </Component>
