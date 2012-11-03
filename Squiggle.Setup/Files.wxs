@@ -9,7 +9,6 @@
             <File Id="ENTITYFRAMEWORK.DLL" Name="EntityFramework.dll" Source="..\Squiggle.UI\bin\x86\Release\EntityFramework.dll" />
             <File Id="FLUIDKIT.DLL" Name="FluidKit.dll" Source="..\Squiggle.UI\bin\x86\Release\FluidKit.dll" />
             <File Id="LIBZMQ.DLL" Name="libzmq.dll" Source="..\Squiggle.UI\bin\x86\Release\libzmq.dll" />
-            <File Id="NAUDIO_LICENSE.TXT" Name="NAudio-license.txt" Source="..\Squiggle.UI\bin\x86\Release\NAudio-license.txt" />
             <File Id="PROTOBUF_NET.DLL" Name="protobuf-net.dll" Source="..\Squiggle.UI\bin\x86\Release\protobuf-net.dll" />
             <File Id="SQLCECA40.DLL" Name="sqlceca40.dll" Source="..\Squiggle.UI\bin\x86\Release\sqlceca40.dll" />
             <File Id="SQLCECOMPACT40.DLL" Name="sqlcecompact40.dll" Source="..\Squiggle.UI\bin\x86\Release\sqlcecompact40.dll" />
@@ -63,7 +62,7 @@
               <File Id="LIBSPEEX_LICENSE.TXT" Name="libspeex-license.txt" Source="..\Squiggle.UI\bin\x86\Release\Plugins\libspeex-license.txt" />
               <File Id="LIBSPEEXDSP.DLL" Name="libspeexdsp.dll" Source="..\Squiggle.UI\bin\x86\Release\Plugins\libspeexdsp.dll" />
               <File Id="NAUDIO.DLL" Name="NAudio.dll" Source="..\Squiggle.UI\bin\x86\Release\Plugins\NAudio.dll" />
-              <File Id="NAUDIO-LICENSE.TXT" Name="NAudio-license.txt" Source="..\Squiggle.UI\bin\x86\Release\Plugins\NAudio-license.txt" />
+              <File Id="NAUDIO_LICENSE.TXT" Name="NAudio-license.txt" Source="..\Squiggle.UI\bin\x86\Release\Plugins\NAudio-license.txt" />
               <File Id="README.TXT" Name="Readme.txt" Source="..\Squiggle.UI\bin\x86\Release\Plugins\Readme.txt" />
               <File Id="SQUIGGLE.FILETRANSFER.DLL" Name="Squiggle.FileTransfer.dll" Source="..\Squiggle.UI\bin\x86\Release\Plugins\Squiggle.FileTransfer.dll" />
               <File Id="SQUIGGLE.VOICECHAT.DLL" Name="Squiggle.VoiceChat.dll" Source="..\Squiggle.UI\bin\x86\Release\Plugins\Squiggle.VoiceChat.dll" />
