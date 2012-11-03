@@ -1,60 +1,87 @@
-CREATE DATABASE SquiggleHistory;
+USE [SquiggleHistory]
 GO
+/****** Object:  Table [dbo].[Events]    Script Date: 11/3/2012 12:06:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Events](
+	[Id] [uniqueidentifier] NOT NULL,
+	[SessionId] [uniqueidentifier] NOT NULL,
+	[TypeCode] [int] NOT NULL,
+	[SenderId] [uniqueidentifier] NOT NULL,
+	[SenderName] [nvarchar](max) NULL,
+	[Data] [nvarchar](max) NULL,
+	[Stamp] [datetime] NOT NULL,
+ CONSTRAINT [PK_dbo.Events] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 
-USE SquiggleHistory;
 GO
+/****** Object:  Table [dbo].[Participants]    Script Date: 11/3/2012 12:06:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Participants](
+	[Id] [uniqueidentifier] NOT NULL,
+	[SessionId] [uniqueidentifier] NOT NULL,
+	[ContactId] [uniqueidentifier] NOT NULL,
+	[ContactName] [nvarchar](max) NULL,
+ CONSTRAINT [PK_dbo.Participants] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 
-CREATE SCHEMA [HistoryModelStoreContainer];
 GO
+/****** Object:  Table [dbo].[Sessions]    Script Date: 11/3/2012 12:06:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Sessions](
+	[Id] [uniqueidentifier] NOT NULL,
+	[ContactId] [uniqueidentifier] NOT NULL,
+	[ContactName] [nvarchar](max) NULL,
+	[Start] [datetime] NOT NULL,
+	[End] [datetime] NULL,
+ CONSTRAINT [PK_dbo.Sessions] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 
-CREATE TABLE [HistoryModelStoreContainer].[Events] (
-  [SessionId] uniqueidentifier NOT NULL
-, [EventTypeCode] int NOT NULL
-, [Sender] uniqueidentifier NOT NULL
-, [Data] nvarchar(4000) NULL
-, [Stamp] datetime NOT NULL
-, [SenderName] nvarchar(255) NOT NULL
-, [Id] uniqueidentifier NOT NULL
-);
 GO
-CREATE TABLE [HistoryModelStoreContainer].[Participants] (
-  [Id] uniqueidentifier NOT NULL
-, [ParticipantId] uniqueidentifier NOT NULL
-, [ParticpantName] nvarchar(255) NOT NULL
-, [SessionId] uniqueidentifier NOT NULL
-);
+/****** Object:  Table [dbo].[StatusUpdates]    Script Date: 11/3/2012 12:06:01 PM ******/
+SET ANSI_NULLS ON
 GO
-CREATE TABLE [HistoryModelStoreContainer].[Sessions] (
-  [Id] uniqueidentifier NOT NULL
-, [Contact] uniqueidentifier NOT NULL
-, [ContactName] nvarchar(255) NOT NULL
-, [Start] datetime NOT NULL
-, [End] datetime NULL
-);
+SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [HistoryModelStoreContainer].[StatusUpdates] (
-  [Id] uniqueidentifier NOT NULL
-, [ContactId] uniqueidentifier NOT NULL
-, [ContactName] nvarchar(255) NOT NULL
-, [StatusCode] int NOT NULL
-, [Stamp] datetime NOT NULL
-);
-GO
-ALTER TABLE [HistoryModelStoreContainer].[Events] ADD CONSTRAINT [PK__Events__00000000000000B0] PRIMARY KEY ([Id]);
-GO
-ALTER TABLE [HistoryModelStoreContainer].[Participants] ADD CONSTRAINT [PK_Participants] PRIMARY KEY ([Id]);
-GO
-ALTER TABLE [HistoryModelStoreContainer].[Sessions] ADD CONSTRAINT [PK_Sessions] PRIMARY KEY ([Id]);
-GO
-ALTER TABLE [HistoryModelStoreContainer].[StatusUpdates] ADD CONSTRAINT [PK_StatusUpdates] PRIMARY KEY ([Id]);
-GO
-CREATE UNIQUE INDEX [UQ__Events__00000000000000A8] ON [HistoryModelStoreContainer].[Events] ([Id] ASC);
-GO
-CREATE UNIQUE INDEX [UQ__Participants__00000000000000DB] ON [HistoryModelStoreContainer].[Participants] ([Id] ASC);
-GO
-CREATE UNIQUE INDEX [UQ__Sessions__00000000000000C9] ON [HistoryModelStoreContainer].[Sessions] ([Id] ASC);
-GO
-CREATE UNIQUE INDEX [UQ__StatusUpdates__00000000000000F8] ON [HistoryModelStoreContainer].[StatusUpdates] ([Id] ASC);
-GO
+CREATE TABLE [dbo].[StatusUpdates](
+	[Id] [uniqueidentifier] NOT NULL,
+	[ContactId] [uniqueidentifier] NOT NULL,
+	[ContactName] [nvarchar](max) NULL,
+	[StatusCode] [int] NOT NULL,
+	[Stamp] [datetime] NOT NULL,
+ CONSTRAINT [PK_dbo.StatusUpdates] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 
-
+GO
+ALTER TABLE [dbo].[Events]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Events_dbo.Sessions_SessionId] FOREIGN KEY([SessionId])
+REFERENCES [dbo].[Sessions] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Events] CHECK CONSTRAINT [FK_dbo.Events_dbo.Sessions_SessionId]
+GO
+ALTER TABLE [dbo].[Participants]  WITH CHECK ADD  CONSTRAINT [FK_dbo.Participants_dbo.Sessions_SessionId] FOREIGN KEY([SessionId])
+REFERENCES [dbo].[Sessions] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Participants] CHECK CONSTRAINT [FK_dbo.Participants_dbo.Sessions_SessionId]
+GO
