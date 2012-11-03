@@ -108,6 +108,7 @@
 copy "$(TargetDir)\libspeex-license.txt" "$(SolutionDir)\Libraries\Plugins" /y
 copy "$(TargetDir)\libspeexdsp.dll" "$(SolutionDir)\Libraries\Plugins" /y
 copy "$(TargetDir)\NAudio.dll" "$(SolutionDir)\Libraries\Plugins" /y
+copy "$(TargetDir)\NAudio-license.txt" "$(SolutionDir)\Libraries\Plugins" /y
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

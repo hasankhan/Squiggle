@@ -6,9 +6,8 @@
         <Directory Id="INSTALLDIR" Name="Squiggle">
           <Component Id="CoreFiles" DiskId="1" Guid="91906336-C57B-46C3-816B-A9FA02AE53F3">
             <File Id="CLRZMQ.DLL" Name="clrzmq.dll" Source="..\Squiggle.UI\bin\x86\Release\clrzmq.dll" />
+            <File Id="ENTITYFRAMEWORK.DLL" Name="EntityFramework.dll" Source="..\Squiggle.UI\bin\x86\Release\EntityFramework.dll" />
             <File Id="FLUIDKIT.DLL" Name="FluidKit.dll" Source="..\Squiggle.UI\bin\x86\Release\FluidKit.dll" />
-            <File Id="LIBSPEEX_LICENSE.TXT" Name="libspeex-license.txt" Source="..\Squiggle.UI\bin\x86\Release\libspeex-license.txt" />
-            <File Id="LIBSPEEXDSP.DLL" Name="libspeexdsp.dll" Source="..\Squiggle.UI\bin\x86\Release\libspeexdsp.dll" />
             <File Id="LIBZMQ.DLL" Name="libzmq.dll" Source="..\Squiggle.UI\bin\x86\Release\libzmq.dll" />
             <File Id="NAUDIO_LICENSE.TXT" Name="NAudio-license.txt" Source="..\Squiggle.UI\bin\x86\Release\NAudio-license.txt" />
             <File Id="PROTOBUF_NET.DLL" Name="protobuf-net.dll" Source="..\Squiggle.UI\bin\x86\Release\protobuf-net.dll" />
@@ -61,9 +60,10 @@
           </Directory>
           <Directory Id="PLUGINS" Name="Plugins">
             <Component Id="PluginFiles" DiskId="1" Guid="31AAB119-BDB8-4E84-A8A5-2AAFD8FA8B09">
-              <File Id="LIBSPEEX_LICENSE.TXT_1" Name="libspeex-license.txt" Source="..\Squiggle.UI\bin\x86\Release\Plugins\libspeex-license.txt" />
-              <File Id="LIBSPEEXDSP.DLL_1" Name="libspeexdsp.dll" Source="..\Squiggle.UI\bin\x86\Release\Plugins\libspeexdsp.dll" />
+              <File Id="LIBSPEEX_LICENSE.TXT" Name="libspeex-license.txt" Source="..\Squiggle.UI\bin\x86\Release\Plugins\libspeex-license.txt" />
+              <File Id="LIBSPEEXDSP.DLL" Name="libspeexdsp.dll" Source="..\Squiggle.UI\bin\x86\Release\Plugins\libspeexdsp.dll" />
               <File Id="NAUDIO.DLL" Name="NAudio.dll" Source="..\Squiggle.UI\bin\x86\Release\Plugins\NAudio.dll" />
+              <File Id="NAUDIO-LICENSE.TXT" Name="NAudio-license.txt" Source="..\Squiggle.UI\bin\x86\Release\Plugins\NAudio-license.txt" />
               <File Id="README.TXT" Name="Readme.txt" Source="..\Squiggle.UI\bin\x86\Release\Plugins\Readme.txt" />
               <File Id="SQUIGGLE.FILETRANSFER.DLL" Name="Squiggle.FileTransfer.dll" Source="..\Squiggle.UI\bin\x86\Release\Plugins\Squiggle.FileTransfer.dll" />
               <File Id="SQUIGGLE.VOICECHAT.DLL" Name="Squiggle.VoiceChat.dll" Source="..\Squiggle.UI\bin\x86\Release\Plugins\Squiggle.VoiceChat.dll" />
