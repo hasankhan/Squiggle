@@ -15,7 +15,7 @@ namespace Squiggle.Client
         IBuddyProperties properties;
         bool initialized;
 
-        public string Id { get; private set; }
+        public string Id { get; protected set; }
         public IPEndPoint ChatEndPoint { get; private set; }
         public DateTime LastUpdated { get; private set; }
 

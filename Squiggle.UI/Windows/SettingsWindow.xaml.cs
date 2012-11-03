@@ -110,6 +110,7 @@ namespace Squiggle.UI.Windows
 
             TrayPopup.Instance.Enabled = settingsVm.GeneralSettings.ShowPopups;
             AudioAlert.Instance.Enabled = settingsVm.GeneralSettings.AudioAlerts;
+            SquiggleContext.Current.ChatClient.EnableLogging = settingsVm.GeneralSettings.EnableStatusLogging;
 
             SetRunAtStartup(settingsVm.GeneralSettings.RunAtStartup);
             SettingsProvider.Current.Save();

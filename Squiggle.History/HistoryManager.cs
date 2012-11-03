@@ -3,19 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Squiggle.History.DAL;
+using Squiggle.History.DAL.Entities;
 
 namespace Squiggle.History
 {
     public class HistoryManager
     {
-        public void AddSessionEvent(Guid sessionId, DateTime stamp, EventType type, Guid sender, string senderName, IEnumerable<Guid> recipients, string data)
+        public void AddSessionEvent(Guid sessionId, DateTime stamp, EventType type, Guid senderId, string senderName, IEnumerable<Guid> recipients, string data)
         {
             using (var repository = new HistoryRepository())
             {
-                repository.AddSessionEvent(sessionId, stamp, type, sender, senderName, recipients, data);
+                repository.AddSessionEvent(sessionId, stamp, type, senderId, senderName, recipients, data);
                 if (type == EventType.Joined)
                 {
-                    var participant = Participant.CreateParticipant(Guid.NewGuid(), sender, senderName);
+                    var participant = new Participant() 
+                    {
+                        Id = Guid.NewGuid(),
+                        ContactId = senderId, 
+                        ContactName = senderName 
+                    };
                     repository.AddParticipant(sessionId, participant);
                 }
             }

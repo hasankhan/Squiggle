@@ -66,6 +66,7 @@ namespace Squiggle.UI.Windows
             chatControl.SignIn.LoadSettings(settings);
 
             var client = context.ChatClient;
+            client.EnableLogging = settings.GeneralSettings.EnableStatusLogging;
             client.ChatStarted += client_ChatStarted;
             client.BuddyUpdated += client_BuddyUpdated;
             client.BuddyOnline += client_BuddyOnline;

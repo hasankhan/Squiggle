@@ -32,6 +32,7 @@ namespace Squiggle.Client
         ISelfBuddy CurrentUser {get; }
         IEnumerable<IBuddy> Buddies { get; }
         bool IsLoggedIn { get; }
+        bool EnableLogging { get; set; }
 
         IChat StartChat(IBuddy buddy);
         void Login(ChatClientOptions options);

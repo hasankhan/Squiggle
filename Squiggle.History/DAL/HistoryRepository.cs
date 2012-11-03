@@ -4,12 +4,14 @@ using System.Data.Objects;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Data.Entity;
+using Squiggle.History.DAL.Entities;
 
 namespace Squiggle.History.DAL
 {
     class HistoryRepository : IDisposable
     {
-        HistoryEntities context = new HistoryEntities();
+        HistoryContext context = new HistoryContext();
 
         public void AddSessionEvent(Guid sessionId, DateTime stamp, EventType type, Guid sender, string senderName, IEnumerable<Guid> recipients, string data)
         {
@@ -17,10 +19,17 @@ namespace Squiggle.History.DAL
             if (session != null)
             {
                 session.End = DateTime.Now;
-                var evnt = Event.CreateEvent((int)type, sender, stamp, senderName, Guid.NewGuid());
+                var evnt = new Event() 
+                { 
+                    Id = Guid.NewGuid(), 
+                    Type = type, 
+                    SenderId = sender, 
+                    Stamp = stamp, 
+                    SenderName = senderName 
+                };
                 evnt.Data = data;
                 evnt.Session = session;
-                context.AddToEvents(evnt);
+                context.Events.Add(evnt);
                 context.SaveChanges();
             }
         }
@@ -34,8 +43,8 @@ namespace Squiggle.History.DAL
                          where (criteria.SessionId == null || session.Id == criteria.SessionId.Value) &&
                              (criteria.From == null || session.Start >= criteria.From.Value) &&
                              (criteria.To == null || session.Start <= criteria.To.Value) &&
-                             (text.Length == 0 || session.Events.Any(e=>e.Data.Contains(text))) && 
-                             (criteria.Participant == null || session.Participants.Any(p=>p.ParticipantId == criteria.Participant.Value))
+                             (text.Length == 0 || session.Events.Any(e=>e.Data.Contains(text))) &&
+                             (criteria.Participant == null || session.Participants.Any(p => p.ContactId == criteria.Participant.Value))
                          orderby session.Start
                          select session);
 
@@ -81,13 +90,12 @@ namespace Squiggle.History.DAL
             var session = GetSession(newSession.Id);
             if (session == null)
             {
-                foreach (var participant in participants)
-                    newSession.Participants.Add(participant);
-                context.AddToSessions(newSession);
-            }            
-            else
-                foreach (var participant in participants)
-                    AddParticipant(session, participant);
+                context.Sessions.Add(newSession);
+                session = newSession;
+            }
+            
+            foreach (var participant in participants)
+                AddParticipant(session, participant);
 
             context.SaveChanges();
         }
@@ -111,7 +119,14 @@ namespace Squiggle.History.DAL
 
         public void AddStatusUpdate(DateTime stamp, Guid contactId, string contactName, int status)
         {
-            context.AddToStatusUpdates(StatusUpdate.CreateStatusUpdate(Guid.NewGuid(), contactId, contactName, status, stamp));
+            context.StatusUpdates.Add(new StatusUpdate() 
+            {
+                Id = Guid.NewGuid(),
+                ContactId = contactId, 
+                ContactName = contactName, 
+                StatusCode = status, 
+                Stamp = stamp 
+            });
             context.SaveChanges();
         }
 
@@ -129,14 +144,15 @@ namespace Squiggle.History.DAL
 
         void AddParticipant(Session session, Participant participant)
         {
-            if (!session.Participants.Any(p => p.ParticipantId == participant.Id))
-                session.Participants.Add(participant);
+            participant.SessionId = session.Id;
+            if (!session.Participants.Any(p => p.ContactId == participant.ContactId))
+                context.Participants.Add(participant);
         }
 
-        void DeleteAll<TEntity>(IQueryable<TEntity> items, Expression<Func<TEntity, bool>> condition)
+        void DeleteAll<TEntity>(DbSet<TEntity> set, Expression<Func<TEntity, bool>> condition) where TEntity:class
         {
-            foreach (var item in items.Where(condition))
-                context.DeleteObject(item);
+            foreach (var item in set.Where(condition))
+                set.Remove(item);
         }
 
         IQueryable<TEntity> WhereIn<TEntity, TValue>(ObjectQuery<TEntity> query, Expression<Func<TEntity, TValue>> selector, IEnumerable<TValue> collection)

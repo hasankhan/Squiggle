@@ -7,7 +7,6 @@
           <Component Id="CoreFiles" DiskId="1" Guid="91906336-C57B-46C3-816B-A9FA02AE53F3">
             <File Id="CLRZMQ.DLL" Name="clrzmq.dll" Source="..\Squiggle.UI\bin\x86\Release\clrzmq.dll" />
             <File Id="FLUIDKIT.DLL" Name="FluidKit.dll" Source="..\Squiggle.UI\bin\x86\Release\FluidKit.dll" />
-            <File Id="HISTORY.SDF" Name="History.sdf" Source="..\Squiggle.UI\bin\x86\Release\History.sdf" />
             <File Id="LIBSPEEX_LICENSE.TXT" Name="libspeex-license.txt" Source="..\Squiggle.UI\bin\x86\Release\libspeex-license.txt" />
             <File Id="LIBSPEEXDSP.DLL" Name="libspeexdsp.dll" Source="..\Squiggle.UI\bin\x86\Release\libspeexdsp.dll" />
             <File Id="LIBZMQ.DLL" Name="libzmq.dll" Source="..\Squiggle.UI\bin\x86\Release\libzmq.dll" />

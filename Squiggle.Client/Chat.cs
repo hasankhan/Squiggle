@@ -15,6 +15,7 @@ using Squiggle.Utilities;
 using BuddyResolver = System.Func<string, Squiggle.Client.Buddy>;
 using Squiggle.Core.Chat.Activity;
 using Squiggle.Utilities.Threading;
+using Squiggle.History.DAL.Entities;
 
 namespace Squiggle.Client
 {    
@@ -249,8 +250,19 @@ namespace Squiggle.Client
             {
                 sessionLogged = true;
                 IBuddy primaryBuddy = Buddies.FirstOrDefault();
-                var newSession = Session.CreateSession(session.Id, new Guid(primaryBuddy.Id), primaryBuddy.DisplayName, DateTime.Now);
-                manager.AddSession(newSession, Buddies.Select(b => Participant.CreateParticipant(Guid.NewGuid(), new Guid(b.Id), b.DisplayName)));
+                var newSession = new Session() 
+                { 
+                    Id = session.Id, 
+                    ContactId = new Guid(primaryBuddy.Id), 
+                    ContactName = primaryBuddy.DisplayName, 
+                    Start = DateTime.Now 
+                };
+                manager.AddSession(newSession, Buddies.Select(b => new Participant() 
+                {
+                    Id = Guid.NewGuid(),
+                    ContactId = new Guid(b.Id), 
+                    ContactName = b.DisplayName,
+                }).ToList());
             });
         }
 

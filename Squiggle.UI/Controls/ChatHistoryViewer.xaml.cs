@@ -68,7 +68,7 @@ namespace Squiggle.UI.Controls
                 Id = session.Id,
                 Start = session.Start,
                 End = session.End,
-                Participants = String.Join(", ", session.Participants.Select(p => p.ParticpantName).ToArray())
+                Participants = String.Join(", ", session.Participants.Select(p => p.ContactName).ToArray())
             }).ToList();
 
             Dispatcher.Invoke(() =>

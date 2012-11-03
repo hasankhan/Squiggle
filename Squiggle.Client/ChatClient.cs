@@ -85,7 +85,7 @@ namespace Squiggle.Client
             StartPresenceService(username, options.UserProperties, presenceOptions);
 
             var self = (SelfBuddy)CurrentUser;
-            self.Update(UserStatus.Online, options.DisplayName, chatEndPoint.Address, options.UserProperties.ToDictionary());
+            self.Update(chatEndPoint.ClientID, UserStatus.Online, options.DisplayName, chatEndPoint.Address, options.UserProperties.ToDictionary());
             self.EnableUpdates = true;
             LogStatus(CurrentUser);
 
@@ -255,6 +255,12 @@ namespace Squiggle.Client
                     base.Status = value;
                     Update();
                 }
+            }
+
+            internal void Update(string id, UserStatus status, string displayName, IPEndPoint chatEndPoint, IDictionary<string, string> properties)
+            {
+                this.Id = id;
+                base.Update(status, displayName, chatEndPoint, properties);
             }
 
             protected override void OnBuddyPropertiesChanged()
