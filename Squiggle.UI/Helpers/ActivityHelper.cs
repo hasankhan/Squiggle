@@ -8,19 +8,20 @@ using Squiggle.UI.Components;
 using Squiggle.Core.Chat.Activity;
 using System.Windows.Input;
 using Squiggle.Client.Activities;
+using Squiggle.Client;
 
 namespace Squiggle.UI.Helpers
 {
-    class ActivitiesMenuHelper
+    class ActivityHelper
     {
         SquiggleContext context;
 
-        public ActivitiesMenuHelper(SquiggleContext context)
+        public ActivityHelper(SquiggleContext context)
         {
             this.context = context;
         }
 
-        public void LoadActivities(MenuItem mnuStartActivity, MenuItem mnuNoActivity, ICommand handler)
+        public void LoadActivitiesMenu(MenuItem mnuStartActivity, MenuItem mnuNoActivity, ICommand handler)
         {
             var activities = context.PluginLoader.Activities.Where(a => !SquiggleActivities.All.Contains(a.Id));
             foreach (IActivity activity in activities)

@@ -73,5 +73,15 @@ namespace Squiggle.UI
             var item = new FileTransferItem(session);
             textbox.AddItem(item, false);
         }
+
+        public static void AddActivitySentRequest(this ChatTextBox textbox, IActivity activity, IActivityHandler session)
+        {
+            //TODO: create the chat item and add it to textbox
+        }
+
+        public static void AddActivityReceiveRequest(this ChatTextBox textbox, IActivity activity, IActivityHandler session)
+        {
+            //TODO: create the chat item and add it to textbox
+        }
     }
 }

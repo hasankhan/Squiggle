@@ -61,7 +61,7 @@ namespace Squiggle.UI.Components
             return handler;
         }
 
-        IActivity GetActivity(Guid activityId)
+        public IActivity GetActivity(Guid activityId)
         {
             IActivity activity = Activities.FirstOrDefault(f => f.Id.Equals(activityId));
             return activity;

@@ -96,7 +96,7 @@ namespace Squiggle.UI.Windows
 
             eventQueue.Enqueue(LoadHistory);
 
-            new ActivitiesMenuHelper(context).LoadActivities(mnuStartActivity, mnuNoActivity, new RelayCommand<IActivity>(StartActivityMenuItem_Click));
+            new ActivityHelper(context).LoadActivitiesMenu(mnuStartActivity, mnuNoActivity, new RelayCommand<IActivity>(StartActivityMenuItem_Click));
         }        
 
         public IEnumerable<IBuddy> Buddies
@@ -367,13 +367,16 @@ namespace Squiggle.UI.Windows
 
         void OnActivityInvite(ActivityInvitationReceivedEventArgs e)
         {
-            IActivityHandler handler = context.PluginLoader.GetActivityHandler(e.ActivityId, f => f.FromInvite(e.Executor, e.Metadata));
+            IActivityHandler handler = context.PluginLoader.GetActivityHandler(e.ActivityId, f => f.FromInvite(e.Executor, e.Metadata));           
             if (e.ActivityId == SquiggleActivities.VoiceChat)
                 OnVoiceInvite(handler as IVoiceChatHandler);
             else if (e.ActivityId == SquiggleActivities.FileTransfer)
                 OnTransferInvite(handler as IFileTransferHandler);
             else
-                OnUnknownActivityInvite(handler);
+            {
+                IActivity activity = context.PluginLoader.GetActivity(e.ActivityId);
+                OnUnknownActivityInvite(activity, handler);
+            }
         }        
 
         void OnBuddyTyping(BuddyEventArgs e)
@@ -520,13 +523,15 @@ namespace Squiggle.UI.Windows
             chatState.ChatStarted = true;
         }
 
-        void OnUnknownActivityInvite(IActivityHandler handler)
+        void OnUnknownActivityInvite(IActivity activity, IActivityHandler handler)
         {
             Dispatcher.Invoke(() =>
             {
                 FlashWindow();
                 if (handler == null)
                     chatTextBox.AddInfo(Translation.Instance.ChatWindow_UnknownActivityInvite);
+                else
+                    chatTextBox.AddActivityReceiveRequest(activity, handler);
             });
         }
 
@@ -614,19 +619,13 @@ namespace Squiggle.UI.Windows
             if (!context.PluginLoader.HasActivity(SquiggleActivities.VoiceChat))
                 return null;
 
-            IActivityExecutor executor = chatSession.CreateActivity();
-            IVoiceChatHandler voiceChat = context.PluginLoader.GetActivityHandler(SquiggleActivities.VoiceChat, f => f.CreateInvite(executor, null)) as IVoiceChatHandler;
+            IVoiceChatHandler voiceChat = StartActivity<IVoiceChatHandler>(SquiggleActivities.VoiceChat, null, handler => handler.Dispatcher = Dispatcher);
 
             if (voiceChat != null)
-            {
-                voiceChat.Dispatcher = Dispatcher;
-                voiceChat.Start();
                 chatTextBox.AddVoiceChatSentRequest(context, voiceChat, PrimaryBuddy.DisplayName);
-                chatState.ChatStarted = true;
-            }
             
             return voiceChat;
-        }
+        }        
 
         public void SendFile()
         {
@@ -684,17 +683,14 @@ namespace Squiggle.UI.Windows
                 return;
             }
 
-            IActivityExecutor executor = chatSession.CreateActivity();
             var args = new Dictionary<string, object>() { { "name", fileName }, { "content", fileStream }, { "size", fileStream.Length } };
-            IFileTransferHandler fileTransfer = context.PluginLoader.GetActivityHandler(SquiggleActivities.FileTransfer, f => f.CreateInvite(executor, args)) as IFileTransferHandler;
-            if (fileTransfer == null)
-                return;
 
-            fileTransfer.Start();
-            fileTransfers.Add(fileTransfer);
-            chatTextBox.AddFileSentRequest(fileTransfer);
-
-            chatState.ChatStarted = true;
+            var fileTransfer = StartActivity<IFileTransferHandler>(SquiggleActivities.FileTransfer, args);
+            if (fileTransfer != null)
+            {
+                fileTransfers.Add(fileTransfer);
+                chatTextBox.AddFileSentRequest(fileTransfer);
+            }
         }
 
         public void SaveAs()
@@ -878,8 +874,7 @@ namespace Squiggle.UI.Windows
                     format = DataFormats.Text;
                 return true;
             }
-            fileName = null;
-            format = null;
+            fileName = format = null;
             return false;
         }
 
@@ -931,7 +926,13 @@ namespace Squiggle.UI.Windows
 
         private void StartActivityMenuItem_Click(IActivity activity)
         {
-            MessageBox.Show("Launching activity " + activity.Title);
+            IDictionary<string,object> args = activity.LaunchInviteUI();
+            if (args == null)
+                return;
+
+            var handler = StartActivity<IActivityHandler>(activity.Id, args);
+            if (handler != null)
+                chatTextBox.AddActivitySentRequest(activity, handler);
         }
 
         private void SendEmoticon_Click(object sender, RoutedEventArgs e)
@@ -1038,6 +1039,20 @@ namespace Squiggle.UI.Windows
                 txtMessageEditBox.BeginEdit(((MessageItem)e.Item).Message, e.Item);
                 txtMessageEditBox.GetFocus();
             }
+        }
+
+        THandler StartActivity<THandler>(Guid activityId, IDictionary<string, object> args, Action<THandler> configure = null) where THandler : IActivityHandler
+        {
+            IActivityExecutor executor = chatSession.CreateActivity();
+            var handler = (THandler)context.PluginLoader.GetActivityHandler(activityId, f => f.CreateInvite(executor, args));
+            if (handler != null)
+            {
+                if (configure != null)
+                    configure(handler);
+                handler.Start();
+                chatState.ChatStarted = true;
+            }
+            return handler;
         }
     }
 }
