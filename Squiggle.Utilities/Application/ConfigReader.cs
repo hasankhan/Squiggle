@@ -21,7 +21,7 @@ namespace Squiggle.Utilities.Application
         public void SetSetting<T>(string name, T value)
         {
             string strValue = Cast<string>(value);
-            string oldValue = config.AppSettings.Settings[name].Coalesce(kv=>kv.Value, null);
+            string oldValue = config.AppSettings.Settings[name].Coalesce(kv=>kv.Value);
             if (oldValue == strValue)
                 return;
 

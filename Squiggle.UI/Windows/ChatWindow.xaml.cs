@@ -367,16 +367,14 @@ namespace Squiggle.UI.Windows
 
         void OnActivityInvite(ActivityInvitationReceivedEventArgs e)
         {
-            IActivityHandler handler = context.PluginLoader.GetActivityHandler(e.ActivityId, f => f.FromInvite(e.Executor, e.Metadata));           
+            IActivity activity = context.PluginLoader.GetActivity(e.ActivityId);
+            IActivityHandler handler = activity.Coalesce(a=>a.FromInvite(e.Executor, e.Metadata));
             if (e.ActivityId == SquiggleActivities.VoiceChat)
                 OnVoiceInvite(handler as IVoiceChatHandler);
             else if (e.ActivityId == SquiggleActivities.FileTransfer)
                 OnTransferInvite(handler as IFileTransferHandler);
             else
-            {
-                IActivity activity = context.PluginLoader.GetActivity(e.ActivityId);
-                OnUnknownActivityInvite(activity.Title, handler);
-            }
+                OnUnknownActivityInvite(activity.Coalesce(a=>a.Title), handler);
         }        
 
         void OnBuddyTyping(BuddyEventArgs e)
@@ -1044,7 +1042,8 @@ namespace Squiggle.UI.Windows
         THandler StartActivity<THandler>(Guid activityId, IDictionary<string, object> args, Action<THandler> configure = null) where THandler : IActivityHandler
         {
             IActivityExecutor executor = chatSession.CreateActivity(activityId);
-            var handler = (THandler)context.PluginLoader.GetActivityHandler(activityId, f => f.CreateInvite(executor, args));
+            IActivity activity = context.PluginLoader.GetActivity(activityId);
+            var handler = (THandler)activity.Coalesce(a => a.CreateInvite(executor, args));
             if (handler != null)
             {
                 if (configure != null)

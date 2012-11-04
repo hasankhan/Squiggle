@@ -52,15 +52,6 @@ namespace Squiggle.UI.Components
             return GetActivity(id) != null;
         }
 
-        public IActivityHandler GetActivityHandler(Guid activityId, Func<IActivity, IActivityHandler> getAction)
-        {
-            IActivity factory = GetActivity(activityId);
-            if (factory == null)
-                return null;
-            IActivityHandler handler = getAction(factory);
-            return handler;
-        }
-
         public IActivity GetActivity(Guid activityId)
         {
             IActivity activity = Activities.FirstOrDefault(f => f.Id.Equals(activityId));

@@ -68,7 +68,7 @@ namespace Squiggle.UI.Helpers
         {
             ChatClientControl chatControl = ((MainWindow)SquiggleContext.Current.MainWindow).chatControl;
             ISelfBuddy buddy = null;
-            if (chatControl.ContactList.ChatContext.Coalesce(context=>context.IsLoggedIn, false))
+            if (chatControl.ContactList.ChatContext.Coalesce(context=>context.IsLoggedIn))
                 buddy = chatControl.ContactList.ChatContext.LoggedInUser;
             var settings = new SettingsWindow(buddy);
             settings.Owner = owner;

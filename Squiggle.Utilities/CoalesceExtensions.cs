@@ -7,6 +7,11 @@ namespace Squiggle.Utilities
 {
     public static class CoalesceExtensions
     {
+        public static TResult Coalesce<T, TResult>(this T obj, Func<T, TResult> func)
+        {
+            return Coalesce<T, TResult>(obj, func, default(TResult));
+        }
+
         public static TResult Coalesce<T, TResult>(this T obj, Func<T, TResult> func, TResult defaultValue)
         {
             if (obj == null)
