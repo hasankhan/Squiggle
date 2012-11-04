@@ -61,7 +61,7 @@ namespace Squiggle.History
         public void ClearStatusHistory()
         {
             using (var repository = new HistoryRepository())
-                repository.ClearStatusUpdates();
+                repository.ClearStatusHistory();
         }
 
         public void AddSession(Session newSession, IEnumerable<Participant> participants)

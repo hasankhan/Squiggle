@@ -78,7 +78,7 @@ namespace Squiggle.History.DAL
             context.SaveChanges();
         }
 
-        public void ClearStatusUpdates()
+        public void ClearStatusHistory()
         {
             DeleteAll(context.StatusUpdates, _ => true);
 
