@@ -15,10 +15,10 @@ namespace Squiggle.UI.Converters
 
         static TrayIconConverter()
         {
-            onlineIcon = new Icon(Application.GetResourceStream(new Uri("/Images/Chat.ico", UriKind.Relative)).Stream);
-            offlineIcon = new Icon(Application.GetResourceStream(new Uri("/Images/Chat-Offline.ico", UriKind.Relative)).Stream);
-            awayIcon = new Icon(Application.GetResourceStream(new Uri("/Images/Chat-Away.ico", UriKind.Relative)).Stream);
-            busyIcon = new Icon(Application.GetResourceStream(new Uri("/Images/Chat-Busy.ico", UriKind.Relative)).Stream);
+            onlineIcon = new Icon(Application.GetResourceStream(new Uri("/Squiggle;component/Images/Chat.ico", UriKind.Relative)).Stream);
+            offlineIcon = new Icon(Application.GetResourceStream(new Uri("/Squiggle;component/Images/Chat-Offline.ico", UriKind.Relative)).Stream);
+            awayIcon = new Icon(Application.GetResourceStream(new Uri("/Squiggle;component/Images/Chat-Away.ico", UriKind.Relative)).Stream);
+            busyIcon = new Icon(Application.GetResourceStream(new Uri("/Squiggle;component/Images/Chat-Busy.ico", UriKind.Relative)).Stream);
         }
 
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)

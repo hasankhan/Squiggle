@@ -19,6 +19,16 @@ namespace Squiggle.UI.ViewModel
         public ISelfBuddy LoggedInUser { get; set; }
         public ObservableCollection<IBuddy> Buddies { get; private set; }
 
+        public string Title
+        {
+            get
+            {
+                if (IsLoggedIn)
+                    return String.Format("Squiggle Messenger - {0}", LoggedInUser.DisplayName);
+                return "Squiggle Messenger";
+            }
+        }
+
         public bool IsLoggedIn
         {
             get { return chatClient.IsLoggedIn; }
@@ -62,7 +72,7 @@ namespace Squiggle.UI.ViewModel
 
         void chatClient_LoggedInOut(object sender, EventArgs e)
         {
-            OnPropertyChanged("IsLoggedIn");
+            OnPropertyChanged("IsLoggedIn", "Title");
         }
 
         void chatClient_BuddyOffline(object sender, BuddyEventArgs e)

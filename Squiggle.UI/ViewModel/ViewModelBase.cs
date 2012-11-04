@@ -11,9 +11,10 @@ namespace Squiggle.UI.ViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
-        protected void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged(params string[] propertyNames)
         {
-            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            foreach (string propertyName in propertyNames)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
         protected void Set<T>(Expression<Func<T>> propertySelector, ref T property, T value )
