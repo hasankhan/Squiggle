@@ -15,6 +15,7 @@ namespace Squiggle.Core.Chat.Activity
         BackgroundWorker worker;
         ActivitySession session;
         ActivityHandler handler;
+        Guid activityId;
 
         public long BytesReceived { get; private set; }
         public bool SelfCancelled { get; private set; }
@@ -25,8 +26,9 @@ namespace Squiggle.Core.Chat.Activity
             get { return session.SelfInitiated; }
         }
 
-        public ActivityExecutor(ActivitySession session)
+        public ActivityExecutor(Guid activityId, ActivitySession session)
         {
+            this.activityId = activityId;
             this.session = session as ActivitySession;
             if (this.session == null)
                 throw new ArgumentException("Invalid session object", "session");
@@ -47,7 +49,7 @@ namespace Squiggle.Core.Chat.Activity
             Async.Invoke(() =>
             {
                 IEnumerable<KeyValuePair<string, string>> metadata = handler.CreateInviteMetadata();
-                bool success = session.SendInvite(handler.ActivityId, metadata);
+                bool success = session.SendInvite(activityId, metadata);
                 if (!success)
                 {
                     OnTransferFinished();

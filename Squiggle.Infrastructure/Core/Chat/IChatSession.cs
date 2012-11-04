@@ -64,7 +64,7 @@ namespace Squiggle.Core.Chat
         void SendMessage(Guid id, string fontName, int fontSize, Color color, FontStyle fontStyle, string message);
         void UpdateMessage(Guid id, string message);
         void NotifyTyping();
-        IActivityExecutor CreateActivity();
+        IActivityExecutor CreateActivity(Guid activityId);
         void End();
         void Invite(ISquiggleEndPoint user);
         void UpdateUser(ISquiggleEndPoint user);

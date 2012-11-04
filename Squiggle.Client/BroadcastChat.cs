@@ -91,7 +91,7 @@ namespace Squiggle.Client
                 chatSessions.ForEach(s => s.UpdateMessage(id, message));
         }
 
-        public IActivityExecutor CreateActivity()
+        public IActivityExecutor CreateActivity(Guid activityId)
         {
             throw new InvalidOperationException("Can not start activity session in broadcast chat.");
         }

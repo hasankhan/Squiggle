@@ -121,12 +121,12 @@ namespace Squiggle.Client
             });
         }
 
-        public IActivityExecutor CreateActivity()
+        public IActivityExecutor CreateActivity(Guid activityId)
         {
             if (IsGroupChat)
                 throw new InvalidOperationException("Can not start activity session in group chat.");
 
-            return session.CreateActivity();
+            return session.CreateActivity(activityId);
         }        
 
         public void Leave()

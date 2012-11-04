@@ -72,7 +72,7 @@ namespace Squiggle.Client
         void SendBuzz();
         void SendMessage(Guid id, string fontName, int fontSize, Color color, FontStyle style, string message);
         void UpdateMessage(Guid id, string message);
-        IActivityExecutor CreateActivity();
+        IActivityExecutor CreateActivity(Guid activityId);
         void Leave();
 
         void Invite(IBuddy buddy);

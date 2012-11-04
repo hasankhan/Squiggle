@@ -21,20 +21,15 @@ namespace Squiggle.VoiceChat
         EchoFilterWaveProvider echoFilter;
         AcmChatCodec codec = new Gsm610ChatCodec();
 
-        public override Guid ActivityId
-        {
-            get { return SquiggleActivities.VoiceChat; }
-        }
-
         public Dispatcher Dispatcher { get; set; }
 
         public bool IsMuted { get; set; }
 
         public VoiceChatHandler(IActivityExecutor executor) : base(executor) { }
 
-        public override IEnumerable<KeyValuePair<string, string>> CreateInviteMetadata()
+        public override IDictionary<string, string> CreateInviteMetadata()
         {
-            return Enumerable.Empty<KeyValuePair<string, string>>();
+            return new Dictionary<string, string>();
         }
 
         public float Volume

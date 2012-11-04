@@ -19,8 +19,6 @@ namespace Squiggle.Core.Chat.Activity
         public event EventHandler TransferFinished = delegate { };
         public event EventHandler<System.ComponentModel.ProgressChangedEventArgs> ProgressChanged = delegate { };
 
-        public abstract Guid ActivityId { get; }
-
         public ActivityHandler(IActivityExecutor executor)
         {
             this.executor = executor;
@@ -58,7 +56,7 @@ namespace Squiggle.Core.Chat.Activity
         }
         public abstract void TransferData(Func<bool> cancelPending);
 
-        public abstract IEnumerable<KeyValuePair<string, string>> CreateInviteMetadata();
+        public abstract IDictionary<string, string> CreateInviteMetadata();
 
         protected void SendData(byte[] chunk)
         {

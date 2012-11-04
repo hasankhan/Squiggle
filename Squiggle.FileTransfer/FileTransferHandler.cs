@@ -20,11 +20,6 @@ namespace Squiggle.FileTransfer
         public long Size { get; private set; }
         public string Name { get; private set; }
 
-        public override Guid ActivityId
-        {
-            get { return SquiggleActivities.FileTransfer; }
-        }
-
         public FileTransferHandler(IActivityExecutor executor, string name, long size, Stream content)
             :base(executor)
         {
@@ -40,9 +35,9 @@ namespace Squiggle.FileTransfer
             this.Size = size;
         }
 
-        public override IEnumerable<KeyValuePair<string, string>> CreateInviteMetadata()
+        public override IDictionary<string, string> CreateInviteMetadata()
         {
-            IEnumerable<KeyValuePair<string, string>> data = new FileInviteData() { Name = Name, Size = Size };
+            var data = new FileInviteData() { Name = Name, Size = Size }.ToDictionary(kv=>kv.Key, kv=>kv.Value);
             return data;
         }
 

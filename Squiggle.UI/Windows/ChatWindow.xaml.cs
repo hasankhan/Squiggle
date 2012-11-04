@@ -1043,7 +1043,7 @@ namespace Squiggle.UI.Windows
 
         THandler StartActivity<THandler>(Guid activityId, IDictionary<string, object> args, Action<THandler> configure = null) where THandler : IActivityHandler
         {
-            IActivityExecutor executor = chatSession.CreateActivity();
+            IActivityExecutor executor = chatSession.CreateActivity(activityId);
             var handler = (THandler)context.PluginLoader.GetActivityHandler(activityId, f => f.CreateInvite(executor, args));
             if (handler != null)
             {
