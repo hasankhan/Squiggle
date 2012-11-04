@@ -12,11 +12,7 @@
         <converters:FileToIconConverter x:Key="fic" />
     </UserControl.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <WrapPanel Grid.Row="1" Orientation="Horizontal">
+        <WrapPanel Orientation="Horizontal">
             <StackPanel Margin="0,0,100,0" DataContext="{Binding ElementName=fileTransferControl, Path=FileName}" Orientation="Horizontal" >
                 <Image x:Name="img" Height="32" Width="32"
                            ToolTip="{Binding Converter={x:Static converters:PathToNameConverter.Instance}}">

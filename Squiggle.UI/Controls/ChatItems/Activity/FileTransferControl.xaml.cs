@@ -32,6 +32,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
         public long FileSize { get; private set; }
         public string Status { get; private set; }
 
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public string DownloadFolder
         {
@@ -71,17 +72,6 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             ShowWaiting();
         }
 
-        void fileTransfer_TransferCompleted(object sender, EventArgs e)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                Status = sending ? Translation.Instance.FileTransfer_FileSent : Translation.Instance.FileTransfer_FileReceived;
-                NotifyPropertyChanged();
-
-                ShowCompleted();
-            });
-        }
-
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
             if (Shell.CreateDirectoryIfNotExists(DownloadFolder))
@@ -107,10 +97,20 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             {
                 CancelDownload(true);
             });
-
         }
 
-        void fileTransfer_TransferCancelled(object sender, EventArgs e)
+        void fileTransfer_TransferCompleted(object sender, EventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                Status = sending ? Translation.Instance.FileTransfer_FileSent : Translation.Instance.FileTransfer_FileReceived;
+                NotifyPropertyChanged();
+
+                ShowCompleted();
+            });
+        }
+
+        private void fileTransfer_TransferCancelled(object sender, EventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -118,7 +118,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             });
         }
 
-        void fileTransfer_TransferStarted(object sender, EventArgs e)
+        private void fileTransfer_TransferStarted(object sender, EventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -126,7 +126,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             });
         }
 
-        void fileTransfer_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+        private void fileTransfer_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -134,7 +134,18 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             });
         }
 
-        private void CancelDownload(bool selfCancel)
+        private void Open_Click(object sender, RoutedEventArgs e)
+        {
+            Shell.OpenFile(FilePath);
+        }
+
+        private void ShowInFolder_Click(object sender, RoutedEventArgs e)
+        {
+            string file = DataContext as string;
+            Shell.ShowInFolder(FilePath);
+        }
+
+        void CancelDownload(bool selfCancel)
         {
             ShowCancelled();
 
@@ -145,7 +156,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
                 fileTransfer.Cancel();
         }
 
-        private void AcceptDownload(string filePath)
+        void AcceptDownload(string filePath)
         {
             FilePath = filePath;
             NotifyPropertyChanged();
@@ -179,7 +190,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             stkCompleted.Visibility = Visibility.Hidden;
         }
 
-        private void ShowDownloading()
+        void ShowDownloading()
         {
             stkAccepted.Visibility = Visibility.Visible;
             stkInvitation.Visibility = Visibility.Hidden;
@@ -190,31 +201,16 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             NotifyPropertyChanged();
         }
 
-        private void NotifyPropertyChanged()
+        void NotifyPropertyChanged()
         {
             OnPropertyChanged("FileName");
             OnPropertyChanged("FileSize");
             OnPropertyChanged("Status");
         }
 
-        #region INotifyPropertyChanged Members
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string propertyName)
+        void OnPropertyChanged(string propertyName)
         {
             PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
-
-        private void Open_Click(object sender, RoutedEventArgs e)
-        {
-            Shell.OpenFile(FilePath);
-        }
-
-        private void ShowInFolder_Click(object sender, RoutedEventArgs e)
-        {
-            string file = DataContext as string;
-            Shell.ShowInFolder(FilePath);
         }
 
         static string ToReadableFileSize(long bytes)
