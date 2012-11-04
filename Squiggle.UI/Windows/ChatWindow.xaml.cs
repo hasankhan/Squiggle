@@ -375,7 +375,7 @@ namespace Squiggle.UI.Windows
             else
             {
                 IActivity activity = context.PluginLoader.GetActivity(e.ActivityId);
-                OnUnknownActivityInvite(activity, handler);
+                OnUnknownActivityInvite(activity.Title, handler);
             }
         }        
 
@@ -523,7 +523,7 @@ namespace Squiggle.UI.Windows
             chatState.ChatStarted = true;
         }
 
-        void OnUnknownActivityInvite(IActivity activity, IActivityHandler handler)
+        void OnUnknownActivityInvite(string activity, IActivityHandler handler)
         {
             Dispatcher.Invoke(() =>
             {
@@ -932,7 +932,7 @@ namespace Squiggle.UI.Windows
 
             var handler = StartActivity<IActivityHandler>(activity.Id, args);
             if (handler != null)
-                chatTextBox.AddActivitySentRequest(activity, handler);
+                chatTextBox.AddActivitySentRequest(activity.Title, handler);
         }
 
         private void SendEmoticon_Click(object sender, RoutedEventArgs e)
