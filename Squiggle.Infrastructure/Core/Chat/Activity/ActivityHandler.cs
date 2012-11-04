@@ -47,13 +47,17 @@ namespace Squiggle.Core.Chat.Activity
 
         public void Start()
         {
-            executor.Start();
+            if (SelfInitiated)
+                executor.Start();
+            else
+                executor.Accept();
         }
 
         public void Cancel()
         {
             executor.Cancel();
         }
+
         public abstract void TransferData(Func<bool> cancelPending);
 
         public abstract IDictionary<string, string> CreateInviteMetadata();
@@ -71,11 +75,6 @@ namespace Squiggle.Core.Chat.Activity
         protected void CompleteTransfer()
         {
             executor.CompleteTransfer();
-        }
-
-        protected void Accept()
-        {
-            executor.Accept();
         }
 
         public abstract void OnDataReceived(byte[] chunk);

@@ -44,7 +44,7 @@ namespace Squiggle.FileTransfer
         public void Accept(string fileName)
         {
             filePath = fileName;
-            this.Accept();
+            Start();
         }
 
         public override void OnAccept()

@@ -9,15 +9,17 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
     class GenericActivityChatItem: ActivityChatItem<GenericActivityControl, IActivityHandler>
     {
         string activityName;
+        string buddyName;
 
-        public GenericActivityChatItem(IActivityHandler session, string activityName, bool sending) : base(session, sending) 
+        public GenericActivityChatItem(IActivityHandler session, string activityName, string buddyName, bool sending) : base(session, sending) 
         {
             this.activityName = activityName;
+            this.buddyName = buddyName;
         }
 
         protected override GenericActivityControl CreateControl()
         {
-            return new GenericActivityControl(Session, Sending);
+            return new GenericActivityControl(Session, activityName, buddyName, Sending);
         }
     }
 }

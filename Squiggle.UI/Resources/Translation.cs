@@ -47,15 +47,21 @@ namespace Squiggle.UI.Resources
         public string ChatWindow_VoiceChatNotAllowedInGroup { get; set; }
         public string ChatWindow_NoBuddyWithName { get; set; }
 
-        public string FileTransfer_Waiting { get; set; }
-        public string FileTransfer_Cancel { get; set; }
-        public string FileTransfer_Reject { get; set; }
+        public string FileTransfer_Waiting { get; set; }       
         public string FileTransfer_FileSent { get; set; }
         public string FileTransfer_FileReceived { get; set; }
         public string FileTransfer_SendingCancelled { get; set; }
         public string FileTransfer_Cancelled { get; set; }
         public string FileTransfer_Sending { get; set; }
         public string FileTransfer_Receiving { get; set; }
+
+        public string Activity_Invitation { get; set; }
+        public string Activity_Waiting { get; set; }
+        public string Activity_Cancel { get; set; }
+        public string Activity_Reject { get; set; }
+        public string Activity_Completed { get; set; }
+        public string Activity_Cancelled { get; set; }
+        public string Activity_Started { get; set; }
         
         public string BuddyStatus_Online { get; set; }
         public string BuddyStatus_Busy { get; set; }
@@ -119,6 +125,6 @@ namespace Squiggle.UI.Resources
         {
             var translation = Application.Current.TryFindResource(key) as String;
             return translation;
-        }        
+        }
     }
 }

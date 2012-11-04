@@ -71,15 +71,15 @@ namespace Squiggle.UI
             textbox.AddItem(item);
         }
 
-        public static void AddActivitySentRequest(this ChatTextBox textbox, string activity, IActivityHandler session)
+        public static void AddActivitySentRequest(this ChatTextBox textbox, string buddyName, string activity, IActivityHandler session)
         {
-            var item = new GenericActivityChatItem(session, activity, sending: true);
+            var item = new GenericActivityChatItem(session, buddyName, activity, sending: true);
             textbox.AddItem(item);
         }
 
-        public static void AddActivityReceiveRequest(this ChatTextBox textbox, string activity, IActivityHandler session)
+        public static void AddActivityReceiveRequest(this ChatTextBox textbox, string buddyName, string activity, IActivityHandler session)
         {
-            var item = new GenericActivityChatItem(session, activity, sending: false);
+            var item = new GenericActivityChatItem(session, buddyName, activity, sending: false);
             textbox.AddItem(item);
         }
     }

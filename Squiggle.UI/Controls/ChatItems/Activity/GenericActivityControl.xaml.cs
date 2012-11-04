@@ -25,6 +25,8 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
     {
         IActivityHandler session;
         bool sending;
+        string buddyName;
+        string activityName;
 
         string _status;
         public string Status 
@@ -38,19 +40,21 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
         }
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
-
+        
         public GenericActivityControl()
         {
             InitializeComponent();
         }
 
-        public GenericActivityControl(IActivityHandler session, bool sending)
+        public GenericActivityControl(IActivityHandler session, string buddyName, string activityName, bool sending): this()
         {
             this.session = session;
             this.sending = sending;
+            this.buddyName = buddyName;
+            this.activityName = activityName;
 
-            Status = sending ? Translation.Instance.FileTransfer_Waiting : String.Empty;
-            btnCancelTransfer.Content = sending ? Translation.Instance.FileTransfer_Cancel : Translation.Instance.FileTransfer_Reject;
+            Status = String.Format(sending ? Translation.Instance.Activity_Waiting : Translation.Instance.Activity_Invitation, buddyName, activityName);
+            btnCancelTransfer.Content = sending ? Translation.Instance.Activity_Cancel : Translation.Instance.Activity_Reject;
 
             session.TransferStarted += session_TransferStarted;
             session.TransferCancelled += session_TransferCancelled;
@@ -63,7 +67,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
         {
             Dispatcher.Invoke(() =>
             {
-                Status = sending ? Translation.Instance.FileTransfer_FileSent : Translation.Instance.FileTransfer_FileReceived;
+                Status = String.Format(Translation.Instance.Activity_Completed, activityName);
 
                 ShowCompleted();
             });
@@ -81,13 +85,13 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
         {
             Dispatcher.Invoke(() =>
             {
-                ShowDownloading();
+                ShowStarted();
             });
         }
 
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
-            AcceptDownload();
+            Accept();
         } 
 
         private void Reject_Click(object sender, RoutedEventArgs e)
@@ -102,15 +106,15 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
         {
             ShowCancelled();
 
-            Status = sending ? Translation.Instance.FileTransfer_SendingCancelled : Translation.Instance.FileTransfer_Cancelled;
+            Status = String.Format(Translation.Instance.Activity_Cancelled, activityName);
 
             if (selfCancel)
                 session.Cancel();
         }
 
-        void AcceptDownload()
+        void Accept()
         {
-            ShowDownloading();
+            ShowStarted();
 
             session.Start();
         }
@@ -139,14 +143,14 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             stkCompleted.Visibility = Visibility.Hidden;
         }
 
-        void ShowDownloading()
+        void ShowStarted()
         {
             stkAccepted.Visibility = Visibility.Visible;
             stkInvitation.Visibility = Visibility.Hidden;
             stkWaitingAcceptance.Visibility = Visibility.Hidden;
             stkCompleted.Visibility = Visibility.Hidden;
 
-            Status = sending ? Translation.Instance.FileTransfer_Sending : Translation.Instance.FileTransfer_Receiving;
+            Status = String.Format(Translation.Instance.Activity_Started, activityName);
         }
 
         void OnPropertyChanged(string propertyName)

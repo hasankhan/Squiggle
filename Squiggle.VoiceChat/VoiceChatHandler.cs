@@ -95,11 +95,6 @@ namespace Squiggle.VoiceChat
             echoFilter = new EchoFilterWaveProvider(codec.RecordFormat, frameSize, filterLength);
         }
 
-        public new void Accept()
-        {
-            base.Accept();
-        }
-
         public override void OnTransferFinished()
         {
             Dispatcher.Invoke(() =>

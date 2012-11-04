@@ -144,14 +144,22 @@
     <sys:String x:Key="ContactListItem_EmailButton">Email</sys:String>
     <sys:String x:Key="ContactListItem_SendFileButton">Send File</sys:String>
     <sys:String x:Key="FileTransfer_Waiting">Waiting</sys:String>
-    <sys:String x:Key="FileTransfer_Cancel">Cancel</sys:String>
-    <sys:String x:Key="FileTransfer_Reject">Reject</sys:String>
     <sys:String x:Key="FileTransfer_FileSent">File Sent</sys:String>
     <sys:String x:Key="FileTransfer_FileReceived">File Received</sys:String>
     <sys:String x:Key="FileTransfer_SendingCancelled">Sending Cancelled</sys:String>
     <sys:String x:Key="FileTransfer_Cancelled">Cancelled</sys:String>
     <sys:String x:Key="FileTransfer_Sending">Sending</sys:String>
     <sys:String x:Key="FileTransfer_Receiving">Receiving</sys:String>
+    <sys:String x:Key="FileTransfer_SaveAs">Save As</sys:String>
+    <sys:String x:Key="FileTransfer_Open">Open</sys:String>
+    <sys:String x:Key="Activity_Waiting">Waiting for {0} to accept {1} activity</sys:String>
+    <sys:String x:Key="Activity_Invitation">{0} wants to start {1} activity with you</sys:String>
+    <sys:String x:Key="Activity_Accept">Accept</sys:String>
+    <sys:String x:Key="Activity_Cancel">Cancel</sys:String>
+    <sys:String x:Key="Activity_Reject">Reject</sys:String>
+    <sys:String x:Key="Activity_Completed">{0} activity completed</sys:String>
+    <sys:String x:Key="Activity_Cancelled">{0} activity cancelled</sys:String>
+    <sys:String x:Key="Activity_Started">{0} activity started</sys:String>
     <sys:String x:Key="BuddyStatus_Online">Online</sys:String>
     <sys:String x:Key="BuddyStatus_Busy">Busy</sys:String>
     <sys:String x:Key="BuddyStatus_BeRightBack">Be Right Back</sys:String>
@@ -217,8 +225,7 @@
     <sys:String x:Key="VoiceChat_Ended">Voice chat ended</sys:String>
     <sys:String x:Key="VoiceChat_ReceivedWaiting">{0} wants to talk to you</sys:String>
     <sys:String x:Key="VoiceChat_SentWaiting">Waiting for {0} to accept voice chat request</sys:String>
-    <sys:String x:Key="VoiceChat_Accept">Accept</sys:String>
-    <sys:String x:Key="VoiceChat_Reject">Reject</sys:String>
+    <sys:String x:Key="VoiceChat_EndCall">End call</sys:String>
     <sys:String x:Key="Authentication_ServiceUnavailable">Unable to connect to authentication service</sys:String>
     <sys:String x:Key="Authentication_Failed">Authentication failed. Please check your credential are correct.</sys:String>
 </ResourceDictionary>

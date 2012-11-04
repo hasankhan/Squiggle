@@ -15,17 +15,17 @@
             </StackPanel>
             <Grid>
                 <StackPanel x:Name="stkInvitation" Orientation="Horizontal" Visibility="Hidden">
-                    <Button Content="Accept" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="5,0,0,0" Click="Accept_Click" 
-                            Template="{DynamicResource BlackGlassButton}" Foreground="White"/>                
-                    <Button Content="Reject" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="5,0,0,0" Click="Reject_Click"
+                    <Button Content="{StaticResource Activity_Accept}" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="5,0,0,0" Click="Accept_Click" 
+                            Template="{DynamicResource BlackGlassButton}" Foreground="White"/>
+                    <Button Content="{StaticResource Activity_Reject}" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="5,0,0,0" Click="Reject_Click"
                             Template="{DynamicResource BlackGlassButton}" Foreground="White"/>
                 </StackPanel>
                 <StackPanel x:Name="stkWaitingAcceptance" Orientation="Horizontal" Visibility="Hidden">
-                    <Button x:Name="btnCancelTransfer" Content="Reject" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="10,0,0,0" Click="Reject_Click"
+                    <Button x:Name="btnCancelTransfer" Content="{StaticResource Activity_Reject}" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="10,0,0,0" Click="Reject_Click"
                             Template="{DynamicResource BlackGlassButton}" Foreground="White"/>
                 </StackPanel>
                 <StackPanel x:Name="stkAccepted" Orientation="Horizontal" Visibility="Hidden">
-                    <Button Content="Cancel" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="5,0,0,0" Click="Reject_Click" 
+                    <Button Content="{StaticResource Activity_Cancel}" VerticalContentAlignment="Center" FontSize="9" Height="15" Width="60" Margin="5,0,0,0" Click="Reject_Click" 
                             Template="{DynamicResource BlackGlassButton}" Foreground="White"/>
                 </StackPanel>
                 <StackPanel x:Name="stkCompleted" Orientation="Horizontal" Visibility="Hidden">

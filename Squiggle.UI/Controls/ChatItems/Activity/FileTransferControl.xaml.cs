@@ -60,7 +60,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             FileName = fileTransfer.Name;
             FileSize = fileTransfer.Size;
             Status = sending ? Translation.Instance.FileTransfer_Waiting : ToReadableFileSize(FileSize);
-            btnCancelTransfer.Content = sending ? Translation.Instance.FileTransfer_Cancel : Translation.Instance.FileTransfer_Reject;
+            btnCancelTransfer.Content = sending ? Translation.Instance.Activity_Cancel : Translation.Instance.Activity_Reject;
 
             NotifyPropertyChanged();
 

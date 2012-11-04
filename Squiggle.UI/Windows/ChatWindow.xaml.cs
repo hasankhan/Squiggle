@@ -529,7 +529,7 @@ namespace Squiggle.UI.Windows
                 if (handler == null)
                     chatTextBox.AddInfo(Translation.Instance.ChatWindow_UnknownActivityInvite);
                 else
-                    chatTextBox.AddActivityReceiveRequest(activity, handler);
+                    chatTextBox.AddActivityReceiveRequest(PrimaryBuddy.DisplayName, activity, handler);
             });
         }
 
@@ -930,7 +930,7 @@ namespace Squiggle.UI.Windows
 
             var handler = StartActivity<IActivityHandler>(activity.Id, args);
             if (handler != null)
-                chatTextBox.AddActivitySentRequest(activity.Title, handler);
+                chatTextBox.AddActivitySentRequest(PrimaryBuddy.DisplayName, activity.Title, handler);
         }
 
         private void SendEmoticon_Click(object sender, RoutedEventArgs e)

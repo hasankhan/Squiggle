@@ -144,7 +144,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             else
                 context.ActiveVoiceChat = voiceChat;
 
-            voiceChat.Accept();
+            voiceChat.Start();
             Dispatcher.Invoke(() =>
             {
                 ShowAccepted();
