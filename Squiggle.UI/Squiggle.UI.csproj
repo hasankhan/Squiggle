@@ -117,6 +117,11 @@
     <Compile Include="Components\Authentication\AuthenticationException.cs" />
     <Compile Include="Components\Authentication\DefaultAuthenticationProvider.cs" />
     <Compile Include="Components\LoginHelper.cs" />
+    <Compile Include="Controls\ChatItems\Activity\ActivityChatItem.cs" />
+    <Compile Include="Controls\ChatItems\Activity\GenericActivityChatItem.cs" />
+    <Compile Include="Controls\ChatItems\Activity\GenericActivityControl.xaml.cs">
+      <DependentUpon>GenericActivityControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Factories\ChatClientOptionsFactory.cs" />
     <Compile Include="Helpers\ActivityHelper.cs" />
     <Compile Include="MessageFilters\Commands\IChatCommand.cs" />
@@ -160,6 +165,10 @@
     <Content Include="Sounds\VoiceChatRingingOut.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Page Include="Controls\ChatItems\Activity\GenericActivityControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\About.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -218,7 +227,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\FileTransferControl.xaml">
+    <Page Include="Controls\ChatItems\Activity\FileTransferControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -254,7 +263,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\VoiceChatControl.xaml">
+    <Page Include="Controls\ChatItems\Activity\VoiceChatControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -373,11 +382,11 @@
     <Compile Include="Controls\ChatItems\ChatItem.cs" />
     <Compile Include="Controls\ChatItems\ChatItemHelper.cs" />
     <Compile Include="Controls\ChatItems\ErrorItem.cs" />
-    <Compile Include="Controls\ChatItems\FileTransferItem.cs" />
+    <Compile Include="Controls\ChatItems\Activity\FileTransferItem.cs" />
     <Compile Include="Controls\ChatItems\InfoItem.cs" />
     <Compile Include="Controls\ChatItems\MessageItem.cs" />
     <Compile Include="Controls\ChatItems\UIChatItem.cs" />
-    <Compile Include="Controls\ChatItems\VoiceChatItem.cs" />
+    <Compile Include="Controls\ChatItems\Activity\VoiceChatItem.cs" />
     <Compile Include="Controls\ConfirmationDialog.xaml.cs">
       <DependentUpon>ConfirmationDialog.xaml</DependentUpon>
     </Compile>
@@ -397,7 +406,7 @@
     <Compile Include="Controls\UpdateNotification.xaml.cs">
       <DependentUpon>UpdateNotification.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\VoiceChatControl.xaml.cs">
+    <Compile Include="Controls\ChatItems\Activity\VoiceChatControl.xaml.cs">
       <DependentUpon>VoiceChatControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\VoiceChatToolbarControl.xaml.cs">
@@ -472,7 +481,7 @@
     <Compile Include="Controls\DisplayMessageBox.xaml.cs">
       <DependentUpon>DisplayMessageBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\FileTransferControl.xaml.cs">
+    <Compile Include="Controls\ChatItems\Activity\FileTransferControl.xaml.cs">
       <DependentUpon>FileTransferControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\MessageEditBox.xaml.cs">

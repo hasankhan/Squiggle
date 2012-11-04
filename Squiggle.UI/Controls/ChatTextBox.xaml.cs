@@ -35,7 +35,7 @@ namespace Squiggle.UI.Controls
             InitializeComponent();                      
         }        
 
-        public void AddItem(ChatItem item, bool allowEdit)
+        public void AddItem(ChatItem item, bool allowEdit = false)
         {
             var span = new Span();
 
