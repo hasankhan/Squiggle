@@ -1,5 +1,7 @@
 ﻿using System;
 using Squiggle.Client;
+using System.Collections;
+using System.Collections.Generic;
 namespace Squiggle.Plugins
 {
     public interface IChatWindow
@@ -13,7 +15,7 @@ namespace Squiggle.Plugins
         void SaveTo(string fileName, string format);
         void SendBuzz();
         void SendFile();
-        void SendFiles(params string[] filePaths);
+        void SendFiles(IEnumerable<string> filePaths);
         void SendMessage(string message);
     }
 }

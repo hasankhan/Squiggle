@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Input;
-using System.Windows.Threading;
-using Squiggle.Client;
+﻿using Squiggle.Client;
 using Squiggle.Client.Activities;
 using Squiggle.Core.Chat.Activity;
 using Squiggle.Plugins;
@@ -24,6 +16,14 @@ using Squiggle.UI.StickyWindow;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 using Squiggle.Utilities.Threading;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Windows;
+using System.Windows.Data;
+using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace Squiggle.UI.Windows
 {
@@ -634,11 +634,11 @@ namespace Squiggle.UI.Windows
             {
                 dialog.CheckFileExists = true;
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    SendFiles(dialog.FileName);
+                    SendFiles(new[]{dialog.FileName});
             }
         }
 
-        public void SendFiles(params string[] filePaths)
+        public void SendFiles(IEnumerable<string> filePaths)
         {
             if (!EnsureFileTransferCapibility())
                 return;

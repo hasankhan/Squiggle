@@ -16,7 +16,6 @@ namespace Squiggle.Plugins
     public interface IMainWindow
     {
         void BlinkTrayIcon();
-        void InitializeComponent();
         void Quit();
         void RestoreWindow();
         void SignIn(SignInOptions options);
