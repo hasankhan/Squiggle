@@ -7,15 +7,82 @@
  			Specifies a single cab file to be embedded in the installer's .msi. 
 		-->
     <Media Id="1" Cabinet="contents.cab" EmbedCab="yes" CompressionLevel="high" />
+
     <!-- Installation directory and files are defined in Files.wxs -->
-    <Directory Id="TARGETDIR" Name="SourceDir" />
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLDIR" Name="Squiggle">
+          <Directory Id="Images" Name="Images">
+            <Directory Id="Status" Name="Status" />
+            <Directory Id="Emoticons" Name="Emoticons" />
+          </Directory>
+          <Directory Id="Plugins" Name="Plugins" />
+          <Directory Id="Resources" Name="Resources" />
+          <Directory Id="Sounds" Name="Sounds" />
+        </Directory>
+      </Directory>
+      <Directory Id="DesktopFolder" />
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ProgramMenuDir" Name="Squiggle" />
+      </Directory>
+    </Directory>
+
     <Feature Id="Complete" Title="Squiggle" Description="Squiggle - A free open source LAN Messenger" Level="1">
-      <ComponentRef Id="CoreFiles" />
-      <ComponentRef Id="EmoticonsFiles" />
-      <ComponentRef Id="StatusFiles" />
-      <ComponentRef Id="PluginFiles" />
-      <ComponentRef Id="ResourceFiles" />
-      <ComponentRef Id="SoundFiles" />
+      <ComponentRef Id="clrzmq.dll" />
+      <ComponentRef Id="EntityFramework.dll" />
+      <ComponentRef Id="FluidKit.dll" />
+      <ComponentRef Id="libzmq.dll" />
+      <ComponentRef Id="protobuf_net.dll" />
+      <ComponentRef Id="sqlceca40.dll" />
+      <ComponentRef Id="sqlcecompact40.dll" />
+      <ComponentRef Id="sqlceer40EN.dll" />
+      <ComponentRef Id="sqlceme40.dll" />
+      <ComponentRef Id="sqlceqp40.dll" />
+      <ComponentRef Id="sqlcese40.dll" />
+      <ComponentRef Id="Squiggle.Client.dll" />
+      <ComponentRef Id="Squiggle.Core.dll" />
+      <ComponentRef Id="Squiggle.exe" />
+      <ComponentRef Id="Squiggle.exe.config" />
+      <ComponentRef Id="Squiggle.History.dll" />
+      <ComponentRef Id="Squiggle.Infrastructure.dll" />
+      <ComponentRef Id="Squiggle.Plugins.dll" />
+      <ComponentRef Id="Squiggle.Utilities.dll" />
+      <ComponentRef Id="System.Data.SqlServerCe.dll" />
+      <ComponentRef Id="System.Data.SqlServerCe.Entity.dll" />
+      <ComponentRef Id="away.png" />
+      <ComponentRef Id="busy.png" />
+      <ComponentRef Id="offline.png" />
+      <ComponentRef Id="online.png" />
+      <ComponentRef Id="angry.png" />
+      <ComponentRef Id="blushing.png" />
+      <ComponentRef Id="burn.png" />
+      <ComponentRef Id="crying.png" />
+      <ComponentRef Id="hot.png" />
+      <ComponentRef Id="Icons_Author.txt" />
+      <ComponentRef Id="laughing.png" />
+      <ComponentRef Id="love.png" />
+      <ComponentRef Id="question.png" />
+      <ComponentRef Id="sad.png" />
+      <ComponentRef Id="shout.png" />
+      <ComponentRef Id="slobber.png" />
+      <ComponentRef Id="smile.png" />
+      <ComponentRef Id="surprised.png" />
+      <ComponentRef Id="tongue.png" />
+      <ComponentRef Id="winking.png" />
+      <ComponentRef Id="libspeex_license.txt" />
+      <ComponentRef Id="libspeexdsp.dll" />
+      <ComponentRef Id="NAudio.dll" />
+      <ComponentRef Id="NAudio_license.txt" />
+      <ComponentRef Id="Readme.txt" />
+      <ComponentRef Id="Squiggle.FileTransfer.dll" />
+      <ComponentRef Id="Squiggle.VoiceChat.dll" />
+      <ComponentRef Id="Translation.xaml" />
+      <ComponentRef Id="BuddyOnline.wav" />
+      <ComponentRef Id="Buzz.wav" />
+      <ComponentRef Id="MessageReceived.wav" />
+      <ComponentRef Id="VoiceChatDisconnected.wav" />
+      <ComponentRef Id="VoiceChatRingingIn.wav" />
+      <ComponentRef Id="VoiceChatRingingOut.wav" />
       <ComponentRef Id="DesktopShortcuts" />
       <ComponentRef Id="ProgramMenuShortcuts" />
     </Feature>
