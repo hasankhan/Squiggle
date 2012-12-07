@@ -196,6 +196,7 @@
         <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
         <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" />
         <util:InternetShortcut Id="OverrootShortcut" Name="Overroot" Type="url" Target="http://www.overroot.com/" />
+        <util:InternetShortcut Id="LetsDonateStuffShortcut" Name="LetsDonateStuff.com" Type="url" Target="http://www.letsdonatestuff.com/" />
         <Shortcut Id="SquiggleProgramMenuShortcut" Name="Squiggle" Description="Squiggle" Target="[INSTALLDIR]Squiggle.exe" />
         <Shortcut Id="UninstallProduct" Name="Uninstall Squiggle" Description="Uninstalls the application" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" />
       </Component>
