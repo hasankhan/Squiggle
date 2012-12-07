@@ -197,6 +197,7 @@
         <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" />
         <util:InternetShortcut Id="OverrootShortcut" Name="Overroot" Type="url" Target="http://www.overroot.com/" />
         <util:InternetShortcut Id="LetsDonateStuffShortcut" Name="LetsDonateStuff.com" Type="url" Target="http://www.letsdonatestuff.com/" />
+        <util:InternetShortcut Id="SupportSquiggleShortcut" Name="Support Squiggle" Type="url"  Target="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YCRMDETF9ZY8W" />
         <Shortcut Id="SquiggleProgramMenuShortcut" Name="Squiggle" Description="Squiggle" Target="[INSTALLDIR]Squiggle.exe" />
         <Shortcut Id="UninstallProduct" Name="Uninstall Squiggle" Description="Uninstalls the application" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" />
       </Component>
