@@ -67,6 +67,15 @@ namespace Squiggle.Core.Presence
         }        
 
         /// <summary>
+        /// To tell discovery service that user is lost via keep alive service
+        /// </summary>
+        /// <param name="id"></param>
+        public void UserIsOffline(string id)
+        {
+            OnUserOffline(id);
+        }
+
+        /// <summary>
         /// Asks user to return his presence information. Can be used to get latest update about user presence or to inquire details about discovered users.
         /// </summary>
         /// <param name="user">The presence endpoint of user.</param>

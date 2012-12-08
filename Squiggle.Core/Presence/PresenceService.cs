@@ -36,15 +36,15 @@ namespace Squiggle.Core.Presence
             channel = new PresenceChannel(options.MulticastEndPoint, options.MulticastReceiveEndPoint, options.PresenceServiceEndPoint);
 
             this.discovery = new UserDiscovery(channel);
-            discovery.UserOnline += new EventHandler<UserEventArgs>(discovery_UserOnline);
-            discovery.UserOffline += new EventHandler<UserEventArgs>(discovery_UserOffline);
-            discovery.UserUpdated += new EventHandler<UserEventArgs>(discovery_UserUpdated);
-            discovery.UserDiscovered += new EventHandler<UserEventArgs>(discovery_UserDiscovered);
+            discovery.UserOnline += discovery_UserOnline;
+            discovery.UserOffline += discovery_UserOffline;
+            discovery.UserUpdated += discovery_UserUpdated;
+            discovery.UserDiscovered += discovery_UserDiscovered;
 
             this.keepAlive = new KeepAliveService(channel, thisUser, options.KeepAliveTime);
-            this.keepAlive.UserLost += new EventHandler<KeepAliveEventArgs>(keepAlive_UserLost);
-            this.keepAlive.UserLosing += new EventHandler<KeepAliveEventArgs>(keepAlive_UserLosing);
-            this.keepAlive.UserDiscovered += new EventHandler<KeepAliveEventArgs>(keepAlive_UserDiscovered);
+            this.keepAlive.UserLost += keepAlive_UserLost;
+            this.keepAlive.UserLosing += keepAlive_UserLosing;
+            this.keepAlive.UserDiscovered += keepAlive_UserDiscovered;
         }        
 
         public void Login(string name, IBuddyProperties properties)
@@ -104,7 +104,7 @@ namespace Squiggle.Core.Presence
         {
             IUserInfo user = Users.FirstOrDefault(u => u.ID.Equals(e.User.ClientID));
             if (user != null)
-                OnUserOffline(user);
+                discovery.UserIsOffline(user.ID);
         }        
 
         void discovery_UserUpdated(object sender, UserEventArgs e)
