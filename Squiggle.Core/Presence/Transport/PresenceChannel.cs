@@ -50,10 +50,10 @@ namespace Squiggle.Core.Presence.Transport
         public void Start()
         {
             host = new PresenceHost(serviceEndPoint);
-            host.MessageReceived += new EventHandler<MessageReceivedEventArgs>(host_MessageReceived);
+            host.MessageReceived += host_MessageReceived;
             host.Start();
 
-            multicastService.MessageReceived += new EventHandler<MessageReceivedEventArgs>(multicastService_MessageReceived);
+            multicastService.MessageReceived += multicastService_MessageReceived;
             multicastService.Start();
         }
 
@@ -62,7 +62,7 @@ namespace Squiggle.Core.Presence.Transport
             host.Dispose();
             host = null;
 
-            multicastService.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(multicastService_MessageReceived);
+            multicastService.MessageReceived -= multicastService_MessageReceived;
             multicastService.Stop();
         }
 

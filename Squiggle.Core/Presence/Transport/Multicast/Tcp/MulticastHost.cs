@@ -35,7 +35,7 @@ namespace Squiggle.Core.Presence.Transport.Multicast.Tcp
         public void Start()
         {
             pipe = new UnicastMessagePipe(endpoint);
-            pipe.MessageReceived += new EventHandler<Utilities.Net.Pipe.MessageReceivedEventArgs>(pipe_MessageReceived);
+            pipe.MessageReceived += pipe_MessageReceived;
             pipe.Open();
         }
 

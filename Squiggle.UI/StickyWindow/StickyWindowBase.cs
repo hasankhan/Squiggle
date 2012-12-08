@@ -13,7 +13,7 @@ namespace Squiggle.UI.StickyWindow
 
         public StickyWindowBase()
         {            
-            this.Loaded += new RoutedEventHandler(StickyWindow_Loaded);
+            this.Loaded += StickyWindow_Loaded;
         }
 
         void StickyWindow_Loaded(object sender, RoutedEventArgs e)

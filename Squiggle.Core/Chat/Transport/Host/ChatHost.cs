@@ -42,7 +42,7 @@ namespace Squiggle.Core.Chat.Transport.Host
         public void Start()
         {
             this.pipe = new UnicastMessagePipe(endpoint);
-            pipe.MessageReceived += new EventHandler<Utilities.Net.Pipe.MessageReceivedEventArgs>(pipe_MessageReceived);
+            pipe.MessageReceived += pipe_MessageReceived;
             pipe.Open();
         }
 

@@ -24,7 +24,7 @@ namespace Squiggle.UI.Components
             this.dispatcher = dispatcher;
             this.signInFunction = signInFunction;
             this.signoutFunction = signoutFunction;
-            System.Net.NetworkInformation.NetworkChange.NetworkAvailabilityChanged += new System.Net.NetworkInformation.NetworkAvailabilityChangedEventHandler(NetworkChange_NetworkAvailabilityChanged);
+            System.Net.NetworkInformation.NetworkChange.NetworkAvailabilityChanged += NetworkChange_NetworkAvailabilityChanged;
         }
 
         public void OnSignIn(SignInOptions signInOptions)
@@ -62,7 +62,7 @@ namespace Squiggle.UI.Components
 
         public void Dispose()
         {
-            System.Net.NetworkInformation.NetworkChange.NetworkAvailabilityChanged -= new System.Net.NetworkInformation.NetworkAvailabilityChangedEventHandler(NetworkChange_NetworkAvailabilityChanged);
+            System.Net.NetworkInformation.NetworkChange.NetworkAvailabilityChanged -= NetworkChange_NetworkAvailabilityChanged;
         }
     }
 }

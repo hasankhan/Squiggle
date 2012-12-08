@@ -44,7 +44,7 @@ namespace Squiggle.Core.Chat
         {
             chatHost = new ChatHost(localEndPoint.Address);
             chatHost.Start();
-            chatHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(chatHost_MessageReceived);
+            chatHost.MessageReceived += chatHost_MessageReceived;
             chatSessions = new ChatSessionCollection();
         }
 
@@ -52,7 +52,7 @@ namespace Squiggle.Core.Chat
         {
             if (chatHost != null)
             {
-                chatHost.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(chatHost_MessageReceived);
+                chatHost.MessageReceived -= chatHost_MessageReceived;
                 chatHost.Dispose();
                 chatHost = null;
                 chatSessions.Clear();

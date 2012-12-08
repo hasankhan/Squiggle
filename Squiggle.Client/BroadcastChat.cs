@@ -112,10 +112,10 @@ namespace Squiggle.Client
             lock (chatSessions)
             {
                 this.chatSessions.Add(session);
-                session.MessageReceived += new EventHandler<ChatMessageReceivedEventArgs>(session_MessageReceived);
-                session.MessageFailed += new EventHandler<MessageFailedEventArgs>(session_MessageFailed);
-                session.BuzzReceived += new EventHandler<BuddyEventArgs>(session_BuzzReceived);
-                session.BuddyTyping += new EventHandler<BuddyEventArgs>(session_BuddyTyping);
+                session.MessageReceived += session_MessageReceived;
+                session.MessageFailed += session_MessageFailed;
+                session.BuzzReceived += session_BuzzReceived;
+                session.BuddyTyping += session_BuddyTyping;
             }
         }
 
@@ -124,10 +124,10 @@ namespace Squiggle.Client
             lock (chatSessions)
             {
                 this.chatSessions.Remove(session);
-                session.MessageReceived -= new EventHandler<ChatMessageReceivedEventArgs>(session_MessageReceived);
-                session.MessageFailed -= new EventHandler<MessageFailedEventArgs>(session_MessageFailed);
-                session.BuzzReceived -= new EventHandler<BuddyEventArgs>(session_BuzzReceived);
-                session.BuddyTyping -= new EventHandler<BuddyEventArgs>(session_BuddyTyping);
+                session.MessageReceived -= session_MessageReceived;
+                session.MessageFailed -= session_MessageFailed;
+                session.BuzzReceived -= session_BuzzReceived;
+                session.BuddyTyping -= session_BuddyTyping;
             }
         }
 

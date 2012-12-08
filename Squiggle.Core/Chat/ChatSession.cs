@@ -58,16 +58,16 @@ namespace Squiggle.Core.Chat
             this.chatHost = localHost;
             this.localUser = localUser;
 
-            localHost.ChatInviteReceived += new EventHandler<ChatInviteReceivedEventArgs>(chatHost_ChatInviteReceived);
-            localHost.ActivityInvitationReceived += new EventHandler<ActivityInvitationReceivedEventArgs>(chatHost_ActivityInvitationReceived);
-            localHost.TextMessageReceived += new EventHandler<TextMessageReceivedEventArgs>(chatHost_MessageReceived);
-            localHost.TextMessageUpdated += new EventHandler<TextMessageUpdatedEventArgs>(chatHost_MessageUpdated);
-            localHost.UserTyping += new EventHandler<SessionEventArgs>(chatHost_UserTyping);
-            localHost.BuzzReceived += new EventHandler<SessionEventArgs>(chatHost_BuzzReceived);
-            localHost.UserJoined += new EventHandler<SessionEventArgs>(chatHost_UserJoined);
-            localHost.UserLeft += new EventHandler<SessionEventArgs>(chatHost_UserLeft);
-            localHost.SessionInfoRequested += new EventHandler<SessionEventArgs>(chatHost_SessionInfoRequested);
-            localHost.SessionInfoReceived += new EventHandler<SessionInfoEventArgs>(chatHost_SessionInfoReceived);
+            localHost.ChatInviteReceived += chatHost_ChatInviteReceived;
+            localHost.ActivityInvitationReceived += chatHost_ActivityInvitationReceived;
+            localHost.TextMessageReceived += chatHost_MessageReceived;
+            localHost.TextMessageUpdated += chatHost_MessageUpdated;
+            localHost.UserTyping += chatHost_UserTyping;
+            localHost.BuzzReceived += chatHost_BuzzReceived;
+            localHost.UserJoined += chatHost_UserJoined;
+            localHost.UserLeft += chatHost_UserLeft;
+            localHost.SessionInfoRequested += chatHost_SessionInfoRequested;
+            localHost.SessionInfoReceived += chatHost_SessionInfoReceived;
 
             remoteUsers = new Dictionary<string, ISquiggleEndPoint>();
             CreateRemoteUsers(Enumerable.Repeat(remoteUser, 1));
@@ -130,16 +130,16 @@ namespace Squiggle.Core.Chat
 
         public void End()
         {
-            chatHost.ChatInviteReceived -= new EventHandler<ChatInviteReceivedEventArgs>(chatHost_ChatInviteReceived);
-            chatHost.ActivityInvitationReceived -= new EventHandler<ActivityInvitationReceivedEventArgs>(chatHost_ActivityInvitationReceived);
-            chatHost.TextMessageReceived -= new EventHandler<TextMessageReceivedEventArgs>(chatHost_MessageReceived);
-            chatHost.TextMessageUpdated -= new EventHandler<TextMessageUpdatedEventArgs>(chatHost_MessageUpdated);
-            chatHost.UserTyping -= new EventHandler<SessionEventArgs>(chatHost_UserTyping);
-            chatHost.BuzzReceived -= new EventHandler<SessionEventArgs>(chatHost_BuzzReceived);
-            chatHost.UserJoined -= new EventHandler<SessionEventArgs>(chatHost_UserJoined);
-            chatHost.UserLeft -= new EventHandler<SessionEventArgs>(chatHost_UserLeft);
-            chatHost.SessionInfoRequested -= new EventHandler<SessionEventArgs>(chatHost_SessionInfoRequested);
-            chatHost.SessionInfoReceived -= new EventHandler<SessionInfoEventArgs>(chatHost_SessionInfoReceived);
+            chatHost.ChatInviteReceived -= chatHost_ChatInviteReceived;
+            chatHost.ActivityInvitationReceived -= chatHost_ActivityInvitationReceived;
+            chatHost.TextMessageReceived -= chatHost_MessageReceived;
+            chatHost.TextMessageUpdated -= chatHost_MessageUpdated;
+            chatHost.UserTyping -= chatHost_UserTyping;
+            chatHost.BuzzReceived -= chatHost_BuzzReceived;
+            chatHost.UserJoined -= chatHost_UserJoined;
+            chatHost.UserLeft -= chatHost_UserLeft;
+            chatHost.SessionInfoRequested -= chatHost_SessionInfoRequested;
+            chatHost.SessionInfoReceived -= chatHost_SessionInfoReceived;
 
             ExceptionMonster.EatTheException(() =>
             {

@@ -62,8 +62,8 @@ namespace Squiggle.UI
 
         public App()
         {
-            AppDomain.CurrentDomain.UnhandledException += new System.UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
-            this.DispatcherUnhandledException += new System.Windows.Threading.DispatcherUnhandledExceptionEventHandler(App_DispatcherUnhandledException);
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            this.DispatcherUnhandledException += App_DispatcherUnhandledException;
         }
 
         void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)

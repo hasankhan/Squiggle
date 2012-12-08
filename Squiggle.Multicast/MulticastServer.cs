@@ -26,7 +26,7 @@ namespace Squiggle.Multicast
         public void Start()
         {
             mcastHost = new MulticastHost(endPoint);
-            mcastHost.MessageReceived += new EventHandler<MessageReceivedEventArgs>(mcastHost_MessageReceived);
+            mcastHost.MessageReceived += mcastHost_MessageReceived;
             mcastHost.Start();
         }
 

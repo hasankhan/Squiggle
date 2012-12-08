@@ -32,16 +32,16 @@ namespace Squiggle.Client
             this.self = self;
             
             this.buddies = new ChatBuddies(session, buddyResolver, buddies);
-            this.buddies.BuddyJoined += new EventHandler<BuddyEventArgs>(buddies_BuddyJoined);
-            this.buddies.BuddyLeft += new EventHandler<BuddyEventArgs>(buddies_BuddyLeft);
-            this.buddies.GroupChatStarted += new EventHandler(buddies_GroupChatStarted);
+            this.buddies.BuddyJoined += buddies_BuddyJoined;
+            this.buddies.BuddyLeft += buddies_BuddyLeft;
+            this.buddies.GroupChatStarted += buddies_GroupChatStarted;
 
             this.session = session;
-            session.MessageReceived += new EventHandler<Squiggle.Core.Chat.TextMessageReceivedEventArgs>(session_MessageReceived);
-            session.MessageUpdated += new EventHandler<Squiggle.Core.Chat.TextMessageUpdatedEventArgs>(session_MessageUpdated);
-            session.UserTyping += new EventHandler<Squiggle.Core.Chat.SessionEventArgs>(session_UserTyping);
-            session.BuzzReceived += new EventHandler<Squiggle.Core.Chat.SessionEventArgs>(session_BuzzReceived);
-            session.ActivityInviteReceived += new EventHandler<ActivityInivteReceivedEventArgs>(session_ActivityInviteReceived);
+            session.MessageReceived += session_MessageReceived;
+            session.MessageUpdated += session_MessageUpdated;
+            session.UserTyping += session_UserTyping;
+            session.BuzzReceived += session_BuzzReceived;
+            session.ActivityInviteReceived += session_ActivityInviteReceived;
         }             
 
         #region IChat Members

@@ -34,7 +34,7 @@ namespace Squiggle.Core.Chat.Activity
                 throw new ArgumentException("Invalid session object", "session");
 
             if (!this.session.SelfInitiated)
-                this.session.ChatHost.ActivitySessionCancelled += new EventHandler<ActivitySessionEventArgs>(chatHost_ActivitySessionCancelled);
+                this.session.ChatHost.ActivitySessionCancelled += chatHost_ActivitySessionCancelled;
         }
 
         public void SetHandler(ActivityHandler handler)
@@ -44,8 +44,8 @@ namespace Squiggle.Core.Chat.Activity
 
         public void Start()
         {
-            session.ChatHost.ActivityInvitationAccepted += new EventHandler<ActivitySessionEventArgs>(chatHost_ActivityInvitationAccepted);
-            session.ChatHost.ActivitySessionCancelled += new EventHandler<ActivitySessionEventArgs>(chatHost_ActivitySessionCancelled);
+            session.ChatHost.ActivityInvitationAccepted += chatHost_ActivityInvitationAccepted;
+            session.ChatHost.ActivitySessionCancelled += chatHost_ActivitySessionCancelled;
             Async.Invoke(() =>
             {
                 IEnumerable<KeyValuePair<string, string>> metadata = handler.CreateInviteMetadata();
@@ -167,9 +167,9 @@ namespace Squiggle.Core.Chat.Activity
                 worker = new BackgroundWorker();
                 worker.WorkerReportsProgress = true;
                 worker.WorkerSupportsCancellation = true;
-                worker.DoWork += new DoWorkEventHandler(worker_DoWork);
-                worker.ProgressChanged += new ProgressChangedEventHandler(worker_ProgressChanged);
-                worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(worker_RunWorkerCompleted);
+                worker.DoWork += worker_DoWork;
+                worker.ProgressChanged += worker_ProgressChanged;
+                worker.RunWorkerCompleted += worker_RunWorkerCompleted;
                 worker.RunWorkerAsync();
             }
         }
@@ -177,16 +177,16 @@ namespace Squiggle.Core.Chat.Activity
         void OnTransferStarted() 
         {
             IsConnected = true;
-            session.ChatHost.ActivityDataReceived += new EventHandler<ActivityDataReceivedEventArgs>(chatHost_ActivityDataReceived);
+            session.ChatHost.ActivityDataReceived += chatHost_ActivityDataReceived;
             handler.OnTransferStarted();
         }
 
         void OnTransferFinished()
         {
             IsConnected = false;
-            session.ChatHost.ActivityDataReceived -= new EventHandler<ActivityDataReceivedEventArgs>(chatHost_ActivityDataReceived);
-            session.ChatHost.ActivityInvitationAccepted -= new EventHandler<ActivitySessionEventArgs>(chatHost_ActivityInvitationAccepted);
-            session.ChatHost.ActivitySessionCancelled -= new EventHandler<ActivitySessionEventArgs>(chatHost_ActivitySessionCancelled);
+            session.ChatHost.ActivityDataReceived -= chatHost_ActivityDataReceived;
+            session.ChatHost.ActivityInvitationAccepted -= chatHost_ActivityInvitationAccepted;
+            session.ChatHost.ActivitySessionCancelled -= chatHost_ActivitySessionCancelled;
             handler.OnTransferFinished();
         }
 

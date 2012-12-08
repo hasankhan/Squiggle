@@ -428,7 +428,7 @@ namespace Squiggle.UI.Windows
         void Monitor(IBuddy buddy)
         {
             StopMonitoring(buddy);
-            buddy.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(buddy_PropertyChanged);
+            buddy.PropertyChanged += buddy_PropertyChanged;
         }
 
         void MonitorAll()
@@ -439,7 +439,7 @@ namespace Squiggle.UI.Windows
 
         void StopMonitoring(IBuddy buddy)
         {
-            buddy.PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(buddy_PropertyChanged);
+            buddy.PropertyChanged -= buddy_PropertyChanged;
         }
 
         void StopMonitoringAll()

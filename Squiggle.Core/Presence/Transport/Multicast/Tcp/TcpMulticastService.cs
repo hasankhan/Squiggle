@@ -36,7 +36,7 @@ namespace Squiggle.Core.Presence.Transport.Multicast.Tcp
         public void Start()
         {
             mcastHost = new MulticastHost(endpoint);
-            mcastHost.MessageReceived += new EventHandler<Tcp.MessageReceivedEventArgs>(mcastHost_MessageReceived);
+            mcastHost.MessageReceived += mcastHost_MessageReceived;
             mcastHost.Start();
             mcastHost.Send(server, new RegisterMessage() { Sender = endpoint });
         }

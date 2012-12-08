@@ -23,7 +23,7 @@ namespace Squiggle.Utilities
 
         public static void Run<TService>(string[] args) where TService : ConsoleService, new()
         {
-            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             if (Environment.UserInteractive)
             {
                 try

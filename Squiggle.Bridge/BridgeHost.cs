@@ -58,11 +58,11 @@ namespace Squiggle.Bridge
         public void Start()
         {
             bridgePipe = new UnicastMessagePipe(externalEndPoint);
-            bridgePipe.MessageReceived += new EventHandler<Utilities.Net.Pipe.MessageReceivedEventArgs>(bridgePipe_MessageReceived);
+            bridgePipe.MessageReceived += bridgePipe_MessageReceived;
             bridgePipe.Open();
 
             chatPipe = new UnicastMessagePipe(internalEndPoint);
-            chatPipe.MessageReceived += new EventHandler<Utilities.Net.Pipe.MessageReceivedEventArgs>(chatPipe_MessageReceived);
+            chatPipe.MessageReceived += chatPipe_MessageReceived;
             chatPipe.Open();
         }
 

@@ -27,9 +27,9 @@ namespace Squiggle.Client
             foreach (Buddy buddy in buddies)
                 AddBuddy(buddy);
 
-            this.session.GroupChatStarted += new EventHandler(session_GroupChatStarted);
-            this.session.UserJoined += new EventHandler<Core.Chat.SessionEventArgs>(session_UserJoined);
-            this.session.UserLeft += new EventHandler<Core.Chat.SessionEventArgs>(session_UserLeft);
+            this.session.GroupChatStarted += session_GroupChatStarted;
+            this.session.UserJoined += session_UserJoined;
+            this.session.UserLeft += session_UserLeft;
         }
 
         public bool TryGet(string clientId, out IBuddy buddy)
@@ -70,7 +70,7 @@ namespace Squiggle.Client
             if (buddy == null || buddies.ContainsKey(buddy.Id))
                 return;
 
-            buddy.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(buddy_PropertyChanged);
+            buddy.PropertyChanged += buddy_PropertyChanged;
             buddies[buddy.Id] = buddy;
         }
 
@@ -78,7 +78,7 @@ namespace Squiggle.Client
         {
             IBuddy buddy;
             if (TryGet(clientId, out buddy))
-                buddy.PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(buddy_PropertyChanged);
+                buddy.PropertyChanged -= buddy_PropertyChanged;
             buddies.Remove(clientId);
             return buddy;
         }

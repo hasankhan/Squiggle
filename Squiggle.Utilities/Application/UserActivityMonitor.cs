@@ -58,7 +58,7 @@ namespace Squiggle.Utilities.Application
         {
             this.timeout = timeout;
             timer = new Timer(1.Seconds().TotalMilliseconds);
-            timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
+            timer.Elapsed += timer_Elapsed;
         }
 
         void timer_Elapsed(object sender, ElapsedEventArgs e)

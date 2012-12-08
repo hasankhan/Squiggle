@@ -58,8 +58,8 @@ namespace Squiggle.Bridge
         public void Start()
         {
             bridgeHost = new BridgeHost(this, bridgeEndPointExternal, bridgeEndPointInternal);
-            bridgeHost.PresenceMessageForwarded += new EventHandler<PresenceMessageForwardedEventArgs>(bridgeHost_PresenceMessageForwarded);
-            bridgeHost.ChatMessageReceived += new EventHandler<ChatMessageReceivedEventArgs>(bridgeHost_ChatMessageReceived);
+            bridgeHost.PresenceMessageForwarded += bridgeHost_PresenceMessageForwarded;
+            bridgeHost.ChatMessageReceived += bridgeHost_ChatMessageReceived;
             bridgeHost.Start();
 
             routeTable = new RouteTable();
@@ -67,7 +67,7 @@ namespace Squiggle.Bridge
 
             presenceChannel = new PresenceChannel(multicastEndPoint, multicastReceiveEndPoint, presenceServiceEndPoint);
             presenceChannel.Start();
-            presenceChannel.MessageReceived += new EventHandler<Squiggle.Core.Presence.Transport.MessageReceivedEventArgs>(presenceChannel_MessageReceived);
+            presenceChannel.MessageReceived += presenceChannel_MessageReceived;
         }
 
         public void Stop()

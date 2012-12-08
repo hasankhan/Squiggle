@@ -38,7 +38,7 @@ namespace Squiggle.Core.Presence
 
             UnsubscribeChannel();
 
-            channel.MessageReceived += new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
+            channel.MessageReceived += channel_MessageReceived;
 
             var message = Message.FromSender<LoginMessage>(me);
             channel.MulticastMessage(message);
@@ -204,7 +204,7 @@ namespace Squiggle.Core.Presence
 
         void UnsubscribeChannel()
         {
-            channel.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
+            channel.MessageReceived -= channel_MessageReceived;
         }
 
         enum UserInfoState

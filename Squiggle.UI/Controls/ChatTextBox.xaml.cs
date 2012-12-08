@@ -41,8 +41,8 @@ namespace Squiggle.UI.Controls
 
             if (allowEdit)
             {
-                span.MouseEnter += new MouseEventHandler(span_MouseEnter);
-                span.MouseLeave += new MouseEventHandler(span_MouseLeave);
+                span.MouseEnter += span_MouseEnter;
+                span.MouseLeave += span_MouseLeave;
             }
             
             span.Tag = item;

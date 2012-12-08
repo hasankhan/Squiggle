@@ -39,9 +39,9 @@ namespace Squiggle.Core.Presence
         {
             this.timer = new Timer();
             timer.Interval = keepAliveSyncTime.TotalMilliseconds;
-            this.timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
+            this.timer.Elapsed += timer_Elapsed;
             this.timer.Start();
-            channel.MessageReceived += new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
+            channel.MessageReceived += channel_MessageReceived;
         }
 
         void channel_MessageReceived(object sender, MessageReceivedEventArgs e)
@@ -74,7 +74,7 @@ namespace Squiggle.Core.Presence
 
         public void Stop()
         {
-            channel.MessageReceived -= new EventHandler<MessageReceivedEventArgs>(channel_MessageReceived);
+            channel.MessageReceived -= channel_MessageReceived;
 
             lock (aliveUsers)
                 aliveUsers.Clear();
@@ -96,16 +96,20 @@ namespace Squiggle.Core.Presence
             lastKeepAliveMessage = DateTime.UtcNow;
             ImAlive();
 
-            List<IUserInfo> gone = GetInactiveUsers(keepAliveTime => (keepAliveTime + keepAliveTime) + 10.Seconds());
-            gone.ForEach(user =>
+            List<IUserInfo> gone = GetInactiveUsers(keepAlive => TimeToConsiderGone(ref keepAlive));
+            foreach (IUserInfo user in gone)
             {
                 HeIsGone(user);
                 UserLost(this, new KeepAliveEventArgs() { User = new SquiggleEndPoint(user.ID, user.PresenceEndPoint) });
-            });
+            }
 
-            List<IUserInfo> going = GetInactiveUsers(keepAliveTime =>keepAliveTime + 5.Seconds()).Except(gone).ToList();
-            going.ForEach(user => UserLosing(this, new KeepAliveEventArgs() { User = new SquiggleEndPoint(user.ID, user.PresenceEndPoint) }));
-        }        
+            List<IUserInfo> going = GetInactiveUsers(keepAlive => TimeToSuspectToBeGone(ref keepAlive))
+                                    .Except(gone)
+                                    .ToList();
+
+            foreach (IUserInfo user in going)
+                UserLosing(this, new KeepAliveEventArgs() { User = new SquiggleEndPoint(user.ID, user.PresenceEndPoint) });
+        }                        
 
         void OnKeepAliveMessage(KeepAliveMessage message)
         {
@@ -119,7 +123,10 @@ namespace Squiggle.Core.Presence
             if (existingUser)
                 HeIsAlive(user);
             else
-                UserDiscovered(this, new KeepAliveEventArgs() { User = new SquiggleEndPoint(user.ID, user.PresenceEndPoint) });
+                UserDiscovered(this, new KeepAliveEventArgs() 
+                { 
+                    User = new SquiggleEndPoint(user.ID, user.PresenceEndPoint) 
+                });
         }
 
         List<IUserInfo> GetInactiveUsers(Func<TimeSpan, TimeSpan> waitTimeSelector)
@@ -131,7 +138,18 @@ namespace Squiggle.Core.Presence
                 var result = aliveUsers.Where(kv => now.Subtract(kv.Value) > waitTimeSelector(kv.Key.KeepAliveSyncTime)).Select(kv=>kv.Key).ToList();
                 return result; 
             }
-        }        
+        }
+
+        static TimeSpan TimeToSuspectToBeGone(ref TimeSpan keepAliveTime)
+        {
+            return keepAliveTime + 5.Seconds();
+        }
+
+        static TimeSpan TimeToConsiderGone(ref TimeSpan keepAliveTime)
+        {
+            var suspicious = TimeToSuspectToBeGone(ref keepAliveTime);
+            return suspicious + suspicious;
+        }
 
         #region IDisposable Members
 
