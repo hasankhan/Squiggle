@@ -186,7 +186,7 @@
 
     <DirectoryRef Id="DesktopFolder">
       <Component Id="DesktopShortcuts" Guid="2F8E3400-E48B-40DE-B5E5-CFA37FA2E3BA">
-        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" />
+        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Name="installed" Type="integer" Value="1" KeyPath="yes" />
         <Shortcut Id="SquiggleDesktopShortcut" Name="Squiggle" Description="Squiggle" Target="[INSTALLDIR]Squiggle.exe" />
       </Component>
     </DirectoryRef>
@@ -194,7 +194,7 @@
     <DirectoryRef Id="ProgramMenuDir">
       <Component Id="ProgramMenuShortcuts" Guid="0D23F6E1-2FE7-4DB0-93DD-A2CCF2375A52">
         <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
-        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" />
+        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Name="installed" Type="integer" Value="1" KeyPath="yes" />
         <util:InternetShortcut Id="OverrootShortcut" Name="Overroot" Type="url" Target="http://www.overroot.com/" />
         <util:InternetShortcut Id="LetsDonateStuffShortcut" Name="LetsDonateStuff.com" Type="url" Target="http://www.letsdonatestuff.com/" />
         <util:InternetShortcut Id="SupportSquiggleShortcut" Name="Support Squiggle" Type="url"  Target="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=YCRMDETF9ZY8W" />
