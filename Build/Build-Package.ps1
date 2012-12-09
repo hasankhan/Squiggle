@@ -31,9 +31,12 @@ function Package-All()
 function Create-Setup()
 {
     write-host ------------- Creating setup ---------------------------
+    $productName = "Squiggle $shortVersion"
+    Change-Setup-Product-Name "Squiggle" $productName
     Change-Setup-Version "1.0.0.0" $longVersion
     & "$myDir\Build.cmd" "Squiggle.Setup\Squiggle.Setup.wixproj"
     Change-Setup-Version $longVersion "1.0.0.0"
+    Change-Setup-Product-Name $productName "Squiggle"
 }
 
 function Update-Config()
@@ -52,6 +55,11 @@ function Build-Squiggle()
         #last command (msbuild) failed
         exit
     }
+}
+
+function Change-Setup-Product-Name($from, $to)
+{
+    Replace-In-File "$myDir\..\Squiggle.Setup\Product.wxs" "Name=`"$from" "Name=`"$to"
 }
 
 function Change-Setup-Version($from, $to)
