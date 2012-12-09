@@ -1,30 +1,67 @@
 $myDir = Split-Path $script:MyInvocation.MyCommand.Path
 $releasePath = "bin\x86\Release"
-$version = (Select-String $myDir\..\Shared\AssemblyInfo.Version.cs -pattern 'AssemblyVersion[(]"(\d\.\d)').Matches[0].Groups[1].Value
 
-rm *.zip,*.msi
+$version = (Select-String $myDir\..\Shared\AssemblyInfo.Version.cs -pattern 'AssemblyVersion[(]"((\d\.\d)\.\d\.\d)').Matches[0]
+$longVersion = $version.Groups[1].Value
+$shortVersion = $version.Groups[2].Value
 
-write-host ------------- Building Squiggle $version -----------------------
-& "$myDir\Build.cmd" Squiggle.sln
-if (!$?) { 
-    #last command (msbuild) failed
-    exit
+function Main()
+{
+    rm *.zip,*.msi
+
+    Build-Squiggle
+    Update-Config
+    Create-Setup
+    Package-All
+
+    write-host ------------- Done ------------------------------------
 }
 
-write-host ------------- Updating config -------------------------
-$gitHash = git rev-parse HEAD
-$configPath = "$myDir\..\Squiggle.UI\$releasePath\Squiggle.exe.config"
-(get-content $configPath) -replace "GitHash`" value=`"`"", "GitHash`" value=`"$gitHash`"" | set-content $configPath
+function Package-All()
+{
+    write-host ------------- Packaging ---------------------------
+    & "$myDir\Package.cmd" Squiggle.UI\$releasePath Client $shortVersion
+    copy "$myDir\..\Squiggle.Setup\bin\Release\Squiggle.Setup.msi" "$myDir\Squiggle-$shortVersion Client.msi"
 
-write-host ------------- Creating setup ---------------------------
-& "$myDir\Build.cmd" Squiggle.Setup\Squiggle.Setup.wixproj
+    & "$myDir\Package.cmd" Squiggle.Bridge\$releasePath Bridge $shortVersion
+    & "$myDir\Package.cmd" Squiggle.Multicast\$releasePath Multicast $shortVersion
+    & "$myDir\Package.cmd" Scripts Scripts $shortVersion
+}
 
-write-host ------------- Packaging ---------------------------
-& "$myDir\Package.cmd" Squiggle.UI\$releasePath Client $version
-copy "$myDir\..\Squiggle.Setup\bin\Release\Squiggle.Setup.msi" "$myDir\Squiggle-$version Client.msi"
+function Create-Setup()
+{
+    write-host ------------- Creating setup ---------------------------
+    Change-Setup-Version "1.0.0.0" $longVersion
+    & "$myDir\Build.cmd" "Squiggle.Setup\Squiggle.Setup.wixproj"
+    Change-Setup-Version $longVersion "1.0.0.0"
+}
 
-& "$myDir\Package.cmd" Squiggle.Bridge\$releasePath Bridge $version
-& "$myDir\Package.cmd" Squiggle.Multicast\$releasePath Multicast $version
-& "$myDir\Package.cmd" Scripts Scripts $version
+function Update-Config()
+{
+    write-host ------------- Updating config -------------------------
+    $gitHash = git rev-parse HEAD
+    $configPath = "$myDir\..\Squiggle.UI\$releasePath\Squiggle.exe.config"
+    Replace-In-File $configPath "GitHash`" value=`"`"" "GitHash`" value=`"$gitHash`""
+}
 
-write-host ------------- Done ------------------------------------
+function Build-Squiggle()
+{
+    write-host ------------- Building Squiggle $shortVersion -----------------------
+    & "$myDir\Build.cmd" Squiggle.sln
+    if (!$?) { 
+        #last command (msbuild) failed
+        exit
+    }
+}
+
+function Change-Setup-Version($from, $to)
+{
+    Replace-In-File "$myDir\..\Squiggle.Setup\Product.wxs" "Version=`"$from" "Version=`"$to"
+}
+
+function Replace-In-File($filePath, $find, $replace)
+{
+    (get-content $filePath) -replace $find, $replace | set-content $filePath
+}
+
+Main
