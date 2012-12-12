@@ -195,7 +195,7 @@
       <Component Id="ProgramMenuShortcuts" Guid="0D23F6E1-2FE7-4DB0-93DD-A2CCF2375A52">
         <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
         <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Name="installed" Type="integer" Value="1" KeyPath="yes" />
-        <util:InternetShortcut Id="LetsDonateStuffShortcut" Name="LetsDonateStuff.com" Type="url" Target="http://www.letsdonatestuff.com/" />
+        <util:InternetShortcut Id="LetsDonateStuffShortcut" Name="LetsDonateStuff.com" Type="url" Target="http://www.letsdonatestuff.com/?utm_source=squiggle&utm_medium=shortcut&utm_campaign=installer" />
         <util:InternetShortcut Id="SupportSquiggleShortcut" Name="Support Squiggle" Type="url"  Target="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=YCRMDETF9ZY8W" />
         <Shortcut Id="SquiggleProgramMenuShortcut" Name="Squiggle" Description="Squiggle" Target="[INSTALLDIR]Squiggle.exe" />
         <Shortcut Id="UninstallProduct" Name="Uninstall Squiggle" Description="Uninstalls the application" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" />
