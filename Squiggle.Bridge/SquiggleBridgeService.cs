@@ -21,7 +21,7 @@ namespace Squiggle.Bridge
             var config = BridgeConfiguration.GetConfig();
 
             var presenceServiceEndPoint = new IPEndPoint(config.InternalServiceBinding.EndPoint.Address, config.PresenceBinding.ServicePort);
-            var broadcastReceiveEndPoint = new IPEndPoint(config.InternalServiceBinding.EndPoint.Address, config.PresenceBinding.PresenceCallbackPort);
+            var broadcastReceiveEndPoint = new IPEndPoint(config.InternalServiceBinding.EndPoint.Address, config.PresenceBinding.CallbackPort);
 
             DumpConfig(config, presenceServiceEndPoint);
 

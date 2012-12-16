@@ -27,10 +27,10 @@ namespace Squiggle.Bridge.Configuration
             get { return Convert.ToInt32(this["ServicePort"]); }
         }
 
-        [ConfigurationProperty("PresenceCallbackPort", IsRequired = true)]
-        public int PresenceCallbackPort
+        [ConfigurationProperty("CallbackPort", IsRequired = true)]
+        public int CallbackPort
         {
-            get { return Convert.ToInt32(this["PresenceCallbackPort"]); }
+            get { return Convert.ToInt32(this["CallbackPort"]); }
         }
 
         public IPEndPoint MulticastEndPoint

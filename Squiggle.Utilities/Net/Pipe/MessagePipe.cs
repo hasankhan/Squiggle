@@ -85,7 +85,8 @@ namespace Squiggle.Utilities.Net.Pipe
                 catch { }
             }            
 
-            listener.Dispose();
+            if (listener != null)
+                listener.Dispose();
             context.Dispose();
         }
 
