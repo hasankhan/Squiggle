@@ -21,14 +21,14 @@ namespace Squiggle.Bridge
             var config = BridgeConfiguration.GetConfig();
 
             var presenceServiceEndPoint = new IPEndPoint(config.InternalServiceBinding.EndPoint.Address, config.PresenceBinding.ServicePort);
-            var broadcastReceiveEndPoint = new IPEndPoint(config.InternalServiceBinding.EndPoint.Address, config.PresenceBinding.CallbackPort);
+            var multicastReceiveEndPoint = new IPEndPoint(config.InternalServiceBinding.EndPoint.Address, config.PresenceBinding.CallbackPort);
 
             DumpConfig(config, presenceServiceEndPoint);
 
             bridge = new SquiggleBridge(config.InternalServiceBinding.EndPoint,
                                         config.ExternalServiceBinding.EndPoint,
                                         config.PresenceBinding.MulticastEndPoint,
-                                        broadcastReceiveEndPoint,
+                                        multicastReceiveEndPoint,
                                         presenceServiceEndPoint);
 
             foreach (Target target in config.Targets)
@@ -37,14 +37,14 @@ namespace Squiggle.Bridge
             bridge.Start();
         }
 
-        static void DumpConfig(BridgeConfiguration config, IPEndPoint channelServiceEndPoint)
+        static void DumpConfig(BridgeConfiguration config, IPEndPoint presenceServiceEndPoint)
         {
             Trace.WriteLine(":: Settings ::");
             Trace.WriteLine("");
-            Trace.WriteLine("Internal bridge endpoint: " + config.InternalServiceBinding.EndPoint);
-            Trace.WriteLine("External bridge endpoint: " + config.ExternalServiceBinding.EndPoint);
+            Trace.WriteLine("Bridge endpoint (Internal): " + config.InternalServiceBinding.EndPoint);
+            Trace.WriteLine("Bridge endpoint (External): " + config.ExternalServiceBinding.EndPoint);
             Trace.WriteLine("Presence multicast endpoint: " + config.PresenceBinding.MulticastEndPoint);
-            Trace.WriteLine("Presence endpoint: " + channelServiceEndPoint);
+            Trace.WriteLine("Presence endpoint: " + presenceServiceEndPoint);
             Trace.WriteLine("");
             Trace.WriteLine(":: Target bridges ::");
             Trace.WriteLine("");

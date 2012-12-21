@@ -43,7 +43,7 @@ namespace Squiggle.UI.Factories
 
             var chatEndPoint = NetworkUtility.GetFreeEndPoint(new IPEndPoint(localIP, chatPort));
             var presenceServiceEndPoint = NetworkUtility.GetFreeEndPoint(new IPEndPoint(localIP, settings.ConnectionSettings.PresencePort));
-            var multicastEndPoint = new IPEndPoint(presenceAddress, settings.ConnectionSettings.PresenceCallbackPort);
+            var multicastEndPoint = new IPEndPoint(presenceAddress, settings.ConnectionSettings.PresencePort);
             var multicastReceiveEndPoint = NetworkUtility.GetFreeEndPoint(new IPEndPoint(localIP, settings.ConnectionSettings.PresenceCallbackPort));
 
             string clientID = settings.ConnectionSettings.ClientID;

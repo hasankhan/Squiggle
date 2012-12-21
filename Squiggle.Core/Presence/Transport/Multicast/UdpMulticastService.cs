@@ -20,7 +20,7 @@ namespace Squiggle.Core.Presence.Transport.Multicast
 
         public UdpMulticastService(IPEndPoint bindToIP, IPEndPoint multicastEndPoint)
         {
-            this.bindToIP = bindToIP;
+            this.bindToIP = new IPEndPoint(bindToIP.Address, multicastEndPoint.Port); // we're only interested in ip. multicast port bind has to be same as target
             this.multicastEndPoint = multicastEndPoint;
         }
 

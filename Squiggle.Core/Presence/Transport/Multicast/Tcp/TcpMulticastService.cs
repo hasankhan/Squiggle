@@ -14,31 +14,31 @@ namespace Squiggle.Core.Presence.Transport.Multicast.Tcp
 {
     class TcpMulticastService: IMulticastService
     {
-        IPEndPoint endpoint;
-        IPEndPoint server;
+        IPEndPoint localEndpoint;
+        IPEndPoint serverEndpoint;
         MulticastHost mcastHost;
 
         public event EventHandler<Squiggle.Core.Presence.Transport.MessageReceivedEventArgs> MessageReceived = delegate { };
 
-        public TcpMulticastService(IPEndPoint endpoint, IPEndPoint server)
+        public TcpMulticastService(IPEndPoint localEndpoint, IPEndPoint server)
         {
-            this.endpoint = endpoint;
-            this.server = server;
+            this.localEndpoint = localEndpoint;
+            this.serverEndpoint = server;
         }
 
         public void SendMessage(Squiggle.Core.Presence.Transport.Message message)
         {
-            var msg = new MulticastMessage() { Sender = endpoint, Data = SerializationHelper.Serialize(message) };
+            var msg = new MulticastMessage() { Sender = localEndpoint, Data = SerializationHelper.Serialize(message) };
             if (mcastHost != null)
-                mcastHost.Send(server, msg);
+                mcastHost.Send(serverEndpoint, msg);
         }
 
         public void Start()
         {
-            mcastHost = new MulticastHost(endpoint);
+            mcastHost = new MulticastHost(localEndpoint);
             mcastHost.MessageReceived += mcastHost_MessageReceived;
             mcastHost.Start();
-            mcastHost.Send(server, new RegisterMessage() { Sender = endpoint });
+            mcastHost.Send(serverEndpoint, new RegisterMessage() { Sender = localEndpoint });
         }
 
         void mcastHost_MessageReceived(object sender, Tcp.MessageReceivedEventArgs e)
@@ -57,7 +57,7 @@ namespace Squiggle.Core.Presence.Transport.Multicast.Tcp
         {
             if (mcastHost != null)
             {
-                mcastHost.Send(server, new UnregisterMessage() { Sender = endpoint });
+                mcastHost.Send(serverEndpoint, new UnregisterMessage() { Sender = localEndpoint });
                 mcastHost.Dispose();
                 mcastHost = null;
             }
