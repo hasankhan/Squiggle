@@ -43,7 +43,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{40B7134A
 	ProjectSection(SolutionItems) = preProject
 		Build\Build-Package.ps1 = Build\Build-Package.ps1
 		Build\Build.cmd = Build\Build.cmd
-		Build\Package.ps1 = Build\Package.ps1
 	EndProjectSection
 EndProject
 Global

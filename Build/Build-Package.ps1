@@ -9,28 +9,41 @@ function Main()
 {
     rm *.zip,*.msi
 
+    Write-Host ------------- Building Squiggle $shortVersion -----------------------
     Build-Squiggle
+    
+	Write-Host ------------- Updating config -------------------------
     Update-Config
+    
+	Write-Host ------------- Creating setup ---------------------------
     Create-Setup
+    
+	Write-Host ------------- Packaging ---------------------------
     Package-All
 
-    write-host ------------- Done ------------------------------------
+    Write-Host ------------- Done ------------------------------------
 }
 
 function Package-All()
 {
-    write-host ------------- Packaging ---------------------------
-    & "$scriptDir\Package.ps1" Squiggle.UI\$releasePath Client $shortVersion
+    Package Squiggle.UI\$releasePath Client $shortVersion
     copy "$scriptDir\..\Squiggle.Setup\bin\Release\Squiggle.Setup.msi" "$scriptDir\Squiggle-$shortVersion Client.msi"
 
-    & "$scriptDir\Package.ps1" Squiggle.Bridge\$releasePath Bridge $shortVersion
-    & "$scriptDir\Package.ps1" Squiggle.Multicast\$releasePath Multicast $shortVersion
-    & "$scriptDir\Package.ps1" Scripts Scripts $shortVersion
+    Package Squiggle.Bridge\$releasePath Bridge $shortVersion
+    Package Squiggle.Multicast\$releasePath Multicast $shortVersion
+    Package Scripts Scripts $shortVersion
+}
+
+function Package()
+{
+    del ("$scriptDir\..\{0}\*.pdb" -f $args[0])
+    $target = ("{0}\Squiggle-{1} {2}.zip" -f $scriptDir, $args[2], $args[1])
+    $source = ("{0}\..\{1}\*.*" -f $scriptDir, $args[0])
+    & "${Env:ProgramFiles}\7-Zip\7z" a -r -tzip $target $source
 }
 
 function Create-Setup()
 {
-    write-host ------------- Creating setup ---------------------------
     $productName = "Squiggle $shortVersion"
     Change-Setup-Product-Name "Squiggle" $productName
     Change-Setup-Version "1.0.0.0" $longVersion
@@ -41,7 +54,6 @@ function Create-Setup()
 
 function Update-Config()
 {
-    write-host ------------- Updating config -------------------------
     $gitHash = git rev-parse HEAD
     $configPath = "$scriptDir\..\Squiggle.UI\$releasePath\Squiggle.exe.config"
     Replace-In-File $configPath "GitHash`" value=`"`"" "GitHash`" value=`"$gitHash`""
@@ -49,7 +61,6 @@ function Update-Config()
 
 function Build-Squiggle()
 {
-    write-host ------------- Building Squiggle $shortVersion -----------------------
     & "$scriptDir\Build.cmd" Squiggle.sln
     if (!$?) { 
         #last command (msbuild) failed
