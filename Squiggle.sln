@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.UI", "Squiggle.UI\Squiggle.UI.csproj", "{F45A0E9A-5F9C-404E-BF72-4DDB8A5380E2}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D469D96B-8840-4645-B74C-A2B6F1ED78DB} = {D469D96B-8840-4645-B74C-A2B6F1ED78DB}
@@ -43,7 +43,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{40B7134A
 	ProjectSection(SolutionItems) = preProject
 		Build\Build-Package.ps1 = Build\Build-Package.ps1
 		Build\Build.cmd = Build\Build.cmd
-		Build\Package.cmd = Build\Package.cmd
+		Build\Package.ps1 = Build\Package.ps1
 	EndProjectSection
 EndProject
 Global
