@@ -1,1 +1,0 @@
-"%WINDIR%\Microsoft.NET\Framework\v4.0.30319\msbuild" "%~dp0\..\%1" /p:Configuration=Release /t:Clean,Build /v:M /fl /nr:false

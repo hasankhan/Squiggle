@@ -39,7 +39,7 @@ function Package()
     del ("$scriptDir\..\{0}\*.pdb" -f $args[0])
     $target = ("{0}\Squiggle-{1} {2}.zip" -f $scriptDir, $args[2], $args[1])
     $source = ("{0}\..\{1}\*.*" -f $scriptDir, $args[0])
-    & "${Env:ProgramFiles}\7-Zip\7z" a -r -tzip $target $source
+    Create-Archive $target $source
 }
 
 function Create-Setup()
@@ -47,7 +47,7 @@ function Create-Setup()
     $productName = "Squiggle $shortVersion"
     Change-Setup-Product-Name "Squiggle" $productName
     Change-Setup-Version "1.0.0.0" $longVersion
-    & "$scriptDir\Build.cmd" "Squiggle.Setup\Squiggle.Setup.wixproj"
+    Build "Squiggle.Setup\Squiggle.Setup.wixproj"
     Change-Setup-Version $longVersion "1.0.0.0"
     Change-Setup-Product-Name $productName "Squiggle"
 }
@@ -61,11 +61,7 @@ function Update-Config()
 
 function Build-Squiggle()
 {
-    & "$scriptDir\Build.cmd" Squiggle.sln
-    if (!$?) { 
-        #last command (msbuild) failed
-        exit
-    }
+    Build Squiggle.sln    
 }
 
 function Change-Setup-Product-Name($from, $to)
@@ -81,6 +77,20 @@ function Change-Setup-Version($from, $to)
 function Replace-In-File($filePath, $find, $replace)
 {
     (get-content $filePath) -replace $find, $replace | set-content $filePath
+}
+
+function Create-Archive($target, $source)
+{
+	& "${Env:ProgramFiles}\7-Zip\7z" a -r -tzip $target $source
+}
+
+function Build($file)
+{
+	& "${Env:WINDIR}\Microsoft.NET\Framework\v4.0.30319\msbuild" "$scriptDir\..\$file" "/p:Configuration=Release" "/t:Clean,Build" "/v:M" "/fl" "/nr:false"
+    if (!$?) { 
+        #last command (msbuild) failed
+        exit
+    }
 }
 
 Main
