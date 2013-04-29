@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Squiggle.History;
 using Squiggle.History.DAL;
+using Squiggle.Plugins;
 using Squiggle.UI.Resources;
 using Squiggle.UI.StickyWindow;
 using Squiggle.Utilities;
@@ -27,6 +28,11 @@ namespace Squiggle.UI.Windows
         public HistoryViewer()
         {
             InitializeComponent();
+        }
+
+        public HistoryViewer(ISquiggleContext context): this()
+        {
+            chatHistory.SquiggleContext = context;
         }
 
         private void StickyWindow_KeyDown(object sender, KeyEventArgs e)

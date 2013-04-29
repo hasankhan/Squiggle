@@ -15,20 +15,20 @@ using Squiggle.Core.Presence;
 
 namespace Squiggle.UI.Factories
 {
-    class ChatClientOptionsFactory: IInstanceFactory<ChatClientOptions>
+    class LoginOptionsFactory: IInstanceFactory<LoginOptions>
     {
         SquiggleSettings settings;
         UserDetails userInfo;
         SignInOptions signInOptions;
 
-        public ChatClientOptionsFactory(SquiggleSettings settings, UserDetails userInfo, SignInOptions signInOptions)
+        public LoginOptionsFactory(SquiggleSettings settings, UserDetails userInfo, SignInOptions signInOptions)
         {
             this.settings = settings;
             this.userInfo = userInfo;
             this.signInOptions = signInOptions;
         }
 
-        public ChatClientOptions CreateInstance()
+        public LoginOptions CreateInstance()
         {
             int chatPort = settings.ConnectionSettings.ChatPort;
             if (String.IsNullOrEmpty(settings.ConnectionSettings.BindToIP))
@@ -48,9 +48,9 @@ namespace Squiggle.UI.Factories
 
             string clientID = settings.ConnectionSettings.ClientID;
 
-            var options = new ChatClientOptions()
+            var options = new LoginOptions()
             {
-                ChatEndPoint = new SquiggleEndPoint(clientID, chatEndPoint),
+                ChatEndPoint = chatEndPoint,
                 MulticastEndPoint = multicastEndPoint,
                 MulticastReceiveEndPoint = multicastReceiveEndPoint,
                 PresenceServiceEndPoint = presenceServiceEndPoint,

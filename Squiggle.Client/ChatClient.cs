@@ -47,10 +47,10 @@ namespace Squiggle.Client
 
         public bool EnableLogging { get; set; }
 
-        public ChatClient()
+        public ChatClient(string clientId)
         {
             buddies = new BuddyList();
-            CurrentUser = new SelfBuddy(this, String.Empty, String.Empty, UserStatus.Offline, new BuddyProperties());
+            CurrentUser = new SelfBuddy(this, clientId, String.Empty, UserStatus.Offline, new BuddyProperties());
         }        
 
         public IChat StartChat(IBuddy buddy)
@@ -63,11 +63,11 @@ namespace Squiggle.Client
             return chat;
         }        
 
-        public void Login(ChatClientOptions options)
+        public void Login(LoginOptions options)
         {
             string username = options.DisplayName.Trim();
 
-            this.chatEndPoint = (SquiggleEndPoint)options.ChatEndPoint;
+            this.chatEndPoint = new SquiggleEndPoint(CurrentUser.Id, options.ChatEndPoint);
             StartChatService();
 
             // Some of the users may have gone offline. Lets try to re-discover all the buddies.
@@ -76,7 +76,7 @@ namespace Squiggle.Client
 
             var presenceOptions = new PresenceServiceOptions()
             {
-                ChatEndPoint = (SquiggleEndPoint)options.ChatEndPoint,
+                ChatEndPoint = chatEndPoint,
                 MulticastEndPoint = options.MulticastEndPoint,
                 MulticastReceiveEndPoint = options.MulticastReceiveEndPoint,
                 PresenceServiceEndPoint = options.PresenceServiceEndPoint,
@@ -85,7 +85,7 @@ namespace Squiggle.Client
             StartPresenceService(username, options.UserProperties, presenceOptions);
 
             var self = (SelfBuddy)CurrentUser;
-            self.Update(chatEndPoint.ClientID, UserStatus.Online, options.DisplayName, chatEndPoint.Address, options.UserProperties.ToDictionary());
+            self.Update(UserStatus.Online, options.DisplayName, chatEndPoint.Address, options.UserProperties.ToDictionary());
             self.EnableUpdates = true;
             LogStatus(CurrentUser);
 
@@ -255,12 +255,6 @@ namespace Squiggle.Client
                     base.Status = value;
                     Update();
                 }
-            }
-
-            internal void Update(string id, UserStatus status, string displayName, IPEndPoint chatEndPoint, IDictionary<string, string> properties)
-            {
-                this.Id = id;
-                base.Update(status, displayName, chatEndPoint, properties);
             }
 
             protected override void OnBuddyPropertiesChanged()

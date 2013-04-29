@@ -8,9 +8,9 @@ using Squiggle.Core.Presence;
 
 namespace Squiggle.Client
 {
-    public class ChatClientOptions
+    public class LoginOptions
     {
-        public ISquiggleEndPoint ChatEndPoint {get; set;}
+        public IPEndPoint ChatEndPoint {get; set;}
         public IPEndPoint MulticastEndPoint {get; set; }
         public IPEndPoint MulticastReceiveEndPoint { get; set; }
         public IPEndPoint PresenceServiceEndPoint { get; set; }

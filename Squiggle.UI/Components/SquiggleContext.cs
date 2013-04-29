@@ -21,6 +21,6 @@ namespace Squiggle.UI.Components
             get { return ActiveVoiceChat != null; }
         }
 
-        public static SquiggleContext Current = new SquiggleContext();
+        public static SquiggleContext Current { get; set; }
     }
 }

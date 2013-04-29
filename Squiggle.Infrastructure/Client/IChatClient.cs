@@ -4,22 +4,7 @@ using System.Linq;
 using Squiggle.Core.Presence;
 
 namespace Squiggle.Client
-{
-    public class ChatStartedEventArgs : EventArgs
-    {
-        public IBuddy Buddy
-        {
-            get { return Buddies.FirstOrDefault(); }
-        }
-        public IEnumerable<IBuddy> Buddies { get; set; }
-        public IChat Chat { get; set; }
-    }
-
-    public class BuddyOnlineEventArgs : BuddyEventArgs
-    {
-        public bool Discovered { get; set; }
-    }
-
+{    
     public interface IChatClient: IDisposable
     {
         event EventHandler<ChatStartedEventArgs> ChatStarted;
@@ -35,7 +20,7 @@ namespace Squiggle.Client
         bool EnableLogging { get; set; }
 
         IChat StartChat(IBuddy buddy);
-        void Login(ChatClientOptions options);
+        void Login(LoginOptions options);
         void Logout();
     }
 }

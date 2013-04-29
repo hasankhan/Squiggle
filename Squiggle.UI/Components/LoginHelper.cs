@@ -36,8 +36,8 @@ namespace Squiggle.UI.Components
             if (result.Status == AuthenticationStatus.ServiceUnavailable)
                 throw new AuthenticationException(result.Status, Translation.Instance.Authentication_ServiceUnavailable);
 
-            var optionsFactory = new ChatClientOptionsFactory(settings, result.UserDetails, signInOptions);
-            ChatClientOptions clientOptions = optionsFactory.CreateInstance();
+            var optionsFactory = new LoginOptionsFactory(settings, result.UserDetails, signInOptions);
+            LoginOptions clientOptions = optionsFactory.CreateInstance();
 
             client.Login(clientOptions);
         }

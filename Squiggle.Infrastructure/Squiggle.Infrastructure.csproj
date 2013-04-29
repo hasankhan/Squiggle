@@ -59,7 +59,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client\ChatClientOptions.cs" />
+    <Compile Include="Client\BuddyOnlineEventArgs.cs" />
+    <Compile Include="Client\ChatStartedEventArgs.cs" />
+    <Compile Include="Client\LoginOptions.cs" />
     <Compile Include="Client\ClientExtensions.cs" />
     <Compile Include="Client\ISelfBuddy.cs" />
     <Compile Include="Core\Chat\Activity\ActivityHandler.cs" />

@@ -51,17 +51,18 @@ namespace Squiggle.UI.Windows
 
             LoadPosition();
 
-            SetupContext();
+            var settingsProvider = SettingsProvider.Current;
+            SquiggleSettings settings = settingsProvider.Settings;
+            settings.ContactSettings.ContactGroups.FlushItems();
+            settingsProvider.Save();
+
+            context = new SquiggleContextFactory(new PluginLoaderFactory(), this, settings.ConnectionSettings.ClientID).CreateInstance();
             context.PluginLoader.LoadAll(context);
 
             SetupControls();
 
             TrayPopup.Instance.Enabled = SettingsProvider.Current.Settings.GeneralSettings.ShowPopups;
             AudioAlert.Instance.Enabled = SettingsProvider.Current.Settings.GeneralSettings.AudioAlerts;
-
-            var settings = SettingsProvider.Current.Settings;
-            settings.ContactSettings.ContactGroups.FlushItems();
-            SettingsProvider.Current.Save();
 
             chatControl.SignIn.LoadSettings(settings);
 
@@ -149,7 +150,7 @@ namespace Squiggle.UI.Windows
 
         private void HistoryViewerMenu_Click(object sender, RoutedEventArgs e)
         {
-            var viewer = new HistoryViewer();
+            var viewer = new HistoryViewer(context);
             viewer.Owner = this;
             viewer.Show();
         }
@@ -548,15 +549,6 @@ namespace Squiggle.UI.Windows
             window.Show(initiatedByUser);
 
             return window;
-        }
-
-        void SetupContext()
-        {
-            var pluginLoader = new PluginLoaderFactory().CreateInstance();
-            context = SquiggleContext.Current;
-            context.MainWindow = this;
-            context.PluginLoader = pluginLoader;
-            context.ChatClient = new ChatClient();
         }
 
         void SetupControls()

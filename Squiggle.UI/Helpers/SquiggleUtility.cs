@@ -70,7 +70,7 @@ namespace Squiggle.UI.Helpers
             ISelfBuddy buddy = null;
             if (chatControl.ContactList.ChatContext.Coalesce(context=>context.IsLoggedIn))
                 buddy = chatControl.ContactList.ChatContext.LoggedInUser;
-            var settings = new SettingsWindow(buddy);
+            var settings = new SettingsWindow(SquiggleContext.Current);
             settings.Owner = owner;
             if (settings.ShowDialog().GetValueOrDefault())
                 chatControl.SignIn.LoadSettings(SettingsProvider.Current.Settings);

@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Squiggle.History;
 using Squiggle.History.DAL;
+using Squiggle.Plugins;
 using Squiggle.UI.Helpers;
 using Squiggle.UI.Resources;
 using Squiggle.UI.Windows;
@@ -25,6 +26,8 @@ namespace Squiggle.UI.Controls
         {
             InitializeComponent();
         }
+
+        public ISquiggleContext SquiggleContext { private get; set; }
 
         void Search_Click(object sender, RoutedEventArgs e)
         {
@@ -63,6 +66,7 @@ namespace Squiggle.UI.Controls
                 From = from,
                 To = to,
                 Text = message.Length == 0 ? null : message,
+                Participant = new Guid(SquiggleContext.ChatClient.CurrentUser.Id)
             }).Select(session => new Result()
             {
                 Id = session.Id,

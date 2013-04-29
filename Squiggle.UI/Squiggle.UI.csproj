@@ -122,7 +122,8 @@
     <Compile Include="Controls\ChatItems\Activity\GenericActivityControl.xaml.cs">
       <DependentUpon>GenericActivityControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Factories\ChatClientOptionsFactory.cs" />
+    <Compile Include="Factories\LoginOptionsFactory.cs" />
+    <Compile Include="Factories\SquiggleContextFactory.cs" />
     <Compile Include="Helpers\ActivityHelper.cs" />
     <Compile Include="MessageFilters\Commands\IChatCommand.cs" />
     <Compile Include="MessageFilters\Commands\InviteCommand.cs" />
