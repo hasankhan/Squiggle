@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Squiggle.History;
+using Squiggle.History.DAL.Entities;
 using Squiggle.UI.StickyWindow;
 
 namespace Squiggle.UI.Windows
@@ -31,8 +32,8 @@ namespace Squiggle.UI.Windows
         {
             this.SessionId = sessionId;
             var historyManager = new HistoryManager();
-            var session = historyManager.GetSession(sessionId);
-            messages.ItemsSource = session.Events;
+            Session session = historyManager.GetSession(sessionId);
+            messages.ItemsSource = session.Events.OrderBy(e=>e.Stamp).ToList();
         }
 
         private void StickyWindow_KeyDown(object sender, KeyEventArgs e)
