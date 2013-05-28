@@ -140,7 +140,7 @@ namespace Squiggle.UI.Controls
             viewModel.AskDisplayName = !authProvider.ReturnsDisplayName;
             viewModel.AskGroupName = !authProvider.ReturnsDisplayName;
 
-            viewModel.AskDomain = authProvider.ReturnsDisplayName;
+            viewModel.AskDomain = authProvider.RequiresDomain;
             viewModel.AskPassword = authProvider.RequiresPassword;
             viewModel.AskUsername = authProvider.RequiresUsername;
         }
