@@ -1,7 +1,8 @@
 ﻿<UserControl x:Class="Squiggle.UI.Controls.SignInControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:controls="clr-namespace:Squiggle.UI.Controls"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Loaded="UserControl_Loaded">
+     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:converters="clr-namespace:Squiggle.UI.Converters"
+             Loaded="UserControl_Loaded">
     <UserControl.Resources>
         <LinearGradientBrush x:Key="SignedOffBackground1" EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FF3DB3EA" Offset="0.012"/>
@@ -23,6 +24,7 @@
             <GradientStop Color="#FFF0F0F0" Offset="0.983"/>
         </LinearGradientBrush>
         <BooleanToVisibilityConverter x:Key="visibilityConverter" />
+        <converters:SingleSignOnToVisibilityConverter x:Key="SSOvisibilityConverter" />
     </UserControl.Resources>
     <Grid Background="{StaticResource SignedOffBackground}">        
         <Grid>
@@ -34,7 +36,10 @@
             <StackPanel Grid.Row="1" Orientation="Vertical">
                 <TextBlock Text="{DynamicResource MainWindow_SignIn_SignIn}"  FontSize="18" Foreground="#FF355A88" HorizontalAlignment="Center"/>
                 <Border CornerRadius="5" BorderBrush="#FFD8E8F0" BorderThickness="1" Margin="20,5,20,5">
-                    <StackPanel>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Height="317">
+                        <StackPanel Visibility="{Binding SingleSignOn, Converter={StaticResource visibilityConverter}}">
+                            <TextBlock Text="Using Single Sign On" HorizontalAlignment="Center" ></TextBlock>
+                        </StackPanel>
                         <StackPanel Visibility="{Binding AskDisplayName, Converter={StaticResource visibilityConverter}}">
                             <TextBlock Text="{DynamicResource MainWindow_SignIn_DisplayName}" TextWrapping="Wrap" />
                             <TextBox x:Name="txtDisplayName" Margin="5,10,5,0" Text="{Binding DisplayName, UpdateSourceTrigger=PropertyChanged}" MaxLength="50" BorderBrush="{x:Null}" />
@@ -58,8 +63,8 @@
                                   PreviewKeyDown="txtGroupName_PreviewKeyDown" DisplayMemberPath="GroupName" 
                                   SelectedValuePath="GroupName" />
                         </StackPanel>
-                        <CheckBox IsChecked="{Binding RememberMe}" Margin="5,10,0,0" Content="{DynamicResource MainWindow_SignIn_RememberMe}" HorizontalAlignment="Left"/>
-                        <CheckBox IsChecked="{Binding AutoSignIn}" Margin="5,10,0,5" Content="{DynamicResource MainWindow_SignIn_AutoSignIn}" HorizontalAlignment="Left"/>
+                        <CheckBox IsChecked="{Binding RememberMe}" Margin="5,10,0,0" Content="{DynamicResource MainWindow_SignIn_RememberMe}" HorizontalAlignment="Left" Visibility="{Binding SingleSignOn, Converter={StaticResource SSOvisibilityConverter}}"/>
+                        <CheckBox IsChecked="{Binding AutoSignIn}" Margin="5,10,0,5" Content="{DynamicResource MainWindow_SignIn_AutoSignIn}" HorizontalAlignment="Left" Visibility="{Binding SingleSignOn, Converter={StaticResource SSOvisibilityConverter}}"/>
                     </StackPanel>
                 </Border>
                 <Button HorizontalAlignment="Center" IsDefault="True" Width="60" Height="25" Content="{DynamicResource MainWindow_SignIn_SignInButton}" Click="SignIn"
