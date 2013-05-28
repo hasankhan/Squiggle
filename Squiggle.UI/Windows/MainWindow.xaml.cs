@@ -79,7 +79,13 @@ namespace Squiggle.UI.Windows
            
             autoSignout = new NetworkSignout(this.Dispatcher, options => SignIn(options, byUser: false), () => SignOut(byUser: false));
 
-            if (settings.PersonalSettings.RememberMe && settings.PersonalSettings.AutoSignMeIn)
+            var signInViewModel = (SignInViewModel)chatControl.SignIn.DataContext;
+
+            if (signInViewModel.SingleSignOn)
+            {
+                SignIn(new SignInOptions(), false);
+            }
+            else if (settings.PersonalSettings.RememberMe && settings.PersonalSettings.AutoSignMeIn)
             {
                 var signInOptions = new SignInOptions()
                 {
