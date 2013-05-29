@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.VisualBasic.ApplicationServices;
@@ -15,6 +16,19 @@ namespace Squiggle.UI
         public static void Main(string[] args)
         {
             SingleInstanceManager manager = new SingleInstanceManager();
+
+            // This code allows that MEF components define their own configuration sections.
+            // Apparently, MEF does not load the assemblies in a way that the AppDomain 
+            // likes and it does not registers the load, ... or something.
+            // This event is fired whenever some code asks for an assembly that is not in
+            // AppDomain's knowledge.
+            // more info at http://stackoverflow.com/questions/4845801/custom-configuration-sections-in-mef-exporting-assemblies
+            // and at http://msdn.microsoft.com/en-us/library/system.appdomain.assemblyresolve.aspx
+            AppDomain.CurrentDomain.AssemblyResolve += (o, a) =>
+            {
+                var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+                return loadedAssemblies.FirstOrDefault(asm => asm.FullName == a.Name);
+            };
 
             manager.Run(args);
         }
