@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
-using System.Windows.Threading;
 using Squiggle.Client;
 using Squiggle.Core.Presence;
 using Squiggle.UI.Components;
@@ -19,9 +18,6 @@ using Squiggle.UI.ViewModel;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Threading;
 using Squiggle.Plugins;
-using System.Net;
-using Squiggle.Plugins.Authentication;
-using Squiggle.UI.Components.Authentication;
 
 namespace Squiggle.UI.Windows
 {
@@ -79,13 +75,9 @@ namespace Squiggle.UI.Windows
            
             autoSignout = new NetworkSignout(this.Dispatcher, options => SignIn(options, byUser: false), () => SignOut(byUser: false));
 
-            var signInViewModel = (SignInViewModel)chatControl.SignIn.DataContext;
 
-            if (signInViewModel.SingleSignOn)
-            {
-                SignIn(new SignInOptions(), false);
-            }
-            else if (settings.PersonalSettings.RememberMe && settings.PersonalSettings.AutoSignMeIn)
+            var singleSignOn = chatControl.SignIn.lblSingleSignOn.Visibility == Visibility.Visible;
+            if (singleSignOn || (settings.PersonalSettings.RememberMe && settings.PersonalSettings.AutoSignMeIn))
             {
                 var signInOptions = new SignInOptions()
                 {
