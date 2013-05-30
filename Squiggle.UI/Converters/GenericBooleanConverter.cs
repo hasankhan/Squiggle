@@ -5,7 +5,7 @@ using System.Windows.Data;
 
 namespace Squiggle.UI.Converters
 {
-    public class GenericBooleanConverter<T> : IValueConverter
+    public abstract class GenericBooleanConverter<T> : IValueConverter
     {
         public GenericBooleanConverter(T trueValue, T falseValue)
         {

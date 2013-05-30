@@ -177,7 +177,7 @@ namespace Squiggle.UI.Controls
             set
             {
                 Set(() => AskUsername, ref _askUsername, value);
-                RefreshSingleSignOn();
+                OnPropertyChanged("SingleSignOn");
             }
         }
 
@@ -195,7 +195,7 @@ namespace Squiggle.UI.Controls
             set
             {
                 Set(() => AskPassword, ref _askPassword, value);
-                RefreshSingleSignOn();
+                OnPropertyChanged("SingleSignOn");
             }
         }
 
@@ -206,7 +206,7 @@ namespace Squiggle.UI.Controls
             set
             {
                 Set(() => AskDisplayName, ref _askDisplayName, value);
-                RefreshSingleSignOn();
+                OnPropertyChanged("SingleSignOn");
             }
         }
 
@@ -224,7 +224,7 @@ namespace Squiggle.UI.Controls
             set
             {
                 Set(() => AskDomain, ref _askDomain, value);
-                RefreshSingleSignOn();
+                OnPropertyChanged("SingleSignOn");
             }
         }
 
@@ -242,7 +242,7 @@ namespace Squiggle.UI.Controls
             set
             {
                 Set(() => AskGroupName, ref _askGroupName, value);
-                RefreshSingleSignOn();
+                OnPropertyChanged("SingleSignOn");
             }
         }
 
@@ -253,13 +253,8 @@ namespace Squiggle.UI.Controls
             set
             {
                 Set(() => GroupName, ref _groupName, Trim(value));
-                RefreshSingleSignOn();
+                OnPropertyChanged("SingleSignOn");
             }
-        }
-        private void RefreshSingleSignOn()
-        {
-            var sso = SingleSignOn;
-            Set(() => SingleSignOn, ref sso, sso);
         }
 
         public bool SingleSignOn
@@ -275,15 +270,13 @@ namespace Squiggle.UI.Controls
             }
             set
             {
-                var _notUsed = false;
-
                 AskDisplayName = false;
                 AskUsername = false;
                 AskDomain = false;
                 AskGroupName = false;
                 AskPassword = false;
 
-                Set(() => SingleSignOn, ref _notUsed, value);
+                OnPropertyChanged("SingleSignOn");
             }
         }
         string Trim(string value)
