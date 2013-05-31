@@ -122,6 +122,8 @@
     <Compile Include="Controls\ChatItems\Activity\GenericActivityControl.xaml.cs">
       <DependentUpon>GenericActivityControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\GenericBooleanConverter.cs" />
+    <Compile Include="Converters\SingleSignOnToVisibilityConverter.cs" />
     <Compile Include="Factories\LoginOptionsFactory.cs" />
     <Compile Include="Factories\SquiggleContextFactory.cs" />
     <Compile Include="Helpers\ActivityHelper.cs" />

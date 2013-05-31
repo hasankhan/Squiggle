@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Squiggle.UI.Settings;
 using Squiggle.UI.ViewModel;
 
 namespace Squiggle.UI.Controls
-{   
+{
     /// <summary>
     /// Interaction logic for SignInControl.xaml
     /// </summary>
@@ -18,14 +17,14 @@ namespace Squiggle.UI.Controls
         public string GroupName
         {
             get { return viewModel.GroupName; }
-            set { viewModel.GroupName = value;  }
+            set { viewModel.GroupName = value; }
         }
 
         public string DisplayName
         {
             get { return viewModel.DisplayName; }
-            set 
-            { 
+            set
+            {
                 viewModel.DisplayName = value;
                 txtDisplayName.SelectAll();
             }
@@ -111,7 +110,7 @@ namespace Squiggle.UI.Controls
 
         private void txtGroupName_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Delete && 
+            if (e.Key == System.Windows.Input.Key.Delete &&
                 txtGroupName.SelectedItem != null) // if it exists in combo list items
             {
                 SettingsProvider.Current.Settings.ContactSettings.ContactGroups.Remove((ContactGroup)txtGroupName.SelectedItem);
@@ -175,7 +174,11 @@ namespace Squiggle.UI.Controls
         public bool AskUsername
         {
             get { return _askUsername; }
-            set { Set(()=>AskUsername, ref _askUsername, value); }
+            set
+            {
+                Set(() => AskUsername, ref _askUsername, value);
+                OnPropertyChanged("SingleSignOn");
+            }
         }
 
         string _username;
@@ -189,16 +192,24 @@ namespace Squiggle.UI.Controls
         public bool AskPassword
         {
             get { return _askPassword; }
-            set { Set(()=>AskPassword, ref _askPassword, value); }
+            set
+            {
+                Set(() => AskPassword, ref _askPassword, value);
+                OnPropertyChanged("SingleSignOn");
+            }
         }
 
         bool _askDisplayName;
         public bool AskDisplayName
         {
             get { return _askDisplayName; }
-            set { Set(()=>AskDisplayName, ref _askDisplayName, value); }
+            set
+            {
+                Set(() => AskDisplayName, ref _askDisplayName, value);
+                OnPropertyChanged("SingleSignOn");
+            }
         }
-        
+
         string _displayName;
         public string DisplayName
         {
@@ -210,7 +221,11 @@ namespace Squiggle.UI.Controls
         public bool AskDomain
         {
             get { return _askDomain; }
-            set { Set(()=>AskDomain, ref _askDomain, value); }
+            set
+            {
+                Set(() => AskDomain, ref _askDomain, value);
+                OnPropertyChanged("SingleSignOn");
+            }
         }
 
         string _domain;
@@ -224,16 +239,46 @@ namespace Squiggle.UI.Controls
         public bool AskGroupName
         {
             get { return _askGroupName; }
-            set { Set(()=>AskGroupName, ref _askGroupName, value); }
+            set
+            {
+                Set(() => AskGroupName, ref _askGroupName, value);
+                OnPropertyChanged("SingleSignOn");
+            }
         }
 
         string _groupName;
         public string GroupName
         {
             get { return _groupName ?? String.Empty; }
-            set { Set(()=>GroupName, ref _groupName, Trim(value)); }
+            set
+            {
+                Set(() => GroupName, ref _groupName, Trim(value));
+                OnPropertyChanged("SingleSignOn");
+            }
         }
 
+        public bool SingleSignOn
+        {
+            get
+            {
+                return
+                       !AskDisplayName
+                    && !AskUsername
+                    && !AskDomain
+                    && !AskGroupName
+                    && !AskPassword;
+            }
+            set
+            {
+                AskDisplayName = false;
+                AskUsername = false;
+                AskDomain = false;
+                AskGroupName = false;
+                AskPassword = false;
+
+                OnPropertyChanged("SingleSignOn");
+            }
+        }
         string Trim(string value)
         {
             return (value ?? String.Empty).Trim();

@@ -50,6 +50,7 @@
     <sys:String x:Key="MainWindow_SignIn_RememberMe">Remember me</sys:String>
     <sys:String x:Key="MainWindow_SignIn_AutoSignIn">Sign me in automatically</sys:String>
     <sys:String x:Key="MainWindow_SignIn_SignInButton">Sign In</sys:String>
+    <sys:String x:Key="MainWindow_SignIn_SingleSignOn">Using Single Sign On</sys:String>
     <sys:String x:Key="MainWindow_ShareAMessage">Share a quick message here.</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_Heading">General</sys:String>
     <sys:String x:Key="SettingsWindow_GeneralTab_SubHeading">General settings</sys:String>
