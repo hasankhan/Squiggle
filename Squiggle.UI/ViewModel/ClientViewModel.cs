@@ -72,7 +72,7 @@ namespace Squiggle.UI.ViewModel
 
         void chatClient_LoggedInOut(object sender, EventArgs e)
         {
-            OnPropertyChanged("IsLoggedIn", "Title");
+            OnPropertyChanged(()=>IsLoggedIn, ()=>Title);
         }
 
         void chatClient_BuddyOffline(object sender, BuddyEventArgs e)
@@ -96,7 +96,7 @@ namespace Squiggle.UI.ViewModel
         void OnContactListUpdated()
         {
             ContactListUpdated(this, EventArgs.Empty);
-            OnPropertyChanged("AnyoneOnline");
+            OnPropertyChanged(()=>AnyoneOnline);
         }
     }
 }

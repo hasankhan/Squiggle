@@ -58,7 +58,6 @@ namespace Squiggle.UI.Controls
 
             var settings = SettingsProvider.Current.Settings.PersonalSettings;
 
-
             if (!viewModel.RememberMe ||
                 (viewModel.AskDisplayName && settings.DisplayName != DisplayName) ||
                 (viewModel.AskUsername && settings.Username != viewModel.Username))
@@ -177,7 +176,7 @@ namespace Squiggle.UI.Controls
             set
             {
                 Set(() => AskUsername, ref _askUsername, value);
-                OnPropertyChanged("SingleSignOn");
+                OnPropertyChanged(()=>SingleSignOn);
             }
         }
 
@@ -195,7 +194,7 @@ namespace Squiggle.UI.Controls
             set
             {
                 Set(() => AskPassword, ref _askPassword, value);
-                OnPropertyChanged("SingleSignOn");
+                OnPropertyChanged(()=>SingleSignOn);
             }
         }
 
@@ -206,7 +205,7 @@ namespace Squiggle.UI.Controls
             set
             {
                 Set(() => AskDisplayName, ref _askDisplayName, value);
-                OnPropertyChanged("SingleSignOn");
+                OnPropertyChanged(()=>SingleSignOn);
             }
         }
 
@@ -224,7 +223,7 @@ namespace Squiggle.UI.Controls
             set
             {
                 Set(() => AskDomain, ref _askDomain, value);
-                OnPropertyChanged("SingleSignOn");
+                OnPropertyChanged(()=>SingleSignOn);
             }
         }
 
@@ -242,7 +241,7 @@ namespace Squiggle.UI.Controls
             set
             {
                 Set(() => AskGroupName, ref _askGroupName, value);
-                OnPropertyChanged("SingleSignOn");
+                OnPropertyChanged(()=>SingleSignOn);
             }
         }
 
@@ -253,7 +252,7 @@ namespace Squiggle.UI.Controls
             set
             {
                 Set(() => GroupName, ref _groupName, Trim(value));
-                OnPropertyChanged("SingleSignOn");
+                OnPropertyChanged(()=>SingleSignOn);
             }
         }
 
@@ -276,7 +275,7 @@ namespace Squiggle.UI.Controls
                 AskGroupName = false;
                 AskPassword = false;
 
-                OnPropertyChanged("SingleSignOn");
+                OnPropertyChanged(()=>SingleSignOn);
             }
         }
         string Trim(string value)
