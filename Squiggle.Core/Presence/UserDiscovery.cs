@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -14,9 +15,9 @@ namespace Squiggle.Core.Presence
     {
         IUserInfo thisUser;
         PresenceChannel channel;
-        HashSet<IUserInfo> onlineUsers;
+        ConcurrentDictionary<string, IUserInfo> onlineUsers;
 
-        public IEnumerable<IUserInfo> Users
+        public IDictionary<string, IUserInfo> Users
         {
             get { return onlineUsers; }
         }
@@ -29,7 +30,7 @@ namespace Squiggle.Core.Presence
         public UserDiscovery(PresenceChannel channel)
         {
             this.channel = channel;
-            this.onlineUsers = new HashSet<IUserInfo>();
+            this.onlineUsers = new ConcurrentDictionary<string, IUserInfo>();
         }
         
         public void Login(IUserInfo me)
@@ -160,7 +161,7 @@ namespace Squiggle.Core.Presence
         {
             if (user.Status == UserStatus.Offline)
                 OnUserOffline(user.ID);
-            else if (onlineUsers.Add(user))
+            else if (onlineUsers.TryAdd(user.ID, user))
             {
                 if (discovered)
                     UserDiscovered(this, new UserEventArgs() { User = user });
@@ -173,18 +174,17 @@ namespace Squiggle.Core.Presence
 
         void OnUserOffline(string id)
         {
-            var user = onlineUsers.FirstOrDefault(u => u.ID.Equals(id));
-            user.Status = UserStatus.Offline;
-            if (user != null)
+            IUserInfo user;
+            if (onlineUsers.TryRemove(id, out user))
             {
-                onlineUsers.Remove(user);
+                user.Status = UserStatus.Offline;
                 UserOffline(this, new UserEventArgs() { User = user });
             }
         }  
 
         void OnUserUpdated(IUserInfo newUser)
         {
-            var oldUser = onlineUsers.FirstOrDefault(u => u.ID.Equals(newUser.ID));
+            IUserInfo oldUser = onlineUsers[newUser.ID];
             if (oldUser == null)
                 OnPresenceMessage(newUser, discovered: true);
             else

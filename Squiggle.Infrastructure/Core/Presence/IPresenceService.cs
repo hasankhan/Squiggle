@@ -19,8 +19,6 @@ namespace Squiggle.Core.Presence
         event EventHandler<UserEventArgs> UserOffline;
         event EventHandler<UserEventArgs> UserUpdated;
 
-        IEnumerable<IUserInfo> Users { get; }
-        
         void Login(string displayName, IBuddyProperties properties);
         void SendUpdate(string displayName, IBuddyProperties properties, UserStatus status);
         void Logout();

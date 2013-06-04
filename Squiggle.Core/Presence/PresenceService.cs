@@ -18,11 +18,6 @@ namespace Squiggle.Core.Presence
         public event EventHandler<UserEventArgs> UserOffline = delegate { };
         public event EventHandler<UserEventArgs> UserUpdated = delegate { };
 
-        public IEnumerable<IUserInfo> Users
-        {
-            get { return discovery.Users; }
-        }
-
         public PresenceService(PresenceServiceOptions options)
         {
             thisUser = new UserInfo()
@@ -102,7 +97,7 @@ namespace Squiggle.Core.Presence
 
         void keepAlive_UserLost(object sender, KeepAliveEventArgs e)
         {
-            IUserInfo user = Users.FirstOrDefault(u => u.ID.Equals(e.User.ClientID));
+            IUserInfo user = discovery.Users[e.User.ClientID];
             if (user != null)
                 discovery.UserIsOffline(user.ID);
         }        
