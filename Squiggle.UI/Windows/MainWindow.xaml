@@ -7,11 +7,9 @@
     xmlns:tray="clr-namespace:Hardcodet.Wpf.TaskbarNotification"
     xmlns:local="clr-namespace:Squiggle.UI.Helpers"
     xmlns:converters="clr-namespace:Squiggle.UI.Converters"
-    Title="{Binding Title}" 
-    SizeChanged="Window_SizeChanged"
-    Icon="/Squiggle;component/Images/Chat.ico" 
-    Loaded="Window_Loaded" 
-    Closing="Window_Closing" LocationChanged="Window_LocationChanged" Width="303">
+    Title="{Binding Title}" Icon="/Squiggle;component/Images/Chat.ico" 
+    Loaded="Window_Loaded" Closing="Window_Closing" 
+    Width="303">
     <Window.Resources>
         <converters:AllEqualConverter x:Key="equalConverter" />
         <converters:StatusConverter x:Key="statusConverter" />

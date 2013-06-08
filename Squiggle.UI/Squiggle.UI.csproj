@@ -127,6 +127,10 @@
     <Compile Include="Factories\LoginOptionsFactory.cs" />
     <Compile Include="Factories\SquiggleContextFactory.cs" />
     <Compile Include="Helpers\ActivityHelper.cs" />
+    <Compile Include="Windows\MainWindow.Position.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MessageFilters\Commands\IChatCommand.cs" />
     <Compile Include="MessageFilters\Commands\InviteCommand.cs" />
     <Compile Include="MessageFilters\Commands\PrefixCommand.cs" />

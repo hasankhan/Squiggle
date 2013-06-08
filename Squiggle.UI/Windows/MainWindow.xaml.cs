@@ -39,13 +39,15 @@ namespace Squiggle.UI.Windows
         public MainWindow()
         {
             InitializeComponent();
+            new PositionHelper(this, Properties.Settings.Default).Initialize();
         }       
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            chatWindows = new ChatWindowCollection();
+            if (App.RunInBackground)
+                this.Hide();
 
-            LoadPosition();
+            chatWindows = new ChatWindowCollection();
 
             var settingsProvider = SettingsProvider.Current;
             SquiggleSettings settings = settingsProvider.Settings;
@@ -74,7 +76,6 @@ namespace Squiggle.UI.Windows
             DataContext = chatControl.ChatContext = clientViewModel;
            
             autoSignout = new NetworkSignout(this.Dispatcher, options => SignIn(options, byUser: false), () => SignOut(byUser: false));
-
 
             var singleSignOn = chatControl.SignIn.lblSingleSignOn.Visibility == Visibility.Visible;
             if (singleSignOn || (settings.PersonalSettings.RememberMe && settings.PersonalSettings.AutoSignMeIn))
@@ -209,7 +210,7 @@ namespace Squiggle.UI.Windows
             }
             else
             {
-                this.Visibility = System.Windows.Visibility.Hidden;
+                this.Visibility = Visibility.Hidden;
 
                 trayIcon.Dispose();
                 autoSignout.Dispose();
@@ -264,25 +265,7 @@ namespace Squiggle.UI.Windows
                 IChatWindow chatWindow = StartChat(buddy);
                 chatWindow.Invite(buddies.Except(new[] { buddy }));
             }
-        }
-
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            if (WindowState == System.Windows.WindowState.Normal)
-            {
-                Properties.Settings.Default.MainWindowHeight = this.Height;
-                Properties.Settings.Default.MainWindowWidth = this.Width;
-                Properties.Settings.Default.Save();
-            }
-        }
-
-        private void Window_LocationChanged(object sender, EventArgs e)
-        {
-            Properties.Settings.Default.MainWindowTop = Top;
-            Properties.Settings.Default.MainWindowLeft = Left;
-
-            Properties.Settings.Default.Save();
-        }
+        }        
 
         private void SendBroadcastMessageMenu_Click(object sender, RoutedEventArgs e)
         {
@@ -564,17 +547,5 @@ namespace Squiggle.UI.Windows
             UpdateSortMenu();
             UpdateGroupMenu();
         }
-
-        void LoadPosition()
-        {
-            this.Height = Properties.Settings.Default.MainWindowHeight;
-            this.Width = Properties.Settings.Default.MainWindowWidth;
-
-            this.Top = Properties.Settings.Default.MainWindowTop > 0 ? Properties.Settings.Default.MainWindowTop : System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height / 2 - this.Height / 2;
-            this.Left = Properties.Settings.Default.MainWindowLeft > 0 ? Properties.Settings.Default.MainWindowLeft : System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width / 2 - this.Width / 2;
-
-            if (App.RunInBackground)
-                this.Hide();
-        } 
     }
 }
