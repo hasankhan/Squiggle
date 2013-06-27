@@ -125,7 +125,7 @@ namespace Squiggle.UI.Controls
 
         void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            showOfflineContacts = SettingsProvider.Current.Settings.ContactSettings.ShowOfflineContatcs;
+            showOfflineContacts = SettingsProvider.Current.Settings.ContactSettings.ShowOfflineContacts;
             contactListView = SettingsProvider.Current.Settings.ContactSettings.ContactListView;
             SettingsProvider.Current.SettingsUpdated += Current_SettingsUpdated;
 
@@ -174,9 +174,9 @@ namespace Squiggle.UI.Controls
                 refresh = true;
             }
 
-            if (showOfflineContacts != SettingsProvider.Current.Settings.ContactSettings.ShowOfflineContatcs)
+            if (showOfflineContacts != SettingsProvider.Current.Settings.ContactSettings.ShowOfflineContacts)
             {
-                showOfflineContacts = SettingsProvider.Current.Settings.ContactSettings.ShowOfflineContatcs;
+                showOfflineContacts = SettingsProvider.Current.Settings.ContactSettings.ShowOfflineContacts;
                 refresh = true;
             }
 

@@ -43,7 +43,7 @@ namespace Squiggle.Core.Presence
                 string groupName = this["GroupName"];
                 return String.IsNullOrEmpty(groupName) ? DefaultGroupName : groupName;
             }
-            set { this["GroupName"] = value.Trim(); }
+            set { this["GroupName"] = value.EmptyIfNull().Trim(); }
         }
 
         public string MachineName
@@ -55,7 +55,7 @@ namespace Squiggle.Core.Presence
         public string DisplayMessage
         {
             get { return this["DisplayMessage"]; }
-            set { this["DisplayMessage"] = value.Trim(); }
+            set { this["DisplayMessage"] = value.EmptyIfNull().Trim(); }
         }
 
         public byte[] DisplayImage

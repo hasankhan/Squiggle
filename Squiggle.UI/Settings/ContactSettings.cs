@@ -12,7 +12,7 @@ namespace Squiggle.UI.Settings
         public ContactListView ContactListView { get; set; }
         public ContactGroups ContactGroups { get; set; }
         public bool GroupContacts { get; set; }
-        public bool ShowOfflineContatcs { get; set; }
+        public bool ShowOfflineContacts { get; set; }
 
         public ContactSettings()
         {
@@ -24,7 +24,7 @@ namespace Squiggle.UI.Settings
             ContactListSortField = settings.ContactListSortField;
             GroupContacts = settings.GroupContacts;
             ContactGroups = settings.Groups ?? new ContactGroups();
-            ShowOfflineContatcs = settings.ShowOfflineContatcs;
+            ShowOfflineContacts = settings.ShowOfflineContacts;
             ContactListView = settings.ContactListView;
         }
 
@@ -33,7 +33,7 @@ namespace Squiggle.UI.Settings
             settings.ContactListSortField = ContactListSortField;
             settings.GroupContacts = GroupContacts;
             settings.Groups = ContactGroups;
-            settings.ShowOfflineContatcs = ShowOfflineContatcs;
+            settings.ShowOfflineContacts = ShowOfflineContacts;
             settings.ContactListView = ContactListView;
         }
     }
