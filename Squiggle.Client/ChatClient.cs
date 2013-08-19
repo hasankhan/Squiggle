@@ -197,7 +197,7 @@ namespace Squiggle.Client
                 ExceptionMonster.EatTheException(() =>
                 {
                     var manager = new HistoryManager();
-                    manager.AddStatusUpdate(DateTime.Now, new Guid(buddy.Id), buddy.DisplayName, (int)buddy.Status);
+                    manager.AddStatusUpdate(new Guid(buddy.Id), buddy.DisplayName, (int)buddy.Status);
                 }, "logging history.");
         }
 

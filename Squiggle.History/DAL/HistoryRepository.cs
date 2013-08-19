@@ -18,7 +18,7 @@ namespace Squiggle.History.DAL
             var session = context.Sessions.FirstOrDefault(s => s.Id == sessionId);
             if (session != null)
             {
-                session.End = DateTime.Now;
+                session.End = session.End < stamp ? stamp : session.End;
                 var evnt = new Event() 
                 { 
                     Id = Guid.NewGuid(), 
@@ -37,7 +37,6 @@ namespace Squiggle.History.DAL
         public IEnumerable<Session> GetSessions(SessionCriteria criteria)
         {
             string text = criteria.Text ?? String.Empty;
-            string participant = criteria.Participant.HasValue ? criteria.Participant.Value.ToString("N") : String.Empty;
 
             var result = (from session in context.Sessions.Include("Participants")
                          where (criteria.SessionId == null || session.Id == criteria.SessionId.Value) &&

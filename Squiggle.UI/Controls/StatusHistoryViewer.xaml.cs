@@ -15,6 +15,7 @@ using Squiggle.Client;
 using Squiggle.Core.Presence;
 using Squiggle.History;
 using Squiggle.History.DAL;
+using Squiggle.History.DAL.Entities;
 using Squiggle.UI.Resources;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Threading;
@@ -45,15 +46,12 @@ namespace Squiggle.UI.Controls
         {
             var historyManager = new HistoryManager();
             var updates = historyManager.GetStatusUpdates(new StatusCriteria()
-            {
-                From = from,
-                To = to,
-            }).Select(update => new Result()
-            {
-                Time = update.Stamp,
-                Name = update.ContactName,
-                Status = (UserStatus)update.StatusCode
-            }).ToList();
+                                        {
+                                            From = from.HasValue ? from.Value.ToUniversalTime() : from,
+                                            To = to.HasValue ? to.Value.ToUniversalTime() : to,
+                                        })
+                                        .Select(update => new Result(update))
+                                        .ToList();
 
             Dispatcher.Invoke(() =>
             {
@@ -96,9 +94,16 @@ namespace Squiggle.UI.Controls
 
         class Result
         {
-            public DateTime Time { get; set; }
-            public string Name { get; set; }
-            public UserStatus Status { get; set; }
+            public DateTime Time { get; private set; }
+            public string Name { get; private set; }
+            public UserStatus Status { get; private set; }
+
+            public Result(StatusUpdate update)
+            {
+                Time = update.Stamp.ToLocalTime();
+                Name = update.ContactName;
+                Status = (UserStatus)update.StatusCode;
+            }
         }
     }
 }

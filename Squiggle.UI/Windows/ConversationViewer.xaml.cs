@@ -33,7 +33,16 @@ namespace Squiggle.UI.Windows
             this.SessionId = sessionId;
             var historyManager = new HistoryManager();
             Session session = historyManager.GetSession(sessionId);
-            messages.ItemsSource = session.Events.OrderBy(e=>e.Stamp).ToList();
+            messages.ItemsSource = session.Events
+                                          .OrderBy(e => e.Stamp)
+                                          .Select(e => new
+                                          {
+                                              Stamp = e.Stamp.ToLocalTime(),
+                                              e.SenderName,
+                                              e.Type,
+                                              e.Data
+                                          })
+                                          .ToList();
         }
 
         private void StickyWindow_KeyDown(object sender, KeyEventArgs e)

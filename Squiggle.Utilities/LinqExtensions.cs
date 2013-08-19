@@ -19,6 +19,11 @@ namespace Squiggle.Utilities
                 action(item);
         }
 
+        public static IEnumerable<T> Append<T>(this IEnumerable<T> items, T item)
+        {
+            return items.Concat(Enumerable.Repeat(item, 1));
+        }
+
         public static string ToTraceString<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> items)
         {
             string output = String.Join(", ", items.Select(i => i.Key + " = " + i.Value).ToArray());

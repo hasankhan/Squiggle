@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Squiggle.History;
 using Squiggle.History.DAL;
+using Squiggle.History.DAL.Entities;
 using Squiggle.Plugins;
 using Squiggle.UI.Helpers;
 using Squiggle.UI.Resources;
@@ -62,18 +63,14 @@ namespace Squiggle.UI.Controls
         {
             var historyManager = new HistoryManager();
             var sessions = historyManager.GetSessions(new SessionCriteria()
-            {
-                From = from,
-                To = to,
-                Text = message.Length == 0 ? null : message,
-                Participant = new Guid(SquiggleContext.ChatClient.CurrentUser.Id)
-            }).Select(session => new Result()
-            {
-                Id = session.Id,
-                Start = session.Start,
-                End = session.End,
-                Participants = String.Join(", ", session.Participants.Select(p => p.ContactName).ToArray())
-            }).ToList();
+                                        {
+                                            From = from.HasValue ? from.Value.ToUniversalTime() : from,
+                                            To = to.HasValue ? to.Value.ToUniversalTime() : to,
+                                            Text = message.Length == 0 ? null : message,
+                                            Participant = new Guid(SquiggleContext.ChatClient.CurrentUser.Id)
+                                        })
+                                        .Select(session => new Result(session))
+                                        .ToList();
 
             Dispatcher.Invoke(() =>
             {
@@ -135,10 +132,18 @@ namespace Squiggle.UI.Controls
 
         class Result
         {
-            public Guid Id { get; set; }
-            public DateTime Start { get; set; }
-            public DateTime? End { get; set; }
-            public string Participants { get; set; }
+            public Guid Id { get; private set; }
+            public DateTime Start { get; private set; }
+            public DateTime? End { get; private set; }
+            public string Participants { get; private set; }
+
+            public Result(Session session)
+            {
+                Id = session.Id;
+                Start = session.Start.ToLocalTime();
+                End = session.End.HasValue ? session.End.Value.ToLocalTime() : session.End;
+                Participants = String.Join(", ", session.Participants.Select(p => p.ContactName).ToArray());
+            }
         }
 
         private void UserControl_GotFocus(object sender, RoutedEventArgs e)
