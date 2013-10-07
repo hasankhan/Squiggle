@@ -8,6 +8,7 @@ using Squiggle.History;
 using Squiggle.History.DAL;
 using Squiggle.History.DAL.Entities;
 using Squiggle.Plugins;
+using Squiggle.UI.Factories;
 using Squiggle.UI.Helpers;
 using Squiggle.UI.Resources;
 using Squiggle.UI.Windows;
@@ -61,7 +62,7 @@ namespace Squiggle.UI.Controls
 
         void SearchSessions(DateTime? from, DateTime? to, string message)
         {
-            var historyManager = new HistoryManager();
+            var historyManager = new HistoryManagerFactory().CreateInstance();
             var sessions = historyManager.GetSessions(new SessionCriteria()
                                         {
                                             From = from.HasValue ? from.Value.ToUniversalTime() : from,
@@ -85,7 +86,7 @@ namespace Squiggle.UI.Controls
                 IEnumerable<Guid> sessionIds = results.SelectedItems.Cast<Result>().Select(r => r.Id).ToList();
                 AsyncInvoke(() =>
                 {
-                    var historyManager = new HistoryManager();
+                    var historyManager = new HistoryManagerFactory().CreateInstance();
                     historyManager.DeleteSessions(sessionIds);
                 },
                 lastSearch);
@@ -98,7 +99,7 @@ namespace Squiggle.UI.Controls
             {
                 AsyncInvoke(() =>
                 {
-                    var historyManager = new HistoryManager();
+                    var historyManager = new HistoryManagerFactory().CreateInstance();
                     historyManager.ClearChatHistory();
                 }, () => results.ItemsSource = null);
             }

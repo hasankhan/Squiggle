@@ -33,7 +33,8 @@ namespace Squiggle.UI.Settings
             CheckForUpdates = reader.GetSetting(SettingKey.CheckForUpdates, true);
             GitHash = reader.GetSetting(SettingKey.GitHash, String.Empty);
 
-            if (String.IsNullOrEmpty(settings.DownloadsFolder) || !Shell.CreateDirectoryIfNotExists(settings.DownloadsFolder))
+            string downloadsFolder = Environment.ExpandEnvironmentVariables(settings.DownloadsFolder ?? String.Empty);
+            if (String.IsNullOrEmpty(downloadsFolder) || !Shell.CreateDirectoryIfNotExists(downloadsFolder))
                 DownloadsFolder = Path.Combine(AppInfo.Location, "Downloads");
             else
                 DownloadsFolder = settings.DownloadsFolder;

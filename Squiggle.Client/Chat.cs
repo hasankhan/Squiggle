@@ -24,10 +24,9 @@ namespace Squiggle.Client
         IChatSession session;
         ChatBuddies buddies;
         IBuddy self;
+        HistoryManager history;
 
-        public Chat(IChatSession session, IBuddy self, IBuddy buddy, BuddyResolver buddyResolver) : this(session, self, Enumerable.Repeat(buddy, 1), buddyResolver) { }
-
-        public Chat(IChatSession session, IBuddy self, IEnumerable<IBuddy> buddies, BuddyResolver buddyResolver)
+        public Chat(IChatSession session, IBuddy self, IEnumerable<IBuddy> buddies, BuddyResolver buddyResolver, HistoryManager history)
         {
             this.self = self;
             
@@ -42,6 +41,8 @@ namespace Squiggle.Client
             session.UserTyping += session_UserTyping;
             session.BuzzReceived += session_BuzzReceived;
             session.ActivityInviteReceived += session_ActivityInviteReceived;
+
+            this.history = history;
         }             
 
         #region IChat Members
@@ -273,7 +274,7 @@ namespace Squiggle.Client
         void DoHistoryAction(Action<HistoryManager> action)
         {
             if (EnableLogging)
-                ExceptionMonster.EatTheException(() => action(new HistoryManager()), "logging history.");
+                ExceptionMonster.EatTheException(() => action(history), "logging history.");
         }      
     }
 }

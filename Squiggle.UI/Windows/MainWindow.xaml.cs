@@ -18,6 +18,7 @@ using Squiggle.UI.ViewModel;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Threading;
 using Squiggle.Plugins;
+using Squiggle.History;
 
 namespace Squiggle.UI.Windows
 {
@@ -54,7 +55,11 @@ namespace Squiggle.UI.Windows
             settings.ContactSettings.ContactGroups.FlushItems();
             settingsProvider.Save();
 
-            context = new SquiggleContextFactory(new PluginLoaderFactory(), this, settings.ConnectionSettings.ClientID).CreateInstance();
+            HistoryManager history = new HistoryManagerFactory().CreateInstance();
+            context = new SquiggleContextFactory(new PluginLoaderFactory(), 
+                                                 history, 
+                                                 this, 
+                                                 settings.ConnectionSettings.ClientID).CreateInstance();
             context.PluginLoader.LoadAll(context);
 
             SetupControls();

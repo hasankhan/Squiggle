@@ -124,6 +124,7 @@
     </Compile>
     <Compile Include="Converters\GenericBooleanConverter.cs" />
     <Compile Include="Converters\SingleSignOnToVisibilityConverter.cs" />
+    <Compile Include="Factories\HistoryManagerFactory.cs" />
     <Compile Include="Factories\LoginOptionsFactory.cs" />
     <Compile Include="Factories\SquiggleContextFactory.cs" />
     <Compile Include="Helpers\ActivityHelper.cs" />

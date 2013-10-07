@@ -48,6 +48,9 @@ namespace Squiggle.UI.Factories
 
             string clientID = settings.ConnectionSettings.ClientID;
 
+            string displayName = Environment.ExpandEnvironmentVariables(userInfo.DisplayName.NullIfEmpty() ?? 
+                                                                        signInOptions.DisplayName.NullIfEmpty() ?? 
+                                                                        settings.PersonalSettings.DisplayName);
             var options = new LoginOptions()
             {
                 ChatEndPoint = chatEndPoint,
@@ -56,7 +59,7 @@ namespace Squiggle.UI.Factories
                 PresenceServiceEndPoint = presenceServiceEndPoint,
                 KeepAliveTime = keepAliveTimeout,
                 UserProperties = CreateProperties(),
-                DisplayName = userInfo.DisplayName.NullIfEmpty() ?? signInOptions.DisplayName.NullIfEmpty() ?? settings.PersonalSettings.DisplayName
+                DisplayName = displayName
             };
 
             return options;
@@ -64,11 +67,19 @@ namespace Squiggle.UI.Factories
 
         IBuddyProperties CreateProperties()
         {
+            string groupName = Environment.ExpandEnvironmentVariables(userInfo.GroupName.NullIfEmpty() ?? 
+                                                                       signInOptions.GroupName.NullIfEmpty() ?? 
+                                                                       settings.PersonalSettings.GroupName);
+
+            string email = Environment.ExpandEnvironmentVariables(userInfo.Email.NullIfEmpty() ?? settings.PersonalSettings.EmailAddress);
+
+            string displayMessage = Environment.ExpandEnvironmentVariables(settings.PersonalSettings.DisplayMessage);
+
             var properties = new BuddyProperties();
-            properties.GroupName = userInfo.GroupName.NullIfEmpty() ?? signInOptions.GroupName.NullIfEmpty() ?? settings.PersonalSettings.GroupName;
-            properties.EmailAddress = userInfo.Email.NullIfEmpty() ?? settings.PersonalSettings.EmailAddress;
+            properties.GroupName = groupName;
+            properties.EmailAddress = email;
             properties.DisplayImage = userInfo.Image ?? settings.PersonalSettings.DisplayImage;
-            properties.DisplayMessage = settings.PersonalSettings.DisplayMessage;
+            properties.DisplayMessage = displayMessage;
             properties.MachineName = Environment.MachineName;
 
             return properties;

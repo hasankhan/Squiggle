@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Windows;
 using Squiggle.Client;
 using Squiggle.Core.Presence;
+using Squiggle.UI.Components;
 using Squiggle.UI.Controls;
 using Squiggle.UI.Settings;
 using Squiggle.UI.ViewModel;
+using Squiggle.UI.Windows;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
-using Squiggle.UI.Windows;
-using Squiggle.UI.Components;
 
 namespace Squiggle.UI.Helpers
 {
@@ -34,9 +32,16 @@ namespace Squiggle.UI.Helpers
             return statuses;
         }
 
-        public static void OpenDownloadsFolder()
+        public static string GetDownloadsFolderPath()
         {
             string downloadsFolder = SettingsProvider.Current.Settings.GeneralSettings.DownloadsFolder;
+            downloadsFolder = Environment.ExpandEnvironmentVariables(downloadsFolder);
+            return downloadsFolder;
+        }
+
+        public static void OpenDownloadsFolder()
+        {
+            string downloadsFolder = GetDownloadsFolderPath();
             if (Shell.CreateDirectoryIfNotExists(downloadsFolder))
                 ExceptionMonster.EatTheException(() => Process.Start(downloadsFolder), "opening downloads folder");
         }

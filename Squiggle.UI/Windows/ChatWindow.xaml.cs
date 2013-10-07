@@ -513,7 +513,7 @@ namespace Squiggle.UI.Windows
                     chatTextBox.AddInfo(Translation.Instance.ChatWindow_FileTransferInviteNotSupported);
                     return;
                 }
-                string downloadsFolder = SettingsProvider.Current.Settings.GeneralSettings.DownloadsFolder;
+                string downloadsFolder = SquiggleUtility.GetDownloadsFolderPath();
                 downloadsFolder = Path.Combine(downloadsFolder, PrimaryBuddy.DisplayName);
                 chatTextBox.AddFileReceiveRequest(invitation, downloadsFolder);
                 fileTransfers.Add(invitation);

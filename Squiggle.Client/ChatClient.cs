@@ -16,6 +16,7 @@ namespace Squiggle.Client
         IPresenceService presenceService;
         SquiggleEndPoint chatEndPoint;
         BuddyList buddies;
+        HistoryManager history;
 
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
         public event EventHandler<BuddyOnlineEventArgs> BuddyOnline = delegate { };
@@ -47,8 +48,9 @@ namespace Squiggle.Client
 
         public bool EnableLogging { get; set; }
 
-        public ChatClient(string clientId)
+        public ChatClient(string clientId, HistoryManager history)
         {
+            this.history = history;
             buddies = new BuddyList();
             CurrentUser = new SelfBuddy(this, clientId, String.Empty, UserStatus.Offline, new BuddyProperties());
         }        
@@ -59,7 +61,7 @@ namespace Squiggle.Client
                 throw new InvalidOperationException("Not logged in.");
 
             IChatSession session = chatService.CreateSession(new SquiggleEndPoint(buddy.Id, ((Buddy)buddy).ChatEndPoint));
-            var chat = new Chat(session, CurrentUser, buddy, id=>buddies[id]);
+            var chat = new Chat(session, CurrentUser, new[]{ buddy }, id=>buddies[id], history);
             return chat;
         }        
 
@@ -121,7 +123,7 @@ namespace Squiggle.Client
             
             if (buddyList.Any())
             {
-                var chat = new Chat(e.Session, CurrentUser, buddyList, id=>buddies[id]);
+                var chat = new Chat(e.Session, CurrentUser, buddyList, id=>buddies[id], history);
                 ChatStarted(this, new ChatStartedEventArgs() { Chat = chat, Buddies = buddyList });
             }
         }
@@ -196,8 +198,7 @@ namespace Squiggle.Client
             if (EnableLogging)
                 ExceptionMonster.EatTheException(() =>
                 {
-                    var manager = new HistoryManager();
-                    manager.AddStatusUpdate(new Guid(buddy.Id), buddy.DisplayName, (int)buddy.Status);
+                    history.AddStatusUpdate(new Guid(buddy.Id), buddy.DisplayName, (int)buddy.Status);
                 }, "logging history.");
         }
 

@@ -9,9 +9,16 @@ namespace Squiggle.History
 {
     public class HistoryManager
     {
+        string connectionString;
+
+        public HistoryManager(string connectionString)
+        {
+            this.connectionString = connectionString;
+        }
+
         public void AddSessionEvent(Guid sessionId, EventType type, Guid senderId, string senderName, IEnumerable<Guid> recipients, string data)
         {
-            using (var repository = new HistoryRepository())
+            using (var repository = new HistoryRepository(connectionString))
             {
                 repository.AddSessionEvent(sessionId, DateTime.UtcNow, type, senderId, senderName, recipients, data);
                 if (type == EventType.Joined)
@@ -29,50 +36,50 @@ namespace Squiggle.History
 
         public void AddStatusUpdate(Guid contactId, string contactName, int status)
         {
-            using (var repository = new HistoryRepository())
+            using (var repository = new HistoryRepository(connectionString))
                 repository.AddStatusUpdate(DateTime.UtcNow, contactId, contactName, status);
         }
 
         public IEnumerable<Session> GetSessions(SessionCriteria criteria)
         {
-            using (var repository = new HistoryRepository())
+            using (var repository = new HistoryRepository(connectionString))
                 return repository.GetSessions(criteria);
         }
 
         public Session GetSession(Guid sessionId)
         {
-            using (var repository = new HistoryRepository())
+            using (var repository = new HistoryRepository(connectionString))
                 return repository.GetSession(sessionId);
         }
 
 
         public IEnumerable<StatusUpdate> GetStatusUpdates(StatusCriteria criteria)
         {
-            using (var repository = new HistoryRepository())
+            using (var repository = new HistoryRepository(connectionString))
                 return repository.GetStatusUpdates(criteria);
         }
 
         public void ClearChatHistory()
         {
-            using (var repository = new HistoryRepository())
+            using (var repository = new HistoryRepository(connectionString))
                 repository.ClearChatHistory();
         }
 
         public void ClearStatusHistory()
         {
-            using (var repository = new HistoryRepository())
+            using (var repository = new HistoryRepository(connectionString))
                 repository.ClearStatusHistory();
         }
 
         public void AddSession(Session newSession, IEnumerable<Participant> participants)
         {
-            using (var repository = new HistoryRepository())
+            using (var repository = new HistoryRepository(connectionString))
                 repository.AddSession(newSession, participants);
         }
 
         public void DeleteSessions(IEnumerable<Guid> sessionIds)
         {
-            using (var repository = new HistoryRepository())
+            using (var repository = new HistoryRepository(connectionString))
                 repository.DeleteSessions(sessionIds);
         }
     }

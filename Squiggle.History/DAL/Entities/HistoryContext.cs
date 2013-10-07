@@ -12,5 +12,9 @@ namespace Squiggle.History.DAL.Entities
         public DbSet<Session> Sessions { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<StatusUpdate> StatusUpdates { get; set; }
+
+        public HistoryContext(string nameOrConnectionString): base(nameOrConnectionString)
+        {
+        }
     }
 }
