@@ -53,9 +53,6 @@
       <Component Id="Squiggle.Infrastructure.dll" Guid="9DD6D939-4475-4974-A587-B043933210FF">
         <File Id="Squiggle.Infrastructure.dll" Name="Squiggle.Infrastructure.dll" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.Infrastructure.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
-      <Component Id="Squiggle.Plugins.dll" Guid="86563C21-BC24-41ED-B240-8F520DC86F52">
-        <File Id="Squiggle.Plugins.dll" Name="Squiggle.Plugins.dll" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.Plugins.dll" KeyPath="yes" Checksum="yes"/>
-      </Component>
       <Component Id="Squiggle.Utilities.dll" Guid="9B671FD9-9786-4D10-A916-5E1123B159BD">
         <File Id="Squiggle.Utilities.dll" Name="Squiggle.Utilities.dll" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.Utilities.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
@@ -154,6 +151,9 @@
       </Component>
       <Component Id="Squiggle.VoiceChat.dll" Guid="B1D638D0-7101-460C-9A7D-14D334D2EE6D">
         <File Id="Squiggle.VoiceChat.dll" Name="Squiggle.VoiceChat.dll" Source="..\Squiggle.UI\bin\x86\Release\Plugins\Squiggle.VoiceChat.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="Squiggle.Screenshot.dll" Guid="807C593F-2272-414F-AFCA-63F0CFAC39FE">
+        <File Id="Squiggle.Screenshot.dll" Name="Squiggle.Screenshot.dll" Source="..\Squiggle.UI\bin\x86\Release\Plugins\Squiggle.Screenshot.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
 

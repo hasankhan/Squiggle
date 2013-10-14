@@ -63,7 +63,7 @@
     </Compile>
     <Compile Include="FileInviteData.cs" />
     <Compile Include="FileTransferHandler.cs" />
-    <Compile Include="FileTransfer.cs" />
+    <Compile Include="FileTransferActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Squiggle.Client\Squiggle.Client.csproj">

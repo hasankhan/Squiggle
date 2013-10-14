@@ -149,7 +149,7 @@ namespace Squiggle.UI.Windows
 
         private void OpenMenu_Click(object sender, RoutedEventArgs e)
         {
-            RestoreWindow();
+            Restore();
         }
 
         private void HistoryViewerMenu_Click(object sender, RoutedEventArgs e)
@@ -305,11 +305,11 @@ namespace Squiggle.UI.Windows
                 if (this.Visibility == Visibility.Visible)
                     this.Hide();
                 else
-                    RestoreWindow();
+                    Restore();
             });
         }
 
-        public void RestoreWindow()
+        public void Restore()
         {
             this.Show();
             this.WindowState = lastState;

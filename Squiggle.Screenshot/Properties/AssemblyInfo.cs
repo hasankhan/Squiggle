@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Squiggle Plugins")]
+[assembly: AssemblyTitle("Squiggle Screenshot")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("076def27-67a3-494e-8bc0-a4757c200ac9")]
+[assembly: Guid("3a1c92c9-aaf9-41c3-9a62-8f343be567f6")]
 
 // Version information for an assembly consists of the following four values:
 //

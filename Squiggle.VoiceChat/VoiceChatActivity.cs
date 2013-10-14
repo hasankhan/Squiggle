@@ -5,11 +5,13 @@ using System.Text;
 using System.ComponentModel.Composition;
 using Squiggle.Client.Activities;
 using Squiggle.Core.Chat.Activity;
+using Squiggle.Plugins;
+using System.Threading.Tasks;
 
 namespace Squiggle.VoiceChat
 {
     [Export(typeof(IActivity))]
-    public class VoiceChat: IActivity
+    public class VoiceChatActivity: IActivity
     {
         public Guid Id
         {
@@ -33,7 +35,7 @@ namespace Squiggle.VoiceChat
             return invitation;
         }
 
-        public IDictionary<string, object> LaunchInviteUI()
+        public Task<IDictionary<string, object>> LaunchInviteUI(ISquiggleContext context, IChatWindow window)
         {
             throw new NotImplementedException();
         }

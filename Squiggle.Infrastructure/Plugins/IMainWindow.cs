@@ -13,11 +13,10 @@ namespace Squiggle.Plugins
         public string GroupName { get; set; }
     }
 
-    public interface IMainWindow
+    public interface IMainWindow: IWindow
     {
         void BlinkTrayIcon();
         void Quit();
-        void RestoreWindow();
         void SignIn(SignInOptions options);
         void SignOut();
         void StartBroadcastChat();

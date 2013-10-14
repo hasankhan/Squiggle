@@ -19,8 +19,8 @@
 /Squiggle.VoiceChat/obj
 /Squiggle.FileTransfer/bin
 /Squiggle.FileTransfer/obj
-/Squiggle.Plugins/bin
-/Squiggle.Plugins/obj
+/Squiggle.Screenshot/bin
+/Squiggle.Screenshot/obj
 /Squiggle.Infrastructure/bin
 /Squiggle.Infrastructure/obj
 /Squiggle.Setup/obj
@@ -28,6 +28,7 @@
 /Libraries/Plugins/NAudio.dll
 /Libraries/Plugins/Squiggle.FileTransfer.dll
 /Libraries/Plugins/Squiggle.VoiceChat.dll
+/Libraries/Plugins/Squiggle.Screenshot.dll
 /Libraries/Plugins/libspeex-license.txt
 /Libraries/Plugins/libspeexdsp.dll
 /Build/*.zip

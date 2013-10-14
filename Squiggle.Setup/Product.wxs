@@ -45,7 +45,6 @@
       <ComponentRef Id="Squiggle.exe.config" />
       <ComponentRef Id="Squiggle.History.dll" />
       <ComponentRef Id="Squiggle.Infrastructure.dll" />
-      <ComponentRef Id="Squiggle.Plugins.dll" />
       <ComponentRef Id="Squiggle.Utilities.dll" />
       <ComponentRef Id="System.Data.SqlServerCe.dll" />
       <ComponentRef Id="System.Data.SqlServerCe.Entity.dll" />
@@ -76,6 +75,7 @@
       <ComponentRef Id="Readme.txt" />
       <ComponentRef Id="Squiggle.FileTransfer.dll" />
       <ComponentRef Id="Squiggle.VoiceChat.dll" />
+      <ComponentRef Id="Squiggle.Screenshot.dll" />
       <ComponentRef Id="Translation.xaml" />
       <ComponentRef Id="BuddyOnline.wav" />
       <ComponentRef Id="Buzz.wav" />

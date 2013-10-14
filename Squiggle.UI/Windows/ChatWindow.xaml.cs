@@ -24,6 +24,9 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
+using System.Threading.Tasks;
+using System.Drawing;
+using System.Windows.Media.Imaging;
 
 namespace Squiggle.UI.Windows
 {
@@ -71,6 +74,7 @@ namespace Squiggle.UI.Windows
             chatState = new ChatState();
             eventQueue = new UIActionQueue(Dispatcher);
         }
+        
 
         internal ChatWindow(IBuddy buddy, SquiggleContext context) : this()
         {
@@ -617,7 +621,7 @@ namespace Squiggle.UI.Windows
             if (!context.PluginLoader.HasActivity(SquiggleActivities.VoiceChat))
                 return null;
 
-            IVoiceChatHandler voiceChat = StartActivity<IVoiceChatHandler>(SquiggleActivities.VoiceChat, null, handler => handler.Dispatcher = Dispatcher);
+            var voiceChat = (IVoiceChatHandler)StartActivity(SquiggleActivities.VoiceChat, null);
 
             if (voiceChat != null)
                 chatTextBox.AddVoiceChatSentRequest(context, voiceChat, PrimaryBuddy.DisplayName);
@@ -681,14 +685,19 @@ namespace Squiggle.UI.Windows
                 return;
             }
 
-            var args = new Dictionary<string, object>() { { "name", fileName }, { "content", fileStream }, { "size", fileStream.Length } };
+            SendFile(fileName, fileStream);
+        }
 
-            var fileTransfer = StartActivity<IFileTransferHandler>(SquiggleActivities.FileTransfer, args);
-            if (fileTransfer != null)
-            {
-                fileTransfers.Add(fileTransfer);
-                chatTextBox.AddFileSentRequest(fileTransfer);
-            }
+        void SendFile(string fileName, Stream fileStream)
+        {
+            var args = new Dictionary<string, object>()
+            { 
+                { "name", fileName }, 
+                { "content", fileStream }, 
+                { "size", fileStream.Length } 
+            };
+
+            StartActivity(SquiggleActivities.FileTransfer, args);
         }
 
         public void SaveAs()
@@ -924,18 +933,18 @@ namespace Squiggle.UI.Windows
 
         private void StartActivityMenuItem_Click(IActivity activity)
         {
-            IDictionary<string,object> args = activity.LaunchInviteUI();
-            if (args == null)
-                return;
-
-            var handler = StartActivity<IActivityHandler>(activity.Id, args);
-            if (handler != null)
-                chatTextBox.AddActivitySentRequest(PrimaryBuddy.DisplayName, activity.Title, handler);
+            activity.LaunchInviteUI(context, this).ContinueWith(task =>
+            {
+                if (task.Result != null)
+                {
+                    StartActivity(activity.Id, task.Result, activity.Title);
+                }
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private void SendEmoticon_Click(object sender, RoutedEventArgs e)
         {
-            Point pos = PointToScreen(Mouse.GetPosition(this));
+            System.Windows.Point pos = PointToScreen(Mouse.GetPosition(this));
             var selector = new EmoticonSelector();
             selector.EmoticonSelected += (s1, e1) => OnEmoticonSelected(((EmoticonSelector)s1).Code);
             selector.Top = pos.Y;
@@ -1039,19 +1048,53 @@ namespace Squiggle.UI.Windows
             }
         }
 
-        THandler StartActivity<THandler>(Guid activityId, IDictionary<string, object> args, Action<THandler> configure = null) where THandler : IActivityHandler
+        private void txtMessageEditBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.V && Keyboard.Modifiers == ModifierKeys.Control && Clipboard.ContainsImage())
+            {
+                Stream stream = GetClipboardImage();
+                string fileName = String.Format("Image_{0:yyMMddHHmmss}.jpg", DateTime.Now);
+                SendFile(fileName, stream);
+            }
+        }
+
+        IActivityHandler StartActivity(Guid activityId, IDictionary<string, object> args, string title = null)
         {
             IActivityExecutor executor = chatSession.CreateActivity(activityId);
             IActivity activity = context.PluginLoader.GetActivity(activityId);
-            var handler = (THandler)activity.Coalesce(a => a.CreateInvite(executor, args));
-            if (handler != null)
+            IActivityHandler handler = activity.Coalesce(a => a.CreateInvite(executor, args));
+            if (handler == null)
+                return null;
+
+            if (handler is IVoiceChatHandler)
             {
-                if (configure != null)
-                    configure(handler);
-                handler.Start();
-                chatState.ChatStarted = true;
+                var voiceHandler = (IVoiceChatHandler)handler;
+                voiceHandler.Dispatcher = Dispatcher;
+                chatTextBox.AddVoiceChatSentRequest(context, voiceHandler, PrimaryBuddy.DisplayName);
             }
+            else if (handler is IFileTransferHandler)
+            {
+                var fileHandler = (IFileTransferHandler)handler;
+                fileTransfers.Add(fileHandler);
+                chatTextBox.AddFileSentRequest(fileHandler);
+            }
+            else
+                chatTextBox.AddActivitySentRequest(PrimaryBuddy.DisplayName, title, handler);
+
+            handler.Start();
+            chatState.ChatStarted = true;
+
             return handler;
+        }        
+
+        static MemoryStream GetClipboardImage()
+        {
+            var stream = new MemoryStream();
+            var encoder = new JpegBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(Clipboard.GetImage()));
+            encoder.Save(stream);
+            stream.Seek(0, SeekOrigin.Begin);
+            return stream;
         }
     }
 }

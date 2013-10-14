@@ -72,7 +72,7 @@
     <Compile Include="EchoFilterWaveProvider.cs" />
     <Compile Include="Gsm610ChatCodec.cs" />
     <Compile Include="VoiceChatHandler.cs" />
-    <Compile Include="VoiceChat.cs" />
+    <Compile Include="VoiceChatActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Libraries\NAudio\NAudio-license.txt">

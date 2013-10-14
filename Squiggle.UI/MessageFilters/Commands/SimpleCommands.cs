@@ -22,7 +22,7 @@ namespace Squiggle.UI.MessageFilters.Commands
             commands["/BRB"] = (window, context) => context.ChatClient.CurrentUser.Status = Core.Presence.UserStatus.BeRightBack;
             commands["/BUSY"] = (window, context) => context.ChatClient.CurrentUser.Status = Core.Presence.UserStatus.Busy;
             commands["/BUZZ"] = (window, context) => window.SendBuzz();
-            commands["/MAIN"] = (window, context) => context.MainWindow.RestoreWindow();
+            commands["/MAIN"] = (window, context) => context.MainWindow.Restore();
         }
 
         public bool IsMatch(string message)

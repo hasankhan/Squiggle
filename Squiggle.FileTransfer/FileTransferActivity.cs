@@ -6,18 +6,20 @@ using System.ComponentModel.Composition;
 using System.IO;
 using Squiggle.Client.Activities;
 using Squiggle.Core.Chat.Activity;
+using Squiggle.Plugins;
+using System.Threading.Tasks;
 
 namespace Squiggle.FileTransfer
 {
     [Export(typeof(IActivity))]
-    public class FileTransfer: IActivity
+    public class FileTransferActivity: IActivity
     {
-        public Guid Id
+        public virtual Guid Id
         {
             get { return SquiggleActivities.FileTransfer; }
         }
 
-        public string Title
+        public virtual string Title
         {
             get { return "File Transfer"; }
         }
@@ -26,6 +28,7 @@ namespace Squiggle.FileTransfer
         {
             var inviteData = new FileInviteData(metadata);
             IFileTransferHandler handler = new FileTransferHandler(executor, inviteData.Name, inviteData.Size);
+
             return handler;
         }
 
@@ -36,12 +39,13 @@ namespace Squiggle.FileTransfer
 
             var stream = (Stream)args["content"];
 
-            var inviteData = new FileInviteData(args.ToDictionary(x=>x.Key, x=>x.Value.ToString()));
+            var inviteData = new FileInviteData(args.ToDictionary(x => x.Key, x => x.Value.ToString()));
             IFileTransferHandler handler = new FileTransferHandler(executor, inviteData.Name, inviteData.Size, stream);
+
             return handler;
         }
 
-        public IDictionary<string, object> LaunchInviteUI()
+        public virtual Task<IDictionary<string, object>> LaunchInviteUI(ISquiggleContext context, IChatWindow window)
         {
             throw new NotImplementedException();
         }

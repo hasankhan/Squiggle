@@ -4,14 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 namespace Squiggle.Plugins
 {
-    public interface IChatWindow
+    public interface IChatWindow: IWindow
     {
         System.Collections.Generic.IEnumerable<IBuddy> Buddies { get; }
         void Invite(IBuddy buddy);
         void Invite(System.Collections.Generic.IEnumerable<IBuddy> buddies);
         bool IsGroupChat { get; }
         IBuddy PrimaryBuddy { get; }
-        void Restore();
         void SaveTo(string fileName, string format);
         void SendBuzz();
         void SendFile();

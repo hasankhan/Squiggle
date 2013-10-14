@@ -23,7 +23,12 @@ namespace Squiggle.UI.Helpers
 
         public void LoadActivitiesMenu(MenuItem mnuStartActivity, MenuItem mnuNoActivity, ICommand handler)
         {
-            var activities = context.PluginLoader.Activities.Where(a => !SquiggleActivities.All.Contains(a.Id));
+            var activities = from activity in context.PluginLoader.Activities
+                             let isBuiltIn = SquiggleActivities.All.Contains(activity.Id)
+                             let isDerivedActivity = typeof(IActivity).IsAssignableFrom(activity.GetType().BaseType)
+                             where !isBuiltIn || isDerivedActivity
+                             select activity;
+
             foreach (IActivity activity in activities)
             {
                 var item = new MenuItem();

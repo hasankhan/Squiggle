@@ -18,7 +18,7 @@
     <OutputPath>bin\x86\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisLogFile>bin\Debug\Squiggle.Infrastructure.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
@@ -78,6 +78,19 @@
     <Compile Include="Core\Presence\IPresenceService.cs" />
     <Compile Include="Core\Presence\IUserInfo.cs" />
     <Compile Include="Core\Presence\UserStatus.cs" />
+    <Compile Include="Plugins\Authentication\AuthenticationResult.cs" />
+    <Compile Include="Plugins\Authentication\AuthenticationStatus.cs" />
+    <Compile Include="Plugins\Authentication\IAuthenticationProvider.cs" />
+    <Compile Include="Plugins\Authentication\UserDetails.cs" />
+    <Compile Include="Plugins\IChatWindow.cs" />
+    <Compile Include="Plugins\IExtension.cs" />
+    <Compile Include="Plugins\IMainWindow.cs" />
+    <Compile Include="Plugins\ISquiggleContext.cs" />
+    <Compile Include="Plugins\IWindow.cs" />
+    <Compile Include="Plugins\MessageFilter\FilterDirection.cs" />
+    <Compile Include="Plugins\MessageFilter\IMessageFilter.cs" />
+    <Compile Include="Plugins\MessageParser\IMessageParser.cs" />
+    <Compile Include="Plugins\MessageParser\MessageParseResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\Shared\AssemblyInfo.Copyright.cs">
       <Link>Properties\AssemblyInfo.Copyright</Link>
