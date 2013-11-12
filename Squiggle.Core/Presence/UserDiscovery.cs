@@ -184,14 +184,14 @@ namespace Squiggle.Core.Presence
 
         void OnUserUpdated(IUserInfo newUser)
         {
-            IUserInfo oldUser = onlineUsers[newUser.ID];
-            if (oldUser == null)
-                OnPresenceMessage(newUser, discovered: true);
-            else
+            IUserInfo oldUser;            
+            if (onlineUsers.TryGetValue(newUser.ID, out oldUser))
             {
                 oldUser.Update(newUser);
                 UserUpdated(this, new UserEventArgs() { User = oldUser });
             }
+            else
+                OnPresenceMessage(newUser, discovered: true);
         }
 
         void AskForUserInfo(ISquiggleEndPoint user, UserInfoState state)
