@@ -55,17 +55,29 @@ namespace Squiggle.VoiceChat
         {
             lock (syncRoot)
             {
-                while (remoteSound.BufferedBytes >= bytesPerFrame && localSound.BufferedBytes >= bytesPerFrame)
-                {
-                    // read source of echo
-                    remoteSound.Read(remoteFrame, 0, bytesPerFrame);
-                    // read local sound + echo
-                    localSound.Read(localFrame, 0, bytesPerFrame);
-
-                    filter.Filter(localFrame, remoteFrame, outputFrame);
-                    filtered.AddSamples(outputFrame, 0, outputFrame.Length);
-                }
+                FilterEcho();
                 return filtered.Read(buffer, offset, count);
+            }
+        }
+
+        void FilterEcho()
+        {
+            while (remoteSound.BufferedBytes >= bytesPerFrame && localSound.BufferedBytes >= bytesPerFrame)
+            {
+                // read source of echo
+                remoteSound.Read(remoteFrame, 0, bytesPerFrame);
+                // read local sound + echo
+                localSound.Read(localFrame, 0, bytesPerFrame);
+
+                filter.Filter(localFrame, remoteFrame, outputFrame);
+                filtered.AddSamples(outputFrame, 0, outputFrame.Length);
+            }
+
+            // read the remaining remote sound and play it
+            while (remoteSound.BufferedBytes > 0)
+            {
+                remoteSound.Read(remoteFrame, 0, bytesPerFrame);
+                filtered.AddSamples(remoteFrame, 0, remoteFrame.Length);
             }
         }
 

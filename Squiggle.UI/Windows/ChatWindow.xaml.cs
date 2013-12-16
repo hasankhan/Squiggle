@@ -623,9 +623,6 @@ namespace Squiggle.UI.Windows
 
             var voiceChat = (IVoiceChatHandler)StartActivity(SquiggleActivities.VoiceChat, null);
 
-            if (voiceChat != null)
-                chatTextBox.AddVoiceChatSentRequest(context, voiceChat, PrimaryBuddy.DisplayName);
-            
             return voiceChat;
         }        
 
