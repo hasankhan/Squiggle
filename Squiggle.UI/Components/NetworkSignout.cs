@@ -5,6 +5,7 @@ using Squiggle.UI.Helpers;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Threading;
 using Squiggle.Plugins;
+using System.Threading.Tasks;
 
 namespace Squiggle.UI.Components
 {
@@ -39,15 +40,13 @@ namespace Squiggle.UI.Components
             loggedIn = false;
         }
 
-        void NetworkChange_NetworkAvailabilityChanged(object sender, System.Net.NetworkInformation.NetworkAvailabilityEventArgs e)
+        async void NetworkChange_NetworkAvailabilityChanged(object sender, System.Net.NetworkInformation.NetworkAvailabilityEventArgs e)
         {
             if (e.IsAvailable)
             {
-                dispatcher.Delay(()=>
-                {
-                    if (autoSignout && signInOptions!=null && !loggedIn)
-                        signInFunction(signInOptions);
-                }, 10.Seconds());
+                await Task.Delay(10.Seconds());
+                if (autoSignout && signInOptions != null && !loggedIn)
+                    signInFunction(signInOptions);
             }
             else
             {

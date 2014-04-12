@@ -22,33 +22,26 @@ namespace Squiggle.Screenshot
             get { return "Screenshot"; }
         }
 
-        public override Task<IDictionary<string, object>> LaunchInviteUI(ISquiggleContext context, IChatWindow window)
+        public override async Task<IDictionary<string, object>> LaunchInviteUI(ISquiggleContext context, IChatWindow window)
         {
-            var tsc = new TaskCompletionSource<IDictionary<string, object>>();
-
             string fileName = String.Format("Screenshot_{0:yyMMddHHmmss}.jpg", DateTime.Now);
 
             var chatWindow = ((Window)window);
             chatWindow.WindowState = WindowState.Minimized;
 
-            chatWindow.Dispatcher.Delay(()=>
-            {
-                Stream stream = CaptureScreen();
-                window.Restore();
+            await Task.Delay(1.Seconds());
+            Stream stream = CaptureScreen();
+            window.Restore();
 
-                var args = new Dictionary<string, object>() 
-                { 
-                    { "name",  fileName }, 
-                    { "content", stream }, 
-                    { "size", stream.Length } 
-                };
-                stream.Seek(0, SeekOrigin.Begin);
+            var args = new Dictionary<string, object>() 
+            { 
+                { "name",  fileName }, 
+                { "content", stream }, 
+                { "size", stream.Length } 
+            };
+            stream.Seek(0, SeekOrigin.Begin);
 
-                tsc.SetResult(args);
-            
-            }, TimeSpan.FromSeconds(1));
-
-            return tsc.Task;
+            return args;
         }
 
         private Stream CaptureScreen()

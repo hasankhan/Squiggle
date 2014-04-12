@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -110,20 +111,17 @@ namespace Squiggle.UI.Controls
             AsyncInvoke(action, () => { });
         }
 
-        void AsyncInvoke(Action action, Action onComplete)
+        async void AsyncInvoke(Action action, Action onComplete)
         {
             busyIndicator.IsBusy = true;
-            Async.Invoke(() =>
+            await Task.Run(() =>
             {
                 Exception ex;
                 if (!ExceptionMonster.EatTheException(action, "searching history", out ex))                
                     MessageBox.Show(ex.Message);
-            },
-            () =>
-            {
-                onComplete();
-                busyIndicator.IsBusy = false;
             });
+            onComplete();
+            busyIndicator.IsBusy = false;
         }
 
         private void results_ContextMenuOpening(object sender, ContextMenuEventArgs e)

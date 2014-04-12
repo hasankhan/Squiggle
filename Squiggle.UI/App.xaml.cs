@@ -99,7 +99,6 @@ namespace Squiggle.UI
                 RunInBackground = e.Args[0].Trim() == "/background";
 
             Translation.Initialize();
-            Async.UIScheduler = TaskScheduler.FromCurrentSynchronizationContext();
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)

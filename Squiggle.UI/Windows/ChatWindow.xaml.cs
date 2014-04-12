@@ -199,25 +199,20 @@ namespace Squiggle.UI.Windows
             eventQueue.Open();
         }
 
-        void ChatWindow_StateChanged(object sender, EventArgs e)
+        async void ChatWindow_StateChanged(object sender, EventArgs e)
         {
             if (this.WindowState != System.Windows.WindowState.Minimized)
                 lastWindowState = this.WindowState;
 
-            Dispatcher.Invoke(() =>
+            if (this.WindowState != System.Windows.WindowState.Minimized)
             {
-                if (this.WindowState != System.Windows.WindowState.Minimized)
+                if (chatState.BuzzPending)
                 {
-                    if (chatState.BuzzPending)
-                    {
-                        Dispatcher.Delay(() =>
-                        {
-                            DoBuzzAction();
-                        }, TimeSpan.FromSeconds(.5));
-                        chatState.BuzzPending = false;
-                    }
+                    await Task.Delay(TimeSpan.FromSeconds(.5));
+                    DoBuzzAction();
+                    chatState.BuzzPending = false;
                 }
-            });
+            }
         }
 
         private void txtMessage_PreviewKeyDown(object sender, KeyEventArgs e)

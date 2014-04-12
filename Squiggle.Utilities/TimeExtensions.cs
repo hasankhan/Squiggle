@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Squiggle.Utilities
+namespace System
 {
     public static class TimeExtensions
     {

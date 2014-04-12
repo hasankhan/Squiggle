@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Squiggle.Core.Chat.Transport.Host;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Threading;
@@ -46,7 +47,7 @@ namespace Squiggle.Core.Chat.Activity
         {
             session.ChatHost.ActivityInvitationAccepted += chatHost_ActivityInvitationAccepted;
             session.ChatHost.ActivitySessionCancelled += chatHost_ActivitySessionCancelled;
-            Async.Invoke(() =>
+            Task.Run(() =>
             {
                 IEnumerable<KeyValuePair<string, string>> metadata = handler.CreateInviteMetadata();
                 bool success = session.SendInvite(activityId, metadata);

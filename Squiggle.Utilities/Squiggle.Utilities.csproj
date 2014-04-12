@@ -92,10 +92,8 @@
     <Compile Include="Security\ProtectedData.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Threading\ActionQueue.cs" />
-    <Compile Include="Threading\Async.cs" />
     <Compile Include="CoalesceExtensions.cs" />
     <Compile Include="Application\ConfigReader.cs" />
-    <Compile Include="Threading\DispatcherExtensions.cs" />
     <Compile Include="Net\Pipe\MessagePipe.cs" />
     <Compile Include="Net\Pipe\MessageReceivedEventArgs.cs" />
     <Compile Include="Serialization\SerializationHelper.cs" />

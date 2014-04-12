@@ -16,6 +16,7 @@ using BuddyResolver = System.Func<string, Squiggle.Client.Buddy>;
 using Squiggle.Core.Chat.Activity;
 using Squiggle.Utilities.Threading;
 using Squiggle.History.DAL.Entities;
+using System.Threading.Tasks;
 
 namespace Squiggle.Client
 {    
@@ -71,7 +72,7 @@ namespace Squiggle.Client
 
         public void SendMessage(Guid id, string fontName, int fontSize, Color color, FontStyle fontStyle, string message)
         {
-            Async.Invoke(() =>
+            Task.Run(() =>
             {
                 Exception ex;
                 if (!ExceptionMonster.EatTheException(()=>
@@ -89,7 +90,7 @@ namespace Squiggle.Client
 
         public void UpdateMessage(Guid id, string message)
         {
-            Async.Invoke(() =>
+            Task.Run(() =>
             {
                 Exception ex;
                 if (!ExceptionMonster.EatTheException(() =>
@@ -107,7 +108,7 @@ namespace Squiggle.Client
 
         public void NotifyTyping()
         {
-            Async.Invoke(() => 
+            Task.Run(() => 
             {
                 ExceptionMonster.EatTheException(() => session.NotifyTyping(), "sending typing message");
             });
@@ -115,7 +116,7 @@ namespace Squiggle.Client
 
         public void SendBuzz()
         {
-            Async.Invoke(() =>
+            Task.Run(() =>
             {
                 ExceptionMonster.EatTheException(() => session.SendBuzz(), "sending buzz");
                 LogHistory(EventType.Buzz, self);
@@ -132,7 +133,7 @@ namespace Squiggle.Client
 
         public void Leave()
         {
-            Async.Invoke(() =>
+            Task.Run(() =>
             {
                 ExceptionMonster.EatTheException(() => session.End(), "leaving chat");
                 LogHistory(EventType.Left, self);
@@ -141,7 +142,7 @@ namespace Squiggle.Client
 
         public void Invite(IBuddy buddy)
         {
-            Async.Invoke(() =>
+            Task.Run(() =>
             {
                 var endpoint = new SquiggleEndPoint(buddy.Id, ((Buddy)buddy).ChatEndPoint);
                 ExceptionMonster.EatTheException(() => session.Invite(endpoint), "sending chat invite to " + endpoint);

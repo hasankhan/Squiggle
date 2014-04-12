@@ -19,6 +19,7 @@ using Squiggle.Utilities;
 using Squiggle.Utilities.Threading;
 using Squiggle.Plugins;
 using Squiggle.History;
+using System.Threading.Tasks;
 
 namespace Squiggle.UI.Windows
 {
@@ -43,7 +44,7 @@ namespace Squiggle.UI.Windows
             new PositionHelper(this, Properties.Settings.Default).Initialize();
         }       
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (App.RunInBackground)
                 this.Hide();
@@ -91,7 +92,8 @@ namespace Squiggle.UI.Windows
                     Password = settings.PersonalSettings.Password,
                     Domain = settings.PersonalSettings.Domain
                 };
-                Dispatcher.Delay(() => SignIn(signInOptions, false), 5.Seconds());
+                await Task.Delay(5.Seconds());
+                SignIn(signInOptions, false);
             }
             else if (settings.PersonalSettings.RememberMe)
                 chatControl.SignIn.RememberMe = true;
@@ -366,7 +368,7 @@ namespace Squiggle.UI.Windows
             SignIn(options, true);
         }
 
-        void SignIn(SignInOptions options, bool byUser)
+        async void SignIn(SignInOptions options, bool byUser)
         {
             if (context.ChatClient.IsLoggedIn)
                 return;
@@ -375,25 +377,23 @@ namespace Squiggle.UI.Windows
 
             Exception ex = null;
 
-            Async.Invoke(() =>
+            await Task.Run(()=>
             {
                 clientAvailable.Wait();
                 SettingsProvider.Current.Load();
                 var loginHelper = new LoginHelper(context.PluginLoader.AuthenticationProvider, SettingsProvider.Current.Settings, context.ChatClient); 
                 ExceptionMonster.EatTheException(() => loginHelper.Login(options), "logging in", out ex);
-            },
-            () =>
-            {
-                busyIndicator.IsBusy = false;
-
-                if (ex != null && byUser)
-                {
-                    MessageBox.Show(ex.Message, Translation.Instance.Error, MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-
-                OnSignIn(options);
             });
+
+            busyIndicator.IsBusy = false;
+
+            if (ex != null && byUser)
+            {
+                MessageBox.Show(ex.Message, Translation.Instance.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            OnSignIn(options);
         }
 
         void OnBuddyChanged(BuddyEventArgs e)
@@ -433,32 +433,29 @@ namespace Squiggle.UI.Windows
             CheckForUpdates();
         }
 
-        void SignOut(bool byUser)
+        async void SignOut(bool byUser)
         {
             if (context.ChatClient == null || !context.ChatClient.IsLoggedIn)
                 return;
 
             clientAvailable.Begin();
 
-            Dispatcher.Invoke((Action)(() =>
+            // Can't chat with chat service stopped. End all sessions.
+            foreach (var window in chatWindows)
+                window.EndChat();
+
+            DestroyMonitor();
+
+            chatControl.SignIn.DisplayName = context.ChatClient.CurrentUser.DisplayName;
+            chatControl.SignIn.GroupName = context.ChatClient.CurrentUser.Properties.GroupName;
+
+            await Task.Run(() =>
             {
-                // Can't chat with chat service stopped. End all sessions.
-                foreach (var window in chatWindows)
-                    window.EndChat();
+                ExceptionMonster.EatTheException(() => context.ChatClient.Logout(), "logging out client");
+                clientAvailable.End();
+            });
 
-                DestroyMonitor();
-
-                chatControl.SignIn.DisplayName = context.ChatClient.CurrentUser.DisplayName;
-                chatControl.SignIn.GroupName = context.ChatClient.CurrentUser.Properties.GroupName;
-
-                Async.Invoke(() =>
-                {
-                    ExceptionMonster.EatTheException(() => context.ChatClient.Logout(), "logging out client");
-                    clientAvailable.End();
-                });
-
-                OnSignout(byUser);
-            }));
+            OnSignout(byUser);
         }
 
         void UpdateSortMenu()
@@ -472,14 +469,13 @@ namespace Squiggle.UI.Windows
             mnuGroupBuddies.IsChecked = SettingsProvider.Current.Settings.ContactSettings.GroupContacts;
         }
 
-        void CheckForUpdates()
+        async void CheckForUpdates()
         {
             if (!SettingsProvider.Current.Settings.GeneralSettings.CheckForUpdates)
                 return;
 
-            UpdateCheckResult result = null;
-            Async.Invoke(() => result = UpdateNotifier.CheckForUpdate(SettingsProvider.Current.Settings.GeneralSettings.FirstRun),
-                         () => OnUpdateCheckComplete(result));
+            UpdateCheckResult result = await Task.Run(() => UpdateNotifier.CheckForUpdate(SettingsProvider.Current.Settings.GeneralSettings.FirstRun));
+            OnUpdateCheckComplete(result);
         }
 
         static void AddGroupName(string groupName)

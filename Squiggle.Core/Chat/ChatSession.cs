@@ -158,7 +158,7 @@ namespace Squiggle.Core.Chat
             if (e.SessionID != Id)
                 return;
 
-            Async.Invoke(() =>
+            Task.Run(() =>
             {
                 ExceptionMonster.EatTheException(() =>
                 {

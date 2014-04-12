@@ -12,6 +12,7 @@ using Squiggle.Utilities.Net;
 using Squiggle.Utilities.Net.Pipe;
 using Squiggle.Utilities.Threading;
 using Squiggle.Core.Presence.Transport.Multicast.Tcp;
+using System.Threading.Tasks;
 
 namespace Squiggle.Core.Presence.Transport
 {
@@ -95,7 +96,7 @@ namespace Squiggle.Core.Presence.Transport
 
         void OnMessageReceived(MessageReceivedEventArgs e)
         {
-            Async.Invoke(() =>
+            Task.Run(() =>
             {
                 if (!e.Message.ChannelID.Equals(ChannelID))
                     MessageReceived(this, e);
