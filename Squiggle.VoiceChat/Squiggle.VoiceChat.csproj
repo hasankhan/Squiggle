@@ -78,10 +78,6 @@
     <Compile Include="VoiceChatActivity.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Libraries\NAudio\NAudio-license.txt">
-      <Link>NAudio-license.txt</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="..\Libraries\Speex\libspeex-license.txt">
       <Link>libspeex-license.txt</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -112,7 +108,6 @@
 copy "$(TargetDir)\libspeex-license.txt" "$(SolutionDir)\Libraries\Plugins" /y
 copy "$(TargetDir)\libspeexdsp.dll" "$(SolutionDir)\Libraries\Plugins" /y
 copy "$(TargetDir)\NAudio.dll" "$(SolutionDir)\Libraries\Plugins" /y
-copy "$(TargetDir)\NAudio-license.txt" "$(SolutionDir)\Libraries\Plugins" /y
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

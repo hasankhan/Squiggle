@@ -3,11 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using ProtoBuf.Meta;
+using System.Runtime.Serialization;
 
 namespace Squiggle.Utilities.Serialization
 {
     public class SerializationHelper
     {
+        static SerializationHelper()
+        {
+            RuntimeTypeModel.Default.AllowParseableTypes = true;
+        }
+
         public static byte[] Serialize<T>(T item)
         {
             var stream = new MemoryStream();
