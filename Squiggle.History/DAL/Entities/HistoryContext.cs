@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data.Entity;
+using System.Data.Common;
 
 namespace Squiggle.History.DAL.Entities
 {
@@ -13,7 +14,8 @@ namespace Squiggle.History.DAL.Entities
         public DbSet<Event> Events { get; set; }
         public DbSet<StatusUpdate> StatusUpdates { get; set; }
 
-        public HistoryContext(string nameOrConnectionString): base(nameOrConnectionString)
+        public HistoryContext(DbConnection connection, bool contextOwnsConnection)
+            : base(connection, contextOwnsConnection)
         {
         }
     }

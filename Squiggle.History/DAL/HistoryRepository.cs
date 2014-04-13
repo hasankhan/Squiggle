@@ -13,9 +13,9 @@ namespace Squiggle.History.DAL
     {
         HistoryContext context;
 
-        public HistoryRepository(string nameOrConnectionString)
+        public HistoryRepository(HistoryContext context)
         {
-            this.context = new HistoryContext(nameOrConnectionString);
+            this.context = context;
         }
 
         public void AddSessionEvent(Guid sessionId, DateTime stamp, EventType type, Guid sender, string senderName, IEnumerable<Guid> recipients, string data)
