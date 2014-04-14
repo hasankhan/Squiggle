@@ -2,24 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ZMQ;
 using System.Net;
+using NetMQ;
 
 namespace Squiggle.Utilities.Net.Pipe
 {
     public class MulticastMessagePipe: MessagePipe
     {
         IPAddress multicastAddress;
-        Socket publisher;
+        NetMQSocket publisher;
 
         public MulticastMessagePipe(IPEndPoint bindTo, IPAddress multicastAddress): base(bindTo)
         {
             this.multicastAddress = multicastAddress;
         }
 
-        protected override Socket CreateListener()
+        protected override NetMQSocket CreateListener()
         {
-            var listener = GetSocket(SocketType.SUB);
+            NetMQSocket listener = this.Context.CreateSubscriberSocket();
             string bindTo = CreateAddress();
             listener.Connect(bindTo);
 
@@ -30,7 +30,7 @@ namespace Squiggle.Utilities.Net.Pipe
         {
             if (publisher == null)
             {
-                publisher = GetSocket(SocketType.PUB);
+                publisher = this.Context.CreatePublisherSocket();
                 publisher.Connect(CreateAddress());
             }
 

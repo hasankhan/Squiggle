@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ZMQ;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
+using NetMQ;
 
 namespace Squiggle.Utilities.Net.Pipe
 {
     public abstract class MessagePipe : IDisposable
     {
-        Context context;
-
-        Socket listener;
+        NetMQSocket listener;
         Task listenTask;
         CancellationTokenSource listenCancelToken;
         int listenTimeout = (int)1.Seconds().TotalMilliseconds;
+
+        protected NetMQContext Context { get; private set; }
 
         protected string Host { get; private set; }
         protected int Port { get; private set; }
@@ -36,26 +36,19 @@ namespace Squiggle.Utilities.Net.Pipe
 
         public void Open()
         {
-            context = new Context(2);
+            Context = NetMQContext.Create();
             this.listener = CreateListener();
 
             listenTask.Start(TaskScheduler.Default);
         }
 
-        protected Socket GetSocket(SocketType type)
-        {
-            var socket = context.Socket(type);
-            socket.Linger = 0;
-            return socket;
-        }
-
-        protected abstract Socket CreateListener();
+        protected abstract NetMQSocket CreateListener();
         
         void Listen()
         {
             while (!listenCancelToken.Token.IsCancellationRequested)
             {
-                byte[] data = listener.Recv(listenTimeout);
+                byte[] data = listener.Receive();
                 if (data != null)
                     MessageReceived(this, new MessageReceivedEventArgs() { Message = data });
             }
@@ -87,7 +80,7 @@ namespace Squiggle.Utilities.Net.Pipe
 
             if (listener != null)
                 listener.Dispose();
-            context.Dispose();
+            this.Context.Dispose();
         }
 
         ~MessagePipe()

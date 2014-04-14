@@ -2,23 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ZMQ;
 using System.Net;
+using NetMQ;
 
 namespace Squiggle.Utilities.Net.Pipe
 {
     public class UnicastMessagePipe: MessagePipe
     {
-        Dictionary<string, Socket> sockets;
+        Dictionary<string, NetMQSocket> sockets;
 
         public UnicastMessagePipe(IPEndPoint localEndPoint) : base(localEndPoint)
         {
-            this.sockets = new Dictionary<string, Socket>();
+            this.sockets = new Dictionary<string, NetMQSocket>();
         }
 
-        protected override Socket CreateListener()
+        protected override NetMQSocket CreateListener()
         {
-            var listener = GetSocket(SocketType.PULL);
+            NetMQSocket listener = this.Context.CreatePullSocket();
             string bindTo = CreateAddress("tcp", Host, Port);
             listener.Bind(bindTo);
 
@@ -33,11 +33,11 @@ namespace Squiggle.Utilities.Net.Pipe
         public void Send(string host, int port, byte[] message)
         {
             string target = CreateAddress("tcp", host, port);
-            Socket socket;
+            NetMQSocket socket;
             lock (sockets)
                 if (!sockets.TryGetValue(target, out socket))
                 {
-                    sockets[target] = socket = GetSocket(SocketType.PUSH);
+                    sockets[target] = socket = this.Context.CreatePushSocket();
                     socket.Connect(target);
                 }
 
@@ -46,7 +46,7 @@ namespace Squiggle.Utilities.Net.Pipe
 
         protected override void Dispose(bool disposing)
         {
-            foreach (Socket socket in sockets.Values)
+            foreach (NetMQSocket socket in sockets.Values)
                 socket.Dispose();
 
             base.Dispose(disposing);
