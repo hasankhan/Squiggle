@@ -1,5 +1,5 @@
 $scriptDir = Split-Path $script:MyInvocation.MyCommand.Path
-$releasePath = "bin\x86\Release"
+$releasePath = "bin"
 
 $version = (Select-String $scriptDir\..\Shared\AssemblyInfo.Version.cs -pattern 'AssemblyVersion[(]"((\d\.\d)\.\d\.\d)').Matches[0]
 $longVersion = $version.Groups[1].Value
@@ -27,7 +27,7 @@ function Main()
 function Package-All()
 {
     Package Squiggle.UI\$releasePath Client $shortVersion
-    copy "$scriptDir\..\Squiggle.Setup\bin\Release\Squiggle.Setup.msi" "$scriptDir\Squiggle-$shortVersion Client.msi"
+    copy "$scriptDir\..\Squiggle.Setup\$releasePath\Squiggle.Setup.msi" "$scriptDir\Squiggle-$shortVersion Client.msi"
 
     Package Squiggle.Bridge\$releasePath Bridge $shortVersion
     Package Squiggle.Multicast\$releasePath Multicast $shortVersion

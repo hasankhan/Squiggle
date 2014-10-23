@@ -2,185 +2,173 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
   <Fragment>
     <DirectoryRef Id="INSTALLDIR">
-      <Component Id="clrzmq.dll" Guid="2FA82E7D-A0D0-4922-BA9B-AD226A805506">
-        <File Id="clrzmq.dll" Name="clrzmq.dll" Source="..\Squiggle.UI\bin\x86\Release\clrzmq.dll" KeyPath="yes" Checksum="yes"/>
+      <Component Id="NetMQ.dll" Guid="2FA82E7D-A0D0-4922-BA9B-AD226A805506">
+        <File Id="NetMQ.dll" Name="NetMQ.dll" Source="..\Squiggle.UI\bin\NetMQ.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="EntityFramework.dll" Guid="1DEA8B49-A9D0-49A6-97AA-9393B54E961B">
-        <File Id="EntityFramework.dll" Name="EntityFramework.dll" Source="..\Squiggle.UI\bin\x86\Release\EntityFramework.dll" KeyPath="yes" Checksum="yes"/>
+        <File Id="EntityFramework.dll" Name="EntityFramework.dll" Source="..\Squiggle.UI\bin\EntityFramework.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="EntityFramework.SqlServer.dll" Guid="4448406B-1736-4054-8B74-315AA0FD69C7">
+        <File Id="EntityFramework.SqlServer.dll" Name="EntityFramework.SqlServer.dll" Source="..\Squiggle.UI\bin\EntityFramework.SqlServer.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="FluidKit.dll" Guid="16B2D5D7-E546-4204-830B-F3B142847ED4">
-        <File Id="FluidKit.dll" Name="FluidKit.dll" Source="..\Squiggle.UI\bin\x86\Release\FluidKit.dll" KeyPath="yes" Checksum="yes"/>
-      </Component>
-      <Component Id="libzmq.dll" Guid="50B20F67-F176-4092-B80C-8B514705CA6F">
-        <File Id="libzmq.dll" Name="libzmq.dll" Source="..\Squiggle.UI\bin\x86\Release\libzmq.dll" KeyPath="yes" Checksum="yes"/>
+        <File Id="FluidKit.dll" Name="FluidKit.dll" Source="..\Squiggle.UI\bin\FluidKit.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="protobuf_net.dll" Guid="B5694CCF-3156-4359-B073-2B119652E1F2">
-        <File Id="protobuf_net.dll" Name="protobuf-net.dll" Source="..\Squiggle.UI\bin\x86\Release\protobuf-net.dll" KeyPath="yes" Checksum="yes"/>
-      </Component>
-      <Component Id="sqlceca40.dll" Guid="3BC29C2B-9B7D-4B74-8167-698F5302BC00">
-        <File Id="sqlceca40.dll" Name="sqlceca40.dll" Source="..\Squiggle.UI\bin\x86\Release\sqlceca40.dll" KeyPath="yes" Checksum="yes"/>
-      </Component>
-      <Component Id="sqlcecompact40.dll" Guid="4B81A7D2-28A1-4BC2-B2D5-128EA317FF9E">
-        <File Id="sqlcecompact40.dll" Name="sqlcecompact40.dll" Source="..\Squiggle.UI\bin\x86\Release\sqlcecompact40.dll" KeyPath="yes" Checksum="yes"/>
-      </Component>
-      <Component Id="sqlceer40EN.dll" Guid="175DE5D1-5DFB-4F7B-BE3B-D3B42381454A">
-        <File Id="sqlceer40EN.dll" Name="sqlceer40EN.dll" Source="..\Squiggle.UI\bin\x86\Release\sqlceer40EN.dll" KeyPath="yes" Checksum="yes"/>
-      </Component>
-      <Component Id="sqlceme40.dll" Guid="44A5BEA5-7196-482D-AB38-69EA178D2632">
-        <File Id="sqlceme40.dll" Name="sqlceme40.dll" Source="..\Squiggle.UI\bin\x86\Release\sqlceme40.dll" KeyPath="yes" Checksum="yes"/>
-      </Component>
-      <Component Id="sqlceqp40.dll" Guid="4B913756-4D8F-4277-A58B-B062A6881598">
-        <File Id="sqlceqp40.dll" Name="sqlceqp40.dll" Source="..\Squiggle.UI\bin\x86\Release\sqlceqp40.dll" KeyPath="yes" Checksum="yes"/>
-      </Component>
-      <Component Id="sqlcese40.dll" Guid="C8D50336-F596-4336-B3F7-A1899C56C6C6">
-        <File Id="sqlcese40.dll" Name="sqlcese40.dll" Source="..\Squiggle.UI\bin\x86\Release\sqlcese40.dll" KeyPath="yes" Checksum="yes"/>
+        <File Id="protobuf_net.dll" Name="protobuf-net.dll" Source="..\Squiggle.UI\bin\protobuf-net.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="Squiggle.Client.dll" Guid="C98978DB-F81F-42C3-8403-C60001792A56">
-        <File Id="Squiggle.Client.dll" Name="Squiggle.Client.dll" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.Client.dll" KeyPath="yes" Checksum="yes"/>
+        <File Id="Squiggle.Client.dll" Name="Squiggle.Client.dll" Source="..\Squiggle.UI\bin\Squiggle.Client.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="Squiggle.Core.dll" Guid="8EAE5E78-63D9-4201-B178-B2DA4A9B6236">
-        <File Id="Squiggle.Core.dll" Name="Squiggle.Core.dll" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.Core.dll" KeyPath="yes" Checksum="yes"/>
+        <File Id="Squiggle.Core.dll" Name="Squiggle.Core.dll" Source="..\Squiggle.UI\bin\Squiggle.Core.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="Squiggle.exe" Guid="CC592F6D-A860-44B4-B687-C42F1F3684DF">
-        <File Id="Squiggle.exe" Name="Squiggle.exe" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.exe" KeyPath="yes" Checksum="yes"/>
+        <File Id="Squiggle.exe" Name="Squiggle.exe" Source="..\Squiggle.UI\bin\Squiggle.exe" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="Squiggle.exe.config" Guid="3FB40669-AC1C-4494-80BB-787E2677B88E">
-        <File Id="Squiggle.exe.config" Name="Squiggle.exe.config" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.exe.config" KeyPath="yes"/>
+        <File Id="Squiggle.exe.config" Name="Squiggle.exe.config" Source="..\Squiggle.UI\bin\Squiggle.exe.config" KeyPath="yes"/>
       </Component>
       <Component Id="Squiggle.History.dll" Guid="1067C293-E032-4650-8868-E6D3099B147A">
-        <File Id="Squiggle.History.dll" Name="Squiggle.History.dll" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.History.dll" KeyPath="yes" Checksum="yes"/>
+        <File Id="Squiggle.History.dll" Name="Squiggle.History.dll" Source="..\Squiggle.UI\bin\Squiggle.History.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="Squiggle.Infrastructure.dll" Guid="9DD6D939-4475-4974-A587-B043933210FF">
-        <File Id="Squiggle.Infrastructure.dll" Name="Squiggle.Infrastructure.dll" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.Infrastructure.dll" KeyPath="yes" Checksum="yes"/>
+        <File Id="Squiggle.Infrastructure.dll" Name="Squiggle.Infrastructure.dll" Source="..\Squiggle.UI\bin\Squiggle.Infrastructure.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="Squiggle.Utilities.dll" Guid="9B671FD9-9786-4D10-A916-5E1123B159BD">
-        <File Id="Squiggle.Utilities.dll" Name="Squiggle.Utilities.dll" Source="..\Squiggle.UI\bin\x86\Release\Squiggle.Utilities.dll" KeyPath="yes" Checksum="yes"/>
+        <File Id="Squiggle.Utilities.dll" Name="Squiggle.Utilities.dll" Source="..\Squiggle.UI\bin\Squiggle.Utilities.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
-      <Component Id="System.Data.SqlServerCe.dll" Guid="36050AF7-0A2C-4C14-988F-16CF2FDD38F9">
-        <File Id="System.Data.SqlServerCe.dll" Name="System.Data.SqlServerCe.dll" Source="..\Squiggle.UI\bin\x86\Release\System.Data.SqlServerCe.dll" KeyPath="yes" Checksum="yes"/>
+      <Component Id="System.Data.SQLite.dll" Guid="36050AF7-0A2C-4C14-988F-16CF2FDD38F9">
+        <File Id="System.Data.SQLite.dll" Name="System.Data.SQLite.dll" Source="..\Squiggle.UI\bin\System.Data.SQLite.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
-      <Component Id="System.Data.SqlServerCe.Entity.dll" Guid="63B39472-3E47-4CEA-9A98-E99CB512137C">
-        <File Id="System.Data.SqlServerCe.Entity.dll" Name="System.Data.SqlServerCe.Entity.dll" Source="..\Squiggle.UI\bin\x86\Release\System.Data.SqlServerCe.Entity.dll" KeyPath="yes" Checksum="yes"/>
+      <Component Id="System.Data.SQLite.EF6.dll" Guid="7C856018-2AA9-4FD4-9F44-5E8A10A2FBB5">
+        <File Id="System.Data.SQLite.EF6.dll" Name="System.Data.SQLite.EF6.dll" Source="..\Squiggle.UI\bin\System.Data.SQLite.EF6.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="System.Data.SQLite.Linq.dll" Guid="D1F15B05-C20B-4F7B-B7F5-7F955FF93A02">
+        <File Id="System.Data.SQLite.Linq.dll" Name="System.Data.SQLite.Linq.dll" Source="..\Squiggle.UI\bin\System.Data.SQLite.Linq.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="SQLite.Interop.dll" Guid="162BE8BF-05E5-419F-80A0-1D37CE30CC8D">
+        <File Id="SQLite.Interop.dll" Name="SQLite.Interop.dll" Source="..\Squiggle.UI\bin\x86\SQLite.Interop.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
 
     <DirectoryRef Id="Status">
       <Component Id="away.png" Guid="A5FABD9C-0C4D-4039-83CD-D04642E20CD3">
-        <File Id="away.png" Name="away.png" Source="..\Squiggle.UI\bin\x86\Release\Images\Status\away.png" KeyPath="yes"/>
+        <File Id="away.png" Name="away.png" Source="..\Squiggle.UI\bin\Images\Status\away.png" KeyPath="yes"/>
       </Component>
       <Component Id="busy.png" Guid="E6B3A3D0-330E-4317-809A-87381AF439D4">
-        <File Id="busy.png" Name="busy.png" Source="..\Squiggle.UI\bin\x86\Release\Images\Status\busy.png" KeyPath="yes"/>
+        <File Id="busy.png" Name="busy.png" Source="..\Squiggle.UI\bin\Images\Status\busy.png" KeyPath="yes"/>
       </Component>
       <Component Id="offline.png" Guid="C1BCC72B-7212-414B-8EEA-AD2DB1C1BC72">
-        <File Id="offline.png" Name="offline.png" Source="..\Squiggle.UI\bin\x86\Release\Images\Status\offline.png" KeyPath="yes"/>
+        <File Id="offline.png" Name="offline.png" Source="..\Squiggle.UI\bin\Images\Status\offline.png" KeyPath="yes"/>
       </Component>
       <Component Id="online.png" Guid="D48830EE-049D-43AB-BC42-CED2528F8B16">
-        <File Id="online.png" Name="online.png" Source="..\Squiggle.UI\bin\x86\Release\Images\Status\online.png" KeyPath="yes"/>
+        <File Id="online.png" Name="online.png" Source="..\Squiggle.UI\bin\Images\Status\online.png" KeyPath="yes"/>
       </Component>
     </DirectoryRef>
 
     <DirectoryRef Id="Emoticons">
       <Component Id="angry.png" Guid="D483DDD8-B36A-4E9F-9DF6-E0D2CE330E34">
-        <File Id="angry.png" Name="angry.png" Source="..\Squiggle.UI\bin\x86\Release\Images\Emoticons\angry.png" KeyPath="yes"/>
+        <File Id="angry.png" Name="angry.png" Source="..\Squiggle.UI\bin\Images\Emoticons\angry.png" KeyPath="yes"/>
       </Component>
       <Component Id="blushing.png" Guid="B077DD99-AFA7-4A0C-9433-185FF18317B8">
-        <File Id="blushing.png" Name="blushing.png" Source="..\Squiggle.UI\bin\x86\Release\Images\Emoticons\blushing.png" KeyPath="yes"/>
+        <File Id="blushing.png" Name="blushing.png" Source="..\Squiggle.UI\bin\Images\Emoticons\blushing.png" KeyPath="yes"/>
       </Component>
       <Component Id="burn.png" Guid="31CCA493-2AAB-4741-8DA3-00CAFC122206">
-        <File Id="burn.png" Name="burn.png" Source="..\Squiggle.UI\bin\x86\Release\Images\Emoticons\burn.png" KeyPath="yes"/>
+        <File Id="burn.png" Name="burn.png" Source="..\Squiggle.UI\bin\Images\Emoticons\burn.png" KeyPath="yes"/>
       </Component>
       <Component Id="crying.png" Guid="5888765F-12C3-4C9B-95E9-4E5278A0C7BD">
-        <File Id="crying.png" Name="crying.png" Source="..\Squiggle.UI\bin\x86\Release\Images\Emoticons\crying.png" KeyPath="yes"/>
+        <File Id="crying.png" Name="crying.png" Source="..\Squiggle.UI\bin\Images\Emoticons\crying.png" KeyPath="yes"/>
       </Component>
       <Component Id="hot.png" Guid="76D5635D-03E6-438E-9683-0D517B1E7667">
-        <File Id="hot.png" Name="hot.png" Source="..\Squiggle.UI\bin\x86\Release\Images\Emoticons\hot.png" KeyPath="yes"/>
+        <File Id="hot.png" Name="hot.png" Source="..\Squiggle.UI\bin\Images\Emoticons\hot.png" KeyPath="yes"/>
       </Component>
       <Component Id="Icons_Author.txt" Guid="33E4CA93-0BD3-4C97-A305-3CAF5FA80B50">
-        <File Id="Icons_Author.txt" Name="Icons-Author.txt" Source="..\Squiggle.UI\bin\x86\Release\Images\Emoticons\Icons-Author.txt" KeyPath="yes"/>
+        <File Id="Icons_Author.txt" Name="Icons-Author.txt" Source="..\Squiggle.UI\bin\Images\Emoticons\Icons-Author.txt" KeyPath="yes"/>
       </Component>
       <Component Id="laughing.png" Guid="6437600D-780F-4B7A-AA23-0A27D3DD307C">
-        <File Id="laughing.png" Name="laughing.png" Source="..\Squiggle.UI\bin\x86\Release\Images\Emoticons\laughing.png" KeyPath="yes"/>
+        <File Id="laughing.png" Name="laughing.png" Source="..\Squiggle.UI\bin\Images\Emoticons\laughing.png" KeyPath="yes"/>
       </Component>
       <Component Id="love.png" Guid="7B085843-EF42-443F-ACAA-F65828571DD7">
-        <File Id="love.png" Name="love.png" Source="..\Squiggle.UI\bin\x86\Release\Images\Emoticons\love.png" KeyPath="yes"/>
+        <File Id="love.png" Name="love.png" Source="..\Squiggle.UI\bin\Images\Emoticons\love.png" KeyPath="yes"/>
       </Component>
       <Component Id="question.png" Guid="9C212CA7-9BA7-4681-95F7-6248238505ED">
-        <File Id="question.png" Name="question.png" Source="..\Squiggle.UI\bin\x86\Release\Images\Emoticons\question.png" KeyPath="yes"/>
+        <File Id="question.png" Name="question.png" Source="..\Squiggle.UI\bin\Images\Emoticons\question.png" KeyPath="yes"/>
       </Component>
       <Component Id="sad.png" Guid="03AF12BF-62AE-4296-81CF-DC32B0DABA8A">
-        <File Id="sad.png" Name="sad.png" Source="..\Squiggle.UI\bin\x86\Release\Images\Emoticons\sad.png" KeyPath="yes"/>
+        <File Id="sad.png" Name="sad.png" Source="..\Squiggle.UI\bin\Images\Emoticons\sad.png" KeyPath="yes"/>
       </Component>
       <Component Id="shout.png" Guid="AE391F72-4506-4F3A-8E32-B9B039D8107E">
-        <File Id="shout.png" Name="shout.png" Source="..\Squiggle.UI\bin\x86\Release\Images\Emoticons\shout.png" KeyPath="yes"/>
+        <File Id="shout.png" Name="shout.png" Source="..\Squiggle.UI\bin\Images\Emoticons\shout.png" KeyPath="yes"/>
       </Component>
       <Component Id="slobber.png" Guid="B3905482-9160-48ED-AFCA-31AED0C95ABF">
-        <File Id="slobber.png" Name="slobber.png" Source="..\Squiggle.UI\bin\x86\Release\Images\Emoticons\slobber.png" KeyPath="yes"/>
+        <File Id="slobber.png" Name="slobber.png" Source="..\Squiggle.UI\bin\Images\Emoticons\slobber.png" KeyPath="yes"/>
       </Component>
       <Component Id="smile.png" Guid="E70B4520-7563-4AB9-8A1C-BBE490F719FD">
-        <File Id="smile.png" Name="smile.png" Source="..\Squiggle.UI\bin\x86\Release\Images\Emoticons\smile.png" KeyPath="yes"/>
+        <File Id="smile.png" Name="smile.png" Source="..\Squiggle.UI\bin\Images\Emoticons\smile.png" KeyPath="yes"/>
       </Component>
       <Component Id="surprised.png" Guid="39EC31CD-A08F-4C77-89F1-59D9DAA5D2BF">
-        <File Id="surprised.png" Name="surprised.png" Source="..\Squiggle.UI\bin\x86\Release\Images\Emoticons\surprised.png" KeyPath="yes"/>
+        <File Id="surprised.png" Name="surprised.png" Source="..\Squiggle.UI\bin\Images\Emoticons\surprised.png" KeyPath="yes"/>
       </Component>
       <Component Id="tongue.png" Guid="B5A3F9F4-90B6-4B13-8D89-050162392FD4">
-        <File Id="tongue.png" Name="tongue.png" Source="..\Squiggle.UI\bin\x86\Release\Images\Emoticons\tongue.png" KeyPath="yes"/>
+        <File Id="tongue.png" Name="tongue.png" Source="..\Squiggle.UI\bin\Images\Emoticons\tongue.png" KeyPath="yes"/>
       </Component>
       <Component Id="winking.png" Guid="30ABCD8D-D38A-45F7-BEAB-04F334AEEEA1">
-        <File Id="winking.png" Name="winking.png" Source="..\Squiggle.UI\bin\x86\Release\Images\Emoticons\winking.png" KeyPath="yes"/>
+        <File Id="winking.png" Name="winking.png" Source="..\Squiggle.UI\bin\Images\Emoticons\winking.png" KeyPath="yes"/>
       </Component>
     </DirectoryRef>
 
     <DirectoryRef Id="Plugins">
       <Component Id="libspeex_license.txt" Guid="99BD260E-676F-4414-8664-0226C02A50CD">
-        <File Id="libspeex_license.txt" Name="libspeex-license.txt" Source="..\Squiggle.UI\bin\x86\Release\Plugins\libspeex-license.txt" KeyPath="yes"/>
+        <File Id="libspeex_license.txt" Name="libspeex-license.txt" Source="..\Squiggle.UI\bin\Plugins\libspeex-license.txt" KeyPath="yes"/>
       </Component>
       <Component Id="libspeexdsp.dll" Guid="BA9E1222-7D20-45F7-A0E5-C53DB5D52BF2">
-        <File Id="libspeexdsp.dll" Name="libspeexdsp.dll" Source="..\Squiggle.UI\bin\x86\Release\Plugins\libspeexdsp.dll" KeyPath="yes" Checksum="yes"/>
+        <File Id="libspeexdsp.dll" Name="libspeexdsp.dll" Source="..\Squiggle.UI\bin\Plugins\libspeexdsp.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="NAudio.dll" Guid="78E2F37E-C810-4A99-8FC2-076008673F2E">
-        <File Id="NAudio.dll" Name="NAudio.dll" Source="..\Squiggle.UI\bin\x86\Release\Plugins\NAudio.dll" KeyPath="yes" Checksum="yes"/>
+        <File Id="NAudio.dll" Name="NAudio.dll" Source="..\Squiggle.UI\bin\Plugins\NAudio.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="NAudio_license.txt" Guid="1399AE9A-61FE-4DB4-BC39-5F4A77899F94">
-        <File Id="NAudio_license.txt" Name="NAudio-license.txt" Source="..\Squiggle.UI\bin\x86\Release\Plugins\NAudio-license.txt" KeyPath="yes"/>
+        <File Id="NAudio_license.txt" Name="NAudio-license.txt" Source="..\Squiggle.UI\bin\Plugins\NAudio-license.txt" KeyPath="yes"/>
       </Component>
       <Component Id="Readme.txt" Guid="C996FB15-69DF-4B10-9FD6-8BDC0CA13079">
-        <File Id="Readme.txt" Name="Readme.txt" Source="..\Squiggle.UI\bin\x86\Release\Plugins\Readme.txt" KeyPath="yes"/>
+        <File Id="Readme.txt" Name="Readme.txt" Source="..\Squiggle.UI\bin\Plugins\Readme.txt" KeyPath="yes"/>
       </Component>
       <Component Id="Squiggle.FileTransfer.dll" Guid="73806D66-0A63-411F-82A2-2E0587A59CD6">
-        <File Id="Squiggle.FileTransfer.dll" Name="Squiggle.FileTransfer.dll" Source="..\Squiggle.UI\bin\x86\Release\Plugins\Squiggle.FileTransfer.dll" KeyPath="yes" Checksum="yes"/>
+        <File Id="Squiggle.FileTransfer.dll" Name="Squiggle.FileTransfer.dll" Source="..\Squiggle.UI\bin\Plugins\Squiggle.FileTransfer.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="Squiggle.VoiceChat.dll" Guid="B1D638D0-7101-460C-9A7D-14D334D2EE6D">
-        <File Id="Squiggle.VoiceChat.dll" Name="Squiggle.VoiceChat.dll" Source="..\Squiggle.UI\bin\x86\Release\Plugins\Squiggle.VoiceChat.dll" KeyPath="yes" Checksum="yes"/>
+        <File Id="Squiggle.VoiceChat.dll" Name="Squiggle.VoiceChat.dll" Source="..\Squiggle.UI\bin\Plugins\Squiggle.VoiceChat.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
       <Component Id="Squiggle.Screenshot.dll" Guid="807C593F-2272-414F-AFCA-63F0CFAC39FE">
-        <File Id="Squiggle.Screenshot.dll" Name="Squiggle.Screenshot.dll" Source="..\Squiggle.UI\bin\x86\Release\Plugins\Squiggle.Screenshot.dll" KeyPath="yes" Checksum="yes"/>
+        <File Id="Squiggle.Screenshot.dll" Name="Squiggle.Screenshot.dll" Source="..\Squiggle.UI\bin\Plugins\Squiggle.Screenshot.dll" KeyPath="yes" Checksum="yes"/>
       </Component>
     </DirectoryRef>
 
     <DirectoryRef Id="Resources">
       <Component Id="Translation.xaml" Guid="F51B6AD4-558E-4008-8D95-2A7290BD576A">
-        <File Id="Translation.xaml" Name="Translation.xaml" Source="..\Squiggle.UI\bin\x86\Release\Resources\Translation.xaml" KeyPath="yes"/>
+        <File Id="Translation.xaml" Name="Translation.xaml" Source="..\Squiggle.UI\bin\Resources\Translation.xaml" KeyPath="yes"/>
       </Component>
     </DirectoryRef>
 
     <DirectoryRef Id="Sounds">
       <Component Id="BuddyOnline.wav" Guid="A8231ACB-F1ED-499D-8144-C2A1908CF7D5">
-        <File Id="BuddyOnline.wav" Name="BuddyOnline.wav" Source="..\Squiggle.UI\bin\x86\Release\Sounds\BuddyOnline.wav" KeyPath="yes"/>
+        <File Id="BuddyOnline.wav" Name="BuddyOnline.wav" Source="..\Squiggle.UI\bin\Sounds\BuddyOnline.wav" KeyPath="yes"/>
       </Component>
       <Component Id="Buzz.wav" Guid="E4D157BC-9973-490C-842A-F6D347352D00">
-        <File Id="Buzz.wav" Name="Buzz.wav" Source="..\Squiggle.UI\bin\x86\Release\Sounds\Buzz.wav" KeyPath="yes"/>
+        <File Id="Buzz.wav" Name="Buzz.wav" Source="..\Squiggle.UI\bin\Sounds\Buzz.wav" KeyPath="yes"/>
       </Component>
       <Component Id="MessageReceived.wav" Guid="E867D6CF-691A-46C2-9DE8-97C04034AC33">
-        <File Id="MessageReceived.wav" Name="MessageReceived.wav" Source="..\Squiggle.UI\bin\x86\Release\Sounds\MessageReceived.wav" KeyPath="yes"/>
+        <File Id="MessageReceived.wav" Name="MessageReceived.wav" Source="..\Squiggle.UI\bin\Sounds\MessageReceived.wav" KeyPath="yes"/>
       </Component>
       <Component Id="VoiceChatDisconnected.wav" Guid="4196C8C1-B458-458C-8BEE-30C08CF6B267">
-        <File Id="VoiceChatDisconnected.wav" Name="VoiceChatDisconnected.wav" Source="..\Squiggle.UI\bin\x86\Release\Sounds\VoiceChatDisconnected.wav" KeyPath="yes"/>
+        <File Id="VoiceChatDisconnected.wav" Name="VoiceChatDisconnected.wav" Source="..\Squiggle.UI\bin\Sounds\VoiceChatDisconnected.wav" KeyPath="yes"/>
       </Component>
       <Component Id="VoiceChatRingingIn.wav" Guid="6BF9B26C-5790-40C1-B295-5F22FB70C815">
-        <File Id="VoiceChatRingingIn.wav" Name="VoiceChatRingingIn.wav" Source="..\Squiggle.UI\bin\x86\Release\Sounds\VoiceChatRingingIn.wav" KeyPath="yes"/>
+        <File Id="VoiceChatRingingIn.wav" Name="VoiceChatRingingIn.wav" Source="..\Squiggle.UI\bin\Sounds\VoiceChatRingingIn.wav" KeyPath="yes"/>
       </Component>
       <Component Id="VoiceChatRingingOut.wav" Guid="DB9620DC-E9CD-4BC9-AD16-8751AC1AEAA2">
-        <File Id="VoiceChatRingingOut.wav" Name="VoiceChatRingingOut.wav" Source="..\Squiggle.UI\bin\x86\Release\Sounds\VoiceChatRingingOut.wav" KeyPath="yes"/>
+        <File Id="VoiceChatRingingOut.wav" Name="VoiceChatRingingOut.wav" Source="..\Squiggle.UI\bin\Sounds\VoiceChatRingingOut.wav" KeyPath="yes"/>
       </Component>
     </DirectoryRef>
 

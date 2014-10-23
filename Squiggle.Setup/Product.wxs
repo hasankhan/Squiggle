@@ -28,17 +28,11 @@
     </Directory>
 
     <Feature Id="Complete" Title="Squiggle" Description="Squiggle - A free open source LAN Messenger" Level="1">
-      <ComponentRef Id="clrzmq.dll" />
+      <ComponentRef Id="NetMQ.dll" />
       <ComponentRef Id="EntityFramework.dll" />
+      <ComponentRef Id="EntityFramework.SqlServer.dll" />
       <ComponentRef Id="FluidKit.dll" />
-      <ComponentRef Id="libzmq.dll" />
       <ComponentRef Id="protobuf_net.dll" />
-      <ComponentRef Id="sqlceca40.dll" />
-      <ComponentRef Id="sqlcecompact40.dll" />
-      <ComponentRef Id="sqlceer40EN.dll" />
-      <ComponentRef Id="sqlceme40.dll" />
-      <ComponentRef Id="sqlceqp40.dll" />
-      <ComponentRef Id="sqlcese40.dll" />
       <ComponentRef Id="Squiggle.Client.dll" />
       <ComponentRef Id="Squiggle.Core.dll" />
       <ComponentRef Id="Squiggle.exe" />
@@ -46,8 +40,10 @@
       <ComponentRef Id="Squiggle.History.dll" />
       <ComponentRef Id="Squiggle.Infrastructure.dll" />
       <ComponentRef Id="Squiggle.Utilities.dll" />
-      <ComponentRef Id="System.Data.SqlServerCe.dll" />
-      <ComponentRef Id="System.Data.SqlServerCe.Entity.dll" />
+      <ComponentRef Id="System.Data.SQLite.dll" />
+      <ComponentRef Id="System.Data.SQLite.EF6.dll" />
+      <ComponentRef Id="System.Data.SQLite.Linq.dll" />
+      <ComponentRef Id="SQLite.Interop.dll" />
       <ComponentRef Id="away.png" />
       <ComponentRef Id="busy.png" />
       <ComponentRef Id="offline.png" />
@@ -87,7 +83,7 @@
       <ComponentRef Id="ProgramMenuShortcuts" />
     </Feature>
 
-    <PropertyRef Id="NETFRAMEWORK40FULL"/>
+    <PropertyRef Id="NETFRAMEWORK45"/>
 
     <!-- 
 			Using the Wix UI library
@@ -104,11 +100,11 @@
       <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="2">1</Publish>
     </UI>
 
-    <Condition Message="This application requires .NET Framework 4.0. Please install the .NET Framework then run this installer again.">
-      <![CDATA[Installed OR NETFRAMEWORK40FULL]]>
+    <Condition Message="This application requires .NET Framework 4.5.1. Please install the .NET Framework then run this installer again.">
+      <![CDATA[Installed OR NETFRAMEWORK45]]>
     </Condition>
-    <Condition Message="This application is only supported on Windows Vista, Windows Server 2008, or higher.">
-      <![CDATA[Installed OR (VersionNT >= 600)]]>
+    <Condition Message="This application is only supported on Windows 8 or higher.">
+      <![CDATA[Installed OR (VersionNT >= 602)]]>
     </Condition>
 
   </Product>
