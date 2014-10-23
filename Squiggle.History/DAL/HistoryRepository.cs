@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Objects;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Data.Entity;
 using Squiggle.History.DAL.Entities;
+using System.Data.Entity.Core.Objects;
 
 namespace Squiggle.History.DAL
 {
