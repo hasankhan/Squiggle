@@ -23,14 +23,14 @@ namespace Squiggle.UI.Windows
     /// </summary>
     public partial class ConversationViewer : StickyWindowBase
     {
-        public Guid SessionId { get; private set; }
+        public string SessionId { get; private set; }
 
         public ConversationViewer()
         {
             InitializeComponent();
         }
 
-        public ConversationViewer(Guid sessionId): this()
+        public ConversationViewer(string sessionId): this()
         {
             this.SessionId = sessionId;
             

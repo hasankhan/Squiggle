@@ -69,7 +69,7 @@ namespace Squiggle.UI.Controls
                                             From = from.HasValue ? from.Value.ToUniversalTime() : from,
                                             To = to.HasValue ? to.Value.ToUniversalTime() : to,
                                             Text = message.Length == 0 ? null : message,
-                                            Participant = new Guid(SquiggleContext.ChatClient.CurrentUser.Id)
+                                            Participant = SquiggleContext.ChatClient.CurrentUser.Id
                                         })
                                         .Select(session => new Result(session))
                                         .ToList();
@@ -84,7 +84,7 @@ namespace Squiggle.UI.Controls
         {
             if (MessageBox.Show(Translation.Instance.HistoryViewer_ConfirmDelete, "Squiggle", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                IEnumerable<Guid> sessionIds = results.SelectedItems.Cast<Result>().Select(r => r.Id).ToList();
+                IEnumerable<string> sessionIds = results.SelectedItems.Cast<Result>().Select(r => r.Id).ToList();
                 AsyncInvoke(() =>
                 {
                     var historyManager = new HistoryManagerFactory().CreateInstance();
@@ -131,7 +131,7 @@ namespace Squiggle.UI.Controls
 
         class Result
         {
-            public Guid Id { get; private set; }
+            public string Id { get; private set; }
             public DateTime Start { get; private set; }
             public DateTime? End { get; private set; }
             public string Participants { get; private set; }

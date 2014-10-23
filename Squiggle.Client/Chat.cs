@@ -242,7 +242,7 @@ namespace Squiggle.Client
             {
                 if (!sessionLogged)
                     LogSessionStart();
-                manager.AddSessionEvent(session.Id, eventType, new Guid(sender.Id), sender.DisplayName, buddies.Select(b => new Guid(b.Id)), data);
+                manager.AddSessionEvent(session.Id.ToString(), eventType, sender.Id, sender.DisplayName, buddies.Select(b => b.Id), data);
             });
         }
 
@@ -254,8 +254,8 @@ namespace Squiggle.Client
                 IBuddy primaryBuddy = Buddies.FirstOrDefault();
                 var newSession = new Session() 
                 { 
-                    Id = session.Id, 
-                    ContactId = new Guid(primaryBuddy.Id), 
+                    Id = session.Id.ToString(), 
+                    ContactId = primaryBuddy.Id, 
                     ContactName = primaryBuddy.DisplayName, 
                     Start = DateTime.Now 
                 };
@@ -263,8 +263,8 @@ namespace Squiggle.Client
                 var participants = Buddies.Append(self)
                                           .Select(b => new Participant()
                                             {
-                                                Id = Guid.NewGuid(),
-                                                ContactId = new Guid(b.Id),
+                                                Id = Guid.NewGuid().ToString(),
+                                                ContactId = b.Id,
                                                 ContactName = b.DisplayName,
                                             }).ToList();
 

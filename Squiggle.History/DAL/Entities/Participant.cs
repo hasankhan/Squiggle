@@ -7,9 +7,9 @@ namespace Squiggle.History.DAL.Entities
 {
     public class Participant
     {
-        public Guid Id {get; set;}
-        public Guid SessionId { get; set; }
-        public Guid ContactId { get; set; }
+        public string Id {get; set;}
+        public string SessionId { get; set; }
+        public string ContactId { get; set; }
         public string ContactName { get; set; }
 
         public Session Session {get; set;}

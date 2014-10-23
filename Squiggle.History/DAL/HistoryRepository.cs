@@ -18,7 +18,7 @@ namespace Squiggle.History.DAL
             this.context = context;
         }
 
-        public void AddSessionEvent(Guid sessionId, DateTime stamp, EventType type, Guid sender, string senderName, IEnumerable<Guid> recipients, string data)
+        public void AddSessionEvent(string sessionId, DateTime stamp, EventType type, string sender, string senderName, IEnumerable<string> recipients, string data)
         {
             var session = context.Sessions.FirstOrDefault(s => s.Id == sessionId);
             if (session != null)
@@ -26,9 +26,9 @@ namespace Squiggle.History.DAL
                 session.End = session.End < stamp ? stamp : session.End;
                 var evnt = new Event() 
                 { 
-                    Id = Guid.NewGuid(), 
+                    Id = Guid.NewGuid().ToString(), 
                     Type = type, 
-                    SenderId = sender, 
+                    SenderId = sender.ToString(), 
                     Stamp = stamp, 
                     SenderName = senderName 
                 };
@@ -44,11 +44,11 @@ namespace Squiggle.History.DAL
             string text = criteria.Text ?? String.Empty;
 
             var result = (from session in context.Sessions.Include("Participants")
-                         where (criteria.SessionId == null || session.Id == criteria.SessionId.Value) &&
+                         where (criteria.SessionId == null || session.Id == criteria.SessionId) &&
                              (criteria.From == null || session.Start >= criteria.From.Value) &&
                              (criteria.To == null || session.Start <= criteria.To.Value) &&
                              (text.Length == 0 || session.Events.Any(e=>e.Data.Contains(text))) &&
-                             (criteria.Participant == null || session.Participants.Any(p => p.ContactId == criteria.Participant.Value))
+                             (criteria.Participant == null || session.Participants.Any(p => p.ContactId == criteria.Participant))
                          orderby session.Start
                          select session);
 
@@ -56,7 +56,7 @@ namespace Squiggle.History.DAL
 
         }
 
-        public Session GetSession(Guid sessionId)
+        public Session GetSession(string sessionId)
         {
             var session = context.Sessions.Include("Participants")
                                           .Include("Events")
@@ -75,7 +75,7 @@ namespace Squiggle.History.DAL
             return updates.ToList();
         }
 
-        public void ClearChatHistory(Guid? sessionId = null)
+        public void ClearChatHistory(string sessionId = null)
         {
             DeleteSession(sessionId);
 
@@ -104,7 +104,7 @@ namespace Squiggle.History.DAL
             context.SaveChanges();
         }
 
-        public void AddParticipant(Guid sessionId, Participant participant)
+        public void AddParticipant(string sessionId, Participant participant)
         {
             var session = GetSession(sessionId);
             if (session != null)
@@ -113,19 +113,19 @@ namespace Squiggle.History.DAL
             context.SaveChanges();
         }
 
-        public void DeleteSessions(IEnumerable<Guid> sessionIds)
+        public void DeleteSessions(IEnumerable<string> sessionIds)
         {
-            foreach (Guid sessionId in sessionIds)
+            foreach (string sessionId in sessionIds)
                 DeleteSession(sessionId);
 
             context.SaveChanges();
         }
 
-        public void AddStatusUpdate(DateTime stamp, Guid contactId, string contactName, int status)
+        public void AddStatusUpdate(DateTime stamp, string contactId, string contactName, int status)
         {
             context.StatusUpdates.Add(new StatusUpdate() 
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString(),
                 ContactId = contactId, 
                 ContactName = contactName, 
                 StatusCode = status, 
@@ -139,11 +139,11 @@ namespace Squiggle.History.DAL
             context.Dispose();
         }
 
-        void DeleteSession(Guid? sessionId)
+        void DeleteSession(string sessionId)
         {
-            DeleteAll(context.Events, e => sessionId == null || e.Session.Id == sessionId.Value);
-            DeleteAll(context.Participants, p => sessionId == null || p.Session.Id == sessionId.Value);
-            DeleteAll(context.Sessions, s => sessionId == null || s.Id == sessionId.Value);
+            DeleteAll(context.Events, e => sessionId == null || e.Session.Id == sessionId);
+            DeleteAll(context.Participants, p => sessionId == null || p.Session.Id == sessionId);
+            DeleteAll(context.Sessions, s => sessionId == null || s.Id == sessionId);
         }
 
         void AddParticipant(Session session, Participant participant)

@@ -8,8 +8,8 @@ namespace Squiggle.History.DAL.Entities
 {
     public class Session
     {
-        public Guid Id { get; set; }
-        public Guid ContactId { get; set; }
+        public string Id { get; set; }
+        public string ContactId { get; set; }
         public string ContactName { get; set; }
         public DateTime Start { get; set; }
         public DateTime? End { get; set; }

@@ -18,7 +18,7 @@ namespace Squiggle.History
             this.connection = connection;
         }        
 
-        public void AddSessionEvent(Guid sessionId, EventType type, Guid senderId, string senderName, IEnumerable<Guid> recipients, string data)
+        public void AddSessionEvent(string sessionId, EventType type, string senderId, string senderName, IEnumerable<string> recipients, string data)
         {
             using (HistoryRepository repository = this.CreateRepository())
             {
@@ -27,8 +27,8 @@ namespace Squiggle.History
                 {
                     var participant = new Participant() 
                     {
-                        Id = Guid.NewGuid(),
-                        ContactId = senderId, 
+                        Id = Guid.NewGuid().ToString(),
+                        ContactId = senderId.ToString(), 
                         ContactName = senderName 
                     };
                     repository.AddParticipant(sessionId, participant);
@@ -36,7 +36,7 @@ namespace Squiggle.History
             }
         }
 
-        public void AddStatusUpdate(Guid contactId, string contactName, int status)
+        public void AddStatusUpdate(string contactId, string contactName, int status)
         {
             using (HistoryRepository repository = this.CreateRepository())
                 repository.AddStatusUpdate(DateTime.UtcNow, contactId, contactName, status);
@@ -48,7 +48,7 @@ namespace Squiggle.History
                 return repository.GetSessions(criteria);
         }
 
-        public Session GetSession(Guid sessionId)
+        public Session GetSession(string sessionId)
         {
             using (HistoryRepository repository = this.CreateRepository())
                 return repository.GetSession(sessionId);
@@ -79,7 +79,7 @@ namespace Squiggle.History
                 repository.AddSession(newSession, participants);
         }
 
-        public void DeleteSessions(IEnumerable<Guid> sessionIds)
+        public void DeleteSessions(IEnumerable<string> sessionIds)
         {
             using (HistoryRepository repository = this.CreateRepository())
                 repository.DeleteSessions(sessionIds);

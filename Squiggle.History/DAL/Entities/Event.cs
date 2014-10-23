@@ -8,10 +8,10 @@ namespace Squiggle.History.DAL.Entities
 {
     public class Event
     {
-        public Guid Id { get; set;  }
-        public Guid SessionId { get; set; }
+        public string Id { get; set;  }
+        public string SessionId { get; set; }
         public int TypeCode { get; set; }
-        public Guid SenderId { get; set; }
+        public string SenderId { get; set; }
         public string SenderName { get; set; }
         public string Data { get; set; }
         public DateTime Stamp { get; set; }
