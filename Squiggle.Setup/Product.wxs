@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
-  <Product Id="*" Name="Squiggle" Language="1033" Version="1.0.0.0" UpgradeCode="CFA30344-560E-4005-AC0F-4BE9E2D8A388" Manufacturer="Overroot">
-    <Package Description="#Description" Comments="Comments" InstallerVersion="200" Compressed="yes" InstallScope="perUser" />
+  <Product Id="*" Name="Squiggle" Language="1033" Version="1.0.0.0"
+           UpgradeCode="CFA30344-560E-4005-AC0F-4BE9E2D8A388" Manufacturer="Overroot">
+    <Package Description="#Description" Comments="Comments" InstallerVersion="200"
+             Compressed="yes" InstallScope="perUser" InstallPrivileges="limited" />
     <!--
 			Source media for the installation. 
  			Specifies a single cab file to be embedded in the installer's .msi. 
@@ -10,54 +12,16 @@
 
     <!-- Installation directory and files are defined in Files.wxs -->
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="AppDataFolder">
+      <Directory Id="LocalAppDataFolder">
         <Directory Id="INSTALLDIR" Name="Squiggle">
-          <Component Id="INSTALLDIR" Guid="2E03BD62-9DBF-4763-9D02-918DBA574980">
-            <RemoveFolder Id='RemoveINSTALLDIR' On='uninstall' />
-            <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Value='1' KeyPath='yes' />
-          </Component>
           <Directory Id="Images" Name="Images">
-            <Component Id="Images" Guid="51E3097E-0E59-4214-8166-D54678A796CA">
-              <RemoveFolder Id='RemoveImages' On='uninstall' />
-              <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Value='1' KeyPath='yes' />
-            </Component>
-            <Directory Id="Status" Name="Status" >
-              <Component Id="Status" Guid="B8DD121B-7C69-4B2D-B7CA-E66AA3BD2B0D">
-                <RemoveFolder Id='RemoveStatus' On='uninstall' />
-                <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Value='1' KeyPath='yes' />
-              </Component>
-            </Directory>
-            <Directory Id="Emoticons" Name="Emoticons">
-              <Component Id="Emoticons" Guid="1EF90571-9ADF-4B42-8973-19C0CE5995FA">
-                <RemoveFolder Id='RemoveEmoticons' On='uninstall' />
-                <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Value='1' KeyPath='yes' />
-              </Component>
-            </Directory>
+            <Directory Id="Status" Name="Status" />
+            <Directory Id="Emoticons" Name="Emoticons" />
           </Directory>
-          <Directory Id="Plugins" Name="Plugins">
-            <Component Id="Plugins" Guid="8E2D296B-0C05-4EE1-9CDC-2CCA9DAFF755">
-              <RemoveFolder Id='RemovePlugins' On='uninstall' />
-              <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Value='1' KeyPath='yes' />
-            </Component>
-          </Directory>
-          <Directory Id="x86" Name="x86">
-            <Component Id="x86" Guid="5E1B4663-78AF-462C-A331-EB72E985CDAA">
-              <RemoveFolder Id='Removex86' On='uninstall' />
-              <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Value='1' KeyPath='yes' />
-            </Component>
-          </Directory>
-          <Directory Id="Resources" Name="Resources">
-            <Component Id="Resources" Guid="59A810E6-B738-4212-A145-A939D662AC15">
-              <RemoveFolder Id='RemoveResources' On='uninstall' />
-              <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Value='1' KeyPath='yes' />
-            </Component>
-          </Directory>
-          <Directory Id="Sounds" Name="Sounds">
-            <Component Id="Sounds" Guid="EDE336C7-3102-4CA2-987F-68F3C55ABDCD">
-              <RemoveFolder Id='RemoveSounds' On='uninstall' />
-              <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Value='1' KeyPath='yes' />
-            </Component>
-          </Directory>
+          <Directory Id="Plugins" Name="Plugins"/>
+          <Directory Id="x86" Name="x86" />
+          <Directory Id="Resources" Name="Resources" />
+          <Directory Id="Sounds" Name="Sounds" />
         </Directory>
       </Directory>
       <Directory Id="DesktopFolder" />
@@ -66,7 +30,7 @@
       </Directory>
     </Directory>
 
-    <Feature Id="Complete" Title="Squiggle" Description="Squiggle - A free open source LAN Messenger" Level="1">     
+    <Feature Id="Complete" Title="Squiggle" Description="Squiggle - A free open source LAN Messenger" Level="1">
       <ComponentRef Id="Resources" />
       <ComponentRef Id="Sounds" />
       <ComponentRef Id="Plugins" />

@@ -2,6 +2,10 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
   <Fragment>
     <DirectoryRef Id="INSTALLDIR">
+      <Component Id="INSTALLDIR" Guid="2E03BD62-9DBF-4763-9D02-918DBA574980">
+        <RemoveFolder Id='RemoveINSTALLDIR' On='uninstall' />
+        <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Value='1' KeyPath='yes' />
+      </Component>
       <Component Id="NetMQ.dll" Guid="2FA82E7D-A0D0-4922-BA9B-AD226A805506">
         <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Name='[INSTALLDIR]' Value='1' />
         <File Id="NetMQ.dll" Name="NetMQ.dll" Source="..\Squiggle.UI\bin\NetMQ.dll" Checksum="yes"/>
@@ -38,7 +42,7 @@
         <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Name='[INSTALLDIR]' Value='1' />
         <File Id="Squiggle.exe.config" Name="Squiggle.exe.config" Source="..\Squiggle.UI\bin\Squiggle.exe.config" />
       </Component>
-       <Component Id="History.db" Guid="F015AAF7-E093-4E62-B44F-8E7257E6E8E8">
+      <Component Id="History.db" Guid="F015AAF7-E093-4E62-B44F-8E7257E6E8E8">
         <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Name='[INSTALLDIR]' Value='1' />
         <File Id="History.db" Name="History.db" Source="..\Squiggle.UI\bin\History.db" Checksum="yes"/>
       </Component>
@@ -65,17 +69,32 @@
       <Component Id="System.Data.SQLite.Linq.dll" Guid="D1F15B05-C20B-4F7B-B7F5-7F955FF93A02">
         <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Name='[INSTALLDIR]' Value='1' />
         <File Id="System.Data.SQLite.Linq.dll" Name="System.Data.SQLite.Linq.dll" Source="..\Squiggle.UI\bin\System.Data.SQLite.Linq.dll" Checksum="yes"/>
-      </Component>      
+      </Component>
     </DirectoryRef>
-    
-    <DirectoryRef Id="x86">     
+
+    <DirectoryRef Id="x86">
+      <Component Id="x86" Guid="5E1B4663-78AF-462C-A331-EB72E985CDAA">
+        <RemoveFolder Id='Removex86' On='uninstall' />
+        <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Value='1' KeyPath='yes' />
+      </Component>
       <Component Id="SQLite.Interop.dll" Guid="162BE8BF-05E5-419F-80A0-1D37CE30CC8D">
         <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Name='[INSTALLDIR]' Value='1' />
         <File Id="SQLite.Interop.dll" Name="SQLite.Interop.dll" Source="..\Squiggle.UI\bin\x86\SQLite.Interop.dll" Checksum="yes"/>
       </Component>
     </DirectoryRef>
 
+    <DirectoryRef Id="Images">
+      <Component Id="Images" Guid="51E3097E-0E59-4214-8166-D54678A796CA">
+        <RemoveFolder Id='RemoveImages' On='uninstall' />
+        <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Value='1' KeyPath='yes' />
+      </Component>
+    </DirectoryRef>
+
     <DirectoryRef Id="Status">
+      <Component Id="Status" Guid="B8DD121B-7C69-4B2D-B7CA-E66AA3BD2B0D">
+        <RemoveFolder Id='RemoveStatus' On='uninstall' />
+        <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Value='1' KeyPath='yes' />
+      </Component>
       <Component Id="away.png" Guid="A5FABD9C-0C4D-4039-83CD-D04642E20CD3">
         <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Name='[INSTALLDIR]' Value='1' />
         <File Id="away.png" Name="away.png" Source="..\Squiggle.UI\bin\Images\Status\away.png" />
@@ -95,6 +114,10 @@
     </DirectoryRef>
 
     <DirectoryRef Id="Emoticons">
+      <Component Id="Emoticons" Guid="1EF90571-9ADF-4B42-8973-19C0CE5995FA">
+        <RemoveFolder Id='RemoveEmoticons' On='uninstall' />
+        <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Value='1' KeyPath='yes' />
+      </Component>
       <Component Id="angry.png" Guid="D483DDD8-B36A-4E9F-9DF6-E0D2CE330E34">
         <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Name='[INSTALLDIR]' Value='1' />
         <File Id="angry.png" Name="angry.png" Source="..\Squiggle.UI\bin\Images\Emoticons\angry.png" />
@@ -162,6 +185,10 @@
     </DirectoryRef>
 
     <DirectoryRef Id="Plugins">
+      <Component Id="Plugins" Guid="8E2D296B-0C05-4EE1-9CDC-2CCA9DAFF755">
+        <RemoveFolder Id='RemovePlugins' On='uninstall' />
+        <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Value='1' KeyPath='yes' />
+      </Component>
       <Component Id="libspeex_license.txt" Guid="99BD260E-676F-4414-8664-0226C02A50CD">
         <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Name='[INSTALLDIR]' Value='1' />
         <File Id="libspeex_license.txt" Name="libspeex-license.txt" Source="..\Squiggle.UI\bin\Plugins\libspeex-license.txt" />
@@ -197,6 +224,10 @@
     </DirectoryRef>
 
     <DirectoryRef Id="Resources">
+      <Component Id="Resources" Guid="59A810E6-B738-4212-A145-A939D662AC15">
+        <RemoveFolder Id='RemoveResources' On='uninstall' />
+        <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Value='1' KeyPath='yes' />
+      </Component>
       <Component Id="Translation.xaml" Guid="F51B6AD4-558E-4008-8D95-2A7290BD576A">
         <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Name='[INSTALLDIR]' Value='1' />
         <File Id="Translation.xaml" Name="Translation.xaml" Source="..\Squiggle.UI\bin\Resources\Translation.xaml" />
@@ -204,6 +235,10 @@
     </DirectoryRef>
 
     <DirectoryRef Id="Sounds">
+      <Component Id="Sounds" Guid="EDE336C7-3102-4CA2-987F-68F3C55ABDCD">
+        <RemoveFolder Id='RemoveSounds' On='uninstall' />
+        <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Value='1' KeyPath='yes' />
+      </Component>
       <Component Id="BuddyOnline.wav" Guid="A8231ACB-F1ED-499D-8144-C2A1908CF7D5">
         <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='integer' Name='[INSTALLDIR]' Value='1' />
         <File Id="BuddyOnline.wav" Name="BuddyOnline.wav" Source="..\Squiggle.UI\bin\Sounds\BuddyOnline.wav" />
