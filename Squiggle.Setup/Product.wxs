@@ -84,6 +84,7 @@
       <ComponentRef Id="Squiggle.Core.dll" />
       <ComponentRef Id="Squiggle.exe" />
       <ComponentRef Id="Squiggle.exe.config" />
+      <ComponentRef Id="History.db" />
       <ComponentRef Id="Squiggle.History.dll" />
       <ComponentRef Id="Squiggle.Infrastructure.dll" />
       <ComponentRef Id="Squiggle.Utilities.dll" />

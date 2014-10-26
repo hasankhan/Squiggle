@@ -16,7 +16,6 @@ namespace Squiggle.History.DAL
         public HistoryRepository(HistoryContext context)
         {
             this.context = context;
-            this.context.Database.CreateIfNotExists();
         }
 
         public void AddSessionEvent(string sessionId, DateTime stamp, EventType type, string sender, string senderName, IEnumerable<string> recipients, string data)
