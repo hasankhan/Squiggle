@@ -2,115 +2,115 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Squiggle.UI.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="DisplayName" Type="System.String" Scope="User">
+    <Setting Name="DisplayName" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="DisplayMessage" Type="System.String" Scope="User">
+    <Setting Name="DisplayMessage" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="DisplayImage" Type="System.Byte[]" Scope="User">
+    <Setting Name="DisplayImage" Roaming="true" Type="System.Byte[]" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="BindToIP" Type="System.String" Scope="User">
+    <Setting Name="BindToIP" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="HideToTray" Type="System.Boolean" Scope="User">
+    <Setting Name="HideToTray" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ShowPopups" Type="System.Boolean" Scope="User">
+    <Setting Name="ShowPopups" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="MainWindowHeight" Type="System.Double" Scope="User">
+    <Setting Name="MainWindowHeight" Roaming="true" Type="System.Double" Scope="User">
       <Value Profile="(Default)">600</Value>
     </Setting>
-    <Setting Name="MainWindowWidth" Type="System.Double" Scope="User">
+    <Setting Name="MainWindowWidth" Roaming="true" Type="System.Double" Scope="User">
       <Value Profile="(Default)">300</Value>
     </Setting>
-    <Setting Name="ChatWindowHeight" Type="System.Double" Scope="User">
+    <Setting Name="ChatWindowHeight" Roaming="true" Type="System.Double" Scope="User">
       <Value Profile="(Default)">500</Value>
     </Setting>
-    <Setting Name="ChatWindowWidth" Type="System.Double" Scope="User">
+    <Setting Name="ChatWindowWidth" Roaming="true" Type="System.Double" Scope="User">
       <Value Profile="(Default)">600</Value>
     </Setting>
-    <Setting Name="SpellCheck" Type="System.Boolean" Scope="User">
+    <Setting Name="SpellCheck" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ConfirmDialogs" Type="System.Collections.Generic.List&lt;System.String&gt;" Scope="User">
+    <Setting Name="ConfirmDialogs" Roaming="true" Type="System.Collections.Generic.List&lt;System.String&gt;" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="ContactListSortField" Type="Squiggle.UI.Settings.ContactListSortField" Scope="User">
+    <Setting Name="ContactListSortField" Roaming="true" Type="Squiggle.UI.Settings.ContactListSortField" Scope="User">
       <Value Profile="(Default)">DisplayName</Value>
     </Setting>
-    <Setting Name="DownloadsFolder" Type="System.String" Scope="User">
+    <Setting Name="DownloadsFolder" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="FontName" Type="System.String" Scope="User">
+    <Setting Name="FontName" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)">Georgia</Value>
     </Setting>
-    <Setting Name="FontSize" Type="System.Int32" Scope="User">
+    <Setting Name="FontSize" Roaming="true" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">12</Value>
     </Setting>
-    <Setting Name="FontColor" Type="System.Drawing.Color" Scope="User">
+    <Setting Name="FontColor" Roaming="true" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">Black</Value>
     </Setting>
-    <Setting Name="FontStyle" Type="System.Drawing.FontStyle" Scope="User">
+    <Setting Name="FontStyle" Roaming="true" Type="System.Drawing.FontStyle" Scope="User">
       <Value Profile="(Default)">Regular</Value>
     </Setting>
-    <Setting Name="ShowEmoticons" Type="System.Boolean" Scope="User">
+    <Setting Name="ShowEmoticons" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="MainWindowTop" Type="System.Double" Scope="User">
+    <Setting Name="MainWindowTop" Roaming="true" Type="System.Double" Scope="User">
       <Value Profile="(Default)">-1</Value>
     </Setting>
-    <Setting Name="MainWindowLeft" Type="System.Double" Scope="User">
+    <Setting Name="MainWindowLeft" Roaming="true" Type="System.Double" Scope="User">
       <Value Profile="(Default)">-1</Value>
     </Setting>
-    <Setting Name="GroupName" Type="System.String" Scope="User">
+    <Setting Name="GroupName" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="GroupContacts" Type="System.Boolean" Scope="User">
+    <Setting Name="GroupContacts" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="Groups" Type="Squiggle.UI.Settings.ContactGroups" Scope="User">
+    <Setting Name="Groups" Roaming="true" Type="Squiggle.UI.Settings.ContactGroups" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="AudioAlerts" Type="System.Boolean" Scope="User">
+    <Setting Name="AudioAlerts" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ClientID" Type="System.String" Scope="User">
+    <Setting Name="ClientID" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="FirstRun" Type="System.String" Scope="User">
+    <Setting Name="FirstRun" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="ShowOfflineContacts" Type="System.Boolean" Scope="User">
+    <Setting Name="ShowOfflineContacts" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="EmailAddress" Type="System.String" Scope="User">
+    <Setting Name="EmailAddress" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="ContactListView" Type="Squiggle.UI.Settings.ContactListView" Scope="User">
+    <Setting Name="ContactListView" Roaming="true" Type="Squiggle.UI.Settings.ContactListView" Scope="User">
       <Value Profile="(Default)">Standard</Value>
     </Setting>
-    <Setting Name="StealFocusOnNewMessage" Type="System.Boolean" Scope="User">
+    <Setting Name="StealFocusOnNewMessage" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="MessagePanelHeight" Type="System.Double" Scope="User">
+    <Setting Name="MessagePanelHeight" Roaming="true" Type="System.Double" Scope="User">
       <Value Profile="(Default)">70</Value>
     </Setting>
-    <Setting Name="ChatWindowShowDisplayPictures" Type="System.Boolean" Scope="User">
+    <Setting Name="ChatWindowShowDisplayPictures" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ClearChatOnWindowClose" Type="System.Boolean" Scope="User">
+    <Setting Name="ClearChatOnWindowClose" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="Username" Type="System.String" Scope="User">
+    <Setting Name="Username" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Password" Type="System.String" Scope="User">
+    <Setting Name="Password" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Domain" Type="System.String" Scope="User">
+    <Setting Name="Domain" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>
