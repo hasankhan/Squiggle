@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
 using NetMQ;
+using NetMQ.zmq;
 
 namespace Squiggle.Utilities.Net.Pipe
 {
@@ -46,12 +47,20 @@ namespace Squiggle.Utilities.Net.Pipe
         
         void Listen()
         {
-            while (!listenCancelToken.Token.IsCancellationRequested)
+            try
             {
-                byte[] data = listener.Receive();
-                if (data != null)
-                    MessageReceived(this, new MessageReceivedEventArgs() { Message = data });
+                while (!listenCancelToken.Token.IsCancellationRequested)
+                {
+                    byte[] data = this.listener.Receive();
+                    if (data != null)
+                        MessageReceived(this, new MessageReceivedEventArgs() { Message = data });
+                }
             }
+            catch (TerminatingException)
+            {
+                // fine just finish the task gracefully
+            }
+            
         }
 
         protected static string CreateAddress(string protocol, string host, int port)
@@ -71,16 +80,15 @@ namespace Squiggle.Utilities.Net.Pipe
             if (!listenTask.IsCompleted)
             {
                 listenCancelToken.Cancel();
+                if (listener != null)
+                    listener.Dispose();
+                this.Context.Dispose();
                 try
                 {
-                    listenTask.Wait();
+                    listenTask.Wait(listenTimeout);
                 }
                 catch { }
             }            
-
-            if (listener != null)
-                listener.Dispose();
-            this.Context.Dispose();
         }
 
         ~MessagePipe()
