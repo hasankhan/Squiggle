@@ -49,44 +49,54 @@ namespace Squiggle.UI.Controls
 
         private void SignIn(object sender, RoutedEventArgs e)
         {
-            if (viewModel.AskDisplayName && String.IsNullOrEmpty(DisplayName))
+            string displayName = (viewModel.DisplayName ?? String.Empty).Trim();
+            string groupName = (viewModel.GroupName ?? String.Empty).Trim();
+            string username = (viewModel.Username ?? String.Empty).Trim();
+            string domain = (viewModel.Domain ?? String.Empty).Trim();
+
+            this.SignIn(displayName, groupName, username, txtPassword.Password, domain);
+        }
+
+        void SignIn(string displayName, string groupName, string username, string password, string domain)
+        {
+            if (viewModel.AskDisplayName && String.IsNullOrEmpty(displayName))
                 return;
-            if (viewModel.AskDomain && String.IsNullOrEmpty(viewModel.Domain))
+            if (viewModel.AskDomain && String.IsNullOrEmpty(domain))
                 return;
-            if (viewModel.AskUsername && String.IsNullOrEmpty(viewModel.Username))
+            if (viewModel.AskUsername && String.IsNullOrEmpty(username))
                 return;
 
             var settings = SettingsProvider.Current.Settings.PersonalSettings;
 
             if (!viewModel.RememberMe ||
-                (viewModel.AskDisplayName && settings.DisplayName != DisplayName) ||
-                (viewModel.AskUsername && settings.Username != viewModel.Username))
+                (viewModel.AskDisplayName && settings.DisplayName != displayName) ||
+                (viewModel.AskUsername && settings.Username != username))
                 ResetPersonalSettings(settings);
 
             if (viewModel.RememberMe)
             {
-                settings.DisplayName = DisplayName;
-                settings.GroupName = GroupName;
-                settings.Username = viewModel.Username;
-                settings.Password = txtPassword.Password;
-                settings.Domain = viewModel.Domain;
+                settings.DisplayName = displayName;
+                settings.GroupName = groupName;
+                settings.Username = username;
+                settings.Password = password;
+                settings.Domain = domain;
             }
 
             settings.RememberMe = viewModel.RememberMe;
             settings.AutoSignMeIn = viewModel.AutoSignIn;
-            if (!String.IsNullOrEmpty(GroupName))
-                SettingsProvider.Current.Settings.ContactSettings.ContactGroups.Add(GroupName);
-            txtGroupName.SelectedValue = GroupName;
+            if (!String.IsNullOrEmpty(groupName))
+                SettingsProvider.Current.Settings.ContactSettings.ContactGroups.Add(groupName);
+            txtGroupName.SelectedValue = groupName;
 
             SettingsProvider.Current.Save();
 
             LoginInitiated(this, new LogInEventArgs()
             {
-                DisplayName = DisplayName,
-                GroupName = GroupName,
-                Domain = viewModel.Domain,
-                Username = viewModel.Username,
-                Password = txtPassword.Password
+                DisplayName = displayName,
+                GroupName = groupName,
+                Domain = domain,
+                Username = username,
+                Password = password
             });
         }
 
@@ -184,7 +194,7 @@ namespace Squiggle.UI.Controls
         public string Username
         {
             get { return _username; }
-            set { Set(() => Username, ref _username, Trim(value)); }
+            set { Set(() => Username, ref _username, value); }
         }
 
         bool _askPassword;
@@ -213,7 +223,7 @@ namespace Squiggle.UI.Controls
         public string DisplayName
         {
             get { return _displayName; }
-            set { Set(() => DisplayName, ref _displayName, Trim(value)); }
+            set { Set(() => DisplayName, ref _displayName, value); }
         }
 
         bool _askDomain;
@@ -231,7 +241,7 @@ namespace Squiggle.UI.Controls
         public string Domain
         {
             get { return _domain; }
-            set { Set(() => Domain, ref _domain, Trim(value)); }
+            set { Set(() => Domain, ref _domain, value); }
         }
 
         bool _askGroupName;
@@ -251,7 +261,7 @@ namespace Squiggle.UI.Controls
             get { return _groupName ?? String.Empty; }
             set
             {
-                Set(() => GroupName, ref _groupName, Trim(value));
+                Set(() => GroupName, ref _groupName, value);
                 OnPropertyChanged(()=>SingleSignOn);
             }
         }
@@ -277,10 +287,6 @@ namespace Squiggle.UI.Controls
 
                 OnPropertyChanged(()=>SingleSignOn);
             }
-        }
-        string Trim(string value)
-        {
-            return (value ?? String.Empty).Trim();
         }
     }
 }
