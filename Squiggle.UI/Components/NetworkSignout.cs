@@ -46,11 +46,11 @@ namespace Squiggle.UI.Components
             {
                 await Task.Delay(10.Seconds());
                 if (autoSignout && signInOptions != null && !loggedIn)
-                    signInFunction(signInOptions);
+                    this.dispatcher.Invoke(() => signInFunction(signInOptions));
             }
             else
             {
-                signoutFunction();
+                this.dispatcher.Invoke(() => signoutFunction());
                 if (loggedIn)
                 {
                     autoSignout = true;
