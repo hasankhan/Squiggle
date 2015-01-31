@@ -106,6 +106,7 @@
     <Compile Include="TimeExtensions.cs" />
     <Compile Include="Application\UserActivityMonitor.cs" />
     <Compile Include="Application\WinStartup.cs" />
+    <Compile Include="Validator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

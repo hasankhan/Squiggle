@@ -27,6 +27,8 @@ namespace Squiggle.Utilities.Net.Pipe
 
         public void Send(IPEndPoint target, byte[] message)
         {
+            Validator.IsNotNull(target, "target");
+            Validator.IsNotNull(message, "message");
             Send(target.Address.ToString(), target.Port, message);
         }
 

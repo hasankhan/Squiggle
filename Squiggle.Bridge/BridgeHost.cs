@@ -131,6 +131,8 @@ namespace Squiggle.Bridge
 
         public void SendPresenceMessage(IPEndPoint target, byte[] message)
         {
+            Validator.IsNotNull(target, "target");
+            Validator.IsNotNull(message, "message");
             Send(target, new ForwardPresenceMessage() { BridgeEndPoint = externalEndPoint, Message = message});
         }
 
