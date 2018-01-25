@@ -19,7 +19,7 @@ Server-less LAN Chat software that is easy to use and has a nice UI.
 
 ![Finalist of About.com Best Enterprise IM Award 2012](Home_about2012.png) 
 
-[System Requirements](System-Requirements)
+[System Requirements](https://github.com/hasankhan/Squiggle/wiki/System-Requirements)
 
 Follow us on twitter [http://twitter.com/overroot](http://twitter.com/overroot)
 [http://www.overroot.com](http://www.overroot.com)
