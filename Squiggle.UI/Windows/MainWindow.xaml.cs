@@ -281,7 +281,7 @@ namespace Squiggle.UI.Windows
 
         private void SortMenu_Click(object sender, RoutedEventArgs e)
         {
-            var sortBy = (ContactListSortField)((MenuItem)sender).Tag;
+            var sortBy = (ContactListSortField)Enum.Parse(typeof(ContactListSortField), ((MenuItem)sender).Tag.ToString());
             SettingsProvider.Current.Settings.ContactSettings.ContactListSortField = sortBy;
             SettingsProvider.Current.Save();
             UpdateSortMenu();
