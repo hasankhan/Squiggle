@@ -12,12 +12,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Extensions.DependencyInjection;
 using Squiggle.Client;
 using Squiggle.Core.Presence;
 using Squiggle.History;
 using Squiggle.History.DAL;
 using Squiggle.History.DAL.Entities;
-using Squiggle.UI.Factories;
 using Squiggle.UI.Resources;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Threading;
@@ -46,8 +46,8 @@ namespace Squiggle.UI.Controls
 
         void SearchUpdates(DateTime? from, DateTime? to)
         {
-            var historyManager = new HistoryManagerFactory().CreateInstance();
-            var updates = historyManager.GetStatusUpdates(new StatusCriteria()
+            var historyManager = App.Services.GetService<HistoryManager>();
+            var updates = historyManager?.GetStatusUpdates(new StatusCriteria()
                                         {
                                             From = from.HasValue ? from.Value.ToUniversalTime() : from,
                                             To = to.HasValue ? to.Value.ToUniversalTime() : to,
@@ -67,8 +67,8 @@ namespace Squiggle.UI.Controls
             {
                 AsyncInvoke(() =>
                 {
-                    var historyManager = new HistoryManagerFactory().CreateInstance();
-                    historyManager.ClearStatusHistory();
+                    var historyManager = App.Services.GetService<HistoryManager>();
+                    historyManager?.ClearStatusHistory();
                 }, () => results.ItemsSource = null);
             }
         }

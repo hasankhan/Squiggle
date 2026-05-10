@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Microsoft.Extensions.DependencyInjection;
 using Squiggle.History;
 using Squiggle.History.DAL;
 using Squiggle.History.DAL.Entities;
 using Squiggle.Plugins;
-using Squiggle.UI.Factories;
 using Squiggle.UI.Helpers;
 using Squiggle.UI.Resources;
 using Squiggle.UI.Windows;
@@ -63,8 +63,8 @@ namespace Squiggle.UI.Controls
 
         void SearchSessions(DateTime? from, DateTime? to, string message)
         {
-            var historyManager = new HistoryManagerFactory().CreateInstance();
-            var sessions = historyManager.GetSessions(new SessionCriteria()
+            var historyManager = App.Services.GetService<HistoryManager>();
+            var sessions = historyManager?.GetSessions(new SessionCriteria()
                                         {
                                             From = from.HasValue ? from.Value.ToUniversalTime() : from,
                                             To = to.HasValue ? to.Value.ToUniversalTime() : to,
@@ -87,8 +87,8 @@ namespace Squiggle.UI.Controls
                 IEnumerable<string> sessionIds = results.SelectedItems.Cast<Result>().Select(r => r.Id).ToList();
                 AsyncInvoke(() =>
                 {
-                    var historyManager = new HistoryManagerFactory().CreateInstance();
-                    historyManager.DeleteSessions(sessionIds);
+                    var historyManager = App.Services.GetService<HistoryManager>();
+                    historyManager?.DeleteSessions(sessionIds);
                 },
                 lastSearch);
             }
@@ -100,8 +100,8 @@ namespace Squiggle.UI.Controls
             {
                 AsyncInvoke(() =>
                 {
-                    var historyManager = new HistoryManagerFactory().CreateInstance();
-                    historyManager.ClearChatHistory();
+                    var historyManager = App.Services.GetService<HistoryManager>();
+                    historyManager?.ClearChatHistory();
                 }, () => results.ItemsSource = null);
             }
         }

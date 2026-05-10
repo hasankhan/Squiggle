@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualBasic.ApplicationServices;
 using Squiggle.UI.Resources;
 using Squiggle.Utilities;
@@ -73,9 +74,11 @@ namespace Squiggle.UI
     public partial class App : Application
     {
         public static bool RunInBackground { get; set; }
+        public static IServiceProvider Services { get; private set; } = null!;
 
         public App()
         {
+            Services = ServiceRegistration.ConfigureServices();
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
         }

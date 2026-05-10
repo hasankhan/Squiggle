@@ -22,6 +22,11 @@ namespace Squiggle.Utilities
 
         public static void Run<TService>(string[] args) where TService : ConsoleService, new()
         {
+            Run(() => new TService(), args);
+        }
+
+        public static void Run(Func<ConsoleService> factory, string[] args)
+        {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             if (Environment.UserInteractive)
             {
@@ -39,7 +44,7 @@ namespace Squiggle.Utilities
                             Console.WriteLine("Use 'sc.exe delete <ServiceName>' to uninstall the Windows service.");
                             break;
                         default:
-                            new TService().RunConsole(args);
+                            factory().RunConsole(args);
                             break;
                     }
                 }
@@ -50,7 +55,7 @@ namespace Squiggle.Utilities
             }
             else
             {
-                ServiceBase[] servicesToRun = new ServiceBase[] { new TService() };
+                ServiceBase[] servicesToRun = new ServiceBase[] { factory() };
                 ServiceBase.Run(servicesToRun);
             }
         }

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using Microsoft.Extensions.DependencyInjection;
 using Squiggle.Client;
 using Squiggle.Core.Presence;
 using Squiggle.UI.Components;
 using Squiggle.UI.Controls;
-using Squiggle.UI.Factories;
 using Squiggle.UI.Helpers;
 using Squiggle.UI.Helpers.Collections;
 using Squiggle.UI.Resources;
@@ -56,11 +56,8 @@ namespace Squiggle.UI.Windows
             settings.ContactSettings.ContactGroups.FlushItems();
             settingsProvider.Save();
 
-            HistoryManager history = new HistoryManagerFactory().CreateInstance();
-            context = new SquiggleContextFactory(new PluginLoaderFactory(), 
-                                                 history, 
-                                                 this, 
-                                                 settings.ConnectionSettings.ClientID).CreateInstance();
+            context = App.Services.GetRequiredService<SquiggleContext>();
+            context.MainWindow = this;
             context.PluginLoader.LoadAll(context);
 
             SetupControls();

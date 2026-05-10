@@ -9,17 +9,17 @@ namespace Squiggle.Bridge
 {
     public partial class SquiggleBridgeService : ConsoleService
     {
+        readonly BridgeConfiguration config;
         SquiggleBridge bridge = null!;
 
-        public SquiggleBridgeService()
+        public SquiggleBridgeService(BridgeConfiguration config)
         {
+            this.config = config;
             InitializeComponent();
         }                
 
         protected override void OnStart(string[] args)
         {
-            var config = BridgeConfiguration.GetConfig();
-
             var presenceServiceEndPoint = new IPEndPoint(config.InternalServiceBinding.EndPoint.Address, config.PresenceBinding.ServicePort);
             var multicastReceiveEndPoint = new IPEndPoint(config.InternalServiceBinding.EndPoint.Address, config.PresenceBinding.CallbackPort);
 
