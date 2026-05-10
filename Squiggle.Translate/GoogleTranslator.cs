@@ -23,12 +23,12 @@ namespace Squiggle.Translate
             return Translate(fromLanguage, toLanguage, text, out detectedLanguage);
         }
 
-        public string Translate(string toLanguage, string text, out string detectedLanguage)
+        public string Translate(string toLanguage, string text, out string? detectedLanguage)
         {
             return Translate(null, toLanguage, text, out detectedLanguage);
         }
 
-        string Translate(string fromLanguage, string toLanguage, string text, out string detectedLanguage)
+        string Translate(string? fromLanguage, string toLanguage, string text, out string? detectedLanguage)
         {
             detectedLanguage = null;
             text = HttpUtility.UrlEncode(text);
@@ -45,12 +45,12 @@ namespace Squiggle.Translate
             request.Method = "GET";
 
             using (WebResponse respone = request.GetResponse())
-            using (var reader = new StreamReader(respone.GetResponseStream(), Encoding.UTF8))
+            using (var reader = new StreamReader(respone.GetResponseStream()!, Encoding.UTF8))
                 text = reader.ReadToEnd();
 
             string translatedText = String.Empty;
 
-            var result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result>(text);
+            var result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result>(text)!;
             if (result.data.translations.Any())
             {
                 var translation = result.data.translations.FirstOrDefault();
@@ -63,18 +63,18 @@ namespace Squiggle.Translate
 
         class Result
         {
-            public Data data { get; set; }
+            public Data data { get; set; } = null!;
         }
 
         class Data
         {
-            public List<Translation> translations { get; set; }
+            public List<Translation> translations { get; set; } = null!;
         }
 
         class Translation
         {
-            public string translatedText { get; set; }
-            public string detectedSourceLanguage { get; set; }
+            public string translatedText { get; set; } = null!;
+            public string? detectedSourceLanguage { get; set; }
         }
     }
 

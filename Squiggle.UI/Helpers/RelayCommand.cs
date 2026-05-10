@@ -10,7 +10,7 @@ namespace Squiggle.UI.Helpers
     public class RelayCommand<T> : ICommand
     {
         Action<T> _execute;
-        Predicate<T> _canExecute;
+        Predicate<T>? _canExecute;
 
         #region Constructors
 
@@ -19,7 +19,7 @@ namespace Squiggle.UI.Helpers
         {
         }
 
-        public RelayCommand(Action<T> execute, Predicate<T> canExecute)
+        public RelayCommand(Action<T> execute, Predicate<T>? canExecute)
         {
             if (execute == null)
                 throw new ArgumentNullException("execute");
@@ -32,7 +32,7 @@ namespace Squiggle.UI.Helpers
         #region ICommand Members
 
         [DebuggerStepThrough]
-        public bool CanExecute(object parameter)
+        public bool CanExecute(object? parameter)
         {
             return _canExecute == null ? true : _canExecute((T)parameter);
         }
@@ -43,7 +43,7 @@ namespace Squiggle.UI.Helpers
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public void Execute(object parameter)
+        public void Execute(object? parameter)
         {
             _execute((T)parameter);
         }

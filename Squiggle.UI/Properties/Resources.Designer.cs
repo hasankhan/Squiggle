@@ -26,7 +26,7 @@ namespace Squiggle.UI.Properties {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
-        private static global::System.Globalization.CultureInfo resourceCulture;
+        private static global::System.Globalization.CultureInfo? resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources() {
@@ -51,7 +51,7 @@ namespace Squiggle.UI.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo? Culture {
             get {
                 return resourceCulture;
             }

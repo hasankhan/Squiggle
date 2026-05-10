@@ -15,8 +15,8 @@ namespace Squiggle.Bridge
 {
     public class PresenceMessageForwardedEventArgs: EventArgs
     {
-        public IPEndPoint BridgeEndPoint { get; set; }
-        public Squiggle.Core.Presence.Transport.Message Message {get; set; }
+        public IPEndPoint BridgeEndPoint { get; set; } = null!;
+        public Squiggle.Core.Presence.Transport.Message Message {get; set; } = null!;
 
         public bool IsBroadcast
         {
@@ -32,16 +32,16 @@ namespace Squiggle.Bridge
 
     public class ChatMessageReceivedEventArgs : EventArgs
     {
-        public Squiggle.Core.Chat.Transport.Message Message { get; set; }
+        public Squiggle.Core.Chat.Transport.Message Message { get; set; } = null!;
     }
 
     public class BridgeHost: IDisposable
     {
         IPEndPoint externalEndPoint;
         IPEndPoint internalEndPoint;
-        UnicastMessagePipe bridgePipe;
+        UnicastMessagePipe bridgePipe = null!;
         SquiggleBridge bridge;
-        UnicastMessagePipe chatPipe;
+        UnicastMessagePipe chatPipe = null!;
 
         public event EventHandler<PresenceMessageForwardedEventArgs> PresenceMessageForwarded = delegate { };
         public event EventHandler<ChatMessageReceivedEventArgs> ChatMessageReceived = delegate { };
@@ -64,12 +64,12 @@ namespace Squiggle.Bridge
             chatPipe.Open();
         }
 
-        void chatPipe_MessageReceived(object sender,Utilities.Net.Pipe.MessageReceivedEventArgs e)
+        void chatPipe_MessageReceived(object? sender,Utilities.Net.Pipe.MessageReceivedEventArgs e)
         {
             OnChatMessage(e.Message);
         }
 
-        void bridgePipe_MessageReceived(object sender, Utilities.Net.Pipe.MessageReceivedEventArgs e)
+        void bridgePipe_MessageReceived(object? sender, Utilities.Net.Pipe.MessageReceivedEventArgs e)
         {
             SerializationHelper.Deserialize<Message>(e.Message, msg =>
             {

@@ -7,11 +7,11 @@ namespace Squiggle.History.DAL.Entities
 {
     public class Participant
     {
-        public string Id {get; set;}
-        public string SessionId { get; set; }
-        public string ContactId { get; set; }
-        public string ContactName { get; set; }
+        public string Id {get; set;} = null!;
+        public string SessionId { get; set; } = null!;
+        public string ContactId { get; set; } = null!;
+        public string ContactName { get; set; } = null!;
 
-        public Session Session {get; set;}
+        public Session Session {get; set;} = null!;
     }
 }

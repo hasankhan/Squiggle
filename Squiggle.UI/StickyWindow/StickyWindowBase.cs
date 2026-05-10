@@ -16,7 +16,7 @@ namespace Squiggle.UI.StickyWindow
             this.Loaded += StickyWindow_Loaded;
         }
 
-        void StickyWindow_Loaded(object sender, RoutedEventArgs e)
+        void StickyWindow_Loaded(object? sender, RoutedEventArgs e)
         {
             AdjustLocation();
             if (loaded)

@@ -22,19 +22,19 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
     /// </summary>
     public partial class FileTransferControl : UserControl, INotifyPropertyChanged
     {
-        IFileTransferHandler fileTransfer;
+        IFileTransferHandler fileTransfer = null!;
         bool sending;
 
-        string downloadFolder;
+        string? downloadFolder;
 
-        public string FilePath { get; private set; }
-        public string FileName { get; private set; }
+        public string? FilePath { get; private set; }
+        public string FileName { get; private set; } = null!;
         public long FileSize { get; private set; }
-        public string Status { get; private set; }
+        public string Status { get; private set; } = null!;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
-        public string DownloadFolder
+        public string? DownloadFolder
         {
             get { return downloadFolder; }
             set
@@ -72,16 +72,16 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             ShowWaiting();
         }
 
-        private void Accept_Click(object sender, RoutedEventArgs e)
+        private void Accept_Click(object? sender, RoutedEventArgs e)
         {
-            if (Shell.CreateDirectoryIfNotExists(DownloadFolder))
+            if (Shell.CreateDirectoryIfNotExists(DownloadFolder!))
             {
-                string filePath = Shell.GetUniqueFilePath(DownloadFolder, fileTransfer.Name);
+                string filePath = Shell.GetUniqueFilePath(DownloadFolder!, fileTransfer.Name);
                 AcceptDownload(filePath);
             }
         }        
 
-        private void SaveAs_Click(object sender, RoutedEventArgs e)
+        private void SaveAs_Click(object? sender, RoutedEventArgs e)
         {
             using (var dlg = new System.Windows.Forms.SaveFileDialog())
             {
@@ -91,7 +91,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             }
         }
 
-        private void Reject_Click(object sender, RoutedEventArgs e)
+        private void Reject_Click(object? sender, RoutedEventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -99,7 +99,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             });
         }
 
-        void fileTransfer_TransferCompleted(object sender, EventArgs e)
+        void fileTransfer_TransferCompleted(object? sender, EventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -110,7 +110,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             });
         }
 
-        private void fileTransfer_TransferCancelled(object sender, EventArgs e)
+        private void fileTransfer_TransferCancelled(object? sender, EventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -118,7 +118,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             });
         }
 
-        private void fileTransfer_TransferStarted(object sender, EventArgs e)
+        private void fileTransfer_TransferStarted(object? sender, EventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -126,7 +126,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             });
         }
 
-        private void fileTransfer_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+        private void fileTransfer_ProgressChanged(object? sender, System.ComponentModel.ProgressChangedEventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -134,15 +134,15 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             });
         }
 
-        private void Open_Click(object sender, RoutedEventArgs e)
+        private void Open_Click(object? sender, RoutedEventArgs e)
         {
-            Shell.OpenFile(FilePath);
+            Shell.OpenFile(FilePath!);
         }
 
-        private void ShowInFolder_Click(object sender, RoutedEventArgs e)
+        private void ShowInFolder_Click(object? sender, RoutedEventArgs e)
         {
-            string file = DataContext as string;
-            Shell.ShowInFolder(FilePath);
+            string? file = DataContext as string;
+            Shell.ShowInFolder(FilePath!);
         }
 
         void CancelDownload(bool selfCancel)

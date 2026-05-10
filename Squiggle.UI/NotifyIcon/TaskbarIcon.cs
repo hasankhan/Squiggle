@@ -61,7 +61,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// An action that is being invoked if the
     /// <see cref="singleClickTimer"/> fires.
     /// </summary>
-    private Action delayedTimerAction;
+    private Action? delayedTimerAction;
 
     /// <summary>
     /// A timer that is used to differentiate between single
@@ -150,7 +150,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     struct PopupOffset
     {
         public int Count { get; set; }
-        public Popup Last { get; set; }
+        public Popup? Last { get; set; }
 
         public double GetOffset(UIElement balloon)
         {
@@ -235,7 +235,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
 
       popup.VerticalOffset = position.Y - offset.GetOffset(balloon) - 1;
       Debug.WriteLine(popup.VerticalOffset);
-      popup.Closed += (sender, e) =>
+      popup.Closed += (object? sender, EventArgs e) =>
       {
           lock (popups)
           {
@@ -340,7 +340,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// Timer-invoke event which closes the currently open balloon and
     /// resets the <see cref="CustomBalloon"/> dependency property.
     /// </summary>
-    private void CloseBalloonCallback(object state)
+    private void CloseBalloonCallback(object? state)
     {
       if (IsDisposed) return;
 
@@ -821,7 +821,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// based on a single click of the left mouse.<br/>
     /// This method is invoked by the <see cref="singleClickTimer"/>.
     /// </summary>
-    private void DoSingleClickAction(object state)
+    private void DoSingleClickAction(object? state)
     {
       if (IsDisposed) return;
 
@@ -953,7 +953,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// <summary>
     /// Disposes the class if the application exits.
     /// </summary>
-    private void OnExit(object sender, EventArgs e)
+    private void OnExit(object? sender, EventArgs e)
     {
       Dispose();
     }

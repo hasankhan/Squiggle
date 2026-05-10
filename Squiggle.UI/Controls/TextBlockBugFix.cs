@@ -18,7 +18,7 @@ namespace Squiggle.UI.Controls
             element.SetValue(Text2Property, value);
         }
 
-        public static string GetText2(UIElement element)
+        public static string? GetText2(UIElement element)
         {
             return (string)element.GetValue(Text2Property);
         }

@@ -63,12 +63,12 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop
     /// this reference makes sure we don't loose our reference
     /// to the message window.
     /// </summary>
-    private WindowProcedureHandler messageHandler;
+    private WindowProcedureHandler? messageHandler;
 
     /// <summary>
     /// Window class ID.
     /// </summary>
-    internal string WindowId { get; private set; }
+    internal string WindowId { get; private set; } = null!;
 
     /// <summary>
     /// Handle for the message window.
@@ -89,25 +89,25 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop
     /// <summary>
     /// The custom tooltip should be closed or hidden.
     /// </summary>
-    public event Action<bool> ChangeToolTipStateRequest;
+    public event Action<bool> ChangeToolTipStateRequest = delegate { };
 
     /// <summary>
     /// Fired in case the user clicked or moved within
     /// the taskbar icon area.
     /// </summary>
-    public event Action<MouseEvent> MouseEventReceived;
+    public event Action<MouseEvent> MouseEventReceived = delegate { };
 
     /// <summary>
     /// Fired if a balloon ToolTip was either displayed
     /// or closed (indicated by the boolean flag).
     /// </summary>
-    public event Action<bool> BallonToolTipChanged;
+    public event Action<bool> BallonToolTipChanged = delegate { };
 
     /// <summary>
     /// Fired if the taskbar was created or restarted. Requires the taskbar
     /// icon to be reset.
     /// </summary>
-    public event Action TaskbarCreated;
+    public event Action TaskbarCreated = delegate { };
 
     #endregion
 

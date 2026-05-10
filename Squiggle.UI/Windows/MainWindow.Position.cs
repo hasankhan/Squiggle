@@ -32,7 +32,7 @@ namespace Squiggle.UI.Windows
                 window.SizeChanged += Window_SizeChanged;
             }
 
-            private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+            private void Window_SizeChanged(object? sender, SizeChangedEventArgs e)
             {
                 if (window.WindowState == WindowState.Normal && window.Height > 0 && window.Width > 0)
                 {
@@ -42,7 +42,7 @@ namespace Squiggle.UI.Windows
                 }
             }
 
-            private void Window_LocationChanged(object sender, EventArgs e)
+            private void Window_LocationChanged(object? sender, EventArgs e)
             {
                 if (window.WindowState == WindowState.Normal && window.Top >= 0 && window.Left >= 0)
                 {

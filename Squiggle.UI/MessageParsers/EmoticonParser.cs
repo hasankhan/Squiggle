@@ -17,12 +17,12 @@ namespace Squiggle.UI.MessageParsers
     {
         class EmoticonEntry
         {
-            public BitmapImage Image { get; set; }
-            public string Title { get; set; }
+            public BitmapImage Image { get; set; } = null!;
+            public string Title { get; set; } = null!;
         }
 
         Dictionary<string, EmoticonEntry> emoticons = new Dictionary<string, EmoticonEntry>();
-        Regex pattern;
+        Regex pattern = null!;
 
         public EmoticonParser()
         {

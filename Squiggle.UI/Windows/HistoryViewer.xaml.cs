@@ -35,7 +35,7 @@ namespace Squiggle.UI.Windows
             chatHistory.SquiggleContext = context;
         }
 
-        private void StickyWindow_KeyDown(object sender, KeyEventArgs e)
+        private void StickyWindow_KeyDown(object? sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
                 Close();

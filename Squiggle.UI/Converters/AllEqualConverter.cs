@@ -5,7 +5,7 @@ namespace Squiggle.UI.Converters
 {
     class AllEqualConverter: IMultiValueConverter
     {
-        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object? Convert(object?[] values, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
         {
             if (values.Length == 0)
                 return true;
@@ -17,7 +17,7 @@ namespace Squiggle.UI.Converters
             return allEqual;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        public object?[] ConvertBack(object? value, Type[] targetTypes, object? parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();
         }

@@ -21,8 +21,8 @@ namespace Squiggle.UI.Windows
     /// </summary>
     public partial class ContactsSelectWindow : StickyWindowBase
     {
-        private ClientViewModel clientViewModel;
-        private List<Buddy> selectedContacts;
+        private ClientViewModel clientViewModel = null!;
+        private List<Buddy> selectedContacts = null!;
         string filter = string.Empty;
 
         public ReadOnlyCollection<Buddy> SelectedContacts
@@ -58,19 +58,19 @@ namespace Squiggle.UI.Windows
             this.DataContext = this.clientViewModel;
         }
 
-        public Predicate<Buddy> ExcludeCriterea { get; set; }
+        public Predicate<Buddy>? ExcludeCriterea { get; set; }
 
-        void clientViewModel_ContactListUpdated(object sender, EventArgs e)
+        void clientViewModel_ContactListUpdated(object? sender, EventArgs e)
         {
             Refresh();
         }
 
-        private void OnCancel(object sender, RoutedEventArgs e)
+        private void OnCancel(object? sender, RoutedEventArgs e)
         {
             CloseDialog(false);
         }
 
-        private void OnOK(object sender, RoutedEventArgs e)
+        private void OnOK(object? sender, RoutedEventArgs e)
         {
             CloseDialog(true);
         }
@@ -81,20 +81,20 @@ namespace Squiggle.UI.Windows
             this.Close();
         }
 
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        private void CheckBox_Checked(object? sender, RoutedEventArgs e)
         {
-            var buddy = ((CheckBox)sender).Tag as Buddy;
-            selectedContacts.Add(buddy);
+            var buddy = ((CheckBox)sender!).Tag as Buddy;
+            selectedContacts.Add(buddy!);
         }
 
-        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        private void CheckBox_Unchecked(object? sender, RoutedEventArgs e)
         {
-            var buddy = ((CheckBox)sender).Tag as Buddy;
-            if(selectedContacts.Contains(buddy))
-                selectedContacts.Remove(buddy);
+            var buddy = ((CheckBox)sender!).Tag as Buddy;
+            if(selectedContacts.Contains(buddy!))
+                selectedContacts.Remove(buddy!);
         }
 
-        private void CollectionViewSource_Filter(object sender, FilterEventArgs e)
+        private void CollectionViewSource_Filter(object? sender, FilterEventArgs e)
         {
             Buddy buddy = (Buddy)e.Item;
             if (!buddy.IsOnline)
@@ -109,7 +109,7 @@ namespace Squiggle.UI.Windows
                 e.Accepted &= !ExcludeCriterea(buddy);
         }
 
-        private void FilterTextBox_FilterChanged(object sender, BuddyFilterEventArs e)
+        private void FilterTextBox_FilterChanged(object? sender, BuddyFilterEventArs e)
         {
             filter = e.FilterBy;
             Refresh();
@@ -125,25 +125,25 @@ namespace Squiggle.UI.Windows
             });
         }
 
-        private void Window_KeyDown(object sender, KeyEventArgs e)
+        private void Window_KeyDown(object? sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
                 CloseDialog(false);
         }  
 
-        private void contactBorder_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void contactBorder_MouseLeftButtonUp(object? sender, MouseButtonEventArgs e)
         {
             var parent = sender as Border;
             if (AllowMultiSelect.HasValue && AllowMultiSelect.Value)
             {
-                var selection = parent.FindName("chkSelection") as CheckBox;
+                var selection = parent!.FindName("chkSelection") as CheckBox;
 
-                selection.IsChecked = !selection.IsChecked;
+                selection!.IsChecked = !selection.IsChecked;
             }
             else
             {
                 selectedContacts.Clear();
-                selectedContacts.Add(parent.Tag as Buddy);
+                selectedContacts.Add((parent!.Tag as Buddy)!);
 
                 CloseDialog(true);
             }

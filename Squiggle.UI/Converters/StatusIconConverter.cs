@@ -9,7 +9,7 @@ namespace Squiggle.UI.Converters
 {
     public class StatusIconConverter: IValueConverter
     {
-        static BitmapImage onlineIcon, busyIcon, awayIcon, offlineIcon;
+        static BitmapImage onlineIcon = null!, busyIcon = null!, awayIcon = null!, offlineIcon = null!;
 
         static StatusIconConverter()
         {
@@ -25,7 +25,7 @@ namespace Squiggle.UI.Converters
 
         #region IValueConverter Members
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object? Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
         {
             if (value != null && value is UserStatus)
             {
@@ -50,7 +50,7 @@ namespace Squiggle.UI.Converters
                 return value;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object? ConvertBack(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();
         }

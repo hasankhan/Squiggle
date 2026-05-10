@@ -14,11 +14,11 @@ namespace Squiggle.FileTransfer
 {
     class FileTransferHandler: ActivityHandler, IFileTransferHandler
     {
-        Stream content;
-        string filePath;
+        Stream? content;
+        string? filePath;
 
         public long Size { get; private set; }
-        public string Name { get; private set; }
+        public string Name { get; private set; } = null!;
 
         public FileTransferHandler(IActivityExecutor executor, string name, long size, Stream content)
             :base(executor)

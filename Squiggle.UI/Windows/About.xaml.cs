@@ -25,12 +25,12 @@ namespace Squiggle.UI.Windows
             lnkGitHash.Inlines.Add(hash);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object? sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
-        private void Link_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+        private void Link_RequestNavigate(object? sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
             Shell.OpenUrl(e.Uri.ToString());
         }

@@ -29,14 +29,14 @@ namespace Squiggle.UI.Controls
     /// </summary>
     public partial class StatusHistoryViewer : UserControl
     {
-        Action lastSearch;
+        Action? lastSearch;
 
         public StatusHistoryViewer()
         {
             InitializeComponent();
         }
 
-        void Search_Click(object sender, RoutedEventArgs e)
+        void Search_Click(object? sender, RoutedEventArgs e)
         {
             DateTime? from = txtFrom.SelectedDate;
             DateTime? to = txtTo.SelectedDate;
@@ -61,7 +61,7 @@ namespace Squiggle.UI.Controls
             });
         }
 
-        private void Clear_Click(object sender, RoutedEventArgs e)
+        private void Clear_Click(object? sender, RoutedEventArgs e)
         {
             if (MessageBox.Show(Translation.Instance.HistoryViewer_ConfirmClear, "Squiggle", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
@@ -94,7 +94,7 @@ namespace Squiggle.UI.Controls
         class Result
         {
             public DateTime Time { get; private set; }
-            public string Name { get; private set; }
+            public string Name { get; private set; } = null!;
             public UserStatus Status { get; private set; }
 
             public Result(StatusUpdate update)

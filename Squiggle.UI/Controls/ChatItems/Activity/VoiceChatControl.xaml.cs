@@ -28,13 +28,13 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
     /// </summary>
     public partial class VoiceChatControl : UserControl
     {
-        IVoiceChatHandler voiceChat;
+        IVoiceChatHandler voiceChat = null!;
         bool sending;
-        string buddyName;
+        string buddyName = null!;
         bool alreadyInChat;
-        SquiggleContext context;
+        SquiggleContext context = null!;
 
-        public string Status { get; private set; }
+        public string? Status { get; private set; }
 
         public VoiceChatControl()
         {
@@ -58,7 +58,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             ShowWaiting();
         }
 
-        void voiceChat_TransferFinished(object sender, EventArgs e)
+        void voiceChat_TransferFinished(object? sender, EventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -69,7 +69,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             });
         }
 
-        void voiceChat_TransferStarted(object sender, EventArgs e)
+        void voiceChat_TransferStarted(object? sender, EventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -78,7 +78,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             });
         }
 
-        void voiceChat_TransferCompleted(object sender, EventArgs e)
+        void voiceChat_TransferCompleted(object? sender, EventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -86,7 +86,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             }); 
         }
 
-        void voiceChat_TransferCancelled(object sender, EventArgs e)
+        void voiceChat_TransferCancelled(object? sender, EventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -137,7 +137,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             AudioAlert.Instance.Play(AudioAlertType.VoiceChatDisconnected);
         }
 
-        private void Accept_Click(object sender, RoutedEventArgs e)
+        private void Accept_Click(object? sender, RoutedEventArgs e)
         {
             if (context.IsVoiceChatActive)
                 return;
@@ -151,7 +151,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             });
         }
 
-        private void Reject_Click(object sender, RoutedEventArgs e)
+        private void Reject_Click(object? sender, RoutedEventArgs e)
         {
             voiceChat.Cancel();
             Dispatcher.Invoke(() =>
@@ -160,7 +160,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             });
         }
 
-        private void Finished_Click(object sender, RoutedEventArgs e)
+        private void Finished_Click(object? sender, RoutedEventArgs e)
         {
             voiceChat.Cancel();
             Dispatcher.Invoke(() =>

@@ -75,9 +75,9 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// <see cref="TrayPopup"/>.
     /// </summary>
     [Category(CategoryName)]
-    public Popup TrayPopupResolved
+    public Popup? TrayPopupResolved
     {
-      get { return (Popup)GetValue(TrayPopupResolvedProperty); }
+      get { return (Popup?)GetValue(TrayPopupResolvedProperty); }
     }
 
     /// <summary>
@@ -85,7 +85,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// This dependency property indicates ....
     /// </summary>
     /// <param name="value">The new value for the property.</param>
-    protected void SetTrayPopupResolved(Popup value)
+    protected void SetTrayPopupResolved(Popup? value)
     {
       SetValue(TrayPopupResolvedPropertyKey, value);
     }
@@ -118,9 +118,9 @@ namespace Hardcodet.Wpf.TaskbarNotification
     [Category(CategoryName)]
     [Browsable(true)]
     [Bindable(true)] 
-    public ToolTip TrayToolTipResolved
+    public ToolTip? TrayToolTipResolved
     {
-      get { return (ToolTip)GetValue(TrayToolTipResolvedProperty); }
+      get { return (ToolTip?)GetValue(TrayToolTipResolvedProperty); }
     }
 
     /// <summary>
@@ -128,7 +128,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// property.  
     /// </summary>
     /// <param name="value">The new value for the property.</param>
-    protected void SetTrayToolTipResolved(ToolTip value)
+    protected void SetTrayToolTipResolved(ToolTip? value)
     {
       SetValue(TrayToolTipResolvedPropertyKey, value);
     }
@@ -151,16 +151,16 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// A custom popup that is being displayed in the tray area in order
     /// to display messages to the user.
     /// </summary>
-    public Popup CustomBalloon
+    public Popup? CustomBalloon
     {
-      get { return (Popup)GetValue(CustomBalloonProperty); }
+      get { return (Popup?)GetValue(CustomBalloonProperty); }
     }
 
     /// <summary>
     /// Provides a secure method for setting the <see cref="CustomBalloon"/> property.  
     /// </summary>
     /// <param name="value">The new value for the property.</param>
-    protected void SetCustomBalloon(Popup value)
+    protected void SetCustomBalloon(Popup? value)
     {
       SetValue(CustomBalloonPropertyKey, value);
     }
@@ -173,7 +173,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
 
     #region Icon property / IconSource dependency property
 
-    private Icon icon;
+    private Icon? icon;
 
     /// <summary>
     /// Gets or sets the icon to be displayed. This is not a
@@ -182,7 +182,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// dependency property.
     /// </summary>
     [Browsable(false)]
-    public Icon Icon
+    public Icon? Icon
     {
       get { return icon; }
       set
@@ -335,9 +335,9 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     [Category(CategoryName)]
     [Description("Custom UI element that is displayed as a tooltip. Only on Vista and above")]
-    public UIElement TrayToolTip
+    public UIElement? TrayToolTip
     {
-      get { return (UIElement) GetValue(TrayToolTipProperty); }
+      get { return (UIElement?) GetValue(TrayToolTipProperty); }
       set { SetValue(TrayToolTipProperty, value); }
     }
 
@@ -409,9 +409,9 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     [Category(CategoryName)]
     [Description("Displayed as a Popup if the user clicks on the taskbar icon.")]
-    public UIElement TrayPopup
+    public UIElement? TrayPopup
     {
-      get { return (UIElement)GetValue(TrayPopupProperty); }
+      get { return (UIElement?)GetValue(TrayPopupProperty); }
       set { SetValue(TrayPopupProperty, value); }
     }
 
@@ -567,7 +567,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// the <see cref="FrameworkElement.DataContext"/> of the NotifyIcon, or the
     /// NotifyIcon itself, if no data context was assigned at all.
     /// </summary>
-    private void UpdateDataContext(FrameworkElement target, object oldDataContextValue, object newDataContextValue)
+    private void UpdateDataContext(FrameworkElement? target, object? oldDataContextValue, object? newDataContextValue)
     {
       //if there is no target or it's data context is determined through a binding
       //of its own, keep it
@@ -681,9 +681,9 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// Associates a command that is being executed if the tray icon is being
     /// double clicked.
     /// </summary>
-    public ICommand DoubleClickCommand
+    public ICommand? DoubleClickCommand
     {
-      get { return (ICommand) GetValue(DoubleClickCommandProperty); }
+      get { return (ICommand?) GetValue(DoubleClickCommandProperty); }
       set { SetValue(DoubleClickCommandProperty, value); }
     }
 
@@ -729,9 +729,9 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// dependency property:<br/>
     /// The target of the command that is fired if the notify icon is double clicked.
     /// </summary>
-    public IInputElement DoubleClickCommandTarget
+    public IInputElement? DoubleClickCommandTarget
     {
-      get { return (IInputElement) GetValue(DoubleClickCommandTargetProperty); }
+      get { return (IInputElement?) GetValue(DoubleClickCommandTargetProperty); }
       set { SetValue(DoubleClickCommandTargetProperty, value); }
     }
 
@@ -757,9 +757,9 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// Associates a command that is being executed if the tray icon is being
     /// double clicked.
     /// </summary>
-    public ICommand LeftClickCommand
+    public ICommand? LeftClickCommand
     {
-      get { return (ICommand) GetValue(LeftClickCommandProperty); }
+      get { return (ICommand?) GetValue(LeftClickCommandProperty); }
       set { SetValue(LeftClickCommandProperty, value); }
     }
 
@@ -805,9 +805,9 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// dependency property:<br/>
     /// The target of the command that is fired if the notify icon is clicked.
     /// </summary>
-    public IInputElement LeftClickCommandTarget
+    public IInputElement? LeftClickCommandTarget
     {
-      get { return (IInputElement) GetValue(LeftClickCommandTargetProperty); }
+      get { return (IInputElement?) GetValue(LeftClickCommandTargetProperty); }
       set { SetValue(LeftClickCommandTargetProperty, value); }
     }
 
@@ -840,7 +840,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     protected RoutedEventArgs RaiseTrayLeftMouseDownEvent()
     {
-      RoutedEventArgs args = RaiseTrayLeftMouseDownEvent(this);
+      RoutedEventArgs args = RaiseTrayLeftMouseDownEvent(this)!;
       return args;
     }
 
@@ -848,7 +848,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// A static helper method to raise the TrayLeftMouseDown event on a target element.
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaiseTrayLeftMouseDownEvent(DependencyObject target)
+    internal static RoutedEventArgs? RaiseTrayLeftMouseDownEvent(DependencyObject target)
     {
       if (target == null) return null;
 
@@ -882,14 +882,14 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     protected RoutedEventArgs RaiseTrayRightMouseDownEvent()
     {
-      return RaiseTrayRightMouseDownEvent(this);
+      return RaiseTrayRightMouseDownEvent(this)!;
     }
 
     /// <summary>
     /// A static helper method to raise the TrayRightMouseDown event on a target element.
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaiseTrayRightMouseDownEvent(DependencyObject target)
+    internal static RoutedEventArgs? RaiseTrayRightMouseDownEvent(DependencyObject target)
     {
       if (target == null) return null;
 
@@ -923,14 +923,14 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     protected RoutedEventArgs RaiseTrayMiddleMouseDownEvent()
     {
-      return RaiseTrayMiddleMouseDownEvent(this);
+      return RaiseTrayMiddleMouseDownEvent(this)!;
     }
 
     /// <summary>
     /// A static helper method to raise the TrayMiddleMouseDown event on a target element.
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaiseTrayMiddleMouseDownEvent(DependencyObject target)
+    internal static RoutedEventArgs? RaiseTrayMiddleMouseDownEvent(DependencyObject target)
     {
       if (target == null) return null;
 
@@ -965,14 +965,14 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     protected RoutedEventArgs RaiseTrayLeftMouseUpEvent()
     {
-      return RaiseTrayLeftMouseUpEvent(this);
+      return RaiseTrayLeftMouseUpEvent(this)!;
     }
 
     /// <summary>
     /// A static helper method to raise the TrayLeftMouseUp event on a target element.
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaiseTrayLeftMouseUpEvent(DependencyObject target)
+    internal static RoutedEventArgs? RaiseTrayLeftMouseUpEvent(DependencyObject target)
     {
       if (target == null) return null;
 
@@ -1006,14 +1006,14 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     protected RoutedEventArgs RaiseTrayRightMouseUpEvent()
     {
-      return RaiseTrayRightMouseUpEvent(this);
+      return RaiseTrayRightMouseUpEvent(this)!;
     }
 
     /// <summary>
     /// A static helper method to raise the TrayRightMouseUp event on a target element.
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaiseTrayRightMouseUpEvent(DependencyObject target)
+    internal static RoutedEventArgs? RaiseTrayRightMouseUpEvent(DependencyObject target)
     {
       if (target == null) return null;
 
@@ -1047,14 +1047,14 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     protected RoutedEventArgs RaiseTrayMiddleMouseUpEvent()
     {
-      return RaiseTrayMiddleMouseUpEvent(this);
+      return RaiseTrayMiddleMouseUpEvent(this)!;
     }
 
     /// <summary>
     /// A static helper method to raise the TrayMiddleMouseUp event on a target element.
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaiseTrayMiddleMouseUpEvent(DependencyObject target)
+    internal static RoutedEventArgs? RaiseTrayMiddleMouseUpEvent(DependencyObject target)
     {
       if (target == null) return null;
 
@@ -1089,7 +1089,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     protected RoutedEventArgs RaiseTrayMouseDoubleClickEvent()
     {
-      RoutedEventArgs args = RaiseTrayMouseDoubleClickEvent(this);
+      RoutedEventArgs args = RaiseTrayMouseDoubleClickEvent(this)!;
       DoubleClickCommand.ExecuteIfEnabled(DoubleClickCommandParameter, DoubleClickCommandTarget ?? this);
       return args;
     }
@@ -1098,7 +1098,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// A static helper method to raise the TrayMouseDoubleClick event on a target element.
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaiseTrayMouseDoubleClickEvent(DependencyObject target)
+    internal static RoutedEventArgs? RaiseTrayMouseDoubleClickEvent(DependencyObject target)
     {
       if (target == null) return null;
 
@@ -1132,14 +1132,14 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     protected RoutedEventArgs RaiseTrayMouseMoveEvent()
     {
-      return RaiseTrayMouseMoveEvent(this);
+      return RaiseTrayMouseMoveEvent(this)!;
     }
 
     /// <summary>
     /// A static helper method to raise the TrayMouseMove event on a target element.
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaiseTrayMouseMoveEvent(DependencyObject target)
+    internal static RoutedEventArgs? RaiseTrayMouseMoveEvent(DependencyObject target)
     {
       if (target == null) return null;
 
@@ -1174,14 +1174,14 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     protected RoutedEventArgs RaiseTrayBalloonTipShownEvent()
     {
-      return RaiseTrayBalloonTipShownEvent(this);
+      return RaiseTrayBalloonTipShownEvent(this)!;
     }
 
     /// <summary>
     /// A static helper method to raise the TrayBalloonTipShown event on a target element.
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaiseTrayBalloonTipShownEvent(DependencyObject target)
+    internal static RoutedEventArgs? RaiseTrayBalloonTipShownEvent(DependencyObject target)
     {
       if (target == null) return null;
 
@@ -1215,14 +1215,14 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     protected RoutedEventArgs RaiseTrayBalloonTipClosedEvent()
     {
-      return RaiseTrayBalloonTipClosedEvent(this);
+      return RaiseTrayBalloonTipClosedEvent(this)!;
     }
 
     /// <summary>
     /// A static helper method to raise the TrayBalloonTipClosed event on a target element.
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaiseTrayBalloonTipClosedEvent(DependencyObject target)
+    internal static RoutedEventArgs? RaiseTrayBalloonTipClosedEvent(DependencyObject target)
     {
       if (target == null) return null;
 
@@ -1256,14 +1256,14 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     protected RoutedEventArgs RaiseTrayBalloonTipClickedEvent()
     {
-      return RaiseTrayBalloonTipClickedEvent(this);
+      return RaiseTrayBalloonTipClickedEvent(this)!;
     }
 
     /// <summary>
     /// A static helper method to raise the TrayBalloonTipClicked event on a target element.
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaiseTrayBalloonTipClickedEvent(DependencyObject target)
+    internal static RoutedEventArgs? RaiseTrayBalloonTipClickedEvent(DependencyObject target)
     {
       if (target == null) return null;
 
@@ -1298,14 +1298,14 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     protected RoutedEventArgs RaiseTrayContextMenuOpenEvent()
     {
-      return RaiseTrayContextMenuOpenEvent(this);
+      return RaiseTrayContextMenuOpenEvent(this)!;
     }
 
     /// <summary>
     /// A static helper method to raise the TrayContextMenuOpen event on a target element.
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaiseTrayContextMenuOpenEvent(DependencyObject target)
+    internal static RoutedEventArgs? RaiseTrayContextMenuOpenEvent(DependencyObject target)
     {
       if (target == null) return null;
 
@@ -1335,14 +1335,14 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     protected RoutedEventArgs RaisePreviewTrayContextMenuOpenEvent()
     {
-      return RaisePreviewTrayContextMenuOpenEvent(this);
+      return RaisePreviewTrayContextMenuOpenEvent(this)!;
     }
 
     /// <summary>
     /// A static helper method to raise the PreviewTrayContextMenuOpen event on a target element.
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaisePreviewTrayContextMenuOpenEvent(DependencyObject target)
+    internal static RoutedEventArgs? RaisePreviewTrayContextMenuOpenEvent(DependencyObject target)
     {
       if (target == null) return null;
 
@@ -1376,14 +1376,14 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     protected RoutedEventArgs RaiseTrayPopupOpenEvent()
     {
-      return RaiseTrayPopupOpenEvent(this);
+      return RaiseTrayPopupOpenEvent(this)!;
     }
 
     /// <summary>
     /// A static helper method to raise the TrayPopupOpen event on a target element.
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaiseTrayPopupOpenEvent(DependencyObject target)
+    internal static RoutedEventArgs? RaiseTrayPopupOpenEvent(DependencyObject target)
     {
       if (target == null) return null;
 
@@ -1413,14 +1413,14 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     protected RoutedEventArgs RaisePreviewTrayPopupOpenEvent()
     {
-      return RaisePreviewTrayPopupOpenEvent(this);
+      return RaisePreviewTrayPopupOpenEvent(this)!;
     }
 
     /// <summary>
     /// A static helper method to raise the PreviewTrayPopupOpen event on a target element.
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaisePreviewTrayPopupOpenEvent(DependencyObject target)
+    internal static RoutedEventArgs? RaisePreviewTrayPopupOpenEvent(DependencyObject target)
     {
       if (target == null) return null;
 
@@ -1455,14 +1455,14 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     protected RoutedEventArgs RaiseTrayToolTipOpenEvent()
     {
-      return RaiseTrayToolTipOpenEvent(this);
+      return RaiseTrayToolTipOpenEvent(this)!;
     }
 
     /// <summary>
     /// A static helper method to raise the TrayToolTipOpen event on a target element.
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaiseTrayToolTipOpenEvent(DependencyObject target)
+    internal static RoutedEventArgs? RaiseTrayToolTipOpenEvent(DependencyObject target)
     {
       if (target == null) return null;
 
@@ -1492,14 +1492,14 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     protected RoutedEventArgs RaisePreviewTrayToolTipOpenEvent()
     {
-      return RaisePreviewTrayToolTipOpenEvent(this);
+      return RaisePreviewTrayToolTipOpenEvent(this)!;
     }
 
     /// <summary>
     /// A static helper method to raise the PreviewTrayToolTipOpen event on a target element.
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaisePreviewTrayToolTipOpenEvent(DependencyObject target)
+    internal static RoutedEventArgs? RaisePreviewTrayToolTipOpenEvent(DependencyObject target)
     {
       if (target == null) return null;
 
@@ -1533,14 +1533,14 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     protected RoutedEventArgs RaiseTrayToolTipCloseEvent()
     {
-      return RaiseTrayToolTipCloseEvent(this);
+      return RaiseTrayToolTipCloseEvent(this)!;
     }
 
     /// <summary>
     /// A static helper method to raise the TrayToolTipClose event on a target element.
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaiseTrayToolTipCloseEvent(DependencyObject target)
+    internal static RoutedEventArgs? RaiseTrayToolTipCloseEvent(DependencyObject target)
     {
       if (target == null) return null;
 
@@ -1570,14 +1570,14 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     protected RoutedEventArgs RaisePreviewTrayToolTipCloseEvent()
     {
-      return RaisePreviewTrayToolTipCloseEvent(this);
+      return RaisePreviewTrayToolTipCloseEvent(this)!;
     }
 
     /// <summary>
     /// A static helper method to raise the PreviewTrayToolTipClose event on a target element.
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaisePreviewTrayToolTipCloseEvent(DependencyObject target)
+    internal static RoutedEventArgs? RaisePreviewTrayToolTipCloseEvent(DependencyObject target)
     {
       if (target == null) return null;
 
@@ -1624,7 +1624,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// A static helper method to raise the PopupOpened event on a target element.
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaisePopupOpenedEvent(DependencyObject target)
+    internal static RoutedEventArgs? RaisePopupOpenedEvent(DependencyObject target)
     {
       if (target == null) return null;
 
@@ -1668,7 +1668,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// A static helper method to raise the ToolTipOpened event on a target element.
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaiseToolTipOpenedEvent(DependencyObject target)
+    internal static RoutedEventArgs? RaiseToolTipOpenedEvent(DependencyObject target)
     {
       if (target == null) return null;
 
@@ -1712,7 +1712,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// A static helper method to raise the ToolTipClose event on a target element.
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-    internal static RoutedEventArgs RaiseToolTipCloseEvent(DependencyObject target)
+    internal static RoutedEventArgs? RaiseToolTipCloseEvent(DependencyObject target)
     {
       if (target == null) return null;
 
@@ -1757,7 +1757,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     /// <param name="source">The <see cref="TaskbarIcon"/> instance that manages the balloon.</param>
-    internal static RoutedEventArgs RaiseBalloonShowingEvent(DependencyObject target, TaskbarIcon source)
+    internal static RoutedEventArgs? RaiseBalloonShowingEvent(DependencyObject target, TaskbarIcon source)
     {
       if (target == null) return null;
 
@@ -1801,7 +1801,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// </summary>
     /// <param name="target">UIElement or ContentElement on which to raise the event</param>
     /// <param name="source">The <see cref="TaskbarIcon"/> instance that manages the balloon.</param>
-    internal static RoutedEventArgs RaiseBalloonClosingEvent(DependencyObject target, TaskbarIcon source)
+    internal static RoutedEventArgs? RaiseBalloonClosingEvent(DependencyObject target, TaskbarIcon source)
     {
       if (target == null) return null;
 
@@ -1828,16 +1828,16 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// Gets the ParentTaskbarIcon property.  This dependency property 
     /// indicates ....
     /// </summary>
-    public static TaskbarIcon GetParentTaskbarIcon(DependencyObject d)
+    public static TaskbarIcon? GetParentTaskbarIcon(DependencyObject d)
     {
-      return (TaskbarIcon)d.GetValue(ParentTaskbarIconProperty);
+      return (TaskbarIcon?)d.GetValue(ParentTaskbarIconProperty);
     }
 
     /// <summary>
     /// Sets the ParentTaskbarIcon property.  This dependency property 
     /// indicates ....
     /// </summary>
-    public static void SetParentTaskbarIcon(DependencyObject d, TaskbarIcon value)
+    public static void SetParentTaskbarIcon(DependencyObject d, TaskbarIcon? value)
     {
       d.SetValue(ParentTaskbarIconProperty, value);
     }

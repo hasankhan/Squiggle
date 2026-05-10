@@ -15,24 +15,24 @@ namespace Squiggle.Bridge
 {
     class TargetBridge
     {
-        public IPEndPoint EndPoint { get; set; }
+        public IPEndPoint EndPoint { get; set; } = null!;
     }
 
     delegate void RouteAction(bool local, IPEndPoint target, SquiggleEndPoint sender, SquiggleEndPoint recipient);
 
     class SquiggleBridge
     {
-        BridgeHost bridgeHost;
+        BridgeHost bridgeHost = null!;
         IPEndPoint presenceServiceEndPoint;
         IPEndPoint bridgeEndPointInternal;
         IPEndPoint bridgeEndPointExternal;
         IPEndPoint multicastEndPoint;
         IPEndPoint multicastReceiveEndPoint;
-        PresenceChannel presenceChannel;
-        PresenceMessageInspector messageInspector;
+        PresenceChannel presenceChannel = null!;
+        PresenceMessageInspector messageInspector = null!;
 
         List<IPEndPoint> targetBridges = new List<IPEndPoint>();
-        RouteTable routeTable;
+        RouteTable routeTable = null!;
 
 
         public SquiggleBridge(IPEndPoint bridgeEndPointInternal,
@@ -75,7 +75,7 @@ namespace Squiggle.Bridge
             presenceChannel.Stop();
         }
 
-        void bridgeHost_PresenceMessageForwarded(object sender, PresenceMessageForwardedEventArgs e)
+        void bridgeHost_PresenceMessageForwarded(object? sender, PresenceMessageForwardedEventArgs e)
         {
             if (e.Message.ChannelID == presenceChannel.ChannelID)
                 return; // my own message
@@ -105,7 +105,7 @@ namespace Squiggle.Bridge
                 }, "routing presence message to local user");
         }
 
-        void bridgeHost_ChatMessageReceived(object sender, ChatMessageReceivedEventArgs e)
+        void bridgeHost_ChatMessageReceived(object? sender, ChatMessageReceivedEventArgs e)
         {
             if (e.Message is IMessageHasParticipants)
             {
@@ -121,7 +121,7 @@ namespace Squiggle.Bridge
             }, e.Message.Sender, e.Message.Recipient);
         }
 
-        void presenceChannel_MessageReceived(object sender, Squiggle.Core.Presence.Transport.MessageReceivedEventArgs e)
+        void presenceChannel_MessageReceived(object? sender, Squiggle.Core.Presence.Transport.MessageReceivedEventArgs e)
         {
             ExceptionMonster.EatTheException(() =>
             {
@@ -178,12 +178,12 @@ namespace Squiggle.Bridge
             ExceptionMonster.EatTheException(() =>
             {
                 sender = new SquiggleEndPoint(sender.ClientID, bridgeEndPointInternal);
-                IPEndPoint endpoint = routeTable.GetLocalChatEndPoint(recipient.ClientID);
+                IPEndPoint endpoint = routeTable.GetLocalChatEndPoint(recipient.ClientID)!;
                 action(true, endpoint, sender, new SquiggleEndPoint(recipient.ClientID, endpoint));
             }, "routing chat message to local user");            
         }
 
-        IPEndPoint FindBridge(IPEndPoint bridgeEndPoint)
+        IPEndPoint? FindBridge(IPEndPoint bridgeEndPoint)
         {
             IPEndPoint bridge = targetBridges.FirstOrDefault(t => t.Equals(bridgeEndPoint));
             return bridge;

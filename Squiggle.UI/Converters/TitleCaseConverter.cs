@@ -10,7 +10,7 @@ namespace Squiggle.UI.Converters
     {
         public static TitleCaseConverter Instance = new TitleCaseConverter();
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object? Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
         {
             if (value == null)
                 return null;
@@ -18,7 +18,7 @@ namespace Squiggle.UI.Converters
             return culture.TextInfo.ToTitleCase(value.ToString());
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object? ConvertBack(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();
         }

@@ -23,13 +23,13 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
     /// </summary>
     public partial class GenericActivityControl : UserControl, INotifyPropertyChanged
     {
-        IActivityHandler session;
+        IActivityHandler session = null!;
         bool sending;
-        string buddyName;
-        string activityName;
+        string buddyName = null!;
+        string activityName = null!;
 
-        string _status;
-        public string Status 
+        string? _status;
+        public string? Status 
         {
             get { return _status; }
             set 
@@ -63,7 +63,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             ShowWaiting();
         }
 
-        void session_TransferCompleted(object sender, EventArgs e)
+        void session_TransferCompleted(object? sender, EventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -73,7 +73,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             });
         }
 
-        void session_TransferCancelled(object sender, EventArgs e)
+        void session_TransferCancelled(object? sender, EventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -81,7 +81,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             });
         }
 
-        void session_TransferStarted(object sender, EventArgs e)
+        void session_TransferStarted(object? sender, EventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -89,12 +89,12 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
             });
         }
 
-        private void Accept_Click(object sender, RoutedEventArgs e)
+        private void Accept_Click(object? sender, RoutedEventArgs e)
         {
             Accept();
         } 
 
-        private void Reject_Click(object sender, RoutedEventArgs e)
+        private void Reject_Click(object? sender, RoutedEventArgs e)
         {
             Dispatcher.Invoke(() =>
             {

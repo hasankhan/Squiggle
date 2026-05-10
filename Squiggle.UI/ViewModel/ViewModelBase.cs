@@ -9,13 +9,13 @@ namespace Squiggle.UI.ViewModel
 {
     public class ViewModelBase: INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         protected void OnPropertyChanged(params Expression<Func<object>>[] propertySelectors)
         {
             IEnumerable<string> propertyNames = propertySelectors.Select(s => GetPropertyName(s));
             foreach (string propertyName in propertyNames)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }        
 
         protected void Set<T>(Expression<Func<object>> propertySelector, ref T property, T value )

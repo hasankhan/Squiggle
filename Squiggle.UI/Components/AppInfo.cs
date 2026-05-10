@@ -11,10 +11,10 @@ namespace Squiggle.UI.Components
 {
     class AppInfo
     {
-        public static string Location { get; private set; }
-        public static string FilePath { get; private set; }
-        public static Version Version { get; private set; }
-        public static string Hash { get; private set; }
+        public static string Location { get; private set; } = null!;
+        public static string FilePath { get; private set; } = null!;
+        public static Version Version { get; private set; } = null!;
+        public static string Hash { get; private set; } = null!;
 
         static AppInfo()
         {

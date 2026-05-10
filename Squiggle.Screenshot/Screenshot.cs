@@ -35,7 +35,7 @@ namespace Squiggle.Screenshot
 
         public static Stream Capture()
         {
-            Size screenSize = Screen.PrimaryScreen.Bounds.Size;
+            Size screenSize = Screen.PrimaryScreen!.Bounds.Size;
             IntPtr hDesktopWnd = GetDesktopWindow();
             IntPtr hDesktopDC = GetWindowDC(hDesktopWnd);
             IntPtr hBitmapDC = CreateCompatibleDC(hDesktopDC);

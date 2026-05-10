@@ -8,9 +8,9 @@ using Squiggle.History;
 
 namespace Squiggle.UI.Factories
 {
-    class HistoryManagerFactory: IInstanceFactory<HistoryManager>
+    class HistoryManagerFactory: IInstanceFactory<HistoryManager?>
     {
-        public HistoryManager CreateInstance()
+        public HistoryManager? CreateInstance()
         {
             ConnectionStringSettings setting = ConfigurationManager.ConnectionStrings["HistoryContext"];
             if (setting == null)
@@ -21,7 +21,7 @@ namespace Squiggle.UI.Factories
                 return null;
 
             string connectionString = Environment.ExpandEnvironmentVariables(setting.ConnectionString);
-            DbConnection connection = DbProviderFactories.GetFactory(provider).CreateConnection();
+            DbConnection connection = DbProviderFactories.GetFactory(provider).CreateConnection()!;
             connection.ConnectionString = connectionString;
             return new HistoryManager(connection);
         }

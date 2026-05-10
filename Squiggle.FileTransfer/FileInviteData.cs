@@ -7,16 +7,16 @@ namespace Squiggle.FileTransfer
 {
     class FileInviteData : IEnumerable<KeyValuePair<string, string>>
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
         public long Size { get; set; }
 
         public FileInviteData() { }
         public FileInviteData(IEnumerable<KeyValuePair<string, string>> data)
         {
             var dictionary = data.ToDictionary(i => i.Key, i => i.Value);
-            string temp;
+            string? temp;
             dictionary.TryGetValue("name", out temp);
-            Name = temp;
+            Name = temp!;
             dictionary.TryGetValue("size", out temp);
             long size = 0;
             if (!String.IsNullOrEmpty(temp))

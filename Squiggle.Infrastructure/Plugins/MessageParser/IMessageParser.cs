@@ -9,6 +9,6 @@ namespace Squiggle.Plugins.MessageParser
 {
 	public interface IMessageParser
 	{
-		bool TryParseText(string message, out MessageParseResult result);
+		bool TryParseText(string message, out MessageParseResult? result);
 	}
 }

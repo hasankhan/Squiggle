@@ -11,9 +11,9 @@ namespace Squiggle.UI.Settings
         public int PresenceCallbackPort { get; set; }
         public int ChatPort { get; set; }
         public int KeepAliveTime { get; set; }
-        public string BindToIP { get; set; }
-        public string PresenceAddress { get; set; }
-        public string ClientID { get; set; }
+        public string BindToIP { get; set; } = null!;
+        public string PresenceAddress { get; set; } = null!;
+        public string ClientID { get; set; } = null!;
 
         public void ReadFrom(Properties.Settings settings, ConfigReader reader)
         {

@@ -39,7 +39,7 @@ namespace Squiggle.FileTransfer
 
             var stream = (Stream)args["content"];
 
-            var inviteData = new FileInviteData(args.ToDictionary(x => x.Key, x => x.Value.ToString()));
+            var inviteData = new FileInviteData(args.ToDictionary(x => x.Key, x => x.Value.ToString()!));
             IFileTransferHandler handler = new FileTransferHandler(executor, inviteData.Name, inviteData.Size, stream);
 
             return handler;

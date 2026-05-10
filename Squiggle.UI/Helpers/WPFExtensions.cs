@@ -27,19 +27,19 @@ namespace Squiggle.UI.Helpers
             SetWindowPos(interopHelper.Handle, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
         }
 
-        public static TParent GetVisualParent<TParent>(this DependencyObject element) where TParent:DependencyObject
+        public static TParent? GetVisualParent<TParent>(this DependencyObject element) where TParent:DependencyObject
         {
             return GetVisualParent<TParent>(element, _ => true);
         }
 
-        public static TParent GetVisualParent<TParent>(this DependencyObject element, Predicate<TParent> filter) where TParent:DependencyObject
+        public static TParent? GetVisualParent<TParent>(this DependencyObject element, Predicate<TParent> filter) where TParent:DependencyObject
         {
             do
             {
                 element = VisualTreeHelper.GetParent(element);
             }
             while (element != null && (!(element is TParent) || !filter((TParent)element)));
-            return (TParent)element;
+            return (TParent?)element;
         }
         
         public static IEnumerable<TChild> GetVisualChildren<TChild>(this DependencyObject element) where TChild:DependencyObject
@@ -68,7 +68,7 @@ namespace Squiggle.UI.Helpers
             }
         }
 
-        public static ScrollViewer FindScrollViewer(this FlowDocumentScrollViewer flowDocumentScrollViewer)
+        public static ScrollViewer? FindScrollViewer(this FlowDocumentScrollViewer flowDocumentScrollViewer)
         {
             if (VisualTreeHelper.GetChildrenCount(flowDocumentScrollViewer) == 0)
             {
@@ -82,7 +82,7 @@ namespace Squiggle.UI.Helpers
                 return null;
             }
 
-            Decorator border = VisualTreeHelper.GetChild(firstChild, 0) as Decorator;
+            Decorator? border = VisualTreeHelper.GetChild(firstChild, 0) as Decorator;
 
             if (border == null)
             {

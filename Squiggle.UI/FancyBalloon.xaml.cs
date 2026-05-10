@@ -40,7 +40,7 @@ namespace Squiggle.UI
 
     #endregion
 
-    Timer timer;
+    Timer? timer;
     public FancyBalloon()
     {
       InitializeComponent();
@@ -60,7 +60,7 @@ namespace Squiggle.UI
     /// and setting the "Handled" property to true, we suppress the popup
     /// from being closed in order to display the fade-out animation.
     /// </summary>
-    private void OnBalloonClosing(object sender, RoutedEventArgs e)
+    private void OnBalloonClosing(object? sender, RoutedEventArgs e)
     {
       e.Handled = true;
       isClosing = true;
@@ -71,7 +71,7 @@ namespace Squiggle.UI
     /// Resolves the <see cref="TaskbarIcon"/> that displayed
     /// the balloon and requests a close action.
     /// </summary>
-    private void imgClose_MouseDown(object sender, MouseButtonEventArgs e)
+    private void imgClose_MouseDown(object? sender, MouseButtonEventArgs e)
     {
         e.Handled = true;
         Close();
@@ -79,7 +79,7 @@ namespace Squiggle.UI
 
     private void Close()
     {
-        timer.Stop();
+        timer?.Stop();
 
         if (Application.Current == null)
             return;
@@ -97,7 +97,7 @@ namespace Squiggle.UI
     /// <summary>
     /// If the users hovers over the balloon, we don't close it.
     /// </summary>
-    private void grid_MouseEnter(object sender, MouseEventArgs e)
+    private void grid_MouseEnter(object? sender, MouseEventArgs e)
     {
       //if we're already running the fade-out animation, do not interrupt anymore
       //(makes things too complicated for the sample)
@@ -114,29 +114,29 @@ namespace Squiggle.UI
     /// The animation was triggered in XAML through the attached
     /// BalloonClosing event.
     /// </summary>
-    private void OnFadeOutCompleted(object sender, EventArgs e)
+    private void OnFadeOutCompleted(object? sender, EventArgs e)
     {
           Popup pp = (Popup)Parent;
           pp.IsOpen = false;
     }
 
-    private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
+    private void TextBlock_MouseDown(object? sender, MouseButtonEventArgs e)
     {
         if (e.ChangedButton == MouseButton.Right)
             Close();
         
     }
 
-    private void Baloon_MouseEnter(object sender, MouseEventArgs e)
+    private void Baloon_MouseEnter(object? sender, MouseEventArgs e)
     {
     }
 
-    private void OnFadeInCompleted(object sender, EventArgs e)
+    private void OnFadeInCompleted(object? sender, EventArgs e)
     {
         
     }
 
-    private void me_MouseDown(object sender, MouseButtonEventArgs e)
+    private void me_MouseDown(object? sender, MouseButtonEventArgs e)
     {
         Close();
     }

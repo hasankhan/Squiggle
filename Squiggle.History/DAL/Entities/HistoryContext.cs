@@ -9,10 +9,10 @@ namespace Squiggle.History.DAL.Entities
 {
     class HistoryContext : DbContext 
     {
-        public DbSet<Participant> Participants { get; set; }
-        public DbSet<Session> Sessions { get; set; }
-        public DbSet<Event> Events { get; set; }
-        public DbSet<StatusUpdate> StatusUpdates { get; set; }
+        public DbSet<Participant> Participants { get; set; } = null!;
+        public DbSet<Session> Sessions { get; set; } = null!;
+        public DbSet<Event> Events { get; set; } = null!;
+        public DbSet<StatusUpdate> StatusUpdates { get; set; } = null!;
 
         public HistoryContext(DbConnection connection, bool contextOwnsConnection)
             : base(connection, contextOwnsConnection)

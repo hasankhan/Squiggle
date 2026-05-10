@@ -10,7 +10,7 @@ namespace Squiggle.UI.Converters
     {
         #region IMultiValueConverter Members
 
-        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object? Convert(object?[] values, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
         {
             foreach (object value in values)
             {
@@ -21,7 +21,7 @@ namespace Squiggle.UI.Converters
             return false;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        public object?[] ConvertBack(object? value, Type[] targetTypes, object? parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();
         }

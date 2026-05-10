@@ -29,12 +29,12 @@ namespace Squiggle.UI.Windows
     public partial class MainWindow : StickyWindowBase, IMainWindow
     {
         WindowState lastState;
-        ClientViewModel clientViewModel;
-        ChatWindowCollection chatWindows;
-        NetworkSignout autoSignout;
+        ClientViewModel clientViewModel = null!;
+        ChatWindowCollection chatWindows = null!;
+        NetworkSignout autoSignout = null!;
         TimeoutSignal clientAvailable = new TimeoutSignal(5.Seconds());
-        IdleStatusChanger idleStatusChanger;
-        SquiggleContext context;
+        IdleStatusChanger? idleStatusChanger;
+        SquiggleContext context = null!;
 
         bool exiting;
 
@@ -44,7 +44,7 @@ namespace Squiggle.UI.Windows
             new PositionHelper(this, Properties.Settings.Default).Initialize();
         }       
 
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object? sender, RoutedEventArgs e)
         {
             if (App.RunInBackground)
                 this.Hide();
@@ -99,7 +99,7 @@ namespace Squiggle.UI.Windows
                 chatControl.SignIn.RememberMe = true;
         }
 
-        private void SignInControl_LoginInitiated(object sender, Squiggle.UI.Controls.LogInEventArgs e)
+        private void SignInControl_LoginInitiated(object? sender, Squiggle.UI.Controls.LogInEventArgs e)
         {
             var signInOptions = new SignInOptions()
             {
@@ -112,78 +112,78 @@ namespace Squiggle.UI.Windows
             SignIn(signInOptions, true);
         }
 
-        private void client_ChatStarted(object sender, Squiggle.Client.ChatStartedEventArgs e)
+        private void client_ChatStarted(object? sender, Squiggle.Client.ChatStartedEventArgs e)
         {
             Dispatcher.Invoke(() => CreateChatWindow(e.Buddy, e.Chat, false));
         }
 
-        private void ContactList_StartChat(object sender, Squiggle.UI.Controls.ChatStartEventArgs e)
+        private void ContactList_StartChat(object? sender, Squiggle.UI.Controls.ChatStartEventArgs e)
         {
             StartChat(e.Buddy, e.SendFile, e.Files);
         }
 
-        private void ContactList_BroadcastChatStart(object sender, Controls.BuddiesActionEventArgs e)
+        private void ContactList_BroadcastChatStart(object? sender, Controls.BuddiesActionEventArgs e)
         {
             StartBroadcastChat(e.Buddies);
         }
 
-        private void ContactList_GroupChatStart(object sender, BuddiesActionEventArgs e)
+        private void ContactList_GroupChatStart(object? sender, BuddiesActionEventArgs e)
         {
             StartGroupChat(e.Buddies);
         }        
 
-        private void trayIcon_TrayLeftMouseDown(object sender, RoutedEventArgs e)
+        private void trayIcon_TrayLeftMouseDown(object? sender, RoutedEventArgs e)
         {
             ToggleMainWindow();
         }
 
-        private void Window_StateChanged(object sender, EventArgs e)
+        private void Window_StateChanged(object? sender, EventArgs e)
         {
             if (this.WindowState != System.Windows.WindowState.Minimized)
                 lastState = this.WindowState;
         }
 
-        private void StatusMenu_Click(object sender, RoutedEventArgs e)
+        private void StatusMenu_Click(object? sender, RoutedEventArgs e)
         {
             var status = (Core.Presence.UserStatus)((System.Windows.Controls.MenuItem)e.OriginalSource).DataContext;
             clientViewModel.LoggedInUser.Status = status;
         }
 
-        private void OpenMenu_Click(object sender, RoutedEventArgs e)
+        private void OpenMenu_Click(object? sender, RoutedEventArgs e)
         {
             Restore();
         }
 
-        private void HistoryViewerMenu_Click(object sender, RoutedEventArgs e)
+        private void HistoryViewerMenu_Click(object? sender, RoutedEventArgs e)
         {
             var viewer = new HistoryViewer(context);
             viewer.Owner = this;
             viewer.Show();
         }
 
-        private void QuiteMenu_Click(object sender, RoutedEventArgs e)
+        private void QuiteMenu_Click(object? sender, RoutedEventArgs e)
         {
             Quit();
         }
 
-        private void ContactList_SignOut(object sender, EventArgs e)
+        private void ContactList_SignOut(object? sender, EventArgs e)
         {
             SignOut(true);
         }
 
-        private void SignOutMenu_Click(object sender, RoutedEventArgs e)
+        private void SignOutMenu_Click(object? sender, RoutedEventArgs e)
         {
             SignOut(true);
         }
 
-        private void CancelUpdateCommand_Execute(object argument)
+        private void CancelUpdateCommand_Execute(object? argument)
         {
             SettingsProvider.Current.Settings.GeneralSettings.FirstRun = DateTimeOffset.Now;
             SettingsProvider.Current.Save();
             clientViewModel.UpdateLink = null;
         }
 
-        private void client_BuddyOnline(object sender, BuddyOnlineEventArgs e)
+        private void client_BuddyOnline(object? sender, BuddyOnlineEventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -197,18 +197,18 @@ namespace Squiggle.UI.Windows
             });
         }
 
-        private void client_BuddyOffline(object sender, BuddyEventArgs e)
+        private void client_BuddyOffline(object? sender, BuddyEventArgs e)
         {
             AudioAlert.Instance.Play(AudioAlertType.BuddyOffline);
             OnBuddyChanged(e);
         }
 
-        private void client_BuddyUpdated(object sender, BuddyEventArgs e)
+        private void client_BuddyUpdated(object? sender, BuddyEventArgs e)
         {
             OnBuddyChanged(e);
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Window_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
             if (!exiting && SettingsProvider.Current.Settings.GeneralSettings.HideToSystemTray)
             {
@@ -236,34 +236,34 @@ namespace Squiggle.UI.Windows
             }
         }
 
-        private void CloseMenu_Click(object sender, RoutedEventArgs e)
+        private void CloseMenu_Click(object? sender, RoutedEventArgs e)
         {
             Close();
         }
 
-        private void OpenReceivedFilesMenu_Click(object sender, RoutedEventArgs e)
+        private void OpenReceivedFilesMenu_Click(object? sender, RoutedEventArgs e)
         {
             SquiggleUtility.OpenDownloadsFolder();
         }
 
-        private void SettingsMenu_Click(object sender, RoutedEventArgs e)
+        private void SettingsMenu_Click(object? sender, RoutedEventArgs e)
         {
             SquiggleUtility.ShowSettingsDialog(this);
         }
 
-        private void AboutMenu_Click(object sender, RoutedEventArgs e)
+        private void AboutMenu_Click(object? sender, RoutedEventArgs e)
         {
             SquiggleUtility.ShowAboutDialog(this);
         }
 
-        private void SendFileMenu_Click(object sender, RoutedEventArgs e)
+        private void SendFileMenu_Click(object? sender, RoutedEventArgs e)
         {
             Buddy buddy = SquiggleUtility.SelectContact(Translation.Instance.ContactSelectWindow_Heading_File, this);
             if (buddy != null)
                 StartChat(buddy, true, null);
         }
 
-        private void SendMessageMenu_Click(object sender, RoutedEventArgs e)
+        private void SendMessageMenu_Click(object? sender, RoutedEventArgs e)
         {
             IEnumerable<Buddy> buddies = SquiggleUtility.SelectContacts(Translation.Instance.ContactSelectWindow_Heading_InstantMessage, this);
             if (buddies.Any())
@@ -274,20 +274,20 @@ namespace Squiggle.UI.Windows
             }
         }        
 
-        private void SendBroadcastMessageMenu_Click(object sender, RoutedEventArgs e)
+        private void SendBroadcastMessageMenu_Click(object? sender, RoutedEventArgs e)
         {
             StartBroadcastChat();
         }
 
-        private void SortMenu_Click(object sender, RoutedEventArgs e)
+        private void SortMenu_Click(object? sender, RoutedEventArgs e)
         {
-            var sortBy = (ContactListSortField)Enum.Parse(typeof(ContactListSortField), ((MenuItem)sender).Tag.ToString());
+            var sortBy = (ContactListSortField)Enum.Parse(typeof(ContactListSortField), ((MenuItem)sender!).Tag.ToString()!);
             SettingsProvider.Current.Settings.ContactSettings.ContactListSortField = sortBy;
             SettingsProvider.Current.Save();
             UpdateSortMenu();
         }
 
-        private void GroupMenu_Click(object sender, RoutedEventArgs e)
+        private void GroupMenu_Click(object? sender, RoutedEventArgs e)
         {
             SettingsProvider.Current.Settings.ContactSettings.GroupContacts = !SettingsProvider.Current.Settings.ContactSettings.GroupContacts;
             SettingsProvider.Current.Save();
@@ -343,7 +343,7 @@ namespace Squiggle.UI.Windows
             if (!buddies.Any())
                 return;
 
-            var chat = StartChat(buddies.FirstOrDefault());
+            var chat = StartChat(buddies.FirstOrDefault()!);
             chat.Invite(buddies.Skip(1));
         }
 
@@ -495,7 +495,7 @@ namespace Squiggle.UI.Windows
 
         void DestroyMonitor()
         {
-            idleStatusChanger.Dispose();
+            idleStatusChanger?.Dispose();
             idleStatusChanger = null;
         }        
 

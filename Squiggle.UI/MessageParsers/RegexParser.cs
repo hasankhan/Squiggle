@@ -12,7 +12,7 @@ namespace Squiggle.UI.MessageParsers
     {
         protected abstract Regex Pattern { get; }
 
-        public bool TryParseText(string message, out MessageParseResult result)
+        public bool TryParseText(string message, out MessageParseResult? result)
         {
             var match = Pattern.Match(message);
             if (match.Success)

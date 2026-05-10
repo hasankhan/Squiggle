@@ -12,15 +12,15 @@ namespace Squiggle.UI.Components
 {
     class SquiggleContext : ISquiggleContext
     {
-        public PluginLoader PluginLoader { get; set; }
-        public IMainWindow MainWindow { get; set; }
-        public IChatClient ChatClient { get; set; }
-        public IVoiceChatHandler ActiveVoiceChat { get; set; }
+        public PluginLoader PluginLoader { get; set; } = null!;
+        public IMainWindow MainWindow { get; set; } = null!;
+        public IChatClient ChatClient { get; set; } = null!;
+        public IVoiceChatHandler? ActiveVoiceChat { get; set; }
         public bool IsVoiceChatActive
         {
             get { return ActiveVoiceChat != null; }
         }
 
-        public static SquiggleContext Current { get; set; }
+        public static SquiggleContext? Current { get; set; }
     }
 }

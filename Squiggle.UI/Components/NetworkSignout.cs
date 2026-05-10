@@ -13,7 +13,7 @@ namespace Squiggle.UI.Components
     {
         bool autoSignout;
 
-        SignInOptions signInOptions;
+        SignInOptions? signInOptions;
 
         Action<SignInOptions> signInFunction;
         Action signoutFunction;
@@ -40,7 +40,7 @@ namespace Squiggle.UI.Components
             loggedIn = false;
         }
 
-        async void NetworkChange_NetworkAvailabilityChanged(object sender, System.Net.NetworkInformation.NetworkAvailabilityEventArgs e)
+        async void NetworkChange_NetworkAvailabilityChanged(object? sender, System.Net.NetworkInformation.NetworkAvailabilityEventArgs e)
         {
             if (e.IsAvailable)
             {

@@ -6,7 +6,7 @@ namespace Squiggle.UI.ViewModel
 {
     class SettingsViewModel
     {
-        SquiggleSettings settings;
+        SquiggleSettings? settings;
 
         public GeneralSettingsViewModel GeneralSettings { get; set; }
         public ConnectionSettingsViewModel ConnectionSettings { get; set; }
@@ -101,16 +101,16 @@ namespace Squiggle.UI.ViewModel
 
     class PersonalSettingsViewModel: ViewModelBase
     {
-        public string DisplayName { get; set; }
-        public string GroupName { get; set; }
-        public string DisplayMessage { get; set; }
-        public string EmailAddress { get; set; }
+        public string DisplayName { get; set; } = null!;
+        public string GroupName { get; set; } = null!;
+        public string DisplayMessage { get; set; } = null!;
+        public string EmailAddress { get; set; } = null!;
         public int IdleTimeout { get; set; }
         public bool RememberMe { get; set; }
         public bool AutoSignMeIn { get; set; }
 
-        byte[] displayImage;
-        public byte[] DisplayImage 
+        byte[]? displayImage;
+        public byte[]? DisplayImage 
         {
             get { return displayImage; }
             set { Set(() => DisplayImage, ref displayImage, value); }
@@ -122,7 +122,7 @@ namespace Squiggle.UI.ViewModel
         public bool RunAtStartup { get; set; }
         public bool HideToSystemTray { get; set; }
         public bool ShowPopups { get; set; }
-        public string DownloadsFolder { get; set; }
+        public string DownloadsFolder { get; set; } = null!;
         public bool AudioAlerts { get; set; }
         public bool EnableStatusLogging { get; set; }
         public bool CheckForUpdates { get; set; }
@@ -147,7 +147,7 @@ namespace Squiggle.UI.ViewModel
 
     class ConnectionSettingsViewModel: ViewModelBase
     {
-        string presenceAddress;
+        string presenceAddress = null!;
         public string PresenceAddress
         {
             get { return presenceAddress; }
@@ -157,7 +157,7 @@ namespace Squiggle.UI.ViewModel
         public int ChatPort { get; set; }
         public int KeepAliveTime { get; set; }
         public List<string> AllIPs { get; private set; }
-        public string BindToIP { get; set; }
+        public string BindToIP { get; set; } = null!;
 
         public ConnectionSettingsViewModel()
         {

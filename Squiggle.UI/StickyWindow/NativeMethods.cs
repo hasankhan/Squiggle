@@ -677,7 +677,7 @@ namespace Squiggle.UI.StickyWindow
             public byte lfQuality;
             public byte lfPitchAndFamily;
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-            public string lfFaceName;
+            public string? lfFaceName;
         }
 
         [StructLayout(LayoutKind.Sequential)]

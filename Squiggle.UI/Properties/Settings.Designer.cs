@@ -52,7 +52,7 @@ namespace Squiggle.UI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public byte[] DisplayImage {
+        public byte[]? DisplayImage {
             get {
                 return ((byte[])(this["DisplayImage"]));
             }
@@ -168,7 +168,7 @@ namespace Squiggle.UI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public global::System.Collections.Generic.List<System.String> ConfirmDialogs {
+        public global::System.Collections.Generic.List<System.String>? ConfirmDialogs {
             get {
                 return ((global::System.Collections.Generic.List<System.String>)(this["ConfirmDialogs"]));
             }
@@ -323,7 +323,7 @@ namespace Squiggle.UI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public global::Squiggle.UI.Settings.ContactGroups Groups {
+        public global::Squiggle.UI.Settings.ContactGroups? Groups {
             get {
                 return ((global::Squiggle.UI.Settings.ContactGroups)(this["Groups"]));
             }

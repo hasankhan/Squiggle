@@ -7,10 +7,10 @@ namespace Squiggle.History.DAL
 {
     public class SessionCriteria
     {
-        public string SessionId { get; set; }
-        public string Participant { get; set; }
+        public string? SessionId { get; set; }
+        public string? Participant { get; set; }
         public DateTime? From { get; set; }
         public DateTime? To { get; set; }
-        public string Text { get; set; }
+        public string? Text { get; set; }
     }
 }

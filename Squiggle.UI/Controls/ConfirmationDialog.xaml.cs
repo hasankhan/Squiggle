@@ -64,12 +64,12 @@ namespace Squiggle.UI.Controls
             Properties.Settings.Default.Save();
         }
 
-        private void btnYes_Click(object sender, RoutedEventArgs e)
+        private void btnYes_Click(object? sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
         }
 
-        private void btnNo_Click(object sender, RoutedEventArgs e)
+        private void btnNo_Click(object? sender, RoutedEventArgs e)
         {
             this.DialogResult = false;
         }

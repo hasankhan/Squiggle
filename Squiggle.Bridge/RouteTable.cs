@@ -19,9 +19,9 @@ namespace Squiggle.Bridge
                 remoteClientBridgeMap[clientId] = bridge;
         }
 
-        public IPEndPoint GetLocalPresenceEndPoint(string clientId)
+        public IPEndPoint? GetLocalPresenceEndPoint(string clientId)
         {
-            IPEndPoint endpoint;
+            IPEndPoint? endpoint;
             lock (localPresenceEndPoints)
                 localPresenceEndPoints.TryGetValue(clientId, out endpoint);
             return endpoint;
@@ -39,17 +39,17 @@ namespace Squiggle.Bridge
                 localChatEndPoints[clientId] = endpoint;
         }
 
-        public IPEndPoint GetLocalChatEndPoint(string clientId)
+        public IPEndPoint? GetLocalChatEndPoint(string clientId)
         {
-            IPEndPoint endpoint;
+            IPEndPoint? endpoint;
             lock (localChatEndPoints)
                 localChatEndPoints.TryGetValue(clientId, out endpoint);
             return endpoint;
         }
 
-        public IPEndPoint FindBridge(string clientID)
+        public IPEndPoint? FindBridge(string clientID)
         {
-            IPEndPoint bridge;
+            IPEndPoint? bridge;
             lock (remoteClientBridgeMap)
                 remoteClientBridgeMap.TryGetValue(clientID, out bridge);
             return bridge;

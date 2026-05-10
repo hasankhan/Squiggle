@@ -12,9 +12,9 @@ namespace Squiggle.Bridge.Messages
     class ForwardPresenceMessage : Message
     {
         [ProtoMember(1)]
-        public byte[] Message { get; set; }
+        public byte[] Message { get; set; } = null!;
         [ProtoMember(2)]
-        IPAddress IP { get; set; }
+        IPAddress IP { get; set; } = null!;
         [ProtoMember(3)]
         int Port { get; set; }
 

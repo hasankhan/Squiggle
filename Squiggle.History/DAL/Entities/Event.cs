@@ -8,12 +8,12 @@ namespace Squiggle.History.DAL.Entities
 {
     public class Event
     {
-        public string Id { get; set;  }
-        public string SessionId { get; set; }
+        public string Id { get; set;  } = null!;
+        public string SessionId { get; set; } = null!;
         public int TypeCode { get; set; }
-        public string SenderId { get; set; }
-        public string SenderName { get; set; }
-        public string Data { get; set; }
+        public string SenderId { get; set; } = null!;
+        public string SenderName { get; set; } = null!;
+        public string Data { get; set; } = null!;
         public DateTime Stamp { get; set; }
 
         [NotMapped]
@@ -23,6 +23,6 @@ namespace Squiggle.History.DAL.Entities
             set { TypeCode = (int)value; }
         }
 
-        public Session Session { get; set; }
+        public Session Session { get; set; } = null!;
     }
 }

@@ -39,7 +39,7 @@ namespace Squiggle.Translate
         class LineMap
         {
             public List<string> Stopped { get; private set; }
-            public string Line { get; set; }
+            public string Line { get; set; } = null!;
 
             public LineMap()
             {
@@ -49,7 +49,7 @@ namespace Squiggle.Translate
 
         List<LineMap> maps = new List<LineMap>();
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object? sender, RoutedEventArgs e)
         {
             LoadTranslationFile();
             language.ItemsSource = CultureInfo.GetCultures(CultureTypes.AllCultures)
@@ -105,13 +105,13 @@ namespace Squiggle.Translate
             return original.Remove(loc, oldValue.Length).Insert(loc, newValue);
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object? sender, RoutedEventArgs e)
         {
-            string languageName = SelectedCulture.EnglishName.Split(' ').FirstOrDefault();
+            string? languageName = SelectedCulture.EnglishName.Split(' ').FirstOrDefault();
             string targetLanguage = SelectedCulture.TwoLetterISOLanguageName;
             string text = inputText.Text;
             string apiKey = key.Text;
-            string direciton = Direction.Content.ToString();
+            string direciton = Direction.Content?.ToString() ?? string.Empty;
             string output = outputText.Text;
             layoutRoot.IsEnabled = false;
 
@@ -119,7 +119,7 @@ namespace Squiggle.Translate
             {
                 var result = await Task.Run(() =>
                 {
-                    string file = GenerateTranslationFile(languageName, direciton, output);
+                    string file = GenerateTranslationFile(languageName ?? "Unknown", direciton, output);
                     return new { Output = output, File = file };
                 });
 
@@ -186,7 +186,7 @@ namespace Squiggle.Translate
             }
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Window_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
             Settings.Default.Save();
         }

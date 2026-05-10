@@ -12,7 +12,7 @@ namespace Squiggle.UI.Controls
     public partial class SignInControl : UserControl
     {
         public event EventHandler<LogInEventArgs> LoginInitiated = delegate { };
-        SignInViewModel viewModel;
+        SignInViewModel viewModel = null!;
 
         public string GroupName
         {
@@ -47,7 +47,7 @@ namespace Squiggle.UI.Controls
             txtGroupName.ItemsSource = groups;
         }
 
-        private void SignIn(object sender, RoutedEventArgs e)
+        private void SignIn(object? sender, RoutedEventArgs e)
         {
             string displayName = (viewModel.DisplayName ?? String.Empty).Trim();
             string groupName = (viewModel.GroupName ?? String.Empty).Trim();
@@ -112,12 +112,12 @@ namespace Squiggle.UI.Controls
             settings.Domain = String.Empty;
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private void UserControl_Loaded(object? sender, RoutedEventArgs e)
         {
             txtDisplayName.Focus();
         }
 
-        private void txtGroupName_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void txtGroupName_PreviewKeyDown(object? sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.Delete &&
                 txtGroupName.SelectedItem != null) // if it exists in combo list items
@@ -156,11 +156,11 @@ namespace Squiggle.UI.Controls
 
     public class LogInEventArgs : EventArgs
     {
-        public string DisplayName { get; set; }
-        public string GroupName { get; set; }
-        public string Domain { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string DisplayName { get; set; } = null!;
+        public string GroupName { get; set; } = null!;
+        public string Domain { get; set; } = null!;
+        public string Username { get; set; } = null!;
+        public string Password { get; set; } = null!;
     }
 
     public class SignInViewModel : ViewModelBase
@@ -190,8 +190,8 @@ namespace Squiggle.UI.Controls
             }
         }
 
-        string _username;
-        public string Username
+        string? _username;
+        public string? Username
         {
             get { return _username; }
             set { Set(() => Username, ref _username, value); }
@@ -219,8 +219,8 @@ namespace Squiggle.UI.Controls
             }
         }
 
-        string _displayName;
-        public string DisplayName
+        string? _displayName;
+        public string? DisplayName
         {
             get { return _displayName; }
             set { Set(() => DisplayName, ref _displayName, value); }
@@ -237,8 +237,8 @@ namespace Squiggle.UI.Controls
             }
         }
 
-        string _domain;
-        public string Domain
+        string? _domain;
+        public string? Domain
         {
             get { return _domain; }
             set { Set(() => Domain, ref _domain, value); }
@@ -255,13 +255,13 @@ namespace Squiggle.UI.Controls
             }
         }
 
-        string _groupName;
+        string? _groupName;
         public string GroupName
         {
             get { return _groupName ?? String.Empty; }
             set
             {
-                Set(() => GroupName, ref _groupName, value);
+                Set(() => GroupName, ref _groupName!, value);
                 OnPropertyChanged(()=>SingleSignOn);
             }
         }

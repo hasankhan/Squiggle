@@ -23,16 +23,16 @@ namespace Squiggle.UI.Controls
     /// </summary>
     public partial class ChatHistoryViewer : UserControl
     {
-        Action lastSearch;
+        Action? lastSearch;
 
         public ChatHistoryViewer()
         {
             InitializeComponent();
         }
 
-        public ISquiggleContext SquiggleContext { private get; set; }
+        public ISquiggleContext SquiggleContext { private get; set; } = null!;
 
-        void Search_Click(object sender, RoutedEventArgs e)
+        void Search_Click(object? sender, RoutedEventArgs e)
         {
             DateTime? from = txtFrom.SelectedDate;
             DateTime? to = txtTo.SelectedDate;
@@ -42,7 +42,7 @@ namespace Squiggle.UI.Controls
             lastSearch();
         }
 
-        private void results_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void results_MouseDoubleClick(object? sender, MouseButtonEventArgs e)
         {
             var source = (FrameworkElement)e.OriginalSource;
             var result = source.DataContext as Result;
@@ -80,7 +80,7 @@ namespace Squiggle.UI.Controls
             });
         }
 
-        private void Delete_Click(object sender, RoutedEventArgs e)
+        private void Delete_Click(object? sender, RoutedEventArgs e)
         {
             if (MessageBox.Show(Translation.Instance.HistoryViewer_ConfirmDelete, "Squiggle", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
@@ -94,7 +94,7 @@ namespace Squiggle.UI.Controls
             }
         }
 
-        private void Clear_Click(object sender, RoutedEventArgs e)
+        private void Clear_Click(object? sender, RoutedEventArgs e)
         {
             if (MessageBox.Show(Translation.Instance.HistoryViewer_ConfirmClear, "Squiggle", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
@@ -124,17 +124,17 @@ namespace Squiggle.UI.Controls
             busyIndicator.IsBusy = false;
         }
 
-        private void results_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        private void results_ContextMenuOpening(object? sender, ContextMenuEventArgs e)
         {
             deleteMenuItem.IsEnabled = results.SelectedItems.Count > 0;
         }
 
         class Result
         {
-            public string Id { get; private set; }
+            public string Id { get; private set; } = null!;
             public DateTime Start { get; private set; }
             public DateTime? End { get; private set; }
-            public string Participants { get; private set; }
+            public string Participants { get; private set; } = null!;
 
             public Result(Session session)
             {
@@ -145,7 +145,7 @@ namespace Squiggle.UI.Controls
             }
         }
 
-        private void UserControl_GotFocus(object sender, RoutedEventArgs e)
+        private void UserControl_GotFocus(object? sender, RoutedEventArgs e)
         {
             if (e.OriginalSource == this)
                 txtMessage.Focus();

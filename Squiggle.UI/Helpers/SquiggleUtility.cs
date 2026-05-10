@@ -72,7 +72,7 @@ namespace Squiggle.UI.Helpers
         public static void ShowSettingsDialog(Window owner)
         {
             ChatClientControl chatControl = ((MainWindow)SquiggleContext.Current.MainWindow).chatControl;
-            ISelfBuddy buddy = null;
+            ISelfBuddy? buddy = null;
             if (chatControl.ContactList.ChatContext.Coalesce(context=>context.IsLoggedIn))
                 buddy = chatControl.ContactList.ChatContext.LoggedInUser;
             var settings = new SettingsWindow(SquiggleContext.Current);
@@ -81,12 +81,12 @@ namespace Squiggle.UI.Helpers
                 chatControl.SignIn.LoadSettings(SettingsProvider.Current.Settings);
         }
 
-        public static Buddy SelectContact(string title, Window owner, Predicate<Buddy> exclusionFilter = null)
+        public static Buddy? SelectContact(string title, Window owner, Predicate<Buddy>? exclusionFilter = null)
         {
             return SelectContacts(title, owner, exclusionFilter, false).FirstOrDefault();
         }
 
-        public static IEnumerable<Buddy> SelectContacts(string title, Window owner, Predicate<Buddy> exclusionFilter = null, bool multiple = true)
+        public static IEnumerable<Buddy> SelectContacts(string title, Window owner, Predicate<Buddy>? exclusionFilter = null, bool multiple = true)
         {
             var clientViewModel = (ClientViewModel)((MainWindow)SquiggleContext.Current.MainWindow).DataContext;
             var selectContactDialog = new ContactsSelectWindow(clientViewModel, false);

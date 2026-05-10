@@ -28,9 +28,9 @@ namespace Squiggle.UI.Windows
     /// </summary>
     public partial class SettingsWindow : StickyWindowBase
     {
-        SettingsViewModel settingsVm;
-        SquiggleContext context;
-        ISelfBuddy currentUser;
+        SettingsViewModel settingsVm = null!;
+        SquiggleContext context = null!;
+        ISelfBuddy? currentUser;
 
         public SettingsWindow()
         {
@@ -43,7 +43,7 @@ namespace Squiggle.UI.Windows
             this.currentUser = context.ChatClient.CurrentUser;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object? sender, RoutedEventArgs e)
         {
             LoadSettings();
 
@@ -53,7 +53,7 @@ namespace Squiggle.UI.Windows
             this.DataContext = settingsVm;
         }            
 
-        private void btnOK_Click(object sender, RoutedEventArgs e)
+        private void btnOK_Click(object? sender, RoutedEventArgs e)
         {
             if (SaveSettings())
             {
@@ -145,18 +145,18 @@ namespace Squiggle.UI.Windows
             }
         }        
 
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        private void btnCancel_Click(object? sender, RoutedEventArgs e)
         {
             Close();
         }
 
-        private void Window_KeyDown(object sender, KeyEventArgs e)
+        private void Window_KeyDown(object? sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
                 Close();
         }
 
-        private void btnBrowseDownloadsFolder_Click(object sender, RoutedEventArgs e)
+        private void btnBrowseDownloadsFolder_Click(object? sender, RoutedEventArgs e)
         {
             var dialog = new System.Windows.Forms.FolderBrowserDialog();
             dialog.SelectedPath = settingsVm.GeneralSettings.DownloadsFolder;
@@ -165,7 +165,7 @@ namespace Squiggle.UI.Windows
                 txtDownloadsFolder.Text = settingsVm.GeneralSettings.DownloadsFolder = dialog.SelectedPath;
         }
 
-        private void btnPresenceAddressReset_Click(object sender, RoutedEventArgs e)
+        private void btnPresenceAddressReset_Click(object? sender, RoutedEventArgs e)
         {
             settingsVm.ConnectionSettings.PresenceAddress = DefaultValues.PresenceAddress;
         }
@@ -175,7 +175,7 @@ namespace Squiggle.UI.Windows
             return AppInfo.FilePath + " /background";
         }
 
-        private void btnSetDisplayImage_Click(object sender, RoutedEventArgs e)
+        private void btnSetDisplayImage_Click(object? sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
             dialog.CheckFileExists = true;
@@ -193,7 +193,7 @@ namespace Squiggle.UI.Windows
             }
         }
 
-        private void btnClearDisplayImage_Click(object sender, RoutedEventArgs e)
+        private void btnClearDisplayImage_Click(object? sender, RoutedEventArgs e)
         {
             settingsVm.PersonalSettings.DisplayImage = null;
         }

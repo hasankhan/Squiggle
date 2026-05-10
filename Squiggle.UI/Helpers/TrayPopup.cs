@@ -32,7 +32,7 @@ namespace Squiggle.UI.Helpers
                 Hardcodet.Wpf.TaskbarNotification.TaskbarIcon icon = new Hardcodet.Wpf.TaskbarNotification.TaskbarIcon();
                 icon.Visibility = Visibility.Hidden;
                 icon.ShowCustomBalloon(balloon, PopupAnimation.Slide, timeout);
-                balloon.MouseLeftButtonDown += (sender, e) =>
+                balloon.MouseLeftButtonDown += (object? sender, MouseButtonEventArgs e) =>
                 {
                     e.Handled = false;
                     onClick(e);

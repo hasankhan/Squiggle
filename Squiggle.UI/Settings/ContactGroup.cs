@@ -7,7 +7,7 @@ namespace Squiggle.UI.Settings
 {
     public class ContactGroup
     {
-        public string GroupName { get; set; }
+        public string GroupName { get; set; } = null!;
         public DateTime LastUsed { get; set; }
         public bool Expanded { get; set; }
     }

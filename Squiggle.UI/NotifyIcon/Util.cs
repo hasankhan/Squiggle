@@ -170,7 +170,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// an icon file (*.ico).</param>
     /// <returns>An icon object that can be used with the
     /// taskbar area.</returns>
-    public static Icon ToIcon(this BitmapImage imageSource)
+    public static Icon? ToIcon(this BitmapImage? imageSource)
     {
       if (imageSource == null) 
           return null;
@@ -265,7 +265,7 @@ namespace Hardcodet.Wpf.TaskbarNotification
     /// <param name="commandParameter">An optional parameter that is associated with
     /// the command.</param>
     /// <param name="target">The target element on which to raise the command.</param>
-    public static void ExecuteIfEnabled(this ICommand command, object commandParameter, IInputElement target)
+    public static void ExecuteIfEnabled(this ICommand? command, object commandParameter, IInputElement target)
     {
       if (command == null) return;
 

@@ -37,20 +37,20 @@ namespace Squiggle.UI.Windows
     {
         static Dictionary<IBuddy, IEnumerable<ChatItem>> chatHistory = new Dictionary<IBuddy, IEnumerable<ChatItem>>();
         
-        FlashWindow flash;
-        DispatcherTimer statusResetTimer;
-        UIActionQueue eventQueue;
+        FlashWindow flash = null!;
+        DispatcherTimer statusResetTimer = null!;
+        UIActionQueue eventQueue = null!;
 
         FileTransferCollection fileTransfers = new FileTransferCollection();
         MultiFilter filters = new MultiFilter();
         MultiParser parsers = new MultiParser();
 
-        IChat chatSession;
-        ChatState chatState;
+        IChat? chatSession;
+        ChatState chatState = null!;
         WindowState lastWindowState;
-        SquiggleContext context;
+        SquiggleContext context = null!;
 
-        IBuddy _primaryBuddy;
+        IBuddy _primaryBuddy = null!;
         public IBuddy PrimaryBuddy
         {
             get { return _primaryBuddy;  }
@@ -190,7 +190,7 @@ namespace Squiggle.UI.Windows
             MonitorAll();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object? sender, RoutedEventArgs e)
         {
             messagePanel.Height = new GridLength(SettingsProvider.Current.Settings.GeneralSettings.MessagePanelHeight, GridUnitType.Pixel);
             flash = new FlashWindow(this);
@@ -199,7 +199,7 @@ namespace Squiggle.UI.Windows
             eventQueue.Open();
         }
 
-        async void ChatWindow_StateChanged(object sender, EventArgs e)
+        async void ChatWindow_StateChanged(object? sender, EventArgs e)
         {
             if (this.WindowState != System.Windows.WindowState.Minimized)
                 lastWindowState = this.WindowState;
@@ -215,14 +215,14 @@ namespace Squiggle.UI.Windows
             }
         }
 
-        private void txtMessage_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void txtMessage_PreviewKeyDown(object? sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
                 if (e.KeyboardDevice.Modifiers == ModifierKeys.Control)
                     e.Handled = true;
         }
 
-        private void txtMessageEditBox_MessageSend(object sender, MessageSendEventArgs e)
+        private void txtMessageEditBox_MessageSend(object? sender, MessageSendEventArgs e)
         {
             var item = (MessageItem)e.Context;
             if (!e.Updated)
@@ -231,116 +231,116 @@ namespace Squiggle.UI.Windows
                 UpdateMessage(item.Id, e.Message);
         }
 
-        private void txtMessageEditBox_MessageTyping(object sender, EventArgs e)
+        private void txtMessageEditBox_MessageTyping(object? sender, EventArgs e)
         {
             if (chatSession != null)
                 chatSession.NotifyTyping();
         }
 
-        private void SendFile_Click(object sender, RoutedEventArgs e)
+        private void SendFile_Click(object? sender, RoutedEventArgs e)
         {
             SendFile();
             txtMessageEditBox.GetFocus();
         }
 
-        private void ChangeFont_Click(object sender, RoutedEventArgs e)
+        private void ChangeFont_Click(object? sender, RoutedEventArgs e)
         {
             SquiggleUtility.ShowFontDialog();
             txtMessageEditBox.GetFocus();
         }
 
-        private void SendBuzz_Click(object sender, RoutedEventArgs e)
+        private void SendBuzz_Click(object? sender, RoutedEventArgs e)
         {
             SendBuzz();
             txtMessageEditBox.GetFocus();
         }
 
-        private void OpenReceivedFilesMenu_Click(object sender, RoutedEventArgs e)
+        private void OpenReceivedFilesMenu_Click(object? sender, RoutedEventArgs e)
         {
             SquiggleUtility.OpenDownloadsFolder();
         }
 
-        private void SettingsMenu_Click(object sender, RoutedEventArgs e)
+        private void SettingsMenu_Click(object? sender, RoutedEventArgs e)
         {
             SquiggleUtility.ShowSettingsDialog(this);
         }
 
-        private void AboutMenu_Click(object sender, RoutedEventArgs e)
+        private void AboutMenu_Click(object? sender, RoutedEventArgs e)
         {
             SquiggleUtility.ShowAboutDialog(this);
         }
 
-        private void SendFileMenu_Click(object sender, RoutedEventArgs e)
+        private void SendFileMenu_Click(object? sender, RoutedEventArgs e)
         {
             SendFile();
         }
 
-        private void CloseMenu_Click(object sender, RoutedEventArgs e)
+        private void CloseMenu_Click(object? sender, RoutedEventArgs e)
         {
             Close();
         }
 
-        private void SaveMenu_Click(object sender, RoutedEventArgs e)
+        private void SaveMenu_Click(object? sender, RoutedEventArgs e)
         {
             Save();
         }
 
-        private void SaveAsMenu_Click(object sender, RoutedEventArgs e)
+        private void SaveAsMenu_Click(object? sender, RoutedEventArgs e)
         {
             SaveAs();
         }
 
-        void chatSession_GroupChatStarted(object sender, EventArgs e)
+        void chatSession_GroupChatStarted(object? sender, EventArgs e)
         {
             eventQueue.Enqueue(OnGroupChatStarted);
         }
 
-        void chatSession_ActivityInvitationReceived(object sender, ActivityInvitationReceivedEventArgs e)
+        void chatSession_ActivityInvitationReceived(object? sender, ActivityInvitationReceivedEventArgs e)
         {
             eventQueue.Enqueue(() => OnActivityInvite(e));
         }        
 
-        void chatSession_BuzzReceived(object sender, BuddyEventArgs e)
+        void chatSession_BuzzReceived(object? sender, BuddyEventArgs e)
         {
             eventQueue.Enqueue(() => OnBuzzReceived(e.Buddy));
         }
 
-        void chatSession_MessageReceived(object sender, ChatMessageReceivedEventArgs e)
+        void chatSession_MessageReceived(object? sender, ChatMessageReceivedEventArgs e)
         {
             eventQueue.Enqueue(() => OnMessageReceived(e.Sender, e.Id, e.Message, e.FontName, e.Color, e.FontSize, e.FontStyle));
         }
 
-        void chatSession_MessageUpdated(object sender, ChatMessageUpdatedEventArgs e)
+        void chatSession_MessageUpdated(object? sender, ChatMessageUpdatedEventArgs e)
         {
             eventQueue.Enqueue(() => OnMessageUpdated(e.Sender, e.Id, e.Message));
         }
 
-        void chatSession_BuddyTyping(object sender, BuddyEventArgs e)
+        void chatSession_BuddyTyping(object? sender, BuddyEventArgs e)
         {
             eventQueue.Enqueue(() => OnBuddyTyping(e));
         }
 
-        void chatSession_MessageFailed(object sender, MessageFailedEventArgs e)
+        void chatSession_MessageFailed(object? sender, MessageFailedEventArgs e)
         {
             eventQueue.Enqueue(() => OnMessageFailed(e));
         }
 
-        void chatSession_BuddyLeft(object sender, BuddyEventArgs e)
+        void chatSession_BuddyLeft(object? sender, BuddyEventArgs e)
         {
             eventQueue.Enqueue(() => OnBuddyLeft(e.Buddy));
         }
 
-        void chatSession_BuddyJoined(object sender, BuddyEventArgs e)
+        void chatSession_BuddyJoined(object? sender, BuddyEventArgs e)
         {
             eventQueue.Enqueue(() => OnBuddyJoined(e.Buddy));
         }
 
-        void buddy_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void buddy_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             Dispatcher.Invoke(OnParticipantsChanged);
         }
 
-        void PrimaryBuddy_Online(object sender, EventArgs e)
+        void PrimaryBuddy_Online(object? sender, EventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -349,7 +349,7 @@ namespace Squiggle.UI.Windows
             });
         }
 
-        void PrimaryBuddy_Offline(object sender, EventArgs e)
+        void PrimaryBuddy_Offline(object? sender, EventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -404,7 +404,7 @@ namespace Squiggle.UI.Windows
         void OnBuddyLeft(IBuddy buddy)
         {
             if (buddy == PrimaryBuddy && Buddies.Any())
-                PrimaryBuddy = Buddies.FirstOrDefault();
+                PrimaryBuddy = Buddies.FirstOrDefault()!;
 
             StopMonitoring(buddy);
             chatTextBox.AddInfo(String.Format("{0} " + Translation.Instance.ChatWindow_HasLeftConversation, buddy.DisplayName));
@@ -564,7 +564,7 @@ namespace Squiggle.UI.Windows
             filters.Filter(message, this, FilterDirection.Out, filteredMessage =>
             {
                 chatState.LastSentMessageId = Guid.NewGuid();
-                chatSession.SendMessage(chatState.LastSentMessageId.Value, settings.FontName, settings.FontSize, settings.FontColor, settings.FontStyle, filteredMessage);
+                chatSession!.SendMessage(chatState.LastSentMessageId.Value, settings.FontName, settings.FontSize, settings.FontColor, settings.FontStyle, filteredMessage);
                 chatTextBox.AddMessage(chatState.LastSentMessageId.Value, displayName, filteredMessage, settings.FontName, settings.FontSize, settings.FontStyle, settings.FontColor, parsers, true);
             });
         }
@@ -579,7 +579,7 @@ namespace Squiggle.UI.Windows
 
         void UpdateMessage(Guid id, string message)
         {
-            chatSession.UpdateMessage(id, message);
+            chatSession!.UpdateMessage(id, message);
             chatTextBox.UpdateMessage(id, message);
         }
 
@@ -591,7 +591,7 @@ namespace Squiggle.UI.Windows
             if (chatState.CanSendBuzz)
             {
                 chatTextBox.AddInfo(Translation.Instance.ChatWindow_YouSentBuzz);
-                chatSession.SendBuzz();
+                chatSession!.SendBuzz();
                 chatState.BuzzSent();
                 DoBuzzAction();
             }
@@ -599,11 +599,11 @@ namespace Squiggle.UI.Windows
                 chatTextBox.AddError(Translation.Instance.ChatWindow_BuzzTooEarly, String.Empty);
         }
 
-        public IVoiceChatHandler StartVoiceChat()
+        public IVoiceChatHandler? StartVoiceChat()
         {
             if (!EnsureChatSession())
                 return null;
-            if (chatSession.IsGroupChat)
+            if (chatSession!.IsGroupChat)
             {
                 chatTextBox.AddError(Translation.Instance.ChatWindow_VoiceChatNotAllowedInGroup, String.Empty);
                 return null;
@@ -651,7 +651,7 @@ namespace Squiggle.UI.Windows
             if (!EnsureChatSession())
                 return false;
 
-            if (chatSession.IsGroupChat)
+            if (chatSession!.IsGroupChat)
             {
                 chatTextBox.AddError(Translation.Instance.ChatWindow_FileTransferNotAllowedInGroup, String.Empty);
                 return false;
@@ -673,7 +673,7 @@ namespace Squiggle.UI.Windows
                 fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete);
             }, "opening the file for transfer"))
             {
-                chatTextBox.AddError(String.Format(Translation.Instance.ChatWindow_CouldNotReadFile + "'{0}'" + Translation.Instance.ChatWindow_MakeSureFileNotInUse, fileName), null);
+                chatTextBox.AddError(String.Format(Translation.Instance.ChatWindow_CouldNotReadFile + "'{0}'" + Translation.Instance.ChatWindow_MakeSureFileNotInUse, fileName), null!);
                 return;
             }
 
@@ -694,17 +694,17 @@ namespace Squiggle.UI.Windows
 
         public void SaveAs()
         {
-            string file, format;
+            string? file, format;
             if (ShowSaveDialog(out file, out format))
-                SaveTo(file, format);
+                SaveTo(file!, format!);
         }
 
         public void Save()
         {
             if (String.IsNullOrEmpty(chatState.LastSavedFile))
             {
-                string lastSavedFile = chatState.LastSavedFile;
-                string lastSavedFormat = chatState.LastSavedFormat;
+                string? lastSavedFile = chatState.LastSavedFile;
+                string? lastSavedFormat = chatState.LastSavedFormat;
                 
                 if (ShowSaveDialog(out lastSavedFile, out lastSavedFormat))
                     Save();
@@ -713,7 +713,7 @@ namespace Squiggle.UI.Windows
                 chatState.LastSavedFile = lastSavedFile;
             }
             else
-                SaveTo(chatState.LastSavedFile, chatState.LastSavedFormat);
+                SaveTo(chatState.LastSavedFile!, chatState.LastSavedFormat!);
         }
 
         public void SaveTo(string fileName, string format)
@@ -857,7 +857,7 @@ namespace Squiggle.UI.Windows
                 Restore();
         }
 
-        static bool ShowSaveDialog(out string fileName, out string format)
+        static bool ShowSaveDialog(out string? fileName, out string? format)
         {
             var dialog = new System.Windows.Forms.SaveFileDialog();
             dialog.Filter = "RTF Document|*.rtf|Unicode Text Document|*.txt|Text Document|*.txt";
@@ -877,37 +877,37 @@ namespace Squiggle.UI.Windows
             return false;
         }
 
-        private void UndoMenu_Click(object sender, RoutedEventArgs e)
+        private void UndoMenu_Click(object? sender, RoutedEventArgs e)
         {
             txtMessageEditBox.txtMessage.Undo();
         }
 
-        private void CutMenu_Click(object sender, RoutedEventArgs e)
+        private void CutMenu_Click(object? sender, RoutedEventArgs e)
         {
             txtMessageEditBox.txtMessage.Cut();
         }
 
-        private void CopyMenu_Click(object sender, RoutedEventArgs e)
+        private void CopyMenu_Click(object? sender, RoutedEventArgs e)
         {
             txtMessageEditBox.txtMessage.Copy();
         }
 
-        private void PasteMenu_Click(object sender, RoutedEventArgs e)
+        private void PasteMenu_Click(object? sender, RoutedEventArgs e)
         {
             txtMessageEditBox.txtMessage.Paste();
         }
 
-        private void DeleteMenu_Click(object sender, RoutedEventArgs e)
+        private void DeleteMenu_Click(object? sender, RoutedEventArgs e)
         {
             txtMessageEditBox.txtMessage.SelectedText = String.Empty;
         }
 
-        private void SelectAllMenu_Click(object sender, RoutedEventArgs e)
+        private void SelectAllMenu_Click(object? sender, RoutedEventArgs e)
         {
             txtMessageEditBox.txtMessage.SelectAll();
         }
 
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void Window_SizeChanged(object? sender, SizeChangedEventArgs e)
         {
             if (WindowState == System.Windows.WindowState.Normal)
             {
@@ -917,7 +917,7 @@ namespace Squiggle.UI.Windows
             }
         }
 
-        private void InviteContactMenu_Click(object sender, RoutedEventArgs e)
+        private void InviteContactMenu_Click(object? sender, RoutedEventArgs e)
         {
             IEnumerable<Buddy> buddies = SquiggleUtility.SelectContacts(Translation.Instance.ChatWindow_InviteContact, this, b => Buddies.Contains(b));
             Invite(buddies);
@@ -932,17 +932,17 @@ namespace Squiggle.UI.Windows
             }
         }
 
-        private void SendEmoticon_Click(object sender, RoutedEventArgs e)
+        private void SendEmoticon_Click(object? sender, RoutedEventArgs e)
         {
             System.Windows.Point pos = PointToScreen(Mouse.GetPosition(this));
             var selector = new EmoticonSelector();
-            selector.EmoticonSelected += (s1, e1) => OnEmoticonSelected(((EmoticonSelector)s1).Code);
+            selector.EmoticonSelected += (s1, e1) => OnEmoticonSelected(((EmoticonSelector)s1!).Code!);
             selector.Top = pos.Y;
             selector.Left = pos.X;
             selector.Show();
         }
 
-        private void SendEmail_Click(object sender, RoutedEventArgs e)
+        private void SendEmail_Click(object? sender, RoutedEventArgs e)
         {
             string to = String.Join(";", Buddies.Select(buddy => buddy.Properties.EmailAddress).ToArray());
             System.Diagnostics.Process.Start("mailto:" + to);
@@ -962,7 +962,7 @@ namespace Squiggle.UI.Windows
             voiceController.IsEnabled = context.PluginLoader.HasActivity(SquiggleActivities.VoiceChat) && singleSession;
         }
 
-        private void Window_Activated(object sender, EventArgs e)
+        private void Window_Activated(object? sender, EventArgs e)
         {
             txtMessageEditBox.GetFocus();
         }
@@ -995,24 +995,24 @@ namespace Squiggle.UI.Windows
             base.OnClosing(e);
         }
 
-        private void Window_KeyDown(object sender, KeyEventArgs e)
+        private void Window_KeyDown(object? sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
                 Close();
         }
 
-        private void GridSplitter_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        private void GridSplitter_DragCompleted(object? sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
             SettingsProvider.Current.Settings.GeneralSettings.MessagePanelHeight = messagePanel.Height.Value;
             SettingsProvider.Current.Save();
         }
 
-        private void Expander_Expanded(object sender, RoutedEventArgs e)
+        private void Expander_Expanded(object? sender, RoutedEventArgs e)
         {
             ChangeExpanderState(true);
         }
 
-        private void Expander_Collapsed(object sender, RoutedEventArgs e)
+        private void Expander_Collapsed(object? sender, RoutedEventArgs e)
         {
             ChangeExpanderState(false);
         }
@@ -1023,13 +1023,13 @@ namespace Squiggle.UI.Windows
             Properties.Settings.Default.Save();
         }
 
-        private void VoiceChatToolbarControl_StartChat(object sender, EventArgs e)
+        private void VoiceChatToolbarControl_StartChat(object? sender, EventArgs e)
         {
-            IVoiceChatHandler voiceChat = StartVoiceChat();
-            ((VoiceChatToolbarControl)sender).VoiceChatContext = voiceChat;
+            IVoiceChatHandler? voiceChat = StartVoiceChat();
+            ((VoiceChatToolbarControl)sender!).VoiceChatContext = voiceChat;
         }
 
-        private void chatTextBox_ItemEdit(object sender, ItemEditEventArgs e)
+        private void chatTextBox_ItemEdit(object? sender, ItemEditEventArgs e)
         {
             if (e.Item is MessageItem)
             {
@@ -1038,7 +1038,7 @@ namespace Squiggle.UI.Windows
             }
         }
 
-        private void txtMessageEditBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void txtMessageEditBox_PreviewKeyDown(object? sender, KeyEventArgs e)
         {
             if (e.Key == Key.V && Keyboard.Modifiers == ModifierKeys.Control && Clipboard.ContainsImage())
             {
@@ -1048,9 +1048,9 @@ namespace Squiggle.UI.Windows
             }
         }
 
-        IActivityHandler StartActivity(Guid activityId, IDictionary<string, object> args, string title = null)
+        IActivityHandler? StartActivity(Guid activityId, IDictionary<string, object>? args, string? title = null)
         {
-            IActivityExecutor executor = chatSession.CreateActivity(activityId);
+            IActivityExecutor executor = chatSession!.CreateActivity(activityId);
             IActivity activity = context.PluginLoader.GetActivity(activityId);
             IActivityHandler handler = activity.Coalesce(a => a.CreateInvite(executor, args));
             if (handler == null)

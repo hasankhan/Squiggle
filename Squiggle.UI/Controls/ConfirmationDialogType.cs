@@ -9,8 +9,8 @@ namespace Squiggle.UI.Controls
     public class ConfirmationDialogType
     {
         public int Code {get; private set; }
-        public string Title {get; private set; }
-        public string Message {get; private set; }
+        public string Title {get; private set; } = null!;
+        public string Message {get; private set; } = null!;
 
         public static ConfirmationDialogType FileTransferWindowClose
         {

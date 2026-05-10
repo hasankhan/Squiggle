@@ -11,7 +11,7 @@ namespace Squiggle.UI.Converters
     {
         #region IValueConverter Members
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object? Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
         {
             if (value == null && parameter.ToString() == "voicechatoff")
                 return Visibility.Visible;
@@ -29,7 +29,7 @@ namespace Squiggle.UI.Converters
 
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object? ConvertBack(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();
         }

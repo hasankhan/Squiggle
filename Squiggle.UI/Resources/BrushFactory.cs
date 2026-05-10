@@ -13,7 +13,7 @@ namespace Squiggle.UI.Resources
         public static SolidColorBrush Create(Color color)
         {
             uint code = Convert.ToUInt32(color.ToString().Substring(1), 16);
-            SolidColorBrush brush;                
+            SolidColorBrush? brush;                
             if (!brushes.TryGetValue(code, out brush))
             {
                 brushes[code] = brush = new SolidColorBrush(color);

@@ -7,7 +7,7 @@ namespace Squiggle.Bridge.Configuration
     class Target : ConfigurationElement
     {
         [ConfigurationProperty("IP", IsRequired = true)]
-        public string IP
+        public string? IP
         {
             get { return this["IP"] as string; }
         }
@@ -22,7 +22,7 @@ namespace Squiggle.Bridge.Configuration
         {
             get 
             {
-                var ip = IPAddress.Parse(IP);
+                var ip = IPAddress.Parse(IP!);
                 return new IPEndPoint(ip, Port); 
             }
         }

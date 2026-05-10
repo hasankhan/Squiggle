@@ -11,7 +11,7 @@ namespace Squiggle.UI.Converters
 {
     public class TrayIconConverter: IMultiValueConverter
     {
-        static Icon onlineIcon, offlineIcon, awayIcon, busyIcon;
+        static Icon onlineIcon = null!, offlineIcon = null!, awayIcon = null!, busyIcon = null!;
 
         static TrayIconConverter()
         {
@@ -21,7 +21,7 @@ namespace Squiggle.UI.Converters
             busyIcon = new Icon(Application.GetResourceStream(new Uri("/Squiggle;component/Images/Chat-Busy.ico", UriKind.Relative)).Stream);
         }
 
-        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object? Convert(object?[] values, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
         {
             if (values.Length < 2)
                 return null;
@@ -54,7 +54,7 @@ namespace Squiggle.UI.Converters
             return null;
         }        
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        public object?[] ConvertBack(object? value, Type[] targetTypes, object? parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();
         }

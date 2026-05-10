@@ -9,7 +9,7 @@ namespace Squiggle.Bridge
 {
     public partial class SquiggleBridgeService : ConsoleService
     {
-        SquiggleBridge bridge;
+        SquiggleBridge bridge = null!;
 
         public SquiggleBridgeService()
         {
@@ -56,7 +56,7 @@ namespace Squiggle.Bridge
         protected override void OnStop()
         {
             bridge.Stop();
-            bridge = null;
+            bridge = null!;
         }
     }
 }

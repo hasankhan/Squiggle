@@ -17,15 +17,15 @@ namespace Squiggle.UI.StickyWindow
         /// <summary>Gets the collection of active handlers.</summary>
         /// <value>A List of the mappings from <see cref="NativeMethods.WindowMessage"/>s
         /// to <see cref="NativeMethods.MessageHandler"/> delegates.</value>
-        protected List<MessageMapping> Handlers { get; set; }
+        protected List<MessageMapping> Handlers { get; set; } = null!;
         /// <summary>
         /// The reference to the Target or "owner" window 
         /// should be accessed through the <see cref="NativeBehaviors.Window"/> property.
         /// </summary>
-        private WeakReference _owner;
+        private WeakReference? _owner;
         /// <summary>Gets or Sets the target/owner window</summary>
         /// <value>The <see cref="Window"/> these Native Behavrios affect.</value>
-        public Window Target
+        public Window? Target
         {
             get
             {
@@ -38,31 +38,31 @@ namespace Squiggle.UI.StickyWindow
             set
             {
                 // design mode bailout (in Design mode there's no window, and no wndproc)
-                if (DesignerProperties.GetIsInDesignMode(value)) { return; }
+                if (DesignerProperties.GetIsInDesignMode(value!)) { return; }
 
                 if (_owner != null && WindowHandle != IntPtr.Zero)
                 {
-                    HwndSource.FromHwnd(WindowHandle).RemoveHook(WndProc);
+                    HwndSource.FromHwnd(WindowHandle)!.RemoveHook(WndProc);
                 }
 
                 Debug.Assert(null != value);
-                _owner = new WeakReference(value);
+                _owner = new WeakReference(value!);
 
                 // Use whether we can get an HWND to determine if the Window has been loaded.
-                WindowHandle = new WindowInteropHelper(value).Handle;
+                WindowHandle = new WindowInteropHelper(value!).Handle;
 
 
                 if (IntPtr.Zero == WindowHandle)
                 {
-                    value.SourceInitialized += (sender, e) =>
+                    value!.SourceInitialized += (object? sender, EventArgs e) =>
                     {
-                        WindowHandle = new WindowInteropHelper((Window)sender).Handle;
-                        HwndSource.FromHwnd(WindowHandle).AddHook(WndProc);
+                        WindowHandle = new WindowInteropHelper((Window)sender!).Handle;
+                        HwndSource.FromHwnd(WindowHandle)!.AddHook(WndProc);
                     };
                 }
                 else
                 {
-                    HwndSource.FromHwnd(WindowHandle).AddHook(WndProc);
+                    HwndSource.FromHwnd(WindowHandle)!.AddHook(WndProc);
                 }
             }
         }
@@ -197,7 +197,7 @@ namespace Squiggle.UI.StickyWindow
         {
             if (window == null) { throw new ArgumentNullException("window"); }
             // This is the plain old normal thing:
-            var behaviors = (NativeBehaviors)window.GetValue(NativeBehaviorsProperty);
+            var behaviors = (NativeBehaviors?)window.GetValue(NativeBehaviorsProperty);
             // Our raison d'être: create a new collection if there isn't one yet
             if (behaviors == null) { behaviors = new NativeBehaviors(window); }
 
@@ -218,7 +218,7 @@ namespace Squiggle.UI.StickyWindow
             if (nccea.Action == NotifyCollectionChangedAction.Add ||
                 nccea.Action == NotifyCollectionChangedAction.Replace)
             {
-                foreach (NativeBehavior behavior in nccea.NewItems)
+                foreach (NativeBehavior behavior in nccea.NewItems!)
                 {
                     behavior.AddTo(Target);
                     Handlers.AddRange(behavior.GetHandlers());
@@ -229,7 +229,7 @@ namespace Squiggle.UI.StickyWindow
             if (nccea.Action == NotifyCollectionChangedAction.Remove ||
                 nccea.Action == NotifyCollectionChangedAction.Replace)
             {
-                foreach (NativeBehavior behavior in nccea.OldItems)
+                foreach (NativeBehavior behavior in nccea.OldItems!)
                 {
                     behavior.RemoveFrom(Target);
                     foreach (var h in behavior.GetHandlers())

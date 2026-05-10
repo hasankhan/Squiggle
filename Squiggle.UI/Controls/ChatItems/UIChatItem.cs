@@ -10,7 +10,7 @@ namespace Squiggle.UI.Controls.ChatItems
 {
     abstract class UIChatItem<T>: ChatItem where T:Control
     {
-        T control;
+        T? control;
 
         public override void AddTo(InlineCollection inlines)
         {

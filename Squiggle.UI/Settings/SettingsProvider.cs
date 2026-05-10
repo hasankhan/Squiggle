@@ -20,7 +20,7 @@ namespace Squiggle.UI.Settings
             Load();
         }
 
-        public SquiggleSettings Settings { get; private set; }
+        public SquiggleSettings Settings { get; private set; } = null!;
 
         public void Load()
         {

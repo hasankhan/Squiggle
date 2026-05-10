@@ -12,7 +12,7 @@ namespace Squiggle.Multicast
 {
     class MulticastServer
     {
-        MulticastHost mcastHost;
+        MulticastHost mcastHost = null!;
         HashSet<IPEndPoint> clients;
         IPEndPoint endPoint;
 
@@ -29,7 +29,7 @@ namespace Squiggle.Multicast
             mcastHost.Start();
         }
 
-        void mcastHost_MessageReceived(object sender, MessageReceivedEventArgs e)
+        void mcastHost_MessageReceived(object? sender, MessageReceivedEventArgs e)
         {
             AddClient(e.Message.Sender);
             if (e.Message is MulticastMessage)

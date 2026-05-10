@@ -30,8 +30,8 @@ namespace Squiggle.UI.Converters
         private class thumbnailInfo
         {
             public IconSize iconsize;
-            public WriteableBitmap bitmap;
-            public string fullPath;
+            public WriteableBitmap bitmap = null!;
+            public string fullPath = null!;
             public thumbnailInfo(WriteableBitmap b, string path, IconSize size)
             {
                 bitmap = b;
@@ -354,11 +354,11 @@ namespace Squiggle.UI.Converters
         }
 
 
-        private void PollIconCallback(object state)
+        private void PollIconCallback(object? state)
         {
 
 
-            thumbnailInfo input = state as thumbnailInfo;
+            thumbnailInfo input = (state as thumbnailInfo)!;
             string fileName = input.fullPath;
             WriteableBitmap writeBitmap = input.bitmap;
             IconSize size = input.iconsize;
@@ -376,10 +376,10 @@ namespace Squiggle.UI.Converters
             copyBitmap(inputBitmapSource, writeBitmap, true);
         }
 
-        private void PollThumbnailCallback(object state)
+        private void PollThumbnailCallback(object? state)
         {
             //Non UIThread
-            thumbnailInfo input = state as thumbnailInfo;
+            thumbnailInfo input = (state as thumbnailInfo)!;
             string fileName = input.fullPath;
             WriteableBitmap writeBitmap = input.bitmap;
             IconSize size = input.iconsize;
@@ -511,7 +511,7 @@ namespace Squiggle.UI.Converters
 
 
         #region IMultiValueConverter Members
-        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object? Convert(object?[] values, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
         {
             int size = defaultsize;
             if (values.Length > 1 && values[1] is double)
@@ -522,7 +522,7 @@ namespace Squiggle.UI.Converters
             else return GetImage("", size);
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        public object?[] ConvertBack(object? value, Type[] targetTypes, object? parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();
         }

@@ -11,7 +11,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
 {
     class FileTransferItem: ActivityChatItem<FileTransferControl, IFileTransferHandler>
     {
-        public string DownloadsFolder { get; private set; }
+        public string? DownloadsFolder { get; private set; }
 
         public FileTransferItem(IFileTransferHandler session, string downloadsFolder):base(session, sending:false)
         {
@@ -24,7 +24,7 @@ namespace Squiggle.UI.Controls.ChatItems.Activity
         {
             var control = new FileTransferControl(Session, Sending);
             if (!Sending)
-                control.DownloadFolder = DownloadsFolder;
+                control.DownloadFolder = DownloadsFolder!;
             return control;
         }
     }

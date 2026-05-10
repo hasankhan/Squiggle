@@ -11,8 +11,8 @@ namespace Squiggle.VoiceChat
     abstract class AcmChatCodec
     {
         private WaveFormat encodeFormat;
-        private AcmStream encodeStream;
-        private AcmStream decodeStream;
+        private AcmStream? encodeStream;
+        private AcmStream? decodeStream;
         private int decodeSourceBytesLeftovers;
         private int encodeSourceBytesLeftovers;
 

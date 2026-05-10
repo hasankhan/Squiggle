@@ -20,7 +20,7 @@ namespace Squiggle.UI.Windows
     /// </summary>
     public partial class EmoticonSelector : StickyWindowBase
     {
-        public string Code { get; set; }
+        public string? Code { get; set; }
 
         public event EventHandler EmoticonSelected = delegate { };
 
@@ -45,19 +45,19 @@ namespace Squiggle.UI.Windows
             }
         }
 
-        private void Window_Deactivated(object sender, EventArgs e)
+        private void Window_Deactivated(object? sender, EventArgs e)
         {            
             if (!closing)
                 Close();
         }
 
-        private void Window_KeyDown(object sender, KeyEventArgs e)
+        private void Window_KeyDown(object? sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
                 Close();
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Window_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
             closing = true;
         }

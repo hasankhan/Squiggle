@@ -56,7 +56,7 @@ namespace Squiggle.History.DAL
 
         }
 
-        public Session GetSession(string sessionId)
+        public Session? GetSession(string sessionId)
         {
             var session = context.Sessions.Include("Participants")
                                           .Include("Events")

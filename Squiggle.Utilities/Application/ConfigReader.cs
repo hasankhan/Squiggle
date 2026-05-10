@@ -32,7 +32,7 @@ namespace Squiggle.Utilities.Application
 
         public T? GetSetting<T>(string name)
         {
-            return GetSetting<T>(name, default!);
+            return GetSetting<T>(name, () => default!);
         }
 
         public T GetSetting<T>(string name, T fallbackValue)

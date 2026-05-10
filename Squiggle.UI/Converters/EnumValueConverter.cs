@@ -13,14 +13,14 @@ namespace Squiggle.UI.Converters
     {
         public static EnumValueConverter Instance = new EnumValueConverter();
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object? Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
         {
             string stringValue = StringValueAttribute.GetValue(value);
             string translatedValue = Translation.GetTranslation(stringValue);
             return translatedValue;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object? ConvertBack(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();
         }

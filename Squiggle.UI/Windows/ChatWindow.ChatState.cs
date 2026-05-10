@@ -14,8 +14,8 @@ namespace Squiggle.UI.Windows
 
             public DateTime? LastMessageReceived { get; private set; }
             public Guid? LastSentMessageId { get; set; }
-            public string LastSavedFile { get; set; }
-            public string LastSavedFormat { get; set; }
+            public string? LastSavedFile { get; set; }
+            public string? LastSavedFormat { get; set; }
             public bool BuzzPending { get; set; }
             public bool ChatStarted { get; set; }
 

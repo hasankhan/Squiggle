@@ -53,12 +53,12 @@ namespace Squiggle.UI.Controls
     class ChatDragDropAdvisor : IDragSourceAdvisor, IDropTargetAdvisor
     {
         static string dataObjectName = "DraggedContact_" + Guid.NewGuid();
-        UIElement sourceElement;
-        UIElement targetElement;
+        UIElement? sourceElement;
+        UIElement? targetElement;
 
         #region IDragSourceAdvisor Members
 
-        public UIElement SourceUI
+        public UIElement? SourceUI
         {
             get { return sourceElement; }
             set { sourceElement = value; }
@@ -71,7 +71,7 @@ namespace Squiggle.UI.Controls
 
         public DataObject GetDataObject(UIElement draggedElt)
         {
-            Border contact = GetContact(draggedElt);
+            Border contact = GetContact(draggedElt)!;
             DataObject obj = new DataObject(dataObjectName, contact);
             return obj;
         }
@@ -88,7 +88,7 @@ namespace Squiggle.UI.Controls
 
         public UIElement GetTopContainer()
         {
-            UIElement container = null;
+            UIElement? container = null;
             if (TargetUI != null)
             {
                 var window = TargetUI.GetVisualParent<Window>();
@@ -106,7 +106,7 @@ namespace Squiggle.UI.Controls
 
         #region IDropTargetAdvisor Members
 
-        public UIElement TargetUI
+        public UIElement? TargetUI
         {
             get { return targetElement; }
             set { targetElement = value; }
@@ -123,7 +123,7 @@ namespace Squiggle.UI.Controls
             return isValid;
         }
 
-        public UIElement GetVisualFeedback(IDataObject obj)
+        public UIElement? GetVisualFeedback(IDataObject obj)
         {
             var contact = GetContact(obj);
 
@@ -152,27 +152,27 @@ namespace Squiggle.UI.Controls
                 else
                 {
                     var item = GetContact(obj);
-                    var buddy = item.DataContext as Buddy;
-                    chatWindow.Invite(buddy);
+                    var buddy = item?.DataContext as Buddy;
+                    chatWindow.Invite(buddy!);
                 }                
             }
         }
 
         #endregion
 
-        static Border GetContact(UIElement element)
+        static Border? GetContact(UIElement element)
         {
             if (IsContact(element as FrameworkElement))
                 return element as Border;
             return element.GetVisualParent<Border>(border => IsContact(border));
         }
 
-        static bool IsContact(FrameworkElement element)
+        static bool IsContact(FrameworkElement? element)
         {
             return element is Border && element.Name == "contactBorder";
         }
 
-        static Border GetContact(IDataObject obj)
+        static Border? GetContact(IDataObject obj)
         {
             var contact = obj.GetData(dataObjectName) as Border;
             return contact;

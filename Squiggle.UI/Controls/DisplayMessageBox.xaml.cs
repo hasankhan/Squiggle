@@ -15,7 +15,7 @@ namespace Squiggle.UI.Controls
         public static DependencyProperty SelfUserProperty = DependencyProperty.Register("SelfUser", typeof(Buddy), typeof(DisplayMessageBox), new PropertyMetadata(null));
         public Buddy SelfUser
         {
-            get { return GetValue(SelfUserProperty) as Buddy; }
+            get { return (GetValue(SelfUserProperty) as Buddy)!; }
             set
             {
                 SetValue(SelfUserProperty, value);
@@ -28,7 +28,7 @@ namespace Squiggle.UI.Controls
             InitializeComponent();
         }
 
-        private void txbMessage_MouseDown(object sender, MouseButtonEventArgs e)
+        private void txbMessage_MouseDown(object? sender, MouseButtonEventArgs e)
         {
             ShowEditableMessage();
 
@@ -41,12 +41,12 @@ namespace Squiggle.UI.Controls
             txtMessage.Visibility = Visibility.Visible;
         }
 
-        private void txtMessage_LostFocus(object sender, RoutedEventArgs e)
+        private void txtMessage_LostFocus(object? sender, RoutedEventArgs e)
         {
             ShowReadOnlyMessage();
         }
 
-        private void txtMessage_KeyUp(object sender, KeyEventArgs e)
+        private void txtMessage_KeyUp(object? sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {

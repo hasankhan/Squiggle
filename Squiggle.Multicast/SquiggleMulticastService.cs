@@ -18,7 +18,7 @@ namespace Squiggle.Multicast
 {
     public partial class SquiggleMulticastService : ConsoleService
     {
-        MulticastServer service;
+        MulticastServer service = null!;
 
         public SquiggleMulticastService()
         {
@@ -45,7 +45,7 @@ namespace Squiggle.Multicast
 
         static IPEndPoint GetConfig()
         {
-            string temp = ConfigurationManager.AppSettings["ip"];
+            string? temp = ConfigurationManager.AppSettings["ip"];
             IPAddress ip;
             if (String.IsNullOrEmpty(temp) ||
                 !IPAddress.TryParse(temp, out ip) ||
@@ -64,7 +64,7 @@ namespace Squiggle.Multicast
         protected override void OnStop()
         {
             service.Stop();
-            service = null;
+            service = null!;
         }
     }
 }

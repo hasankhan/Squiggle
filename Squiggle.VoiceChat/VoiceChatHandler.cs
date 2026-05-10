@@ -15,13 +15,13 @@ namespace Squiggle.VoiceChat
 {
     class VoiceChatHandler: ActivityHandler, IVoiceChatHandler
     {
-        WaveIn waveIn;
-        WaveOut waveOut;
-        BufferedWaveProvider waveOutProvider;
-        EchoFilterWaveProvider echoFilter;
+        WaveIn? waveIn;
+        WaveOut? waveOut;
+        BufferedWaveProvider waveOutProvider = null!;
+        EchoFilterWaveProvider echoFilter = null!;
         AcmChatCodec codec = new Gsm610ChatCodec();
 
-        public Dispatcher Dispatcher { get; set; }
+        public Dispatcher Dispatcher { get; set; } = null!;
 
         public bool IsMuted { get; set; }
 
@@ -119,7 +119,7 @@ namespace Squiggle.VoiceChat
             base.OnTransferFinished();
         }
 
-        void waveIn_DataAvailable(object sender, WaveInEventArgs e)
+        void waveIn_DataAvailable(object? sender, WaveInEventArgs e)
         {
             byte[] buffer = IsMuted ? GetEmptyBuffer(e.BytesRecorded) : e.Buffer;
 
@@ -130,7 +130,7 @@ namespace Squiggle.VoiceChat
             SendData(encoded);
         }
 
-        byte[] emptyBuffer;
+        byte[]? emptyBuffer;
         byte[] GetEmptyBuffer(int size)
         {
             if (emptyBuffer == null || emptyBuffer.Length < size)

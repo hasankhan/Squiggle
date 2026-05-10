@@ -10,6 +10,6 @@ namespace Squiggle.Bridge.Messages
     class ForwardChatMessage: Message
     {
         [ProtoMember(1)]
-        public byte[] Message { get; set; }
+        public byte[] Message { get; set; } = null!;
     }
 }

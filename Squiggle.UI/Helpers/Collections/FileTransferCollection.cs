@@ -32,7 +32,7 @@ namespace Squiggle.UI.Helpers.Collections
             item.TransferFinished -= item_TransferFinished;
         }
 
-        void item_TransferFinished(object sender, EventArgs e)
+        void item_TransferFinished(object? sender, EventArgs e)
         {
             Remove((IFileTransferHandler)sender);
         }

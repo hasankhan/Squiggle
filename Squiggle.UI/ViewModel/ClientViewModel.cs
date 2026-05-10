@@ -16,7 +16,7 @@ namespace Squiggle.UI.ViewModel
         IChatClient chatClient;
         Dispatcher dispatcher;
 
-        public ISelfBuddy LoggedInUser { get; set; }
+        public ISelfBuddy LoggedInUser { get; set; } = null!;
         public ObservableCollection<IBuddy> Buddies { get; private set; }
 
         public string Title
@@ -39,15 +39,15 @@ namespace Squiggle.UI.ViewModel
             get { return Buddies.Any(b => b.IsOnline()); }
         }
 
-        string updateLink;
-        public string UpdateLink
+        string? updateLink;
+        public string? UpdateLink
         {
             get { return updateLink; }
             set { Set(()=>UpdateLink, ref updateLink, value); }
         }
 
-        ICommand cancelUpdateCommand;
-        public ICommand CancelUpdateCommand
+        ICommand? cancelUpdateCommand;
+        public ICommand? CancelUpdateCommand
         {
             get { return cancelUpdateCommand; }
             set { Set(() => cancelUpdateCommand, ref cancelUpdateCommand, value); }
@@ -70,22 +70,22 @@ namespace Squiggle.UI.ViewModel
             Buddies.CollectionChanged += (sender, e) => OnContactListUpdated();
         }
 
-        void chatClient_LoggedInOut(object sender, EventArgs e)
+        void chatClient_LoggedInOut(object? sender, EventArgs e)
         {
             OnPropertyChanged(()=>IsLoggedIn, ()=>Title);
         }
 
-        void chatClient_BuddyOffline(object sender, BuddyEventArgs e)
+        void chatClient_BuddyOffline(object? sender, BuddyEventArgs e)
         {
             OnContactListUpdated();
         }
 
-        void chatClient_BuddyUpdated(object sender, BuddyEventArgs e)
+        void chatClient_BuddyUpdated(object? sender, BuddyEventArgs e)
         {
             OnContactListUpdated();
         }
 
-        void chatClient_BuddyOnline(object sender, BuddyOnlineEventArgs e)
+        void chatClient_BuddyOnline(object? sender, BuddyOnlineEventArgs e)
         {
             if (Buddies.Contains(e.Buddy))
                 OnContactListUpdated();

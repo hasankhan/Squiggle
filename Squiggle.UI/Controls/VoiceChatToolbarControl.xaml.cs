@@ -25,7 +25,7 @@ namespace Squiggle.UI.Controls
     /// </summary>
     public partial class VoiceChatToolbarControl : UserControl, INotifyPropertyChanged
     {
-        IVoiceChatHandler voiceChatContext;
+        IVoiceChatHandler? voiceChatContext;
 
         public event EventHandler StartChat = delegate { };
 
@@ -35,7 +35,7 @@ namespace Squiggle.UI.Controls
             this.DataContext = this;
         }
 
-        public IVoiceChatHandler VoiceChatContext 
+        public IVoiceChatHandler? VoiceChatContext 
         {
             get { return voiceChatContext; }
             set 
@@ -60,7 +60,7 @@ namespace Squiggle.UI.Controls
             }
         }
 
-        void voiceChatContext_TransferStarted(object sender, EventArgs e)
+        void voiceChatContext_TransferStarted(object? sender, EventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -68,7 +68,7 @@ namespace Squiggle.UI.Controls
             });
         }
 
-        void voiceChatContext_TransferFinished(object sender, EventArgs e)
+        void voiceChatContext_TransferFinished(object? sender, EventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -76,7 +76,7 @@ namespace Squiggle.UI.Controls
             });
         }
 
-        void voiceChatContext_TransferCompleted(object sender, EventArgs e)
+        void voiceChatContext_TransferCompleted(object? sender, EventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -84,7 +84,7 @@ namespace Squiggle.UI.Controls
             });
         }
 
-        void voiceChatContext_TransferCancelled(object sender, EventArgs e)
+        void voiceChatContext_TransferCancelled(object? sender, EventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
@@ -92,12 +92,12 @@ namespace Squiggle.UI.Controls
             });
         }
 
-        private void StartVoiceChat_Click(object sender, RoutedEventArgs e)
+        private void StartVoiceChat_Click(object? sender, RoutedEventArgs e)
         {
             StartChat(this, e);
         }
 
-        private void StopVoiceChat_Click(object sender, RoutedEventArgs e)
+        private void StopVoiceChat_Click(object? sender, RoutedEventArgs e)
         {
             if (voiceChatContext != null)
                 voiceChatContext.Cancel();

@@ -17,7 +17,7 @@ namespace Squiggle.UI.Settings
             });
         }
 
-        public ContactGroup Find(string groupName)
+        public ContactGroup? Find(string groupName)
         {
             var group = this.FirstOrDefault(g => g.GroupName.Equals(groupName, StringComparison.InvariantCultureIgnoreCase));
             return group;
@@ -26,7 +26,7 @@ namespace Squiggle.UI.Settings
         protected override void InsertItem(int index, ContactGroup item)
         {
             item.GroupName = item.GroupName.Trim();
-            ContactGroup existing = this.Find(item.GroupName);
+            ContactGroup? existing = this.Find(item.GroupName);
             if (existing == null)
                 base.InsertItem(index, item);
             else

@@ -20,19 +20,19 @@ namespace Squiggle.UI.Components
     class PluginLoader
     {
         [ImportMany(typeof(IActivity))]
-        public IEnumerable<IActivity> Activities { get; set; }
+        public IEnumerable<IActivity> Activities { get; set; } = null!;
 
         [ImportMany(typeof(IMessageFilter))]
-        public IEnumerable<IMessageFilter> MessageFilters { get; set; }
+        public IEnumerable<IMessageFilter> MessageFilters { get; set; } = null!;
 
         [ImportMany(typeof(IMessageParser))]
-        public IEnumerable<IMessageParser> MessageParsers { get; set; }
+        public IEnumerable<IMessageParser> MessageParsers { get; set; } = null!;
 
         [ImportMany(typeof(IExtension))]
-        public IEnumerable<IExtension> Extensions { get; set; }
+        public IEnumerable<IExtension> Extensions { get; set; } = null!;
 
         [Import(AllowDefault=true)]
-        public IAuthenticationProvider AuthenticationProvider { get; set; }
+        public IAuthenticationProvider? AuthenticationProvider { get; set; }
 
         public PluginLoader(ComposablePartCatalog catalog)
         {
@@ -52,9 +52,9 @@ namespace Squiggle.UI.Components
             return GetActivity(id) != null;
         }
 
-        public IActivity GetActivity(Guid activityId)
+        public IActivity? GetActivity(Guid activityId)
         {
-            IActivity activity = Activities.FirstOrDefault(f => f.Id.Equals(activityId));
+            IActivity? activity = Activities.FirstOrDefault(f => f.Id.Equals(activityId));
             return activity;
         }
 

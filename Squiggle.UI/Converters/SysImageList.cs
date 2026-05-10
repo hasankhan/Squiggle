@@ -483,7 +483,7 @@ namespace Squiggle.UI.Converters
 
         #region Member Variables
         private IntPtr hIml = IntPtr.Zero;
-        private IImageList iImageList = null;
+        private IImageList? iImageList = null;
         private SysImageListSize size = SysImageListSize.smallIcons;
         private bool disposed = false;
         #endregion
@@ -552,9 +552,9 @@ namespace Squiggle.UI.Converters
         /// </summary>
         /// <param name="index">The index to get the icon for</param>
         /// <returns>The specified icon</returns>
-        public Icon Icon(int index)
+        public Icon? Icon(int index)
         {
-            Icon icon = null;
+            Icon? icon = null;
 
             IntPtr hIcon = IntPtr.Zero;
             if (iImageList == null)

@@ -40,7 +40,7 @@ namespace Squiggle.UI
     //	  NOTE:	it is redirected to	this instance thanks to	IsSingleInstance
     public class SingleInstanceManager : WindowsFormsApplicationBase
     {
-        App app;
+        App app = null!;
 
         public SingleInstanceManager()
         {
@@ -80,12 +80,12 @@ namespace Squiggle.UI
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
         }
 
-        void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
+        void CurrentDomain_UnhandledException(object? sender, System.UnhandledExceptionEventArgs e)
         {
             Trace.WriteLine("App domain unhandled exception: " + e.ExceptionObject.ToString());
         }
 
-        void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        void App_DispatcherUnhandledException(object? sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
 #if !DEBUG
             e.Handled = true;
@@ -93,7 +93,7 @@ namespace Squiggle.UI
 #endif
         }
 
-        private void Application_Startup(object sender, System.Windows.StartupEventArgs e)
+        private void Application_Startup(object? sender, System.Windows.StartupEventArgs e)
         {
             if (e.Args.Length > 0)
                 RunInBackground = e.Args[0].Trim() == "/background";
@@ -101,7 +101,7 @@ namespace Squiggle.UI
             Translation.Initialize();
         }
 
-        private void Application_Exit(object sender, ExitEventArgs e)
+        private void Application_Exit(object? sender, ExitEventArgs e)
         {
             Squiggle.UI.Properties.Settings.Default.Save();
             Environment.Exit(0);

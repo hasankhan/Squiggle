@@ -15,8 +15,8 @@ namespace Squiggle.UI.Components
     {
         public bool IsUpdated { get; set; }
         public DateTime LastUpdate { get; set; }
-        public string Title { get; set; }
-        public string UpdateLink { get; set; }
+        public string Title { get; set; } = null!;
+        public string UpdateLink { get; set; } = null!;
     }
 
     class UpdateNotifier
@@ -27,7 +27,7 @@ namespace Squiggle.UI.Components
         {
             var result = new UpdateCheckResult();
 
-            SyndicationItem lastUpdate = GetLastUpdate();
+            SyndicationItem? lastUpdate = GetLastUpdate();
             if (lastUpdate != null && lastUpdate.PublishDate > clientLastUpdate && VersionIsSameOrNewer(lastUpdate))
             {
                 result.LastUpdate = lastUpdate.PublishDate.LocalDateTime;
@@ -50,10 +50,10 @@ namespace Squiggle.UI.Components
             return sameOrNewer;
         }
 
-        static SyndicationItem GetLastUpdate()
+        static SyndicationItem? GetLastUpdate()
         {
             var feed = SyndicationFeed.Load(new XmlTextReader("http://squiggle.codeplex.com/project/feeds/rss?ProjectRSSFeed=codeplex%3a%2f%2frelease%2fsquiggle"));
-            SyndicationItem lastUpdate = feed.Items.OrderByDescending(item => item.PublishDate).FirstOrDefault();
+            SyndicationItem? lastUpdate = feed.Items.OrderByDescending(item => item.PublishDate).FirstOrDefault();
             return lastUpdate;
         }
     }

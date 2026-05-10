@@ -18,8 +18,8 @@ namespace Squiggle.UI.Controls
         const int maxMessages = 10;
         int messageIndex = 0;
         List<string> messages = new List<string>();
-        object editContext;
-        EditViewModel editModel;
+        object? editContext;
+        EditViewModel editModel = null!;
 
         public event EventHandler<MessageSendEventArgs> MessageSend = delegate { };
         public event EventHandler MessageTyping = delegate { };
@@ -65,7 +65,7 @@ namespace Squiggle.UI.Controls
             editContext = context;
         }
 
-        void Current_SettingsUpdated(object sender, EventArgs e)
+        void Current_SettingsUpdated(object? sender, EventArgs e)
         {
             SetFont();
         }
@@ -81,7 +81,7 @@ namespace Squiggle.UI.Controls
             txtMessage.FontStyle = result.Style;
         }
 
-        private void btnSend_Click(object sender, RoutedEventArgs e)
+        private void btnSend_Click(object? sender, RoutedEventArgs e)
         {
             OnMessageSent();            
         }
@@ -103,7 +103,7 @@ namespace Squiggle.UI.Controls
             MessageSend(this, new MessageSendEventArgs() { Message = message, Context = context });
         }
 
-        private void txtMessage_TextChanged(object sender, TextChangedEventArgs e)
+        private void txtMessage_TextChanged(object? sender, TextChangedEventArgs e)
         {
             CanUndo = txtMessage.CanUndo;
             if (editModel.Message == String.Empty)
@@ -124,7 +124,7 @@ namespace Squiggle.UI.Controls
             btnSend.IsEnabled = Enabled && editModel.Message != String.Empty;
         }        
 
-        private void txtMessage_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void txtMessage_PreviewKeyDown(object? sender, KeyEventArgs e)
         {
             if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.Up)
             {
@@ -178,7 +178,7 @@ namespace Squiggle.UI.Controls
 
     class EditViewModel : ViewModelBase
     {
-        string message;
+        string message = null!;
         bool editMode;
 
         public string Message
@@ -200,12 +200,12 @@ namespace Squiggle.UI.Controls
         {
             get { return Context != null; }
         }
-        public object Context { get; set; }
-        public string Message { get; set; }
+        public object? Context { get; set; }
+        public string Message { get; set; } = null!;
     }
 
     public class FileDroppedEventArgs : EventArgs
     {
-        public string[] Files { get; set; }
+        public string[] Files { get; set; } = null!;
     }
 }

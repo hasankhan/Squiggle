@@ -10,13 +10,13 @@ namespace Squiggle.UI.Converters
         public static PathToNameConverter Instance = new PathToNameConverter();
 
         #region IValueConverter Members
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object? Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
         {
             string fileName = (string)value;
             return Path.GetFileName(fileName);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object? ConvertBack(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();
         }

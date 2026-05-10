@@ -12,12 +12,12 @@ namespace Squiggle.UI.Factories
     class SquiggleContextFactory: IInstanceFactory<SquiggleContext>
     {
         IInstanceFactory<PluginLoader> pluginLoaderFactory;
-        HistoryManager history;
+        HistoryManager? history;
         MainWindow window;
         string clientId;
 
         public SquiggleContextFactory(IInstanceFactory<PluginLoader> pluginLoaderFactory, 
-                                      HistoryManager history,
+                                      HistoryManager? history,
                                       MainWindow window, 
                                       string clientId)
         {
@@ -38,7 +38,7 @@ namespace Squiggle.UI.Factories
                 context.ChatClient = new ChatClient(clientId, history);
                 SquiggleContext.Current = context;
             }
-            return SquiggleContext.Current;
+            return SquiggleContext.Current!;
         }
     }
 }

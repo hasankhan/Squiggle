@@ -12,7 +12,7 @@ namespace Squiggle.UI.StickyWindow
     public class SnapToBehavior : NativeBehavior
     {
         System.Windows.Point snapPoint;
-        Window originalForm;
+        Window originalForm = null!;
 
         public Window OriginalForm
         {
@@ -39,7 +39,7 @@ namespace Squiggle.UI.StickyWindow
         //http://www.codeproject.com/KB/winsdk/snapping_window.aspx
         IntPtr OnMoving(IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            var snap_prc = (NativeMethods.WindowPosition)Marshal.PtrToStructure(lParam, typeof(NativeMethods.WindowPosition));
+            var snap_prc = (NativeMethods.WindowPosition)Marshal.PtrToStructure(lParam, typeof(NativeMethods.WindowPosition))!;
             var snap_cur_pos = NativeMethods.GetMousePosition();
             OffsetRect(ref snap_prc, snap_cur_pos.X - (snap_prc.Left + snapPoint.X),
                                      snap_cur_pos.Y - (snap_prc.Top + snapPoint.Y));

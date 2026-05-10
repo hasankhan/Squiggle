@@ -4,7 +4,7 @@ namespace Squiggle.Bridge.Configuration
 {
     class TargetCollection : ConfigurationElementCollection
     {
-        public Target this[int index]
+        public Target? this[int index]
         {
             get
             {
@@ -25,7 +25,7 @@ namespace Squiggle.Bridge.Configuration
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((Target)element).IP;
+            return ((Target)element).IP!;
         }
 
     }

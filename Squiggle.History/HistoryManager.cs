@@ -48,7 +48,7 @@ namespace Squiggle.History
                 return repository.GetSessions(criteria);
         }
 
-        public Session GetSession(string sessionId)
+        public Session? GetSession(string sessionId)
         {
             using (HistoryRepository repository = this.CreateRepository())
                 return repository.GetSession(sessionId);

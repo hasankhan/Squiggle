@@ -50,7 +50,7 @@ namespace Squiggle.UI.Helpers.Collections
             return windows.Remove(item);
         }
 
-        public ChatWindow Find(Func<ChatWindow, bool> criterea)
+        public ChatWindow? Find(Func<ChatWindow, bool> criterea)
         {
             var window = windows.FirstOrDefault(criterea);
             return window;

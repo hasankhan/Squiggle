@@ -34,7 +34,7 @@ namespace Squiggle.UI.Controls
         public static DependencyProperty ChatContextProperty = DependencyProperty.Register("ChatContext", typeof(ClientViewModel), typeof(ContactListControl), new PropertyMetadata(null));
         public ClientViewModel ChatContext
         {
-            get { return GetValue(ChatContextProperty) as ClientViewModel; }
+            get { return (GetValue(ChatContextProperty) as ClientViewModel)!; }
             set 
             {
                 SetValue(ChatContextProperty, value);
@@ -53,13 +53,13 @@ namespace Squiggle.UI.Controls
                 cvs.View.Refresh();
         }
 
-        void ComboBoxItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        void ComboBoxItem_PreviewMouseLeftButtonDown(object? sender, MouseButtonEventArgs e)
         {
             SignOut(this, new EventArgs());
             e.Handled = true;
         }
 
-        void ComboBoxItem_PreviewKeyDown(object sender, KeyEventArgs e)
+        void ComboBoxItem_PreviewKeyDown(object? sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
@@ -68,26 +68,26 @@ namespace Squiggle.UI.Controls
             }
         }
 
-        void About_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        void About_MouseLeftButtonDown(object? sender, MouseButtonEventArgs e)
         {
             OpenAbout(this, EventArgs.Empty);
         }
 
-        void Buddy_Click(object sender, MouseButtonEventArgs e)
+        void Buddy_Click(object? sender, MouseButtonEventArgs e)
         {
-            Buddy buddy = ((FrameworkElement)sender).DataContext as Buddy;
+            Buddy? buddy = ((FrameworkElement)sender!).DataContext as Buddy;
             StartChat(buddy, false);
         }        
 
-        void StartChat(Buddy buddy, bool sendFile, params string[] filePaths)
+        void StartChat(Buddy? buddy, bool sendFile, params string[] filePaths)
         {
-            if (buddy.IsOnline)
+            if (buddy != null && buddy.IsOnline)
                 ChatStart(this, new ChatStartEventArgs() { Buddy = buddy,
                                                            SendFile = sendFile,
                                                            Files = filePaths });
         }
 
-        void Buddy_DragOver(object sender, DragEventArgs e)
+        void Buddy_DragOver(object? sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
                 e.Effects = DragDropEffects.All;
@@ -95,17 +95,17 @@ namespace Squiggle.UI.Controls
                 e.Effects = DragDropEffects.None;
         }
 
-        void Buddy_Drop(object sender, DragEventArgs e)
+        void Buddy_Drop(object? sender, DragEventArgs e)
         {
             var files = e.Data.GetData(DataFormats.FileDrop) as string[];
             if (files != null)
             {
-                var buddy = ((FrameworkElement)sender).DataContext as Buddy;
+                var buddy = ((FrameworkElement)sender!).DataContext as Buddy;
                 StartChat(buddy, true, files);
             }
         }
 
-        void CollectionViewSource_Filter(object sender, FilterEventArgs e)
+        void CollectionViewSource_Filter(object? sender, FilterEventArgs e)
         {
             Buddy buddy = (Buddy)e.Item;
             if (!showOfflineContacts && buddy.Status == UserStatus.Offline)
@@ -116,14 +116,14 @@ namespace Squiggle.UI.Controls
                 e.Accepted = buddy.DisplayName.ToUpperInvariant().Contains(filter.ToUpperInvariant());
         }
 
-        void FilterTextBox_FilterChanged(object sender, BuddyFilterEventArs e)
+        void FilterTextBox_FilterChanged(object? sender, BuddyFilterEventArs e)
         {
             filter = e.FilterBy;
 
             Refresh();
         }
 
-        void UserControl_Loaded(object sender, RoutedEventArgs e)
+        void UserControl_Loaded(object? sender, RoutedEventArgs e)
         {
             showOfflineContacts = SettingsProvider.Current.Settings.ContactSettings.ShowOfflineContacts;
             contactListView = SettingsProvider.Current.Settings.ContactSettings.ContactListView;
@@ -146,7 +146,7 @@ namespace Squiggle.UI.Controls
             cvs.SortDescriptions.Add(sort);         
         }
 
-        void Current_SettingsUpdated(object sender, EventArgs e)
+        void Current_SettingsUpdated(object? sender, EventArgs e)
         {
             var cvs = (CollectionViewSource)this.FindResource("buddiesCollection");
 
@@ -189,9 +189,9 @@ namespace Squiggle.UI.Controls
             return refresh;
         }
 
-        void Group_ExpandChanged(object sender, RoutedEventArgs e)
+        void Group_ExpandChanged(object? sender, RoutedEventArgs e)
         {
-            var expander = (Expander)sender;
+            var expander = (Expander)sender!;
             ContactGroup group = SettingsProvider.Current.Settings.ContactSettings.ContactGroups.Find(expander.Tag as string);
             if (group != null)
             {
@@ -200,39 +200,39 @@ namespace Squiggle.UI.Controls
             }
         }
 
-        void Group_Loaded(object sender, RoutedEventArgs e)
+        void Group_Loaded(object? sender, RoutedEventArgs e)
         {
-            var expander = (Expander)sender;
+            var expander = (Expander)sender!;
             ContactGroup group = SettingsProvider.Current.Settings.ContactSettings.ContactGroups.Find(expander.Tag as string);
             expander.IsExpanded = group != null ? group.Expanded : true;
         }
 
-        private void SendBroadcastMessageMenu_Click(object sender, RoutedEventArgs e)
+        private void SendBroadcastMessageMenu_Click(object? sender, RoutedEventArgs e)
         {
-            RaiseBuddiesEvent(sender, BroadcastChatStart);
+            RaiseBuddiesEvent(sender!, BroadcastChatStart);
         }
 
-        private void StartGroupChatMenu_Click(object sender, RoutedEventArgs e)
+        private void StartGroupChatMenu_Click(object? sender, RoutedEventArgs e)
         {
-            RaiseBuddiesEvent(sender, GroupChatStart);
+            RaiseBuddiesEvent(sender!, GroupChatStart);
         }
 
-        void StartChat_Click(object sender, RoutedEventArgs e)
+        void StartChat_Click(object? sender, RoutedEventArgs e)
         {
-            Buddy buddy = ((Control)sender).Tag as Buddy;
+            Buddy? buddy = ((Control)sender!).Tag as Buddy;
             StartChat(buddy, false);
         }
 
-        void SendFile_Click(object sender, RoutedEventArgs e)
+        void SendFile_Click(object? sender, RoutedEventArgs e)
         {
-            Buddy buddy = ((Control)sender).Tag as Buddy;
+            Buddy? buddy = ((Control)sender!).Tag as Buddy;
             StartChat(buddy, true);
         }
 
-        void SendEmail_Click(object sender, RoutedEventArgs e)
+        void SendEmail_Click(object? sender, RoutedEventArgs e)
         {
-            Buddy buddy = ((Control)sender).Tag as Buddy;
-            SendEmail(buddy);
+            Buddy? buddy = ((Control)sender!).Tag as Buddy;
+            SendEmail(buddy!);
         }
 
         static void SendEmail(Buddy buddy)
@@ -240,22 +240,22 @@ namespace Squiggle.UI.Controls
             System.Diagnostics.Process.Start("mailto:" + buddy.Properties.EmailAddress);
         }
 
-        private void ChatCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void ChatCommand_Executed(object? sender, ExecutedRoutedEventArgs e)
         {
             StartChat((Buddy)e.Parameter, false);
         }
 
-        private void EmailCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void EmailCommand_Executed(object? sender, ExecutedRoutedEventArgs e)
         {
             SendEmail((Buddy)e.Parameter);
         }
 
-        private void SendFileCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void SendFileCommand_Executed(object? sender, ExecutedRoutedEventArgs e)
         {
             StartChat((Buddy)e.Parameter, true);
         }
 
-        void RaiseBuddiesEvent(object sender, EventHandler<BuddiesActionEventArgs> evt)
+        void RaiseBuddiesEvent(object? sender, EventHandler<BuddiesActionEventArgs> evt)
         {
             var menuItem = (MenuItem)sender;
             var buddies = ((IEnumerable<object>)menuItem.Tag).Cast<Buddy>();
@@ -265,13 +265,13 @@ namespace Squiggle.UI.Controls
 
     public class ChatStartEventArgs : EventArgs
     {
-        public Buddy Buddy { get; set; }
+        public Buddy Buddy { get; set; } = null!;
         public bool SendFile { get; set; }
-        public string[] Files { get; set; }
+        public string[]? Files { get; set; }
     }
 
     public class BuddiesActionEventArgs: EventArgs
     {
-        public IEnumerable<Buddy> Buddies {get; set;}
+        public IEnumerable<Buddy> Buddies {get; set;} = null!;
     }
 }

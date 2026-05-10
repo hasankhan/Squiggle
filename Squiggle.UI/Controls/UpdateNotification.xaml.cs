@@ -26,7 +26,7 @@ namespace Squiggle.UI.Controls
             InitializeComponent();
         }
 
-        private void UpdateLink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+        private void UpdateLink_RequestNavigate(object? sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
             Shell.OpenUrl(e.Uri.ToString());
         }

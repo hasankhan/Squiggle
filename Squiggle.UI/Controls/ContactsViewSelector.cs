@@ -10,8 +10,8 @@ namespace Squiggle.UI.Controls
 {
     public class ContactsViewSelector : DataTemplateSelector
     {
-        public DataTemplate StandardView { get; set; }
-        public DataTemplate CompactView { get; set; }
+        public DataTemplate StandardView { get; set; } = null!;
+        public DataTemplate CompactView { get; set; } = null!;
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {

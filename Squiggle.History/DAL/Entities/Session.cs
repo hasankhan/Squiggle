@@ -8,9 +8,9 @@ namespace Squiggle.History.DAL.Entities
 {
     public class Session
     {
-        public string Id { get; set; }
-        public string ContactId { get; set; }
-        public string ContactName { get; set; }
+        public string Id { get; set; } = null!;
+        public string ContactId { get; set; } = null!;
+        public string ContactName { get; set; } = null!;
         public DateTime Start { get; set; }
         public DateTime? End { get; set; }
 
