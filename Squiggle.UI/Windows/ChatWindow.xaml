@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:Squiggle.UI"
     Title="ChatWindow" x:Name="chatWindow"
-    xmlns:dragdrop="clr-namespace:FluidKit.Helpers.DragDrop;assembly=FluidKit"     
+    xmlns:dragdrop="clr-namespace:FluidKit.Helpers.DragDrop"     
     Loaded="Window_Loaded" Activated="Window_Activated" KeyDown="Window_KeyDown"
     SizeChanged="Window_SizeChanged" Icon="/Squiggle;component/Images/chat.ico">
     <sticky:StickyWindowBase.Resources>
