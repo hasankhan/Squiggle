@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Squiggle.Core.Chat.Transport.Host;
 using Squiggle.Utilities;
 using Squiggle.Core.Chat.Activity;
@@ -21,6 +22,7 @@ namespace Squiggle.Core.Chat
         Dictionary<string, ISquiggleEndPoint> remoteUsers;
         ActionQueue eventQueue = new ActionQueue();
         bool initialized;
+        readonly ILogger logger;
 
         public event EventHandler<TextMessageReceivedEventArgs> MessageReceived = delegate { };
         public event EventHandler<TextMessageUpdatedEventArgs> MessageUpdated = delegate { };
@@ -52,11 +54,12 @@ namespace Squiggle.Core.Chat
             }
         }
 
-        public ChatSession(Guid sessionID, ChatHost localHost, ISquiggleEndPoint localUser, ISquiggleEndPoint remoteUser)
+        public ChatSession(Guid sessionID, ChatHost localHost, ISquiggleEndPoint localUser, ISquiggleEndPoint remoteUser, ILogger? logger = null)
         {
             this.Id = sessionID;
             this.chatHost = localHost;
             this.localUser = localUser;
+            this.logger = logger ?? NullLogger.Instance;
 
             localHost.ChatInviteReceived += chatHost_ChatInviteReceived;
             localHost.ActivityInvitationReceived += chatHost_ActivityInvitationReceived;
@@ -355,7 +358,7 @@ namespace Squiggle.Core.Chat
                 }, "doing a broadcast operation in chat", out ex))
                 {
                     allSuccess = false;
-                    Trace.WriteLine(ex!.Message);
+                    logger.LogWarning(ex, "Broadcast operation failed for user {User}", user);
                 }
             });
 

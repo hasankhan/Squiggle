@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace Squiggle.Utilities
 {
     public static class ExceptionMonster
     {
+        public static ILogger? Logger { get; set; }
+
         public static bool EatTheException(Action action, string actionDescription)
         {
             Exception ex;
@@ -44,7 +46,7 @@ namespace Squiggle.Utilities
             catch (Exception exception)
             {
                 ex = exception;
-                Trace.WriteLine("Erorr occured while " + actionDescription + ": " + ex.ToString());
+                Logger?.LogError(exception, "Error occurred while {Action}", actionDescription);
             }
             success = false;
             return default;

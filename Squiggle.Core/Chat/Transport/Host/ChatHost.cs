@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Squiggle.Core.Chat.Transport.Messages;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Net.Pipe;
@@ -17,6 +18,7 @@ namespace Squiggle.Core.Chat.Transport.Host
     {
         IPEndPoint endpoint;
         UnicastMessagePipe pipe = null!;
+        readonly ILogger<ChatHost> logger;
 
         public event EventHandler<SessionEventArgs> BuzzReceived = delegate { };
         public event EventHandler<TextMessageReceivedEventArgs> TextMessageReceived = delegate { };
@@ -33,9 +35,10 @@ namespace Squiggle.Core.Chat.Transport.Host
         public event EventHandler<SessionEventArgs> SessionInfoRequested = delegate { };
         public event EventHandler<SessionInfoEventArgs> SessionInfoReceived = delegate { };
 
-        public ChatHost(IPEndPoint endpoint)
+        public ChatHost(IPEndPoint endpoint, ILogger<ChatHost>? logger = null)
         {
             this.endpoint = endpoint;
+            this.logger = logger ?? NullLogger<ChatHost>.Instance;
         }
 
         public void Start()
@@ -91,25 +94,25 @@ namespace Squiggle.Core.Chat.Transport.Host
         void OnSessionInfoRequested(GiveSessionInfoMessage msg)
         {
             SessionInfoRequested(this, new SessionEventArgs(msg.SessionId, msg.Sender));
-            Trace.WriteLine(msg.Sender + " is requesting session info.");
+            logger.LogDebug("{Sender} is requesting session info", msg.Sender);
         }
 
         void OnSessionInfoReceived(SessionInfoMessage msg)
         {
             SessionInfoReceived(this, new SessionInfoEventArgs() { Participants = msg.Participants.ToArray(), Sender = msg.Sender, SessionID = msg.SessionId });
-            Trace.WriteLine(msg.Sender + " is sent session info.");
+            logger.LogDebug("{Sender} sent session info", msg.Sender);
         }
 
         void OnBuzzReceived(BuzzMessage msg)
         {
             BuzzReceived(this, new SessionEventArgs(msg.SessionId, msg.Sender));
-            Trace.WriteLine(msg.Sender + " is buzzing.");
+            logger.LogDebug("{Sender} is buzzing", msg.Sender);
         }
 
         void OnUserTyping(UserTypingMessage msg)
         {
             UserTyping(this, new SessionEventArgs(msg.SessionId, msg.Sender ));
-            Trace.WriteLine(msg.Sender + " is typing.");
+            logger.LogDebug("{Sender} is typing", msg.Sender);
         }
 
         void OnTextMessageReceived(TextMessage msg)
@@ -125,7 +128,7 @@ namespace Squiggle.Core.Chat.Transport.Host
                 FontStyle = msg.FontStyle,
                 Message = msg.Message 
             });
-            Trace.WriteLine("Message received from: " + msg.Sender + ", sessionId= " + msg.SessionId);
+            logger.LogDebug("Message received from {Sender}, SessionId={SessionId}", msg.Sender, msg.SessionId);
         }
 
         void OnTextMessageUpdated(UpdateTextMessage msg)
@@ -137,12 +140,12 @@ namespace Squiggle.Core.Chat.Transport.Host
                 Sender = msg.Sender,
                 Message = msg.Message
             });
-            Trace.WriteLine("Message updated by: " + msg.Sender + ", sessionId= " + msg.SessionId);
+            logger.LogDebug("Message updated by {Sender}, SessionId={SessionId}", msg.Sender, msg.SessionId);
         }
 
         void OnChatInviteReceived(ChatInviteMessage msg)
         {
-            Trace.WriteLine(msg.Sender + " invited you to group chat.");
+            logger.LogDebug("{Sender} invited you to group chat", msg.Sender);
             ChatInviteReceived(this, new ChatInviteReceivedEventArgs() 
             { 
                 SessionID = msg.SessionId, 
@@ -153,19 +156,19 @@ namespace Squiggle.Core.Chat.Transport.Host
 
         void OnUserJoined(ChatJoinMessage msg)
         {
-            Trace.WriteLine(msg.Sender + " has joined the chat.");
+            logger.LogDebug("{Sender} has joined the chat", msg.Sender);
             UserJoined(this, new MessageReceivedEventArgs() { SessionID = msg.SessionId, Sender = msg.Sender});
         }
 
         void OnUserLeft(ChatLeaveMessage msg)
         {
-            Trace.WriteLine(msg.Sender + " has left the chat.");
+            logger.LogDebug("{Sender} has left the chat", msg.Sender);
             UserLeft(this, new MessageReceivedEventArgs() { SessionID = msg.SessionId, Sender = msg.Sender});
         }
 
         void OnActivityInvitationReceived(ActivityInviteMessage msg)
         {
-            Trace.WriteLine(msg.Sender + " wants to send a file " + msg.Metadata.ToTraceString());
+            logger.LogDebug("{Sender} wants to send a file {Metadata}", msg.Sender, msg.Metadata.ToTraceString());
             ActivityInvitationReceived(this, new ActivityInvitationReceivedEventArgs()
             {
                 SessionID = msg.SessionId,

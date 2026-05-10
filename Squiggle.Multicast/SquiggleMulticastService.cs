@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Net;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Squiggle.Utilities;
 
 namespace Squiggle.Multicast
@@ -8,11 +9,13 @@ namespace Squiggle.Multicast
     partial class SquiggleMulticastService : ConsoleService
     {
         readonly IPEndPoint endPoint;
+        readonly ILogger<SquiggleMulticastService> _logger;
         MulticastServer service = null!;
 
-        public SquiggleMulticastService(IPEndPoint endPoint)
+        public SquiggleMulticastService(IPEndPoint endPoint, ILogger<SquiggleMulticastService>? logger = null) : base(logger)
         {
             this.endPoint = endPoint;
+            this._logger = logger ?? NullLogger<SquiggleMulticastService>.Instance;
             InitializeComponent();
         }
 
@@ -26,10 +29,8 @@ namespace Squiggle.Multicast
 
         void DumpConfig(IPEndPoint endPoint)
         {
-            Trace.WriteLine(":: Settings ::");
-            Trace.WriteLine("");
-            Trace.WriteLine("Endpoint: " + endPoint);
-            Trace.WriteLine("");            
+            _logger.LogInformation(":: Settings ::");
+            _logger.LogInformation("Endpoint: {Endpoint}", endPoint);
         }
 
         protected override void OnStop()

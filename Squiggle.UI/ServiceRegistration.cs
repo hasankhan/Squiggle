@@ -5,10 +5,13 @@ using System.Data.Common;
 using System.IO;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Serilog;
 using Squiggle.Client;
 using Squiggle.History;
 using Squiggle.UI.Components;
 using Squiggle.UI.Windows;
+using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 
 namespace Squiggle.UI
@@ -18,6 +21,16 @@ namespace Squiggle.UI
         public static IServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.File(
+                    Path.Combine(AppInfo.Location, "logs", "squiggle-.log"),
+                    rollingInterval: RollingInterval.Day,
+                    retainedFileCountLimit: 7)
+                .CreateLogger();
+
+            services.AddLogging(builder => builder.AddSerilog(dispose: true));
 
             services.AddSingleton(_ => Settings.SettingsProvider.Current);
 
@@ -51,7 +64,8 @@ namespace Squiggle.UI
             {
                 var settings = provider.GetRequiredService<Settings.SettingsProvider>().Settings;
                 var history = provider.GetService<HistoryManager>();
-                return new ChatClient(settings.ConnectionSettings.ClientID, history);
+                var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
+                return new ChatClient(settings.ConnectionSettings.ClientID, history, loggerFactory);
             });
 
             services.AddSingleton<SquiggleContext>(provider =>
@@ -65,7 +79,11 @@ namespace Squiggle.UI
 
             services.AddSingleton<MainWindow>();
 
-            return services.BuildServiceProvider();
+            var serviceProvider = services.BuildServiceProvider();
+
+            ExceptionMonster.Logger = serviceProvider.GetRequiredService<ILoggerFactory>().CreateLogger("ExceptionMonster");
+
+            return serviceProvider;
         }
     }
 }

@@ -5,6 +5,8 @@ using System.Net;
 using System.ServiceProcess;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Serilog;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Application;
 using Squiggle.Utilities.Net;
@@ -18,10 +20,19 @@ namespace Squiggle.Multicast
         /// </summary>
         static void Main(string[] args)
         {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.Console()
+                .WriteTo.File("logs/multicast-.log", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 7)
+                .CreateLogger();
+
             var services = new ServiceCollection();
+            services.AddLogging(builder => builder.AddSerilog(dispose: true));
             services.AddSingleton<IPEndPoint>(_ => GetEndPoint());
             services.AddTransient<SquiggleMulticastService>();
             var provider = services.BuildServiceProvider();
+
+            ExceptionMonster.Logger = provider.GetRequiredService<ILoggerFactory>().CreateLogger("ExceptionMonster");
 
             ConsoleService.Run(() => provider.GetRequiredService<SquiggleMulticastService>(), args);
         }

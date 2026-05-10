@@ -1,21 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
 using System.Text;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Squiggle.Utilities
 {
     public class ConsoleService : ServiceBase
     {
+        protected ILogger Logger { get; }
+
+        public ConsoleService() : this(null) { }
+
+        public ConsoleService(ILogger? logger)
+        {
+            Logger = logger ?? NullLogger.Instance;
+        }
+
         public void RunConsole(string[] args)
         {
-            Trace.Listeners.Add(new ConsoleTraceListener());
             OnStart(args);
-            Trace.WriteLine(this.ServiceName + " running... Press any key to stop");
-            Trace.WriteLine("");
+            Logger.LogInformation("{ServiceName} running... Press any key to stop", ServiceName);
             Console.ReadKey();
             OnStop();
         }
@@ -62,8 +70,8 @@ namespace Squiggle.Utilities
 
         static void CurrentDomain_UnhandledException(object? sender, UnhandledExceptionEventArgs e)
         {
-            if (e.ExceptionObject is Exception)
-                Trace.WriteLine(((Exception)e.ExceptionObject).Message);
+            if (e.ExceptionObject is Exception ex)
+                ExceptionMonster.Logger?.LogCritical(ex, "Unhandled exception");
         }
     }
 }

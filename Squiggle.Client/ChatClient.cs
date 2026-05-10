@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Squiggle.Core;
 using Squiggle.Core.Chat;
 using Squiggle.Core.Presence;
@@ -17,6 +19,7 @@ namespace Squiggle.Client
         SquiggleEndPoint chatEndPoint = null!;
         BuddyList buddies;
         HistoryManager history;
+        readonly ILoggerFactory loggerFactory;
 
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
         public event EventHandler<BuddyOnlineEventArgs> BuddyOnline = delegate { };
@@ -48,9 +51,10 @@ namespace Squiggle.Client
 
         public bool EnableLogging { get; set; }
 
-        public ChatClient(string clientId, HistoryManager history)
+        public ChatClient(string clientId, HistoryManager history, ILoggerFactory? loggerFactory = null)
         {
             this.history = history;
+            this.loggerFactory = loggerFactory ?? NullLoggerFactory.Instance;
             buddies = new BuddyList();
             CurrentUser = new SelfBuddy(this, clientId, String.Empty, UserStatus.Offline, new BuddyProperties());
         }        
@@ -213,7 +217,7 @@ namespace Squiggle.Client
 
         void StartChatService()
         {
-            chatService = new ChatService(chatEndPoint);
+            chatService = new ChatService(chatEndPoint, loggerFactory);
             chatService.ChatStarted += chatService_ChatStarted;
             chatService.Start();
         }

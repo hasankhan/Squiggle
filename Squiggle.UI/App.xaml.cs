@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic.ApplicationServices;
 using Squiggle.UI.Resources;
 using Squiggle.Utilities;
@@ -85,14 +85,14 @@ namespace Squiggle.UI
 
         void CurrentDomain_UnhandledException(object? sender, System.UnhandledExceptionEventArgs e)
         {
-            Trace.WriteLine("App domain unhandled exception: " + e.ExceptionObject.ToString());
+            ExceptionMonster.Logger?.LogCritical("App domain unhandled exception: {Exception}", e.ExceptionObject);
         }
 
         void App_DispatcherUnhandledException(object? sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
 #if !DEBUG
             e.Handled = true;
-            Trace.WriteLine("Dispatcher unhandled exception: " + e.Exception.ToString());
+            ExceptionMonster.Logger?.LogCritical(e.Exception, "Dispatcher unhandled exception");
 #endif
         }
 

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Squiggle.Core.Chat.Transport.Host;
 using Squiggle.Utilities;
 using Squiggle.Core.Chat.Transport.Messages;
@@ -15,12 +16,16 @@ namespace Squiggle.Core.Chat
         ChatHost chatHost = null!;
         ChatSessionCollection chatSessions = null!;
         SquiggleEndPoint localEndPoint;
+        readonly ILoggerFactory loggerFactory;
+        readonly ILogger<ChatService> logger;
 
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
 
-        public ChatService(SquiggleEndPoint endpoint)
+        public ChatService(SquiggleEndPoint endpoint, ILoggerFactory? loggerFactory = null)
         {
             localEndPoint = endpoint;
+            this.loggerFactory = loggerFactory ?? NullLoggerFactory.Instance;
+            this.logger = this.loggerFactory.CreateLogger<ChatService>();
         }                      
 
         #region IChatService Members
@@ -41,7 +46,7 @@ namespace Squiggle.Core.Chat
 
         public void Start()
         {
-            chatHost = new ChatHost(localEndPoint.Address);
+            chatHost = new ChatHost(localEndPoint.Address, loggerFactory.CreateLogger<ChatHost>());
             chatHost.Start();
             chatHost.MessageReceived += chatHost_MessageReceived;
             chatSessions = new ChatSessionCollection();
@@ -60,7 +65,7 @@ namespace Squiggle.Core.Chat
 
         void chatHost_MessageReceived(object? sender, MessageReceivedEventArgs e)
         {
-            Trace.WriteLine("Ensuring chat session=" + e.SessionID);
+            logger.LogDebug("Ensuring chat session={SessionId}", e.SessionID);
             if (e.Type.In(typeof(TextMessage), typeof(ActivityInviteMessage), typeof(BuzzMessage), typeof(ChatInviteMessage)))
                 EnsureChatSession(e.SessionID, e.Sender);
         }
@@ -73,7 +78,7 @@ namespace Squiggle.Core.Chat
 
         ChatSession CreateSession(Guid sessionId, ISquiggleEndPoint endpoint)
         {
-            ChatSession session = new ChatSession(sessionId, chatHost, localEndPoint, endpoint);
+            ChatSession session = new ChatSession(sessionId, chatHost, localEndPoint, endpoint, loggerFactory.CreateLogger<ChatSession>());
             RegisterSession(session);
             return session;
         }

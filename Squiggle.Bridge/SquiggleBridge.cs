@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Squiggle.Core;
 using Squiggle.Core.Chat.Transport.Host;
 using Squiggle.Core.Chat.Transport.Messages;
@@ -30,6 +31,7 @@ namespace Squiggle.Bridge
         IPEndPoint multicastReceiveEndPoint;
         PresenceChannel presenceChannel = null!;
         PresenceMessageInspector messageInspector = null!;
+        readonly ILogger<SquiggleBridge> logger;
 
         List<IPEndPoint> targetBridges = new List<IPEndPoint>();
         RouteTable routeTable = null!;
@@ -39,13 +41,15 @@ namespace Squiggle.Bridge
                               IPEndPoint bridgeEndPointExternal,
                               IPEndPoint multicastEndPoint,
                               IPEndPoint multicastReceiveEndPoint,
-                              IPEndPoint presenceServiceEndPoint)
+                              IPEndPoint presenceServiceEndPoint,
+                              ILogger<SquiggleBridge>? logger = null)
         {
             this.bridgeEndPointInternal = bridgeEndPointInternal;
             this.bridgeEndPointExternal = bridgeEndPointExternal;
             this.multicastEndPoint = multicastEndPoint;
             this.multicastReceiveEndPoint = multicastReceiveEndPoint; 
             this.presenceServiceEndPoint = presenceServiceEndPoint;
+            this.logger = logger ?? NullLogger<SquiggleBridge>.Instance;
         }
 
         public void AddTarget(IPEndPoint target)
@@ -85,7 +89,7 @@ namespace Squiggle.Bridge
 
             messageInspector.InspectForeignPresenceMessage(e.Message, e.BridgeEndPoint);
 
-            Trace.WriteLine("Replay: " + e.Message.GetType().Name);
+            logger.LogDebug("Replay: {MessageType}", e.Message.GetType().Name);
 
             if (e.IsBroadcast)
                 ExceptionMonster.EatTheException(() =>
@@ -139,7 +143,7 @@ namespace Squiggle.Bridge
                     IPEndPoint bridge = routeTable.FindBridge(e.Message.Recipient.ClientID);
                     bridgeHost.SendPresenceMessage(bridge, message);
                 }
-                Trace.WriteLine("Forward: " + e.Message.GetType().Name);
+                logger.LogDebug("Forward: {MessageType}", e.Message.GetType().Name);
             }, "forwarding presence message to bridge(s)");
         }       
 
