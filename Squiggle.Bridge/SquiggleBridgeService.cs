@@ -7,7 +7,7 @@ using Squiggle.Utilities;
 
 namespace Squiggle.Bridge
 {
-    public partial class SquiggleBridgeService : ConsoleService
+    partial class SquiggleBridgeService : ConsoleService
     {
         readonly BridgeConfiguration config;
         SquiggleBridge bridge = null!;

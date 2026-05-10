@@ -5,7 +5,7 @@ using Squiggle.Utilities;
 
 namespace Squiggle.Multicast
 {
-    public partial class SquiggleMulticastService : ConsoleService
+    partial class SquiggleMulticastService : ConsoleService
     {
         readonly IPEndPoint endPoint;
         MulticastServer service = null!;
