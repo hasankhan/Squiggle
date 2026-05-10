@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
 using NetMQ;
-using NetMQ.zmq;
 
 namespace Squiggle.Utilities.Net.Pipe
 {
@@ -16,8 +15,6 @@ namespace Squiggle.Utilities.Net.Pipe
         Task listenTask;
         CancellationTokenSource listenCancelToken;
         int listenTimeout = (int)1.Seconds().TotalMilliseconds;
-
-        protected NetMQContext Context { get; private set; }
 
         protected string Host { get; private set; }
         protected int Port { get; private set; }
@@ -37,7 +34,6 @@ namespace Squiggle.Utilities.Net.Pipe
 
         public void Open()
         {
-            Context = NetMQContext.Create();
             this.listener = CreateListener();
 
             listenTask.Start(TaskScheduler.Default);
@@ -51,14 +47,21 @@ namespace Squiggle.Utilities.Net.Pipe
             {
                 while (!listenCancelToken.Token.IsCancellationRequested)
                 {
-                    byte[] data = this.listener.Receive();
-                    if (data != null)
+                    var msg = new Msg();
+                    msg.InitEmpty();
+                    bool received = this.listener.TryReceive(ref msg, TimeSpan.FromMilliseconds(listenTimeout));
+                    if (received && msg.Size > 0)
+                    {
+                        byte[] data = new byte[msg.Size];
+                        Buffer.BlockCopy(msg.Data, msg.Offset, data, 0, msg.Size);
                         MessageReceived(this, new MessageReceivedEventArgs() { Message = data });
+                    }
+                    msg.Close();
                 }
             }
-            catch (TerminatingException)
+            catch (Exception)
             {
-                // fine just finish the task gracefully
+                // finish the task gracefully
             }
             
         }
@@ -82,7 +85,6 @@ namespace Squiggle.Utilities.Net.Pipe
                 listenCancelToken.Cancel();
                 if (listener != null)
                     listener.Dispose();
-                this.Context.Dispose();
                 try
                 {
                     listenTask.Wait(listenTimeout);

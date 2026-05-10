@@ -19,7 +19,7 @@ namespace Squiggle.Utilities.Net.Pipe
 
         protected override NetMQSocket CreateListener()
         {
-            NetMQSocket listener = this.Context.CreateSubscriberSocket();
+            NetMQSocket listener = new NetMQ.Sockets.SubscriberSocket();
             string bindTo = CreateAddress();
             listener.Connect(bindTo);
 
@@ -30,11 +30,11 @@ namespace Squiggle.Utilities.Net.Pipe
         {
             if (publisher == null)
             {
-                publisher = this.Context.CreatePublisherSocket();
+                publisher = new NetMQ.Sockets.PublisherSocket();
                 publisher.Connect(CreateAddress());
             }
 
-            publisher.Send(message);
+            publisher.SendFrame(message);
         }
 
         string CreateAddress()

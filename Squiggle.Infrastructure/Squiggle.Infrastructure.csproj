@@ -5,6 +5,9 @@
     <AssemblyVersion>3.4.0.0</AssemblyVersion>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="9.0.*" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="..\Shared\AssemblyInfo.Copyright.cs" Link="Properties\AssemblyInfo.Copyright.cs" />
     <Compile Include="..\Shared\AssemblyInfo.ApiVersion.cs" Link="Properties\AssemblyInfo.ApiVersion.cs" />
   </ItemGroup>

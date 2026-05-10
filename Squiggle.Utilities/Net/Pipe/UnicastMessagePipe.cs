@@ -18,7 +18,7 @@ namespace Squiggle.Utilities.Net.Pipe
 
         protected override NetMQSocket CreateListener()
         {
-            NetMQSocket listener = this.Context.CreatePullSocket();
+            NetMQSocket listener = new NetMQ.Sockets.PullSocket();
             string bindTo = CreateAddress("tcp", Host, Port);
             listener.Bind(bindTo);
 
@@ -39,11 +39,11 @@ namespace Squiggle.Utilities.Net.Pipe
             lock (sockets)
                 if (!sockets.TryGetValue(target, out socket))
                 {
-                    sockets[target] = socket = this.Context.CreatePushSocket();
+                    sockets[target] = socket = new NetMQ.Sockets.PushSocket();
                     socket.Connect(target);
                 }
 
-            socket.Send(message);
+            socket.SendFrame(message);
         }
 
         protected override void Dispose(bool disposing)

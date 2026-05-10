@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration.Install;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -33,11 +32,11 @@ namespace Squiggle.Utilities
                     {
                         case "-I":
                         case "/I":
-                            ManagedInstallerClass.InstallHelper(new string[] { Assembly.GetCallingAssembly().Location });
+                            Console.WriteLine("Use 'sc.exe create <ServiceName> binPath=<ExePath>' to install as a Windows service.");
                             break;
                         case "-U":
                         case "/U":
-                            ManagedInstallerClass.InstallHelper(new string[] { "/U", Assembly.GetCallingAssembly().Location });
+                            Console.WriteLine("Use 'sc.exe delete <ServiceName>' to uninstall the Windows service.");
                             break;
                         default:
                             new TService().RunConsole(args);
