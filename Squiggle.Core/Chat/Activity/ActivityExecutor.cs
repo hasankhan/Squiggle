@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Squiggle.Core.Chat.Transport.Host;
 using Squiggle.Utilities;
@@ -13,7 +13,8 @@ namespace Squiggle.Core.Chat.Activity
 {
     class ActivityExecutor: IActivityExecutor
     {
-        BackgroundWorker worker;
+        CancellationTokenSource _cts;
+        IProgress<int> _progress;
         ActivitySession session;
         ActivityHandler handler;
         Guid activityId;
@@ -94,8 +95,8 @@ namespace Squiggle.Core.Chat.Activity
             if (selfCancel)
                 session.Cancel();
 
-            if (session.SelfInitiated && worker != null)
-                worker.CancelAsync();
+            if (session.SelfInitiated && _cts != null)
+                _cts.Cancel();
             else
             {
                 OnTransferFinished();
@@ -103,36 +104,9 @@ namespace Squiggle.Core.Chat.Activity
             }
         }  
 
-        void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            OnTransferFinished();
-
-            if (e.Cancelled)
-                OnTransferCancelled();
-            else if (e.Error != null)
-                OnError(e.Error);
-            else
-                OnTransferCompleted();
-        }
-
-        void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            OnProgressChanged(e.ProgressPercentage);
-        }        
-
-        void worker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            OnTransferStarted();
-
-            handler.TransferData(() => worker.CancellationPending);
-
-            if (worker.CancellationPending)
-                e.Cancel = true;
-        }
-
         public void UpdateProgress(int progress)
         {
-            worker.ReportProgress(progress);
+            _progress?.Report(progress);
         }
 
         public void SendData(byte[] chunk)
@@ -165,13 +139,26 @@ namespace Squiggle.Core.Chat.Activity
         {
             if (e.ActivitySessionId == session.Id)
             {
-                worker = new BackgroundWorker();
-                worker.WorkerReportsProgress = true;
-                worker.WorkerSupportsCancellation = true;
-                worker.DoWork += worker_DoWork;
-                worker.ProgressChanged += worker_ProgressChanged;
-                worker.RunWorkerCompleted += worker_RunWorkerCompleted;
-                worker.RunWorkerAsync();
+                _cts = new CancellationTokenSource();
+                _progress = new Progress<int>(OnProgressChanged);
+                var token = _cts.Token;
+
+                Task.Run(() =>
+                {
+                    OnTransferStarted();
+                    handler.TransferData(() => token.IsCancellationRequested);
+                    return token.IsCancellationRequested;
+                }, token).ContinueWith(task =>
+                {
+                    OnTransferFinished();
+
+                    if (task.IsCanceled || (task.IsCompleted && !task.IsFaulted && task.Result))
+                        OnTransferCancelled();
+                    else if (task.IsFaulted)
+                        OnError(task.Exception.InnerException);
+                    else
+                        OnTransferCompleted();
+                });
             }
         }
 

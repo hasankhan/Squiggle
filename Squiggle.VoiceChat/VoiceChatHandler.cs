@@ -44,6 +44,10 @@ namespace Squiggle.VoiceChat
 
         public override void TransferData(Func<bool> cancelPending)
         {
+            // Thread.Sleep is intentional here: this runs on a background thread inside
+            // ActivityExecutor's Task.Run and simply keeps the voice chat session alive
+            // until cancellation. Converting to async would require changing the
+            // ActivityHandler.TransferData contract across all implementations.
             while (!cancelPending())
                 Thread.Sleep(100);
         }

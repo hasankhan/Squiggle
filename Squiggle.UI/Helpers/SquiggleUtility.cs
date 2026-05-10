@@ -120,7 +120,8 @@ namespace Squiggle.UI.Helpers
                 {
                     window.Top = top + rand.Next(-power, power);
                     window.Left = left + rand.Next(-power, power);
-                    Thread.Sleep(10);                    
+                    // Thread.Sleep is intentional: synchronous delay drives the shake animation on the UI thread.
+                    Thread.Sleep(10);
                 }
 
                 window.Top = top;

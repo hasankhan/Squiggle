@@ -923,15 +923,13 @@ namespace Squiggle.UI.Windows
             Invite(buddies);
         }
 
-        private void StartActivityMenuItem_Click(IActivity activity)
+        private async void StartActivityMenuItem_Click(IActivity activity)
         {
-            activity.LaunchInviteUI(context, this).ContinueWith(task =>
+            var result = await activity.LaunchInviteUI(context, this);
+            if (result != null)
             {
-                if (task.Result != null)
-                {
-                    StartActivity(activity.Id, task.Result, activity.Title);
-                }
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+                StartActivity(activity.Id, result, activity.Title);
+            }
         }
 
         private void SendEmoticon_Click(object sender, RoutedEventArgs e)

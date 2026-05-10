@@ -105,7 +105,7 @@ namespace Squiggle.Translate
             return original.Remove(loc, oldValue.Length).Insert(loc, newValue);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             string languageName = SelectedCulture.EnglishName.Split(' ').FirstOrDefault();
             string targetLanguage = SelectedCulture.TwoLetterISOLanguageName;
@@ -115,29 +115,26 @@ namespace Squiggle.Translate
             string output = outputText.Text;
             layoutRoot.IsEnabled = false;
 
-            Task.Factory.StartNew(() =>
+            try
             {
-                //string output = TranslateText(targetLanguage, text, apiKey);
-                string file = GenerateTranslationFile(languageName, direciton, output);
-                return new
+                var result = await Task.Run(() =>
                 {
-                    Output = output,
-                    File = file
-                };
-            }).ContinueWith(task =>
+                    string file = GenerateTranslationFile(languageName, direciton, output);
+                    return new { Output = output, File = file };
+                });
+
+                outputText.Text = result.Output;
+                MessageBox.Show("Translation file generated.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                Shell.ShowInFolder(result.File);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not translate due to exception: " + ex.Message);
+            }
+            finally
             {
                 layoutRoot.IsEnabled = true;
-                try
-                {
-                    outputText.Text = task.Result.Output;
-                    MessageBox.Show("Translation file generated.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    Shell.ShowInFolder(task.Result.File);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Could not translate due to exception: " + ex.Message);
-                }
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+            }
         }
 
         string GenerateTranslationFile(string languageName, string direction, string translatedText)

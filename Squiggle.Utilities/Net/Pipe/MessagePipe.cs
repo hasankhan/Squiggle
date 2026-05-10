@@ -29,14 +29,13 @@ namespace Squiggle.Utilities.Net.Pipe
             this.Port = port;
 
             listenCancelToken = new CancellationTokenSource();
-            listenTask = new Task(Listen, listenCancelToken.Token, TaskCreationOptions.LongRunning);
         }
 
         public void Open()
         {
             this.listener = CreateListener();
 
-            listenTask.Start(TaskScheduler.Default);
+            listenTask = Task.Factory.StartNew(Listen, listenCancelToken.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
         }
 
         protected abstract NetMQSocket CreateListener();
