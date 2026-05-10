@@ -4,6 +4,7 @@
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>disable</ImplicitUsings>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Nullable>enable</Nullable>
     <Version>3.4.4.0</Version>
     <AssemblyVersion>3.4.4.0</AssemblyVersion>
     <Company>Overroot</Company>
