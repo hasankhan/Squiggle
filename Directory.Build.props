@@ -1,0 +1,12 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Version>3.4.4.0</Version>
+    <AssemblyVersion>3.4.4.0</AssemblyVersion>
+    <Company>Overroot</Company>
+    <Product>Squiggle Messenger</Product>
+    <Copyright>Copyright © 2010 Overroot</Copyright>
+  </PropertyGroup>
+</Project>
