@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Squiggle.Client;
 using Squiggle.History;
 using Squiggle.UI.Components;
-using Squiggle.UI.Settings;
 using Squiggle.UI.Windows;
 using Squiggle.Utilities.Application;
 
@@ -20,7 +19,7 @@ namespace Squiggle.UI
         {
             var services = new ServiceCollection();
 
-            services.AddSingleton<SettingsProvider>(_ => SettingsProvider.Current);
+            services.AddSingleton(_ => Settings.SettingsProvider.Current);
 
             services.AddSingleton<HistoryManager?>(provider =>
             {
@@ -41,7 +40,7 @@ namespace Squiggle.UI
             services.AddSingleton<PluginLoader>(provider =>
             {
                 var pluginPath = Path.Combine(AppInfo.Location, "Plugins");
-                Squiggle.UI.Helpers.Shell.CreateDirectoryIfNotExists(pluginPath);
+                Squiggle.Utilities.Application.Shell.CreateDirectoryIfNotExists(pluginPath);
                 var dirCatalog = new DirectoryCatalog(pluginPath);
                 var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
                 var aggregate = new AggregateCatalog(dirCatalog, assemblyCatalog);
@@ -50,7 +49,7 @@ namespace Squiggle.UI
 
             services.AddSingleton<IChatClient>(provider =>
             {
-                var settings = provider.GetRequiredService<SettingsProvider>().Settings;
+                var settings = provider.GetRequiredService<Settings.SettingsProvider>().Settings;
                 var history = provider.GetService<HistoryManager>();
                 return new ChatClient(settings.ConnectionSettings.ClientID, history);
             });

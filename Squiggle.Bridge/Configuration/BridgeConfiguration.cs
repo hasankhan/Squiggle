@@ -2,7 +2,7 @@
 
 namespace Squiggle.Bridge.Configuration
 {
-    class BridgeConfiguration : ConfigurationSection
+    public class BridgeConfiguration : ConfigurationSection
     {
         public static BridgeConfiguration GetConfig()
         {
