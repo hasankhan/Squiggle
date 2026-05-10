@@ -5,6 +5,7 @@
     <AssemblyName>Squiggle</AssemblyName>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
+    <EnableDefaultApplicationDefinition>false</EnableDefaultApplicationDefinition>
     <ApplicationIcon>Images\chat.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
