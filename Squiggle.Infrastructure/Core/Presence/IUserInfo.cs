@@ -8,7 +8,7 @@ namespace Squiggle.Core.Presence
         string ID { get; set; }
         TimeSpan KeepAliveSyncTime { get; set; }
         System.Net.IPEndPoint PresenceEndPoint { get; set; }
-        System.Collections.Generic.IDictionary<string, string> Properties { get; set; }
+        System.Collections.Generic.IDictionary<string, string>? Properties { get; set; }
         UserStatus Status { get; set; }
         void Update(IUserInfo user);
     }

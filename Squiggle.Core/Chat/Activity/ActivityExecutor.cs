@@ -13,10 +13,10 @@ namespace Squiggle.Core.Chat.Activity
 {
     class ActivityExecutor: IActivityExecutor
     {
-        CancellationTokenSource _cts;
-        IProgress<int> _progress;
+        CancellationTokenSource? _cts;
+        IProgress<int>? _progress;
         ActivitySession session;
-        ActivityHandler handler;
+        ActivityHandler handler = null!;
         Guid activityId;
 
         public long BytesReceived { get; private set; }
@@ -117,7 +117,7 @@ namespace Squiggle.Core.Chat.Activity
             session.SendData(chunk, OnError);
         }
 
-        void chatHost_ActivitySessionCancelled(object sender, ActivitySessionEventArgs e)
+        void chatHost_ActivitySessionCancelled(object? sender, ActivitySessionEventArgs e)
         {
             if (e.ActivitySessionId == session.Id)
             {
@@ -126,7 +126,7 @@ namespace Squiggle.Core.Chat.Activity
             }
         }        
 
-        void chatHost_ActivityDataReceived(object sender, ActivityDataReceivedEventArgs e)
+        void chatHost_ActivityDataReceived(object? sender, ActivityDataReceivedEventArgs e)
         {
             if (e.ActivitySessionId == session.Id) 
             {
@@ -135,7 +135,7 @@ namespace Squiggle.Core.Chat.Activity
             }
         }        
 
-        void chatHost_ActivityInvitationAccepted(object sender, ActivitySessionEventArgs e)
+        void chatHost_ActivityInvitationAccepted(object? sender, ActivitySessionEventArgs e)
         {
             if (e.ActivitySessionId == session.Id)
             {

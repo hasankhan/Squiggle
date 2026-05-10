@@ -7,7 +7,7 @@ namespace Squiggle.Core.Chat
 {
     public class ChatStartedEventArgs: EventArgs
     {
-        public IChatSession Session {get; set; }
+        public IChatSession Session {get; set; } = null!;
     }
 
     public interface IChatService

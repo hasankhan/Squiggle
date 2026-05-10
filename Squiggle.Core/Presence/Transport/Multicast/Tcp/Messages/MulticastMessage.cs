@@ -11,6 +11,6 @@ namespace Squiggle.Core.Presence.Transport.Multicast.Tcp.Messages
     public class MulticastMessage: Message
     {
         [ProtoMember(3)]
-        public byte[] Data { get; set; }
+        public byte[] Data { get; set; } = null!;
     }
 }

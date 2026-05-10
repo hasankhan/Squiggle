@@ -16,7 +16,7 @@ namespace Squiggle.Core.Chat.Transport.Host
     public class ChatHost: IDisposable
     {
         IPEndPoint endpoint;
-        UnicastMessagePipe pipe;
+        UnicastMessagePipe pipe = null!;
 
         public event EventHandler<SessionEventArgs> BuzzReceived = delegate { };
         public event EventHandler<TextMessageReceivedEventArgs> TextMessageReceived = delegate { };
@@ -45,7 +45,7 @@ namespace Squiggle.Core.Chat.Transport.Host
             pipe.Open();
         }
 
-        void pipe_MessageReceived(object sender, Utilities.Net.Pipe.MessageReceivedEventArgs e)
+        void pipe_MessageReceived(object? sender, Utilities.Net.Pipe.MessageReceivedEventArgs e)
         {
             SerializationHelper.Deserialize<Message>(e.Message, msg => OnMessageReceived(msg), "chat message");            
         }
@@ -208,7 +208,7 @@ namespace Squiggle.Core.Chat.Transport.Host
 
     public class ChatInviteReceivedEventArgs : SessionEventArgs
     {
-        public ISquiggleEndPoint[] Participants { get; set; }
+        public ISquiggleEndPoint[] Participants { get; set; } = null!;
     }
 
     public class ActivitySessionEventArgs : EventArgs
@@ -220,21 +220,21 @@ namespace Squiggle.Core.Chat.Transport.Host
     {
         public Guid ActivitySessionId { get; set; }
         public Guid ActivityId { get; set; }
-        public IDictionary<string, string> Metadata { get; set; }
+        public IDictionary<string, string> Metadata { get; set; } = null!;
     }
 
     public class ActivityDataReceivedEventArgs : ActivitySessionEventArgs
     {
-        public byte[] Chunk { get; set; }
+        public byte[] Chunk { get; set; } = null!;
     }
 
     public class MessageReceivedEventArgs : SessionEventArgs
     {
-        public Type Type { get; set; }
+        public Type Type { get; set; } = null!;
     }
 
     public class SessionInfoEventArgs : SessionEventArgs
     {
-        public ISquiggleEndPoint[] Participants { get; set; }
+        public ISquiggleEndPoint[] Participants { get; set; } = null!;
     }
 }

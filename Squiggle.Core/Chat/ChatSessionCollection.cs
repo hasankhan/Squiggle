@@ -33,7 +33,7 @@ namespace Squiggle.Core.Chat
                 return chatSessions.ContainsKey(sessionId);
         }
 
-        public IChatSession Find(Func<IChatSession, bool> criterea)
+        public IChatSession? Find(Func<IChatSession, bool> criterea)
         {
             lock (chatSessions)
                 return chatSessions.Values.Where(criterea).FirstOrDefault();

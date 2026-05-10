@@ -24,13 +24,13 @@ namespace Squiggle.Core.Presence.Transport
         /// Presence endpoint for the sender
         /// </summary>
         [ProtoMember(2)]
-        public SquiggleEndPoint Sender { get; set; }
+        public SquiggleEndPoint Sender { get; set; } = null!;
 
         /// <summary>
         /// Presence endpoint for the recipient
         /// </summary>
         [ProtoMember(3)]
-        public SquiggleEndPoint Recipient { get; set; }
+        public SquiggleEndPoint? Recipient { get; set; }
 
         public static TMessage FromSender<TMessage>(IUserInfo user) where TMessage:Message, new()
         {

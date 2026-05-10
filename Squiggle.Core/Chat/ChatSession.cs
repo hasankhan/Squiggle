@@ -28,7 +28,7 @@ namespace Squiggle.Core.Chat
         public event EventHandler<SessionEventArgs> UserJoined = delegate { };
         public event EventHandler<SessionEventArgs> UserLeft = delegate { };
         public event EventHandler<SessionEventArgs> BuzzReceived = delegate { };
-        public event EventHandler<ActivityInivteReceivedEventArgs> ActivityInviteReceived;
+        public event EventHandler<ActivityInivteReceivedEventArgs> ActivityInviteReceived = delegate { };
         public event EventHandler SessionEnded = delegate { };
         public event EventHandler GroupChatStarted = delegate { };
         public event EventHandler Initialized = delegate { };
@@ -153,7 +153,7 @@ namespace Squiggle.Core.Chat
             chatHost.ReceiveChatInvite(Id, localUser, user, RemoteUsers);
         }
 
-        void chatHost_SessionInfoRequested(object sender, SessionEventArgs e)
+        void chatHost_SessionInfoRequested(object? sender, SessionEventArgs e)
         {
             if (e.SessionID != Id)
                 return;
@@ -168,7 +168,7 @@ namespace Squiggle.Core.Chat
             });
         }
 
-        void chatHost_SessionInfoReceived(object sender, SessionInfoEventArgs e)
+        void chatHost_SessionInfoReceived(object? sender, SessionInfoEventArgs e)
         {
             if (e.SessionID != Id)
                 return;
@@ -185,7 +185,7 @@ namespace Squiggle.Core.Chat
             }
         }
 
-        void chatHost_UserLeft(object sender, SessionEventArgs e)
+        void chatHost_UserLeft(object? sender, SessionEventArgs e)
         {
             if (e.SessionID != Id)
                 return;
@@ -193,7 +193,7 @@ namespace Squiggle.Core.Chat
             eventQueue.Enqueue(() => OnUserLeft(e));
         }
 
-        void chatHost_UserJoined(object sender, SessionEventArgs e)
+        void chatHost_UserJoined(object? sender, SessionEventArgs e)
         {
             if (e.SessionID != Id)
                 return;
@@ -201,7 +201,7 @@ namespace Squiggle.Core.Chat
              eventQueue.Enqueue(() => OnUserJoined(e));
         }
 
-        void chatHost_ChatInviteReceived(object sender, ChatInviteReceivedEventArgs e)
+        void chatHost_ChatInviteReceived(object? sender, ChatInviteReceivedEventArgs e)
         {
             if (e.SessionID != Id)
                 return;
@@ -209,7 +209,7 @@ namespace Squiggle.Core.Chat
             OnInviteReceived(e);
         }
 
-        void chatHost_ActivityInvitationReceived(object sender, ActivityInvitationReceivedEventArgs e)
+        void chatHost_ActivityInvitationReceived(object? sender, ActivityInvitationReceivedEventArgs e)
         {
             if (e.SessionID != Id)
                 return;
@@ -217,7 +217,7 @@ namespace Squiggle.Core.Chat
             eventQueue.Enqueue(() => OnActivityInvitationReceived(e));
         }
 
-        void chatHost_UserTyping(object sender, SessionEventArgs e)
+        void chatHost_UserTyping(object? sender, SessionEventArgs e)
         {
             if (e.SessionID != Id)
                 return;
@@ -225,7 +225,7 @@ namespace Squiggle.Core.Chat
             eventQueue.Enqueue(() => OnUserTyping(e));
         }
 
-        void chatHost_BuzzReceived(object sender, SessionEventArgs e)
+        void chatHost_BuzzReceived(object? sender, SessionEventArgs e)
         {
             if (e.SessionID != Id)
                 return;
@@ -233,7 +233,7 @@ namespace Squiggle.Core.Chat
             eventQueue.Enqueue(() => OnBuzzReceived(e));
         }
 
-        void chatHost_MessageReceived(object sender, TextMessageReceivedEventArgs e)
+        void chatHost_MessageReceived(object? sender, TextMessageReceivedEventArgs e)
         {
             if (e.SessionID != Id)
                 return;
@@ -241,7 +241,7 @@ namespace Squiggle.Core.Chat
             eventQueue.Enqueue(() => OnMessageReceived(e));
         }
 
-        void chatHost_MessageUpdated(object sender, TextMessageUpdatedEventArgs e)
+        void chatHost_MessageUpdated(object? sender, TextMessageUpdatedEventArgs e)
         {
             if (e.SessionID != Id)
                 return;
@@ -348,14 +348,14 @@ namespace Squiggle.Core.Chat
 
             Parallel.ForEach(RemoteUsers, user =>
             {
-                Exception ex;
+                Exception? ex;
                 if (!ExceptionMonster.EatTheException(() =>
                 {
                     userAction(user);
                 }, "doing a broadcast operation in chat", out ex))
                 {
                     allSuccess = false;
-                    Trace.WriteLine(ex.Message);
+                    Trace.WriteLine(ex!.Message);
                 }
             });
 
@@ -363,7 +363,7 @@ namespace Squiggle.Core.Chat
                 throw new OperationFailedException();
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null)
                 return false;

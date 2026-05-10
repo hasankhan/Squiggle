@@ -25,13 +25,13 @@ namespace Squiggle.Utilities.Serialization
 
         public static void Deserialize<T>(byte[] data, Action<T> onDeserialize, string entityName) where T:class
         {
-            T obj = null;
+            T? obj = null;
             if (ExceptionMonster.EatTheException(() =>
             {
                 obj = SerializationHelper.Deserialize<T>(data);
             }, "deserializing " + entityName + " of type " + typeof(T).Name))
             {
-                onDeserialize(obj);
+                onDeserialize(obj!);
             }
         }
 

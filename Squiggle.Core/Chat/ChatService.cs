@@ -12,8 +12,8 @@ namespace Squiggle.Core.Chat
 {
     public class ChatService : IChatService
     {
-        ChatHost chatHost;
-        ChatSessionCollection chatSessions;
+        ChatHost chatHost = null!;
+        ChatSessionCollection chatSessions = null!;
         SquiggleEndPoint localEndPoint;
 
         public event EventHandler<ChatStartedEventArgs> ChatStarted = delegate { };
@@ -58,7 +58,7 @@ namespace Squiggle.Core.Chat
             }
         }
 
-        void chatHost_MessageReceived(object sender, MessageReceivedEventArgs e)
+        void chatHost_MessageReceived(object? sender, MessageReceivedEventArgs e)
         {
             Trace.WriteLine("Ensuring chat session=" + e.SessionID);
             if (e.Type.In(typeof(TextMessage), typeof(ActivityInviteMessage), typeof(BuzzMessage), typeof(ChatInviteMessage)))

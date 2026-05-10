@@ -55,7 +55,7 @@ namespace Squiggle.Utilities
             }
         }
 
-        static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        static void CurrentDomain_UnhandledException(object? sender, UnhandledExceptionEventArgs e)
         {
             if (e.ExceptionObject is Exception)
                 Trace.WriteLine(((Exception)e.ExceptionObject).Message);

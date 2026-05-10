@@ -53,7 +53,7 @@ namespace Squiggle.Utilities.Net
             return true;
         }
 
-        public static bool TryParseAddress(string address, out IPAddress ip)
+        public static bool TryParseAddress(string address, out IPAddress? ip)
         {
             if (IPAddress.TryParse(address, out ip))
                 return true;
@@ -75,7 +75,7 @@ namespace Squiggle.Utilities.Net
 
         public static bool IsValidLocalIP(string address)
         {
-            IPAddress ip;
+            IPAddress? ip;
             bool isValid = !String.IsNullOrEmpty(address) &&
                           (IPAddress.TryParse(address, out ip) && IsValidLocalIP(ip));
             return isValid;
@@ -87,7 +87,7 @@ namespace Squiggle.Utilities.Net
             return isValid;
         }
 
-        public static IPAddress GetLocalIPAddress()
+        public static IPAddress? GetLocalIPAddress()
         {
             var address = GetLocalIPAddresses().FirstOrDefault();
             return address;

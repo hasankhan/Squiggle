@@ -12,6 +12,6 @@ namespace Squiggle.Core.Chat.Transport.Messages
         [ProtoMember(1)]
         public Guid Id { get; set; }
         [ProtoMember(2)]
-        public string Message { get; set; }
+        public string Message { get; set; } = null!;
     }
 }

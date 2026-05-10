@@ -11,7 +11,7 @@ namespace Squiggle.Core.Presence.Transport
 {
     class PresenceHost: IDisposable
     {
-        UnicastMessagePipe pipe;
+        UnicastMessagePipe pipe = null!;
         IPEndPoint endpoint;
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
@@ -34,7 +34,7 @@ namespace Squiggle.Core.Presence.Transport
             pipe.Send(message.Recipient.Address, data);
         }
 
-        void pipe_MessageReceived(object sender, Utilities.Net.Pipe.MessageReceivedEventArgs e)
+        void pipe_MessageReceived(object? sender, Utilities.Net.Pipe.MessageReceivedEventArgs e)
         {
             SerializationHelper.Deserialize<Message>(e.Message, msg =>
             {

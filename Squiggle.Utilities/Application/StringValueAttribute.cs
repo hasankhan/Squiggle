@@ -16,11 +16,11 @@ namespace Squiggle.Utilities.Application
             Value = value;
         }
 
-        public static string GetValue(object item)
+        public static string? GetValue(object item)
         {
-            MemberInfo member = item.GetType().GetMember(item.ToString()).FirstOrDefault();
-            StringValueAttribute attribute = member.GetCustomAttributes(typeof(StringValueAttribute), false).Cast<StringValueAttribute>().FirstOrDefault();
-            return attribute.Value;
+            MemberInfo? member = item.GetType().GetMember(item.ToString()!).FirstOrDefault();
+            StringValueAttribute? attribute = member?.GetCustomAttributes(typeof(StringValueAttribute), false).Cast<StringValueAttribute>().FirstOrDefault();
+            return attribute?.Value;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Squiggle.Core.Presence
 {    
     class UserDiscovery
     {
-        IUserInfo thisUser;
+        IUserInfo thisUser = null!;
         PresenceChannel channel;
         ConcurrentDictionary<string, IUserInfo> onlineUsers;
 
@@ -86,7 +86,7 @@ namespace Squiggle.Core.Presence
             AskForUserInfo(user, discovered ? UserInfoState.PresenceDiscovered : UserInfoState.Update);
         }
 
-        void channel_MessageReceived(object sender, MessageReceivedEventArgs e)
+        void channel_MessageReceived(object? sender, MessageReceivedEventArgs e)
         {
             ExceptionMonster.EatTheException(() =>
             {

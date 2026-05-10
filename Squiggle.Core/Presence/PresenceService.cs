@@ -85,42 +85,42 @@ namespace Squiggle.Core.Presence
             channel.Stop();
         }    
 
-        void keepAlive_UserDiscovered(object sender, KeepAliveEventArgs e)
+        void keepAlive_UserDiscovered(object? sender, KeepAliveEventArgs e)
         {
             discovery.UpdateUser(e.User, discovered: true);
         }
 
-        void keepAlive_UserLosing(object sender, KeepAliveEventArgs e)
+        void keepAlive_UserLosing(object? sender, KeepAliveEventArgs e)
         {
             discovery.UpdateUser(e.User, discovered: false);
         }
 
-        void keepAlive_UserLost(object sender, KeepAliveEventArgs e)
+        void keepAlive_UserLost(object? sender, KeepAliveEventArgs e)
         {
             IUserInfo user = discovery.Users[e.User.ClientID];
             if (user != null)
                 discovery.UserIsOffline(user.ID);
         }        
 
-        void discovery_UserUpdated(object sender, UserEventArgs e)
+        void discovery_UserUpdated(object? sender, UserEventArgs e)
         {
             keepAlive.HeIsAlive(e.User);
             UserUpdated(this, e);
         }
         
-        void discovery_UserOnline(object sender, UserEventArgs e)
+        void discovery_UserOnline(object? sender, UserEventArgs e)
         {
             keepAlive.MonitorUser(e.User);
             OnUserOnline(e, false);
         }
 
-        void discovery_UserDiscovered(object sender, UserEventArgs e)
+        void discovery_UserDiscovered(object? sender, UserEventArgs e)
         {
             keepAlive.MonitorUser(e.User);
             OnUserOnline(e, true);
         }   
 
-        void discovery_UserOffline(object sender, UserEventArgs e)
+        void discovery_UserOffline(object? sender, UserEventArgs e)
         {
             keepAlive.LeaveUser(e.User);
             OnUserOffline(e.User);

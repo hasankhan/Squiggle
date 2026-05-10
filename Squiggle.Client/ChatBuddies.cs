@@ -32,33 +32,33 @@ namespace Squiggle.Client
             this.session.UserLeft += session_UserLeft;
         }
 
-        public bool TryGet(string clientId, out IBuddy buddy)
+        public bool TryGet(string clientId, out IBuddy? buddy)
         {
             return buddies.TryGetValue(clientId, out buddy);
         }
 
-        void session_UserLeft(object sender, Core.Chat.SessionEventArgs e)
+        void session_UserLeft(object? sender, Core.Chat.SessionEventArgs e)
         {
             IBuddy buddy = RemoveBuddy(e.Sender.ClientID);
             if (buddy != null)
                 BuddyLeft(this, new BuddyEventArgs(buddy));
         }
 
-        void session_UserJoined(object sender, Core.Chat.SessionEventArgs e)
+        void session_UserJoined(object? sender, Core.Chat.SessionEventArgs e)
         {
             Buddy buddy = AddBuddy(e.Sender);
             if (buddy != null)
                 BuddyJoined(this, new BuddyEventArgs(buddy));
         }
 
-        void session_GroupChatStarted(object sender, EventArgs e)
+        void session_GroupChatStarted(object? sender, EventArgs e)
         {
             foreach (SquiggleEndPoint user in session.RemoteUsers)
                 AddBuddy(user);
             GroupChatStarted(this, EventArgs.Empty);
         }
 
-        Buddy AddBuddy(ISquiggleEndPoint user)
+        Buddy? AddBuddy(ISquiggleEndPoint user)
         {
             Buddy buddy = buddyResolver(user.ClientID);
             AddBuddy(buddy);
@@ -74,7 +74,7 @@ namespace Squiggle.Client
             buddies[buddy.Id] = buddy;
         }
 
-        IBuddy RemoveBuddy(string clientId)
+        IBuddy? RemoveBuddy(string clientId)
         {
             IBuddy buddy;
             if (TryGet(clientId, out buddy))
@@ -83,7 +83,7 @@ namespace Squiggle.Client
             return buddy;
         }
 
-        void buddy_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void buddy_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "ChatEndPoint")
             {

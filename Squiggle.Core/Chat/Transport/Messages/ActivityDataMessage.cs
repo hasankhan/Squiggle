@@ -10,6 +10,6 @@ namespace Squiggle.Core.Chat.Transport.Messages
     class ActivityDataMessage : Message
     {
         [ProtoMember(1)]
-        public byte[] Data { get; set; }
+        public byte[] Data { get; set; } = null!;
     }
 }

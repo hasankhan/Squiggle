@@ -7,11 +7,11 @@ namespace Squiggle.Client
 {
     public class ChatStartedEventArgs : EventArgs
     {
-        public IBuddy Buddy
+        public IBuddy? Buddy
         {
             get { return Buddies.FirstOrDefault(); }
         }
-        public IEnumerable<IBuddy> Buddies { get; set; }
-        public IChat Chat { get; set; }
+        public IEnumerable<IBuddy> Buddies { get; set; } = null!;
+        public IChat Chat { get; set; } = null!;
     }
 }

@@ -10,13 +10,13 @@ namespace Squiggle.Client
 {
     public class LoginOptions
     {
-        public IPEndPoint ChatEndPoint {get; set;}
-        public IPEndPoint MulticastEndPoint {get; set; }
-        public IPEndPoint MulticastReceiveEndPoint { get; set; }
-        public IPEndPoint PresenceServiceEndPoint { get; set; }
+        public IPEndPoint ChatEndPoint {get; set;} = null!;
+        public IPEndPoint MulticastEndPoint {get; set; } = null!;
+        public IPEndPoint MulticastReceiveEndPoint { get; set; } = null!;
+        public IPEndPoint PresenceServiceEndPoint { get; set; } = null!;
         public TimeSpan KeepAliveTime { get; set; }
         
-        public string DisplayName { get;set; }
-        public IBuddyProperties UserProperties {get; set; } 
+        public string DisplayName { get;set; } = null!;
+        public IBuddyProperties UserProperties {get; set; } = null!; 
     }
 }

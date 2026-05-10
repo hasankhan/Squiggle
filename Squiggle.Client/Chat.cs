@@ -74,7 +74,7 @@ namespace Squiggle.Client
         {
             Task.Run(() =>
             {
-                Exception ex;
+                Exception? ex;
                 if (!ExceptionMonster.EatTheException(()=>
                                     {
                                         session.SendMessage(id, fontName, fontSize, color, fontStyle, message);                    
@@ -82,7 +82,7 @@ namespace Squiggle.Client
                     MessageFailed(this, new MessageFailedEventArgs()
                     {
                         Message = message,
-                        Exception = ex
+                        Exception = ex!
                     });
                 LogHistory(EventType.Message, self, message);
             });
@@ -92,7 +92,7 @@ namespace Squiggle.Client
         {
             Task.Run(() =>
             {
-                Exception ex;
+                Exception? ex;
                 if (!ExceptionMonster.EatTheException(() =>
                     {
                         session.UpdateMessage(id, message);
@@ -100,7 +100,7 @@ namespace Squiggle.Client
                     MessageFailed(this, new MessageFailedEventArgs()
                     {
                         Message = message,
-                        Exception = ex
+                        Exception = ex!
                     });
                 LogHistory(EventType.Message, self, message);
             });
@@ -151,12 +151,12 @@ namespace Squiggle.Client
 
         #endregion
 
-        void buddies_GroupChatStarted(object sender, EventArgs e)
+        void buddies_GroupChatStarted(object? sender, EventArgs e)
         {
             GroupChatStarted(this, EventArgs.Empty);
         }
 
-        void session_ActivityInviteReceived(object sender, ActivityInivteReceivedEventArgs e)
+        void session_ActivityInviteReceived(object? sender, ActivityInivteReceivedEventArgs e)
         {
             IBuddy buddy;
             if (buddies.TryGet(e.Sender.ClientID, out buddy))
@@ -172,7 +172,7 @@ namespace Squiggle.Client
             }
         }  
 
-        void session_BuzzReceived(object sender, Squiggle.Core.Chat.SessionEventArgs e)
+        void session_BuzzReceived(object? sender, Squiggle.Core.Chat.SessionEventArgs e)
         {
             IBuddy buddy;
             if (buddies.TryGet(e.Sender.ClientID, out buddy))
@@ -182,26 +182,26 @@ namespace Squiggle.Client
             }
         } 
 
-        void session_UserTyping(object sender, Squiggle.Core.Chat.SessionEventArgs e)
+        void session_UserTyping(object? sender, Squiggle.Core.Chat.SessionEventArgs e)
         {
             IBuddy buddy;
             if (buddies.TryGet(e.Sender.ClientID, out buddy))
                 BuddyTyping(this, new BuddyEventArgs( buddy ));
         }
 
-        void buddies_BuddyLeft(object sender, BuddyEventArgs e)
+        void buddies_BuddyLeft(object? sender, BuddyEventArgs e)
         {
             BuddyLeft(this, e);
             LogHistory(EventType.Left, e.Buddy);
         }
 
-        void buddies_BuddyJoined(object sender, BuddyEventArgs e)
+        void buddies_BuddyJoined(object? sender, BuddyEventArgs e)
         {
             BuddyJoined(this, e);
             LogHistory(EventType.Joined, e.Buddy);
         }
 
-        void session_MessageReceived(object sender, Squiggle.Core.Chat.TextMessageReceivedEventArgs e)
+        void session_MessageReceived(object? sender, Squiggle.Core.Chat.TextMessageReceivedEventArgs e)
         {
             IBuddy buddy;
             if (buddies.TryGet(e.Sender.ClientID, out buddy))
@@ -220,7 +220,7 @@ namespace Squiggle.Client
             }
         }
 
-        void session_MessageUpdated(object sende, Squiggle.Core.Chat.TextMessageUpdatedEventArgs e)
+        void session_MessageUpdated(object? sende, Squiggle.Core.Chat.TextMessageUpdatedEventArgs e)
         {
             IBuddy buddy;
             if (buddies.TryGet(e.Sender.ClientID, out buddy))
@@ -236,7 +236,7 @@ namespace Squiggle.Client
         }
 
         bool sessionLogged;
-        void LogHistory(EventType eventType, IBuddy sender, string data = null)
+        void LogHistory(EventType eventType, IBuddy sender, string? data = null)
         {
             DoHistoryAction(manager=>
             {

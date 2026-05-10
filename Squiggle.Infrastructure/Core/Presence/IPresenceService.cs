@@ -5,7 +5,7 @@ namespace Squiggle.Core.Presence
 {
     public class UserEventArgs : EventArgs
     {
-        public IUserInfo User { get; set; }
+        public IUserInfo User { get; set; } = null!;
     }
 
     public class UserOnlineEventArgs : UserEventArgs

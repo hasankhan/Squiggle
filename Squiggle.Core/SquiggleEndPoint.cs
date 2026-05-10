@@ -13,9 +13,9 @@ namespace Squiggle.Core
     {
         [ProtoMember(1)]
         [DataMember]
-        public string ClientID { get; set; }
+        public string ClientID { get; set; } = null!;
         [ProtoMember(2)]
-        IPAddress IP { get; set; }
+        IPAddress IP { get; set; } = null!;
         [ProtoMember(3)]
         int Port { get; set; }
 
@@ -58,7 +58,7 @@ namespace Squiggle.Core
             return hash;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is SquiggleEndPoint)
             {

@@ -16,38 +16,38 @@ namespace Squiggle.Client
             this.Buddy = buddy;
         }
 
-        public IBuddy Buddy { get; set; }
+        public IBuddy Buddy { get; set; } = null!;
     }
 
     public class ChatMessageReceivedEventArgs : EventArgs
     {
         public Guid Id { get; set; }
-        public IBuddy Sender { get; set; }
-        public string FontName { get; set; }
+        public IBuddy Sender { get; set; } = null!;
+        public string FontName { get; set; } = null!;
         public int FontSize { get; set; }
         public Color Color { get; set; }
         public FontStyle FontStyle { get; set; }
-        public string Message { get; set; }
+        public string Message { get; set; } = null!;
     }
 
     public class ChatMessageUpdatedEventArgs: EventArgs
     {
         public Guid Id { get; set; }
-        public IBuddy Sender { get; set; }
-        public string Message { get; set; }
+        public IBuddy Sender { get; set; } = null!;
+        public string Message { get; set; } = null!;
     }
 
     public class MessageFailedEventArgs : EventArgs
     {
-        public string Message { get; set; }
-        public Exception Exception { get; set; }
+        public string Message { get; set; } = null!;
+        public Exception Exception { get; set; } = null!;
     }
 
     public class ActivityInvitationReceivedEventArgs : BuddyEventArgs
     {
         public Guid ActivityId { get; set; }
-        public IActivityExecutor Executor { get; set; }
-        public IDictionary<string, string> Metadata { get; set; }
+        public IActivityExecutor Executor { get; set; } = null!;
+        public IDictionary<string, string> Metadata { get; set; } = null!;
 
         public ActivityInvitationReceivedEventArgs(IBuddy buddy) : base(buddy) { }
     }

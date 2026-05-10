@@ -9,16 +9,16 @@ namespace Squiggle.Core.Chat
 {
     public class ActivityInivteReceivedEventArgs : EventArgs
     {
-        public ISquiggleEndPoint Sender { get; set; }
+        public ISquiggleEndPoint Sender { get; set; } = null!;
         public Guid ActivityId { get; set; }
-        public IActivityExecutor Executor {get; set;}
-        public IDictionary<string, string> Metadata { get; set; }
+        public IActivityExecutor Executor {get; set;} = null!;
+        public IDictionary<string, string> Metadata { get; set; } = null!;
     }
 
     public class SessionEventArgs : EventArgs
     {
         public Guid SessionID { get; set; }
-        public ISquiggleEndPoint Sender { get; set; }
+        public ISquiggleEndPoint Sender { get; set; } = null!;
 
         public SessionEventArgs() { }
 
@@ -32,17 +32,17 @@ namespace Squiggle.Core.Chat
     public class TextMessageReceivedEventArgs : SessionEventArgs
     {
         public Guid Id { get; set; }
-        public string FontName { get; set; }
+        public string FontName { get; set; } = null!;
         public int FontSize { get; set; }
         public Color Color { get; set; }
         public FontStyle FontStyle { get; set; }
-        public string Message { get; set; }
+        public string Message { get; set; } = null!;
     }
 
     public class TextMessageUpdatedEventArgs : SessionEventArgs
     {
         public Guid Id { get; set; }
-        public string Message { get; set; }
+        public string Message { get; set; } = null!;
     }
 
     public interface IChatSession

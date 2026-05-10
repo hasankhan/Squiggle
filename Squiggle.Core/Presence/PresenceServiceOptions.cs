@@ -8,10 +8,10 @@ namespace Squiggle.Core.Presence
 {
     public class PresenceServiceOptions
     {
-        public SquiggleEndPoint ChatEndPoint {get; set; } 
-        public IPEndPoint MulticastEndPoint {get; set; }
-        public IPEndPoint MulticastReceiveEndPoint { get; set; } 
-        public IPEndPoint PresenceServiceEndPoint {get; set; } 
+        public SquiggleEndPoint ChatEndPoint {get; set; } = null!;
+        public IPEndPoint MulticastEndPoint {get; set; } = null!;
+        public IPEndPoint MulticastReceiveEndPoint { get; set; } = null!;
+        public IPEndPoint PresenceServiceEndPoint {get; set; } = null!; 
         public TimeSpan KeepAliveTime {get; set; }
     }
 }

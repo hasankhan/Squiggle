@@ -14,13 +14,13 @@ namespace Squiggle.Utilities
             return EatTheException(action, actionDescription, out ex);
         }
 
-        public static bool EatTheException(Action action, string actionDescription, out Exception ex)
+        public static bool EatTheException(Action action, string actionDescription, out Exception? ex)
         {
             bool success;
             EatTheException(() =>
             {
                 action();
-                return (object)null;
+                return (object?)null;
             }, actionDescription, out success, out ex);
             return success;
         }
@@ -32,7 +32,7 @@ namespace Squiggle.Utilities
             return EatTheException(action, actionDescription, out success, out ex);
         }
 
-        public static T EatTheException<T>(Func<T> action, string actionDescription, out bool success, out Exception ex)
+        public static T? EatTheException<T>(Func<T> action, string actionDescription, out bool success, out Exception? ex)
         {
             ex = null;
             try
@@ -47,7 +47,7 @@ namespace Squiggle.Utilities
                 Trace.WriteLine("Erorr occured while " + actionDescription + ": " + ex.ToString());
             }
             success = false;
-            return default(T);
+            return default;
         }
     }
 }

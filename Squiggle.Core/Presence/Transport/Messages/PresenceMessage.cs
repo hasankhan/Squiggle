@@ -12,7 +12,7 @@ namespace Squiggle.Core.Presence.Transport.Messages
     public abstract class PresenceMessage : Message
     {        
         [ProtoMember(1)]
-        public string DisplayName { get; set; }
+        public string DisplayName { get; set; } = null!;
         [ProtoMember(2)]        
         public UserStatus Status { get; set; }
         [ProtoMember(3)]
@@ -20,7 +20,7 @@ namespace Squiggle.Core.Presence.Transport.Messages
         [ProtoMember(4)]
         public TimeSpan KeepAliveSyncTime { get; set; }
         [ProtoMember(5)]
-        IPAddress ChatIP { get; set; }
+        IPAddress ChatIP { get; set; } = null!;
         [ProtoMember(6)]
         int ChatPort { get; set; }
 

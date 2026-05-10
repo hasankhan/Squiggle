@@ -33,7 +33,7 @@ namespace Squiggle.Client
                 buddies.RemoveAt(index);
         }
 
-        public Buddy this[string id]
+        public Buddy? this[string id]
         {
             get
             {

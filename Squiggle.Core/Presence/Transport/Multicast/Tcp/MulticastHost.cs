@@ -16,7 +16,7 @@ namespace Squiggle.Core.Presence.Transport.Multicast.Tcp
 {
     public class MessageReceivedEventArgs: EventArgs
     {
-        public Squiggle.Core.Presence.Transport.Multicast.Tcp.Message Message { get; set; }
+        public Squiggle.Core.Presence.Transport.Multicast.Tcp.Message Message { get; set; } = null!;
     }
 
     public class MulticastHost: IDisposable
@@ -38,7 +38,7 @@ namespace Squiggle.Core.Presence.Transport.Multicast.Tcp
             pipe.Open();
         }
 
-        void pipe_MessageReceived(object sender, Utilities.Net.Pipe.MessageReceivedEventArgs e)
+        void pipe_MessageReceived(object? sender, Utilities.Net.Pipe.MessageReceivedEventArgs e)
         {
             SerializationHelper.Deserialize<Squiggle.Core.Presence.Transport.Multicast.Tcp.Message>(e.Message, msg =>
             {

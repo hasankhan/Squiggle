@@ -11,8 +11,8 @@ namespace Squiggle.Utilities.Net.Pipe
 {
     public abstract class MessagePipe : IDisposable
     {
-        NetMQSocket listener;
-        Task listenTask;
+        NetMQSocket? listener;
+        Task? listenTask;
         CancellationTokenSource listenCancelToken;
         int listenTimeout = (int)1.Seconds().TotalMilliseconds;
 
@@ -79,7 +79,7 @@ namespace Squiggle.Utilities.Net.Pipe
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!listenTask.IsCompleted)
+            if (listenTask != null && !listenTask.IsCompleted)
             {
                 listenCancelToken.Cancel();
                 if (listener != null)

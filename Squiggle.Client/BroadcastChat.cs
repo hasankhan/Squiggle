@@ -131,22 +131,22 @@ namespace Squiggle.Client
             }
         }
 
-        void session_BuddyTyping(object sender, BuddyEventArgs e)
+        void session_BuddyTyping(object? sender, BuddyEventArgs e)
         {
             BuddyTyping(sender, e);
         }
 
-        void session_BuzzReceived(object sender, BuddyEventArgs e)
+        void session_BuzzReceived(object? sender, BuddyEventArgs e)
         {
             BuzzReceived(sender, e);
         }
 
-        void session_MessageFailed(object sender, MessageFailedEventArgs e)
+        void session_MessageFailed(object? sender, MessageFailedEventArgs e)
         {
             MessageFailed(sender, e);
         }
 
-        void session_MessageReceived(object sender, ChatMessageReceivedEventArgs e)
+        void session_MessageReceived(object? sender, ChatMessageReceivedEventArgs e)
         {
             MessageReceived(sender, e);
         }

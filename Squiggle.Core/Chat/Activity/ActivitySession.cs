@@ -55,12 +55,12 @@ namespace Squiggle.Core.Chat.Activity
 
         public void SendData(byte[] chunk, Action<Exception> onError)
         {
-            Exception ex;
+            Exception? ex;
             if (!ExceptionMonster.EatTheException(() =>
                 {
                     ChatHost.ReceiveActivityData(Id, localUser, remoteUser, chunk);
                 }, "sending data to " + remoteUser.ToString(), out ex))
-                onError(ex);
+                onError(ex!);
         }
 
         public bool SendInvite(Guid activityId, IEnumerable<KeyValuePair<string, string>> metadata)

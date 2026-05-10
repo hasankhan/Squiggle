@@ -13,7 +13,7 @@ namespace Squiggle.Utilities.Application
                 bool success = true;
                 if (!Directory.Exists(path))
                 {
-                    DirectoryInfo dirInfo = Directory.GetParent(path);
+                    DirectoryInfo? dirInfo = Directory.GetParent(path);
                     if (dirInfo != null)
                         success = CreateDirectoryIfNotExists(dirInfo.FullName);
                     if (success)

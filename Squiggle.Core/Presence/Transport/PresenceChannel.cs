@@ -17,7 +17,7 @@ namespace Squiggle.Core.Presence.Transport
 {
     public class MessageReceivedEventArgs : EventArgs
     {
-        public Message Message { get; set; }
+        public Message Message { get; set; } = null!;
 
         public bool IsBroadcast
         {
@@ -29,7 +29,7 @@ namespace Squiggle.Core.Presence.Transport
     {
         IMulticastService multicastService;
         IPEndPoint serviceEndPoint;
-        PresenceHost host;
+        PresenceHost host = null!;
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
 
@@ -83,12 +83,12 @@ namespace Squiggle.Core.Presence.Transport
             }, "sending presence message to " + message.Recipient);
         }
 
-        void multicastService_MessageReceived(object sender, MessageReceivedEventArgs e)
+        void multicastService_MessageReceived(object? sender, MessageReceivedEventArgs e)
         {
             OnMessageReceived(e);
         }
 
-        void host_MessageReceived(object sender, MessageReceivedEventArgs e)
+        void host_MessageReceived(object? sender, MessageReceivedEventArgs e)
         {
             OnMessageReceived(e);
         }

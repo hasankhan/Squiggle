@@ -10,19 +10,19 @@ namespace Squiggle.Core.Presence
     public class UserInfo: IUserInfo
     {
         [DataMember]
-        public string ID { get; set; }
+        public string ID { get; set; } = null!;
         [DataMember]
-        public string DisplayName { get; set; }
+        public string DisplayName { get; set; } = null!;
         [DataMember]
-        public IPEndPoint ChatEndPoint { get; set; }
+        public IPEndPoint ChatEndPoint { get; set; } = null!;
         [DataMember]
-        public IPEndPoint PresenceEndPoint { get; set; }
+        public IPEndPoint PresenceEndPoint { get; set; } = null!;
         [DataMember]
         public TimeSpan KeepAliveSyncTime { get; set; }
         [DataMember]
         public UserStatus Status { get; set; }
         [DataMember]
-        public IDictionary<string, string> Properties { get; set;  }
+        public IDictionary<string, string>? Properties { get; set;  }
 
         public void Update(IUserInfo user)
         {
@@ -31,7 +31,7 @@ namespace Squiggle.Core.Presence
             this.Status = user.Status;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null)
                 return false;
@@ -61,7 +61,7 @@ namespace Squiggle.Core.Presence
                 ID = ID,
                 KeepAliveSyncTime = KeepAliveSyncTime,
                 PresenceEndPoint = PresenceEndPoint,
-                Properties = Properties.ToDictionary(t => t.Key, t => t.Value),
+                Properties = Properties?.ToDictionary(t => t.Key, t => t.Value),
                 Status = Status,
             };
             return info;

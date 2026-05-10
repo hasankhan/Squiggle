@@ -14,7 +14,7 @@ namespace Squiggle.Core.Presence.Transport.Multicast.Tcp
     {
         IPEndPoint localEndpoint;
         IPEndPoint serverEndpoint;
-        MulticastHost mcastHost;
+        MulticastHost mcastHost = null!;
 
         public event EventHandler<Squiggle.Core.Presence.Transport.MessageReceivedEventArgs> MessageReceived = delegate { };
 
@@ -39,7 +39,7 @@ namespace Squiggle.Core.Presence.Transport.Multicast.Tcp
             mcastHost.Send(serverEndpoint, new RegisterMessage() { Sender = localEndpoint });
         }
 
-        void mcastHost_MessageReceived(object sender, Tcp.MessageReceivedEventArgs e)
+        void mcastHost_MessageReceived(object? sender, Tcp.MessageReceivedEventArgs e)
         {
             if (e.Message is MulticastMessage)
             {

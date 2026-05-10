@@ -12,7 +12,7 @@ namespace Squiggle.Core.Presence.Transport.Multicast
     class UdpMulticastService : IMulticastService
     {
         bool started;
-        UdpClient client;
+        UdpClient client = null!;
         IPEndPoint bindToIP;
         IPEndPoint multicastEndPoint;
 
@@ -64,8 +64,8 @@ namespace Squiggle.Core.Presence.Transport.Multicast
 
         void OnReceive(IAsyncResult ar)
         {
-            byte[] data = null;
-            IPEndPoint remoteEndPoint = null;
+            byte[]? data = null;
+            IPEndPoint remoteEndPoint = null!;
 
             ExceptionMonster.EatTheException(() =>
             {

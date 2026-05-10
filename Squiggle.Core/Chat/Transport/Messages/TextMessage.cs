@@ -13,7 +13,7 @@ namespace Squiggle.Core.Chat.Transport.Messages
         [ProtoMember(1)]
         public Guid Id { get; set; }
         [ProtoMember(2)]
-        public string FontName { get; set; }
+        public string FontName { get; set; } = null!;
         [ProtoMember(3)]
         public int FontSize { get; set; }
         [ProtoMember(4)]
@@ -35,6 +35,6 @@ namespace Squiggle.Core.Chat.Transport.Messages
         [ProtoMember(7)]
         public FontStyle FontStyle { get; set; }
         [ProtoMember(8)]
-        public string Message { get; set; }
+        public string Message { get; set; } = null!;
     }
 }

@@ -61,7 +61,7 @@ namespace Squiggle.Utilities.Application
             timer.Elapsed += timer_Elapsed;
         }
 
-        void timer_Elapsed(object sender, ElapsedEventArgs e)
+        void timer_Elapsed(object? sender, ElapsedEventArgs e)
         {
             TimeSpan idleTime = GetIdleTime();
             if (idleTime > timeout)

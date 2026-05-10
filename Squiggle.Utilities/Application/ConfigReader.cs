@@ -20,8 +20,8 @@ namespace Squiggle.Utilities.Application
 
         public void SetSetting<T>(string name, T value)
         {
-            string strValue = Cast<string>(value);
-            string oldValue = config.AppSettings.Settings[name].Coalesce(kv=>kv.Value);
+            string? strValue = Cast<string>(value);
+            string? oldValue = config.AppSettings.Settings[name].Coalesce(kv=>kv.Value);
             if (oldValue == strValue)
                 return;
 
@@ -30,9 +30,9 @@ namespace Squiggle.Utilities.Application
             config.AppSettings.Settings.Add(name, strValue);
         }
 
-        public T GetSetting<T>(string name)
+        public T? GetSetting<T>(string name)
         {
-            return GetSetting<T>(name, default(T));
+            return GetSetting<T>(name, default!);
         }
 
         public T GetSetting<T>(string name, T fallbackValue)

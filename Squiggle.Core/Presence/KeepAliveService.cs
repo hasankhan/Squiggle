@@ -11,12 +11,12 @@ namespace Squiggle.Core.Presence
 {
     class KeepAliveEventArgs: EventArgs
     {
-        public SquiggleEndPoint User { get; set; }
+        public SquiggleEndPoint User { get; set; } = null!;
     }
 
     class KeepAliveService : IDisposable
     {
-        Timer timer;
+        Timer? timer;
         PresenceChannel channel;
         TimeSpan keepAliveSyncTime;
         Message keepAliveMessage;
@@ -44,7 +44,7 @@ namespace Squiggle.Core.Presence
             channel.MessageReceived += channel_MessageReceived;
         }
 
-        void channel_MessageReceived(object sender, MessageReceivedEventArgs e)
+        void channel_MessageReceived(object? sender, MessageReceivedEventArgs e)
         {
             if (e.Message is KeepAliveMessage)
                 OnKeepAliveMessage((KeepAliveMessage)e.Message);
@@ -88,7 +88,7 @@ namespace Squiggle.Core.Presence
             channel.MulticastMessage(keepAliveMessage);
         }
 
-        void timer_Elapsed(object sender, ElapsedEventArgs e)
+        void timer_Elapsed(object? sender, ElapsedEventArgs e)
         {
             if ((DateTime.UtcNow - lastKeepAliveMessage).TotalMilliseconds < timer.Interval / 2)
                 return;

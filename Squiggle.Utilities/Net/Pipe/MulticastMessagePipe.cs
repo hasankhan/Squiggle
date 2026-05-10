@@ -10,7 +10,7 @@ namespace Squiggle.Utilities.Net.Pipe
     public class MulticastMessagePipe: MessagePipe
     {
         IPAddress multicastAddress;
-        NetMQSocket publisher;
+        NetMQSocket? publisher;
 
         public MulticastMessagePipe(IPEndPoint bindTo, IPAddress multicastAddress): base(bindTo)
         {

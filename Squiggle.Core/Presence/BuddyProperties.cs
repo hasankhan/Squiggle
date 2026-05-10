@@ -21,17 +21,17 @@ namespace Squiggle.Core.Presence
             this.dictionary = new Dictionary<string, string>();
         }
 
-        public string this[string key]
+        public string? this[string key]
         {
             get
             {
-                string value;
+                string? value;
                 dictionary.TryGetValue(key, out value);
                 return value;
             }
             set
             {
-                dictionary[key] = value;
+                dictionary[key] = value!;
                 PropertyChanged(this, new PropertyChangedEventArgs(key));
             }
         }
@@ -46,19 +46,19 @@ namespace Squiggle.Core.Presence
             set { this["GroupName"] = value.EmptyIfNull().Trim(); }
         }
 
-        public string MachineName
+        public string? MachineName
         {
             get { return this["MachineName"]; }
             set { this["MachineName"] = value; }
         }
 
-        public string DisplayMessage
+        public string? DisplayMessage
         {
             get { return this["DisplayMessage"]; }
             set { this["DisplayMessage"] = value.EmptyIfNull().Trim(); }
         }
 
-        public byte[] DisplayImage
+        public byte[]? DisplayImage
         {
             get 
             { 
@@ -77,14 +77,14 @@ namespace Squiggle.Core.Presence
             }
             set 
             {
-                string image = null;
+                string? image = null;
                 if (value != null)
                     image = Convert.ToBase64String(value);
                 this["DisplayImage"] = image; 
             }
         }
 
-        public string EmailAddress
+        public string? EmailAddress
         {
             get { return this["EmailAddress"]; }
             set { this["EmailAddress"] = value; }

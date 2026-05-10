@@ -15,7 +15,7 @@ namespace Squiggle.Core.Presence.Transport.Multicast.Tcp
     public class Message
     {
         [ProtoMember(1)]
-        IPAddress IP { get; set; }
+        IPAddress IP { get; set; } = null!;
         [ProtoMember(2)]
         int Port { get; set; }
 

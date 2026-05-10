@@ -12,9 +12,9 @@ namespace Squiggle.Client
 {
     public class ChatClient: IChatClient
     {
-        IChatService chatService;
-        IPresenceService presenceService;
-        SquiggleEndPoint chatEndPoint;
+        IChatService chatService = null!;
+        IPresenceService presenceService = null!;
+        SquiggleEndPoint chatEndPoint = null!;
         BuddyList buddies;
         HistoryManager history;
 
@@ -114,7 +114,7 @@ namespace Squiggle.Client
             presenceService.SendUpdate(CurrentUser.DisplayName, properties, CurrentUser.Status);
         }
 
-        void chatService_ChatStarted(object sender, Squiggle.Core.Chat.ChatStartedEventArgs e)
+        void chatService_ChatStarted(object? sender, Squiggle.Core.Chat.ChatStartedEventArgs e)
         {
             IEnumerable<IBuddy> buddyList = e.Session.RemoteUsers
                                                      .Select(u => buddies[u.ClientID])
@@ -128,7 +128,7 @@ namespace Squiggle.Client
             }
         }
 
-        void presenceService_UserUpdated(object sender, UserEventArgs e)
+        void presenceService_UserUpdated(object? sender, UserEventArgs e)
         {
             var buddy = buddies[e.User.ID];
             if (buddy != null)
@@ -145,7 +145,7 @@ namespace Squiggle.Client
             }
         }        
 
-        void presenceService_UserOnline(object sender, UserOnlineEventArgs e)
+        void presenceService_UserOnline(object? sender, UserOnlineEventArgs e)
         {
             var buddy = buddies[e.User.ID];
             if (buddy == null)
@@ -159,7 +159,7 @@ namespace Squiggle.Client
             OnBuddyOnline(buddy, e.Discovered);
         }        
 
-        void presenceService_UserOffline(object sender, UserEventArgs e)
+        void presenceService_UserOffline(object? sender, UserEventArgs e)
         {
             var buddy = buddies[e.User.ID];
             if (buddy != null)
@@ -233,7 +233,7 @@ namespace Squiggle.Client
 
             public bool EnableUpdates { get; set; }
 
-            public SelfBuddy(IChatClient client, string id, string displayName, UserStatus status, IBuddyProperties properties) : base(id, displayName, status, null, properties)
+            public SelfBuddy(IChatClient client, string id, string displayName, UserStatus status, IBuddyProperties properties) : base(id, displayName, status, null!, properties)
             {
                 this.client = client;
             }

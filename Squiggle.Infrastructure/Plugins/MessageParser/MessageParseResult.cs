@@ -8,9 +8,9 @@ namespace Squiggle.Plugins.MessageParser
 {
     public class MessageParseResult
     {
-        public string Prefix { get; set; }
+        public string? Prefix { get; set; }
         public Inline Converted { get; private set; }
-        public string Suffix { get; set; }
+        public string? Suffix { get; set; }
 
         public MessageParseResult(Inline converted)
         {
