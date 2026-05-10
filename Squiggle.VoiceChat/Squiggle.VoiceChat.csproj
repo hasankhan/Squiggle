@@ -12,10 +12,10 @@
     <ProjectReference Include="..\Squiggle.Utilities\Squiggle.Utilities.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Libraries\Speex\libspeex-license.txt" Link="libspeex-license.txt">
+    <None Include="Native\libspeex-license.txt" Link="libspeex-license.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="..\Libraries\Speex\libspeexdsp.dll" Link="libspeexdsp.dll">
+    <None Include="Native\libspeexdsp.dll" Link="libspeexdsp.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
