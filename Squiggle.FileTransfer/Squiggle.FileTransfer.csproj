@@ -3,6 +3,9 @@
     <RootNamespace>Squiggle.FileTransfer</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="System.ComponentModel.Composition" Version="9.0.*" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Squiggle.Client\Squiggle.Client.csproj" />
     <ProjectReference Include="..\Squiggle.Infrastructure\Squiggle.Infrastructure.csproj" />
     <ProjectReference Include="..\Squiggle.Utilities\Squiggle.Utilities.csproj" />

@@ -5,6 +5,9 @@
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="System.ComponentModel.Composition" Version="9.0.*" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Squiggle.FileTransfer\Squiggle.FileTransfer.csproj" />
     <ProjectReference Include="..\Squiggle.Infrastructure\Squiggle.Infrastructure.csproj" />
     <ProjectReference Include="..\Squiggle.Utilities\Squiggle.Utilities.csproj" />
