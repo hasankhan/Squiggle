@@ -17,6 +17,7 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop
   [StructLayout(LayoutKind.Sequential)]
   public struct WindowClass
   {
+    public WindowClass() { }
     public uint style;
     public WindowProcedureHandler lpfnWndProc = null!;
     public int cbClsExtra;

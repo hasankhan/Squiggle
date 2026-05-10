@@ -14,6 +14,7 @@ namespace Hardcodet.Wpf.TaskbarNotification.Interop
   [StructLayout(LayoutKind.Sequential)]
   public struct NotifyIconData
   {
+    public NotifyIconData() { }
     /// <summary>
     /// Size of this structure, in bytes.
     /// </summary>
