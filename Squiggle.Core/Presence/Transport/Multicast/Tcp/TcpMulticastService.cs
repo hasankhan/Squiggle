@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.ServiceModel;
-using System.ServiceModel.Channels;
 using System.Text;
 using Squiggle.Utilities;
 using Squiggle.Utilities.Net.Pipe;

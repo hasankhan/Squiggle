@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.ServiceModel;
 using System.Text;
 using Squiggle.Core;
 using Squiggle.Core.Presence.Transport.Multicast.Tcp;

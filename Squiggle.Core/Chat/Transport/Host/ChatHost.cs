@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Net;
-using System.ServiceModel;
 using System.Threading;
 using Squiggle.Core.Chat.Transport.Messages;
 using Squiggle.Utilities;

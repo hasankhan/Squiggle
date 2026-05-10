@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.ServiceModel;
 using System.Threading;
 using Squiggle.Core.Chat.Transport.Host;
 using Squiggle.Utilities;

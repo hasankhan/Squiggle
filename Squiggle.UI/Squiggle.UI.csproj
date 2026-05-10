@@ -11,6 +11,7 @@
     <PackageReference Include="EntityFramework" Version="6.5.*" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.*" />
     <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.*" />
+    <PackageReference Include="System.ServiceModel.Syndication" Version="9.0.*" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Squiggle.Client\Squiggle.Client.csproj" />
