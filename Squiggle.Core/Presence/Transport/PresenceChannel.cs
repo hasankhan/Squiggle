@@ -7,8 +7,6 @@ using System.Threading;
 using Squiggle.Core.Chat;
 using Squiggle.Core.Presence.Transport.Multicast;
 using Squiggle.Utilities;
-using Squiggle.Utilities.Net;
-using Squiggle.Utilities.Net.Pipe;
 using Squiggle.Utilities.Threading;
 using Squiggle.Core.Presence.Transport.Multicast.Mdns;
 using System.Threading.Tasks;
