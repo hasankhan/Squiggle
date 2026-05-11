@@ -2,7 +2,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Squiggle.UI.Avalonia</RootNamespace>
-    <AssemblyName>Squiggle.Avalonia</AssemblyName>
+    <AssemblyName>Squiggle.UI.Avalonia</AssemblyName>
     <UseWPF>false</UseWPF>
     <UseWindowsForms>false</UseWindowsForms>
   </PropertyGroup>
