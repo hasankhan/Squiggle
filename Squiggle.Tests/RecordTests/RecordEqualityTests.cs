@@ -4,7 +4,7 @@ using FluentAssertions;
 using NSubstitute;
 using Squiggle.Client;
 using Squiggle.Core.Presence;
-using Squiggle.Plugins.Authentication;
+using Squiggle.Plugins;
 using Xunit;
 
 namespace Squiggle.Tests.RecordTests
@@ -12,21 +12,21 @@ namespace Squiggle.Tests.RecordTests
     public class RecordEqualityTests
     {
         [Fact]
-        public void UserDetails_SameValues_AreEqual()
+        public void SignInOptions_SameValues_AreEqual()
         {
-            var a = new UserDetails
+            var a = new SignInOptions
             {
+                Username = "ahmad",
                 DisplayName = "Ahmad",
-                DisplayMessage = "Online",
                 GroupName = "Team",
-                Email = "ahmad@example.com"
+                Domain = "local"
             };
-            var b = new UserDetails
+            var b = new SignInOptions
             {
+                Username = "ahmad",
                 DisplayName = "Ahmad",
-                DisplayMessage = "Online",
                 GroupName = "Team",
-                Email = "ahmad@example.com"
+                Domain = "local"
             };
 
             a.Should().Be(b);
@@ -34,40 +34,19 @@ namespace Squiggle.Tests.RecordTests
         }
 
         [Fact]
-        public void UserDetails_DifferentValues_AreNotEqual()
+        public void SignInOptions_DifferentValues_AreNotEqual()
         {
-            var a = new UserDetails { DisplayName = "Ahmad" };
-            var b = new UserDetails { DisplayName = "Bilal" };
+            var a = new SignInOptions { DisplayName = "Ahmad" };
+            var b = new SignInOptions { DisplayName = "Bilal" };
 
             a.Should().NotBe(b);
         }
 
         [Fact]
-        public void UserDetails_WithImage_EqualsByReference()
+        public void SignInOptions_NullValues_AreEqual()
         {
-            var image = new byte[] { 1, 2, 3 };
-            var a = new UserDetails { Image = image };
-            var b = new UserDetails { Image = image };
-
-            // Record equality for byte[] uses reference equality
-            a.Should().Be(b);
-        }
-
-        [Fact]
-        public void UserDetails_WithDifferentImageArrays_AreNotEqual()
-        {
-            var a = new UserDetails { Image = new byte[] { 1, 2, 3 } };
-            var b = new UserDetails { Image = new byte[] { 1, 2, 3 } };
-
-            // byte[] uses reference equality in records
-            a.Should().NotBe(b);
-        }
-
-        [Fact]
-        public void UserDetails_NullValues_AreEqual()
-        {
-            var a = new UserDetails();
-            var b = new UserDetails();
+            var a = new SignInOptions();
+            var b = new SignInOptions();
 
             a.Should().Be(b);
         }
