@@ -6,7 +6,7 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.29.*" />
+    <PackageReference Include="Google.Protobuf" Version="3.30.*" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.71.*" />
     <PackageReference Include="Grpc.Net.Client" Version="2.71.*" />
     <PackageReference Include="Grpc.Tools" Version="2.71.*" PrivateAssets="All" />
