@@ -1,48 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Squiggle.Client.Activities;
 using Squiggle.Core.Chat.Activity;
 using Squiggle.Plugins;
-using System.Threading.Tasks;
 
 namespace Squiggle.FileTransfer
 {
-    public class FileTransferActivity: IActivity
+    /// <summary>
+    /// Registers file transfer as an activity in the Squiggle plugin system.
+    /// File data flows through the gRPC activity stream pipeline:
+    /// FileTransferHandler → ActivityExecutor → ActivitySession → ChatHost → gRPC (ActivityDataPayload).
+    /// </summary>
+    public class FileTransferActivity : IActivity
     {
-        public virtual Guid Id
-        {
-            get { return SquiggleActivities.FileTransfer; }
-        }
+        /// <inheritdoc />
+        public virtual Guid Id => SquiggleActivities.FileTransfer;
 
-        public virtual string Title
-        {
-            get { return "File Transfer"; }
-        }
+        /// <inheritdoc />
+        public virtual string Title => "File Transfer";
 
+        /// <summary>
+        /// Creates a file transfer handler from an incoming invite.
+        /// </summary>
         public IActivityHandler FromInvite(IActivityExecutor executor, IDictionary<string, string> metadata)
         {
             var inviteData = new FileInviteData(metadata);
-            IFileTransferHandler handler = new FileTransferHandler(executor, inviteData.Name, inviteData.Size);
-
-            return handler;
+            return new FileTransferHandler(executor, inviteData.Name, inviteData.Size);
         }
 
+        /// <summary>
+        /// Creates a file transfer handler for an outgoing invite.
+        /// </summary>
+        /// <param name="executor">The activity executor managing this transfer session.</param>
+        /// <param name="args">Must contain "content" (Stream), "name" (string), and "size" (long).</param>
         public IActivityHandler CreateInvite(IActivityExecutor executor, IDictionary<string, object> args)
         {
-            if (!args.ContainsKey("content") || !(args["content"] is Stream))
-                throw new ArgumentException("metadata must include content stream.", "metadata");
-
-            var stream = (Stream)args["content"];
+            if (!args.TryGetValue("content", out var contentObj) || contentObj is not Stream stream)
+                throw new ArgumentException("args must include a 'content' Stream.", nameof(args));
 
             var inviteData = new FileInviteData(args.ToDictionary(x => x.Key, x => x.Value.ToString()!));
-            IFileTransferHandler handler = new FileTransferHandler(executor, inviteData.Name, inviteData.Size, stream);
-
-            return handler;
+            return new FileTransferHandler(executor, inviteData.Name, inviteData.Size, stream);
         }
 
+        /// <inheritdoc />
         public virtual Task<IDictionary<string, object>> LaunchInviteUI(ISquiggleContext context, IChatWindow window)
         {
             throw new NotImplementedException();
