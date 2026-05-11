@@ -18,7 +18,7 @@ jobs:
         shell: pwsh
         run: |
           Invoke-WebRequest -Uri 'https://dot.net/v1/dotnet-install.ps1' -OutFile dotnet-install.ps1
-          ./dotnet-install.ps1 -Channel 9.0 -Architecture x86 -Runtime dotnet -InstallDir 'C:\Program Files (x86)\dotnet'
+          ./dotnet-install.ps1 -Channel 9.0 -Architecture x86 -Runtime windowsdesktop -InstallDir 'C:\Program Files (x86)\dotnet'
           echo "DOTNET_ROOT_X86=C:\Program Files (x86)\dotnet" >> $env:GITHUB_ENV
       - run: dotnet restore
       - run: dotnet build --no-restore --configuration Release
