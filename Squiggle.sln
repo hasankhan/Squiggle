@@ -47,6 +47,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{40B7134A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Screenshot", "Squiggle.Screenshot\Squiggle.Screenshot.csproj", "{F76A7D4F-3EAB-42D9-BFA6-198C5ADDD0DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squiggle.Tests", "Squiggle.Tests\Squiggle.Tests.csproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -102,6 +104,10 @@ Global
 		{F76A7D4F-3EAB-42D9-BFA6-198C5ADDD0DE}.Debug|x86.Build.0 = Debug|x86
 		{F76A7D4F-3EAB-42D9-BFA6-198C5ADDD0DE}.Release|x86.ActiveCfg = Release|x86
 		{F76A7D4F-3EAB-42D9-BFA6-198C5ADDD0DE}.Release|x86.Build.0 = Release|x86
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|x86.ActiveCfg = Debug|x86
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|x86.Build.0 = Debug|x86
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|x86.ActiveCfg = Release|x86
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

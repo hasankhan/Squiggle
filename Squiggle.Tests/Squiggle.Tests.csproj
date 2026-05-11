@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="8.*" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.*" />
+    <PackageReference Include="NSubstitute" Version="5.*" />
+    <PackageReference Include="xunit" Version="2.*" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.*">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Squiggle.Utilities\Squiggle.Utilities.csproj" />
+    <ProjectReference Include="..\Squiggle.Core\Squiggle.Core.csproj" />
+    <ProjectReference Include="..\Squiggle.Client\Squiggle.Client.csproj" />
+    <ProjectReference Include="..\Squiggle.History\Squiggle.History.csproj" />
+    <ProjectReference Include="..\Squiggle.Infrastructure\Squiggle.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>
