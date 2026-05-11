@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Squiggle.History.DAL;
 using Squiggle.History.DAL.Entities;
 
@@ -82,6 +83,8 @@ namespace Squiggle.History
                 repository.DeleteSessions(sessionIds);
         }
 
+        [UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode",
+            Justification = "EF Core model types are preserved; all entity types are statically referenced")]
         private HistoryRepository CreateRepository()
         {
             var context = new HistoryContext(connectionString);

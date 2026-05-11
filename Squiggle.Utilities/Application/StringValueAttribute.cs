@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -16,6 +17,7 @@ namespace Squiggle.Utilities.Application
             Value = value;
         }
 
+        [RequiresUnreferencedCode("Uses reflection to read custom attributes from enum members")]
         public static string? GetValue(object item)
         {
             MemberInfo? member = item.GetType().GetMember(item.ToString()!).FirstOrDefault();

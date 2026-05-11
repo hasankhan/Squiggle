@@ -10,5 +10,13 @@
     <Company>Overroot</Company>
     <Product>Squiggle Messenger</Product>
     <Copyright>Copyright © 2010 Overroot</Copyright>
+
+    <!-- Trimming: produce smaller published binaries.
+         partial mode only trims assemblies that opt in with IsTrimmable,
+         which is safer for reflection-heavy code (WPF, protobuf-net, MEF). -->
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>partial</TrimMode>
+    <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
   </PropertyGroup>
 </Project>

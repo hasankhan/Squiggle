@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 
 namespace Squiggle.History.DAL.Entities
 {
+    [RequiresUnreferencedCode("EF Core model building uses reflection")]
     class HistoryContext : DbContext 
     {
         public DbSet<Participant> Participants { get; set; } = null!;

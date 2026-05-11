@@ -3,6 +3,7 @@
     <RootNamespace>Squiggle.Infrastructure</RootNamespace>
     <UseWPF>true</UseWPF>
     <AssemblyVersion>3.4.0.0</AssemblyVersion>
+    <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="9.0.*" />

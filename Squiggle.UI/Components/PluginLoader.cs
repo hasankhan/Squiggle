@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.ComponentModel.Composition;
@@ -34,6 +35,7 @@ namespace Squiggle.UI.Components
         [Import(AllowDefault=true)]
         public IAuthenticationProvider? AuthenticationProvider { get; set; }
 
+        [RequiresUnreferencedCode("MEF CompositionContainer uses reflection to discover and compose parts")]
         public PluginLoader(ComposablePartCatalog catalog)
         {
             var container = new CompositionContainer(catalog);

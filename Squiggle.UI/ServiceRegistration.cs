@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.Composition.Hosting;
 using System.Configuration;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,8 @@ namespace Squiggle.UI
 {
     static class ServiceRegistration
     {
+        [UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode",
+            Justification = "MEF plugin loading requires reflection; plugins are loaded from disk at runtime")]
         public static IServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();

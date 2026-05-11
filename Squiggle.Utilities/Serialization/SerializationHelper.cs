@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Squiggle.Utilities.Serialization
 {
@@ -17,6 +18,7 @@ namespace Squiggle.Utilities.Serialization
             // on the serialized classes (see SquiggleEndPoint).
         }
 
+        [RequiresUnreferencedCode("protobuf-net Serializer.Serialize uses reflection-based serialization")]
         public static byte[] Serialize<T>(T item)
         {
             var stream = new MemoryStream();
@@ -24,6 +26,7 @@ namespace Squiggle.Utilities.Serialization
             return stream.ToArray();
         }        
 
+        [RequiresUnreferencedCode("protobuf-net Serializer.Deserialize uses reflection-based serialization")]
         public static void Deserialize<T>(byte[] data, Action<T> onDeserialize, string entityName) where T:class
         {
             T? obj = null;
@@ -36,6 +39,7 @@ namespace Squiggle.Utilities.Serialization
             }
         }
 
+        [RequiresUnreferencedCode("protobuf-net Serializer.Deserialize uses reflection-based serialization")]
         static T Deserialize<T>(byte[] data)
         {
             if (data == null)
