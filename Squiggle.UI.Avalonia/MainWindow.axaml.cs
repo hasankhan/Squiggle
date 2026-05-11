@@ -1,7 +1,10 @@
+using System;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
 using Squiggle.Client;
 using Squiggle.UI.Avalonia.Controls;
+using Squiggle.UI.Avalonia.Services;
 using Squiggle.UI.Avalonia.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,12 +13,16 @@ namespace Squiggle.UI.Avalonia;
 public partial class MainWindow : Window
 {
     private ClientViewModel? _viewModel;
+    private ITrayIconService? _trayIconService;
+    private INotificationService? _notificationService;
+    private bool _forceClose;
 
     public MainWindow()
     {
         InitializeComponent();
 
         Loaded += MainWindow_Loaded;
+        Closing += MainWindow_Closing;
     }
 
     private void MainWindow_Loaded(object? sender, RoutedEventArgs e)
@@ -25,6 +32,49 @@ public partial class MainWindow : Window
         DataContext = _viewModel;
 
         signInControl.LoginRequested += SignInControl_LoginRequested;
+
+        InitializeTrayIcon();
+        InitializeNotifications();
+    }
+
+    private void InitializeTrayIcon()
+    {
+        _trayIconService = App.Services.GetRequiredService<ITrayIconService>();
+        _trayIconService.ShowTrayIcon();
+        _trayIconService.TrayIconClicked += (_, _) => ShowAndActivate();
+
+        if (_trayIconService is AvaloniaTrayIconService avaloniaTray)
+        {
+            avaloniaTray.SignOutRequested += (_, _) => SignOutMenu_Click(this, new RoutedEventArgs());
+            avaloniaTray.ExitRequested += (_, _) =>
+            {
+                _forceClose = true;
+                Close();
+            };
+        }
+    }
+
+    private void InitializeNotifications()
+    {
+        _notificationService = App.Services.GetRequiredService<INotificationService>();
+        _notificationService.Initialize(this);
+    }
+
+    private void ShowAndActivate()
+    {
+        Show();
+        WindowState = WindowState.Normal;
+        Activate();
+    }
+
+    private void MainWindow_Closing(object? sender, WindowClosingEventArgs e)
+    {
+        if (_forceClose)
+            return;
+
+        // Minimize to tray instead of closing
+        e.Cancel = true;
+        Hide();
     }
 
     private async void SignInControl_LoginRequested(object? sender, LoginEventArgs e)
@@ -32,12 +82,12 @@ public partial class MainWindow : Window
         var chatClient = App.Services.GetRequiredService<IChatClient>();
         try
         {
-            // Login logic will be connected when chat infrastructure is wired
             await System.Threading.Tasks.Task.CompletedTask;
         }
-        catch (System.Exception)
+        catch (Exception)
         {
-            // Show error - will be implemented with proper dialog support
+            var dialogService = App.Services.GetRequiredService<IDialogService>();
+            await dialogService.ShowMessageBoxAsync("Error", "Failed to sign in. Please try again.");
         }
     }
 
@@ -50,6 +100,7 @@ public partial class MainWindow : Window
 
     private void CloseMenu_Click(object? sender, RoutedEventArgs e)
     {
+        _forceClose = true;
         Close();
     }
 

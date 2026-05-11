@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Squiggle.Client;
 using Squiggle.History;
+using Squiggle.UI.Avalonia.Services;
 
 namespace Squiggle.UI.Avalonia;
 
@@ -61,6 +62,13 @@ public partial class App : Application
 
         var dbPath = Path.Combine(appLocation, "squiggle_history.db");
         services.AddSingleton(new HistoryManager($"Data Source={dbPath}"));
+
+        // Platform services
+        services.AddSingleton<ITrayIconService, AvaloniaTrayIconService>();
+        services.AddSingleton<INotificationService, AvaloniaNotificationService>();
+        services.AddSingleton<IDialogService, AvaloniaDialogService>();
+        services.AddSingleton<IClipboardService, AvaloniaClipboardService>();
+        services.AddSingleton<IAutoStartService, WindowsAutoStartService>();
 
         return services.BuildServiceProvider();
     }

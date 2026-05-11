@@ -1,0 +1,19 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Squiggle.UI.Avalonia.Windows.MessageBoxWindow"
+        Title="Squiggle"
+        Width="380" Height="180"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False"
+        ShowInTaskbar="False"
+        SystemDecorations="BorderOnly">
+    <DockPanel Margin="20">
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal"
+                    HorizontalAlignment="Right" Spacing="10" Margin="0,15,0,0">
+            <Button x:Name="btnPrimary" MinWidth="80" Click="PrimaryButton_Click" />
+            <Button x:Name="btnSecondary" MinWidth="80" Click="SecondaryButton_Click"
+                    IsVisible="False" />
+        </StackPanel>
+        <TextBlock x:Name="txtMessage" TextWrapping="Wrap" VerticalAlignment="Center" />
+    </DockPanel>
+</Window>
