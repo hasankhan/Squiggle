@@ -3,7 +3,6 @@
     <TargetFramework>net9.0-windows</TargetFramework>
     <RootNamespace>Squiggle.Screenshot</RootNamespace>
     <UseWindowsForms>true</UseWindowsForms>
-    <UseWPF>true</UseWPF>
     <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
   <ItemGroup>
