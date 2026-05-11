@@ -2,26 +2,24 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Squiggle.UI</RootNamespace>
-    <AssemblyName>Squiggle</AssemblyName>
-    <UseWPF>true</UseWPF>
-    <UseWindowsForms>true</UseWindowsForms>
-    <EnableDefaultApplicationDefinition>false</EnableDefaultApplicationDefinition>
-    <ApplicationIcon>Images\chat.ico</ApplicationIcon>
+    <AssemblyName>Squiggle.UI</AssemblyName>
+    <UseWPF>false</UseWPF>
+    <UseWindowsForms>false</UseWindowsForms>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.3.*" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.*" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.3.*" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.*" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.*" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.*" />
     <PackageReference Include="Serilog" Version="4.2.*" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.*" />
     <PackageReference Include="Serilog.Sinks.Console" Version="6.0.*" />
     <PackageReference Include="Serilog.Sinks.File" Version="6.0.*" />
-    <PackageReference Include="EntityFramework" Version="6.5.*" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.*" />
-    <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.*" />
-    <PackageReference Include="System.ServiceModel.Syndication" Version="9.0.*" />
-    <PackageReference Include="System.ComponentModel.Composition" Version="9.0.*" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Squiggle.Client\Squiggle.Client.csproj" />
@@ -29,23 +27,5 @@
     <ProjectReference Include="..\Squiggle.History\Squiggle.History.csproj" />
     <ProjectReference Include="..\Squiggle.Infrastructure\Squiggle.Infrastructure.csproj" />
     <ProjectReference Include="..\Squiggle.Utilities\Squiggle.Utilities.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Images\Emoticons\**">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\Status\**">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Sounds\**">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Translation.xaml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\Shared\AssemblyInfo.Copyright.cs" Link="Properties\AssemblyInfo.Copyright.cs" />
-    <Compile Include="..\Shared\AssemblyInfo.Version.cs" Link="Properties\AssemblyInfo.Version.cs" />
   </ItemGroup>
 </Project>

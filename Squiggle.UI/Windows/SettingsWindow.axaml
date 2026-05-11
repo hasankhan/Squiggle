@@ -1,0 +1,110 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Squiggle.UI.Windows.SettingsWindow"
+        Title="Squiggle Settings"
+        Width="480" Height="420"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False">
+    <DockPanel>
+        <!-- OK/Cancel buttons at bottom -->
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal"
+                    HorizontalAlignment="Right" Margin="0,8,12,12" Spacing="8">
+            <Button Content="{DynamicResource Global_OKButton}"
+                    Click="OkButton_Click" Width="80" Classes="accent" />
+            <Button Content="{DynamicResource Global_CancelButton}"
+                    Click="CancelButton_Click" Width="80" />
+        </StackPanel>
+
+        <TabControl Margin="8">
+            <!-- Personal Tab -->
+            <TabItem Header="{DynamicResource SettingsWindow_PersonalTab_Heading}">
+                <StackPanel Margin="12" Spacing="10">
+                    <TextBlock Text="{DynamicResource SettingsWindow_PersonalTab_DisplayName}" />
+                    <TextBox Text="{Binding PersonalSettings.DisplayName}" />
+
+                    <TextBlock Text="{DynamicResource SettingsWindow_PersonalTab_EmailAddress}" />
+                    <TextBox Text="{Binding PersonalSettings.EmailAddress}" />
+
+                    <TextBlock Text="{DynamicResource SettingsWindow_PersonalTab_GroupName}" />
+                    <TextBox Text="{Binding PersonalSettings.GroupName}" />
+
+                    <TextBlock Text="{DynamicResource SettingsWindow_PersonalTab_DisplayMessage}" />
+                    <TextBox Text="{Binding PersonalSettings.DisplayMessage}" />
+                </StackPanel>
+            </TabItem>
+
+            <!-- General Tab -->
+            <TabItem Header="{DynamicResource SettingsWindow_GeneralTab_Heading}">
+                <StackPanel Margin="12" Spacing="8">
+                    <CheckBox Content="{DynamicResource SettingsWindow_GeneralTab_CloseToTray}"
+                              IsChecked="{Binding GeneralSettings.HideToSystemTray}" />
+                    <CheckBox Content="{DynamicResource SettingsWindow_GeneralTab_ShowPopups}"
+                              IsChecked="{Binding GeneralSettings.ShowPopups}" />
+                    <CheckBox Content="{DynamicResource SettingsWindow_GeneralTab_AudioAlerts}"
+                              IsChecked="{Binding GeneralSettings.AudioAlerts}" />
+                    <CheckBox Content="{DynamicResource SettingsWindow_GeneralTab_StatusLogging}"
+                              IsChecked="{Binding GeneralSettings.EnableStatusLogging}" />
+                    <CheckBox Content="{DynamicResource SettingsWindow_GeneralTab_CheckForUpdates}"
+                              IsChecked="{Binding GeneralSettings.CheckForUpdates}" />
+
+                    <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
+                        <TextBlock Text="Theme:" VerticalAlignment="Center" />
+                        <ComboBox SelectedItem="{Binding GeneralSettings.ThemeMode}" Width="120">
+                            <x:String>System</x:String>
+                            <x:String>Light</x:String>
+                            <x:String>Dark</x:String>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <TextBlock Text="{DynamicResource SettingsWindow_GeneralTab_DownloadsFolder}" Margin="0,8,0,0" />
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBox Text="{Binding GeneralSettings.DownloadsFolder}" IsReadOnly="True" />
+                        <Button Grid.Column="1" Content="..."  Click="BrowseFolder_Click"
+                                Width="32" Margin="4,0,0,0" />
+                    </Grid>
+                </StackPanel>
+            </TabItem>
+
+            <!-- Chat Tab -->
+            <TabItem Header="{DynamicResource SettingsWindow_ChatTab_Heading}">
+                <StackPanel Margin="12" Spacing="8">
+                    <CheckBox Content="{DynamicResource SettingsWindow_ChatTab_ShowEmoticons}"
+                              IsChecked="{Binding ChatSettings.ShowEmoticons}" />
+                    <CheckBox Content="{DynamicResource SettingsWindow_ChatTab_StealFocusOnNewMessage}"
+                              IsChecked="{Binding ChatSettings.StealFocusOnNewMessage}" />
+                    <CheckBox Content="{DynamicResource SettingsWindow_ChatTab_ClearChatOnWindowClose}"
+                              IsChecked="{Binding ChatSettings.ClearChatOnWindowClose}" />
+                    <CheckBox Content="{DynamicResource SettingsWindow_ChatTab_EnableLogging}"
+                              IsChecked="{Binding ChatSettings.EnableLogging}" />
+                </StackPanel>
+            </TabItem>
+
+            <!-- Contacts Tab -->
+            <TabItem Header="{DynamicResource SettingsWindow_ContactsTab_Heading}">
+                <StackPanel Margin="12" Spacing="8">
+                    <CheckBox Content="{DynamicResource SettingsWindow_ContactsTab_ShowGroupedContacts}"
+                              IsChecked="{Binding ContactSettings.GroupContacts}" />
+                    <CheckBox Content="{DynamicResource SettingsWindow_ContactsTab_ShowOfflineContacts}"
+                              IsChecked="{Binding ContactSettings.ShowOfflineContacts}" />
+                </StackPanel>
+            </TabItem>
+
+            <!-- Connection Tab -->
+            <TabItem Header="{DynamicResource SettingsWindow_ConnectionTab_Heading}">
+                <StackPanel Margin="12" Spacing="8">
+                    <TextBlock Text="{DynamicResource SettingsWindow_ConnectionTab_PresenceAddress}" />
+                    <TextBox Text="{Binding ConnectionSettings.PresenceAddress}" />
+
+                    <TextBlock Text="{DynamicResource SettingsWindow_ConnectionTab_PresencePort}" />
+                    <TextBox Text="{Binding ConnectionSettings.PresencePort}" />
+
+                    <TextBlock Text="{DynamicResource SettingsWindow_ConnectionTab_ChatPort}" />
+                    <TextBox Text="{Binding ConnectionSettings.ChatPort}" />
+
+                    <TextBlock Text="{DynamicResource SettingsWindow_ConnectionTab_KeepAliveTime}" />
+                    <TextBox Text="{Binding ConnectionSettings.KeepAliveTime}" />
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

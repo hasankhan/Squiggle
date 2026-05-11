@@ -1,53 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+using System;
 using System.Windows.Input;
 
-namespace Squiggle.UI.Helpers
+namespace Squiggle.UI.Helpers;
+
+public class RelayCommand : ICommand
 {
-    public class RelayCommand<T> : ICommand
+    private readonly Action<object?> _execute;
+    private readonly Predicate<object?>? _canExecute;
+
+    public RelayCommand(Action<object?> execute, Predicate<object?>? canExecute = null)
     {
-        Action<T> _execute;
-        Predicate<T>? _canExecute;
-
-        #region Constructors
-
-        public RelayCommand(Action<T> execute)
-            : this(execute, null)
-        {
-        }
-
-        public RelayCommand(Action<T> execute, Predicate<T>? canExecute)
-        {
-            if (execute == null)
-                throw new ArgumentNullException("execute");
-
-            _execute = execute;
-            _canExecute = canExecute;
-        }
-        #endregion // Constructors
-
-        #region ICommand Members
-
-        [DebuggerStepThrough]
-        public bool CanExecute(object? parameter)
-        {
-            return _canExecute == null ? true : _canExecute((T)parameter);
-        }
-
-        public event EventHandler CanExecuteChanged
-        {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
-        }
-
-        public void Execute(object? parameter)
-        {
-            _execute((T)parameter);
-        }
-
-        #endregion // ICommand Members
+        _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+        _canExecute = canExecute;
     }
+
+    public RelayCommand(Action execute, Func<bool>? canExecute = null)
+        : this(_ => execute(), canExecute != null ? _ => canExecute() : null)
+    {
+    }
+
+    public bool CanExecute(object? parameter) => _canExecute?.Invoke(parameter) ?? true;
+
+    public event EventHandler? CanExecuteChanged;
+
+    public void Execute(object? parameter) => _execute(parameter);
+
+    public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+}
+
+public class RelayCommand<T> : ICommand
+{
+    private readonly Action<T?> _execute;
+    private readonly Predicate<T?>? _canExecute;
+
+    public RelayCommand(Action<T?> execute, Predicate<T?>? canExecute = null)
+    {
+        _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+        _canExecute = canExecute;
+    }
+
+    public bool CanExecute(object? parameter) => _canExecute?.Invoke((T?)parameter) ?? true;
+
+    public event EventHandler? CanExecuteChanged;
+
+    public void Execute(object? parameter) => _execute((T?)parameter);
+
+    public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 }

@@ -1,0 +1,43 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Squiggle.UI.Controls.SignInControl">
+    <Grid VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="20">
+        <StackPanel Spacing="12" MaxWidth="280" HorizontalAlignment="Center">
+            <!-- App Icon/Title -->
+            <TextBlock Text="Squiggle"
+                       FontSize="28" FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       Foreground="{DynamicResource SystemAccentColor}" />
+            <TextBlock Text="LAN Messenger"
+                       FontSize="14"
+                       HorizontalAlignment="Center"
+                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+
+            <!-- Sign In Form -->
+            <Border CornerRadius="8" Padding="16"
+                    BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                    BorderThickness="1">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="{DynamicResource MainWindow_SignIn_DisplayName}" />
+                    <TextBox x:Name="txtDisplayName"
+                             Watermark="{DynamicResource MainWindow_SignIn_Username}"
+                             MaxLength="50" />
+
+                    <TextBlock Text="{DynamicResource MainWindow_SignIn_GroupName}" />
+                    <TextBox x:Name="txtGroupName"
+                             MaxLength="25" />
+
+                    <CheckBox x:Name="chkRememberMe"
+                              Content="{DynamicResource MainWindow_SignIn_RememberMe}" />
+
+                    <Button x:Name="btnSignIn"
+                            Content="{DynamicResource MainWindow_SignIn_SignInButton}"
+                            HorizontalAlignment="Center"
+                            Classes="accent"
+                            Click="SignIn_Click"
+                            Width="120" Height="36" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,48 +1,32 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Data;
-using Squiggle.Client;
+using System;
+using System.Globalization;
+using Avalonia.Data.Converters;
 using Squiggle.Core.Presence;
-using Squiggle.UI.Resources;
 
-namespace Squiggle.UI.Converters
+namespace Squiggle.UI.Converters;
+
+public class StatusConverter : IValueConverter
 {
-    public class StatusConverter: IValueConverter
+    public static readonly StatusConverter Instance = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        #region IValueConverter Members
-
-        public object? Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
+        if (value is UserStatus status)
         {
-            if (value != null && value is UserStatus)
+            return status switch
             {
-                var status = (UserStatus)value;
-                switch (status)
-                {
-                    case UserStatus.Online:
-                        return Translation.Instance.BuddyStatus_Online;
-                    case UserStatus.Busy:
-                        return Translation.Instance.BuddyStatus_Busy;
-                    case UserStatus.BeRightBack:
-                        return Translation.Instance.BuddyStatus_BeRightBack;
-                    case UserStatus.Away:
-                        return Translation.Instance.BuddyStatus_Away;
-                    case UserStatus.Idle:
-                        return Translation.Instance.BuddyStatus_Idle;
-                    case UserStatus.Offline:
-                        return Translation.Instance.BuddyStatus_Offline;
-                    default:
-                        return status.ToString();
-                }
-            }
-            else
-                return value;
+                UserStatus.Online => "Online",
+                UserStatus.Busy => "Busy",
+                UserStatus.BeRightBack => "Be Right Back",
+                UserStatus.Away => "Away",
+                UserStatus.Idle => "Idle",
+                UserStatus.Offline => "Offline",
+                _ => status.ToString()
+            };
         }
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
-        {
-            return DependencyProperty.UnsetValue;
-        }
-
-        #endregion
+        return value;
     }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => throw new NotImplementedException();
 }

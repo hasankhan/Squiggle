@@ -1,26 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Data;
+using System;
+using System.Globalization;
+using Avalonia.Data.Converters;
 
-namespace Squiggle.UI.Converters
+namespace Squiggle.UI.Converters;
+
+public class TitleCaseConverter : IValueConverter
 {
-    public class TitleCaseConverter: IValueConverter
-    {
-        public static TitleCaseConverter Instance = new TitleCaseConverter();
+    public static readonly TitleCaseConverter Instance = new();
 
-        public object? Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
-        {
-            if (value == null)
-                return null;
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => value?.ToString() is string s ? culture.TextInfo.ToTitleCase(s) : value;
 
-            return culture.TextInfo.ToTitleCase(value.ToString());
-        }
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => throw new NotImplementedException();
 }

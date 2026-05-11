@@ -1,26 +1,17 @@
-﻿using System;
+using System;
+using System.Globalization;
 using System.IO;
-using System.Windows.Data;
+using Avalonia.Data.Converters;
 
-namespace Squiggle.UI.Converters
+namespace Squiggle.UI.Converters;
+
+public class PathToNameConverter : IValueConverter
 {
-    [ValueConversion(typeof(string), typeof(string))]
-    public class PathToNameConverter : IValueConverter
-    {
-        public static PathToNameConverter Instance = new PathToNameConverter();
+    public static readonly PathToNameConverter Instance = new();
 
-        #region IValueConverter Members
-        public object? Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
-        {
-            string fileName = (string)value;
-            return Path.GetFileName(fileName);
-        }
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => value is string path ? Path.GetFileName(path) : value;
 
-        public object? ConvertBack(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-    }
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => throw new NotImplementedException();
 }

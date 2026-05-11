@@ -1,102 +1,91 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
-using System.Windows.Threading;
-using Squiggle.Utilities.Threading;
+using Avalonia.Threading;
 using Squiggle.Client;
 
-namespace Squiggle.UI.ViewModel
+namespace Squiggle.UI.ViewModel;
+
+public class ClientViewModel : ViewModelBase
 {
-    public class ClientViewModel: ViewModelBase
+    public event EventHandler ContactListUpdated = delegate { };
+
+    private readonly IChatClient _chatClient;
+
+    public ISelfBuddy LoggedInUser { get; set; } = null!;
+    public ObservableCollection<IBuddy> Buddies { get; private set; }
+
+    public string Title
     {
-        public event EventHandler ContactListUpdated = delegate { };
-
-        IChatClient chatClient;
-        Dispatcher dispatcher;
-
-        public ISelfBuddy LoggedInUser { get; set; } = null!;
-        public ObservableCollection<IBuddy> Buddies { get; private set; }
-
-        public string Title
+        get
         {
-            get
-            {
-                if (IsLoggedIn)
-                    return String.Format("Squiggle Messenger - {0}", LoggedInUser.DisplayName);
-                return "Squiggle Messenger";
-            }
+            if (IsLoggedIn)
+                return $"Squiggle Messenger - {LoggedInUser.DisplayName}";
+            return "Squiggle Messenger";
         }
+    }
 
-        public bool IsLoggedIn
-        {
-            get { return chatClient.IsLoggedIn; }
-        }
+    public bool IsLoggedIn => _chatClient.IsLoggedIn;
 
-        public bool AnyoneOnline
-        {
-            get { return Buddies.Any(b => b.IsOnline()); }
-        }
+    public bool AnyoneOnline => Buddies.Any(b => b.IsOnline());
 
-        string? updateLink;
-        public string? UpdateLink
-        {
-            get { return updateLink; }
-            set { Set(()=>UpdateLink, ref updateLink, value); }
-        }
+    private string? _updateLink;
+    public string? UpdateLink
+    {
+        get => _updateLink;
+        set { Set(ref _updateLink, value); }
+    }
 
-        ICommand? cancelUpdateCommand;
-        public ICommand? CancelUpdateCommand
-        {
-            get { return cancelUpdateCommand; }
-            set { Set(() => cancelUpdateCommand, ref cancelUpdateCommand, value); }
-        }
+    private ICommand? _cancelUpdateCommand;
+    public ICommand? CancelUpdateCommand
+    {
+        get => _cancelUpdateCommand;
+        set { Set(ref _cancelUpdateCommand, value); }
+    }
 
-        public ClientViewModel(IChatClient chatClient)
-        {
-            this.chatClient = chatClient;
+    public ClientViewModel(IChatClient chatClient)
+    {
+        _chatClient = chatClient;
+        LoggedInUser = chatClient.CurrentUser;
 
-            dispatcher = Dispatcher.CurrentDispatcher;
-            LoggedInUser = chatClient.CurrentUser;
+        chatClient.BuddyOnline += ChatClient_BuddyOnline;
+        chatClient.BuddyOffline += ChatClient_BuddyOffline;
+        chatClient.BuddyUpdated += ChatClient_BuddyUpdated;
+        chatClient.LoggedIn += ChatClient_LoggedInOut;
+        chatClient.LoggedOut += ChatClient_LoggedInOut;
 
-            chatClient.BuddyOnline += chatClient_BuddyOnline;
-            chatClient.BuddyOffline += chatClient_BuddyOffline;
-            chatClient.BuddyUpdated += chatClient_BuddyUpdated;
-            chatClient.LoggedIn += chatClient_LoggedInOut;
-            chatClient.LoggedOut += chatClient_LoggedInOut;
+        Buddies = new ObservableCollection<IBuddy>(chatClient.Buddies);
+        Buddies.CollectionChanged += (_, _) => OnContactListUpdated();
+    }
 
-            Buddies = new ObservableCollection<IBuddy>(chatClient.Buddies);
-            Buddies.CollectionChanged += (sender, e) => OnContactListUpdated();
-        }
+    private void ChatClient_LoggedInOut(object? sender, EventArgs e)
+    {
+        OnPropertyChanged(nameof(IsLoggedIn));
+        OnPropertyChanged(nameof(Title));
+    }
 
-        void chatClient_LoggedInOut(object? sender, EventArgs e)
-        {
-            OnPropertyChanged(()=>IsLoggedIn, ()=>Title);
-        }
+    private void ChatClient_BuddyOffline(object? sender, BuddyEventArgs e)
+    {
+        OnContactListUpdated();
+    }
 
-        void chatClient_BuddyOffline(object? sender, BuddyEventArgs e)
-        {
+    private void ChatClient_BuddyUpdated(object? sender, BuddyEventArgs e)
+    {
+        OnContactListUpdated();
+    }
+
+    private void ChatClient_BuddyOnline(object? sender, BuddyOnlineEventArgs e)
+    {
+        if (Buddies.Contains(e.Buddy))
             OnContactListUpdated();
-        }
+        else
+            Dispatcher.UIThread.Post(() => Buddies.Add(e.Buddy));
+    }
 
-        void chatClient_BuddyUpdated(object? sender, BuddyEventArgs e)
-        {
-            OnContactListUpdated();
-        }
-
-        void chatClient_BuddyOnline(object? sender, BuddyOnlineEventArgs e)
-        {
-            if (Buddies.Contains(e.Buddy))
-                OnContactListUpdated();
-            else
-                dispatcher.Invoke(()=> Buddies.Add(e.Buddy));
-        }
-
-        void OnContactListUpdated()
-        {
-            ContactListUpdated(this, EventArgs.Empty);
-            OnPropertyChanged(()=>AnyoneOnline);
-        }
+    private void OnContactListUpdated()
+    {
+        ContactListUpdated(this, EventArgs.Empty);
+        OnPropertyChanged(nameof(AnyoneOnline));
     }
 }

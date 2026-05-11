@@ -1,167 +1,112 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using Squiggle.UI.Settings;
+namespace Squiggle.UI.ViewModel;
 
-namespace Squiggle.UI.ViewModel
+public class SettingsViewModel : ViewModelBase
 {
-    class SettingsViewModel
-    {
-        SquiggleSettings? settings;
+    public GeneralSettingsViewModel GeneralSettings { get; set; } = new();
+    public ConnectionSettingsViewModel ConnectionSettings { get; set; } = new();
+    public PersonalSettingsViewModel PersonalSettings { get; set; } = new();
+    public ChatSettingsViewModel ChatSettings { get; set; } = new();
+    public ContactSettingsViewModel ContactSettings { get; set; } = new();
+}
 
-        public GeneralSettingsViewModel GeneralSettings { get; set; }
-        public ConnectionSettingsViewModel ConnectionSettings { get; set; }
-        public PersonalSettingsViewModel PersonalSettings { get; set; }
-        public ChatSettingsViewModel ChatSettings { get; set; }
-        public ContactSettingsViewModel ContactSettings { get; set; }
+public class GeneralSettingsViewModel : ViewModelBase
+{
+    private bool _hideToSystemTray;
+    public bool HideToSystemTray { get => _hideToSystemTray; set => Set(ref _hideToSystemTray, value); }
 
-        public SettingsViewModel()
-        {
-            GeneralSettings = new GeneralSettingsViewModel();
-            ConnectionSettings = new ConnectionSettingsViewModel();
-            PersonalSettings = new PersonalSettingsViewModel();
-            ChatSettings = new ChatSettingsViewModel();
-            ContactSettings = new ContactSettingsViewModel();
-        }
+    private bool _showPopups = true;
+    public bool ShowPopups { get => _showPopups; set => Set(ref _showPopups, value); }
 
-        public SettingsViewModel(SquiggleSettings settings): this()
-        {
-            this.settings = settings;
+    private bool _audioAlerts = true;
+    public bool AudioAlerts { get => _audioAlerts; set => Set(ref _audioAlerts, value); }
 
-            ChatSettings.ShowEmoticons = settings.ChatSettings.ShowEmoticons;
-            GeneralSettings.HideToSystemTray = settings.GeneralSettings.HideToSystemTray;
-            GeneralSettings.ShowPopups = settings.GeneralSettings.ShowPopups;
-            GeneralSettings.AudioAlerts = settings.GeneralSettings.AudioAlerts;
-            GeneralSettings.DownloadsFolder = settings.GeneralSettings.DownloadsFolder;
-            GeneralSettings.EnableStatusLogging = settings.GeneralSettings.EnableStatusLogging;
-            GeneralSettings.CheckForUpdates = settings.GeneralSettings.CheckForUpdates;
+    private string _downloadsFolder = "";
+    public string DownloadsFolder { get => _downloadsFolder; set => Set(ref _downloadsFolder, value); }
 
-            ChatSettings.SpellCheck = settings.ChatSettings.SpellCheck;
-            ChatSettings.StealFocusOnNewMessage = settings.ChatSettings.StealFocusOnNewMessage;
-            ChatSettings.ClearChatOnWindowClose = settings.ChatSettings.ClearChatOnWindowClose;
-            ChatSettings.EnableLogging = settings.ChatSettings.EnableLogging;
-            
-            ContactSettings.ContactListSortField = settings.ContactSettings.ContactListSortField;
-            ContactSettings.GroupContacts = settings.ContactSettings.GroupContacts;
-            ContactSettings.ShowOfflineContacts = settings.ContactSettings.ShowOfflineContacts;
-            ContactSettings.ContactListView = settings.ContactSettings.ContactListView;
+    private bool _enableStatusLogging;
+    public bool EnableStatusLogging { get => _enableStatusLogging; set => Set(ref _enableStatusLogging, value); }
 
-            ConnectionSettings.BindToIP = settings.ConnectionSettings.BindToIP;
-            ConnectionSettings.ChatPort = settings.ConnectionSettings.ChatPort;
-            ConnectionSettings.KeepAliveTime = settings.ConnectionSettings.KeepAliveTime;
-            ConnectionSettings.PresenceAddress = settings.ConnectionSettings.PresenceAddress;
-            ConnectionSettings.PresencePort = settings.ConnectionSettings.PresencePort;
+    private bool _checkForUpdates = true;
+    public bool CheckForUpdates { get => _checkForUpdates; set => Set(ref _checkForUpdates, value); }
 
-            PersonalSettings.DisplayMessage = settings.PersonalSettings.DisplayMessage;
-            PersonalSettings.DisplayImage = settings.PersonalSettings.DisplayImage;
-            PersonalSettings.DisplayName = settings.PersonalSettings.DisplayName;
-            PersonalSettings.EmailAddress = settings.PersonalSettings.EmailAddress;
-            PersonalSettings.GroupName = settings.PersonalSettings.GroupName;
-            PersonalSettings.RememberMe = settings.PersonalSettings.RememberMe;
-            PersonalSettings.AutoSignMeIn = settings.PersonalSettings.AutoSignMeIn;
-            PersonalSettings.IdleTimeout = settings.PersonalSettings.IdleTimeout;
-        }
+    private string _themeMode = "System";
+    public string ThemeMode { get => _themeMode; set => Set(ref _themeMode, value); }
+}
 
-        public void Update()
-        {
-            if (settings == null)
-                return;
+public class ConnectionSettingsViewModel : ViewModelBase
+{
+    private string _presenceAddress = "224.1.1.1";
+    public string PresenceAddress { get => _presenceAddress; set => Set(ref _presenceAddress, value); }
 
-            settings.ChatSettings.ShowEmoticons = ChatSettings.ShowEmoticons;
-            settings.GeneralSettings.EnableStatusLogging = GeneralSettings.EnableStatusLogging;
-            settings.GeneralSettings.CheckForUpdates = GeneralSettings.CheckForUpdates;
-            settings.GeneralSettings.HideToSystemTray = GeneralSettings.HideToSystemTray;
-            settings.GeneralSettings.ShowPopups = GeneralSettings.ShowPopups;
-            settings.GeneralSettings.AudioAlerts = GeneralSettings.AudioAlerts;
-            settings.ChatSettings.StealFocusOnNewMessage = ChatSettings.StealFocusOnNewMessage;
-            settings.ChatSettings.ClearChatOnWindowClose = ChatSettings.ClearChatOnWindowClose;
-            settings.ChatSettings.SpellCheck = ChatSettings.SpellCheck;
-            settings.ChatSettings.EnableLogging = ChatSettings.EnableLogging;
-            settings.ContactSettings.GroupContacts = ContactSettings.GroupContacts;
-            settings.ContactSettings.ContactListSortField = ContactSettings.ContactListSortField;
-            settings.ContactSettings.ShowOfflineContacts = ContactSettings.ShowOfflineContacts;
-            settings.ContactSettings.ContactListView = ContactSettings.ContactListView;
-            settings.GeneralSettings.DownloadsFolder = GeneralSettings.DownloadsFolder;
+    private int _presencePort = 9999;
+    public int PresencePort { get => _presencePort; set => Set(ref _presencePort, value); }
 
-            settings.ConnectionSettings.BindToIP = ConnectionSettings.BindToIP;
-            settings.ConnectionSettings.ChatPort = ConnectionSettings.ChatPort;
-            settings.ConnectionSettings.KeepAliveTime = ConnectionSettings.KeepAliveTime;
-            settings.ConnectionSettings.PresenceAddress = ConnectionSettings.PresenceAddress;
-            settings.ConnectionSettings.PresencePort = ConnectionSettings.PresencePort;
+    private int _chatPort = 9998;
+    public int ChatPort { get => _chatPort; set => Set(ref _chatPort, value); }
 
-            settings.PersonalSettings.DisplayMessage = PersonalSettings.DisplayMessage;
-            settings.PersonalSettings.DisplayImage = PersonalSettings.DisplayImage;
-            settings.PersonalSettings.GroupName = PersonalSettings.GroupName;
-            settings.PersonalSettings.DisplayName = PersonalSettings.DisplayName;
-            settings.PersonalSettings.IdleTimeout = PersonalSettings.IdleTimeout;
-            settings.PersonalSettings.RememberMe = PersonalSettings.RememberMe;
-            settings.PersonalSettings.AutoSignMeIn = PersonalSettings.AutoSignMeIn;
-            settings.PersonalSettings.EmailAddress = PersonalSettings.EmailAddress;
-        }
-    }
+    private string _bindToIP = "";
+    public string BindToIP { get => _bindToIP; set => Set(ref _bindToIP, value); }
 
-    class PersonalSettingsViewModel: ViewModelBase
-    {
-        public string DisplayName { get; set; } = null!;
-        public string GroupName { get; set; } = null!;
-        public string DisplayMessage { get; set; } = null!;
-        public string EmailAddress { get; set; } = null!;
-        public int IdleTimeout { get; set; }
-        public bool RememberMe { get; set; }
-        public bool AutoSignMeIn { get; set; }
+    private int _keepAliveTime = 5000;
+    public int KeepAliveTime { get => _keepAliveTime; set => Set(ref _keepAliveTime, value); }
+}
 
-        byte[]? displayImage;
-        public byte[]? DisplayImage 
-        {
-            get { return displayImage; }
-            set { Set(() => DisplayImage, ref displayImage, value); }
-        }
-    }
+public class PersonalSettingsViewModel : ViewModelBase
+{
+    private string _displayName = "";
+    public string DisplayName { get => _displayName; set => Set(ref _displayName, value); }
 
-    class GeneralSettingsViewModel
-    {
-        public bool RunAtStartup { get; set; }
-        public bool HideToSystemTray { get; set; }
-        public bool ShowPopups { get; set; }
-        public string DownloadsFolder { get; set; } = null!;
-        public bool AudioAlerts { get; set; }
-        public bool EnableStatusLogging { get; set; }
-        public bool CheckForUpdates { get; set; }
-    }
+    private string _displayMessage = "";
+    public string DisplayMessage { get => _displayMessage; set => Set(ref _displayMessage, value); }
 
-    class ChatSettingsViewModel
-    {
-        public bool EnableLogging { get; set; }
-        public bool SpellCheck { get; set; }
-        public bool ShowEmoticons { get; set; }
-        public bool StealFocusOnNewMessage { get; set; }
-        public bool ClearChatOnWindowClose { get; set; }
-    }
+    private string _groupName = "";
+    public string GroupName { get => _groupName; set => Set(ref _groupName, value); }
 
-    class ContactSettingsViewModel
-    {
-        public ContactListSortField ContactListSortField { get; set; }
-        public bool GroupContacts { get; set; }
-        public bool ShowOfflineContacts { get; set; }
-        public ContactListView ContactListView { get; set; }
-    }
+    private string _emailAddress = "";
+    public string EmailAddress { get => _emailAddress; set => Set(ref _emailAddress, value); }
 
-    class ConnectionSettingsViewModel: ViewModelBase
-    {
-        string presenceAddress = null!;
-        public string PresenceAddress
-        {
-            get { return presenceAddress; }
-            set { Set(()=>PresenceAddress, ref presenceAddress, value); }
-        }
-        public int PresencePort { get; set; }
-        public int ChatPort { get; set; }
-        public int KeepAliveTime { get; set; }
-        public List<string> AllIPs { get; private set; }
-        public string BindToIP { get; set; } = null!;
+    private string? _displayImage;
+    public string? DisplayImage { get => _displayImage; set => Set(ref _displayImage, value); }
 
-        public ConnectionSettingsViewModel()
-        {
-            AllIPs = new List<string>();
-        }
-    }
+    private bool _rememberMe;
+    public bool RememberMe { get => _rememberMe; set => Set(ref _rememberMe, value); }
+
+    private bool _autoSignMeIn;
+    public bool AutoSignMeIn { get => _autoSignMeIn; set => Set(ref _autoSignMeIn, value); }
+
+    private int _idleTimeout = 5;
+    public int IdleTimeout { get => _idleTimeout; set => Set(ref _idleTimeout, value); }
+}
+
+public class ChatSettingsViewModel : ViewModelBase
+{
+    private bool _showEmoticons = true;
+    public bool ShowEmoticons { get => _showEmoticons; set => Set(ref _showEmoticons, value); }
+
+    private bool _spellCheck;
+    public bool SpellCheck { get => _spellCheck; set => Set(ref _spellCheck, value); }
+
+    private bool _stealFocusOnNewMessage;
+    public bool StealFocusOnNewMessage { get => _stealFocusOnNewMessage; set => Set(ref _stealFocusOnNewMessage, value); }
+
+    private bool _clearChatOnWindowClose;
+    public bool ClearChatOnWindowClose { get => _clearChatOnWindowClose; set => Set(ref _clearChatOnWindowClose, value); }
+
+    private bool _enableLogging = true;
+    public bool EnableLogging { get => _enableLogging; set => Set(ref _enableLogging, value); }
+}
+
+public class ContactSettingsViewModel : ViewModelBase
+{
+    private string _contactListSortField = "Status";
+    public string ContactListSortField { get => _contactListSortField; set => Set(ref _contactListSortField, value); }
+
+    private bool _groupContacts = true;
+    public bool GroupContacts { get => _groupContacts; set => Set(ref _groupContacts, value); }
+
+    private bool _showOfflineContacts = true;
+    public bool ShowOfflineContacts { get => _showOfflineContacts; set => Set(ref _showOfflineContacts, value); }
+
+    private string _contactListView = "Normal";
+    public string ContactListView { get => _contactListView; set => Set(ref _contactListView, value); }
 }

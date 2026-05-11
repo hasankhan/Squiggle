@@ -1,36 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
+using System.Runtime.CompilerServices;
 
-namespace Squiggle.UI.ViewModel
+namespace Squiggle.UI.ViewModel;
+
+public class ViewModelBase : INotifyPropertyChanged
 {
-    public class ViewModelBase: INotifyPropertyChanged
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
 
-        protected void OnPropertyChanged(params Expression<Func<object>>[] propertySelectors)
-        {
-            IEnumerable<string> propertyNames = propertySelectors.Select(s => GetPropertyName(s));
-            foreach (string propertyName in propertyNames)
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }        
-
-        protected void Set<T>(Expression<Func<object>> propertySelector, ref T property, T value )
-        {
-            property = value;
-            OnPropertyChanged(propertySelector);
-        }
-
-        static string GetPropertyName(Expression<Func<object>> propertySelector)
-        {
-            Expression selector = propertySelector.Body;
-            if (selector.NodeType == ExpressionType.Convert)
-                selector = ((UnaryExpression)selector).Operand;
-            string propertyName = ((MemberExpression)selector).Member.Name;
-            return propertyName;
-        }
+    protected bool Set<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    {
+        if (Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
     }
 }

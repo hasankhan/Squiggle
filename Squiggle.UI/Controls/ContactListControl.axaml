@@ -1,0 +1,61 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="using:Squiggle.UI.Controls"
+             xmlns:converters="using:Squiggle.UI.Converters"
+             x:Class="Squiggle.UI.Controls.ContactListControl">
+    <UserControl.Resources>
+        <converters:StatusConverter x:Key="statusConverter" />
+        <converters:StatusBrushConverter x:Key="statusBrushConverter" />
+    </UserControl.Resources>
+
+    <DockPanel>
+        <!-- Header: logged in user info -->
+        <Border DockPanel.Dock="Top" Padding="12,8"
+                Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}">
+            <StackPanel Spacing="4">
+                <TextBlock Text="{Binding LoggedInUser.DisplayName}"
+                           FontSize="16" FontWeight="SemiBold" />
+                <TextBlock Text="{Binding LoggedInUser.Status, Converter={StaticResource statusConverter}}"
+                           FontSize="12"
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+            </StackPanel>
+        </Border>
+
+        <!-- Search/Filter -->
+        <controls:FilterTextBox DockPanel.Dock="Top" x:Name="filterBox"
+                                 Margin="8,4" />
+
+        <!-- Contact List -->
+        <ListBox x:Name="contactsList"
+                 ItemsSource="{Binding Buddies}"
+                 SelectionMode="Single"
+                 DoubleTapped="ContactsList_DoubleTapped">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid ColumnDefinitions="Auto,*" Margin="4,6">
+                        <!-- Status dot -->
+                        <Ellipse Grid.Column="0"
+                                 Classes="statusIndicator"
+                                 Fill="{Binding Status, Converter={StaticResource statusBrushConverter}}" />
+                        <!-- Contact info -->
+                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                            <TextBlock Text="{Binding DisplayName}" FontSize="14" />
+                            <TextBlock Text="{Binding Properties.DisplayMessage}"
+                                       FontSize="11"
+                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                       TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{DynamicResource Buddy_StartChat}" Click="StartChat_Click" />
+                    <MenuItem Header="{DynamicResource Buddy_SendFile}" Click="SendFile_Click" />
+                    <MenuItem Header="{DynamicResource Buddy_SendEmail}" Click="SendEmail_Click" />
+                </ContextMenu>
+            </ListBox.ContextMenu>
+        </ListBox>
+    </DockPanel>
+</UserControl>
