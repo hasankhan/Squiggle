@@ -57,7 +57,7 @@ namespace Squiggle.Utilities.Application
         public UserActivityMonitor(TimeSpan timeout)
         {
             this.timeout = timeout;
-            timer = new Timer(1.Seconds().TotalMilliseconds);
+            timer = new Timer(TimeSpan.FromSeconds(1).TotalMilliseconds);
             timer.Elapsed += timer_Elapsed;
         }
 

@@ -142,7 +142,7 @@ namespace Squiggle.Core.Presence
 
         static TimeSpan TimeToSuspectToBeGone(ref TimeSpan keepAliveTime)
         {
-            return keepAliveTime + 5.Seconds();
+            return keepAliveTime + TimeSpan.FromSeconds(5);
         }
 
         static TimeSpan TimeToConsiderGone(ref TimeSpan keepAliveTime)

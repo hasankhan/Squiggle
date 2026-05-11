@@ -27,7 +27,7 @@ namespace Squiggle.Screenshot
             var chatWindow = ((Window)window);
             chatWindow.WindowState = WindowState.Minimized;
 
-            await Task.Delay(1.Seconds());
+            await Task.Delay(TimeSpan.FromSeconds(1));
             Stream stream = CaptureScreen();
             window.Restore();
 
