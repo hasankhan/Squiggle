@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using ProtoBuf.Meta;
 using System.Runtime.Serialization;
 using System.Diagnostics;
 
@@ -13,7 +12,9 @@ namespace Squiggle.Utilities.Serialization
     {
         static SerializationHelper()
         {
-            RuntimeTypeModel.Default.AllowParseableTypes = true;
+            // In protobuf-net v3, AllowParseableTypes was removed.
+            // Types like IPAddress are now handled via string-backed properties
+            // on the serialized classes (see SquiggleEndPoint).
         }
 
         public static byte[] Serialize<T>(T item)
