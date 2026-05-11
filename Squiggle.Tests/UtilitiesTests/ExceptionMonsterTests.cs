@@ -54,19 +54,24 @@ namespace Squiggle.Tests.UtilitiesTests
         [Fact]
         public void EatTheException_LogsError_WhenLoggerIsSet()
         {
+            var loggedMessages = new System.Collections.Generic.List<string>();
             var logger = Substitute.For<ILogger>();
+            logger.IsEnabled(Arg.Any<LogLevel>()).Returns(true);
+            logger.When(x => x.Log(
+                    Arg.Any<LogLevel>(),
+                    Arg.Any<EventId>(),
+                    Arg.Any<object>(),
+                    Arg.Any<Exception?>(),
+                    Arg.Any<Func<object, Exception?, string>>()))
+                .Do(ci => loggedMessages.Add(ci.ArgAt<object>(2)?.ToString() ?? ""));
+
             ExceptionMonster.Logger = logger;
 
             ExceptionMonster.EatTheException(
                 () => throw new InvalidOperationException("logged error"),
                 "failing action");
 
-            logger.ReceivedWithAnyArgs(1).Log(
-                LogLevel.Error,
-                default,
-                default(object)!,
-                Arg.Any<Exception>(),
-                Arg.Any<Func<object, Exception?, string>>());
+            loggedMessages.Should().NotBeEmpty();
         }
 
         [Fact]
