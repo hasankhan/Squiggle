@@ -1,0 +1,30 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Squiggle.UI.Avalonia.Windows.ConversationViewer"
+        Title="Conversation"
+        Width="500" Height="400"
+        WindowStartupLocation="CenterOwner">
+    <DockPanel Margin="8">
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal"
+                    HorizontalAlignment="Right" Margin="0,8,0,0" Spacing="8">
+            <Button Content="Export" Click="Export_Click" />
+            <Button Content="Close" Click="Close_Click" />
+        </StackPanel>
+
+        <ListBox x:Name="messagesList">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="4,2">
+                        <DockPanel>
+                            <TextBlock Text="{Binding SenderName}" FontWeight="SemiBold" FontSize="12" DockPanel.Dock="Left" />
+                            <TextBlock Text="{Binding Timestamp}" FontSize="10"
+                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                       HorizontalAlignment="Right" />
+                        </DockPanel>
+                        <TextBlock Text="{Binding Text}" TextWrapping="Wrap" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </DockPanel>
+</Window>

@@ -1,0 +1,58 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Squiggle.UI.Avalonia.Windows.HistoryViewer"
+        Title="History Viewer"
+        Width="620" Height="450"
+        WindowStartupLocation="CenterOwner">
+    <TabControl Margin="8">
+        <!-- Chat History Tab -->
+        <TabItem Header="{DynamicResource HistoryViewer_ChatHistoryTab}">
+            <Grid Margin="8" RowDefinitions="Auto,Auto,Auto,Auto,*">
+                <!-- From Date -->
+                <Grid Grid.Row="0" ColumnDefinitions="100,*" Margin="0,4">
+                    <TextBlock Text="{DynamicResource HistoryViewer_FromDate}" VerticalAlignment="Center" />
+                    <DatePicker x:Name="txtFrom" Grid.Column="1" HorizontalAlignment="Left" Width="200" />
+                </Grid>
+
+                <!-- To Date -->
+                <Grid Grid.Row="1" ColumnDefinitions="100,*" Margin="0,4">
+                    <TextBlock Text="{DynamicResource HistoryViewer_ToDate}" VerticalAlignment="Center" />
+                    <DatePicker x:Name="txtTo" Grid.Column="1" HorizontalAlignment="Left" Width="200" />
+                </Grid>
+
+                <!-- Message search -->
+                <Grid Grid.Row="2" ColumnDefinitions="100,*" Margin="0,4">
+                    <TextBlock Text="{DynamicResource HistoryViewer_Message}" VerticalAlignment="Center" />
+                    <TextBox x:Name="txtMessage" Grid.Column="1" />
+                </Grid>
+
+                <!-- Buttons -->
+                <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8" Margin="0,8">
+                    <Button Content="{DynamicResource HistoryViewer_Clear}" Click="Clear_Click" />
+                    <Button Content="{DynamicResource HistoryViewer_Search}" Click="Search_Click" Classes="accent" />
+                </StackPanel>
+
+                <!-- Results -->
+                <DataGrid Grid.Row="4" x:Name="resultsGrid"
+                          IsReadOnly="True"
+                          CanUserSortColumns="True"
+                          CanUserResizeColumns="True"
+                          DoubleTapped="Results_DoubleTapped"
+                          SelectionMode="Extended">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="{DynamicResource HistoryViewer_Results_Start}" Binding="{Binding Start}" Width="160" />
+                        <DataGridTextColumn Header="{DynamicResource HistoryViewer_Results_End}" Binding="{Binding End}" Width="160" />
+                        <DataGridTextColumn Header="{DynamicResource HistoryViewer_Results_Participants}" Binding="{Binding Participants}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </TabItem>
+
+        <!-- Status History Tab -->
+        <TabItem Header="{DynamicResource HistoryViewer_StatusHistoryTab}">
+            <TextBlock Text="Status history will be available in a future update."
+                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+        </TabItem>
+    </TabControl>
+</Window>

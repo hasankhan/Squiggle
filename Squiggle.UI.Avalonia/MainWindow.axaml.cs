@@ -59,6 +59,12 @@ public partial class MainWindow : Window
         await settingsWindow.ShowDialog(this);
     }
 
+    private async void HistoryMenu_Click(object? sender, RoutedEventArgs e)
+    {
+        var viewer = new Windows.HistoryViewer();
+        await viewer.ShowDialog(this);
+    }
+
     private void AboutMenu_Click(object? sender, RoutedEventArgs e)
     {
         // About dialog - will be implemented later

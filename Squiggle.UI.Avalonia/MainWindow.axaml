@@ -22,7 +22,7 @@
             </MenuItem>
             <MenuItem Header="{DynamicResource MainWindow_MainMenu_Tools}">
                 <MenuItem Header="{DynamicResource MainWindow_MainMenu_HistoryViewer}"
-                          IsEnabled="{Binding IsLoggedIn}" />
+                          IsEnabled="{Binding IsLoggedIn}" Click="HistoryMenu_Click" />
                 <MenuItem Header="{DynamicResource MainWindow_MainMenu_Settings}" Click="SettingsMenu_Click" />
             </MenuItem>
             <MenuItem Header="{DynamicResource MainWindow_MainMenu_Help}">

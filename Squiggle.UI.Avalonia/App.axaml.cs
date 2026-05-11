@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Squiggle.Client;
+using Squiggle.History;
 
 namespace Squiggle.UI.Avalonia;
 
@@ -57,6 +58,9 @@ public partial class App : Application
             var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
             return new ChatClient(Guid.NewGuid().ToString(), null, loggerFactory);
         });
+
+        var dbPath = Path.Combine(appLocation, "squiggle_history.db");
+        services.AddSingleton(new HistoryManager($"Data Source={dbPath}"));
 
         return services.BuildServiceProvider();
     }
