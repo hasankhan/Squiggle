@@ -1,5 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Squiggle.UI.Avalonia.Controls"
         x:Class="Squiggle.UI.Avalonia.Windows.ChatWindow"
         Width="500" Height="450"
         WindowStartupLocation="CenterScreen">
@@ -56,9 +57,9 @@
                                                        DockPanel.Dock="Right"
                                                        HorizontalAlignment="Right" />
                                         </DockPanel>
-                                        <TextBlock TextWrapping="Wrap"
-                                                   Margin="0,2,0,0"
-                                                   Text="{Binding Text}" />
+                                        <controls:MarkdownTextBlock TextWrapping="Wrap"
+                                                                       Margin="0,2,0,0"
+                                                                       Markdown="{Binding Text}" />
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
