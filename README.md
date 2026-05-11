@@ -31,13 +31,13 @@ dotnet build Squiggle.sln
 ## Run
 
 ```bash
-dotnet run --project Squiggle.UI.Avalonia
+dotnet run --project Squiggle.UI
 ```
 
 ## Architecture
 
 ```
-Squiggle.UI.Avalonia  (Avalonia app — windows, views, plugin loader)
+Squiggle.UI           (Avalonia app — windows, views, plugin loader)
     ↓
 Squiggle.Client       (Facade — ChatClient exposes buddy list, login, chat events)
     ↓
