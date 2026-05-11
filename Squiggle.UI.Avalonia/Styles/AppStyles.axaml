@@ -1,0 +1,89 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Status Colors -->
+    <Color x:Key="StatusOnlineColor">#2ECC40</Color>
+    <Color x:Key="StatusAwayColor">#FFDC00</Color>
+    <Color x:Key="StatusBusyColor">#FF4136</Color>
+    <Color x:Key="StatusOfflineColor">#AAAAAA</Color>
+
+    <SolidColorBrush x:Key="StatusOnlineBrush" Color="{StaticResource StatusOnlineColor}" />
+    <SolidColorBrush x:Key="StatusAwayBrush" Color="{StaticResource StatusAwayColor}" />
+    <SolidColorBrush x:Key="StatusBusyBrush" Color="{StaticResource StatusBusyColor}" />
+    <SolidColorBrush x:Key="StatusOfflineBrush" Color="{StaticResource StatusOfflineColor}" />
+
+    <!-- Chat Bubble Styles -->
+    <SolidColorBrush x:Key="SentMessageBrush" Color="#DCF8C6" />
+    <SolidColorBrush x:Key="ReceivedMessageBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="SystemMessageBrush" Color="#F0F0F0" />
+
+    <CornerRadius x:Key="ChatBubbleCornerRadius">12</CornerRadius>
+    <Thickness x:Key="ChatBubblePadding">10,6,10,6</Thickness>
+    <Thickness x:Key="ChatBubbleMargin">4,2,4,2</Thickness>
+
+    <!-- Round Button Style -->
+    <Style Selector="Button.round">
+        <Setter Property="CornerRadius" Value="999" />
+        <Setter Property="Width" Value="32" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="Padding" Value="4" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <!-- Contact List Item Style -->
+    <Style Selector="Border.contactItem">
+        <Setter Property="Padding" Value="8,4" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="CornerRadius" Value="4" />
+    </Style>
+    <Style Selector="Border.contactItem:pointerover">
+        <Setter Property="Background" Value="{DynamicResource SystemControlHighlightListLowBrush}" />
+    </Style>
+
+    <!-- Toolbar Style -->
+    <Style Selector="Button.toolbar">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="6" />
+        <Setter Property="Width" Value="32" />
+        <Setter Property="Height" Value="32" />
+    </Style>
+    <Style Selector="Button.toolbar:pointerover">
+        <Setter Property="Background" Value="{DynamicResource SystemControlHighlightListLowBrush}" />
+    </Style>
+
+    <!-- Status Indicator (small circle) -->
+    <Style Selector="Ellipse.statusIndicator">
+        <Setter Property="Width" Value="10" />
+        <Setter Property="Height" Value="10" />
+        <Setter Property="Margin" Value="2" />
+    </Style>
+
+    <!-- Section Header in Contact List -->
+    <Style Selector="TextBlock.sectionHeader">
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+        <Setter Property="Margin" Value="8,12,8,4" />
+    </Style>
+
+    <!-- Chat Window Message Styles -->
+    <Style Selector="TextBlock.messageSender">
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Margin" Value="0,0,0,2" />
+    </Style>
+
+    <Style Selector="TextBlock.messageTimestamp">
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+        <Setter Property="Margin" Value="8,0,0,0" />
+        <Setter Property="VerticalAlignment" Value="Bottom" />
+    </Style>
+
+    <Style Selector="TextBlock.messageContent">
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="FontSize" Value="14" />
+    </Style>
+</ResourceDictionary>

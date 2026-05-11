@@ -4,4 +4,8 @@
     <Application.Styles>
         <FluentTheme />
     </Application.Styles>
+    <Application.Resources>
+        <ResourceInclude Source="avares://Squiggle.UI.Avalonia/Styles/AppStyles.axaml" />
+        <ResourceInclude Source="avares://Squiggle.UI.Avalonia/Styles/Translations.axaml" />
+    </Application.Resources>
 </Application>
