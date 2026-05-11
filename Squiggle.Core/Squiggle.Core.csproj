@@ -3,9 +3,19 @@
     <RootNamespace>Squiggle.Core</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.29.*" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.71.*" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.71.*" />
+    <PackageReference Include="Grpc.Tools" Version="2.71.*" PrivateAssets="All" />
     <PackageReference Include="Makaretu.Dns.Multicast" Version="0.27.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.*" />
     <PackageReference Include="protobuf-net" Version="3.2.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="Chat\Transport\Protos\squiggle_chat.proto" GrpcServices="Both" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Squiggle.Infrastructure\Squiggle.Infrastructure.csproj" />

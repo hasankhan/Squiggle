@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package squiggle.chat;
+
+option csharp_namespace = "Squiggle.Core.Chat.Transport.Grpc";
+
+service SquiggleChat {
+  rpc SendChatMessage(ChatMessageEnvelope) returns (ChatResponse);
+}
+
+message ChatResponse {
+  bool success = 1;
+}
+
+message EndPointInfo {
+  string client_id = 1;
+  string ip = 2;
+  int32 port = 3;
+}
+
+message ChatMessageEnvelope {
+  string session_id = 1;
+  EndPointInfo sender = 2;
+  EndPointInfo recipient = 3;
+
+  oneof payload {
+    TextMessagePayload text_message = 10;
+    BuzzPayload buzz = 11;
+    ChatInvitePayload chat_invite = 12;
+    ChatJoinPayload chat_join = 13;
+    ChatLeavePayload chat_leave = 14;
+    TypingPayload typing = 15;
+    UpdateTextPayload update_text = 16;
+    ActivityInvitePayload activity_invite = 17;
+    ActivityAcceptPayload activity_accept = 18;
+    ActivityCancelPayload activity_cancel = 19;
+    ActivityDataPayload activity_data = 20;
+    GiveSessionInfoPayload give_session_info = 21;
+    SessionInfoPayload session_info = 22;
+  }
+}
+
+message TextMessagePayload {
+  string id = 1;
+  string font_name = 2;
+  int32 font_size = 3;
+  int32 color_r = 4;
+  int32 color_g = 5;
+  int32 color_b = 6;
+  int32 font_style = 7;
+  string message = 8;
+}
+
+message BuzzPayload {
+}
+
+message ChatInvitePayload {
+  repeated EndPointInfo participants = 1;
+}
+
+message ChatJoinPayload {
+}
+
+message ChatLeavePayload {
+}
+
+message TypingPayload {
+}
+
+message UpdateTextPayload {
+  string id = 1;
+  string message = 2;
+}
+
+message ActivityInvitePayload {
+  string activity_id = 1;
+  string activity_session_id = 2;
+  map<string, string> metadata = 3;
+}
+
+message ActivityAcceptPayload {
+}
+
+message ActivityCancelPayload {
+}
+
+message ActivityDataPayload {
+  bytes data = 1;
+}
+
+message GiveSessionInfoPayload {
+}
+
+message SessionInfoPayload {
+  repeated EndPointInfo participants = 1;
+}

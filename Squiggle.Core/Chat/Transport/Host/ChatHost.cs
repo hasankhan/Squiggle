@@ -1,15 +1,21 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
+using Grpc.Net.Client;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Squiggle.Core.Chat.Transport.Grpc;
 using Squiggle.Core.Chat.Transport.Messages;
 using Squiggle.Utilities;
-using Squiggle.Utilities.Net.Pipe;
-using Squiggle.Utilities.Serialization;
 
 namespace Squiggle.Core.Chat.Transport.Host
 {
@@ -17,7 +23,8 @@ namespace Squiggle.Core.Chat.Transport.Host
     public class ChatHost: IDisposable
     {
         IPEndPoint endpoint;
-        UnicastMessagePipe pipe = null!;
+        WebApplication? grpcApp;
+        readonly ConcurrentDictionary<string, GrpcChannel> channels = new();
         readonly ILogger<ChatHost> logger;
 
         public event EventHandler<SessionEventArgs> BuzzReceived = delegate { };
@@ -43,169 +50,306 @@ namespace Squiggle.Core.Chat.Transport.Host
 
         public void Start()
         {
-            this.pipe = new UnicastMessagePipe(endpoint);
-            pipe.MessageReceived += pipe_MessageReceived;
-            pipe.Open();
-        }
+            var builder = WebApplication.CreateBuilder();
+            builder.Logging.ClearProviders();
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.Listen(endpoint, listenOptions =>
+                {
+                    listenOptions.Protocols = HttpProtocols.Http2;
+                });
+            });
+            builder.Services.AddGrpc();
+            builder.Services.AddSingleton(this);
+            builder.Services.AddSingleton<ILogger>(logger);
 
-        void pipe_MessageReceived(object? sender, Utilities.Net.Pipe.MessageReceivedEventArgs e)
-        {
-            SerializationHelper.Deserialize<Message>(e.Message, msg => OnMessageReceived(msg), "chat message");            
-        }
+            grpcApp = builder.Build();
+            grpcApp.MapGrpcService<SquiggleChatGrpcService>();
 
-        void OnMessageReceived(Message msg)
-        {
-            OnMessageReceived(msg.SessionId, msg.Sender, msg.GetType());
-
-            if (msg is ActivityCancelMessage)
-                OnActivitySessionCancelled((ActivityCancelMessage)msg);
-            else if (msg is ActivityDataMessage)
-                OnActivityDataReceived((ActivityDataMessage)msg);
-            else if (msg is ActivityInviteAcceptMessage)
-                OnActivityInvitationAccepted((ActivityInviteAcceptMessage)msg);
-            else if (msg is ActivityInviteMessage)
-                OnActivityInvitationReceived((ActivityInviteMessage)msg);
-            else if (msg is BuzzMessage)
-                OnBuzzReceived((BuzzMessage)msg);
-            else if (msg is ChatInviteMessage)
-                OnChatInviteReceived((ChatInviteMessage)msg);
-            else if (msg is ChatJoinMessage)
-                OnUserJoined((ChatJoinMessage)msg);
-            else if (msg is ChatLeaveMessage)
-                OnUserLeft((ChatLeaveMessage)msg);
-            else if (msg is GiveSessionInfoMessage)
-                OnSessionInfoRequested((GiveSessionInfoMessage)msg);
-            else if (msg is SessionInfoMessage)
-                OnSessionInfoReceived((SessionInfoMessage)msg);
-            else if (msg is TextMessage)
-                OnTextMessageReceived((TextMessage)msg);
-            else if (msg is UpdateTextMessage)
-                OnTextMessageUpdated((UpdateTextMessage)msg);
-            else if (msg is UserTypingMessage)
-                OnUserTyping((UserTypingMessage)msg);
+            grpcApp.StartAsync().GetAwaiter().GetResult();
+            logger.LogInformation("gRPC ChatHost started on {Endpoint}", endpoint);
         }
 
         public void Send(Message message)
         {
-            byte[] data = SerializationHelper.Serialize(message);
-            pipe.Send(message.Recipient.Address, data);
+            var envelope = MessageToEnvelope(message);
+            var target = message.Recipient.Address;
+            SendGrpcMessage(target, envelope);
         }
 
-        void OnSessionInfoRequested(GiveSessionInfoMessage msg)
+        void SendGrpcMessage(IPEndPoint target, ChatMessageEnvelope envelope)
         {
-            SessionInfoRequested(this, new SessionEventArgs(msg.SessionId, msg.Sender));
-            logger.LogDebug("{Sender} is requesting session info", msg.Sender);
+            var key = $"{target.Address}:{target.Port}";
+            var channel = channels.GetOrAdd(key, _ =>
+                GrpcChannel.ForAddress($"http://{target.Address}:{target.Port}", new GrpcChannelOptions
+                {
+                    HttpHandler = new System.Net.Http.SocketsHttpHandler
+                    {
+                        EnableMultipleHttp2Connections = true
+                    }
+                }));
+
+            var client = new SquiggleChat.SquiggleChatClient(channel);
+            client.SendChatMessage(envelope);
         }
 
-        void OnSessionInfoReceived(SessionInfoMessage msg)
+        #region Message-to-Envelope conversion
+
+        static ChatMessageEnvelope MessageToEnvelope(Message msg)
         {
-            SessionInfoReceived(this, new SessionInfoEventArgs() { Participants = msg.Participants.ToArray(), Sender = msg.Sender, SessionID = msg.SessionId });
-            logger.LogDebug("{Sender} sent session info", msg.Sender);
+            var envelope = new ChatMessageEnvelope
+            {
+                SessionId = msg.SessionId.ToString(),
+                Sender = ToEndPointInfo(msg.Sender),
+                Recipient = ToEndPointInfo(msg.Recipient),
+            };
+
+            switch (msg)
+            {
+                case TextMessage tm:
+                    envelope.TextMessage = new TextMessagePayload
+                    {
+                        Id = tm.Id.ToString(),
+                        FontName = tm.FontName ?? "",
+                        FontSize = tm.FontSize,
+                        ColorR = tm.Color.R,
+                        ColorG = tm.Color.G,
+                        ColorB = tm.Color.B,
+                        FontStyle = (int)tm.FontStyle,
+                        Message = tm.Message ?? ""
+                    };
+                    break;
+                case BuzzMessage:
+                    envelope.Buzz = new BuzzPayload();
+                    break;
+                case ChatInviteMessage cim:
+                    var invite = new ChatInvitePayload();
+                    invite.Participants.AddRange(cim.Participants.Select(ToEndPointInfo));
+                    envelope.ChatInvite = invite;
+                    break;
+                case ChatJoinMessage:
+                    envelope.ChatJoin = new ChatJoinPayload();
+                    break;
+                case ChatLeaveMessage:
+                    envelope.ChatLeave = new ChatLeavePayload();
+                    break;
+                case UserTypingMessage:
+                    envelope.Typing = new TypingPayload();
+                    break;
+                case UpdateTextMessage utm:
+                    envelope.UpdateText = new UpdateTextPayload
+                    {
+                        Id = utm.Id.ToString(),
+                        Message = utm.Message ?? ""
+                    };
+                    break;
+                case ActivityInviteMessage aim:
+                    var actInvite = new ActivityInvitePayload
+                    {
+                        ActivityId = aim.ActivityId.ToString(),
+                        ActivitySessionId = aim.ActivitySessionId.ToString()
+                    };
+                    foreach (var kv in aim.Metadata)
+                        actInvite.Metadata[kv.Key] = kv.Value;
+                    envelope.ActivityInvite = actInvite;
+                    break;
+                case ActivityInviteAcceptMessage:
+                    envelope.ActivityAccept = new ActivityAcceptPayload();
+                    break;
+                case ActivityCancelMessage:
+                    envelope.ActivityCancel = new ActivityCancelPayload();
+                    break;
+                case ActivityDataMessage adm:
+                    envelope.ActivityData = new ActivityDataPayload
+                    {
+                        Data = Google.Protobuf.ByteString.CopyFrom(adm.Data)
+                    };
+                    break;
+                case GiveSessionInfoMessage:
+                    envelope.GiveSessionInfo = new GiveSessionInfoPayload();
+                    break;
+                case SessionInfoMessage sim:
+                    var info = new SessionInfoPayload();
+                    info.Participants.AddRange(sim.Participants.Select(ToEndPointInfo));
+                    envelope.SessionInfo = info;
+                    break;
+            }
+
+            return envelope;
         }
 
-        void OnBuzzReceived(BuzzMessage msg)
+        static EndPointInfo ToEndPointInfo(SquiggleEndPoint ep)
         {
-            BuzzReceived(this, new SessionEventArgs(msg.SessionId, msg.Sender));
-            logger.LogDebug("{Sender} is buzzing", msg.Sender);
+            return new EndPointInfo
+            {
+                ClientId = ep.ClientID ?? "",
+                Ip = ep.Address?.Address?.ToString() ?? "",
+                Port = ep.Address?.Port ?? 0
+            };
         }
 
-        void OnUserTyping(UserTypingMessage msg)
+        static EndPointInfo ToEndPointInfo(ISquiggleEndPoint ep)
         {
-            UserTyping(this, new SessionEventArgs(msg.SessionId, msg.Sender ));
-            logger.LogDebug("{Sender} is typing", msg.Sender);
+            return new EndPointInfo
+            {
+                ClientId = ep.ClientID ?? "",
+                Ip = ep.Address?.Address?.ToString() ?? "",
+                Port = ep.Address?.Port ?? 0
+            };
         }
 
-        void OnTextMessageReceived(TextMessage msg)
+        #endregion
+
+        #region gRPC inbound handlers (called by SquiggleChatGrpcService)
+
+        internal void OnGrpcTextMessageReceived(Guid sessionId, SquiggleEndPoint sender, TextMessagePayload payload)
         {
+            OnMessageReceived(sessionId, sender, typeof(TextMessage));
             TextMessageReceived(this, new TextMessageReceivedEventArgs()
             {
-                Id = msg.Id,
-                SessionID = msg.SessionId, 
-                Sender = msg.Sender,
-                FontName = msg.FontName,
-                FontSize = msg.FontSize,
-                Color = msg.Color,
-                FontStyle = msg.FontStyle,
-                Message = msg.Message 
+                Id = Guid.Parse(payload.Id),
+                SessionID = sessionId,
+                Sender = sender,
+                FontName = payload.FontName,
+                FontSize = payload.FontSize,
+                Color = Color.FromArgb(payload.ColorR, payload.ColorG, payload.ColorB),
+                FontStyle = (FontStyle)payload.FontStyle,
+                Message = payload.Message
             });
-            logger.LogDebug("Message received from {Sender}, SessionId={SessionId}", msg.Sender, msg.SessionId);
+            logger.LogDebug("Message received from {Sender}, SessionId={SessionId}", sender, sessionId);
         }
 
-        void OnTextMessageUpdated(UpdateTextMessage msg)
+        internal void OnGrpcBuzzReceived(Guid sessionId, SquiggleEndPoint sender)
         {
+            OnMessageReceived(sessionId, sender, typeof(BuzzMessage));
+            BuzzReceived(this, new SessionEventArgs(sessionId, sender));
+            logger.LogDebug("{Sender} is buzzing", sender);
+        }
+
+        internal void OnGrpcChatInviteReceived(Guid sessionId, SquiggleEndPoint sender, ChatInvitePayload payload)
+        {
+            OnMessageReceived(sessionId, sender, typeof(ChatInviteMessage));
+            var participants = payload.Participants.Select(p =>
+                new SquiggleEndPoint(p.ClientId, new IPEndPoint(IPAddress.Parse(p.Ip), p.Port))).ToArray();
+            logger.LogDebug("{Sender} invited you to group chat", sender);
+            ChatInviteReceived(this, new ChatInviteReceivedEventArgs()
+            {
+                SessionID = sessionId,
+                Sender = sender,
+                Participants = participants
+            });
+        }
+
+        internal void OnGrpcUserJoined(Guid sessionId, SquiggleEndPoint sender)
+        {
+            OnMessageReceived(sessionId, sender, typeof(ChatJoinMessage));
+            logger.LogDebug("{Sender} has joined the chat", sender);
+            UserJoined(this, new MessageReceivedEventArgs() { SessionID = sessionId, Sender = sender });
+        }
+
+        internal void OnGrpcUserLeft(Guid sessionId, SquiggleEndPoint sender)
+        {
+            OnMessageReceived(sessionId, sender, typeof(ChatLeaveMessage));
+            logger.LogDebug("{Sender} has left the chat", sender);
+            UserLeft(this, new MessageReceivedEventArgs() { SessionID = sessionId, Sender = sender });
+        }
+
+        internal void OnGrpcUserTyping(Guid sessionId, SquiggleEndPoint sender)
+        {
+            OnMessageReceived(sessionId, sender, typeof(UserTypingMessage));
+            UserTyping(this, new SessionEventArgs(sessionId, sender));
+            logger.LogDebug("{Sender} is typing", sender);
+        }
+
+        internal void OnGrpcTextMessageUpdated(Guid sessionId, SquiggleEndPoint sender, UpdateTextPayload payload)
+        {
+            OnMessageReceived(sessionId, sender, typeof(UpdateTextMessage));
             TextMessageUpdated(this, new TextMessageUpdatedEventArgs()
             {
-                Id = msg.Id,
-                SessionID = msg.SessionId,
-                Sender = msg.Sender,
-                Message = msg.Message
+                Id = Guid.Parse(payload.Id),
+                SessionID = sessionId,
+                Sender = sender,
+                Message = payload.Message
             });
-            logger.LogDebug("Message updated by {Sender}, SessionId={SessionId}", msg.Sender, msg.SessionId);
+            logger.LogDebug("Message updated by {Sender}, SessionId={SessionId}", sender, sessionId);
         }
 
-        void OnChatInviteReceived(ChatInviteMessage msg)
+        internal void OnGrpcActivityInvitationReceived(Guid sessionId, SquiggleEndPoint sender, ActivityInvitePayload payload)
         {
-            logger.LogDebug("{Sender} invited you to group chat", msg.Sender);
-            ChatInviteReceived(this, new ChatInviteReceivedEventArgs() 
-            { 
-                SessionID = msg.SessionId, 
-                Sender = msg.Sender, 
-                Participants = msg.Participants.ToArray() 
-            });
-        }
-
-        void OnUserJoined(ChatJoinMessage msg)
-        {
-            logger.LogDebug("{Sender} has joined the chat", msg.Sender);
-            UserJoined(this, new MessageReceivedEventArgs() { SessionID = msg.SessionId, Sender = msg.Sender});
-        }
-
-        void OnUserLeft(ChatLeaveMessage msg)
-        {
-            logger.LogDebug("{Sender} has left the chat", msg.Sender);
-            UserLeft(this, new MessageReceivedEventArgs() { SessionID = msg.SessionId, Sender = msg.Sender});
-        }
-
-        void OnActivityInvitationReceived(ActivityInviteMessage msg)
-        {
-            logger.LogDebug("{Sender} wants to send a file {Metadata}", msg.Sender, msg.Metadata.ToTraceString());
+            OnMessageReceived(sessionId, sender, typeof(ActivityInviteMessage));
+            logger.LogDebug("{Sender} wants to send a file {Metadata}", sender, payload.Metadata.ToTraceString());
             ActivityInvitationReceived(this, new ActivityInvitationReceivedEventArgs()
             {
-                SessionID = msg.SessionId,
-                Sender = msg.Sender,
-                ActivityId = msg.ActivityId,
-                ActivitySessionId = msg.ActivitySessionId,
-                Metadata = msg.Metadata.ToDictionary(i => i.Key, i => i.Value)
+                SessionID = sessionId,
+                Sender = sender,
+                ActivityId = Guid.Parse(payload.ActivityId),
+                ActivitySessionId = Guid.Parse(payload.ActivitySessionId),
+                Metadata = payload.Metadata.ToDictionary(kv => kv.Key, kv => kv.Value)
             });
         }
 
-        void OnActivityDataReceived(ActivityDataMessage msg)
+        internal void OnGrpcActivityInvitationAccepted(Guid sessionId, SquiggleEndPoint sender)
         {
-            ActivityDataReceived(this, new ActivityDataReceivedEventArgs() { ActivitySessionId = msg.SessionId, Chunk = msg.Data });
+            OnMessageReceived(sessionId, sender, typeof(ActivityInviteAcceptMessage));
+            ActivityInvitationAccepted(this, new ActivitySessionEventArgs() { ActivitySessionId = sessionId });
         }
 
-        void OnActivityInvitationAccepted(ActivityInviteAcceptMessage msg)
+        internal void OnGrpcActivitySessionCancelled(Guid sessionId, SquiggleEndPoint sender)
         {
-            ActivityInvitationAccepted(this, new ActivitySessionEventArgs() { ActivitySessionId = msg.SessionId });
+            OnMessageReceived(sessionId, sender, typeof(ActivityCancelMessage));
+            ActivitySessionCancelled(this, new ActivitySessionEventArgs() { ActivitySessionId = sessionId });
         }
 
-        void OnActivitySessionCancelled(ActivityCancelMessage msg)
+        internal void OnGrpcActivityDataReceived(Guid sessionId, SquiggleEndPoint sender, ActivityDataPayload payload)
         {
-            ActivitySessionCancelled(this, new ActivitySessionEventArgs() { ActivitySessionId = msg.SessionId });
+            OnMessageReceived(sessionId, sender, typeof(ActivityDataMessage));
+            ActivityDataReceived(this, new ActivityDataReceivedEventArgs()
+            {
+                ActivitySessionId = sessionId,
+                Chunk = payload.Data.ToByteArray()
+            });
         }
+
+        internal void OnGrpcSessionInfoRequested(Guid sessionId, SquiggleEndPoint sender)
+        {
+            OnMessageReceived(sessionId, sender, typeof(GiveSessionInfoMessage));
+            SessionInfoRequested(this, new SessionEventArgs(sessionId, sender));
+            logger.LogDebug("{Sender} is requesting session info", sender);
+        }
+
+        internal void OnGrpcSessionInfoReceived(Guid sessionId, SquiggleEndPoint sender, SessionInfoPayload payload)
+        {
+            OnMessageReceived(sessionId, sender, typeof(SessionInfoMessage));
+            var participants = payload.Participants.Select(p =>
+                (ISquiggleEndPoint)new SquiggleEndPoint(p.ClientId, new IPEndPoint(IPAddress.Parse(p.Ip), p.Port))).ToArray();
+            SessionInfoReceived(this, new SessionInfoEventArgs()
+            {
+                Participants = participants,
+                Sender = sender,
+                SessionID = sessionId
+            });
+            logger.LogDebug("{Sender} sent session info", sender);
+        }
+
+        #endregion
 
         void OnMessageReceived(Guid sessionId, ISquiggleEndPoint sender, Type messageType)
         {
-            MessageReceived(this, new MessageReceivedEventArgs(){Sender = sender, SessionID = sessionId, Type = messageType});
+            MessageReceived(this, new MessageReceivedEventArgs() { Sender = sender, SessionID = sessionId, Type = messageType });
         }
 
         public void Dispose()
         {
-            if (pipe != null)
+            if (grpcApp != null)
             {
-                pipe.Dispose();
-                pipe = null;
+                grpcApp.StopAsync().GetAwaiter().GetResult();
+                grpcApp.DisposeAsync().AsTask().GetAwaiter().GetResult();
+                grpcApp = null;
             }
+
+            foreach (var channel in channels.Values)
+                channel.Dispose();
+            channels.Clear();
         }
     }
 
