@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <RootNamespace>Squiggle.Screenshot</RootNamespace>
-    <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>

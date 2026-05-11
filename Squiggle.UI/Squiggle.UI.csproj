@@ -3,8 +3,6 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Squiggle.UI</RootNamespace>
     <AssemblyName>Squiggle.UI</AssemblyName>
-    <UseWPF>false</UseWPF>
-    <UseWindowsForms>false</UseWindowsForms>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <RootNamespace>Squiggle.VoiceChat</RootNamespace>
     <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
