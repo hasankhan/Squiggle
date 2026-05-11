@@ -8,11 +8,7 @@
     <ProjectReference Include="..\Squiggle.Client\Squiggle.Client.csproj" />
     <ProjectReference Include="..\Squiggle.Utilities\Squiggle.Utilities.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\Squiggle.UI\Resources\Translation.xaml" Link="Translation.xaml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+
   <ItemGroup>
     <Compile Include="..\Shared\AssemblyInfo.Copyright.cs" Link="Properties\AssemblyInfo.Copyright.cs" />
   </ItemGroup>
