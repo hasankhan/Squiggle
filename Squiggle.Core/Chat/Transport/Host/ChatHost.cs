@@ -23,6 +23,7 @@ namespace Squiggle.Core.Chat.Transport.Host
     public class ChatHost: IDisposable
     {
         IPEndPoint endpoint;
+        bool useQuic;
         WebApplication? grpcApp;
         readonly ConcurrentDictionary<string, GrpcChannel> channels = new();
         readonly ILogger<ChatHost> logger;
@@ -42,21 +43,32 @@ namespace Squiggle.Core.Chat.Transport.Host
         public event EventHandler<SessionEventArgs> SessionInfoRequested = delegate { };
         public event EventHandler<SessionInfoEventArgs> SessionInfoReceived = delegate { };
 
-        public ChatHost(IPEndPoint endpoint, ILogger<ChatHost>? logger = null)
+        public ChatHost(IPEndPoint endpoint, bool useQuic = false, ILogger<ChatHost>? logger = null)
         {
             this.endpoint = endpoint;
+            this.useQuic = useQuic;
             this.logger = logger ?? NullLogger<ChatHost>.Instance;
         }
 
         public void Start()
         {
+            bool quicEnabled = useQuic && QuicSupported();
+
             var builder = WebApplication.CreateBuilder();
             builder.Logging.ClearProviders();
             builder.WebHost.ConfigureKestrel(options =>
             {
                 options.Listen(endpoint, listenOptions =>
                 {
-                    listenOptions.Protocols = HttpProtocols.Http2;
+                    if (quicEnabled)
+                    {
+                        listenOptions.Protocols = HttpProtocols.Http1AndHttp2AndHttp3;
+                        listenOptions.UseHttps();
+                    }
+                    else
+                    {
+                        listenOptions.Protocols = HttpProtocols.Http2;
+                    }
                 });
             });
             builder.Services.AddGrpc();
@@ -67,7 +79,19 @@ namespace Squiggle.Core.Chat.Transport.Host
             grpcApp.MapGrpcService<SquiggleChatGrpcService>();
 
             grpcApp.StartAsync().GetAwaiter().GetResult();
-            logger.LogInformation("gRPC ChatHost started on {Endpoint}", endpoint);
+            logger.LogInformation("gRPC ChatHost started on {Endpoint} (QUIC={QuicEnabled})", endpoint, quicEnabled);
+        }
+
+        static bool QuicSupported()
+        {
+            try
+            {
+                return System.Net.Quic.QuicListener.IsSupported;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public void Send(Message message)
@@ -79,15 +103,30 @@ namespace Squiggle.Core.Chat.Transport.Host
 
         void SendGrpcMessage(IPEndPoint target, ChatMessageEnvelope envelope)
         {
-            var key = $"{target.Address}:{target.Port}";
+            bool quicEnabled = useQuic && QuicSupported();
+            var scheme = quicEnabled ? "https" : "http";
+            var key = $"{scheme}://{target.Address}:{target.Port}";
             var channel = channels.GetOrAdd(key, _ =>
-                GrpcChannel.ForAddress($"http://{target.Address}:{target.Port}", new GrpcChannelOptions
+            {
+                var handler = new System.Net.Http.SocketsHttpHandler
                 {
-                    HttpHandler = new System.Net.Http.SocketsHttpHandler
+                    EnableMultipleHttp2Connections = true
+                };
+
+                if (quicEnabled)
+                {
+                    // Skip certificate validation for LAN peers using self-signed certs
+                    handler.SslOptions = new System.Net.Security.SslClientAuthenticationOptions
                     {
-                        EnableMultipleHttp2Connections = true
-                    }
-                }));
+                        RemoteCertificateValidationCallback = (_, _, _, _) => true
+                    };
+                }
+
+                return GrpcChannel.ForAddress($"{scheme}://{target.Address}:{target.Port}", new GrpcChannelOptions
+                {
+                    HttpHandler = handler
+                });
+            });
 
             var client = new SquiggleChat.SquiggleChatClient(channel);
             client.SendChatMessage(envelope);
