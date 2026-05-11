@@ -1,16 +1,12 @@
-﻿using System;
-
-namespace Squiggle.Plugins
+﻿namespace Squiggle.Plugins
 {
-
-    public class SignInOptions
+    public record SignInOptions
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public string Domain { get; set; }
-        
-        public string DisplayName { get; set; }
-        public string GroupName { get; set; }
+        public string? Username { get; init; }
+        public string? Password { get; init; }
+        public string? Domain { get; init; }
+        public string? DisplayName { get; init; }
+        public string? GroupName { get; init; }
     }
 
     public interface IMainWindow: IWindow

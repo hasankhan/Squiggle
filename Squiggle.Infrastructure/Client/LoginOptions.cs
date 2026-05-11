@@ -1,22 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Squiggle.Core;
 using System.Net;
 using Squiggle.Core.Presence;
 
 namespace Squiggle.Client
 {
-    public class LoginOptions
+    public record LoginOptions
     {
-        public IPEndPoint ChatEndPoint {get; set;} = null!;
-        public IPEndPoint MulticastEndPoint {get; set; } = null!;
-        public IPEndPoint MulticastReceiveEndPoint { get; set; } = null!;
-        public IPEndPoint PresenceServiceEndPoint { get; set; } = null!;
-        public TimeSpan KeepAliveTime { get; set; }
-        
-        public string DisplayName { get;set; } = null!;
-        public IBuddyProperties UserProperties {get; set; } = null!; 
+        public required IPEndPoint ChatEndPoint { get; init; }
+        public required IPEndPoint MulticastEndPoint { get; init; }
+        public required IPEndPoint MulticastReceiveEndPoint { get; init; }
+        public required IPEndPoint PresenceServiceEndPoint { get; init; }
+        public TimeSpan KeepAliveTime { get; init; }
+        public required string DisplayName { get; init; }
+        public required IBuddyProperties UserProperties { get; init; }
     }
 }

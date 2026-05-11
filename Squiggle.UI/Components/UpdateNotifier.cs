@@ -11,12 +11,12 @@ using Squiggle.Utilities;
 
 namespace Squiggle.UI.Components
 {
-    class UpdateCheckResult
+    record UpdateCheckResult
     {
-        public bool IsUpdated { get; set; }
-        public DateTime LastUpdate { get; set; }
-        public string Title { get; set; } = null!;
-        public string UpdateLink { get; set; } = null!;
+        public bool IsUpdated { get; init; }
+        public DateTime LastUpdate { get; init; }
+        public string Title { get; init; } = null!;
+        public string UpdateLink { get; init; } = null!;
     }
 
     class UpdateNotifier
@@ -25,18 +25,19 @@ namespace Squiggle.UI.Components
 
         public static UpdateCheckResult CheckForUpdate(DateTimeOffset clientLastUpdate)
         {
-            var result = new UpdateCheckResult();
-
             SyndicationItem? lastUpdate = GetLastUpdate();
             if (lastUpdate != null && lastUpdate.PublishDate > clientLastUpdate && VersionIsSameOrNewer(lastUpdate))
             {
-                result.LastUpdate = lastUpdate.PublishDate.LocalDateTime;
-                result.IsUpdated = true;
-                result.Title = lastUpdate.Title.Text;
-                result.UpdateLink = lastUpdate.Links.FirstOrDefault().Uri.ToString();
+                return new UpdateCheckResult
+                {
+                    IsUpdated = true,
+                    LastUpdate = lastUpdate.PublishDate.LocalDateTime,
+                    Title = lastUpdate.Title.Text,
+                    UpdateLink = lastUpdate.Links.FirstOrDefault().Uri.ToString()
+                };
             }
 
-            return result;
+            return new UpdateCheckResult();
         }
 
         static bool VersionIsSameOrNewer(SyndicationItem lastUpdate)

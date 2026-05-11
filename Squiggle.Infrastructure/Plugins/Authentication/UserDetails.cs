@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Squiggle.Plugins.Authentication
+﻿namespace Squiggle.Plugins.Authentication
 {
-    public class UserDetails
+    public record UserDetails
     {
-        public byte[]? Image { get; set; }
-        public string? DisplayName { get; set; }
-        public string? DisplayMessage { get; set; }
-        public string? GroupName { get; set; }
-        public string? Email { get; set; }
+        public byte[]? Image { get; init; }
+        public string? DisplayName { get; init; }
+        public string? DisplayMessage { get; init; }
+        public string? GroupName { get; init; }
+        public string? Email { get; init; }
     }
 }
