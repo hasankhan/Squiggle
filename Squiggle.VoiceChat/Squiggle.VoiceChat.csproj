@@ -13,14 +13,6 @@
     <ProjectReference Include="..\Squiggle.Utilities\Squiggle.Utilities.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Native\libspeex-license.txt" Link="libspeex-license.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Native\libspeexdsp.dll" Link="libspeexdsp.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\Shared\AssemblyInfo.Copyright.cs" Link="Properties\AssemblyInfo.Copyright.cs" />
     <Compile Include="..\Shared\AssemblyInfo.Version.cs" Link="Properties\AssemblyInfo.Version.cs" />
   </ItemGroup>

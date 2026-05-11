@@ -544,7 +544,6 @@ namespace Squiggle.UI.Windows
                 }
                 chatTextBox.AddVoiceChatReceivedRequest(context, invitation, PrimaryBuddy.DisplayName, context.IsVoiceChatActive);
                 voiceController.VoiceChatContext = invitation;
-                invitation.Dispatcher = Dispatcher;
             });
             chatState.ChatStarted = true;
         }
@@ -1059,7 +1058,6 @@ namespace Squiggle.UI.Windows
             if (handler is IVoiceChatHandler)
             {
                 var voiceHandler = (IVoiceChatHandler)handler;
-                voiceHandler.Dispatcher = Dispatcher;
                 chatTextBox.AddVoiceChatSentRequest(context, voiceHandler, PrimaryBuddy.DisplayName);
             }
             else if (handler is IFileTransferHandler)
