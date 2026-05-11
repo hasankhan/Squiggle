@@ -44,6 +44,18 @@ namespace Squiggle.Core.Chat.Transport.Host
 
         void DispatchMessage(Guid sessionId, SquiggleEndPoint sender, ChatMessageEnvelope envelope)
         {
+            // Handle encrypted envelopes — decrypt before dispatching
+            if (envelope.Encrypted)
+            {
+                var decrypted = chatHost.TryDecryptEnvelope(envelope);
+                if (decrypted == null)
+                {
+                    logger.LogWarning("Could not decrypt message from {Sender}, dropping", sender);
+                    return;
+                }
+                envelope = decrypted;
+            }
+
             switch (envelope.PayloadCase)
             {
                 case ChatMessageEnvelope.PayloadOneofCase.TextMessage:
@@ -84,6 +96,9 @@ namespace Squiggle.Core.Chat.Transport.Host
                     break;
                 case ChatMessageEnvelope.PayloadOneofCase.SessionInfo:
                     chatHost.OnGrpcSessionInfoReceived(sessionId, sender, envelope.SessionInfo);
+                    break;
+                case ChatMessageEnvelope.PayloadOneofCase.KeyExchange:
+                    chatHost.OnGrpcKeyExchangeReceived(sessionId, sender, envelope.KeyExchange);
                     break;
                 default:
                     logger.LogWarning("Unknown gRPC chat message payload type: {PayloadCase}", envelope.PayloadCase);

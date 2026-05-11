@@ -71,6 +71,7 @@ namespace Squiggle.Core.Chat
             localHost.UserLeft += chatHost_UserLeft;
             localHost.SessionInfoRequested += chatHost_SessionInfoRequested;
             localHost.SessionInfoReceived += chatHost_SessionInfoReceived;
+            localHost.KeyExchangeReceived += chatHost_KeyExchangeReceived;
 
             remoteUsers = new Dictionary<string, ISquiggleEndPoint>();
             CreateRemoteUsers(Enumerable.Repeat(remoteUser, 1));
@@ -87,6 +88,12 @@ namespace Squiggle.Core.Chat
 
         public void Initialize(bool needSessionInfo)
         {
+            // Initiate E2EE key exchange with the primary remote user
+            ExceptionMonster.EatTheException(() =>
+            {
+                chatHost.InitiateKeyExchange(Id, localUser, PrimaryUser);
+            }, "initiating E2EE key exchange");
+
             if (needSessionInfo)
                 ExceptionMonster.EatTheException(() =>
                 {
@@ -143,6 +150,14 @@ namespace Squiggle.Core.Chat
             chatHost.UserLeft -= chatHost_UserLeft;
             chatHost.SessionInfoRequested -= chatHost_SessionInfoRequested;
             chatHost.SessionInfoReceived -= chatHost_SessionInfoReceived;
+            chatHost.KeyExchangeReceived -= chatHost_KeyExchangeReceived;
+
+            // Clean up encryption state for all remote users in this session
+            ExceptionMonster.EatTheException(() =>
+            {
+                foreach (var user in RemoteUsers)
+                    chatHost.RemoveEncryptionState(user.ClientID);
+            }, "cleaning up encryption state");
 
             ExceptionMonster.EatTheException(() =>
             {
@@ -250,6 +265,25 @@ namespace Squiggle.Core.Chat
                 return;
 
             eventQueue.Enqueue(() => OnMessageUpdated(e));
+        }
+
+        void chatHost_KeyExchangeReceived(object? sender, Transport.Host.KeyExchangeReceivedEventArgs e)
+        {
+            if (e.SessionID != Id)
+                return;
+
+            if (e.NeedsResponse)
+            {
+                // The peer initiated key exchange; our key was auto-derived by ChatHost.
+                // Send our public key back to complete the handshake.
+                ExceptionMonster.EatTheException(() =>
+                {
+                    chatHost.InitiateKeyExchange(Id, localUser, e.Sender);
+                }, "responding to E2EE key exchange");
+            }
+
+            logger.LogInformation("E2EE key exchange completed for session {SessionId} with peer {Peer}",
+                Id, e.Sender.ClientID);
         }
 
         void OnInitialized()

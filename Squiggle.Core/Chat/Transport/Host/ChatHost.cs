@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Google.Protobuf;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +14,7 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Squiggle.Core.Chat.Encryption;
 using Squiggle.Core.Chat.Transport.Grpc;
 using Squiggle.Core.Chat.Transport.Messages;
 using Squiggle.Utilities;
@@ -27,6 +29,7 @@ namespace Squiggle.Core.Chat.Transport.Host
         WebApplication? grpcApp;
         readonly ConcurrentDictionary<string, GrpcChannel> channels = new();
         readonly ILogger<ChatHost> logger;
+        readonly EncryptionManager encryptionManager;
 
         public event EventHandler<SessionEventArgs> BuzzReceived = delegate { };
         public event EventHandler<TextMessageReceivedEventArgs> TextMessageReceived = delegate { };
@@ -42,12 +45,14 @@ namespace Squiggle.Core.Chat.Transport.Host
         public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
         public event EventHandler<SessionEventArgs> SessionInfoRequested = delegate { };
         public event EventHandler<SessionInfoEventArgs> SessionInfoReceived = delegate { };
+        public event EventHandler<KeyExchangeReceivedEventArgs> KeyExchangeReceived = delegate { };
 
         public ChatHost(IPEndPoint endpoint, ILogger<ChatHost>? logger = null, bool useQuic = false)
         {
             this.endpoint = endpoint;
             this.useQuic = useQuic;
             this.logger = logger ?? NullLogger<ChatHost>.Instance;
+            this.encryptionManager = new EncryptionManager(this.logger);
         }
 
         public void Start()
@@ -98,7 +103,78 @@ namespace Squiggle.Core.Chat.Transport.Host
         {
             var envelope = MessageToEnvelope(message);
             var target = message.Recipient.Address;
+            var peerId = message.Recipient.ClientID;
+
+            // Encrypt the envelope payload if we have a shared key with this peer
+            if (peerId != null && encryptionManager.IsEncrypted(peerId))
+            {
+                EncryptEnvelope(envelope, peerId);
+            }
+
             SendGrpcMessage(target, envelope);
+        }
+
+        /// <summary>
+        /// Initiates E2EE key exchange with a peer by sending our public key.
+        /// </summary>
+        public void InitiateKeyExchange(Guid sessionId, ISquiggleEndPoint sender, ISquiggleEndPoint recipient)
+        {
+            var peerId = recipient.ClientID;
+            var publicKey = encryptionManager.GetOrCreateLocalPublicKey(peerId);
+            encryptionManager.MarkKeySent(peerId);
+
+            var envelope = new ChatMessageEnvelope
+            {
+                SessionId = sessionId.ToString(),
+                Sender = ToEndPointInfo(sender),
+                Recipient = ToEndPointInfo(recipient),
+                KeyExchange = new KeyExchangePayload
+                {
+                    PublicKey = ByteString.CopyFrom(publicKey)
+                }
+            };
+
+            logger.LogInformation("Initiating E2EE key exchange with peer {PeerId}", peerId);
+            SendGrpcMessage(recipient.Address, envelope);
+        }
+
+        /// <summary>
+        /// Returns true if encryption is established with the given peer.
+        /// </summary>
+        public bool IsEncryptedWith(string peerId) => encryptionManager.IsEncrypted(peerId);
+
+        void EncryptEnvelope(ChatMessageEnvelope envelope, string peerId)
+        {
+            // Serialize the payload portion to bytes, encrypt, and replace
+            var payloadBytes = envelope.ToByteArray();
+            var result = encryptionManager.Encrypt(peerId, payloadBytes);
+            if (result == null)
+                return;
+
+            // Build an encrypted envelope — clear the original payload and set encrypted fields
+            var encryptedEnvelope = new ChatMessageEnvelope
+            {
+                SessionId = envelope.SessionId,
+                Sender = envelope.Sender,
+                Recipient = envelope.Recipient,
+                Encrypted = true,
+                Nonce = ByteString.CopyFrom(result.Value.Nonce),
+                SenderPublicKey = ByteString.CopyFrom(encryptionManager.GetOrCreateLocalPublicKey(peerId)),
+                // Store the encrypted full envelope bytes in a text message as a carrier
+                TextMessage = new TextMessagePayload
+                {
+                    Id = Guid.Empty.ToString(),
+                    Message = Convert.ToBase64String(result.Value.Ciphertext)
+                }
+            };
+
+            // Copy encrypted envelope fields back
+            envelope.Encrypted = encryptedEnvelope.Encrypted;
+            envelope.Nonce = encryptedEnvelope.Nonce;
+            envelope.SenderPublicKey = encryptedEnvelope.SenderPublicKey;
+            envelope.TextMessage = encryptedEnvelope.TextMessage;
+            // Clear the original payload — the encrypted data is in TextMessage.Message
+            // We repurpose the envelope in-place
         }
 
         void SendGrpcMessage(IPEndPoint target, ChatMessageEnvelope envelope)
@@ -370,6 +446,82 @@ namespace Squiggle.Core.Chat.Transport.Host
             logger.LogDebug("{Sender} sent session info", sender);
         }
 
+        internal void OnGrpcKeyExchangeReceived(Guid sessionId, SquiggleEndPoint sender, KeyExchangePayload payload)
+        {
+            var peerId = sender.ClientID;
+            var peerPublicKey = payload.PublicKey.ToByteArray();
+
+            logger.LogInformation("Received E2EE public key from peer {PeerId}, fingerprint={Fingerprint}",
+                peerId, Encryption.E2EEncryptionService.ComputeFingerprint(peerPublicKey));
+
+            // Derive shared key and get our public key if we need to respond
+            var ourPublicKey = encryptionManager.OnPeerPublicKeyReceived(peerId, peerPublicKey);
+
+            KeyExchangeReceived(this, new KeyExchangeReceivedEventArgs
+            {
+                SessionID = sessionId,
+                Sender = sender,
+                PublicKey = peerPublicKey,
+                NeedsResponse = ourPublicKey != null
+            });
+
+            // If this is the first time we see this peer's key, send ours back
+            if (ourPublicKey != null)
+            {
+                encryptionManager.MarkKeySent(peerId);
+                var responseEnvelope = new ChatMessageEnvelope
+                {
+                    SessionId = sessionId.ToString(),
+                    Sender = new EndPointInfo
+                    {
+                        ClientId = "",  // Will be set properly via the endpoint info
+                        Ip = endpoint.Address.ToString(),
+                        Port = endpoint.Port
+                    },
+                    Recipient = ToEndPointInfo(sender),
+                    KeyExchange = new KeyExchangePayload
+                    {
+                        PublicKey = ByteString.CopyFrom(ourPublicKey)
+                    }
+                };
+                // We can't easily get our own EndPointInfo here, so fire event for ChatSession to respond
+                logger.LogDebug("Peer {PeerId} needs our public key — will be sent via key exchange response", peerId);
+            }
+        }
+
+        /// <summary>
+        /// Attempts to decrypt an incoming encrypted envelope.
+        /// Returns the decrypted envelope, or null if decryption fails.
+        /// </summary>
+        internal ChatMessageEnvelope? TryDecryptEnvelope(ChatMessageEnvelope envelope)
+        {
+            if (!envelope.Encrypted)
+                return envelope;
+
+            var senderId = envelope.Sender.ClientId;
+            var ciphertext = Convert.FromBase64String(envelope.TextMessage.Message);
+            var nonce = envelope.Nonce.ToByteArray();
+
+            var plaintext = encryptionManager.Decrypt(senderId, ciphertext, nonce);
+            if (plaintext == null)
+            {
+                logger.LogWarning("Failed to decrypt message from {Sender} — no shared key", senderId);
+                return null;
+            }
+
+            // Parse the decrypted bytes back into a ChatMessageEnvelope
+            var decrypted = ChatMessageEnvelope.Parser.ParseFrom(plaintext);
+            return decrypted;
+        }
+
+        /// <summary>
+        /// Removes encryption state for a peer.
+        /// </summary>
+        public void RemoveEncryptionState(string peerId)
+        {
+            encryptionManager.RemovePeer(peerId);
+        }
+
         #endregion
 
         void OnMessageReceived(Guid sessionId, ISquiggleEndPoint sender, Type messageType)
@@ -389,6 +541,8 @@ namespace Squiggle.Core.Chat.Transport.Host
             foreach (var channel in channels.Values)
                 channel.Dispose();
             channels.Clear();
+
+            encryptionManager.Dispose();
         }
     }
 
@@ -422,5 +576,11 @@ namespace Squiggle.Core.Chat.Transport.Host
     public class SessionInfoEventArgs : SessionEventArgs
     {
         public ISquiggleEndPoint[] Participants { get; set; } = null!;
+    }
+
+    public class KeyExchangeReceivedEventArgs : SessionEventArgs
+    {
+        public byte[] PublicKey { get; set; } = null!;
+        public bool NeedsResponse { get; set; }
     }
 }

@@ -37,7 +37,17 @@ message ChatMessageEnvelope {
     ActivityDataPayload activity_data = 20;
     GiveSessionInfoPayload give_session_info = 21;
     SessionInfoPayload session_info = 22;
+    KeyExchangePayload key_exchange = 23;
   }
+
+  // Encryption fields (set when payload is encrypted)
+  bool encrypted = 30;
+  bytes nonce = 31;
+  bytes sender_public_key = 32;
+}
+
+message KeyExchangePayload {
+  bytes public_key = 1;
 }
 
 message TextMessagePayload {
