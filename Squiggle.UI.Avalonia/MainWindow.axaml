@@ -1,0 +1,14 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Squiggle.UI.Avalonia.MainWindow"
+        Title="Squiggle Messenger"
+        Width="300" Height="500"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <TextBlock Text="Squiggle Messenger"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="18"
+                   FontWeight="Bold"/>
+    </Grid>
+</Window>
