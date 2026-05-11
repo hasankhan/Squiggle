@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel.Composition.Hosting;
 using System.Configuration;
-using System.Data.Common;
 using System.IO;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,14 +39,8 @@ namespace Squiggle.UI
                 if (setting == null)
                     return null;
 
-                string? dbProvider = ConfigurationManager.AppSettings["DbProvider"];
-                if (dbProvider == null)
-                    return null;
-
                 string connectionString = Environment.ExpandEnvironmentVariables(setting.ConnectionString);
-                DbConnection connection = DbProviderFactories.GetFactory(dbProvider).CreateConnection()!;
-                connection.ConnectionString = connectionString;
-                return new HistoryManager(connection);
+                return new HistoryManager(connectionString);
             });
 
             services.AddSingleton<PluginLoader>(provider =>

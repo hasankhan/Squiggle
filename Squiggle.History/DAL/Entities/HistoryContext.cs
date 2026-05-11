@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data.Entity;
-using System.Data.Common;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Squiggle.History.DAL.Entities
 {
@@ -14,9 +9,16 @@ namespace Squiggle.History.DAL.Entities
         public DbSet<Event> Events { get; set; } = null!;
         public DbSet<StatusUpdate> StatusUpdates { get; set; } = null!;
 
-        public HistoryContext(DbConnection connection, bool contextOwnsConnection)
-            : base(connection, contextOwnsConnection)
+        readonly string connectionString;
+
+        public HistoryContext(string connectionString)
         {
+            this.connectionString = connectionString;
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite(connectionString);
         }
     }
 }

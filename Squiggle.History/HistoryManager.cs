@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
 using Squiggle.History.DAL;
 using Squiggle.History.DAL.Entities;
 
@@ -11,11 +7,12 @@ namespace Squiggle.History
 {
     public class HistoryManager
     {
-        DbConnection connection;
+        readonly string connectionString;
+        bool databaseCreated;
         
-        public HistoryManager(DbConnection connection)
+        public HistoryManager(string connectionString)
         {
-            this.connection = connection;
+            this.connectionString = connectionString;
         }        
 
         public void AddSessionEvent(string sessionId, EventType type, string senderId, string senderName, IEnumerable<string> recipients, string data)
@@ -87,7 +84,13 @@ namespace Squiggle.History
 
         private HistoryRepository CreateRepository()
         {
-            return new HistoryRepository(new HistoryContext(this.connection, contextOwnsConnection: false));
+            var context = new HistoryContext(connectionString);
+            if (!databaseCreated)
+            {
+                context.Database.EnsureCreated();
+                databaseCreated = true;
+            }
+            return new HistoryRepository(context);
         }
     }
 }

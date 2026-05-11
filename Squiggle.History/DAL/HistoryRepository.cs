@@ -1,11 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using Squiggle.History.DAL.Entities;
-using System.Data.Entity.Core.Objects;
 
 namespace Squiggle.History.DAL
 {
@@ -43,14 +41,14 @@ namespace Squiggle.History.DAL
         {
             string text = criteria.Text ?? String.Empty;
 
-            var result = (from session in context.Sessions.Include("Participants")
-                         where (criteria.SessionId == null || session.Id == criteria.SessionId) &&
-                             (criteria.From == null || session.Start >= criteria.From.Value) &&
-                             (criteria.To == null || session.Start <= criteria.To.Value) &&
-                             (text.Length == 0 || session.Events.Any(e=>e.Data.Contains(text))) &&
-                             (criteria.Participant == null || session.Participants.Any(p => p.ContactId == criteria.Participant))
-                         orderby session.Start
-                         select session);
+            var result = (from session in context.Sessions.Include(s => s.Participants)
+                          where (criteria.SessionId == null || session.Id == criteria.SessionId) &&
+                              (criteria.From == null || session.Start >= criteria.From.Value) &&
+                              (criteria.To == null || session.Start <= criteria.To.Value) &&
+                              (text.Length == 0 || session.Events.Any(e=>e.Data.Contains(text))) &&
+                              (criteria.Participant == null || session.Participants.Any(p => p.ContactId == criteria.Participant))
+                          orderby session.Start
+                          select session);
 
             return result.ToList();
 
@@ -58,8 +56,8 @@ namespace Squiggle.History.DAL
 
         public Session? GetSession(string sessionId)
         {
-            var session = context.Sessions.Include("Participants")
-                                          .Include("Events")
+            var session = context.Sessions.Include(s => s.Participants)
+                                          .Include(s => s.Events)
                                           .FirstOrDefault(s => s.Id == sessionId);
             return session;
         }
@@ -75,7 +73,7 @@ namespace Squiggle.History.DAL
             return updates.ToList();
         }
 
-        public void ClearChatHistory(string sessionId = null)
+        public void ClearChatHistory(string? sessionId = null)
         {
             DeleteSession(sessionId);
 
@@ -139,7 +137,7 @@ namespace Squiggle.History.DAL
             context.Dispose();
         }
 
-        void DeleteSession(string sessionId)
+        void DeleteSession(string? sessionId)
         {
             DeleteAll(context.Events, e => sessionId == null || e.Session.Id == sessionId);
             DeleteAll(context.Participants, p => sessionId == null || p.Session.Id == sessionId);
@@ -157,24 +155,6 @@ namespace Squiggle.History.DAL
         {
             foreach (var item in set.Where(condition))
                 set.Remove(item);
-        }
-
-        IQueryable<TEntity> WhereIn<TEntity, TValue>(ObjectQuery<TEntity> query, Expression<Func<TEntity, TValue>> selector, IEnumerable<TValue> collection)
-        {
-            if (selector == null) 
-                throw new ArgumentNullException("selector");
-            if (collection == null) 
-                throw new ArgumentNullException("collection");
-            ParameterExpression p = selector.Parameters.Single();
-
-            if (!collection.Any()) 
-                return query;
-
-            IEnumerable<Expression> equals = collection.Select(value => (Expression)Expression.Equal(selector.Body, Expression.Constant(value, typeof(TValue))));
-
-            Expression body = equals.Aggregate((accumulate, equal) => Expression.Or(accumulate, equal));
-
-            return query.Where(Expression.Lambda<Func<TEntity, bool>>(body, p));
         }
     }
 }

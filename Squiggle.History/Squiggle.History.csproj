@@ -3,14 +3,7 @@
     <RootNamespace>Squiggle.History</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="EntityFramework" Version="6.5.*" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.*" />
-    <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.*" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="History.db">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.*" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Shared\AssemblyInfo.Copyright.cs" Link="Properties\AssemblyInfo.Copyright.cs" />
