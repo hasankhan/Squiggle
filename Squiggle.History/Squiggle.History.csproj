@@ -3,9 +3,6 @@
     <RootNamespace>Squiggle.History</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <InternalsVisibleTo Include="Squiggle.Tests" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.*" />
   </ItemGroup>
   <ItemGroup>
