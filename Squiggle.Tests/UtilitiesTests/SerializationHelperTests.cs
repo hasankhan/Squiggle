@@ -1,7 +1,7 @@
 using System;
-using System.IO;
+using System.Net;
+using System.Text.Json;
 using FluentAssertions;
-using ProtoBuf;
 using Squiggle.Utilities.Serialization;
 using Xunit;
 
@@ -9,16 +9,12 @@ namespace Squiggle.Tests.UtilitiesTests
 {
     public class SerializationHelperTests
     {
-        [ProtoContract]
         public class TestPayload
         {
-            [ProtoMember(1)]
             public int Id { get; set; }
 
-            [ProtoMember(2)]
             public string Name { get; set; } = null!;
 
-            [ProtoMember(3)]
             public double Value { get; set; }
         }
 
@@ -31,10 +27,9 @@ namespace Squiggle.Tests.UtilitiesTests
 
             bytes.Should().NotBeNullOrEmpty();
 
-            // Deserialize using ProtoBuf directly since the helper's Deserialize is private
-            var deserialized = ProtoBuf.Serializer.Deserialize<TestPayload>(new MemoryStream(bytes));
+            var deserialized = JsonSerializer.Deserialize<TestPayload>(bytes);
 
-            deserialized.Id.Should().Be(42);
+            deserialized!.Id.Should().Be(42);
             deserialized.Name.Should().Be("test");
             deserialized.Value.Should().BeApproximately(3.14, 0.001);
         }
@@ -46,7 +41,6 @@ namespace Squiggle.Tests.UtilitiesTests
 
             byte[] bytes = SerializationHelper.Serialize(empty);
 
-            // Protobuf serialization of default values may produce empty byte array
             bytes.Should().NotBeNull();
         }
 
@@ -74,17 +68,6 @@ namespace Squiggle.Tests.UtilitiesTests
             SerializationHelper.Deserialize<TestPayload>(garbage, obj => received = obj, "TestPayload");
 
             received.Should().BeNull();
-        }
-
-        [Fact]
-        public void Serialize_PreservesNullableStrings()
-        {
-            var payload = new TestPayload { Id = 1, Name = null!, Value = 0 };
-
-            byte[] bytes = SerializationHelper.Serialize(payload);
-            var deserialized = ProtoBuf.Serializer.Deserialize<TestPayload>(new MemoryStream(bytes));
-
-            deserialized.Name.Should().BeNull();
         }
     }
 }

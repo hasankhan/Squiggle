@@ -13,7 +13,6 @@
     <PackageReference Include="Grpc.Tools" Version="2.71.*" PrivateAssets="All" />
     <PackageReference Include="Makaretu.Dns.Multicast" Version="0.27.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.*" />
-    <PackageReference Include="protobuf-net" Version="3.2.*" />
   </ItemGroup>
   <ItemGroup>
     <Protobuf Include="Chat\Transport\Protos\squiggle_chat.proto" GrpcServices="Both" />

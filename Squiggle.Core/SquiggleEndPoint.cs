@@ -4,37 +4,17 @@ using System.Linq;
 using System.Net;
 using System.Runtime.Serialization;
 using System.Text;
-using ProtoBuf;
 
 namespace Squiggle.Core
 {
     [DataContract]
     public class SquiggleEndPoint: ISquiggleEndPoint
     {
-        [ProtoMember(1)]
         [DataMember]
         public string ClientID { get; set; } = null!;
-        // protobuf-net v3 removed AllowParseableTypes; serialize IPAddress as string.
-        [ProtoMember(2)]
-        string IPString
-        {
-            get => IP?.ToString() ?? "";
-            set => IP = string.IsNullOrEmpty(value) ? null! : IPAddress.Parse(value);
-        }
-        IPAddress IP { get; set; } = null!;
-        [ProtoMember(3)]
-        int Port { get; set; }
 
         [DataMember]
-        public IPEndPoint Address
-        {
-            get { return new IPEndPoint(IP, Port); }
-            set
-            {
-                IP = value.Address;
-                Port = value.Port;
-            }
-        }
+        public IPEndPoint Address { get; set; } = null!;
 
         public SquiggleEndPoint() { }
 

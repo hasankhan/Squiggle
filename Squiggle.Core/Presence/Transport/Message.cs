@@ -1,35 +1,31 @@
 ﻿using System;
-using System.IO;
 using System.Net;
-using System.Runtime.Serialization.Formatters.Binary;
-using ProtoBuf;
+using System.Text.Json.Serialization;
 using Squiggle.Core.Presence.Transport.Messages;
-using Squiggle.Utilities.Serialization;
 
 namespace Squiggle.Core.Presence.Transport
 {
-    [ProtoContract]
-    [ProtoInclude(50, typeof(GiveUserInfoMessage))]
-    [ProtoInclude(51, typeof(KeepAliveMessage))]
-    [ProtoInclude(52, typeof(LoginMessage))]
-    [ProtoInclude(53, typeof(LogoutMessage))]
-    [ProtoInclude(54, typeof(UserUpdateMessage))]
-    [ProtoInclude(55, typeof(PresenceMessage))]
+    [JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
+    [JsonDerivedType(typeof(GiveUserInfoMessage), "GiveUserInfo")]
+    [JsonDerivedType(typeof(KeepAliveMessage), "KeepAlive")]
+    [JsonDerivedType(typeof(LoginMessage), "Login")]
+    [JsonDerivedType(typeof(LogoutMessage), "Logout")]
+    [JsonDerivedType(typeof(UserUpdateMessage), "UserUpdate")]
+    [JsonDerivedType(typeof(HiMessage), "Hi")]
+    [JsonDerivedType(typeof(HelloMessage), "Hello")]
+    [JsonDerivedType(typeof(UserInfoMessage), "UserInfo")]
     public abstract class Message
     {
-        [ProtoMember(1)]
         public Guid ChannelID { get; set; }
 
         /// <summary>
         /// Presence endpoint for the sender
         /// </summary>
-        [ProtoMember(2)]
         public SquiggleEndPoint Sender { get; set; } = null!;
 
         /// <summary>
         /// Presence endpoint for the recipient
         /// </summary>
-        [ProtoMember(3)]
         public SquiggleEndPoint? Recipient { get; set; }
 
         public static TMessage FromSender<TMessage>(IUserInfo user) where TMessage:Message, new()

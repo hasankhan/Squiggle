@@ -28,7 +28,7 @@ namespace Squiggle.Core.Presence
                 PresenceEndPoint = options.PresenceServiceEndPoint
             };
 
-            channel = new PresenceChannel(options.MulticastEndPoint, options.MulticastReceiveEndPoint, options.PresenceServiceEndPoint, options.DiscoveryMode);
+            channel = new PresenceChannel(options.MulticastEndPoint, options.MulticastReceiveEndPoint, options.PresenceServiceEndPoint);
 
             this.discovery = new UserDiscovery(channel);
             discovery.UserOnline += discovery_UserOnline;

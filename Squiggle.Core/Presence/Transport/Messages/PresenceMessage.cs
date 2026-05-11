@@ -1,42 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using ProtoBuf;
+using System.Text.Json.Serialization;
+using Squiggle.Utilities.Serialization;
 
 namespace Squiggle.Core.Presence.Transport.Messages
 {
-    [ProtoContract]
-    [ProtoInclude(50, typeof(HiMessage))]
-    [ProtoInclude(51, typeof(HelloMessage))]
-    [ProtoInclude(52, typeof(UserInfoMessage))]
     public abstract class PresenceMessage : Message
     {        
-        [ProtoMember(1)]
         public string DisplayName { get; set; } = null!;
-        [ProtoMember(2)]        
         public UserStatus Status { get; set; }
-        [ProtoMember(3)]
         public IDictionary<string, string> Properties { get; set; }
-        [ProtoMember(4)]
         public TimeSpan KeepAliveSyncTime { get; set; }
-        [ProtoMember(5)]
-        IPAddress ChatIP { get; set; } = null!;
-        [ProtoMember(6)]
-        int ChatPort { get; set; }
+
+        [JsonConverter(typeof(IPEndPointJsonConverter))]
+        public IPEndPoint ChatEndPoint { get; set; } = null!;
 
         public PresenceMessage()
         {
             Properties = new Dictionary<string, string>();
-        }
-
-        public IPEndPoint ChatEndPoint
-        {
-            get { return new IPEndPoint(ChatIP, ChatPort); }
-            set
-            {
-                ChatIP = value.Address;
-                ChatPort = value.Port;
-            }
         }
 
         public static TMessage FromUserInfo<TMessage>(IUserInfo user) where TMessage: PresenceMessage, new ()

@@ -10,7 +10,6 @@ using Squiggle.Utilities;
 using Squiggle.Utilities.Net;
 using Squiggle.Utilities.Net.Pipe;
 using Squiggle.Utilities.Threading;
-using Squiggle.Core.Presence.Transport.Multicast.Tcp;
 using Squiggle.Core.Presence.Transport.Multicast.Mdns;
 using System.Threading.Tasks;
 
@@ -36,28 +35,10 @@ namespace Squiggle.Core.Presence.Transport
 
         public Guid ChannelID { get; private set; }
 
-        public PresenceChannel(IPEndPoint multicastEndPoint, IPEndPoint multicastReceiveEndPoint, IPEndPoint serviceEndPoint,
-            DiscoveryMode discoveryMode = DiscoveryMode.Mdns)
+        public PresenceChannel(IPEndPoint multicastEndPoint, IPEndPoint multicastReceiveEndPoint, IPEndPoint serviceEndPoint)
         {
             this.ChannelID = Guid.NewGuid();
-
-            switch (discoveryMode)
-            {
-                case DiscoveryMode.Mdns:
-                    this.multicastService = new MdnsMulticastService(multicastReceiveEndPoint);
-                    break;
-                case DiscoveryMode.TcpMulticast:
-                    this.multicastService = new TcpMulticastService(multicastReceiveEndPoint, multicastEndPoint);
-                    break;
-                case DiscoveryMode.UdpMulticast:
-                default:
-                    if (NetworkUtility.IsMulticast(multicastEndPoint.Address))
-                        this.multicastService = new UdpMulticastService(multicastReceiveEndPoint, multicastEndPoint);
-                    else
-                        this.multicastService = new TcpMulticastService(multicastReceiveEndPoint, multicastEndPoint);
-                    break;
-            }
-            
+            this.multicastService = new MdnsMulticastService(multicastReceiveEndPoint);
             this.serviceEndPoint = serviceEndPoint;
         }        
 
