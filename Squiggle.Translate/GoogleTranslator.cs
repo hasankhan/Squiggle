@@ -12,6 +12,11 @@ namespace Squiggle.Translate
 {
     class GoogleTranslator
     {
+        static readonly JsonSerializerOptions jsonOptions = new()
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        };
+
         string apiKey;
 
         public GoogleTranslator(string apiKey)
@@ -52,7 +57,7 @@ namespace Squiggle.Translate
 
             string translatedText = String.Empty;
 
-            var result = JsonSerializer.Deserialize(text, GoogleTranslateJsonContext.Default.TranslateResult)!;
+            var result = JsonSerializer.Deserialize<TranslateResult>(text, jsonOptions)!;
             if (result.Data.Translations.Any())
             {
                 var translation = result.Data.Translations.FirstOrDefault();
@@ -64,28 +69,19 @@ namespace Squiggle.Translate
         }
     }
 
-    internal class TranslateResult
+    class TranslateResult
     {
-        [JsonPropertyName("data")]
         public TranslateData Data { get; set; } = null!;
     }
 
-    internal class TranslateData
+    class TranslateData
     {
-        [JsonPropertyName("translations")]
         public List<TranslateTranslation> Translations { get; set; } = null!;
     }
 
-    internal class TranslateTranslation
+    class TranslateTranslation
     {
-        [JsonPropertyName("translatedText")]
         public string TranslatedText { get; set; } = null!;
-        [JsonPropertyName("detectedSourceLanguage")]
         public string? DetectedSourceLanguage { get; set; }
-    }
-
-    [JsonSerializable(typeof(TranslateResult))]
-    internal partial class GoogleTranslateJsonContext : JsonSerializerContext
-    {
     }
 }
