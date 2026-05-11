@@ -3,7 +3,7 @@
              x:Class="Squiggle.UI.Avalonia.App">
     <Application.Styles>
         <FluentTheme />
-        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.axaml" />
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
         <StyleInclude Source="avares://Squiggle.UI.Avalonia/Styles/AppStyles.axaml" />
     </Application.Styles>
     <Application.Resources>
