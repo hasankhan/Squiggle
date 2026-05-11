@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Squiggle.Client.Activities;
 using Squiggle.Core.Chat.Activity;
@@ -8,7 +7,6 @@ using Squiggle.Plugins;
 
 namespace Squiggle.VoiceChat
 {
-    [Export(typeof(IActivity))]
     public class VoiceChatActivity : IActivity
     {
         public Guid Id => SquiggleActivities.VoiceChat;

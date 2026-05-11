@@ -4,7 +4,6 @@
     <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.ComponentModel.Composition" Version="9.0.*" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Squiggle.Client\Squiggle.Client.csproj" />

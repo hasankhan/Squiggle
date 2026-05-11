@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.ComponentModel.Composition;
 using System.IO;
 using Squiggle.Client.Activities;
 using Squiggle.Core.Chat.Activity;
@@ -11,7 +10,6 @@ using System.Threading.Tasks;
 
 namespace Squiggle.FileTransfer
 {
-    [Export(typeof(IActivity))]
     public class FileTransferActivity: IActivity
     {
         public virtual Guid Id
