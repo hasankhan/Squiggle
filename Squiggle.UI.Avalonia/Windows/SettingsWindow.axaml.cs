@@ -1,6 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using Microsoft.Extensions.DependencyInjection;
+using Squiggle.UI.Avalonia.Services;
 using Squiggle.UI.Avalonia.ViewModel;
 
 namespace Squiggle.UI.Avalonia.Windows;
@@ -24,6 +26,8 @@ public partial class SettingsWindow : Window
 
     private void OkButton_Click(object? sender, RoutedEventArgs e)
     {
+        var themeService = App.Services.GetRequiredService<ThemeService>();
+        themeService.ApplyTheme(_viewModel.GeneralSettings.ThemeMode);
         Close(true);
     }
 

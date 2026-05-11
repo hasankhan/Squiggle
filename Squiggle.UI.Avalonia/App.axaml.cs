@@ -32,6 +32,10 @@ public partial class App : Application
             if (desktop.Args is { Length: > 0 } && desktop.Args[0].Trim() == "/background")
                 RunInBackground = true;
 
+            // Apply saved theme on startup
+            var themeService = Services.GetRequiredService<ThemeService>();
+            themeService.ApplyTheme("System");
+
             desktop.MainWindow = new MainWindow();
             desktop.ShutdownMode = global::Avalonia.Controls.ShutdownMode.OnMainWindowClose;
         }
@@ -72,6 +76,7 @@ public partial class App : Application
         services.AddSingleton(pluginLoader);
 
         // Platform services
+        services.AddSingleton<ThemeService>();
         services.AddSingleton<ITrayIconService, AvaloniaTrayIconService>();
         services.AddSingleton<INotificationService, AvaloniaNotificationService>();
         services.AddSingleton<IDialogService, AvaloniaDialogService>();

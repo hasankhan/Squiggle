@@ -47,6 +47,15 @@
                     <CheckBox Content="{DynamicResource SettingsWindow_GeneralTab_CheckForUpdates}"
                               IsChecked="{Binding GeneralSettings.CheckForUpdates}" />
 
+                    <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
+                        <TextBlock Text="Theme:" VerticalAlignment="Center" />
+                        <ComboBox SelectedItem="{Binding GeneralSettings.ThemeMode}" Width="120">
+                            <x:String>System</x:String>
+                            <x:String>Light</x:String>
+                            <x:String>Dark</x:String>
+                        </ComboBox>
+                    </StackPanel>
+
                     <TextBlock Text="{DynamicResource SettingsWindow_GeneralTab_DownloadsFolder}" Margin="0,8,0,0" />
                     <Grid ColumnDefinitions="*,Auto">
                         <TextBox Text="{Binding GeneralSettings.DownloadsFolder}" IsReadOnly="True" />

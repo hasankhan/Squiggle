@@ -13,14 +13,24 @@
             <SolidColorBrush x:Key="StatusBusyBrush" Color="{StaticResource StatusBusyColor}" />
             <SolidColorBrush x:Key="StatusOfflineBrush" Color="{StaticResource StatusOfflineColor}" />
 
-            <!-- Chat Bubble Styles -->
-            <SolidColorBrush x:Key="SentMessageBrush" Color="#DCF8C6" />
-            <SolidColorBrush x:Key="ReceivedMessageBrush" Color="#FFFFFF" />
-            <SolidColorBrush x:Key="SystemMessageBrush" Color="#F0F0F0" />
-
+            <!-- Chat Bubble Layout -->
             <CornerRadius x:Key="ChatBubbleCornerRadius">12</CornerRadius>
             <Thickness x:Key="ChatBubblePadding">10,6,10,6</Thickness>
             <Thickness x:Key="ChatBubbleMargin">4,2,4,2</Thickness>
+
+            <!-- Theme-aware Chat Bubble Colors -->
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="SentMessageBrush" Color="#DCF8C6" />
+                    <SolidColorBrush x:Key="ReceivedMessageBrush" Color="#FFFFFF" />
+                    <SolidColorBrush x:Key="SystemMessageBrush" Color="#F0F0F0" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="SentMessageBrush" Color="#1B5E20" />
+                    <SolidColorBrush x:Key="ReceivedMessageBrush" Color="#2D2D2D" />
+                    <SolidColorBrush x:Key="SystemMessageBrush" Color="#3D3D3D" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
 

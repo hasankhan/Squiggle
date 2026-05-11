@@ -28,6 +28,9 @@ public class GeneralSettingsViewModel : ViewModelBase
 
     private bool _checkForUpdates = true;
     public bool CheckForUpdates { get => _checkForUpdates; set => Set(ref _checkForUpdates, value); }
+
+    private string _themeMode = "System";
+    public string ThemeMode { get => _themeMode; set => Set(ref _themeMode, value); }
 }
 
 public class ConnectionSettingsViewModel : ViewModelBase
