@@ -43,7 +43,7 @@ namespace Squiggle.Core.Chat.Transport.Host
         public event EventHandler<SessionEventArgs> SessionInfoRequested = delegate { };
         public event EventHandler<SessionInfoEventArgs> SessionInfoReceived = delegate { };
 
-        public ChatHost(IPEndPoint endpoint, bool useQuic = false, ILogger<ChatHost>? logger = null)
+        public ChatHost(IPEndPoint endpoint, ILogger<ChatHost>? logger = null, bool useQuic = false)
         {
             this.endpoint = endpoint;
             this.useQuic = useQuic;
