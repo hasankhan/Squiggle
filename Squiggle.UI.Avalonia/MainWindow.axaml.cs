@@ -53,9 +53,10 @@ public partial class MainWindow : Window
         Close();
     }
 
-    private void SettingsMenu_Click(object? sender, RoutedEventArgs e)
+    private async void SettingsMenu_Click(object? sender, RoutedEventArgs e)
     {
-        // Settings window will be implemented in #52
+        var settingsWindow = new Windows.SettingsWindow();
+        await settingsWindow.ShowDialog(this);
     }
 
     private void AboutMenu_Click(object? sender, RoutedEventArgs e)
