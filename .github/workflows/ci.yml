@@ -11,15 +11,39 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
+
       - name: Install .NET 9 x86 SDK for test host
         shell: pwsh
         run: |
           Invoke-WebRequest -Uri 'https://dot.net/v1/dotnet-install.ps1' -OutFile dotnet-install.ps1
           ./dotnet-install.ps1 -Channel 9.0 -Architecture x86 -InstallDir 'C:\Program Files (x86)\dotnet'
           echo "DOTNET_ROOT_X86=C:\Program Files (x86)\dotnet" >> $env:GITHUB_ENV
-      - run: dotnet restore
-      - run: dotnet build --no-restore --configuration Release
-      - run: dotnet test --no-build --configuration Release --verbosity normal
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Test
+        run: dotnet test --no-build --configuration Release --verbosity normal --logger "trx;LogFileName=test-results.trx"
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: '**/*.trx'
+          retention-days: 30

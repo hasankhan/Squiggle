@@ -1,3 +1,5 @@
+[![CI](https://github.com/hasankhan/Squiggle/actions/workflows/ci.yml/badge.svg)](https://github.com/hasankhan/Squiggle/actions/workflows/ci.yml)
+
 Squiggle is a free server-less peer to peer LAN messenger.
 Just download and run it and you're ready to talk to everyone on your LAN.
 
