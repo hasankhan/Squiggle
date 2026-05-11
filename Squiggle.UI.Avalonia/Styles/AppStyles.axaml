@@ -1,25 +1,28 @@
-<ResourceDictionary xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Styles.Resources>
+        <ResourceDictionary>
+            <!-- Status Colors -->
+            <Color x:Key="StatusOnlineColor">#2ECC40</Color>
+            <Color x:Key="StatusAwayColor">#FFDC00</Color>
+            <Color x:Key="StatusBusyColor">#FF4136</Color>
+            <Color x:Key="StatusOfflineColor">#AAAAAA</Color>
 
-    <!-- Status Colors -->
-    <Color x:Key="StatusOnlineColor">#2ECC40</Color>
-    <Color x:Key="StatusAwayColor">#FFDC00</Color>
-    <Color x:Key="StatusBusyColor">#FF4136</Color>
-    <Color x:Key="StatusOfflineColor">#AAAAAA</Color>
+            <SolidColorBrush x:Key="StatusOnlineBrush" Color="{StaticResource StatusOnlineColor}" />
+            <SolidColorBrush x:Key="StatusAwayBrush" Color="{StaticResource StatusAwayColor}" />
+            <SolidColorBrush x:Key="StatusBusyBrush" Color="{StaticResource StatusBusyColor}" />
+            <SolidColorBrush x:Key="StatusOfflineBrush" Color="{StaticResource StatusOfflineColor}" />
 
-    <SolidColorBrush x:Key="StatusOnlineBrush" Color="{StaticResource StatusOnlineColor}" />
-    <SolidColorBrush x:Key="StatusAwayBrush" Color="{StaticResource StatusAwayColor}" />
-    <SolidColorBrush x:Key="StatusBusyBrush" Color="{StaticResource StatusBusyColor}" />
-    <SolidColorBrush x:Key="StatusOfflineBrush" Color="{StaticResource StatusOfflineColor}" />
+            <!-- Chat Bubble Styles -->
+            <SolidColorBrush x:Key="SentMessageBrush" Color="#DCF8C6" />
+            <SolidColorBrush x:Key="ReceivedMessageBrush" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="SystemMessageBrush" Color="#F0F0F0" />
 
-    <!-- Chat Bubble Styles -->
-    <SolidColorBrush x:Key="SentMessageBrush" Color="#DCF8C6" />
-    <SolidColorBrush x:Key="ReceivedMessageBrush" Color="#FFFFFF" />
-    <SolidColorBrush x:Key="SystemMessageBrush" Color="#F0F0F0" />
-
-    <CornerRadius x:Key="ChatBubbleCornerRadius">12</CornerRadius>
-    <Thickness x:Key="ChatBubblePadding">10,6,10,6</Thickness>
-    <Thickness x:Key="ChatBubbleMargin">4,2,4,2</Thickness>
+            <CornerRadius x:Key="ChatBubbleCornerRadius">12</CornerRadius>
+            <Thickness x:Key="ChatBubblePadding">10,6,10,6</Thickness>
+            <Thickness x:Key="ChatBubbleMargin">4,2,4,2</Thickness>
+        </ResourceDictionary>
+    </Styles.Resources>
 
     <!-- Round Button Style -->
     <Style Selector="Button.round">
@@ -86,4 +89,4 @@
         <Setter Property="TextWrapping" Value="Wrap" />
         <Setter Property="FontSize" Value="14" />
     </Style>
-</ResourceDictionary>
+</Styles>
