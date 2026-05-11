@@ -1,0 +1,105 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Squiggle.UI.Avalonia.Windows.ChatWindow"
+        Width="500" Height="450"
+        WindowStartupLocation="CenterScreen">
+    <DockPanel>
+        <!-- Menu Bar -->
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="{DynamicResource ChatWindow_MainMenu_File}">
+                <MenuItem Header="{DynamicResource ChatWindow_MainMenu_SendAFile}" Click="SendFile_Click" />
+                <Separator />
+                <MenuItem Header="{DynamicResource ChatWindow_MainMenu_Save}" Click="Save_Click" />
+                <MenuItem Header="{DynamicResource ChatWindow_MainMenu_Close}" Click="CloseMenu_Click" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource ChatWindow_MainMenu_Edit}">
+                <MenuItem Header="{DynamicResource ChatWindow_MainMenu_Copy}" Click="Copy_Click" />
+                <MenuItem Header="{DynamicResource ChatWindow_MainMenu_SelectAll}" Click="SelectAll_Click" />
+            </MenuItem>
+            <MenuItem Header="{DynamicResource ChatWindow_MainMenu_Help}">
+                <MenuItem Header="{DynamicResource Global_Menu_About}" />
+            </MenuItem>
+        </Menu>
+
+        <!-- Main Chat Area -->
+        <Grid Margin="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="120" />
+            </Grid.RowDefinitions>
+
+            <!-- Conversation Display -->
+            <Border Grid.Row="0" CornerRadius="4"
+                    BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                    BorderThickness="1">
+                <ScrollViewer x:Name="messageScroller"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl x:Name="messagesControl">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="4,2"
+                                        Padding="8,4"
+                                        CornerRadius="8"
+                                        Background="{Binding Background}">
+                                    <StackPanel>
+                                        <DockPanel>
+                                            <TextBlock FontWeight="SemiBold"
+                                                       FontSize="12"
+                                                       Text="{Binding SenderName}"
+                                                       DockPanel.Dock="Left" />
+                                            <TextBlock FontSize="10"
+                                                       Opacity="0.6"
+                                                       Text="{Binding Timestamp}"
+                                                       DockPanel.Dock="Right"
+                                                       HorizontalAlignment="Right" />
+                                        </DockPanel>
+                                        <TextBlock TextWrapping="Wrap"
+                                                   Margin="0,2,0,0"
+                                                   Text="{Binding Text}" />
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
+
+            <!-- Typing indicator -->
+            <TextBlock Grid.Row="1" x:Name="typingIndicator"
+                       FontSize="11" Margin="4,2"
+                       Foreground="Gray"
+                       IsVisible="False" />
+
+            <!-- Toolbar -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,4">
+                <Button ToolTip.Tip="{DynamicResource Buddy_SendFile}" Click="SendFile_Click"
+                        Padding="6,2" Margin="0,0,4,0">
+                    <TextBlock Text="📎" FontSize="16" />
+                </Button>
+                <Button ToolTip.Tip="{DynamicResource Emoticon_Smile}" Click="Emoticon_Click"
+                        Padding="6,2">
+                    <TextBlock Text="😊" FontSize="16" />
+                </Button>
+            </StackPanel>
+
+            <!-- Message Input -->
+            <Grid Grid.Row="3" ColumnDefinitions="*,Auto">
+                <TextBox x:Name="txtMessage"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
+                         Watermark="{DynamicResource ChatWindow_TypeMessageHere}"
+                         KeyDown="TxtMessage_KeyDown" />
+                <Button Grid.Column="1"
+                        Content="{DynamicResource ChatWindow_SendButton}"
+                        Click="SendButton_Click"
+                        Margin="4,0,0,0"
+                        VerticalAlignment="Stretch"
+                        Width="70"
+                        Classes="accent" />
+            </Grid>
+        </Grid>
+    </DockPanel>
+</Window>

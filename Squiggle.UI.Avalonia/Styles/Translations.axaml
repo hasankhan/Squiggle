@@ -120,6 +120,7 @@ Are you sure you want to close this window?</sys:String>
     <sys:String x:Key="ChatWindow_MainMenu_Settings">_Settings...</sys:String>
     <sys:String x:Key="ChatWindow_MainMenu_Help">_Help</sys:String>
     <sys:String x:Key="ChatWindow_SendButton">Send</sys:String>
+    <sys:String x:Key="ChatWindow_TypeMessageHere">Type a message...</sys:String>
     <sys:String x:Key="ChatWindow_SendButtonToolTip">Send Message</sys:String>
     <sys:String x:Key="ChatWindow_ShowInFolder">Show In Folder</sys:String>
     <sys:String x:Key="ChatWindow_IsTyping">is typing...</sys:String>

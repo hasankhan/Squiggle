@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Squiggle.Client;
+using Squiggle.UI.Avalonia.Windows;
 
 namespace Squiggle.UI.Avalonia.Controls;
 
@@ -16,7 +17,7 @@ public partial class ContactListControl : UserControl
     {
         if (contactsList.SelectedItem is IBuddy buddy)
         {
-            // Chat window will be implemented in #51
+            OpenChatWindow(buddy);
         }
     }
 
@@ -24,8 +25,14 @@ public partial class ContactListControl : UserControl
     {
         if (contactsList.SelectedItem is IBuddy buddy)
         {
-            // Chat window will be implemented in #51
+            OpenChatWindow(buddy);
         }
+    }
+
+    private void OpenChatWindow(IBuddy buddy)
+    {
+        var chatWindow = new ChatWindow(buddy);
+        chatWindow.Show();
     }
 
     private void SendFile_Click(object? sender, RoutedEventArgs e)
