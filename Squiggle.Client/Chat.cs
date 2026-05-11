@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
-using System.Windows.Threading;
 using Squiggle.Core;
 using Squiggle.Core.Chat;
 using Squiggle.History;

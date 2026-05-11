@@ -1,8 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <RootNamespace>Squiggle.Utilities</RootNamespace>
-    <UseWPF>true</UseWPF>
-    <UseWindowsForms>true</UseWindowsForms>
     <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
   <ItemGroup>

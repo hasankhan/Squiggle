@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Windows;
-using System.Windows.Interop;
+using System.Runtime.Versioning;
 
 namespace Squiggle.Utilities.Application
 {
+    [SupportedOSPlatform("windows")]
     public class FlashWindow
     {
         [DllImport("user32.dll")]
@@ -21,27 +21,18 @@ namespace Squiggle.Utilities.Application
             public UInt32 dwTimeout;
         }
 
-        //Stop flashing. The system restores the window to its original state.
         public const UInt32 FLASHW_STOP = 0;
-        //Flash the window caption.
         public const UInt32 FLASHW_CAPTION = 1;
-        //Flash the taskbar button.
         public const UInt32 FLASHW_TRAY = 2;
-        //Flash both the window caption and taskbar button.
-        //This is equivalent to setting the FLASHW_CAPTION | FLASHW_TRAY flags.
         public const UInt32 FLASHW_ALL = 3;
-        //Flash continuously, until the FLASHW_STOP flag is set.
         public const UInt32 FLASHW_TIMER = 4;
-        //Flash continuously until the window comes to the foreground.
-        public const UInt32 FLASHW_TIMERNOFG = 12; 
+        public const UInt32 FLASHW_TIMERNOFG = 12;
 
-        private Window target;
         IntPtr handle;
 
-        public FlashWindow(Window sender)
+        public FlashWindow(IntPtr windowHandle)
         {
-            target = (Window)sender;
-            handle = new WindowInteropHelper(target).Handle;
+            handle = windowHandle;
         }
 
         public bool Start()

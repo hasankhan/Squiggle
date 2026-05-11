@@ -2,22 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Threading;
+using System.Threading;
 
 namespace Squiggle.Utilities.Threading
 {
     public class UIActionQueue: ActionQueue
     {
-        Dispatcher dispatcher;
+        SynchronizationContext context;
 
-        public UIActionQueue(Dispatcher dispatcher)
+        public UIActionQueue(SynchronizationContext context)
         {
-            this.dispatcher = dispatcher;
+            this.context = context;
         }
 
         protected override void Execute(Action action)
         {
-            dispatcher.Invoke(action);
+            context.Send(_ => action(), null);
         }
     }
 }

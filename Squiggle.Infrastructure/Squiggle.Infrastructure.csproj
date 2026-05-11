@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <RootNamespace>Squiggle.Infrastructure</RootNamespace>
-    <UseWPF>true</UseWPF>
     <AssemblyVersion>3.4.0.0</AssemblyVersion>
     <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
