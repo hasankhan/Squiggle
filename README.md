@@ -59,6 +59,24 @@ Squiggle.Utilities       (Cross-cutting helpers used by all layers)
 | `Squiggle.Multicast` | Multicast presence (standalone exe) |
 | `Squiggle.Bridge` | Cross-subnet/WAN bridging (standalone exe) |
 
+## Releases
+
+Releases are automated via GitHub Actions. When a version tag is pushed, the CI builds self-contained single-file executables for all platforms and creates a GitHub Release with the artifacts.
+
+**To create a release:**
+
+```bash
+git tag v4.0.0
+git push --tags
+```
+
+Pre-built binaries are available for:
+- Windows (x64)
+- Linux (x64)
+- macOS (x64 and ARM64)
+
+Tags containing `-beta`, `-rc`, or `-alpha` are automatically marked as pre-releases.
+
 ## License
 
 See [LICENSE](LICENSE) for details.
