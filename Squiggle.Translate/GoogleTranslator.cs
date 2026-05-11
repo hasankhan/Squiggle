@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Web;
 
 namespace Squiggle.Translate
@@ -50,32 +52,40 @@ namespace Squiggle.Translate
 
             string translatedText = String.Empty;
 
-            var result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result>(text)!;
-            if (result.data.translations.Any())
+            var result = JsonSerializer.Deserialize(text, GoogleTranslateJsonContext.Default.TranslateResult)!;
+            if (result.Data.Translations.Any())
             {
-                var translation = result.data.translations.FirstOrDefault();
-                detectedLanguage = translation.detectedSourceLanguage;
-                translatedText = translation.translatedText;
+                var translation = result.Data.Translations.FirstOrDefault();
+                detectedLanguage = translation.DetectedSourceLanguage;
+                translatedText = translation.TranslatedText;
             }
 
             return translatedText;
         }
-
-        class Result
-        {
-            public Data data { get; set; } = null!;
-        }
-
-        class Data
-        {
-            public List<Translation> translations { get; set; } = null!;
-        }
-
-        class Translation
-        {
-            public string translatedText { get; set; } = null!;
-            public string? detectedSourceLanguage { get; set; }
-        }
     }
 
+    internal class TranslateResult
+    {
+        [JsonPropertyName("data")]
+        public TranslateData Data { get; set; } = null!;
+    }
+
+    internal class TranslateData
+    {
+        [JsonPropertyName("translations")]
+        public List<TranslateTranslation> Translations { get; set; } = null!;
+    }
+
+    internal class TranslateTranslation
+    {
+        [JsonPropertyName("translatedText")]
+        public string TranslatedText { get; set; } = null!;
+        [JsonPropertyName("detectedSourceLanguage")]
+        public string? DetectedSourceLanguage { get; set; }
+    }
+
+    [JsonSerializable(typeof(TranslateResult))]
+    internal partial class GoogleTranslateJsonContext : JsonSerializerContext
+    {
+    }
 }
