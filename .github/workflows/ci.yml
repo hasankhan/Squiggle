@@ -8,7 +8,13 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+          - os: ubuntu-latest
+          - os: macos-latest
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
 
@@ -17,6 +23,7 @@ jobs:
           dotnet-version: '9.0.x'
 
       - name: Install .NET 9 x86 SDK for test host
+        if: matrix.os == 'windows-latest'
         shell: pwsh
         run: |
           Invoke-WebRequest -Uri 'https://dot.net/v1/dotnet-install.ps1' -OutFile dotnet-install.ps1
@@ -31,18 +38,29 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
 
-      - name: Restore
+      - name: Restore (Full solution - Windows)
+        if: matrix.os == 'windows-latest'
         run: dotnet restore
 
-      - name: Build
+      - name: Restore (Cross-platform projects)
+        if: matrix.os != 'windows-latest'
+        run: dotnet restore Squiggle.UI/Squiggle.UI.csproj
+
+      - name: Build (Full solution - Windows)
+        if: matrix.os == 'windows-latest'
         run: dotnet build --no-restore --configuration Release
 
+      - name: Build (Cross-platform projects)
+        if: matrix.os != 'windows-latest'
+        run: dotnet build Squiggle.UI/Squiggle.UI.csproj --no-restore --configuration Release
+
       - name: Test
+        if: matrix.os == 'windows-latest'
         run: dotnet test --no-build --configuration Release --verbosity normal --logger "trx;LogFileName=test-results.trx"
 
       - name: Upload test results
+        if: always() && matrix.os == 'windows-latest'
         uses: actions/upload-artifact@v4
-        if: always()
         with:
           name: test-results
           path: '**/*.trx'
