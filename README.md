@@ -80,3 +80,6 @@ Tags containing `-beta`, `-rc`, or `-alpha` are automatically marked as pre-rele
 ## License
 
 See [LICENSE](LICENSE) for details.
+
+## Educational Project Description 
+This repository is a open-source LAN Messenger application used as a practical work to master teamwork development workflows, branch management, and Pull Request creation on GitHub
